@@ -1,0 +1,16 @@
+# Signature Based Malicious Behavior Detection in Android
+261
+1. Burguera, I., Zurutuza, U., Nadjm-Tehrani, S.: Crowdroid: behavior-based malware detection system for Android. In: Proceedings of the 1st ACM Workshop on Security and Privacy in Smartphones and Mobile Devices, pp. 15–26 (2011). https://doi.org/10/2046614
+2. Cai, H., Meng, N., Ryder, B., Yao, D.: DroidCat: effective Android malware detection and categorization via app-level profiling. IEEE Trans. Inf. Foren. Secur. 14(6), 1455–1470 (2018). https://doi.org/10/TIFS
+3. Dash, S.K., et al.: DroidScribe: classifying Android malware based on runtime behavior. In: 2016 IEEE Security and Privacy Workshops (SPW), pp. 252–261. IEEE (2016). https://doi.org/10/SPW
+4. Doulamis, A., Pelekis, N., Theodoridis, Y.: Easytracker: an Android application for capturing mobility behavior. In: 16th Panhellenic Conference on Informatics, pp. 357–362. IEEE (2012). https://doi.org/10/PCi
+5. Isohara, T., Takemori, K., Kubota, A.: Kernel-based behavior analysis for Android malware detection. In: 2011 Seventh International Conference on Computational Intelligence and Security, pp. 1011–1015. IEEE (2011). https://doi.org/10/CIS
+6. Jang, J.W., Yun, J., Woo, J., Kim, H.K.: Andro-profiler: anti-malware system based on behavior profiling of mobile malware. In: Proceedings of the 23rd International Conference on World Wide Web, pp. 737–738 (2014). https://doi.org/10/JKIISC
+7. Kong, D., Cen, L., Jin, H.: Autoreb: automatically understanding the review-to-behavior fidelity in Android applications. In: Proceedings of the 22nd ACM SIGSAC Conference on Computer and Communications Security, pp. 530–541 (2015). https://doi.org/10/2810103
+8. Kong, D., Jin, H.: Towards permission request prediction on mobile apps via structure feature learning. In: Proceedings of the 2015 SIAM International Conference on Data Mining, pp. 604–612. SIAM (2015). https://doi.org/10/1
+9. Lindorfer, M., Neugschwandtner, M., Platzer, C.: Marvin: efficient and comprehensive mobile app classification through static and dynamic analysis. In: 2015 IEEE 39th Annual Computer Software and Applications Conference, vol. 2, pp. 422–433. IEEE (2015). https://doi.org/10/COMPSAC
+10. Ma, W., Duan, P., Liu, S., Gu, G., Liu, J.C.: Shadow attacks: automatically evading system-call-behavior based malware detection. J. Comput. Virol. 8(1–2), 1–13 (2012). https://doi.org/10/s11416-011-0157-5
+11. Mas’ud, M.Z., Sahib, S., Abdollah, M.F., Selamat, S.R., Yusof, R.: Analysis of features selection and machine learning classifier in Android malware detection. In: 2014 International Conference on Information Science & Applications (ICISA), pp. 1–5. IEEE (2014). https://doi.org/10/ICISA
+12. Saracino, A., Sgandurra, D., Dini, G., Martinelli, F.: Madam: effective and efficient behavior-based Android malware detection and prevention. IEEE Trans. Dependable Secur. Comput. 15(1), 83–97 (2016). https://doi.org/10/TDSC
+13. Statista: Mobile Operating Systems’ Market Share Worldwide from January 2012 to December 2019. https://www.statista.com/statistics/272698/global-market-share-held-by-mobile-operating-systems-since-2009/
+14. Statista: Number of Apps Available in Leading App Stores as of 4th Quarter 2019. https://www.statista.com/statistics/276623/number-of-apps-available-in-leading-app-stores/.

@@ -1,0 +1,59 @@
+# 6 Enhancing the security of virtualization frameworks
+The security is a critical consideration of virtualization frameworks. We notice that many virtualization frameworks explicitly declare that they will not abuse permissions or leak user privacy . However, our experiments show that only a little effort is taken to prevent these frameworks from being abused by malware. As discussed in §2, virtualization frameworks act as a proxy between the virtualized apps and the Android framework, thus Android frameworks cannot control accesses of apps executed in the virtualization frameworks. To ensure the security while satisfying the virtualization demands of mobile users, OS developers can apply more flexible access controls. For example, Android provides a mechanism called “isolated process" to create isolated processes in apps. By leveraging this mechanism, app virtualization frameworks can execute virtualized apps in isolated processes, mitigating the security issues revealed in this paper. However, the isolated processes are highly restricted in Android, for example, they are forbidden to access any of the Android services, thus no app virtualization framework leverages such mechanism. It might be helpful if Android applies fine grained access controls to the isolated processes, instead of such a strong restriction to their functionality. From the perspective of these virtualization frameworks, they should inherit the role of the Android framework and re-implement the access control policies. To achieve this purpose, they should first hook the sensitive interfaces of Android, and implement the access control policies in the hook functions. Fortunately, according to our observation, almost all the frameworks already hooked all sensitive interfaces. The remaining work for them is to implement the corresponding security enforcements.
+
+# 6 Detecting the virtualization
+An app can detect whether it is being virtualized by either a virtualization framework or a repackaged app:
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 17:20 L. Zhang et al.
+
+# 1. com.facebook.katana.LoginActivity.OnCreate()
+# 2. android.app.Instrumentation.callApplicationOnCreate()
+# 3. android.app.ActivitThread.handleServiceArgs()
+# 4. dalvik.system.NativeStart.main()
+(a) Call stack of Facebook in a clean Android system
+# 1. com.facebook.katana.LoginActivity.OnCreate()
+# 2. android.app.Instrumentation.callApplicationOnCreate()
+# 3. com.doubleagent.client.e.callApplicationOnCreate()
+# 4. com.lbe.doubleagen.client.g.a()
+# 5. com.lbe.doubleagen.client.proxy.ServiceProxyImple.onStartCommand()
+# 6. android.app.ActivitThread.handleServiceArgs()
+# 7. dalvik.system.NativeStart.main()
+(b) Call stack of Facebook in Parallel Space
+- Detecting instrumentation. Virtualization techniques usually override the system instrumentation callback (Instrumentation.callApplicationOnCreate()) of the original app. Thus, to check whether an app is executed in a virtualization framework, we can monitor the call stack and check whether the callback is replaced. For example, as illustrated in Figure 11, the original callback (line 2) in Figure 11.(a)) has been replaced by a 3rd party implementation (line 2 to line 5 in Figure 11.(b)), which illustrates that the app is executed in a virtualization framework.
+
+- Verifying the file system structure. Virtualization framework redirects the file operations of the virtualized apps. Thus, to ensure whether an app is executed in a virtualization framework, one can also verify the structure of the file system. For example, the system call getDataDir() returns the location of the app’s internal storage. In virtualization frameworks, this path is replaced by a subdirectory of the virtualization framework itself.
+
+To prevent from being abused, apps can either alert the users that they are not executing the original app, or restrict the usage of the apps (for example, execute a “safe mode" that does not load user privacy from the server).
+
+# 7 DISCUSSION
+Other security impacts of the virtualization techniques. Our paper now focuses on how malware can utilize app virtualization to either attack the mobile users or to repackage Android apps. However, according to our observation, we find that not only malware, but also benign apps are using the app virtualization techniques, causing other security issues. In §5, our tool finds that 302 Android apps are using the virtualization techniques. Among them, 209 are repackaged or suspicious apps, and the remaining 93 apps are benign. We investigate these apps, and find that although they utilize the virtualization techniques to achieve a benign purpose (e.g., achieve modularity programming), they are all over-privileged by declaring a large number of Android permissions (as illustrated in Table 2). A deep analysis shows that most of these permissions are declared by the virtualization modules of these apps. Related researches  studied the over-privileged problem of Android apps, and discussed the security threats imposed by this issue.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+Aggressive results of anti-virus engines. Our paper illustrates that malware are armed by virtualization techniques to evade malware detection. However, since anti-virus engines cannot tell apart virtualization frameworks from malware with virtualization techniques, they aggressively mark all of them as malware. As a result, many false positives are introduced to their results. On the other hand, even such an aggressive approach is not sufficient to completely detect malware. Actually, we observed that many malware still evade most anti-virus engines. Interestingly, we observed that an open-sourced virtualization framework (VirtualApp ) is labeled as malware by many anti-virus engines, thus another open-source project  is proposed to evade all the engines.
+
+Malware utilization of the vulnerabilities discussed in this paper. Our paper illustrates several attacks to the virtualization frameworks. We also drive a comprehensive study on the attack surface and attack scenarios. We observed an app (com.tiqiaa.remote) on Google Play uses the internal storage vulnerability in §3 to access files of another virtualized app (com.tiqiaa.icontrol), as illustrated in Figure 12. Though these two apps come from the same developer and use the vulnerability for a legitimate purpose, we argue that these vulnerabilities may cause severe consequences in the future. Actually, many existing malware on Android attempt to root the infected devices before they read/temper sensitive user data. Leveraging the vulnerabilities discussed in this paper, rooting the device is no longer a precondition of the attacks.
+
+1 File file = new File ("/ data / data / com . lbe . parallel / parallel /0/ com . tiqiaa.
+
+icontrol /");
+2 if ( file . exists () ){
+3       ... ...
+
+4 }
+Evasion techniques against our repackage detector. As aforementioned, utilizing the characteristics of virtualization techniques, we propose a new detection method of repackaged Android apps. Inevitably, deliberate evasion techniques can target our approach. For example, an adversary can repackage the inlined app with its own certificate. However, even if the app is repackaged, we can locate its malicious intention by calculating its similarity to popular Android apps . Besides, malware can also obfuscate their code to evade our similarity analysis. Since application virtualization techniques create a massive number of wrapper functions, we plan to calculate the similarity of control flow structure, instead of the code, in the future. Currently, we do not witness real-world examples with the evasion techniques above. Moreover, our detector locates 164 repackaged Android apps which evade all the existing related approaches.
+
+Comparison with other virtualization techniques. Virtualization-based techniques have been widely used in browsers and operating systems . These virtualization frameworks commonly virtualize a complete operating system or a browser, which enforces comprehensive access controls. Malicious apps or webpages therefore should first compromise the operating system or browser before they can attack other benign apps or webpages. The app virtualization frameworks discussed in this paper is different, that is, the virtualized targets are mostly Android apps, which applies limited access controls and assumes that the underlying Android runtime environment is secure. Unfortunately, this paper shows that app virtualization frameworks break the security assumptions, making virtualized apps vulnerable to malware.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 8 RELATED WORK
+In this section, we review related prior research and compare our work with those studies.
+
+# Security threats from Android customizations.
+
+The app virtualization techniques are commonly applied to customize an Android app. Prior related research studied the security risks introduced by the Android system customization. Specifically, some prior works  focus on the pre-installed apps in Android factory images and report several kinds of vulnerabilities, such as over-privilege, permission re-delegation, hanging attribute references, etc. Other related studies  find that customized system images modify security configurations, and the incorrect modifications bring in security vulnerabilities. These works focus on the customization of Android system images. However, this paper reveals the security issues of app virtualization, which is applied to customize apps. Thomas, et al.  identify that the file and memory isolation of some app virtualization frameworks may be vulnerable. Zheng, et al.  describe three attacks against app virtualization techniques. Different from these studies, we systematically study a more comprehensive set of vulnerabilities on a large set of app virtualization frameworks in the wild, and show a complete exploitation scenario of these vulnerabilities, by a deep analysis of the app virtualization ecosystem. Our analysis on Android app markets discovers many real-world repackaged apps that abuse the app virtualization techniques. To the best of our knowledge, it is the first systematic study of app virtualization and its security issues.
+
+# Vulnerability detection in Android.

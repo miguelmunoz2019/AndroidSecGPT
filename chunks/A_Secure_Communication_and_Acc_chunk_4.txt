@@ -1,0 +1,51 @@
+# 5. Performance Overhead
+SEBOX added the feature of fine-grained permission management of the shared library to the stock Android system, which inevitably reduced the
+# Security and Communication Networks
+# Isolation
+Java
+2022-02-18
+Operational efficiency of the Android system. Compared with the stock Android system, our most significant changes are in the following two perspectives. First, we modified the application installation process. SEBox will additionally install an application called “isolated application.” Second, we modified the process of calling shared library functions. The original in-process native method calls done through JNI are converted to Binder-based interprocess calls. Therefore, we first test the performance overhead of the above process and then test the overall performance of our system.
+
+# Overhead of Application Installation
+To evaluate the app installation overhead, we collected a total of 200 applications from the APKPure store. These applications are collected from the “top 100 popular applications” and the “top 100 popular games” charts. The application installation time is closely related to the size of the APK (Android Package) file. As a simple example, the Android system will create local storage space for the application and copy the APK file to the local storage space during installation. The efficiency of this process depends on the size of the APK. Therefore, to accurately evaluate the overhead of application installation, we first performed a statistical analysis of the APK size in our dataset, and the result is shown in Figure 9. The result shows that the highest percentage of apps is in the APK size range from 20 MB to 200 MB, accounting for more than 60%. In addition, game applications tend to have a larger APK size, most likely because they usually contain more resource files.
+
+Next, we conducted application installation performance tests for different sized application datasets separately. We randomly selected an application in each dataset, tested its installation time on both the stock Android system and SEBox, and then repeated this process ten times. Table 1 shows the following results. (1) Whether the stock Android system or SEBox, the installation time increases with APK file size. Intuitively, a larger APK will contain more contents (e.g., codes, components, and resources). Therefore, the
+# Security and Communication Networks
+# 9
+The horizontal axis represents the APK size (MB), and the vertical axis represents the number of applications in our data set with APK size in that range. The colors indicate different types of applications. Blue is for general applications, and green is for games.
+
+System needs to spend extra time processing these contents.
+
+(2) Delay describes the time required for SEBox to install the “isolation application.” The value of delay is relatively small and stable in all datasets. The reason for the low delay is that the steps we take to install the “isolation application” are quite simple. The primary step is to create some data structures in memory. And the reason for the stability is that these data structures are independent of how much content is contained in the APK. (3) In some datasets, we have an overhead of up to 27%. However, considering the proportion of each dataset in practice, our system’s average delay and overhead are 1 s and 13%, which are acceptable values.
+
+# Overhead of Remote Function Call
+SEBox runs the Native library in the “isolation application.” And the local calls between the host application and the Native library are converted into interprocess remote calls. This incurs additional processing time due to the interprocess communication. MiBench  is a free, commercially representative embedded benchmark, which provides many benchmark programs and corresponding datasets. We selected seven typical programs related to consumer electronics from MiBench and evaluated SEBox on them. Table 2 presents the results. SEBox shows a reasonable overhead (7% on smaller datasets and 4% on larger datasets) on these benchmark programs. Considering the reasons for performance overhead, in addition to the interprocess communication, there is another important reason. When a Native function is registered in the stock Android system, the host application can directly find the corresponding function address to call, while in SEBox, we need to look up the target function address in the remote “isolation application” during each call. It is worth noting that programs on large.
+
+# Security and Communication Networks
+datasets show fewer performance overheads. This is mainly because the programs usually spend relatively less time on small data, so the performance overhead caused by SEBox will account for a larger percentage.
+
+# Overhead on BenchMark Apps
+In addition to the parts we evaluated above, SEBox also introduces overhead in some other aspects, such as “isolation application” startup and remote loading of shared libraries. Therefore, we chose GeekBench  and AnTuTu  to measure the overall overhead of our system, both of which are prevalent benchmark applications. Geekbench tests device performance by performing four tasks (e.g., Crypto, Integer, Floating Point, and Memory), focusing more on computing performance. The Antutu benchmark app performs various tasks to give a final result, and it is more concerned with the overall system performance. The points score of SEBox is shown in Table 3. The overhead introduced by SEBox is only 3% on average.
+
+In summary, SEBox introduces less performance overhead while enhancing the security of the stock Android system.
+
+# 5. Comparison of Similar Approaches
+Several approaches are similar to our scheme, all of which aim to achieve TPLs privilege deescalation. We compare these approaches from three perspectives. Table 4 shows the comparison details of 8 different similar approaches.
+
+# Native Library Supported
+The Native library also runs in the same sandbox as the host application and shares all the permissions. Therefore, support for the Native library is an essential feature. However, many permission separation approaches do not support Native libraries, leading to the fact that malicious TPLs could bypass these approaches through native code. For example, AdCapsule mainly adopts Binder hooking, in-VM API hooking, and GOT (Global Offset Table) hooking to reliably hook the privacy-related APIs. However, TPLs can load a Native library to call the managers directly. Among these approaches, NativeGuard is the first work focusing on security threats of Native libraries. However, the shared libraries isolated by NativeGuard cannot obtain any permissions. A study by Afonso et al.  shows that placing the native libraries with no permission is not ideal because the native methods also require permissions for Java method calls through JNI and system calls. Libcapule uses the isolated process mechanism to isolate shared libraries, which also has the above problem because the isolated process cannot be granted any permissions. Although they solve this problem through additional modules, they also introduce additional performance overhead. In our scheme, the shared library is run in the “isolation application,” an environment created by ourselves that can be flexibly assigned permissions.
+
+# Applicability
+We compare the applicability of these approaches in two aspects. The first is the highest supported version. Our scheme could be deployed on Android version 10, the highest of all approaches. Considering the year in which each approach was published, it is not objective to compare applicability only from the highest supported version. For example, in 2014, the highest Android version was only 5. Therefore, we also compare applicability by device coverage, which we calculate from the official Android version distribution statistics. Due to the well-known Android fragmentation problem , the results are generally low. The approach with the highest device coverage is NativeGuard, while our solution ranks third at 26%.
+
+# Modification Mode
+There are usually two modification modes: (1) modify the bytecode of applications and (2) modify the Android system. The former is generally easier to deploy than the latter, but the latter is more convenient from the developers’ point of view. We complete the automation of many processes by only modifying the Android system. To effectively manage native library permissions, developers only need to add some configurations in their application Manifest file.
+
+In summary, our scheme supports flexible permission management for the Native library, does not require developers to modify their applications, and has the highest supported version. Our scheme has advantages in functionality, applicability, and convenience compared with other approaches.
+
+# 6. Discussion
+In this section, we will discuss possible limitations, potential improvements, and other application scenarios of our system. In order to restrict the permissions of shared libraries, we first need to know what permissions are really required for the shared library. To do this, we provide developers with some interfaces in the application Manifest file, which can be...
+
+# Security and Communication Networks
+# 11
+✓ means yes; ✕ means no.

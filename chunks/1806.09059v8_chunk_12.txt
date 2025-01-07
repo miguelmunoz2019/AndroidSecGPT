@@ -1,0 +1,57 @@
+1. Internal Storage is best suited to store files private to apps. Every time an app is uninstalled, its internal storage is purged. Starting with Android 7 (API 24), files stored in internal storage cannot be shared with and accessed by other apps [Google Inc., 2018c].
+
+2. External Storage is best suited to store files that are to be shared with other apps or persisted even after an app is uninstalled. While public directories are accessible by all apps, app-specific directories are accessible only by corresponding apps or other apps with appropriate permission [Google Inc., 2018c].
+
+Files stored in public directories on external storage can be accessed by an app with appropriate permission to access external storage. This aspect can be used to tamper data via data injection [Google Inc., 2018c].
+
+The same aspect from S1 can lead to information leak [Google Inc., 2018c].
+
+Apps can accept paths to files in the external storage from external sources and use them without sanitizing them. A well-crafted file path can be used to read, write, or execute files in the app’s private directory on external storage (directory traversal attack) [Ryohei Koike, 2014].
+
+Apps can copy data from internal storage to external storage. As a result, information could be leaked if such apps accept input from untrusted sources to determine the data to be copied [Yu Dongsong, 2014].
+
+SQLiteDatabase.rawQuery() method can be used by apps to serve data queries. If such uses rely on external inputs and use non-parameterized SQL queries, then they are susceptible to sql injection attacks [Wang Tao, 2014a].
+
+Content Provider API support selectionArgs parameter in various data access operations to separate selection criteria and selection parameters. App that do not use this parameter are be susceptible to sql injection attacks [Wang Tao, 2014a].
+
+# A System
+System APIs enable Android apps to access low-level features of the Android platform like process management, thread management, runtime permissions, etc.
+
+Every Android app runs in its own process with a unique Process ID (PID) and a User ID (UID). All components in an app run in the same process. A permission can be granted to an app at installation time or at run time. All components inherit the permissions granted to the containing app at installation time. If a component in an app is protected by a permission, only components that have been granted this permission can communicate with the protected component.
+
+During IPC, checkCallingOrSelfPermission method can be used to check if the calling process or the called process has permission P. If a component with permission P uses this method to check if the calling component has permission P, then improper use of this method can leak privilege when the calling component does not have permission P [Google Inc., 2018a].
+
+checkPermission method can be used to check if the given permission is allowed for the given PID and UID pair. getCallingPID and getCallingUID methods of Binder API can be used to retrieve the PID and UID of the calling process. In certain situations, they return PID/UID of the called process. So, improper use of these methods by a called component with given permission can leak privilege [Google Inc., 2018a].
+
+During IPC, enforceCallingOrSelfPermission method can be used to check if the calling process or the called process has permission P. Like in Y1, improper use of this method can leak privilege [Google Inc., 2018a].
+
+enforcePermission method can be used to check if the given permission is allowed for the given PID and UID pair. Like in Y2, improper use of this method along with getCallingPID and getCallingUID can leak privilege [Google Inc., 2018a].
+
+# A Web
+Web APIs allow Android apps to interact with web servers both with and without SSL/TLS, display web content through WebView widget, and control navigation between web pages via WebViewClient class.
+
+Apps connecting to remote servers via HTTP (as opposed to HTTPS) are susceptible to information theft via Man-in-the-Middle (MitM) attacks [Tendulkar and Enck, 2014].
+
+# W2
+Apps can employ HostnameVerifier interface to perform custom checks on hostname when using SSL/TLS for secure communication. If these checks are incorrect, apps can end up connecting to malicious servers and be targets of malicious actions [Tendulkar and Enck, 2014].
+
+# W3
+In secure communication, apps employ TrustManager interface to check the validity and trustworthiness of presented certificates. Like in W2, if these checks are incorrect, apps can end up trusting certificates from malicious servers and be targets of malicious actions [Tendulkar and Enck, 2014].
+
+# W4
+Intents can be embedded in URIs. Apps that do not handle such intents safely (e.g., check intended app) can leak information [Google Inc., 2017].
+
+# W5
+Web pages can access information local to the device (e.g., GPS location). Apps that allow such access without explicit user permission can leak information [Ryoji Tamura, 2014].
+
+# W6
+When WebView is used to display web content, JavaScript code executed as part of the web content is executed with the permissions of the host app. Without proper checks, malicious JavaScript code can get access to the app’s resources, e.g. private files [Chin and Wagner, 2013].
+
+# W7
+When loading content over a secure connection via WebView, host app is notified of SSL errors via WebViewClient. Apps ignoring such errors can enable MitM attacks [Tendulkar and Enck, 2014].
+
+# W8
+When a web resource (e.g., CSS file) is loaded in WebView, the load request can be validated in shouldInterceptRequest method of WebViewClient. Apps failing to validate such requests can allow loading of malicious content [Chin and Wagner, 2013].
+
+# W9
+When a web page is loaded into WebView, the load request can be validated in shouldOverrideUrlLoading method of WebViewClient. Apps failing to validate such requests can allow loading of malicious content [Chin and Wagner, 2013]..

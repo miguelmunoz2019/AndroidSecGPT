@@ -1,0 +1,53 @@
+With AWARE, we capture when the user switches between applications. Each Android application has a unique installation ID (UID). To capture their individual network use, we monitor four system-generated, but world readable files – /proc/net/tcp(6) and /proc/net/udp(6) for IPv4 and (IPv6), respectively – and filter the matching application UID’s to the network connection traces. From these connection traces, we extract the destination IP and connected port, and then classify it as secure over ports 22, 26, 443, 465, 563, 636, 695, 898, 706, 989, 990, 992, 993, 994, 995, 2087, 2096, 2484, 2949, 3269, 3424, 4843, 5223, 6619, 6679, 6697, 8443, 8883, 9091, 10302, 12975, and 32976; and insecure otherwise, per IANA specifications.
+
+# 4 Evaluation “in-the-wild” of Securacy
+During a 6-month long deployment, the 218 anonymous participants reviewed a total of 219 distinct applications and provided us with a total of 406 ratings. We also collected 26
+questionnaires during application removal. We collected 41,794 unique network connections from 422 distinct applications.
+
+# A. Which servers do applications use the most and where are they located?
+The majority of the servers used by applications were located in North America (65%), with 23% in Europe, 7% in Asia, 1% in South America, 1% in Africa, and 1% in Australia (Figure 6 - left). We found the largest number of connections (4,077 out of the 41,794) established to a Facebook server in North America; and 1,900 to Facebook in Europe. Applications with advertisements made 1,771 connections to a Google’s AdMob server; and we recorded 1,544 connections to Amazon’s elastic cloud hosting service. Our fifth most recorded connection was to our own server, which participants' devices connected to on 1,430 occasions to synchronize Securacy data and submit ratings (Figure 6 - right).
+
+During the field deployment, participants’ applications established 115 (SD=282) network connections while using 10 (SD=12) applications on average per day. The majority of our participants are from Europe (41%) and North America (53%). A network analysis across all applications revealed that applications connect to North America the most, independently of the country of origin (Table 2).
+
+# B. Are applications using secure or insecure network connections?
+We investigated each application’s distribution of connections (i.e., secure vs. insecure, depending on the port). Overall, and disregarding Securacy, 56% (SD=41%) of applications’ connections are, on average, insecure (Friedman χ2(1)=24, p < 0); Wilcoxon: W = 728675, Z = -3, p < 0, r = 0). However, further analysis of the top ten most frequently used applications revealed that established developers (e.g., Google, Facebook) are mostly using secure connections (i.e., using HTTPS – port 443, instead of HTTP – port 80). See Table 3.
+
+# C. How do users rate an application from a security and privacy standpoint?
+We found a bimodal distribution in number of permissions participants were concerned about. Figure 7 summarizes the data and shows that 70 out of the 218 participants did not use the feature at all. On the other extreme, 59 participants activated all.
+
+Applications' Server Locations Distribution
+Applications' Network Usage
+Facebook
+Facebook (Messenger)
+Google' AdMob
+Our server
+# Participants' permission concerns
+Almost all participants, with four exceptions, set these only once for the duration of the study. Our participants are somewhat uncomfortable with sharing some data with applications, particularly their contact information (62%), profile data (61%) or access to their messages or call data (60%). On the other hand, they expressed less discomfort providing access to their browser history (37%), Internet connectivity (38%) and calendar data (45%) (Kruskal-Wallis χ2(8)=59, p<0). See Figure 8.
+
+# Participants' discomfort
+We found that trusting the application developer (Cockran’s Q χ2(2) = 96, p < 0, ϕ = 0) and the application’s permissions (Cockran’s Q χ2(2) = 89, p < 0, ϕ = 0) are significant factors that are considered when rating an application. We also found that insecure connections (Cockran’s Q χ2(2) = 11, p < 0, ϕ = 0) and the application’s permissions (Cockran’s Q χ2(2) = 6, p < 0, ϕ = 0) are significant factors that are considered when removing an application.
+
+Lastly, using a Kendall tau rank correlation coefficient, we investigated if a participant with more concerns (i.e., higher number of active permission concerns) would, in general, give an application a lower rating. However, we did not find any correlation between the number of concerns and the applications’ median rating (Kendall’s z = -1, p = 0, τ = -0).
+
+# 5. DISCUSSION
+Managing network security and user privacy is a challenge across multiple domains: sensor networks ; social networks ; e-learning ; and smart vehicles , to name just a few. As mobile applications increasingly connect online, it is important to understand and capture how people perceive privacy and security on their mobile phones. PeopleFinder  allowed users to share their location based on user-defined privacy policies and auditing.
+
+In their study, they report user difficulty in anticipating the conditions under which their peers would request access to their location. Similarly, we expected it would be challenging for casual users to anticipate all requests made by applications and pre-emptively restrict their access. In fact, Android’s KitKat contained such hidden functionality: an experimental application called “AppOps” allowed users to disable access to sensitive permissions at runtime on a per-application basis. This feature was abandoned because, when used carelessly, it made applications non-responsive and also affected operating system performance, which Google feared would ultimately affect Android adoption and users experience.
+
+We argue that requiring users to define per-app data access policies through a mechanism such as Securacy at installation time, or requiring further configuration, could also hinder participant recruitment. Alternatively, an on-demand, per-application data access strategy postpones the configuration to a when-needed basis. This model has been shown to work for iOS devices and only on rare occasions renders the applications unusable. Nauman et al.’s  work allows users to configure fine-grained allow/disallow settings for application permissions, by intercepting application data access, at some performance cost.
+
+In contrast to previous work, in our work we leveraged anonymous feedback from users (i.e., as a security rating) and data (e.g., application server location and port used) to create a security and privacy trigger that juxtaposes user concerns on data access and application network security. This trigger is activated.
+
+Most users do not rate applications on the Google Play store . Likewise, the majority (24 out of 30, i.e., 80%) of Study 1’s participants stated they did not rate applications on the Google Play store. Similarly, in Study 2, the majority (184 out of 218, i.e., 84%) of participants did not rate apps. See Figure 9.
+
+# 5 Reflecting on Securacy’s functionalities
+Securacy was developed in approximately two months and tested intensively for two weeks before being deployed on the Google Play store. A reasonably polished application is required in order to reduce any potential risk of bad reviews, which could ultimately hinder participation . The application was rated 4/5 – at the time of analysis – on the application store and most users reported no major application issues, instead encouraging further development and suggesting additional functionality by email or via comments on the store.
+
+Securacy offered access to information previously inaccessible on the mobile phone: a crowdsourced mapping of mobile applications’ network connections and their security status. The most popular request from participants was per-application permission management instead of a global approach. This is motivated by the fact that certain developers are perceived as worthy of access to specific permissions. For example, even though participants were uncomfortable allowing access to their contact list information, this was not true for applications from Facebook or WhatsApp. Such functionality would also allow us to further investigate which applications and developers are perceived as trustworthy and under which circumstances and with what data.
+
+Another request was the ability to pause or disable Securacy functionality temporarily. Some participants were concerned that, due to its ability to share server locations publicly, they could compromise their own private servers. Simply terminating the application within Android’s application manager would have addressed this concern, but this is not immediately clear to users. Further development would provide users with a means of deleting a specific server or capturing server locations for specific applications.
+
+Lastly, users also wanted to see all application ratings, not just the ones installed on their device. This would allow users to preemptively check if an application is perceived as secure or not before installation.
+
+# 5 Sanctioned Mobile Usage
+It has been three years since Felt et al.’s survey on the adequacy of Android’s permissions . In their paper, they reported that the majority of Android users did not pay attention to or understand permission warnings. Our findings suggest that, with a medium effect, users do review an application’s permissions and have some understanding of what they mean (Cockran’s Q χ2(2) = 9, p = 0, ϕ = 0).

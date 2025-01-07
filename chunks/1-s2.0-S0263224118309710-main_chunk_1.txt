@@ -1,0 +1,47 @@
+# Measurement 133 (2019) 396–411
+# Contents lists available at ScienceDirect
+# Measurement
+# ELSEVIER
+# j o u r n a l h o m e p a g e : w w w . e l s e v i e r . c o m / l o c a t e / m e a s u r e m e n t
+# “Less Give More”: Evaluate and zoning Android applications
+Mohd Faizal Ab Razak a,b, Nor Badrul Anuar a,⇑, Rosli Salleh a, Ahmad Firdaus b, Muhammad Faiza, Hammoudeh S. Alamri b
+a Department of Computer System and Technology, Faculty of Computer Science and Information Technology, University of Malaya, 50603 Kuala Lumpur, Malaysia
+b Faculty of Computer Systems & Software Engineering, Universiti Malaysia Pahang, Lebuhraya Tun Razak, 26300 Kuantan, Pahang, Malaysia
+# a r t i c l e i n f o
+Article history:
+Received 3 January 2017
+Received in revised form 11 August 2018
+Accepted 11 October 2018
+Available online 13 October 2018
+# Keywords:
+Risk assessment
+Analytical hierarchy process (AHP)
+Mobile device
+Android
+EZADroid
+# a b s t r a c t
+The Android security mechanism is the first approach to protect data, system resource as well as reduce the impact of malware. Past malware studies tend to investigate the novel approaches of preventing, detecting and responding to malware threats but little attention has been given to the area of risk assessment. This paper aims to fill that gap by presenting a risk assessment approach that evaluate the risk zone for an application. The permission-based approach is presented for evaluating and zoning the Android applications (EZADroid), based on risk assessment. The EZADroid applies the Analytic Hierarchy Process (AHP) as a decision factor to calculate the risk value. A total of 5000 benign and 5000 malware applications were drawn from the AndroZoo and Drebin datasets for evaluation. Results showed that the EZADroid had achieved 89% accuracy rate in classifying the application into a different level of risk zones (i.e. very low, low, medium, and high).
+
+Ó 2018 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+As technology grows with time, the mobile device landscape continues to evolve. The increasing speed, power, storage space and available application services such as online shopping and games have led mobile users into adopting this technology. As the number of mobile devices increase, malware attacks, especially on Android, also rise consecutively . According to Trend Micro 2016 Security Prediction’s report, malware growth is expected to be 20 million by the end of 2016 while Android is labeled as a high-risk mobile application . The trend shows that more sophisticated mobile malware with zero-days attack bypassing a modern security defenses. The attacks are difficult to identify or mitigate since the number of attacks is probably higher and unnoticed. An Android application known as GodLess, for example, has infected 850,000 mobile devices worldwide . Out of the 96% surge in mobile device infections, Android was the hardest hit by 74% cases while the iOS device recorded only four (4) % of infection rate . In 2014, Symantec discovered more than 317 million new malware while PandaLabs was able to neutralize 75 million malware . These figures demonstrate that, on average, nearly one (1) million malware are released every day . This explosive growth in Android malware causes serious infiltrations to the Android system . In addition, the trends that will dominate in 2018 and influence malware attacks such as evasive techniques, malware vaccination, ransomware and Android malware . These trends will continue to dominate in 2018 with continually-evolving threats . To combat these problems, security researchers have designed various anti-virus, anti-malware software and risk analysis which used to detect and analyze the risk of malware applications . This is done by analyzing the patterns of the malicious activities which is achieved by looking at their predefined signatures or by monitoring the application’s behavior. In particular, the noticeable change of the malware behavior detected through existing approaches such as anti-virus, firewall and the Intrusion Detection Systems (IDSs) . However, these approaches are inadequate to fully eliminate the attack since recent malware are capable of evading detection . Google Play has introduced a detection approach known as Bouncer ; it provides automatic scanning and the removal of potentially malicious applications . However, it is inefficient enough to examine applications from third party sources  which may lead to privacy violations . Another approach provided by Google Play is a security mechanism which restricts Android applications from accessing private data by using a permission-based system . Nonetheless, the mechanism is also unable to completely protect Android from malware attacks. Expanding on this, the APK Auditor and Stowaway is one mechanism that uses the permission analysis to classify the Android applications as benign or malware.
+
+⇑ Corresponding author.
+
+E-mail addresses: faizalrazak@ump.edu.my (M.F.A. Razak), badrul@um.edu.my (N.B. Anuar), rosli_salleh@um.edu.my (R. Salleh), firdausza@ump.edu.my (A. Firdaus), faizzaki@um.edu.my (M. Faiz), ha.amri@gmail.com (H.S. Alamri).
+
+https://doi.org/10/j.measurement
+0263-2241/Ó 2018 Elsevier Ltd. All rights reserved.
+
+M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+ while the DroidRisk  applies the quantitative risk assessment of both Android permissions and applications to test malware. Nonetheless, both are also inadequate. In addition, without appropriate risk assessment, the users’ are insecure and vulnerable to malicious attacks  and most of users’ ignore such long list of permissions since some of the permission is quite difficult to understand . Consequently, the users may install high-risk applications. These limitations of the Android permission mechanism inspire to evaluate the risk of an Android application based on their critically and providing the user with risk zones. Therefore, it is proposed that a decision-based approach such as the multi-criteria decision making mechanism be used for risk assessment.
+
+Risk assessment is important for guarding users from dangerous application and it is a compelling issue. Although, Android security mechanism such as permission provide protection for user and device, these still show several flaws and threat. Even though, the users have some knowledge in mobile security threat, but the evaluation process for determine the risk is handled by user. This issue happen when user need to install an applications and Android only informs users about which permission need to be granted . Most of users unaware about the permission and some of them just ignore permission because unable to understood . Therefore, it is important to identify potential malware in Android applications thus to generate risk zone for warning potential malicious activities.
+
+This study introduces the EZADroid which used to evaluate the Android applications by using minimal features but providing maximum information about them. This paper aims to evaluate the risk of Android applications based on risk zones by using Android permissions. In this paper, the Android applications are zoned into several categories (i.e. very low, low, medium and high) which inform users about the specific risk of the Android applications, based on their criticality. Specifically, this study applies risk assessment and the AHP technique so as to generate results that allow users to identify the risk zones of Android applications, thereby, protecting themselves from being affected by the threat. Both the approaches not only enlighten decision making but also the importance of each level of the findings. The features selection approach was used to select the criteria. The box plot analysis was also used to evaluate the effectiveness of the EZADroid system.
+
+The main contributions of this study are as follows: adoption by users for daily personal and professional activities is attracting a significant threat. In order to avoid these threats on Android, there has to be a security mechanism and a risk assessment approach that offer users protection.
+
+# 2. Android security mechanism
+The Android security mechanism is important because it is used in a mobile device that contains a lot of sensitive information which used by attackers against the users. The application permission, application signing, and component encapsulation are types of security mechanisms used to avoid threats on the Android.

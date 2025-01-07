@@ -1,0 +1,56 @@
+In Android, each application runs in its own sandbox environment. To make it easier to describe that sandbox environment, Android assigns a unique UID (User ID) to each sandbox environment. The main idea of SEBox is to create an additional application with a different UID from the host app and use it to load and run the shared libraries. We will refer to this additional application as the “isolated application” later on for ease of description. With the help of sandbox-based access control and authorization mechanism in the Android system, we can manage the permissions of the host application and the shared libraries separately.
+
+# Security and Communication Networks
+# Application
+# Kanbox
+Kensitive data Jost Fndroid Kystem application Kervices
+Fllow F++ to access photos-media-and oles on your deviceS
+Fllow Zeny +ermissions Thaccess photo\media\ +ermission +ermission Xheck sensitive F+'s
+The architecture of SEBox is illustrated in Figure 2. The Manifest file is a configuration file where developers can provide basic information about their application to the Android system. The “original application” is the environment in which the system runs the host application code, and the “isolated application” is an isolated environment in which the shared libraries are run.
+
+First, the developer configures permissions of the isolated environment and which shared libraries need to be isolated in the application’s Manifest file. Then SEBox completes the isolation of the shared libraries in two separate work phases. In the application installation phase, the installer module additionally installs the “Isolated Application” based on the information configured in the Manifest file. For example, as shown in Figure 2, the “isolated application” only has permission2 configured by the developer. In the application runtime phase, SEBox intercepts the shared library loading behavior of the host application and loads the shared libraries into the “isolated application” through the remote loading module. Then, SEBox supports the host application to call remote shared library functions by the remote calling module. In this way, the host application can normally run while the isolated shared libraries can only access limited system resources and sensitive user information. Thus, the permissions of the shared library are controlled by developers in a fine-grained manner.
+
+# 2. Key Technical Points
+# 2. Isolated Environment Creation
+The isolated environment is used to load and run the shared libraries on the one hand and also carries the permissions of the shared libraries on the other hand. The isolated environment is one of our scheme’s most basic and essential modules. Many previous works used the isolated process mechanism provided by the Android system to load and run shared libraries. However, the isolated process cannot obtain any permissions, causing these approaches to require additional modules to ensure the legal permission behavior of the shared libraries. In our scheme, we create a kind of isolated environment called “isolation application” by modifying the underlying modules of the system, which can freely assign permissions and avoid some additional overhead. At the same time, the process of creating the isolated environment is entirely automated by the system and does not require any operation by the developer.
+
+# 2. Dynamic Permission Management
+The purpose of running shared libraries in isolation is to manage their permissions. In this process, unnecessary permissions should be removed, but reasonable permission requirements should be ensured. On the earlier versions of Android, the shared libraries mainly consisted of computing-intensive functions. They rarely relied on system permissions, so the previous work focused on isolating the shared libraries but ignored the legitimate permission requirements of the shared libraries. As the demand for permissions for shared libraries increases, some shortcomings of the previous work are revealed. In this paper, by providing an interface for permission configuration, developers can accurately specify permissions of the shared libraries, which could ensure the execution of legal behaviors while restricting permissions of the shared libraries. Additionally, in the previous work, shared library permissions are not adjustable after the application is installed. Our scheme proposed achieves dynamic permission management of the shared libraries by working with the Android dynamic authorization mechanism.
+
+# 2. Remote Function Call
+Since the shared libraries run independently in the “isolation application,” the host application will not find the shared library functions. To enable the host application to call the functions in the shared libraries correctly, it is necessary to convert the function calls that are finished through JNI to IPC (Interprocess Communication). Although Android provides Binder IPC mechanism, Binder is just a tool. It is challenging to use Binder efficiently and easily to complete the above process. The previous work keeps the shared library in the host application and rewrites the functions in the shared library as proxy calls to remote functions. In this paper, the related
+# Security and Communication Networks
+”anifest(xml Fpplication packageTh(apk,9
+7usesTpermission9permissionW-9permissionx)8 Jost9application
+7libTusesTpermission9permissionx)8 Khared9libraryW-9x
+7libTisolate9Khared9libraryx)8 ”anifest9ole Zevelopers9conogure9isolation environment9permissions9and Vun9in9the
+which9shared9libraries9need9to background9only be9isolated KB3oxTh’nstallation9phase, ffiormal9installation ’nstaller +arser Fdditional9installation module9
+flriginal9application KB3oxThVuntime9phase, ’solation9application
+Jost9application “ibrary9loading Vemote9loading9module Vemote9loading Khared9libraryx
+Khared9libraryW ffiative9call Vemote9execution Veturn9results Vemote9call9module Veturn9results +roxy9service
+permissionW permissionx permissionx ffiormal9access Kensitive9information Vestricted9access
+underlying logic of the ART is modified so that the Android system can automatically complete the remote call of the host application to the library function. These key technical points will be introduced in detail in Section 4.
+
+# 3. Related Technologies
+# 3. Android Permission Model.
+
+The Android permission model follows a “declare first, use later” rule. If developers want to use permission, they must declare it first in the application’s Manifest file. In lower versions of Android, all the permissions declared by the application are granted by the system at install time. Android version 6 introduces a dynamic authorization mechanism, under which permissions can be roughly divided into install-time permissions and runtime permissions. The former is usually some permissions of the general level, which are granted automatically by the system during the application installation. The latter is usually permissions of the dangerous level, which must be dynamically requested from the user during the application runtime.
+
+# 3. Android Package Manager Service.
+
+Package manager service (PMS) is one of the core services in the Android system, which manages the information of all applications through two members: mPackages and mSettings. As shown in Figure 3, mPackages is an index table, and PackageParser.Package (later referred to as Package) of each application can be queried by the application package name through this table. Package mainly stores the static information of the application, including the requested permissions, component information, and application package name. mSettings also manages the PackageSetting of each application through an index table. PackageSetting mainly stores dynamic information of the application, including the status of permission and process information.
+
+# 4. Scheme Design and Implementation
+The workflow of our scheme can be divided into two phases, which are the installation phase and the runtime phase. The design and implementation of these two phases will be introduced in detail in this section.
+
+# 4. Installation Phase.
+
+The goals of the application installation phase include the following. (1) After the installation, the original application is automatically installed into two parts: the host application and “isolation application.” (2) The permissions of the host application and the “isolation
+# Security and Communication Networks
+# 4. Permission Extraction Module
+This module is used for extracting and storing the required permissions of the shared libraries, which are used to restrict the isolated environment permissions lately. The permissions declared in the Manifest file are generally all the permissions P required by the application, including the permission PH needed by the host application and the permission PN needed by each shared library. The relationship between them is as follows.
+
+P = PH ∪ PN1 ∪ PN2 ∪ PN3 ∪ ... , (1)
+To manage the permissions of the shared libraries, it is necessary to decompose the application permissions, i.e., to determine the permissions required by each part of the application. In this paper, the developer is trusted in the threat model, so only the permission PN of the shared libraries needs to be determined. Our scheme adds a new shared library permission configuration interface to the Manifest file, through which developers can accurately configure the required permission PN of the shared libraries.
+
+PackageParser is a tool used by Android to parse Manifest files. By modifying the PackageParser, the required permission of the shared libraries configured in the Manifest file will be extracted and stored into the Package during the application installation phase. In Package, the member requestedPermissions is used to store all the permissions P declared by the application. In this paper, a new member libRequestedPermissions is added to Package to store the required permission PN of the shared libraries, as shown in Figure 4.

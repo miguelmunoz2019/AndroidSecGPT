@@ -1,0 +1,116 @@
+Then we decompile the App package file, search the source code according to the key fields in the privacy data, and locate the function call of sending privacy streams. Based on the inter-function invocation rules, the propagation trails of the privacy data within the App is reversely tracked until the privacy-sensitive API function calls of the Android system are found. Finally, the host App and third-party libraries are distinguished according to the package name structure of the Java source codes. By tracing the source codes, we can reconstruct the paths where privacy leaks occur in the App.
+
+# 2. Classification of privacy leakage paths
+By analyzing the propagation path of privacy data inside an App between third-party libraries and the host App, we identify four kinds of privacy leakage paths of the Android App as follows. The four privacy leakage paths can be represented by the following four Figs 2–5. Solid lines represent function call relationships. Dotted lines represent the privacy getting path or privacy sending path. The privacy leakage path types are illustrated in Table 3.
+
+Case 1: The host App directly calls the sensitive API, obtains and leaks the privacy data.
+
+Case 2: The host App calls the third-party library function, indirectly the third-party library calls the sensitive API, the third-party library passes privacy data to the host App, and finally the host App leaks them.
+
+# 2. Analysis of privacy leakage paths
+The different paths of privacy leakage have different risks. In Case 1, the privacy leakage path only consists of function calls from the host App. Privacy collector who reads the privacy data, and privacy leaker who sends privacy data out of the phone, are both the host App, so Case 1 is controllable for the App developers. In Case 2 and 3, the host App calls the sensitive API function indirectly through third-party libraries, so the privacy collecting path contains functions from third-party libraries. The main difference between Case 2 and Case 3 is the privacy-leaking path. In this paper, we focus only on the privacy leaking through the network connection. In Case 2, the network connection of privacy leakage is initiated by the host App, while in Case 3, the network connection is initiated by a third-party library. Therefore, it is obvious that Case 3 is the riskiest, uncontrollable situation.
+
+In our case study, there is no privacy leakage situation belonging to Case 4. It is obvious that Apps are not dependent on third-party libraries.
+
+# 3. Design and implementation
+# 3. Privacy leakage risk analysis framework
+In this section, we give an overview of our tool. Our tool is based on Xposed to dynamically detect and analyze privacy leakage. However, it also depends on static techniques to identify the third-party libraries at first. The granularity of privacy detection in our tool is refined to distinguish the host App and third-party libraries in the Android App. The framework of our tool is shown in Fig. 6.
+
+Our tool is composed of three modules: the third-party library detection module, Xposed privacy monitor module and privacy risk analysis module.
+
+# Y. He, X. Yang and B. Hu et al. / Journal of Information Security and Applications 46 (2019) 259–270
+# Application
+# Host program
+# Application Framework Layer
+# Application
+# Host program
+# Application Framework Layer
+# The third-party library detection module
+We check whether an App is obfuscated after decompiling. If the App is obfuscated with rename according to the decision rules, we will use motifs-based detection to identify which libraries are included in the App. Otherwise, it will use whitelist-based detection.
+
+# The Xposed privacy monitor module
+It is responsible for monitoring the privacy data propagating paths. We design the BeforeHookedMethod method that gets the call stack for the privacy source function and extracts the call chains. Then we match the call chain with third-party library list output by the third-party library detection tool and analyzes the caller of privacy source function. Meanwhile, we hook the sink functions to identify the caller of privacy leakage and generate privacy log recording call chains of each privacy access process.
+
+# The privacy risk analysis module
+Based on privacy log, we develop the risk evaluation criteria for third-party library privacy leakage and classify the privacy risks of the third-party library. Then we use three levels to represent the degrees of risk and generate privacy report.
+
+Our tool is implemented as an App. When we run the App under test and click on its UI to trigger the application-related functionalities. Our tool monitors the App’s privacy behaviors in real-time and automatically generates a privacy log and privacy leakage analysis report.
+
+# Y. He, X. Yang and B. Hu et al. / Journal of Information Security and Applications 46 (2019) 259–270
+# Application
+Get the privacy data
+Application Framework Layer
+System Privacy API
+Content Providers
+Telephone Manager
+Network Service
+# Application
+Host program
+Get the privacy data
+Application Framework Layer
+System Privacy API
+Content Providers
+Telephone Manager
+Network Service
+# Compared with the existing tools for privacy leakage analysis, our tool has the following advantages.
+
+1. Low coupling with Android system: No need to modify the Android platform or repackaging the Apps.
+
+2. Suitable for various types of private information, various applications: Based on the Android system APIs, we can dynamically change the privacy data types managed by our tool, through implementing addition, deletion and modification operations. Moreover, our tool is suitable for privacy leakage analysis of various Apps, regardless of the App functionalities.
+
+3. Dynamic and real-time: Our tool is a dynamic analysis tool based on monitoring the actual execution of Apps. It is more practical and effective to report the privacy risk of the third-party libraries than the existing static analysis based on analyzing privacy policy and source code of the third-party library.
+
+# 3. Privacy-sensitive APIs
+We focus on the privacy data protected by Android permission system, which is the most sensitive privacy data for users, and other information that may be misused to expose user privacy, including the following types of information.
+
+- Equipment identification information: It can be used to identify phones or users, such as IMEI, IMSI, ICCID (SIM card unique identification), telephone numbers, and user account information.
+
+Y. He, X. Yang and B. Hu et al. / Journal of Information Security and Applications 46 (2019) 259–270
+# Collect Privacy Data
+# Privacy-Sensitive API
+Android application application
+The host
+Third-party libraries
+Initiate a Network Connection
+Network Interface
+Sink
+Third-party libraries
+Xposed Privacy
+detection Module
+Monitor Module
+Analysis Module
+Get call stacktrace
+Privacy flows
+Whitelist-based Detection
+Motifs-based Detection
+Match
+Extract call chain
+Log
+Third-party lib list
+Invocate component
+information
+# Privacy-sensitive APIs list.
+
+# Information database:
+The database stores some privacy data such as address books and text messages.
+
+# Location information:
+Android Apps obtain user location information through GPS, network or cellular base station. GPS positioning has the highest accuracy and needs ACCESS_FINE_LOCATION permission. Network positioning and base station positioning have slightly reduced accuracy, only need the ACCESS_COARSE_LOCATION permission.
+
+# Sensors:
+Android supports eight kinds of sensors including acceleration sensor, gyroscope, ambient light sensor, magnetic force sensor, direction sensor, pressure sensor, distance sensor, and temperature sensor. The sensors may be misused to leak users’ privacy.
+
+# Camera and microphone:
+Android Apps use the camera to take and view photos, use microphones to record audio, which is privacy sensitive.
+
+We use Apktool and Dex2jar to decompile the Apps from the Android application markets and identify the system API functions related to user privacy data. Some of the sensitive APIs are shown in Table 5.
+
+# 3. The third-party library detection
+Because some Apps are obfuscated but many are not, we present a new method to detect third-party libraries inside Android Apps to support detecting both obfuscated and plain Apps with high efficiency and accuracy. There are many types of obfuscation mechanisms such as adding useless codes, changing the logic of codes and so on. Among them, rename obfuscation is the most widely used in Apps. In order to be fast and accurate, our detection tool first decides whether an App is obfuscated after decompiling APK file of an App. If the App is obfuscated with rename according to the decision rules, we will use motifs-based detection to identify which libraries are included in the App. Otherwise, it will use whitelist-based detection. Finally, we generate a file containing a list of all the third-party libraries inside the App, which will be used in Xposed monitor module. Fig. 7 shows the workflow.
+
+# 3. Rename obfuscation rules
+After decompiling the App, we go through the names of all the packages. Based on our observation and analysis of obfuscated Android Apps, we design the rules to decide rename obfuscation. Given space limitations, we show some rules following.
+
+- Rule 1: The name is a single character such as /a, /b.
+
+- Rule 2: The name is made up of several same characters such as /aa, /bbbbb.

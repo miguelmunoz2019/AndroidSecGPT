@@ -1,0 +1,62 @@
+18 https://www.virustotal.com/
+# 6 Datasets groups considered
+To evaluate the dataset and the contribution of the 3 different categories to a classifier, we consider the following seven subsets:
+1. P: Permissions only
+2. S: Smell Code only
+3. A: AndroBugs only
+4. P+S: Permissions and Smell Code
+5. P+A: Permissions and AndroBugs
+6. S+A: Smell Code and AndroBugs
+7. All: Permissions and Smell Code and AndroBugs
+# 6 Correlation Analysis
+To get a quick initial sense of how much the collected metrics can contribute to malware detection, we first proceeded to some statistical correlation analysis of the metrics to i) the number of antivirus
+# AndroVul: a repository for Android security vulnerabilities
+# CASCON ’19, November 2019, Markham, Ontario, Canada
+# App.apk
+# AndroBugs
+- AndroZoo
+- Smali Files
+- Manifest.xml
+# Vulnerability
+flags and ii) a binary value representing the benign / malicious classification : 0 for benign or 1 for malware. We computed Pearson correlations for all metrics and found some interesting values in all 3 categories:
+- for permissions, READ_PHONE_STATE returns the highest correlations with respectively 0 for the number of antivirus flags and 0 for the benign/malware decision;
+- for code smells, the Dynamic Code Loading metric yields 0 for the number of flags and 0 for the binary decision;
+- and for Androbugs, the vulnerability Using critical function returns 0 (number of flags) and 0 (binary decision) as correlation values.
+
+All three metrics mentioned above returned p-values way lower than 0 (the commonly accepted statistical significance threshold), as is the case for all but a few metrics in the dataset.
+
+# 6 Classifiers used
+For this limited experiment, we selected four different classifiers representing 4 types of machine learning algorithms commonly used in the Android malware community. More precisely, we used the well known machine learning software Weka and selected Naive-Bayes (NB) from its bayes category, RBF classifier from its function category, JRip from its rules category, and J48 from its tree category.
+
+Using these classifiers, we proceeded to the commonly used statistical method that is the K-fold cross-validation. In short, it consists in splitting, after random shuffling, the dataset in K groups; after which, each group is used as a test group while the other K-1 groups are used for training. More specifically, we chose, in accordance to many similar studies, K = 10 for a 10-fold cross validation study, in which 90% of the data is used for training and 10% for testing (prediction).
+
+# 6 Performance Indicators
+The application of classifiers result in decisions about individual apps that can be quantitatively evaluated through various measures. As it relates to the detection of malwares, we refer to True Positive (TP) as the number of malwares actually classified as such, True Negative (TN) as the number of benign apps classified as such, False Positive (FP) as the number of benign apps wrongly classified as malwares and finally False Negative (FN) the number of malwares wrongly classified as benign. From these basic measures are derived more insightful measures commonly used in malware detection papers such as:
+- Precision: It is the ratio of actual malwares in the set of apps classified as such : TP/(TP+FP)
+- Recall: It is the ratio of malwares that were detected as such : TP/(TP+FN)
+- Accuracy: It is the percentage of correctly classified apps : (TP+TN)/(TP+TN+FP+FN)
+- F1-Measure: It is a performance indicator that takes into account both precision and recall of the obtained classification : 2*(Recall * Precision) / (Recall + Precision)
+- Area under ROC Curve (AUROC): It is a measure of the predictive power of the classifier that basically informs on how much the model is capable of distinguishing between classes (here benign apps vs malwares).
+
+For all these measures, the higher, the better, with 1 being a perfect value.
+
+# 6 Results
+Figures 5 to 9 present the results obtained by the 4 classifiers on the seven dataset groups defined in Section 6.
+
+Figures 5 and 6 respectively present data about precision and recall. When it comes to precision, the dataset P+S (Permissions +
+# CASCON ’19, November 2019, Markham, Ontario, Canada
+# Z. Namrud, S. Kpodjedo, C. Talhi
+# PrecisionRecall
+Code Smell) gets the highest precision with nearly 0 for JRIP, variations in the results still hold. Not only that, dataset S (Code Smell only) gives some of the worst results, with the classifier RBF going as low as 0. We can also more clearly note that datasets that include Permissions not only are less dependent on which classifiers are used but additionally tend to perform better than other variants. In particular, permissions by themselves (dataset P) yield a F1-measure around 0 while all metrics propose a F1-measure around 0. When it comes to the AUROC (Figure 8), the same.
+
+A careful look at the data suggests that Code Smells introduce greater variability in the classifiers performances, with datasets S (Code Smells) and S+A (Code Smells + AndroBugs), clearly the ones generating the starkest differences among the classifiers. This is in contrast with permissions, which seem to induce relatively close results for the classifiers: in particular for recall, results from different classifiers on datasets including permissions are remarkably close. Figure 7 displays F1-measures for all datasets and classifiers.
+
+69
+# AcurracyAndroVul: a repository for Android security vulnerabilities
+# CASCON ’19, November 2019, Markham, Ontario, Canada
+store that info so there is a need to retrieve it from the different stores. This is a tedious and sometimes unfruitful process since i) the apps may no longer be available in those stores, ii) the stores themselves do not offer simple ways to automatically get the info. Thus, HTML parsers have to be written for webpages that could be in other languages or have structures that can and do change. This is the main limitation of our dataset as many of the apps do not have complete metadata. To this effect, we plan some future work that would complement the data through the parsing of various app store clones that keep apps metadata even after they are deleted from the main market places. As it relates to our preliminary empirical study, some threats to validity are worth noting.
+
+An external threat to validity of our results is that we used only a sample of Androzoo, which itself does not account for all Android Apps. However, Androzoo is a widely used repository and we took pains to extract a random sample large enough to be reasonably representative of Androzoo. Nevertheless, we cannot claim that our results would be generalizable. As for threats to internal validity, the threshold of three for the number of antivirus flags from which an app is considered malware is debatable but as previously said, it is a de facto consensus number among researchers working on Androzoo data. As such, using it, places our preliminary study in previously established grounds. Overall, we believe that the provided dataset can be used to test research ideas for anomaly detection or the mining of safe patterns useful for the identification of malwares.  does report a significantly better accuracy but it should be noted that the framework from which they extract their metrics provides data from dynamic analysis of the apps, which is a significant addition. Also, their experimental setup differs in some significant ways from ours, including a rather sophisticated and unique process to determine the ground truth of their classification, i.e., which apps are considered benign vs malicious. Nevertheless, these preliminary results are encouraging ones, with potential for improvement if we were to enhance the classifiers.
+
+# 8 CONCLUSION
+The ubiquity of smartphones, and their growing use make the security of these devices arguably as important as that of standard computers. In this paper, we propose a repository for Android vulnerabilities to better support the research community engaged with anomaly detection and security issues for Android apps. Our contributions are threefold. First, we propose scripts that harness well known reverse engineering tools and greatly simplify the generation of diverse vulnerability information (dangerous permissions, vulnerabilities from AndroBugs, and code smells in Smali code) for any app. Second, we propose vulnerability data on a random sample of 16,180 Android apps downloaded from the well established AndroZoo dataset. Our scripts and data made it so that an Android app researcher can start applying statistic analysis and machine learning experiments right away on our benchmark or right after downloading his own set of APKs. Third, we propose a preliminary empirical study that provide some insights into the predictive power of the vulnerability information mined by our scripts. Our scripts and data sample are available on GitHub and we intend to build and extend on that repository, notably by working on recovering more completely apps metadata.

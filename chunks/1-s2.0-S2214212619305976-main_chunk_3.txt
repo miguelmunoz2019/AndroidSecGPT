@@ -1,0 +1,44 @@
+From this snippet of code, we extract the relevant protection atoms that allow us to conjecture the presence of the Installer Verification protection. Table 1 (page 6) reports these protection atoms.
+
+We include the Context Java two classes employed in the snippet of code, and PackageManager. Then, we add the methods related to these classes that are involved in the implementation of the protection, that are Context.getPackageName, Context.getPackageManager and PackageManager.getInstallerPackageName. For instance, the method m1 of (Context.getPackageName) returns the package name of the current app. The method m2 returns an instance of the class c2 (PackageManager), while the third returns the name of the app that installed the current app. In our case, this package name is expected to be equal to the string s1 (“com.android.vending”).
+
+The baseline assumption is that, if an app contains these protection atoms, it likely implements the Installer Verification protection. A similar argument applies to the other protections as well, both at the Java and at the Native level. We listed all the protection atoms in Appendix B.
+
+# 3. Boolean formula applied on protection atoms
+We introduce a boolean formula applied over the protection atoms to connect them through AND and OR operators. This formula describes which atoms have to be detected to reasonably suppose that the app is implementing the related protection. We define as “fingerprint” the combination of the protection atoms with a boolean formula. To identify the Installer Verification protection in an app based on the protection atoms in Table 1 (page 6), we need to detect both the method m3 (PackageManager.getInstallerPackageName) and the string s1 (“com.android.vending”). These are the essential protection atoms without which it is very difficult to implement this protection. The returning value of the method and the string have to be compared to determine whether the end-user installed the app from the Google Play Store or not. Therefore, the fingerprint for the Installer Verification protection at Java level is:
+m3 AND s1
+We report the fingerprints of other protections in Appendix C.
+
+Extended set of protection atoms for the Installer Verification protection at Java level.
+
+# 3. Handling reflection
+The developers could have hidden some protection atoms through Java Reflection to harden their protections against attackers. Reflection is a peculiar feature in Java that allows an executing program to access variables and methods dynamically by name. For instance, developers can replace a direct invocation to a method with a reflective call. Fig. 2 (page 5) shows the implementation for the Installer Verification protection with a reflective invocation to the getInstallerPackageName method.
+
+The Installer Verification protection implemented in the snippet of code in Fig. 2 (page 7) is as effective as the original one implemented in Fig. 1 (page 5). However, the PackageManager.getInstallerPackageName variables invoked through Reflection. The code declares two method containing the class (line 2) and the method (line 3) as strings. They are “android.content.pm.PackageManager” and “getInstallerPackageName”, respectively. Then, the code obtains the method (lines 10-11) and invokes it (lines 13-14). Therefore, the code includes two strings containing (i) the fully-qualified name (FQN) of the class and (ii) the method to invoke. To make our approach more effective, we can include such strings in our protection atoms. Note that an app can have a hybrid approach, accessing the class traditionally and the method through reflection. In this case, we would search for the class as a symbol and the method as a string.
+
+A more systematic approach to solve reflective calls in Java is proposed by Li et al. . Their approach is based on constant propagation with static analysis, to compute the strings used as class and method names in reflective calls, and the strings used as class and field names in reflective field accesses. However, considering that their approach would be expensive, but deliver partial results when strings are obfuscated or encrypted, we opted for a faster and cheaper alternative.
+
+We report in Table 2 (page 7) the extended set of protection atoms.
+
+In Table 2 (page 7), we include the strings necessary to invoke the method m3 through reflection (strings s2 and s3). Therefore, the final fingerprint for this protection at Java level is:
+(m3 OR (s2 AND (c2 OR s3))) AND (s1)
+The first half of the fingerprint refers to the retrieving of the package name of the installer app. The app can obtain this package name either directly (m3) or through reflection, with the name of the method as a string (s2) and the class, either importing it (c2) or getting it through reflection as well (s3). The second half of the fingerprint refers to the detection of the “com.android.vending” string. From now on, to avoid complications in the fingerprints, we omit this mechanism for Reflection detection in the fingerprints.
+
+# 3. Concerns on Fingerprint Fragility
+We observed that expecting to detect all the protection atoms of the protections may be an ineffective and a too strict requirement. Therefore, there are two concerns to discuss:
+- We have to exclude the protection atoms that a developer can use for other reasons besides implementing AD and AT protections. For instance, an app can use the Context class also for checking available permissions or creating a new object, like an android/view/View object. Moreover, an app can use the “com.android.vending” string for in-app purchases. So, the signature should be flexible and exclude those protection atoms that might occur spuriously also outside of protection code.
+
+# 4. Incremental validation and refinement of protection fingerprints
+Before using the fingerprints on the large case study, we carried out an iterative process for refining and then validating the fingerprints. The goal is to tune and adapt the fingerprints with more complex and complete experimental settings. In this section, we illustrate this process by presenting the three validation steps we performed.
+
+# 4. Validation and refinement with toy apps
+We need to refine our approach to achieve better detection results. Therefore, to face this challenge and define more accurate fingerprints, we have to test our fingerprints in an iterative process of incremental validation and refinement.
+
+# 3. Tool implementation
+We automated the detection of the fingerprints in a tool named ATADetector. Fig. 3 (page 9) summarizes the workflow and Anti-Debugging of ATADetector. We employ the Apache Commons CLI library to parse input arguments. ATADetector takes as input an APK file and splits the app in the Java (.dex files) and C++ (.so .jar files) components. ATADetector transforms the .dex files with the nightly version (2) of dex2jar. We implemented the tool in Java on top of the ASM library. This library allows parsing Java bytecode of an Android app to extract the programming elements like classes, methods, attributes and strings.
+
+In Java, strings are immutable and stored in the constant pool of the class where they are used. We detect string values used in the Java bytecode by identifying their usages, i.e. the LDC (LoaD Constant) Java opcode. This opcode is meant to take a specific constant value from the constant pool and push it to the operand stack to be used by the subsequent opcode, for instance, to make a reflective call. The string value is provided by ASM, that resolves the argument of the LDC opcode.
+
+At Native level, we extract imported symbols and strings with the Linux command-line utilities nm and strings, respectively. Finally, we combine the extracted protection atoms in the fingerprints and produce a JSON report with the org.json library.
+
+For the first validation, we consider simple “Hello World” apps with no specific functionality. We manually deploy the protections one by one in the apps, following the example implementations illustrated in Section 2. We then run ATADetector on these apps to verify whether it detects protections in this straightforward setting. To have cleaner results, we perform the analysis both on the whole code of the app and then only on the Java class that implements the protection. In this way, we can understand which protection atoms are significant for the detection of the protections. There can be protection atoms often used in protections but also for other purposes and in Android standard libraries as well. Thus, their detection would be an irrelevant contribution to the final result. In the analysis considering the Java class that implements the protection only, we identify all the protections correctly. In the analysis considering the whole app, we identify all the protections but also some false positives.

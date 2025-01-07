@@ -1,0 +1,56 @@
+This process continued until a reasonable level of inter-rater reliability was reached for each variable. Inter-rater reliability measures the agreement or consensus between different researchers applying the same codebook. To measure inter-rater reliability, we used the Krippendorff’s α statistic . Krippendorff’s α is a conservative measure which considers improvement over simply guessing. Krippendorff et al. recommend a threshold of α > 0 as a sufficient level of agreement . The final Krippendorff’s alpha for each variable is given in Table 1. Because the Types observed in the MD problem were very different from the other two problems (e.g., cryptography vs. access control related), we calculated inter-rater reliability separately for this problem to ensure reliability was maintained in this different data. Once a reliable codebook was established, the remaining 34 projects (with 166 associated breaks) were divided evenly among the two researchers and coded separately.
+
+Overall, this process took approximately six months of consistent effort by two researchers.
+
+# 4 Vulnerability Types
+Our manual analysis of 94 BIBIFI projects identified 182 unique vulnerabilities. We categorized each based on our codebook into 23 different issues. Table 2 presents this data. Issues are organized according to three main types: No Implementation, Misunderstanding, and Mistake (RQ1). These were determined systematically using axial coding, which identifies connections between codes and extracts higher-level themes [74, pg. 123-142]. For each issue type, the table gives both the number of vulnerabilities and the number of projects that included a vulnerability of that type. A dash indicates that a vulnerability does not apply to a problem.
+
+This section presents descriptions and examples for each type. When presenting examples, we identify particular projects using a shortened version of the problem and a randomly assigned ID. In the next section, we consider trends in this data, specifically involving vulnerability type prevalence, attacker control, and exploitability.
+
+# 4 No Implementation
+We coded a vulnerability type as No Implementation when a team failed to even attempt to implement a necessary security mechanism. Presumably, they did not realize it was needed. This type is further divided into the sub-type All Intuitive, Some Intuitive, and Unintuitive. In the first two sub-types teams did not implement all or some, respectively, of the requirements that were either directly mentioned in the problem specification or were intuitive (e.g., the need for encryption to provide confidentiality). The Unintuitive sub-type was used if the security requirement was not directly stated or was otherwise unintuitive (e.g., using MAC to provide integrity ).
+
+1 Number of projects submitted to the competition
+2 Number of unique vulnerabilities introduced
+3 Total percentages are based on the counts of applicable projects
+USENIX Association 29th USENIX Security Symposium 115
+Two issues were typed as All Intuitive: not using encryption in the secure log (P=3, V=3) and secure communication (P=2, V=2) problems and not performing any of the specified access control checks in the multiuser database problem (P=0, V=0). The Some Intuitive sub-type was used when teams did not implement some of the nine multiuser database problem access-control checks (P=10, V=18). For example, several teams failed to check authorization for commands only admin should be able to issue. For Unintuitive vulnerabilities, there were four issues: teams failed to include a MAC to protect data integrity in the secure log (P=16, V=16) and secure communication (P=7, V=7) problems; prevent side-channel data leakage through packet sizes or success/failure responses in the secure communication (P=11, V=11) and multiuser database (P=4, V=4) problems, respectively; prevent replay attacks (P=7, V=7) in the secure communication problem; and check the chain of rights delegation (P=4, V=4) in the multiuser database problem.
+
+# 4 Misunderstanding
+A vulnerability type was coded as Misunderstanding when a team attempted to implement a security mechanism, but failed due to a conceptual misunderstanding. We sub-typed these as either Bad Choice or Conceptual Error.
+
+# 4 Bad Choice
+Five issues fall under this sub-type, which categorizes algorithmic choices that are inherently insecure. The first three issues relate to the incorrect implementation of encryption and/or integrity checks in the SL and SC problems: use of an algorithm without any secret component, i.e., a key (P=8, V=8), weak algorithms (P=4, V=5), or homemade encryption (P=2, V=2). As an example of a weak algorithm, SL-69 simply XOR’d key-length chunks of the text with the user-provided key to generate the final ciphertext. Therefore, the attacker could simply extract two key-length chunks of the ciphertext, XOR them together and produce the key.
+
+The next issue identifies a weak access-control design for the MD problem, which could not handle all use cases (P=5, V=6). For example, MD-14 implemented delegation improperly. In the MD problem, a default delegator may be set by the administrator, and new users should receive the rights this delegator has when they are created. However, MD-14 granted rights not when a user was created, but when they accessed particular data. If the default delegator received access to data between time of the user’s creation and time of access, the user would be incorrectly provided access to this data.
+
+The final issue (potentially) applies to all three problems: use of libraries that could lead to memory corruption. In this case, team SL-81 chose to use strcpy when processing user input, and in one instance failed to validate it, allowing an overflow. Rather than code this as Mistake, we considered it a bad choice because a safe function (strlcpy) could have been used instead to avoid the security issue.
+
+# 4 Conceptual Error
+Teams that chose a secure design often introduced a vulnerability in their implementation due to a conceptual misunderstanding (rather than a simple mistake). This Conceptual Error sub-type manifested in six ways. Most commonly, teams used a fixed value when an random or unpredictable one was necessary (P=26, V=26). This included using hardcoded account passwords (P=8, V=8), encryption keys (P=3, V=3), salts (P=3, V=3), or using a fixed IV (V=12, N=12).
+
+1 var nextNonce uint64 = 1337
+2 ...
+
+3 func sendMessage ( conn * net . Conn , message
+4      [] byte ) ( err error ) {
+5      var box [] byte
+6      var nonce  byte
+7
+8       byteOrder . PutUint64 ( nonce [:] , nextNonce )
+9      box = secretbox . Seal (box , message , & nonce ,
+10          & sharedSecret )
+11       var packet = Packet { Size : uint64 ( len ( box )) ,
+12          Nonce : nextNonce }
+13        nextNonce ++
+14        writer := * conn
+15       err = binary . Write ( writer , byteOrder , packet )
+16       ...
+
+17 }
+Listing 1: SC-76 Used a hardcoded IV seed.
+
+Sometimes chosen values were not fixed, but not sufficiently unpredictable (P=7, V=8). This included using a timestamp-based nonce, but making the accepted window too large (P=3, V=3); using repeated nonces or IVs (P=3, V=4); or using predictable IVs (P=1, V=1). As an example, SC-76 attempted to use a counter-based IV to ensure IV uniqueness. Listing 1 shows that nonce nextNonce is incremented after each message. Unfortunately, the counter is re-initialized every time the client makes a new transaction, so all messages to the server are encrypted with the same IV. Further, both the client and server initialize their counter with the same number (1337 in Line 1 of Listing 1), so the messages to and from the server for the first transaction share an IV. If team SC-76 had maintained the counter across executions of the client (i.e., by persisting it to a file) and used a different seed for the client and server, both problems would be avoided.
+
+Other teams set up a security mechanism correctly, but only protected a subset of necessary components (P=9, V=10). For example, Team SL-66 generated a MAC for each log entry separately, preventing an attacker from modifying an entry, but allowing them to arbitrarily delete, duplicate, or reorder log entries. Team SC-24 used an HTTP library to handle client-server communication, then performed encryption on each packet’s data segment. As such, an attacker can read or
+manipulate the HTTP headers; e.g., by changing the HTTP return status the attacker could cause the receiver to drop a legitimate packet.

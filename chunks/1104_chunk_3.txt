@@ -1,0 +1,59 @@
+© IEOM Society International 6468
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+For the last parental control application, the application OurPact was discovered to have 4 assessments which had an assessment status of 'Fail' out of 10 issues with a severity level of 'High', which results in a fail rate of 40%. Out of 13 vulnerability assessments with a severity level of 'Medium', 7 has an assessment status of 'Fail' that yields a 53% fail rate as well. Lastly, out of the 7 issues with a severity level of 'Low', only one had an assessment status of 'Fail' that results in a fail rate of 14%. Only 12 out of the 30 vulnerability assessments were detected as ‘Fail’ which is a 40% overall fail rate.
+
+# 5 Common Vulnerabilities Between the Three Parental Control Applications
+Out of the 10 common vulnerabilities, 4 or 40% are having a ‘High’ severity level. Five or 50% of them are having a ‘Medium’ severity level. Lastly, only one or 10% of the ten is having a ‘Low’ severity level. These ten common vulnerabilities between the three most used mobile parental apps will be the focus of the recommendations in terms of mitigation suggestions.
+
+# 5 Proposed Improvements
+The following are the recommendations based on the CWE list Version 4 (2020) for the common vulnerabilities between the three most used applications:
+- The issue of unsafe file deletion, missing Copy&Paste protection from EditText fields, missing protection against screenshots & screen sharing, and no blurring for the app in the background can be mitigated in the Architecture and Design phase by separating privileges. The issue has a likelihood of "High" in exploitation, that is why it is required to divide the system into categories, so that safe areas wherein trust boundaries can be drawn. Also, not allowing sensitive information or data to go beyond the trust boundary and appropriate division of the system must be ensured in building the system’s design. Designers and architects are obliged to rely on the principle of least privilege for their decision when it is appropriate in dropping and using system privileges (CWE 2020).
+
+- The issues of improper export of Android Activities and improper export of Android Services can be mitigated by four phases. In the Build and Compilation phase, marking components with android: exported="false" in the application manifest must be conducted, if the application doesn't need to be shared by other applications. If the
+© IEOM Society International
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+usage of exported components between related apps under a control is intended, the utilization of android: protection Level= "signature" in the XML manifest will limit access to applications signed. The strategy of this phase is Attack Surface Reduction. According to the CWE (2020) code CWE-200 which deals with the exposure of sensitive information to an unauthorized actor, the phases Build and Compilation; Architecture and Design is the limiting of Content Provider permissions (read/write) as appropriate. The strategies in this method phase are Attack Surface Reduction and Separation of Privilege.
+
+The issue of debugging information provision can be alleviated in the implementation phase by not leaving the debug statements, which could be used in the source code for execution. Also, all the debug information must be eradicated before releasing the software. Moreover, in the Architecture and Design phase, the system must be divided into categories to have safe areas trust boundaries wherein it can be unambiguously drawn. Sensitive information must not be allowed to go beyond the trust boundary and must always be careful in the interaction with a compartment out of the safe area. A standard established by CWE (2020) in the code CWE-926, designers and architects must always rely on the principle of least privilege when deciding on using and dropping appropriate system provisions.
+
+One of the potential mitigations for the security issue regarding the unsafe Trust Manager implementation can be alleviated during the Architecture and Design, and Implementation phase. This phase is the managing and checking of certificates for ensuring that the data are encrypted with the predetermined owner’s public key. Another potential mitigation for this issue the Implementation phase. In this phase, before the certificate is pinned, the needed properties of the certificate should be completely validated and guaranteed, if certificate pinning is being utilized (CWE, 2020).
+
+The issue about the weak random number generation can be mitigated by performing two phases. The phases are Architecture and Design and Implementation. According to CWE (2020), the Architecture and Design phase is the specification of a true random number generator for cryptographic algorithms. The Implementation phase is the implementation of a true random number generator for cryptographic algorithms.
+
+# 5 Validation
+To decide whether to accept the stated directional hypothesis of this case study, the mean of the fail rate in every severity level is determined and the overall fail rate for every mobile app is presented in Table 2.
+
+It shows in Table 3 that the mean failure rate of the HIGH, MEDIUM and LOW severity levels are 53%, 53%, and 28%, respectively. This suggests that most of the vulnerabilities detected in the parental control application have a severity level of ‘High’ and ‘Medium’ and the vulnerability tests with a severity level of ‘Low’ are mostly secured. The overall fail rate (vulnerability) mean is 47% and this indicates that almost half of the vulnerability tests were failed by the top three parental control mobile applications. This rejects the directional hypothesis and indicates that the top three most used parental control mobile applications are not secured because the overall fail rate mean is more than 40%.
+
+© IEOM Society International 6470
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+# 6. Conclusion
+At the end of the study, the vulnerabilities of the parental control mobile applications were able to be identified using the Quixxi Security tool. The said scanning tool used six OWASP security requirements (MASVS) and using this standard, the specific issues and vulnerabilities, and their corresponding assessment statuses were identified.
+
+Based on the survey on the parents, the top three most used parental control applications were revealed, and these are Family Time, Family Link, and OurPact. All these three have their set of security issues detected, ranging from the severity level, 'Low' to 'High'. The total number of vulnerabilities detected in the three mentioned applications ranges from 12 to 16. Out of those vulnerabilities, they have 10 vulnerabilities that are common to each other which are mostly having ‘Moderate’ to ‘High’ severity levels. It can be decided that the top three most used parental control mobile applications are not that secured based on the OWASP’s MASVS standards because of their overall fail rate.
+
+#fails in mobile apps, Available: https://techbeacon.com/security/6-ways-eliminate-most-common-security-fails-mobile-apps/, October 2020.
+
+Mannan, M. and Youssef, A., Privacy report card for parental control solutions, Available: https://www.priv.gc.ca/en/opc-actions-and-decisions/research/funding-for-privacy-research-and-knowledge-translation/completed-contributions-program-projects/2019-2020/p_2019-20_02/, August 2020
+Olekss, J., Vulnerabilities – if you can’t beat them, hide them, Available: https://www.intertrust.com/blog/vulnerabilities-if-you-cant-beat-them-hide-them/, May 2020.
+
+OWASP., OWASP Mobile Application Security Verification Standard, Available: https://github.com/OWASP/owasp-masvs/, March 2020
+OWASP., What is CVE?, Available: https://github.com/RedHatProductSecurity/CVE-HOWTO/, November 2016
+OWASP., Who is the OWASP Foundation? Available: https://owasp.org/, October 2020
+Positive Technologies., Vulnerabilities and threats in mobile applications, 2019. Available: https://www.ptsecurity.com/ww-en/analytics/mobile-application-security-threats-and-vulnerabilities-2019/, June 2019.
+
+Quixxi Security, How Secure is your mobile app?, Available: https://quixxisecurity.com/scan/, October 2020
+Red Hat. 2020. What is CVE?, Available: https://www.redhat.com/en/topics/security/what-is-cve/, October 2020.
+
+Saravid, A., Suchaad L., Mashiko, K., Ismail, N., and Abidin, M., Blockchain Use in Home Automation for Children Incentives in Parental Control, Proceedings of the 2018 International Conference on Machine Learning and Machine Intelligence (MLMI2018), New York, NY, USA, September 2018, pp. 50–53.
+
+© IEOM Society International 6471
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+# Biographies
+Eric Blancaflor is an Associate Professor of Mapua University, Philippines. He earned B.S. in Electronics Engineering from Mapua University, Masters in Engineering major in Computer Engineering in the University of the City of Manila and currently working on his dissertation study as a requirement for the degree Doctor of Technology in Technological University of the Philippines. He has published conference papers related to IT systems, network design and security.
+
+Gerardine Anne J. Anson is a high school graduate from Siena College of Taytay. She is also an on-going third-year student taking up a degree in Information Technology at Mapúa University. During her senior year in high school, she and her co-researchers conducted studies entitled, “Correlation on the Employee’s Usage of the IoT Software to their Security” and “Perception of PERAA Company Employees on their Security in Using IoT (TeamViewer)”.

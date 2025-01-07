@@ -1,0 +1,60 @@
+In order to keep the experiment as representative as possible, we decided to reuse three of the apps for which real developers provided a mapping in Experiment 3. The app selection was performed with the goal of having at least one app making use of each of the device resources currently adopted by the current implementation of AFP (i.e., Camera, Microphone, and Location). Unfortunately, we could not successfully instrument app A1, the only one in our dataset that uses the microphone, because it relies on Java reflection (a language construct traditionally hard to deal with by approaches relying on static analysis ). Hence, we discarded it and selected an alternative app, thus ending with apps A3, A10, A11 in our final app selection.
+
+# 5 Experiment 4: Usability and Acceptance of AFP by End Users
+Design. The goal of this study is to evaluate usability and acceptance of AFP from the end-user perspective. We conducted an in-person study involving 47 participants. This experiment is composed of three main phases:
+1. Pre-study: each participant was given a short description about the goal of the experiment, together with the definition of feature- and level-based permissions. Demographic information was also collected.
+
+2. First trial: each participant was asked to try out three Android apps, employing either AFP or the current Android permission system. An evaluation questionnaire was given at the end of the trial.
+
+3. Second trial: the participant was asked to repeat the trial, this time employing the permission system that was not used during the previous phase. Again, an evaluation questionnaire was given at the end of the trial.
+
+The first part of the questionnaire (Trustability) consists of two questions (Q1, Q2). It was filled by participants at the end of both the second and the third phase of the experiment. The second part of the questionnaire (Acceptance) evaluates the acceptance of AFP and the last one assesses usability of AFP.
+
+A breakdown of the structure of the evaluation questionnaires provided to users is shown in Table 4.
+
+# 2044
+# IEEE TRANSACTIONS ON SOFTWARE ENGINEERING, VOL. 47, NO. 10, OCTOBER 2021
+# Structure of the Evaluation Questionnaire for End Users
+# Breakdown of End Users Privacy Preferences
+contains four questions (Q3-Q6) and it was filled by participants after completing the third phase of the experiment. All answers to questions Q1-Q6 range on a five-point Likert scale.
+
+Also the third part of the questionnaire (i.e., Usability) was filled by participants after completing the third phase of the experiment. In this part, we relied again on the System Usability Scale (S1-S10). At the end of the questionnaire, open comments were collected from the participants.
+
+Results. Professions and backgrounds of participants are varied and include students, shop assistants, mechanical engineers, lawyers, etc. Participants were mostly male (68 percent) and the mode of their age is Between 21 and 30 years old. Although not perfectly balanced, we consider the group of participants to be a good sample of the general smartphone users population, itself skewed towards younger ages and males . The mean self-assessed knowledge of Android is 3 on a 1-5 scale (1 standard deviation). Roughly half of the participants (24/47) tried out the apps with the Android permission system as first, and with AFP as second. The opposite order was adopted for the others.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.
+
+# SCOCCIA ET AL.: ENHANCING TRUSTABILITY OF ANDROID APPLICATIONS VIA USER-CENTRIC FLEXIBLE PERMISSIONS
+# 2045
+Very trustable Very likely
+Trustable Likely
+Neutral 1 Neutral
+Not trustable Unlikely -
+Absolutely not trustable
+Android AFP Android AFP
+Android knowledge Android knowledge
+We obtained a p-value of 7:623e08 for Q1 and 4:802e05 for Q2, thus rejecting the null hypothesis that the distributions of the answers about Android and AFP are equal. Fig. 13 provides a breakdown of answers to Q1 and Q2 by self-declared Android knowledge of participants. For both questions, AFP achieved more favourable answers even for participants with a lower level of knowledge. Answers for the Acceptance part of the questionnaire (i.e., Q3, Q4, Q5 and Q6) are summarized in Fig. 14. The answers are skewed towards the positive part of the scale and the median value is Absolutely yes for most of them, with the only exception of Q5 for which the median value is Yes. Fig. 15 provides an overview of answers to the same questions by self-declared Android knowledge of participants. For all levels of knowledge, the majority of answers fall in the upper end of the scale.
+
+Results of the usability evaluation are shown in Fig. 17. Each column of the heatmap presents the frequency distribution of answers for one of the ten SUS statements. The procedure described in the SUS guidelines  was applied to normalize answers to each statement. For all ten statements, participants provided mostly positive answers with the total amount of negative ones being less than 15 percent.
+
+Still concerning users choices, it is worth noting that, when possible, users favoured more restricted access levels and seldom provided full location access. An exception is represented by feature F1, for which full access is the consensus choice. During the execution of the experiment, we observed that users believed that full access was strictly necessary for performing this feature, thus explaining such difference. Consequently, we can state that: When possible, most users choose levels that disclose a restricted amount of data.
+
+From the answers to questions Q1 and Q2 (see Fig. 12), we can point out that users generally felt more secure when employing AFP and praised the added control over shared personal data provided by it. Fig. 13 provides an indication that this preference towards AFP is constant across varying levels of Android knowledge. Such considerations are also supported by some of the comments collected during the evaluation questionnaire: one participant stated that “(Between the two systems) I prefer AFP as I have more control on permissions and I feel more secure”, while another participant pointed out that “as a user, with AFP I am more aware on.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.
+
+# IEEE TRANSACTIONS ON SOFTWARE ENGINEERING, VOL. 47, NO. 10, OCTOBER 2021
+# Acceptance of AFP Q3-Q6 by self-declared Android knowledge
+# Usability of AFP (S1-S10) by self-declared Android knowledge
+For odd numbered statements higher is better. For even numbered statements lower is better.
+
+Users feel more secure and are more willing to use apps on their smartphone when using feature- and level-based permissions. This leads us to the following reflection point: misleading and enforce a binary choice. I appreciated AFP’s level-based permissions. In conclusion:
+Feature- and level-based permissions are both well understood and deemed useful by end users, although the usefulness of the latter is more immediate to them.
+
+Regarding the results of the usability evaluation, according to prior research , the achieved mean SUS score (78) is to be interpreted as a Good level of usability (see Fig. 17). Focusing on the distribution of answers for each statement, positive answers are the majority for all statements, even for users with a limited knowledge of the Android platform (see Fig. 16). Nonetheless some points of improvement can be identified. Statements S1, S2, S3 and S5 achieved a comparatively lower amount of maximum score answers, revealing that some users did experience some difficulties while using the system. Investigating the comments left by participants, we noticed that some users would prefer to grant feature- and level-based permissions at runtime. In particular, one user noted “I would like to grant permissions.”
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.
+
+# LIMITATIONS AND FUTURE WORK
+The proposed approach suffers a number of limitations that we plan to address in the future. At the time of writing, AFP only permits the specification of PolicyItems that reference a single resource. Our plan is to enhance the permission model by introducing consistency-checking of policies and reasoning on multiple resources (e.g., do not allow access to contacts book if the app also requests Internet access).
+
+As previously discussed in Section 3, our current implementation of AFP is fully contained in the application layer of the Android stack. Our prototype implementation was developed with the main goal of assessing the perception of users on the proposed feature- and level-based permissions. We are aware that a full market-scale adoption requires a more tightly-coupled integration with the lower levels of the Android stack. In this direction, the integration of AFP with existing works on kernel-space security would be beneficial.

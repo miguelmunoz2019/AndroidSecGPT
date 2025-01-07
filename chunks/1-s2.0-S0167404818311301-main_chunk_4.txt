@@ -1,0 +1,72 @@
+5. We further extend to find other tuples by only considering both pi and d, regardless of si and v, then obtain a collection of tuples 〈s, d, v〉, where si is a signature associated with a specific version of a TPL. The derived representation of the TPL corpus serves as a benchmark dataset for detecting original or obfuscated TPLs directly. Note vi is the feature for detecting shrunk or optimized TPLs.
+
+To date, most polluted TPLs are sanitized by using cycle search. Shrunk and optimized TPLs are sanitized by feature set matching. We successfully create a one-to-one mapping between a hash value (or a feature set) and a specific TPL version.
+
+# 3. Identifying shrunk or optimized TPLs
+With the TPL corpus established in hand, we attempt to take a deep dive into how we use it for proposing our TPL detection, where no previous research considers the effect of shrunk or optimized TPLs in the wild. Recall that the shrinkage and optimization of ProGuard introduce the complexity of TPL detection. In order to detect shrunk or optimized TPLs, we first decouple an APP, and then use the stable generated feature to identify the calibrated TPL.
+
+# 3. Decoupling an APP
+Because an APK file processed by ProGuard can be mixed up with shrunk, optimized, obfuscated user space, the boundary between these modules become obscure. In order to identify a TPL within an APK file, we use module decoupling technique to divide the APK file into different modules. Inspired by PiggyApp  and the follow-up work LibSift , we decouple APPs through the “Package Stem” probing.
+
+Different from Section 3, we probe the “Package Stem” from the second level of the package tree. Fig. 4 shows an anecdotal example when we decouple an APP. In this case, a node represents a module and a directed edge represents the dependency between two modules. Direction of the edge helps us to find cycles between different modules (by the assumption that the TPL will not invoke each other). In the mean time, if there is a cycle in the siblings, we stop decoupling and take the current node as a “Package Stem” of this module. The weight assigned to each edge is the degree of dependencies between modules. The dependency between modules includes fields and method dependency. We present the module decoupling technique used in Algorithm 1.
+
+# Algorithm 1: Decoupling an APP
+Input: Android package structure and metadata
+Input: Upper-threshold of PDG: U
+Output: Modules and their dependencies: M = ∅
+foreach node i visited by recursive DFS do
+ic ← child’s nodes of node i;
+wic ←∑PDG(i);
+if wic > U then
+M ← M ∪ i;
+end
+else if cycle(ici , icj ) = True then
+M ← M ∪ i;
+end
+else
+continue;
+end
+end
+foreach (m, mj), mi ∈ M, mj ∈ M do
+if cycle(m, mj) = True then
+M ← M - mi;
+M ← M - mj;
+M ← M ∪ mi j;
+end
+end
+# 3. Feature generation
+Current research chooses to use parameter types, return types, constant strings, access modifiers, and instruction streams as features to detect TPL . However, the optimization of ProGuard changes the layout of TPL drastically (see Fig. 3). This leads to the fact that the precise graph
+# Computers & Security 80 (2019) 257–272
+(a) The original call graph of “com.amazonaws.regions/RegionMetadataParser” class
+(b) The result of shrinkage and optimization with one iteration (n = 1 in Figure 1)
+detection does not scale well to optimized TPLs. As we see from the anecdotal example shown in Fig. 5, it indicates that inlining renders subgraph isomorphism to fail on class “com/amazonaws/regions/RegionMetadataParser”. To continue with this APP, we show after one iteration of optimization by ProGuard, there are 465 classes left. By utilizing NetworkX, we find 34 classes are not belong to subgraph isomorphism, 12 classes are timeout (20 seconds) for subgraph isomorphism detection. Out of the 419 subgraph isomorphism classes, 150 classes contain less than 3 nodes that have less information, which makes subgraph isomorphism detection unreasonable. In addition, data dependency and the entire dependency graph for the APP are also affected by optimization.
+
+Instead, we use the invocation of Android SDK APIs in TPLs. These Android SDK APIs are not directly processed by ProGuard and we find they are resistant to shrinkage and optimization.
+
+# 4. Evaluation
+In this section, we evaluate the performance of PanGuard and compare it with previous works. The APP’s metadata is distilled and stored in the HBase of our edge computing architecture.
+
+# 4. Bandwidth and computing requirement analysis
+In order to collect Android SDK API in an APP, we extract method with “public” modifier from “android.jar” file of version android-22. There are 32,203 Android SDK APIs are extracted. Bit vector representation for each TPL takes 4026 bytes. To go further on shrinking the data usage for TPL signature, we use sparse vector instead. For example, the Android SDK API used by different version of “Android Support V4” is ranging from 770 to 1805 with an average of 1107, 2214 bytes on average is needed for a specific “Android Support V4” TPL version. Compared to other tree-based method which maintain relation between node, our representation tremendous reduced the bandwidth for feature distribution from cloud to edge and the storage of edge.
+
+In order to detect TPL, feature is converted to bit vector on edge node and the comparison is a bit vector operation. Compared to other tree-based method for TPL identification with complexity (exp((logn)O(1))), our comparison is constant complexity, say O(1). This is acceptable in edge for TPL checking.
+
+# 4. The Distributions of TPLs
+# 4. TPL popularity
+For feature vi matching that is not practical on a large dataset, we do a measurement on the signature s. The distribution of TPLs in APPs is shown as Figure 6(a). We find that TPLs in our dataset are approximately 20% more than those in previous research . Taking as example the TPL “Apache Http Client” as shown in Table 5, we find that
+1 By using Reflector, class in “Lorg/apache/http” can be moved to “Lorg/apache/commons/httpclient”. 2 “Lorg/a/b” are detected because they have the same si within the TPL corpus. APPs turn off shrinkage and optimization options to make the same si as the TPL corpus. 3 Hashing procedure ensures that the layout under each package is the same.
+
+Detecting TPLs by qualified name is not sufficient due to the use of Refactor in Java. Moreover, developers rarely process an APP by ProGuard using obfuscation alone. In fact, we show that ProGuard outperforms LibRadar  in the case— If two signatures si are the same for any node i, PanGuard not only ensures the same Android SDK API in these TPLs, but also preserves the structural information of its children, leading to a lower false positive rate.
+
+# 4. The distribution of raw TPL versions
+Before sanitization, each raw TPL version is shown in Fig. 6(b). Strikingly, we find 1,428 unique hashes appearing in the raw TPL “Android.support.v4”, while there are only 61 versions of the officially-released one. We attribute this to the fact that shrinkage and optimization of ProGuard largely contribute to the difference of the version numbers.
+
+# 4. The distribution of sanitized TPL versions
+We try to merge raw TPL versions to sanitize ones produced by the approach shown in Section 3. Simply put, if a path of
+# c o m p u t e r s & s e c u r i t y 8 0 ( 2 0 1 9 ) 2 5 7 – 2 7 2
+# 267
+a decoupled module of an APP matches the “Package Stem” of a TPL, we then search cycles that contain this module. In most cases, we regard that a TPL is polluted if the model is discovered in the cycle, and then the related versions of this TPL will be removed. This sanitization process is shown in Fig. 7. For the example of “Android.support.v4”, we show that about 64% of the APPs containing a raw version of a TPL is decoupled successfully. Out of the successfully decoupled 80 samples, we find that approximately 63% of them are in a cycle, which indicates that this TPL is largely polluted by code injection. Finally, we try to measure edit distance between two instances with respect to different TPLs. As we see from Fig. 6, the edit distance between two TPLs is large enough, which indicates they are remarkably distinguishable.
+
+“.∗ /a;- > .∗” and “./b;- > .∗”
+# 4. The actual proportion of TPLs distorted by ProGuard
+We find that 5,948,438 out of 7,602,323 (78%) APPs hit the following ProGuard signature (see Table 7). However, this data is a combination of ProGuard, processed by TPL providers and APP developers. Since only the developer processing can distort the TPL, we adopt Duet’s term  to separate the TPL processing into developer’s post-processing and provider’s post-processing.

@@ -1,0 +1,83 @@
+# Discussion
+From an IoT category perspective, Table 3 reveals that all the apps in the AP, Smart Assistant, and Smart bulb/plug categories are susceptible to Janus. On the other hand, this vulnerability is present in half, 2 out of 9 (22%), and in 2 out of 12 (17%) apps, in Smart TV, Wireless IP cameras, and Smart wearable IoT categories, respectively.
+
+As shown in the third column of Table 3, a significant number of apps in each IoT category were found to be prone to severe network security issues. Specifically, both the Smart TV apps, 3 out of 5 (60%) of the Smart assistant apps, and half of the Smart bulb/plug
+apps were identified to allow cleartext traffic towards any network domain. This figure is significantly lower in the remaining categories, with one-third, and 1 out of 12 or 8% apps, in the AP and Smart wearable categories, respectively. Moreover, 4 and 1 apps in the Smart wearable and Smart bulb/plug categories, respectively, were found to allow cleartext traffic towards certain network domains. On top of that, 3 or 33% and 25% of the apps in the Wireless IP cameras and Smart wearable categories trust the system’s certificates, respectively; this figure is also significant in the Smart assistant and Smart bulb/plug categories and around 11% in the AP one. On the plus side, the majority of apps do not trust user’s installed certificates. This situation is met only in the Wireless IP cameras and Smart wearable categories, but for a limited number of apps, namely 1 and 2, respectively.
+
+The use of obsolete hashing schemes in APK signing is prevalent in all app categories except the bottom two in Table 3. Precisely, more than 55% of the apps in AP, Smart TV, Wireless IP cameras, and Smart wearable categories have been signed with SHA-1 algorithm, thus being prone to collision issues. Interestingly, this is the case with all but one app in the Smart wearable category. Packers is the most infrequently met issue across all the categories. Generally, only a couple of the IoT categories were found to incorporate a packing scheme.
+
+# 4. Detected CWEs
+The current subsection briefly discusses all high severity CWEs that are pertinent to each app. From them, CWEs 89, 276 and 502 belong to the list of top 25 most dangerous software weaknesses , while CWEs 295 and 532 occupy positions 28 and 33 in the extended list, respectively.
+
+- CWE-89: This perilous weakness, titled “Improper neutralization of special elements used in an SQL command (’SQL Injection’)” is classified as M7 in OWASP-10. It is present in cases where the app does not sanitize or improperly sanitizes input stemming from an upstream component, e.g., from a Web form for user authentication. All but two apps (95%) were found to be potentially vulnerable to this issue.
+
+- CWE-250: Known as “Execution with Unnecessary Privileges”, this weakness refers to any unnecessary elevated privilege the software may hold when performing an operation. Only one app were found to be susceptible to the relevant weakness.
+
+- CWE-276: The so-called “incorrect default permissions” weakness, appears if the app is granted unneeded read/write permissions. In such a case, any affected file can be potentially read or written by third parties. By referring to OWASP-10, this weakness is classified under M2, namely, “insecure data storage”. All apps, but one, were found to be susceptible to this weakness for at least one of the below reasons. The first, is related to the creation of a temporary file, which may contain sensitive data. This is a significant issue, since anyone is able to access folders that contain temp files. The second, represented by an additional plus sign, relates to the fact that the app requests read or write access to the external storage.
+
+- CWE-295: It is titled “Improper certificate validation” and classified under M3 in OWASP-10. This situation occurs if the app is configured to trust an insecure or self-signed or any sort of certificate during a Transport Layer Security (TLS) handshake. As already pointed out, this weakness may enable an attacker to mount MitM attacks. About 50% of the examined apps were found to be susceptible to this weakness. An additional plus sign in the same column designates that this app is susceptible to the same weakness for their WebView implementation as well.
+
+- CWE-312: It is known as “Cleartext storage of sensitive information”, and is classified as M9 in OWASP-10. When sensitive pieces of information, say, a username and/or password, are kept in cleartext form, anyone can read them. In some cases, such sensitive information may be statically placed in the code of the app, e.g., in a configuration file. As seen from Table 3, the totality of the apps were found to be susceptible to the current weakness.
+
+# Sensors 2022, 22, 513
+# 13 of 41
+- CWE-327: The “Use of a broken or risky cryptographic algorithm” is classified as M5
+(“Insufficient Cryptography”) in OWASP-10. This weakness pertains to the usage of
+outdated hash or encryption algorithms. It is observed that all the examined apps,
+but one may potentially use at least one obsolete hash algorithm, namely either MD5,
+SHA-1, or both, and 24 of them—those having a value of “3”—support AES-ECB,
+which is not semantically secure.
+
+- CWE-330: This weakness titled “Use of insufficiently random values” relates to the
+generation of predictable random values by an app. It typically means that the app
+employs an insecure random number generator. In the OWASP top 10 mobile risks
+list, this weakness ranks in the fifth position, namely “insufficient cryptography”. All
+apps were found to be susceptible to this weakness.
+
+- CWE-502: The app can possibly use an untrustworthy way of deserializing data, which
+is known as a “Deserialization of Untrusted Data” weakness. In our case, one app
+was found to use a Jackson deserialization library, which could possibly deserialize
+data in an unsafe way. Favorably, only one app presents this weakness.
+
+- CWE-532: The weakness, known as “Insertion of sensitive information into log file”,
+arises when a production app has enabled logging information to a file, while this
+feature may be of particular aid during the development stage of an app, it must be
+removed prior to the app being made publicly available. If not, an attacker could read
+these files and obtain any private information stored in them. All apps were found to
+be susceptible to this weakness.
+
+- CWE-649: The “Reliance on Obfuscation or Encryption of Security-Relevant Inputs
+without Integrity Checking” weakness refers to the usage of cryptographic algorithms
+that require the validation of the encrypted data. Simply put, an app that uses such an
+algorithm must perform integrity checks to validate that these data are not tampered
+with. More than thirty of the examined apps rely on AES-CBC with PKCS5/PKCS7
+padding, without validating their encrypted results. This means that these apps may
+be vulnerable to the so-called padding oracle attacks.
+
+- CWE-749: The “Exposed dangerous method or function” weakness belongs to M1
+(“Improper Platform Usage”) of OWASP-10. It can arm several major vulnerabilities
+depending on the case at hand, that is, the underlying vulnerable function. In our case,
+29 of the examined apps were found to offer an insecure WebView implementation.
+
+The latter is used to display Web content as part of an activity layout. In the presence
+of this weakness, an attacker could possibly perform a MitM assault or even execute a
+Cross Site Scripting (XSS) injection. For further information about this issue, we refer
+the concerned reader to the “WebView” section of.
+
+- CWE-919: The overarching “Weaknesses in Mobile Applications” view is related to
+CWE-749. In this case, both of them refer to the same issue, but for a different matter.
+
+Namely, we observed that 17 apps have enabled the remote WebView debugging. It is
+common knowledge that this particular mode must be disabled before deploying a
+production app. If not, anyone who can access an unlocked mobile device can easily
+acquire access to the app’s data.
+
+# Discussion
+All the app categories were found to be susceptible to several CWEs, as presented
+in Table 3. Even more, all apps across every IoT category were found to be susceptible to
+CWEs 312, 330, and 532. Almost the same picture applies to CWEs 276 and 327; all apps
+but one are found to be susceptible to these weaknesses. The situation is more or less better
+for CWEs 649, 749, and 295, demonstrating a susceptibility percentage of around 75%, 66%
+and 46%, respectively. On the positive side, both CWEs 250 and 502 have an insignificant
+presence among the apps, possibly affecting only one app in both the Wireless IP cameras
+and Smart assistant categories.

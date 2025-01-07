@@ -1,0 +1,99 @@
+The obfuscator ProGuard offers 29 optimizations 3 to developers. Some of them have an impact on our features:
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# Johannes Feichtner and Christof Rabensteiner
+# Inlining
+Hereby, ProGuard replaces a method invocation with the body of the invoked method. This usually affects short or unique methods but also tail recursive methods could be inlined. Inlining alters the AST vector. However, if only a short method is being inlined, we argue that the alteration is also limited.
+
+# Code Merging
+With this transformation, ProGuard identifies duplicated code fragments and merges them by modifying branch targets. Merging affects the AST vector as it reduces AST nodes.
+
+# Method Parameter Removal
+Hereby, ProGuard identifies unused parameters in methods and removes them from the signature. If applied, the sanitized signature will be altered and we will not be able to match it with the corresponding method.
+
+# 4 WORKFLOW
+The workflow of our approach starts by converting a given code fragment or library into the .dex format. This task is delegated to the build tool dx, which is provided by the Android SDK. Based on the Dalvik bytecode obtained, for each available method, we extract a fingerprint and arrange all of them within a package hierarchy (see Section 4). When learning code, we stop after this step and store the results in a database. When matching code, we compute a similarity score between 0 and 1, indicating whether given code fragments can be recognized fully, partially, or not at all by comparing with learned fingerprints and package hierarchies.
+
+# 4 Fingerprinting Code
+To derive fingerprints, we explain AST vectors in Section 4 and sanitized signatures in Section 4. The aggregation of fingerprints in package hierarchies is elaborated in Section 4. Finally, in Section 4, we give a practical example of a fingerprint derivation.
+
+# Algorithm 1: Building a minimal AST from a method body
+Input : Method Body
+Output : Abstract Syntax Tree
+1 AST ← createRootNode();
+2 foreach instruction ∈ method body do
+3      keep instructions with opcode in {INVOKE_DIRECT, INVOKE_VIRTUAL};
+4      instructionNode ← createNode(instruction.opcode);
+5      foreach parameter ∈ instruction do
+6           parameterNode ← createNode(parameter.type);
+7      end
+8      instructionNode.addChild(parameterNode);
+9 end
+10 AST.addChild(instructionNode);
+11 return AST
+# 4 AST Vectors
+We generate an AST vector by building an AST and conveying this tree to a vector. To compare methods, AST vectors are preferable over regular ASTs, as they allow to express the similarity of two methods by computing their distance. As depicted in Listing 1, we first build a minimal AST over a method body. Starting at the root node of a tree (line 1), we iterate over all program statements contained in the method (line 2) and filter instructions of the type INVOKE_DIRECT and INVOKE_VIRTUAL (line 3). We focus on these two as they are the most common method invocation calls according to Potharaju et. al. . However, for a more detailed vector, we could also keep track of further suffixes, i.e., _SUPER, _STATIC and _INTERFACE. Next, we create an AST node for the current invocation call (line 4) and attach a child node for each parameter of the method (lines 5-8). Finally, we add the instruction node as a child to the tree root (line 9).
+
+# Algorithm 2: Conversion of an AST to an AST vector
+Input : Abstract Syntax Tree
+Output : Abstract Syntax Tree Vector
+1 vector = createVector();
+2 //count horizontal features; ∈ AST.getChildren() do
+3 foreach invokeActionNode
+4       #locals ← |{c ∈ invokeActionNode.getChildren() | c.type = local}|;
+5       #params ← |{c ∈ invokeActionNode.getChildren() | c.type = param}|;
+6       vector[local_local] ← #locals;
+7       vector[param_param] ← 2#params;
+8 end
+9 foreach lvl1Node ∈ AST.getChildren() do
+10       increment(vector[lvl1Node]);
+11       foreach lvl2Node ∈ lvl1Node.getChildren() do
+12            increment(vector[lvl2Node]);
+13       end
+14       increment(vector[lvl1Node, lvl2Node]);
+15 end
+16 return vector
+We convert the AST into a vector by counting horizontal and vertical features, as defined by Potharaju et al. : A horizontal feature is a pair of leaf nodes with the same parent node, whereas a vertical feature is a directed path of arbitrary length, starting at the root node. Each dimension in our AST vector resembles the number of occurrences of a particular horizontal or vertical feature. As shown in Listing 2, starting with an empty vector (line 1), we count horizontal features by going through all first level nodes of the AST, determining the number of leaf pairs for each node (lines 3-8). For each invocation call, we count the number of local variables and parameters (lines 4-5), and compute the amount of pairs of type local-local and param-param (lines 6-7). Determining the number of pairs is equivalent to the handshake problem, so we can compute it using the binomial coefficient over 2. Next, we count the vertical features by iterating over first level nodes of the AST again (lines 10-16) and increment the occurrence count of the current node by 1 (line 11). Finally, we iterate over all of its children and increment occurrences of both paths, be it either 2nd-level relation only or a conjunction of first and second-level nodes (line 12).
+
+# 4 Sanitized Signature
+Sanitized signatures contain data from a method signature that is invariant to obfuscation. To sanitize the signature from features affected by obfuscation, we remove method identifiers, parameter names, and modifiers from the original signature. Further, we replace parameter types and the return type with a single letter code. For primitive types, we adopt the mapping from smali. Since object types can be subject to identifier renaming, they are mapped to an obfuscation-invariant token depending on its type.
+
+# Obfuscation-Resilient Code Recognition in Android Apps
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+public ClassY doSomething(float[] number, ClassX x) {
+return new ClassY(field1, number);
+}
+# Java Source Equivalent
+.method public doSomething([FLhello/ClassX;)Lhello/ClassY;
+new-instance v0, Lhello/ClassY;
+iget v1, p0, Lhello/ClassX;->field1:I
+invoke-direct {v0, v1, p1}, Lhello/ClassY;-><init>(I[F)V
+return-object v0
+.end method
+# Fingerprint Extraction Example
+# Recognizing Code Fingerprint
+In the matching process, we are given a set of package hierarchies Pa, which we extracted from an Android app archive. For each package hierarchy pa ∈ Pa we pursue the following steps:
+1. We sort all fingerprints in pa by particularity in descending order, such that we can choose a set of particular fingerprints. An explanation of particularity is given in Section 4.
+
+2. For each fingerprint, we query the database for previously learned fingerprints with the same AST vector and sanitized signature. We collect the package hierarchies of similar fingerprints and store them in the candidate set Pl.
+
+3. For each candidate pl ∈ Pl, we check if pa ⊆ pl, which means that the app package is included in the known package. Section 4 defines this relation and steps to compute it.
+
+4. If pa ⊆ pl, we compute the similarity s(pa, pl), which depends on the AST vectors in pa and pl. Otherwise, we set s(pa, pl) to 0. Section 4 elaborates on the definition and computation of the similarity score.
+
+5. We sort package candidates by similarity score in descending order and return the package with the highest score that meets a minimum threshold as a match.
+
+# Fingerprint Particularity
+Some fingerprints are more likely to match with unrelated fingerprints than others. When populating a set of candidates, rare fingerprints are preferable over frequent ones as they will less likely yield false positive candidates. In a test with 120,000 fingerprints, we observed that fingerprints with long AST vectors are more particular as they occur less frequently.
+
+We approximate the particularity of a fingerprint with a score. Let m = (s, v) be a method fingerprint with a sanitized signature s and an AST vector v. The particularity score of m is defined as:
+score(m) := ws · length(s) + wv · ∥v ∥1,                                              (1)
+whereas length(s) returns the amount of character of s and ∥v ∥1 denotes the Manhattan distance of v. We weigh both dimensions with ws and wv in order to rectify the distributions.
+
+# Inclusion
+The inclusion relation ⊆ expresses if a package hierarchy p is included in a package hierarchy p′. Inclusion depends on the sanitized signatures in both package hierarchies. We use inclusion instead of equivalence in order to handle the loss of code when an obfuscator removes dead code from an app.
+
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# Johannes Feichtner and Christof Rabensteiner
+inclusion is reflexive and transitive, but not symmetric:
+p ⊆ p′ ⇔ ∃fc : p 7→ p′, fc ... injective. (2)
+In other words: Package p is included in package p′ if and only if there exists an injective mapping fc for all classes in p to the classes in p′. We require injectivity because we expect each code class to end up at most as one class in the app.

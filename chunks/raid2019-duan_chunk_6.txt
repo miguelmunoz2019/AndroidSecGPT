@@ -1,0 +1,52 @@
+# Updating Improvements
+We further evaluate our slicing by examining the updating results improvements. The results in Section 7 shows LIBBANDAID could achieve a high successful updating rate for security commits when leveraging our new slicing. To evaluate, we run the experiments again with traditional slicing and compare the differences. The results show that LIBBANDAID could only achieve an updating rate of 61% with a rate of 74% when combined with the potentially patchable commits. In contrast, with the help of new slicing, our system could perform much better at rates of 80% and 94% when combined with potentially patchables as reported in Section 7. Detailed information is presented in Figure 6.
+
+# 8 Discussion
+# Soundness
+The soundness of our approach results from that of diffing analysis, update generation and patching respectively.
+
+For diffing analysis, we leverage Tracelet Execution technique, which has demonstrated a 0 accuracy in its evaluation, to compare TPLs at statement level. In our case, false positive (statements that are not code changes to be considered as changes) is impossible since we match the exact strings to confirm. Theoretically, false negatives are possible. However, we argue that false negative can only lower the successful patching rate but not bring any correctness or compatibility issue.
+
+For update generation, the soundness of our impact analysis inherits from the soundness of traditional slicing. The basic scheme strictly follows the definition of impact in Section 2. However, due to the two optimizations, our slicing is still sound with respect to the definition of impact but may contain over-conservativeness for performance gain.
+
+Based on the soundness analysis of our slicing, the correctness of updating is ensured by virtue of two reasons. First, LIBBANDAID introduces absolutely no code changes other than the ones from the new library itself. We assume the library developers have already tested their code before committing. Second, the completeness of each generated update is guaranteed by our slicing algorithm.
+
+# Correctness
+In certain extreme cases, LIBBANDAID may affect the correctness of the updated apps in practice. For instance, a TPL function originally returns 0 only on a very rare failure, but now returns 0 for all kinds of failure after a patch. The Android app that uses the old version may simply ignore the case of returning 0 since it is so rare that developers could never make it happen during testing. However, the app may break after using LIBBANDAID.
+
+We argue that it is the app developers’ responsibility to fully test their apps in a complete fashion. But in practice, LIBBANDAID could use some lightweight sampling process such as fuzzing  to estimate the satisfying space for return values of a function and choose whether to perform the update. We leave this as a future work.
+
+# Limitations
+To begin with, LIBBANDAID can only handle Java libraries and Java codes, and cannot update native libraries in Android apps. Moreover, non-code changes could also bring issues. For example, a version number may be stored in a file and used to communicate with server as part of the protocol. In this case, LIBBANDAID may change the protocol and introduce incompatibility. To solve the problem, we need to consider the accesses to the same file as data dependency. We also leave this as a future work.
+
+Second, our analysis technique cannot handle obfuscated code. Recently, there is a growing tend for Android apps to use different obfuscation and packing techniques  to hide real logic. We argue that this is not a big problem for LIBBANDAID as it is designed for App developers who should possess unobfuscated code. Also, most of the popular TPLs  in Android apps are not obfuscated.
+
+Third, our slicing relies on an accurate data dependency analysis that in turn depends on a complete modeling of Java and Android APIs. We manually write models for more than 500 most popular APIs but they still can be incomplete. This incompleteness may thwart the soundness of our analysis.
+
+Fourth, we handle the diffing analysis as a code matching problem and leverage existing research  to perform analysis. We argue that this problem is orthogonal to our major focus of updating the TPLs in Android apps. We can definitely make use of the advance in code matching techniques to improve the performance of LIBBANDAID.
+
+Finally, although LIBBANDAID analyzes the library API to collect new exception information, the analysis results in theory can be incomplete. For example, a code change in a TPL’s API can call other function outside the library that eventually rises an exception. In this case, we may miss it, jeopardizing the non-intrusiveness.
+
+# 9 Related Work
+# Change Impact Analysis
+Change Impact Analysis  studies how code changes in one place could affect codes in other places of the program. Techniques have been proposed [12, 28, 30, 33, 40, 42 –44, 48, 58] to improve the change impact analysis. Some of them utilize call graph analysis to study the impact of code change . The limitation is that call graphs by nature can only provide a coarse-grained information usually at method level. Another set of research  utilizes dynamic analysis to understand the impact of code changes. However, dynamic analysis often falls short of code coverage.
+
+Program slicing  becomes a promising technique to grasp a comprehensive understanding of the impact for code changes. A series of research  has been done towards this direction. TAILER  computes a tailored program that comprises the statements in all possible execution paths passing through a given statement sequence. GRACE  performs forward slicing to capture all potentially affected codes. To deal with the conservativeness, Sridharan et.al.  propose a new slicing algorithm called thin slicing that only considers value-flow. P-slicing  and PRIOSLICE  augment the forward slicing with relevance scores that indicate how likely a code statement can be affected by the change.
+
+# Android Program Patching
+Automatic Program Patching in the context of Android falls into two categories: Android system patching and Android app patching. Many works have been done  to perform patching on Android system and kernel. PatchDroid  uses in-memory patching techniques to address vulnerabilities. KARMA  is proposed as an adaptive live patching system for Android kernels by featuring a multi-level adaptive patching model. Embriodery  only targets the binary code in Android kernels by using binary rewriting techniques. It transplants official patches of known vulnerabilities to different devices by adopting heuristic matching strategies. InstaGuard  adopts hot-patching to patch the system programs in Android by enforcing updatable rules that contain no code to block exploits of unpatched vulnerabilities.
+
+Android application patching techniques, on the other hand, are also proposed to mitigate security problems in Android apps. AppSealer , which is the most similar work with ours, performs automatic patching for preventing component hijacking attacks in Android apps. Duan et.al.  uses Android rewriting technique to perform privacy-preserving offloading of Android apps to the public cloud. Capper  and Liu et.al.  rewrite the Android apps to keep track of private information flow and detect privacy leakage at runtime. CDRep  fixes cryptographic-misuses in Android with
+USENIX Association 22nd International Symposium on Research in Attacks, Intrusions and Defenses 287
+# 10 Conclusion
+In this paper, we developed a novel technique named LIB-BANDAID to solve the outdatedness problem for TPLs in Android apps by automatically generating non-intrusive updates. Our system extracts the outdated library within apps, compares it to the latest version of the library and generates diffing information that precisely characterizes the code changes at code statement level. Then, it analyzes the impact of each code change and generates updates. To do so, we propose a novel slicing algorithm named Value-sensitive Differential Slicing to reduce the over-conservativeness of the traditional slicing algorithm while still preserving the soundness. LIB-BANDAID further performs selective updating by filtering out the updates that can potentially change the interactions between the library and other components. Our evaluation on 9 real-world popular third-party libraries and 100 real-world Android apps demonstrates that LIBBANDAID could effectively patch the security vulnerabilities within libraries with an average of 80% success rate and an even higher 94% when combined with potentially patchable vulnerabilities.
+
+# Effectiveness Results By Numbers
+USENIX Association
+22nd International Symposium on Research in Attacks, Intrusions and Defenses
+291
+# Effectiveness Results by Percentage
+# Effectiveness Results with Traditional Slicing
+Effectiveness Results by Percentage
+Effectiveness Results with Traditional Slicing
+292 22nd International Symposium on Research in Attacks, Intrusions and Defenses USENIX Association.

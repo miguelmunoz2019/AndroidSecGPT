@@ -1,0 +1,68 @@
+The libraries Ion and Volley have been used only in open-source apps, while HttpComponents and LoopJ have been used only in closed-source apps. Surprisingly, we did not find any instances of the well-known AndroidHttpClient and SSLSocket classes. Finally, the use of Glide, which supports exhaustive image downloading and caching features, seems much more prevalent on closed-source apps.
+
+# B. The Nature of Web API Requests
+Based on the analysis results for the apps in our database, we investigated the structure, dissemination and use of 13 276 web API URLs, of which 9 714 were unique.
+
+# 1) Open-source Apps:
+The tool extracted 1 533 URLs from the open-source projects. We found that the majority of web APIs consist of one or two queries or path segments. We only found up to one fragment per web API. We further found that 209 web APIs exist with paths consisting of four or five segments to distinguish between resources (the average number of segments in the web APIs is 2). Nevertheless, web APIs using more than five elements are rare. Web APIs contain an average of 2 key-value pairs in queries. The data do not follow a normal distribution.
+
+Surprisingly, the top base URL was https://github.com, which we observed 29 times (1%). Likewise, Google services have been widely used, e.g., https://play.google.com or https://plus.google.com, of which the tool could spot 42 instances (2%). Rather at the end of the ten most commonly used base URLs the tool found the OpenWeatherMap API http://openweathermap.org (7, 0%) and the Twitter social network API https://twitter.com (6, 0%).
+
+Furthermore, we found that the https URL scheme (1 012 occurrences, 66%) is much more commonly used than its insecure counterpart http (521 occurrences, 33%).
+
+# 2) Closed-source Apps:
+The tool extracted 11 743 URLs from closed-source apps. We found that the majority of web APIs consist of one or two queries or path segments. On a second look, we observed that web APIs with two path segments are most prevalent. We further discovered that 2 116 web APIs exist with paths consisting of four to eight path segments to distinguish between resources (the average number of segments in the web APIs is 2). Nevertheless, web APIs using more than four elements are rare.
+
+we could identify that URL fragments are seldomly used in web APIs; although we found up to seven fragments in a single web API URL, we only discovered 183 web APIs in total using this feature, i.e., 1%. Web APIs, on average, contain 2 key-value pairs in queries. The data do not follow a normal distribution.
+
+Interestingly, all the most common URLs we could retrieve were pointing towards Google services. The top URL, http://schemas.android.com, was observed 1 303 times (11%). Two of the observed URLs were related to advertising distribution services, i.e., http://media.admob.com (283, 2%) and https://pagead2.googlesyndication.com (271, 2%).
+
+We found that the http URL scheme (7 208 occurrences, 61%) is much more prevalent than its secure counterpart https (4 531 occurrences, 38%). Besides findings of the two common schemes we found few appearances of the ws (WebSocket) protocol (4 occurrences, 0%), which provides (unprotected) full-duplex communication on top of HTTP TCP connections.
+
+# 3) Discussion:
+The number of used path segments and query keys are an indicator for the complexity of a specific request. Servers usually reject requests with incomplete or flawed parameter configurations, and thus the task of sending a successful request becomes harder the more path segments and query keys are involved.
+
+Open-source apps relied on simpler request paths including only one or two path segments, while closed-source apps mostly included two or three path segments. Unexpectedly, the opposite is true for key-value pairs: Open-source apps frequently use one to three pairs, while closed-source apps majorly use one pair. Fragments have only been used very sparsely in both types of apps.
+
+We did not expect to observe a difference between open-source and closed-source apps. Moreover, we did not expect to find many complex requests, because the idea of providing APIs is that they can be used by other developers who presumably prefer an easy to use interface. We conclude that the majority of the APIs provide a simple interface and are rather straightforward to access.
+
+While the open-source apps contained no advertising services in the ten most used base URLs, the closed-source apps heavily used such services. We expect that the “Freemium” price model, i.e., installation of apps is free but the user must later watch ads or pay a fee, is a major enabler of this setting.
+
+The open-source community prefers the Twitter social network over Facebook.
+
+We found one major difference in the URL schemes used in the apps. Open-source apps principally rely on secure https connections (66%). In contrast, closed-source apps largely use the insecure http protocol (60%). We see here much potential for improvement through stricter rejection of apps using insecure connections. The more efficient, but more complex WebSocket protocol seems to be out of interest for the majority of developers.
+
+# 8
+Google AdMob is a popular advertising platform that provides SDKs to developers to integrate Google ads into their own apps to increase revenue.
+
+# C. Security Risks
+We studied the kinds of data communicated through web APIs, and found that both credentials (i.e., user name and password combinations) and embedded code were very common in the web communications. As the former has been reported on extensively in the past, we focus here on the latter.
+
+# 1) Open-source Apps:
+The tool extracted 458 JSON schemes in which STRING is the most used value type with 1 197 occurrences, followed by NUMBER with 234 occurrences.
+
+We found that SQL (91%, 10 affected apps) is by far the most used embedded language. HTML (5%, 2 affected apps) and JavaScript (2%, 1 affected apps) are very rare. No instances of other embedded languages were detected.
+
+# 2) Closed-source Apps:
+The tool extracted 14 606 JSON schemes where STRING is the most used value type with 40 017 occurrences, followed by BOOLEAN with 5 640 occurrences. NUMBER and NULL only represent a minority with 2 389 and 1 483 occurrences, respectively.
+
+In contrast to open-source apps, we observed that JavaScript (76%, 170 affected apps) is very prevalent, and SQL (23%, 476 affected apps) is used less, but still frequently. HTML code is almost non-existent (0%, 27 affected apps).
+
+# 3) Discussion:
+We found that the use of tokens in open-source apps is not as common as in closed-source apps. One explanation could be that the fees associated to web services do not pay off for open-source apps which mostly do not generate any revenue.
+
+Several embedded languages are actively used within mobile apps. While SQL is relatively common in both open-source and closed-source apps, JavaScript is much more commonly used in the latter.
+
+# IV. WEB API SECURITY SMELLS
+In this section, we present the security smells that we found in web communication during investigation of the tool’s results, by manually investigating 100 apps, and by analyzing the responses from requests to each of the 9 714 web API URLs extracted from apps in our dataset. We classify the smells into client side (i.e., within mobile apps), and server side (i.e., on the API servers). For each smell we report the security issue at stake, the potential consequences for users, the symptom in the code (i.e., the code smell), and the recommended mitigation strategy of the issue, principally for developers.
+
+We used the results from the manual analysis explicitly to identify security issues, but not to perform any quantitative evaluation. In this section, we do not report any number of occurrences found in the tool’s results, because those either have been discussed in the previous section, or the task would require additional research to gather qualitative results.
+
+In our analysis, we could identify eight web API security smells, of which three were in apps and five in server implementations. Two of the three web API app security smells could be mitigated, if only secure HTTPS channels would be.
+
+# Client-side
+We identified three client-side web API security code smells.
+
+- Credential leak. We found hard-coded API keys, login information, and other sensitive data, e.g., email addresses, in the source code. Several of the retrieved data were valid at the time of our investigation: We could access Google Maps, Mapquest, OpenWeatherMap, the San Francisco transit API, and a Telegram bot.
+
+Issue: Credentials issued to app vendors are prevalent in apps that use web APIs, and they are statically stored in the Java software to perform the queries. However, the software can be decompiled into source code, which renders the data extraction trivial. Consequently, web services can be misused by people who have gained access to unique credentials. Such services allow impersonation, phishing, information leaks, fake messages, or financial infringements for the app developers due to API overuse or lockdowns.

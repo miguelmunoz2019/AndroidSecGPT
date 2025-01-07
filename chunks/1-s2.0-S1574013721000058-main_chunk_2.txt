@@ -1,0 +1,79 @@
+# Linux kernel
+The foundation of the Android platform is the Linux kernel customized for smart devices with power, memory and computational constraints. For instance, the Android Runtime (ART) relies on the Linux kernel for inherent functionalities like threading and low-level memory control. Using a Linux kernel allows Android to take advantage of its key security features and allows device manufacturers to develop hardware drivers for a well-known kernel.
+
+# Native C/C++ libraries
+Most key components and utilities of Android system like ART and HAL are created from native codes that include C and C++ compatible libraries. Android provides access to some of these Native C/C++ Libraries using Java APIs. Native platform libraries can directly be accessed from native code using Android NDK, which allows implementing parts of an app in native code, using languages such as C and C++.
+
+# Java API framework
+Features of Android are available for developers to write apps easily and quickly. It includes APIs to design UI, work with databases, handle user interaction, etc. APIs are grouped into modular system services. (a) Content Providers to access or share data to or from other apps; (b) View System for building UI including lists, grids and even internet browsers; and (c) Various Managers for accessing location, network status, resources like graphics, displaying notification and managing app activities.
+
+# System apps
+Android contains a set of preinstalled System Apps to ensure minimum functionalities of SMS, internet browsing, contact management, calendar, music and more. These system apps provide vital capabilities that developers can access from their app, for instance sharing a message by system messaging app.
+
+# 2. APK file structure
+Android app is a zip archive with .apk file extension. It generally contains files and folders required for the application as depicted in Fig. 4. The purpose of them is listed below.
+
+# Hardware Abstraction Layer (HAL)
+On top of Linux kernel, HAL provides standard interfaces that expose device hardware capabilities to the higher-level Java API framework. It consists of library modules, each of which implements an interface for a specific hardware element, such as Bluetooth or camera module.
+
+# Android Run Time (ART)
+For Android version 5 or higher, each app runs its process with its instance of the Android Runtime (ART). ART converts the application’s DEX bytecode into native code at install time. DEX is a Dalvik EXecutable bytecode format to execute on dalvik virtual machine for memory-constrained Android devices. ART runs multiple virtual machines (VMs) each with a DEX file executing on it. Ahead-Of-Time (AOT), Just-In-Time (JIT) compilation, Optimized garbage collection (GC), compact machine code generation and better debugging support are some of the considerable features of ART. Dalvik runtime was a virtual environment used before Android version 5. This change has negatively affected analysis frameworks.
+
+# Android core libraries
+Android contains several Core Runtime Libraries which offer Java programming language functionality, such as database access, interface construction and graphics rendering. Some of the leading Android core libraries open to developers are: android.app for access to application model, android.database for content providers data access, android.opengl for graphics rendering, android.os for access to OS services like inter-process communication, android.text to manage text display, android.view for building user interface, android.widget to access prebuilt user interface widgets and android.webkit to access web browsing capabilities.
+
+# lib
+It contains .so libraries as the code compiled for platforms. The code for each platform (like armeabi, x86, x86 64) is stored in a subdirectory. While not mandatory, programs usually have a lib directory.
+
+# META-INF
+It contains metadata information, which also includes signature and certificate information used for integrity and identity validation.
+
+- CERT.RSA: It is the certificate of the app. An APK file must be digitally signed with a certificate whose private key is owned by the creator of the request in order to be accepted for download. As a trustworthy certificate authority is not required to sign the certificate, it is usually not done.
+
+- CERT.SF: It lists application resources with their SHA-1 hashes.
+
+- MANIFEST.MF: It is the application manifest file.
+
+# res
+directory is responsible for storing raw resource files (such as images and audio files), which are later mapped to .R files.
+
+# Assets
+directory is res like and used in the APK to store external resources (e.g., audio, images, and even executable exploits). Developers can build arbitrary folder hierarchy, unlike the res directory.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Android Architecture
+# APK File Structure
+AndroidManifest.xml stores the configuration information like name, version, required permissions, and components. It is responsible for protecting the system by specifying permissions to access any protected sections.
+
+classes.dex contains all the information about the classes in Dalvik Executable bytecode format. The data is organized in a way the Dalvik virtual machine can understand and execute. It contains vital information for app reversal and static analysis.
+
+resources.arsc provides precompiled application resources and is used to record the relationship between the resource files and related resource ID and can be leveraged to locate specific resources.
+
+# 2. APK Compilation and Execution
+Applications in Android are developed in Java. They are built into the corresponding .class files with the javac compiler. The .class files contain Java Bytecode, which is not directly executable on an Android device. Rather, Android has a distinct machine code format called Dalvik Bytecode. Fig. 5 gives an overview of application compilation process. Java .class files along with other .jar library files are forwarded to dex converter to convert into a single classes.dex file.
+
+# Listing 1: Java Source Code
+1 public MainActivity () {
+2    super ();
+3    currentPosition = 0;
+4 }
+# Listing 2: Corresponding Dalvik Bytecode
+1 0x0000: iput - object v1 , v0 , Lcom/abc/myapp/
+MainActivity ;com.abc.myapp. MainActivity$2 .this$0
+2 0x0002: invoke - direct {v0}, void java.lang. Object.<
+init >()
+3 0x0005: return -void
+After it has been created, classes.dex file with compiled resources and shared object (.so) files containing native code are then compressed by the ApkBuilder tool into an Android Package (APK) file. For authenticating an APK for distribution, it is signed using jarsigner tool followed by zipalign.
+
+Application execution in Android is a bit different from execution in a regular OS. Each application runs as a separate process in its own Dalvik/ART VM. Before executing an app, its UID, package names, entry point classes, required permissions and app components are extracted from the AndroidManifest.xml. Android at its core runs a process called zygote at startup after init. The zygote is a half started process with memory space and required core libraries, but without any of the code. As loading a new process is memory is system intensive, a copy of zygote is created using a fork system call to launch the desired app.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+In Android Runtime (ART) during installation, the application byte code in classes.dex zipped inside APK is extracted and converted using the dex2oat tool to Executable and Linkable Files (ELF) shared objects which contain both DEX and native code. Generation of native code during installation is known as Ahead Of Time (AOT) compilation. The converted file is stored in /data/dalvik-cache/... path, which contains package name in the path to prevent overwriting. ELF (also known as OAT format) OAT format is a machine code that is specific to the CPU of the Android device, later mapped to the process memory. In Dalvik environment, which is the precursor of ART, an optimized version of DEX file called Optimized DEX (ODEX) file is generated. Just In Time (JIT) compilation is used to execute ODEX file. Fig. 6 illustrates comparative outline of APK execution in Dalvik and ART architecture in Android. Apps in ART runtime executes faster and requires less execution memory as compared to Dalvik runtime due to pregenerated machine code during installation. However, it takes longer for application installation in ART runtime.
+
+# 2. Android security framework
+Android platform has been designed with multiple security mechanisms. Android system has a hierarchical structure, and each layer has its own security mechanism, namely, traditional access control mechanism, a mechanism based on inspection of permission, sandbox mechanism, digital signature mechanism and encryption mechanism.
+
+# 2. Linux security
+Android’s Linux kernel incorporates the access control mechanism of traditional Linux OS. Users access to resources and services is restricted based on user authentication and authorization. Android has a Mandatory Access Control (MAC) over traditional Discretionary Access Control (DAC). MAC manages access control decisions on all access attempts as part of the Linux Security Module (LSM) framework. However, in DAC owner of a particular resource controls access permissions associated with it. Android’s access control policy greatly limits the potential damage to compromised machines and accounts. It ensures apps are running at the minimum privilege level . This approach protects resource confidentiality and integrity.

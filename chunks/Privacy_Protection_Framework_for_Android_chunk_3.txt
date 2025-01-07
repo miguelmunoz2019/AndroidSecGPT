@@ -1,0 +1,56 @@
+Qu et al. proposed Permizer, an automatic permission optimization to recommend app permission configuration to users. Permizer builds a mapping between permissions and functionalities for each app then regulates the relationship between permission and functionality based on the user’s privacy preferences.
+
+Xiao et al. proposed an approach to identify minimum required permissions for an android app. They used collaborative filtering to determine the initial minimum permissions of the app. Then, they find the actual requirements that the app really required for proper functioning using static analysis and evaluate the risk by inspecting extra permissions requested by the app, thereafter, generate a permission recommendation.
+
+Gao et al. suggested an autonomous permission recommendation system, AutoPer+. It automatically recommends permission decisions to users at runtime. They proposed a deep semi-supervised machine to identify similar apps and explore the privacy permission usage in a cluster of apps that help in determining the correlation between permission and app, which is used in generating permission recommendations.
+
+Li et al. built an automatic fuzzing tool, CUPERFUZZER+, to detect vulnerabilities related to custom permissions in existing Android OS and given general design guidelines to secure custom permissions.
+
+From literature, it is found that the existing methods do very little to determine how to stop the applications from being malicious and still use it; almost all of them used mobile processing power for the framework and did not learn with time. One of the works in which permissions were being revoked after use, also does not prevent the application from using user data at runtime. This study addresses all these issues by providing a system that analyses an application’s functionality permission by permission and prevents them from using user data potentially for malicious purposes. The results that are obtained from the server during analysis are processed and stored for all new applications.
+
+# B. Mishra et al.: Privacy Protection Framework for Android
+# IV. PROPOSED APPROACH
+# A. ANALYSIS AND INSTRUMENTATION OF THE APK
+We propose an end-to-end framework to ensure the proper functioning of the app along with user privacy protection. A background data protection service is installed on the user’s phone to capture the dangerous API calls on the runtime. It returns garbage data to be sent back to the malicious app. Dedicated server analyze and instrument apps that the user is using for making it compatible with the proposed service.
+
+The analysis of the app is done using the resources and permissions the app requires. Analysis of permissions against the API calls and the utility of the application is done. The permission recommendations are used to predict whether the application is demanding extra permissions for stealing user data. For that purpose, the algorithms collaborative filtering and frequent permission set mining are used on permissions. Table 1 shows various keywords used in the proposed model.
+
+The proposed approach uses two algorithms to determine malicious permissions asked by the apps that needs some initial dataset to work on. The control flow of the proposed work is illustrated in Fig. 2. The following two components are presented in the proposed framework:
+# Decompiled
+# Static analysis.
+
+# APK
+Application Mapped for all API calls
+Recompilation of APK from byte code
+# B. Mishra et al.: Privacy Protection Framework for Android
+Application map sent to permission recommendation engine
+Permission result with safe/unsafe permissions
+Instrumentation of byte code
+Application permission and API policy modification
+# B. DATA PROTECTION SERVICE
+To prevent user privacy, the proposed service runs in the background on the user’s phone and sends the APK file of the installed app to the server for analysis and instrumentation. It facilitates the installation of the instrumented APK for the user. Finally, when the application starts running, it provides garbage data to the app whenever an identified malicious call to API is made. Garbage data is produced using the broadcast receiver. The Android framework has a facility to allow users to register for events using a broadcast receiver according to the lifetime i.e., statistically and dynamically. In the case of dynamic, the lifetime depends upon Context.registerReceiver() and Context.unregisterReceiver() on the app component. In the case of static, a receiver is specified in the AndroidManifest.xml and has an identical lifetime to the app. The receiver utilizes a callback approach i.e., BroadcastReceiver.onReceive(), to override SDK calls.
+
+# 1) DATA COLLECTION
+The data collection approach is divided into two parts. The initial data collection is done by developing and circulating one data collection app. This app is downloaded by roughly 300 users through which information about 1000 unique applications is collected. Thereafter, the data of asked permissions and the permissions provided by the user are extracted, and the half probability rule is used to determine whether the permission is necessary or malicious. Afterward, whenever the algorithms run on the server, unique app data is added to the database, which would help to increase the dataset and help the proposed framework learn with time.
+
+# 2) ANALYSIS AND INSTRUMENTATION
+The engine on the server runs to analyze and instrument APKs (see Fig. 3). It begins with the decompilation of the app using Apktool which is used to reverse engineer Android apps. It decompiles app into Smali code, i.e., the assembly code that runs on the Dalvik Virtual Machine (Android’s Java Virtual Machine). The decompiled code goes through the following stages in the parsing and instrumentation engine. The application is then repackaged using Apktool. It is installed on the user’s Android phone by the Data Protection Service.
+
+7978 VOLUME 10, 2022
+# B. Mishra et al.: Privacy Protection Framework for Android
+# a: STATIC ANALYSIS
+The original Smali code is given as input to the proposed engine. Static analysis is performed by parsing Smali code files. A map of app is created, which shows the file name and the methods included in the file, class names, and API calls. A clear map is created for reference in instrumentation in the later stages. The manifest file is parsed separately. All permissions are extracted from the file, and dangerous permissions from the superset are kept for analysis. A python-based parser handles the manifest file and Smali code; it traverses the directory of the decompiled APK and maintains a record of class names, method names, and API Calls for each file. A map is created for all method calls. During enforcement of redefined permission policies, the map is used to locate the functions and files to be instrumented.
+
+# b: PERMISSION ANALYSIS
+As discussed earlier, two approaches were used to identify the permissions required by an app: collaborative filtering and frequent permission set mining. The training set consists of apps of all categories as available in the Google play store.
+
+# COLLABORATIVE FILTERING
+Collaborative filtering is one of the commonly used techniques in recommender systems. It utilizes the information contained in a group to recommend information on a new entity related to the group. It is based on the idea that entities that share certain evaluation criteria of certain items in the past are likely to agree again in the future. Feature vectors are used in this method to represent the items in the entity that goes through the evaluation process of finding a similarity score.
+
+# (i) Finding the feature vector in the proposed engine
+The app permissions are used as feature vectors for the collaborative filtering engine. Permissions of an app are extracted in a vector as V =< P1, P2, . . . , Pn >, where Pi can take values from the set  depending upon whether the app takes that permission. Feature vectors from the apps in the training data set are taken. The engine first extracts the apps in the same category as that of the test app. It then extracts all the permissions in the feature vectors for filtering and recommendation. Ai = {AP1, AP2, . . . , APn}, where APi takes the value from the set.
+
+# (ii) Evaluation of similarity
+A similarity score is a measure of how closely related two entities are. The similarity is calculated for the app with all the apps in the same category using the Jaccard similarity score as:
+S (A, A) = it (F01 + F10 + F11) (1)
+Ai is the app from the data set in the same category. At is the test app. F11 is the frequency of matches in the permissions between Ai and A. F01 is the frequency of permissions 1 in the case of Ai and 0 in the case of A. F10 is the frequency of permissions 1 in the case of At and 0 in the case of A.

@@ -1,0 +1,63 @@
+- (v) I do not know: 1% (3).
+
+-e vast majority of users (92%) declared to have their mobile applications updated, whereas 71% consciously granted the permission to the app update process. Notably, over five percent of users pointed to invoking the update process. A very small percentage (1%) was not able to give an answer.
+
+-e reasons for keeping the apps up to date might include expecting new features, as well as benefiting from performance improvements, and fixing to errors and security vulnerabilities . Moreover, a developer can set up the priority for each update, considering three different types: low, medium, or high.
+
+# Q3. Do you perform backups of the app data collected on your smartphone?
+- (i) Yes, data backups are automatically performed: 47% (79)
+- (ii) Yes, I manually perform data backups: 19% (32)
+- (iii) No: 31% (52)
+- (iv) I do not know: 2% (4)
+Almost two-thirds (66%) of respondents declared having data backups performed, either automatically (47%) or manually (19%). On the contrary, almost one-third (31%) neglected data backup as part of mobile device maintenance. -e vast minority is not aware of the status of their data backups.
+
+Here, another question arises, which (unfortunately) was not included in the survey: what do you back up? An undeniable approach is to copy everything, in particular user-generated content, such as documents, images, videos, and other content. On the contrary, a user may also consider backing up setting data to preserve their personalized preferences if their data are restored on a new device.
+
+# Q4. Do you use data encryption on your smartphone?
+- (i) Yes: 24% (40)
+- (ii) No: 50% (84)
+- (iii) I do not know: 25% (43)
+Less than a quarter of the respondents admitted to using data encryption on their smartphones. On the contrary, over a half acknowledged not enabling any available feature or third-party app to encrypt data. Interestingly, over a quarter of users are not aware of the status of the data collected on their smartphones.
+
+A Contractor Magazine forecast  that, in 2019, mobile platforms would be the largest cybersecurity threat turn out to be correct . Moreover, infections from both Mac App Store and Google Play continue to increase. According to Hodge , for years, iOS has kept “an iron grip on its reputation as the most secure mobile operating system.” However, the upcoming Android 11 shows Google’s efforts focused around privacy features. Nevertheless, on iOS, drive encryption is a standard, while Android users must enable this feature.
+
+# Q5. Are you aware of the remote data wipe feature in your smartphone?
+- (i) Yes: 81% (136)
+- (ii) No: 18% (31)
+More than three quarters of respondents (81%) are aware of the remote data wipe feature, available to use in the case of device loss (theft). On the contrary, the rest (18%) declared to be unaware.
+
+By design, remote data wipe allows users to remotely delete data by sending a wipe command to the device through SMS or the internet. Other studies show differences in the extent of this awareness. In 2015, over forty percent of surveyed users (42%) based in the United Kingdom, when asked about the adoption of physical security controls in smartphones, declared using remote data wipe.
+
+# Mobile Information Systems
+was poor. For example, remote data wipe was used by only 15 percent of the users.
+
+# Q6. Do you intentionally disable/enable Bluetooth or Wi-Fi on your smartphone?
+-e majority of the respondents (85%) intentionally used the Bluetooth and Wi-Fi settings, disabling or enabling these features according to the situation. Only 10% of the respondents switch on or off Bluetooth or Wi-Fi occasionally while not considering it as a habit. According to the survey, 4% declared they do not disable/enable the Bluetooth or Wi-Fi features.
+
+According to the FCC (Federal Communication Commission) , both Wi-Fi networks and Bluetooth connections can be vulnerable points of access for data or identity theft. When transmitting sensitive information via Wi-Fi, it is recommended to use the cell phone’s data plan instead of public networks. Turning Bluetooth off when not in use protects the device from being “visible” and therefore hacked. Additionally, turning off both these features guarantees longer battery life.
+
+# Q7. What is your knowledge regarding social engineering techniques?
+Among the respondents, almost half (46%) declared they have basic knowledge regarding social engineering, 29% declared they have an intermediate level of knowledge, and 9% considered themselves advanced in the field.
+
+-e number of social engineering attacks is growing rapidly to weaken the cybersecurity chain, and they mainly aim at manipulating individuals and enterprises to divulge valuable and sensitive data . Humans are more likely to trust other humans compared to computers or technology; therefore, they are the weakest link in the security chain . -e aforementioned is the reason why it is so important to educate users about what precautions they can take in order to protect their sensitive data. Finally, according to a study done by US telco Verizon , among 41,868 security incidents recorded, 33% concerned social attacks.
+
+# Q8. Have you ever used the root account on your smartphone?
+Over two-thirds (67%) claimed to use the root account, while the rest (32%) have never taken advantage of the root account on their smartphones.
+
+As we can observe, mobile users are becoming more and more aware of technical gimmicks concerning their devices that can enhance their device speed, look and feel, and functionality. On the contrary, manufacturers do not want users to make modifications that could result in accidents beyond repair. It is noteworthy that rooted devices are more susceptible to attacks, especially iOS devices. In 2015, a piece of malware, known as KeyRaider, infected 225,000 iPhones, stealing personal data . In case of Google, its app market does not allow users with rooted devices to download particular mobile applications.
+
+# Q9. Do you verify the permissions (e.g., GPS, camera, and microphone) requested by apps?
+Almost half of the respondents (49%) declared verifying all the permissions which apps notify to require. Over forty percent (44%) stated that they verify the requests based on the level of the application familiarity. Only 1% were not interested in checking the permissions granted to an application. Finally, over five percent (5%) were also not fully aware or willing to acknowledge their actions in this extent.
+
+-is type of permission usually pops up during the first use of the given application accordingly to gain access to the built-in hardware devices or data folders. -ese permissions exist to protect the smartphone resources against unauthorized access. Overprivileged applications introduce security threats to the mobile device ecosystem and pose various reputational risks to online markets such as the Android marketplace . A study from 2016 demonstrated that users, in general, make the consistent choice to willingly grant access by default.
+
+# Q10. Which of the following safeguard apps have you installed on your smartphone?
+Over a quarter (27%) of respondents claimed to have antivirus software installed on their smartphones. A further ten percent (10%) added an extra layer of protection by using a firewall. However, almost a half (47%) stated that neither antivirus nor firewall software was currently in use, but 2% stated using other, undisclosed software. Interestingly, twelve percent did not actually recognize any safeguard apps being operational on a daily basis.
+
+-e experts argue that having antivirus software installed on smartphones is essential [88–90]. Indeed, mobile security apps offer protection with a raft of features including antitheft, antimalware capabilities, as well as real-time protection for web browsers, remote localization detection, and
+# Mobile Information Systems
+lockdown features. An interesting one is the so-called autopilot, which is capable of making intelligent recommendations for security actions depending on the type of the operating system and frequent usage patterns.
+
+Thinking in terms of security, mobile operating systems work differently than their desktop equivalents. In practice, it means that a user does not need to install a firewall on their mobile device to the same extent as on their PC. Due to its built-in power management functions, a mobile device is not constantly “open for traffic,” and the risk of being attacked and hacked is greatly mitigated. However, over time, one can notice that more and more apps are demanding a permanent connection.
+
+Using a VPN client is a gateway to quickly add an extra layer of security to any network device, essentially including mobile computing. A VPN is also an answer to users’ requests to maintain their online confidentiality and protect their online activities. In other words, at a basic level, VPN technology provides two major benefits : privacy and security. The former concerns “hiding” the IP address, location, and browsing history, while the latter is associated with using an encrypted layered tunneling protocol. VPNs can also grant access to blocked websites. According to a Global Market Insights report from 2018, the cloud VPN market was worth $18 billion at that time and is projected to hit the $54 billion mark by 2024.

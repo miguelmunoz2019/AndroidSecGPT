@@ -1,0 +1,56 @@
+# 2012 IEEE 11th International Conference on Trust, Security and Privacy in Computing and Communications
+# Reputation Based Security Model for Android Applications
+# Welderufael Berhane Tesfay, Todd Booth, and Karl Andersson
+# Pervasive and Mobile Computing Laboratory
+# Luleå University of Technology
+# SE-931 87 Skellefteå, Sweden
+Abstract—The market for smart phones has been booming in the past few years. There are now over 400,000 applications on the Android market. Over 10 billion Android applications have been downloaded from the Android market. Due to the Android popularity, there are now a large number of malicious vendors targeting the platform. Many honest end users are being successfully hacked on a regular basis. In this work, a cloud based reputation security model has been proposed as a solution which greatly mitigates the malicious attacks targeting the Android market. Our security solution takes advantage of the fact that each application in the android platform is assigned a unique user id (UID). Our solution stores the reputation of Android applications in an anti-malware providers’ cloud (AM Cloud). The experimental results witness that the proposed model could well identify the reputation index of a given application and hence its potential of being risky or not.
+
+Keywords-Smartphones; Android OS; Reputation based security; Inter Process Communication
+# I. INTRODUCTION
+Android is a Linux-based open-source operating system, with a layered structure of services including core native libraries and application frameworks. Android isolates different applications and provides safety through OS primitives and environmental features such as type safety. At the application level, each software package is partially sand-boxed by the kernel, making Android a widely deployed system that employs privilege separation as a matter of course. More specifically, by default, each application is not allowed to read, update or delete another application's files. On the other hand, the Android user has the ability to allow or deny one application to communicate with other applications via inter process communication (IPC). If the user grants this permission, malware applications may be able to compromise the Android system. If the application requests this permission, and the user denies this permission, the possibly valid application will not install.
+
+The Android Operating System (OS) provides a rich set of IPC capabilities. Unfortunately there are many security issues in the OS. Since the Android phones are limited in processing power, memory and speed, there are some additional constraints in running strong security defenses such as live antivirus and firewall programs. Privacy issues are common in all OSes. However with Android's Global Positioning System (GPS) and Locations Based Services (LBS), hackers may be able to track the movements and location of the Android phone owner. The purpose of this paper is to present a solution to identify the reputation of applications. These reputations can be stored in the AM Cloud which will mitigate all three of these Android permission security limitations.
+
+In peer to peer network environments, the trust mechanism, integrality grade of force access control can be improved by calculating.
+
+IEEE 978-0-7695-4745-9/12 $26 © 2012 IEEE
+DOI 10/TrustCom
+the reputation grade which the application have developed . Through the trust mechanism, users can get the historical experiences of target nodes, thus the network resource security and the integrity of download resources (including applications) will be ensured.
+
+The remainder of the paper is structured in the following way: Section II describes related work, while Section III describes the solution we propose. Section IV presents the experiments performed, Section V indicates results, and Section VI, finally, concludes the paper and indicates future work.
+
+# II. RELATED WORK
+Shabtai et al.  provided a security assessment of the Android framework after identifying high-risk threats to the framework.
+
+Bläsing et al.  propose an Android Application Sandbox (AASandbox) being able to perform dynamic analysis on Android programs. Also, it automatically detects suspicious applications. Dynamic analysis executes the application in a fully isolated environment, which intervenes and logs low-level interactions with the system for further analysis.
+
+Ongtang et al.  pointed out that smartphone security is not yet fully developed. They considered security requirements of smartphone applications and augmented the existing Android OS with a framework to meet them. Having presented a modified infrastructure, called Secure Application INTeraction (Saint), governing install-time permission assignment and their run-time use as dictated by application provider policy, the authors provided an in-depth description of the semantics of application policy.
+
+Shin et al.  specified the permission mechanism for the Android OS representing it in terms of a state machine. Security needs were identified and the authors showed that the specified system is secure over the specified states and transitions.
+
+Teufl et al.  describe a method for extracting knowledge about security permissions for apps and their relations, description terms, and download counts. Based on their earlier work on Activation Patterns the paper highlights its benefits and provides a number of examples.
+
+Orthacker et al.  presented a method circumventing the Android permission system by spreading the permissions over two or more apps that communicate with each other via arbitrary communication channels. Three apps were demonstrated as well as a possible detection method.
+
+Burns  created a guide intended for developers of Android applications. Burns takes the developer through the security model of Android, including many of the key security mechanisms and how they can be used safely. We take the next logical step and propose a solution to some of the Android security model weaknesses.
+
+Burguera et al.  suggested earlier approaches for dynamic analysis of application behavior as a means for detecting malware in the Android platform.
+
+An application can share a service and specify which permissions the consumer needs. During install, the end user can allow these consumers to access the service. The application service can further restrict access, via any authentication methods. To the best of our knowledge, there are currently no published results to further restrict permissions. Neither are there published solutions to check whether a given application is malicious or not based on its reputation record on the fly.
+
+# III. PROPOSED SOLUTION
+As part of a solution to the above identified pitfalls in the android security model, we propose a reputation based security trust model to evaluate and validate the applications prior to installation. We have also analyzed the consequences of a malicious application that has managed to get installed with the full consent of the end user.
+
+The Internet is full of genuine and malicious applications. Android mobile owner can download different applications with varying reputation ratings. In this model, it is proposed that after downloading and before installing, the mobile device asks the AM Cloud for the reputation of the downloaded application.
+
+Based on the downloaded applications’ behavior and reputation index the downloaded application can be classified in any of the following three ways.
+
+1. The application has built a good reputation and there is likely no harm installing it on the client’s device. Good reputation will be set after some threshold of positive feedback from those clients that have downloaded and automatically reported.
+
+2. The application has not yet developed any good or bad reputation in the AM Cloud. In general, if an application has not developed a good reputation, we should be extremely cautious with such an unknown application. In this scenario, the anti-malware provider may wish to recommend that the user does not install the application or that the user installs the application in a sandbox. Let’s assume that the user, Fred, installed the application anyway, in a sandbox. Our proposes that the anti-
+malware provider keep track of which unknown applications were installed on which users Android devices. As time goes on, more information will be received from thousands of other user, who have installed the identical application. As the unknown application builds a reputation (good or bad), the anti-malware provider can inform all users, including Fred, that the unknown application has now been reclassified (as good or perhaps bad).
+
+# 3.
+
+The application has a bad reputation. In this case, the user is warned about the application’s bad reputation.

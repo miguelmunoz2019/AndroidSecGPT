@@ -1,0 +1,48 @@
+While discussing the results related to the survivability of the vulnerabilities, it is important to note that this is not the number of days needed to fix a vulnerability after it has been reported, but after it has been introduced. This means that a vulnerability could remain unnoticed in the system for years before being identified, possibly exploited, and then fixed. While it would have been interesting to also analyze the time actually needed for the vulnerability fixing (i.e., the number of days between the vulnerability reporting and fixing), we did not find a way to reliably identifying the reporting date.
+
+The very long survivability of the Android-related vulnerabilities was surprising for us at a first sight, especially due to the young age of the Android OS. Thus, we manually inspected 30 randomly selected vulnerabilities in order to verify whether strong imprecisions of the SZZ algorithm were there affecting our findings. Note that such a sample is not statistically significant, but just meant to show qualitative examples about the extracted data.
+
+Overall, we found the estimates provided by the SZZ algorithm to be quite precise. In particular, in 17 of the inspected cases the SZZ identified a single commit as the vulnerability-fix-inducing one. In 15 cases the identified commit was correct. In the other two cases we found imprecisions that can be explained by discussing the case of the vulnerability CVE-2015-3867, caused by a possible integer overflow. The vulnerability has been fixed in commit 7e9ac35 and the SZZ algorithm identifies as the only bug-inducing change, a commit performed four days before that introduced the line of code then fixed in 7e9ac35. The problem here is that this line of code (i.e., if (chunk data size >= SIZE MAX - 1)) was a first attempt to fix the CVE-2015-3867 vulnerability that already affected the system. Thus, the SZZ is underestimating the survivability of the vulnerability, considering the first fixing attempt as the bug-inducing commit. While we expect other imprecisions of this type in our dataset, it is worth noting that this means that the very long survivability we observed is likely to be an underestimation.
+
+In the remaining 13 cases we manually analyzed, multiple commits were identified by the SZZ algorithm as the possible responsible for the vulnerability introduction. In all
+# Empirical Software Engineering (2019) 24:2056–2101
+In these cases, either the minimum or the maximum vulnerability estimate was correct. In the following, we discuss some examples of manually inspected vulnerabilities.
+
+# The vulnerability CVE-2015-1538
+has been reported in the August 2015 security bulletin and is described as follows:
+Integer overflow in the SampleTable::setSampleToChunkParams function in libstagefright in Android before 5 LMY48I allows remote attackers to execute arbitrary code [...]
+Such a vulnerability has been fixed in the commit cf1581c made on the 8th April 2015, having commit message Fix several ineffective integer overflow checks and modifying the file libstagefright/SampleTable.cpp. By inspecting the diff of such a commit, three lines were changed to fix the integer overflows (Aosp commit 2015). The SZZ algorithm correctly identifies the commit edd4a76e performed on the 28th July 2014 as the vulnerability-inducing commit (thus, the vulnerability survived in the system for 254 days). Indeed, in such a commit the three lines causing the integer overflows and then fixed were introduced all together, as it can be seen from the commit diff (Aosp commit 2018b). Note that this is one of those cases in which the SZZ algorithm identified a single commit as the responsible for inducing the vulnerability-fix. This was the case for 181 out of the 331 vulnerabilities (55%) considered in this research question.
+
+# For the vulnerability CVE-2015-6608
+we identified instead multiple commits as the possible responsible for the vulnerability introduction. This vulnerability is described as follows:
+[...] allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) [...]
+The vulnerability has been fixed in the commit 8ec845c (commit note: stagefright: check IMemory::pointer() before using the allocation) made on the 15th May 2015 and modifying two lines (Aosp commit 2018a) in media/libstagefright/ACodec.cpp. These two lines were modified for the last time by two different commits, one performed on the 21st February 2012 (i.e., 5778822) and one performed on the 2nd May 2013 (i.e., 054e734). Each of these commits introduced one of the two lines then fixed in 8ec845c thus, they were both correctly identified as vulnerability-inducing commits.
+
+In this case, the commit 054e734 contributes to the “minimum survivability distribution” depicted in green in Fig. 13 (the survivability is 742 days), while 5778822 contributes to the “maximum survivability distribution” depicted in red in Fig. 13 (survivability=1,179 days). Clearly, in this case the correct survivability estimate is 1,179, since the vulnerability was there (at least in part) since the 21st February 2012.
+
+# When looking for the survivability of vulnerabilities having different severity levels
+we were not able to identify any clear trend: It is not possible to assert that vulnerabilities having a higher severity have a higher/lower survivability with respect to those having a lower severity (or vice versa). This is visible both from the forest plots (see Fig. 13) and confirmed by the statistical analysis, in which we did not observe any significant difference, with all the adjusted p-values higher than 0 (see Table 4).
+
+# Finally, when comparing the survivability of vulnerabilities to that of other types of bugs unrelated to security
+we found that the former have a much longer survivability (see)
+Note that all p-values equal 1 after the holm correction procedure. Before that they were in any case all higher than 0.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# RQ 4 : Survivability of vulnerabilities having different severity levels: Mann-Whitney test (adj. p-value) and Cliff’s Delta (d)
+# 5 Threats to Validity
+Threats to construct validity concern the relation between the theory and the observation, and in this work are mainly due to the measurements we performed. This is the most important kind of threat for our study, and is related to:
+- RQ1, RQ2, and RQ3: Subjectivity in the manual classification. We identified through manual analysis the types of vulnerabilities (RQ 1) and the subsystems (RQ 3) they affect, and also use this data in the results discussion of RQ 2. To mitigate subjectivity bias in such a process, the authors manually analyzed the vulnerabilities in couples to allow cross validation. For instance, A 1 checked the vulnerability types and the impacted subsystems assigned by A 2 and vice versa. Finally, the authors discussed the cases of disagreement, reaching an agreement on the correct classification needed. Also, when the type of the vulnerability and/or the impacted subsystem was unclear, we preferred to exclude the vulnerability from the study rather than risking to introduce imprecisions.
+
+- RQ4: Approximations due to identifying bug-inducing commits using the SZZ algorithm . We used heuristics to limit the number of false positives, for example excluding blank and comment lines from the set of bug-inducing changes. Also, we computed both the minimum and the maximum survivability estimates on the basis of the SZZ outcome, showing that in any case the main outcome of our study did not change: Android-related vulnerabilities survive for long time. Moreover, the manual analysis performed on some vulnerabilities confirmed the validity of our experimental design to assess the survivability of vulnerabilities.
+
+- RQ4: Imprecision due to tangled code changes (Herzig and Zeller 2013). We cannot exclude that some vulnerability-fixing commits grouped together tangled code changes.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Threats to Internal Validity
+concern external factors we did not consider that could affect the variables and the relations being investigated. When analyzing the survivability of vulnerabilities (RQ 4) we considered the severity of the vulnerability as a confounding factor to be controlled. We are aware that many other factors could influence the survivability, and we plan to analyze them in future work. To reinforce the internal validity, when possible, we integrated the quantitative analysis with a qualitative one.
+
+# Threats to Conclusion Validity
+concern the relation between the treatment and the outcome. Although this is mainly an observational study, wherever possible we used an appropriate support of statistical procedures, integrated with effect size measures that, besides the significance of the differences found, highlight the magnitude of such differences. In the case of RQ 4 we used meta-analysis to avoid having a biased conclusion towards the maximum or minimum survivability times reported by the SZZ algorithm.
+
+# Threats to External Validity
+concern the generalization of results. All RQs but RQ 4 considered 1,235 vulnerabilities, while the RQ 4’s findings are based on the analysis of 331 vulnerabilities due to the need for identifying the vulnerability-fixing commit (see Section 3 for details). Clearly, the number of Android-related vulnerabilities that can be studied will increase in the future, and larger replications of our study will be possible.

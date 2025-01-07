@@ -1,0 +1,49 @@
+Researchers have also contributed to improve the security of the Android ecosystem by analyzing security vulnerabilities and proposing improvements to current security models (Bagheri et al. In Press; Huang et al. 2015; Xu et al. 2016; Cao et al. 2015; You et al. 2016; Wang et al. 2016; Wu et al. 2013; Ahmad et al. 2016; Zhou and Jiang 2012b; Sufatrio Tan et al. 2015; Sadeghi et al. 2016; Fahl et al. 2012; Zuo et al. 2015; Backes et al. 2016; Kantola et al. 2012). However, while the focus of the academic research has been the security of the applications—the closest component to the user—, the core of the Android ecosystem (i.e., the Android OS) has received little attention, and it is the focus of our work.
+
+In the following subsections we briefly discuss previous work related to vulnerabilities in Android applications and the Android OS. Also, we contextualize the reader with background concepts and information that are instrumental for our work.
+
+# 2 Background Concepts
+A vulnerability is typically defined as a weakness in procedures or system configurations that could lead to a failure of confidentiality, integrity or availability (U.S. National Institute of Standards and Technology - NIST 2012b; for Standardization 2011; Mell et al. 2007). Organizations like MITRE and the US National Institute of Standards and Technology (NIST) have created databases of known vulnerabilities: The Common Vulnerabilities and Exposures (CVE) dataset  and the NIST National Vulnerabilities Database (NVD) (U.S. National Institute of Standards and Technology - NIST 2012a) are the result of these efforts.
+
+Both CVE and NVD use a standard set of attributes to describe vulnerabilities. This includes: a unique identifier (e.g., CVE-2016-2439), names of the affected product (as defined by the Common Platform Enumeration Dictionary), product’s vendor, and vulnerability features (as defined by the Common Vulnerability Scoring System FIRST Organization 2019) such as the confidentiality, integrity, and availability impact of the vulnerability.
+
+The Common Vulnerability Scoring System (CVSS) uses three groups of attributes describing a vulnerability: Base, Temporal and Environmental (see Table 1). The Base group represents the “intrinsic and fundamental characteristics that are constant over time and user environments” . This includes, for example, how complex it is to exploit the vulnerability. The Temporal group represents the characteristics “that change over time but not among user environments” (e.g., whether a patch exists for the vulnerability) . Finally, the Environmental group represents the characteristics “that are unique to a particular user’s environment” (e.g., the target distribution of the vulnerability) . Two versions of CVSS are currently used by the vulnerabilities databases: CVSS 2 and 3. While CVSS 3 is the most recent, it is not available for vulnerabilities discovered before 2016. For this reason, in our study we use the CVSS 2 version, including the attributes in Table 1. Note that each group of attributes in CVSS is assigned with (i) a numeric score representing how critical the vulnerability is, and (ii) a vector.
+
+1 We used the base group attributes because it is the only mandatory group.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Base Group Attributes and Description:
+# Temporal group Attributes and Description:
+# Environmental group Attributes and Description:
+reporting the features used to compute the score. In particular, the vector is a collection of <attribute>:<value> pairs (e.g., AC:H is a pair meaning Access Complexity:High).
+
+# 2 Security in Android Applications
+Android malware and vulnerabilities in Android apps are characterized by a novel set of flaws that exploit user level weaknesses and the issues in security mechanisms of the Android OS. For instance, Android-specific attacks include (i) privileges/permissions escalation through pairs of infected apps that exploit inter-application communication or mis-configured apps (Kantola et al. 2012; Sbˆırlea et al. 2013; Sadeghi et al. 2015; Bagheri et al. 2015; Ahmad et al. 2016), (ii) applications tapjacking/hijacking by apps repackaging and substitution , (iii) information leaking through covert channels (Gasior and Yang 2012; Novak et al. 2015), (iv) SSL vulnerabilities in hybrid  and native apps , (v) activity/task hijacking , (vi) security issues introduced by third party libraries , and (vii) security issues introduced by OS customizations . These novel attacks, in addition to classic security attacks induced by malware (e.g., DoS), have been widely studied by the community at the application level, however few attention has been given to vulnerabilities in the Android OS.
+
+Various approaches have been proposed for detection and mitigation of vulnerabilities in Android apps. Some works use static analysis, like JoDroid (Graf and Hecker 2015), Chex
+Empirical Software Engineering (2019) 24:2056–2101 2061
+, DidFail , User-aware control project , FlowDroid , COVERT , Mud-Flow , Chabada , Kirin  and Permission-based profiles (Morales and Rueda 2015). Other works use techniques based on dynamic behavior, like TaintDroid , Q-Floid , CopperDroid , AppInspector , and Malware detection based on system calls (Dimjaˇsevic et al. 2015; Park and Reeves 2013). There are also hybrid approaches, such as Andrubis.
+
+Other resources, like the Android Malware Genome Project (Malgenome) (Zhou and Jiang 2012a), aim at characterizing Android malware families by describing installation methods, activation mechanisms, and malicious payloads. The Malgenome project includes 1,200 malware samples collected from August 2010 to October 2011.
+
+Beyond the detection, research efforts have been also devoted to automatically generate exploits for specific vulnerabilities at the applications level and to generate test cases that are security features oriented. Representative examples are LetterBomb by Garcia et al. (2017) and PATDroid by Sadeghi et al. (2017). The former is an approach for the automatic generation of exploits, in particular for vulnerabilities in inter-component communication via intents. The latter (PATDroid) minimizes/prioritizes the combinations of permissions that should be granted/revoked with an existing test suite.
+
+For more details on the existing techniques for detection of vulnerabilities in Android apps, we refer the interested reader to the works by Zhou and Jiang (2012b) and Sufatrio Tan et al. (2015) that widely describe Android malware and detection techniques, and a recent work by Sadeghi et al. (2016) presenting a survey of static analysis techniques for detecting Android malware.
+
+In addition to malware and vulnerabilities, recent work cataloged a set of 28 code smells related to the security of Android apps. Security smells are sets of instructions in the source code that should be avoided by developers, since they likely indicate the presence of one or more vulnerabilities . The 28 smells reported by Ghafari et al. (2017) are categorized in five different categories: (i) insufficient attack protection, (ii) security invalidation, (iii) broken access control, (iv) sensitive data exposure, and (v) lax input validation.
+
+The aforementioned papers analyze vulnerabilities at the application level, while our study focuses on vulnerabilities at the OS level.
+
+# 2 Android OS Vulnerabilities
+The Android OS is an open source mobile operative system developed by Google and based on the Linux Kernel. It is composed of a set of architectural layers that follows a software stack model (i.e., there is no communication between layers that are not neighbors in the stack), having the Linux Kernel as the foundation, and an Applications layer as the closest interaction point for the end users. Each layer is composed of subsystems/components mostly implemented in Java and C/C++.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+Applications (Java)Application Framework (Java)Libraries (C/C++)Android Runtime (Java, C/C++)Hardware Abstraction Layer (C/C++)Linux Kernel (C/C++)
+we point the interested reader to the following sources:.
+
+# The Android OS stack is composed of the following layers:
+- Applications: this layer contains software running on the device that uses the Android APIs to implement specific features, like geo-localization. The components in this layer are the mobile “apps” (mostly developed by Google) that are shipped with the Android OS and we use daily such as Browser, Calendar, Telephony, Messaging, and Settings; these apps are mostly written in Java and the Android API, although some apps can include native C/C++ code.
+
+- Android Framework: provides apps (and developers) with the building blocks and common tasks required for exposing/using device- and Android-specific features such as managing UI elements and sensors. The Android Framework contains the Android APIs used by Android apps, and the Android managers (a.k.a., services) that implement the services and features exposed by the APIs; examples of these services are the View System and the Activity Manager that are in charge of managing the different views and view groups available in the GUI, and of controlling applications life cycle and the activity/task stack, respectively. This layer is mostly implemented in Java.
+
+- Runtime: contains the Virtual Machine (Dalvik/ART) and the core libraries required for the execution of apps and services on the device. The Runtime layer is required for ensuring apps portability across different devices. Examples of the core libraries in the Runtime layer are the independent implementation of Java used by Android (e.g., Apache Harmony) and the Bouncy castle library for cryptography.

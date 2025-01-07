@@ -1,0 +1,50 @@
+Feedback we received on role expressiveness was mostly positive compared to other dimensions. Participants mentioned in their questionnaire responses that classes and methods of the API were appropriately named per the functionality they provided. P1 mentioned that “classes were appropriately named relating to the functionality” and also they said that “names are self-explanatory”. However, we observed some issues with naming, especially in exceptions. Exception names such as NoSuchAlgorithmException and SunCertPathBuilderException did not communicate their meanings properly to the programmer. This was discussed in more detail under penetrability. Furthermore, some participants mentioned in their questionnaire responses and think aloud output that they failed to understand functionalities of some classes such as KeyManagerFactory and X509ExtendedKeyManager.
+
+Participants also mentioned in their questionnaire responses that it was easy to know what classes and methods of the API to use in their implementation and it was easy to read the code that uses the API.
+
+# 5. Domain correspondence of JSSE API
+Domain correspondence describes “how clearly the API components map to the domain and any special tricks that the developer needs to be aware of to accomplish some functionality.” . It describes how closely related are the classes and methods of the API to the conceptual objects that programmers make in their heads while programming. It also discusses how easy it is to map ideas in the programmer’s head to code using the API.
+
+Participants reported in their questionnaire responses and think aloud output that the use of factory pattern was not something that were in their heads initially. P10 described this in their questionnaire response pointing out the code they had to write using factory pattern. P10 said that “The code I had to write was bit different from the commonly used technique for declaring Socket objects”. P9 also provided some thoughts in their response to the questionnaire mentioning “They have...
+
+# Computers & Security 80 (2019) 54–73
+# 5. Testability of JSSE API
+Testability describes whether or not the API provides any help to test the security of applications that are developed using the API.
+
+Only 5 participants who developed a functional code reached a state where they could test the security of the programme they developed. Some of them did not try to test the security of the code they developed. As per our observation, only 1 participant did proper security testing of the developed code. P7 and P10 mentioned in their questionnaire responses that API did not provide sufficient help to test the security of the code they developed. P7 mentioned in his questionnaire response that “API did not provide any guidance to test the security of the code. I hastily assumed it worked, considering that I had SSL-related errors along the way.” We observed this in participant screen recordings also. In P4’s think aloud results, they mentioned that “My concern is its going to be hard to test if this actually has SSL. I am not entirely sure how I am going to test it or if I will test it, I just hope it will work.” This suggests that JSSE API needs to provide more guidance to programmers on how to test the security of applications that are developed using it.
+
+While searching for example code that use keystores, P4 was surprised as the usage was different from their expectation and mentioned “This is not what I expected”. P10 also mentioned this in their think aloud results saying “The problem I am receiving is jargons like keystores”.
+
+However, most participants mentioned in questionnaire responses that some parts of the API mapped well to the concepts they had in their head. P3 mentioned that “Classes and methods exposed by the API closely match to the conceptual objects. API provides expected operation and properties”.
+
+# 5. ‘End user protection’ of JSSE API
+End user protection describes whether or not the security of the end user of an application developed using the API depends on the programmer who developed the application . A better API should depend less on programmers for providing security to end users (Gorski and Iacono, 2016; Green and Smith, 2016; Wijayarathna et al., 2017a).
+
+Participants of our study believed that security of end users who will use the application they developed will depend on choices they made while using the API and on how they used the API. Several participants provided interesting thoughts on this aspect. For example, P7 mentioned in their response to the questionnaire that “Security of the end user depends on the correct usage of the API as well as the security API being correct. Incorrect usage and incorrect implementation could lead to errors and exposure of user data”.
+
+Our results also identified that there are too much information to read and learn about SSL/TLS and the API in order to successfully use the API. As we observed with our participants, programmers have to spend a significant time to learn these stuff. Furthermore, there are security related concepts such as keystore and trustsore concepts that programmers need to know to use the API. In real world scenarios, programmers work with tight deadlines and it is more than probable that they would go on to use the API without having a proper understanding about the API.
+
+# 6. Discussion
+In this section, we discuss how identified usability issues could lead developers to develop vulnerable applications. Even though, all usability issues that we identified might not result in security vulnerabilities, there were some issues that we like to analyze more closely.
+
+In the results, we identified that some components of the API have a lower abstraction level that leaves programmers to do a lot of work on their own while using the API. It leaves programmers to do security critical tasks such as host name verification and protocol selection, which makes the security of the end users of applications depends a lot on programmers who develop them. Because of leaving such critical stuff to be done by the programmer, Georgiev et al. suggested that the code implementing SSL/TLS for non-browser software as the most dangerous code in the world . Fahl et al. also stressed the importance of providing SSL/TLS APIs with higher abstraction level that depends less on programmers to provide protection for end users . Unfortunately, these issues have not been addressed yet and still exist.
+
+# Computers & Security 80 (2019) 54–73
+Not security experts can miss important details such as details related to host name verification which would make them develop vulnerable applications. Participants also blamed the API for the bad structure and presentation of it and its documentation. We observed that this led programmers to follow insecure behaviors while developing applications that introduced security vulnerabilities to their applications. Even though some information that programmers required while using the API were available in the official JSSE reference guide, programmers preferred to search for those information in Google and use online resources such as Stack Overflow to find those details. For example, when they came up with exceptions such as “RuntimeExceptions: No cipher suites in common”, participants referred unreliable sources and trusted solutions given with those sources. Previous research has investigated and criticized this behavior as it leads to the inclusion of untested code in to security critical software that would make them vulnerable (Fischer et al., 2017; Green and Smith, 2016). Even though causes and solutions for above exception are clearly mentioned in the official documentation, participants did not notice them due to the bad structure of the documentation.
+
+Some issues we discovered in this study do not have a direct effect to the security of applications that are developed using the API. For example, even though issues related to working framework and premature commitment reduce programmers’ efficiency and performance, we did not observe the backward compatibility. It is suggested that such aspects should be evaluated in the early stage of the API development, and otherwise they would be hard to fix. However, results we obtained in those dimensions would be useful when developing new APIs that provide TLS functionalities. Following are some suggestions that we can derive from our results.
+
+- Provide more high level classes to set keystores, truststores and certificates.
+
+- Minimize the use of factories and class casting.
+
+- Improve exceptions with more meaningful and easy to understand messages.
+
+- Use more user friendly class and method names while avoiding names such as X509ExtendedKeyManager.
+
+# 7. Implications of the study
+We believe results revealed in this study would provide a good platform to improve the usability of JSSE API as well as of other SSL/TLS related APIs. From the results, it is visible that further consideration needs to be given to the aspects like abstraction level, learning style and penetrability of the API. Following are some of the improvements that can be introduced to JSSE API to improve its usability.
+
+- Provide more examples about how to use the API.
+
+- Improve official JSSE reference guide (2017b) and improve its structure.

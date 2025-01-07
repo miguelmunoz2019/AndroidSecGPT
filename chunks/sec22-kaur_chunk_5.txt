@@ -1,0 +1,76 @@
+# Receiving security training:
+We asked participants which security training they received in the past, including training on the job, at school or university, online and self-taught training (cf. Figure 6). In almost all samples except Prolific, more than one third of participants received a security related training at work, with Google Play (53%) and MTurk (54%) participants reporting extraordinarily high numbers. In contrast, only 10 to 20% of all participants except for MTurk (30%) participated in a dedicated security training event organized by their employer. Across all samples, at least roughly a third (29% on Google Play) of participants received a security training at educational institutions, the highest being students (62%). Online courses were similarly popular across all samples, except for CS students and Prolific, who took them only about half as often as others. While 24% of MTurk participants reported to have participated in dedicated workshops or seminars, only 6% of Prolific participants and roughly 15% of the remaining participants did. A majority of Google Play participants reported that they were self-taught (58%), with similar high numbers on Upwork (40%) and Freelancer (48%), which fits to the culture of freelancing or self-employment. This is in stark contrast to MTurk participants, where only 16% report to be self-taught.
+
+# Security-related activities and events:
+We asked participants about security certifications, participation in security events or CTF contests, software vulnerability disclosure, and submissions to bug bounty programs (cf. Figure 7), as we found these as recruitment criteria or methods in our literature review. Overall, we found that participants most commonly attended security related events or had previously disclosed vulnerabilities. However, this did not apply to Google Play participants.
+
+# Certificates
+29
+8
+5
+22
+2
+5
+40
+# Sec. Events
+45
+24
+37
+37
+20
+42
+30
+# CTF contests
+23
+3
+6
+11
+11
+19
+25
+# Disclosed vuln.
+
+28
+28
+45
+40
+22
+26
+15
+# Bug Bounty
+25
+16
+22
+25
+9
+8
+10
+# 4050
+# 31st USENIX Security Symposium
+# USENIX Association
+# Key Points | Security Demographics
+MTurk along with Freelancer and Upwork participants reported the highest values for most security related questions. CS students and partially Prolific participants reported the lowest. Secure development features were used, but not by a majority. Most common features included input validation, authorization and authentication, API keys, encryption and storing passwords. More than a third of all participants reported security training at work. Security activities were not common in most samples. We found a security focus and tasks more common in teams than for solo workers.
+
+# 6 Limitations
+Both the literature survey and the online study have limitations. First, the literature survey is limited to the proceedings listed in Section 3. We cross-checked with literature reviews from 2018  and 2021 , which also included workshops and lower-ranked venues, finding no significant oversights and believe to have identified and included all relevant papers.
+
+Due to the diverse nature of screening questions, payment types and filtering criteria, we were unable to perfectly replicate all previous work on all tested platforms. We furthermore decided against certain recruitment strategies that were too easily influenced by research team location (e. g., security events or meetups) or personal/professional contacts (e. g., social media, LinkedIn), or that would not allow us to recruit sufficient sample sizes. An exception to this was the student sample. While these are also influenced by location, we argue that they are easy to reach for university researchers, and in our sample, decided to merge several student samples to mitigate the biases.
+
+Participants on Upwork and Freelancer were able to directly communicate with us, and were often interested in additional jobs, which might have been an incentive to report higher scores to leave a better impression, although we do not find both platforms to perform visibly better than others.
+
+For some platforms, we required multiple runs or stops in between due to bureaucratic reasons (i. e., resolving payments with our institutions), resulting in longer data collection time frames for these samples. Furthermore, there may have been instances of the same person participating multiple times through different platforms. However, we asked participants on which recruitment platforms they are active, to which participants reported up to three additional platforms on average (cf. Figure 10 in replication package ). We argue that due to other differences in, e. g., ethnic backgrounds, it is unlikely that participants responded multiple times on a large scale.
+
+USENIX Association 31st USENIX Security Symposium 4051
+For the German student sample, due to translations and differing cultural and societal circumstances, participants were able to select a different number of answers for the gender, primary study field and caregiving question. We found no significant impact in the data due to this. Lastly, as recruitment channels change, we believe that this kind of study should be repeated from time to time.
+
+# 7 Discussion
+In this section, we discuss our experiences with the recruitment platforms used in this research and provide recommendations for platforms suitable for certain security study types. As researchers need to consider their target population when deciding for or against recruitment platforms, we discuss insights from results below that can be helpful for recruitment decisions.
+
+# 7 Participant Characteristics
+Development experience, skills and knowledge: Development experience and skills are common selection criteria for secure development studies. Our results offer insights to researchers considering a variety of points along the experience spectrum, depending on their study’s needs. We found students to have the least experience while Google Play developers have the highest overall and professional development experience. This finding is also backed up by the fact that most students reported working part-time or studying as their main occupation. In contrast, participants on Google Play and other platforms are older and report more years of experience as well as working full-time, which positively influence their experience. MTurk and Freelancer participants report the second-highest overall and professional development experience, respectively and can be considered reasonable developer recruitment alternatives to Google Play, with the benefit of offering faster recruitment.
+
+Another relevant set of criteria for developer recruitment is the specific skill set participants may have, such as knowledge of a certain programming language or development area which could be useful for studies that want to research, e. g., a security aspect of Python programming. We found MTurk to be the most diverse as participants reported high proficiency levels for most development areas and languages. Google Play developers reported to be more proficient with Java and Kotlin, CS students with Java and Python, while participants on Freelancer and Upwork reported high proficiency with SQL and HTML/CSS. While some of these might be coincidental, it seems sensible to find Android developers to be skilled in Java, and that Java and Python are popular teaching languages for students.
+
+Researchers also often need to balance their experience and skill needs with the amount of recruitment effort required. While we were able to recruit developers on all platforms we sampled, we found that on some, the recruitment was faster or easier. This was especially the case on Prolific and MTurk, as researchers can screen and hire developers in batches, while Upwork and Freelancer are focused on contract-work and therefore require researchers to hire one participant at a time.
+
+Security experience, skills and knowledge: Overall, we found our participants to have experience in various areas of secure development. Regarding experience with security features, we found usage of input validation, authentication, API keys, encryption and password storage most common, especially widespread on Upwork, Freelancer and Google Play, suggesting a wider range of experience with secure development than within other samples. Regarding the frequency of secure development tools to find code problems, MTurk participants reported deploying them on a much more frequent basis than all other samples; we found no meaningful differences between the other samples. While we only regarded participants with development background in our analysis, we asked for experience with several other areas and find security-relevant job roles present in our samples, making recruitment of e. g. reverse engineers on Freelancer a more viable option than on Prolific or Google Play.

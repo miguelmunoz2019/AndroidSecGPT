@@ -1,0 +1,61 @@
+# Individually
+1. Usability: What is usability for you in a software product?
+2. Security: What role does security play in software development for you?
+3. Usable Security: How do you think usability and security are related to each other?
+# Case Example
+# Usability
+1. Have you ever implemented something that affected the usability of the product? (e. g., anything that changes the UI)
+2. Can you tell me a little bit about the background of the product and feature you have implemented?
+3. How did you make your decision about usability? Can you walk me through the process?
+4. Did the specification you were given cover usability aspects?
+5. Were you given any specific usability criteria to meet (when would the software be “usable enough”)?
+6. Who did you assign usability tasks to? Did you assign the role of “usability champion” to any team member?
+7. Did you consult other team members, or other usability resources in the company, at any stage?
+8. Did you consult any external usability resources – literature, design guidelines – at any point?
+9. What were the specific usability goals/requirements for this project?
+10. Were any usability assessments (e. g., heuristic evaluation, user test) carried out during the project?
+11. Did you know exactly who the users are and how they behave with the product?
+12. How do you handle usability bugs?
+13. Was usability directly or indirectly part of your goals within your contract?
+14. What role does usability play for your team?
+15. What usability knowledge and skills does the team have?
+16. How many of you previously worked on a project with usability requirements?
+17. How many of you had usability training in this company, or in a previous position?
+18. How important was it for the company that software delivered is usable? What are the consequences if it is not?
+19. How well do you think this company delivers usability, compared to other companies you know?
+20. How does the company deliver usability?
+21. How does the organization define usability?
+22. Can you give me some more background information to this company?
+# Security
+1. Have you ever implemented something that affected the security of the product? (e. g., login field, network interface, some API which used cryptographic functions)
+2. Can you tell me a little bit about the background of the product and feature you have implemented?
+3. How did you make your decision about security? Can you walk me through the process?
+4. Did the specification you were given cover security aspects? For instance, was a risk/threat analysis provided? Were security mechanisms specified?
+5. Were you given any specific security criteria to meet (when would the software be “usable enough”)?
+6. Who did you assign security tasks to? Did you assign the role of “security champion” to any team member?
+7. Did you consult other team members, or other security resources in the company, at any stage?
+8. What were the specific security goals/requirements for this project?
+9. Were any security assessments (e. g., code walkthrough, pen testing) carried out during the project?
+10. How do you select an API for security purposes?
+11. How do you deal with security bugs?
+12. Was security directly or indirectly part of your goals within your contract?
+13. How do members of the team define security?
+14. What security knowledge and skills did the team have?
+15. How many of you previously worked on a project with significant security requirements?
+16. How many of you had security training in this company, or in a previous position?
+17. How important is it for the company that software delivered is secure? What are the consequences if it is not?
+18. How does the organization deliver secure software?
+19. How well do you think this company delivers usability, compared to other companies you know?
+20. How does the organization define security?
+21. How well does the software delivered by the organization meet security goals, compared to other organizations?
+22. Can you give me some more background information of this company?
+# Usable Security
+1. Did you personally have to deal with conflicting usability and security requirements at any stage?
+2. Can you tell me a little bit about the background of the product and conflict you dealt with?
+3. When you look at all your projects in the past, how many of them had bad usable security requirements?
+4. Did you consult any internal or external resources – colleagues, developer forum – to help you solve the problem? If so, what information was helpful to you?
+5. Do you follow a particular software development process? If so, how would you describe it? And how easy is it to deliver usable security as part of this process?
+6. Did you consult any internal or external resources – colleagues, external experts, developer forum – to help you achieve usable security in the project? If so, what information was helpful to you?
+7. Were there specific goals for usability of the security mechanisms in the software?
+8. How important is it for the company to deliver usable security? What are the consequences if it is not?
+9. What does the company do to ensure it does deliver usable security? Who in the company has responsibility for this?.

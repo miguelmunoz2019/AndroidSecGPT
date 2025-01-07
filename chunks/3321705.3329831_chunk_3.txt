@@ -1,0 +1,56 @@
+Since around half of the vulnerabilities in our dataset have no publicly available patches, we still need to find another way to identify vulnerable modules. Moreover, the module path information of some URLs are coarse-grained, e.g., the aforementioned CVE-2016-3900 only shows platform/frameworks/native in its patch URL. Our technique thus leverages the second feature: the Android Bulletin webpage itself contains certain pattern that records the module information input by the Android Security team. For instance, in the bulletin webpage shown in Figure 1, we can locate the HTML field &lt;h3 id="eopv-in-servicemanager"&gt; for CVE-2016-3900, where “eopv” is the vulnerability type and “servicemanager” pinpoints the module.
+
+# 3 Extracting and Counting Diff Code
+Our second analysis objective is to study the complexity of Android patch code, and it requires a robust method to extract the “real” patch diff code and count their line change. This is because not all modified code lines in a patch are for the vulnerability fix and some are only auxiliary, e.g., the #include statements in C/C++, the import statements in Java, and also many comment statements.
+
+Before dealing with those auxiliary code lines, we need to extract patch code fragments (i.e., contiguous lines of code ) from the raw HTML files and organize them in the format shown in Figure 3. We first use Selenium  to locate the code diff fields , i.e., “add”, “del”, “ctx”, and “hunk”, in the patch HTML files. We then use “add”/“del” as the indicators to count contiguous code lines and use “ctx”/“hunk” as the stop words. In the meantime, we count the number of line changes for each code fragment as
+countFrag = max (countAdd, countDel)
+where countAdd and countDel are the total numbers of lines added or deleted (note that the auxiliary code lines have been excluded when performing the counting). The number of line changes in a code fragment, countFrag, is the maximum of the two since any single line change could contribute to both addition and deletion. With each individual countFrag counted in a code fragment, the line change of a file, countFile, is then the corresponding sum.
+
+When counting the number of code line changes, we exclude the auxiliary code lines as follows. First, the blank lines, after stripping the “+”/“-” symbols and various whitespaces, are eliminated. Second, the include and import statements in C/C++ and Java are not taken into consideration when studying the complexity of a patch. Third, we remove comment statements, some of which are not easy to be recognized. For example, we need to track forward across multiple lines to pinpoint the end of a comment block that uses /* . . . */ in C/C++/Java or &lt;!- - . . . - -!&gt; in XML. Moreover, some comment blocks are only partially shown in the diff files (e.g., not
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+uint8_t > uint32_t--                  [[ 1.           0 ..., 0 0]
+uint8_t > uint16_t--                  [ 0 1.             ..., 0 0]
+Cluster 1      Cluster N
+uint8_t >--    %p --> %pK
+Extract     writeLong > -- writeInt                 [ 0 0 ..., 0 0]
+Generate        uint32_t   …  %p --> %pK
+Diff Code                            …               Calculate                                 ...,
+uint8_t >-- …  %p --> %pK
+Fragments      essential            --> = 0            pairwise     [ 0 0 ..., 0 0]
+changes      if > if || value <= 0--  similarity    [ 0 0 ..., 1.               0]
+via affinity        …              …
+propagation     uint8_t >--    %p --> %pK
+uint16_t      %p --> %pK
+A high-level overview of our similarity-based algorithm to automatically generate patch code clusters.
+
+Examples illustrating how we extract patch code’s essential changes.
+
+# 3 Clustering Patch Code Patterns
+In the last and most important analyzer, we aim to automatically cluster Android patch code to reveal system developers’ common coding mistake patterns. Specifically, our objective is to cluster (patch) code-level patterns, such as changes in an integer type from uint8_t to uint32_t and changes in a character of printing kernel addresses from %p to %pK. These patterns, after interpreting with security knowledge, can reflect the root causes of corresponding vulnerabilities, e.g., inappropriate usage of pointer %p in kernel address printing could signal information leakage. Figure 4 depicts a high-level overview of our similarity-based algorithm, which is comprised of three major steps as follows.
+
+First, different from code clone detection approaches [ 17, 39 , 40 , 43 , 44 , 49 – 51 , 71 ] that typically compare multiple versions of the same code piece or code from multiple software, we need to extract “diff of the diff” from code fragments. More specifically, we extract patch code’ essential changes that not only concisely reflect syntax-level changes but also maintain important semantic information by keeping change-related tokens. Table 1 shows various examples to illustrate how we extract essential changes of patch code. For example, in code C1, we not only extract syntax-level change (i.e., Long to Int) but also keep the full token (i.e., function name in this example) to capture change-related semantic. Similarly, in code C2 and C3, the essential change we extracted is uint8_t to uint16|32_t, which is much more concise than the original diff code and also more meaningful than the syntax-only change (i.e., 8 to 16|32). The only special handling is that we add keywords for return, if, and define statements (see code C8 to C10) to better maintain their semantic changes.
+
+To express each code change into one code text, we employ a special character “-->” to represent the change process. For code fragments that are fully added or deleted, we simply use their original JSON format shown in Figure 3, which clearly marks the added or deleted code lines. Note that we currently focus only.
+
+# Session 4A: Mobile Security
+# 4 ANALYSIS RESULTS
+In this section, we present our analysis results of Android system vulnerabilities. We first introduce the dataset and vulnerability metadata in §4, then describe our analysis results of vulnerable modules, patch code complexity, and patch code patterns from §4 to §4, and finally discuss their implications in §4.
+
+# 4 Dataset and Vulnerability Metadata
+Till we initiated the analysis in June 2018, we have collected the information of 2,179 vulnerabilities on the Android Security Bulletin program and their 1,349 publicly available patches (from 1,158 distinct vulnerabilities). These vulnerabilities include all Android vulnerabilities reported over around three years (from August 2015 to June 2018). For vulnerability clustering, we extract a total of 940 short code fragments from these 1,349 patches.
+
+**Vulnerability metadata: type and severity**
+Notes:
+RCE = Remote Code Execution; EoP = Elevation of Privilege;
+ID = Information Disclosure; DoS = Denial of Service.
+
+N/A = Not Available, due to closed-source driver components.
+
+Regarding the vulnerability severity, high-level severity accounts for the largest proportion with 1,335 (61%) vulnerabilities. The critical- and the moderate-level severity hold the remaining 38% portions, with only 14 vulnerabilities being rated as at low-level severity. By correlating the severity with the vulnerability type, we further find that the critical-level severity is mostly related to RCE issues, and similarly, high severity appears the most significantly in EoP, the moderate and low severity are for ID and DoS, respectively. Such a one-to-one relationship is also almost true when correlating the vulnerability type with the severity except that most of the DoS vulnerabilities result in high-level severity.
+
+Key Takeaway: Most of Android vulnerabilities are dangerous, with 81% (1,773/2,179) rated as the high severity or above. Moreover, most of them could lead to a serious elevation of privilege and remote code execution. These suggest that Android vulnerabilities could make severe security impacts and require better understanding.
+
+# 4 Analysis of Vulnerable Modules
+In this subsection, we present our analysis of vulnerable modules. We first depict the layered map of vulnerable Android modules in Figure 5, with the percentage counted for each Android layer and with the vulnerability number marked behind each module name. By inspecting the vulnerability percentage of different Android layers, we can observe that layers with modules mainly coded in Java (i.e., the Application Framework and the System Applications layers) have significantly fewer vulnerabilities than those mainly coded in C/C++ at 7% v.s. 92%. In particular, the Linux Kernel layer itself already accounts for 65% of all the 2,179 Android vulnerabilities studied, and the Native Libraries layer also holds 23%. Both layers introduce many third-party drivers or libraries, the code quality of which might be worse than Android’s own code. Generally, there are more vulnerabilities in C/C++ code than Java due to the potential memory corruption issues (e.g., buffer overflow). This could be supported by the evidence that in our dataset of 1,349 patches, only 154 patches involve Java code while that number for C/C++ is 1,164.

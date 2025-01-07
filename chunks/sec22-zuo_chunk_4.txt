@@ -1,0 +1,58 @@
+# 5      Tracking Payment-Data Propagation
+A receipt can be propagated to other objects, e.g., via JSON APIs; can be assigned to local variables, e.g., to variable receipt and gpayload in running example (B) of function ProcessPurchase; or can be assigned to a class field such as m_LastReceipt in class unityInAppPurchase_LS in running example (C). We therefore have to systematically identify these propagations. The algorithm of how we perform this analysis is presented in Algorithm 1.
+
+At a high level, starting from the caller of payment-data definition function (line 3-5 of Algorithm 1), we iterate each instruction to handle propagations (line 9-24), resolve object base address, and infer field taintedness (line 25-39). We repeat this process by iterating all of the functions in GFT (line 7-8, and line 40-55), until reaching a fixed point where the taintedness of the classes and their fields will not be updated any more (line 6). For example, when analyzing the instruction at 0x00ffa794 in Figure 5 (A), we know it is a call instruction, and by retrieving its callee with address 0x02212258, we know it is UnityEngine.Purchasing.Product.get_receipt. Then our
+USENIX Association 31st USENIX Security Symposium 3099
+analysis will get started at line 3. Based on the API summary, we know its return value is the payment receipt data, and we therefore perform the data propagation by adding a taint tag (line 4), basically just a single bit, to the return value, i.e., (register, 0x4000, 8), of this function in the corresponding shadow memory (line 5), and then perform the analysis further. In the following, we describe the key procedures of our analysis.
+
+# Algorithm 1 Payment-aware Data Flow Analysis (PDFA)
+1. Input: GCT : global class table; GFT : global function table; SM: shadow memory
+2. procedure PDFA
+3. 1. for ( f , inst) in GetCaller(Purchasing.Product.get_receipt) do
+2. UPDATESHADOWMEMORY(SM, TargetOperand(inst))
+3. TAINTPROPAGATION( f , inst, TargetOperand(inst))
+4. while HASUPDATES(GCT ) do
+5. for func in GFT do
+6. PROCESSFUNCTIONWITHTAINTEDCLASSES(func)
+procedure TAINTPROPAGATION( f unc, inst, v0dofor (inst1) ← FindDataUse( f unc, inst, v0)
+4. 1. if opcode(inst) is Data Move then
+2. v1 ← TargetOperand(inst1)
+3. UPDATESHADOWMEMORY(SM, v1)
+4. (v2, o f f set2) ← FIELDBASEADDRESSRESOLUTION( f unc, v1)
+5. cls1 ← BASECLASSRESOLUTION( f unc, v2)
+6. TAINTGCT(GCT , cls1, o f f set2)
+7. TAINTPROPAGATION( f unc, inst1, v1)
+8. else if opcode(inst1) is CALL then
+9. if← GetCallee(inst1); index ← GetParameterIndex(inst1, v0)
+10. f0 isSystemAPI( f0) then
+11. TAINTWITHAPISUMMARY( f0, inst1, TargetOperand(inst1))
+12. else
+13. for (inst, v2) ← GetInstructUseParameter( f0, index) do
+14. TAINTPROPAGATION( f0, inst2, v2)
+procedure BASECLASSRESOLUTION( f unc, v0)
+5. 1. vde f ← FindDataDef( f unc, v0)
+2. if isParameter(vde f ) then
+3. index ← GetParameterIndex(vde f )
+4. return GETFUNCPARAMETERTYPE(GFT , f unc, index)
+5. else if opcode(vde f ) is CALL then
+6. f0 ← GetCallee(vde f )
+7. return GETFUNCRETURNTYPE(GFT , f0)
+8. else if opcode(vde f ) is LOAD then
+9. vx ← SourceOperand(vde f )
+10. (cls, o f f set1) ← FIELDBASEADDRESSRESOLUTION( f unc, vx )
+11. (v11← BASECLASSRESOLUTION( f unc, v1)
+12. return GETCLASSFIELDTYPE(GCT , cls1, o f f set1)
+13. else if opcode(vde f ) is COPY or CAST then
+14. return BASECLASSRESOLUTION( f unc, SourceOperand(vde f ))
+procedure PROCESSFUNCTIONWITHTAINTEDCLASSES( f unc)
+Handling taint propagation. Our taint needs to be propagated for data movement instructions (e.g., LOAD, STORE, INT_ADD), and we update the shadow memory of the register and object memory accordingly based on the tainted-ness of data source (line 13). However, when encountering a function call (line 18-24), we will check whether this function is a system or Unity provided API (line 20). If so, we will skip the analysis of this function, and instead directly apply the propagation rule based on the API summary (line 21). Otherwise, we will process this callee function as usual to analyze each instruction that access the tainted parameter for taint propagation (line 23-24). For instance, for the instruction at 0x0130d4ac in Figure 5 (B), by checking the corresponding GFT, we find this function is UnityEngine.JsonUtility.FromJson. Based on the API summary, the propagation rule is to add a taint tag to the return value if the first parameter is tainted. Therefore, we add a taint tag to (register, 0x4000, 8).
+
+Tracking taintedness for classes. When encountering an instruction that propagates taint to a class field, we also need to know the specific class to which the destination field belongs. However, at the instruction level, we only observe memory addresses (due to the nature of IL2CPP), which is always in the form of a base address plus an offset, and we have to therefore first identify its base address, then identify the class of the base address. With the identified class information and the offset we can identify the field in GCT, then we taint the corresponding field and track the taintedness of the classes. As such, it eventually becomes a three-step process:
+- Step-I: Identifying the base address of a field. When a tainted value is stored to a memory address, e.g., (unique, 0x00000c90, 8) in Figure 5 (C), we need to identify how this address is generated (or defined). To this end, we perform backward slicing  starting from the current instruction to find out its definition. In this example, we find (unique, 0x00000c90, 8) comes from (register, 0x4098, 8) with an offset 0x30, and (register, 0x4098, 8) comes from the first parameter of the current function. With backward slicing, we resolve the base address of field address (unique, 0x00000c90, 8) as (register, 0x4098, 8). This procedure is referred as FIELDBASEADDRESS-RESOLUTION. Note that P-Code has made dependence analysis such as slicing easier by simply inspecting the data-def and use chain. For instance, the Ghidra API Varnode.getDef can be used to find the P-Code instruction that defines a particular variable.
+
+- Step-II: Resolving the corresponding class of the base address. Having recognized the base address of the target field, we need to identify its class types, e.g., to find the class definition of (register, 0x4098, 8). Fortunately, this is also an easy process given the metadata we have collected. In particular, a base address accessed in a function usually comes from three sources: a) the address of other class object passed from the function parameter, b) a return value of a function call, and c) a field from another class. Therefore, we resolve the class information based on its definition. This procedure is
+referred as BASECLASSRESOLUTION (line 25-39). In this procedure, we first locate the definition of the base address (line 26), if it is from either a) or b) (line 27, 30), we directly get its class by querying the GFT (line 29, 32) since GFT has the class type for the function parameters and return value. If the base address is from c) (line 33), we apply FIELDBASEADDRESSRESOLUTION to find the base address of this new field (line 35) and apply BASECLASSRESOLUTION to find the class of the new field (line 36), then we get the class of the base address by querying GCT (line 37). Finally, if it is copied from another variable, we will resolve it recursively (line 38-39).
+
+- Step-III: Tainting the class field. With the identified class of the destination field, we then taint the destination memory address in the shadow memory, and also taint the corresponding field of the identified class in the GCT (line 16). Note that the purpose of having GCT is to track the tainted classes (and its fields), and iterate all of the functions that access any of the tainted classes. Also, we do not taint the single primitive type (e.g., the first String type entry in the GCT at shadow memory {1} in Figure 5, and we mark it N/A), as primitive type will be used in many other fields, and instead we taint the class and the offset at that particular class (as shown in shadow memory {2}, our algorithm has tainted the field at offset 0x30 of class unityInAppPurchase_LS.
+
+Repeating the propagation analysis. After identifying the tainted classes, we next iterate each instruction of the functions that have accessed these classes (in both the caller and the function itself), to identify whether there are any other class fields to which the tainted data can be propagated. If so, we add these classes into our tainted class as well. We call this process PROCESSFUNCTIONWITHTAINTEDCLASS (line 40-55). In particular, for each function in GFT (line 7), we iterate on the tainted class-field in GCT (line 41), to find which functions used the class (line 42-43). Then we a) iterate on the caller of the function call (line 45) to find out who read the class-field (line 46-48), and then we perform taint propagation from that point (line 50); b) iterate on the function itself (line 51) to perform the same actions (line 52-55) in our algorithm. accessed the payment (and its propagation), we use the following security policies to identify the vulnerabilities.

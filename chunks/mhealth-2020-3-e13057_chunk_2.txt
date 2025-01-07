@@ -1,0 +1,47 @@
+# Information From Standards Governing the Development of Software for Medical Devices
+Finally, in our search for information, we also searched for standards governing the development of software for medical devices on the specialized websites of regulatory organizations. To conduct this search, we also focused on the regions and countries where the mHealth market has been shown to be most significant, as described above. In this analysis, we focused the
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+search on those standards with criteria related to health apps, added to our list only those criteria that are specific to health apps, and left all others out of our scrutiny (eg, protection against radiation and chemical properties).
+
+# Development of a Common Set of Criteria and Categories
+We first compiled a list of the criteria identified in (1) published studies, (2) guidelines, and (3) standards governing the development of software for medical devices. Next, we grouped the criteria in categories on the basis of their shared characteristics. That is, each criterion was closely analyzed to identify what its general purpose was (eg, the criterion the functionality is adapted to the purpose of the app was considered related to usability, and this opened a group or category that was labeled usability). All criteria underwent the same scrutiny. In the case that no category existed, a new one was created and labeled. If the category already existed, then the criterion was subsumed under that existing category. As a result of this analysis, we obtained a list of unique criteria classified into categories according to their similarity.
+
+# Preliminary Analysis of the Set of Criteria
+The resulting set of criteria underwent a preliminary analysis of their face validity by asking stakeholders to report on the comprehensibility and perceived importance of all the criteria. Specifically, in this analysis, we requested the collaboration of a group of individuals from different groups of stakeholders (ie, final users, potential patients, health care professionals, and developers or engineers). Final users or potential patients and health care professionals were approached by the authors while at the university hospital (while they were visiting for a health checkup and while at work, respectively). Engineers were professors or technicians working at the university. Before the participation of stakeholders, we first requested and obtained permission from the Ethics Committee of the School of Education Sciences and Psychology for the study procedures. Participants had to sign a consent form. All were asked to respond to two questions in relation to each criterion: (1) “Do you understand the criterion?” and (2) “How important is this criterion for a health-related mobile application?” The first one was responded with yes, no, or partially to the question, whereas the second one was to be responded by providing a number that best represented the importance of the criterion, between 0 (not important at all) to 10 (utmost important).
+
+# Results
+# Information From the Systematic Review
+Our review of the scientific databases identified 283 nonduplicated papers. Of these, only 43 were of interest for our purposes. Studies that were not related to pain or that did not describe health-related apps were deemed irrelevant, and not included in the analysis (see Figure 1). In this search, 168 criteria were identified (the full list is provided in Multimedia Appendix 1).
+
+JMIR Mhealth Uhealth 2020 | vol. 8 | iss. 3 | e13057 | p. 3 (page number not for citation purposes)
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+# Information From Websites of Professional Organizations
+Following the planned strategy, we found just 4 organizations that had developed guidelines and recommendations for health-related apps. Of these, 3 were of national coverage—Andalusian Agency for Healthcare Quality (Spain), TIC Salut Social Foundation (Spain), and National Health Service (United Kingdom)—and 1 of supranational or international coverage, the European Commission (European Union [EU]). No similar information was found in the other searched regions. From each of the guidelines, we collected only the criteria that were specifically related to mobile phone apps and discarded the criteria related to other technologies (eg, wearables and websites): Andalusian Agency for Healthcare Quality, 31 criteria; European Commission, 58 criteria; National Health Service, 78 criteria; and TIC Salut Social Foundation, 115 criteria (see Multimedia Appendix 1).
+
+# Information From Standards Governing the Development of Software For Medical Devices
+As planned, in our search of the main mHealth markets, we also looked at the specialized websites of regulatory organizations and searched through standards in the regulations of medical devices. In so doing, we found just two standards that were of interest: (1) Mobile Medical Applications: Guidance for Food and Drug (the United States) and (2) Regulation of medical software and mobile medical “apps” (Australia). In this analysis, we added to our list only those criteria that were specific to health apps and left all others out of our scrutiny (eg, protection against radiation and chemical properties). We identified 42 and 11 criteria, respectively (see Multimedia Appendix 1).
+
+# Development of a Common Set of Criteria and Categories
+Then, the set of criteria were grouped in categories according to their similarity. That is to say, the criteria of the same class were grouped and subsumed together (see Table 1), resulting in eight categories. The categories were the following: usability (this includes criteria that are related to user experience), which contained eight criteria; privacy (ie, criteria related to data protection, compliance with the law, and treatment of users’ data), which contained six criteria; security (ie, criteria related to cybersecurity, encryption mechanisms for the storage and transmission of data, and measures against vulnerabilities), which contained four criteria; appropriateness and suitability (ie, criteria related to the adaptation of the app for the benefit of the targeted user), which contained three criteria; transparency and content (ie, criteria related to the sharing of information in relation to the development of the app), which contained five criteria; safety (ie, criteria related to the identification and prevention of harm to end users), which contained two criteria; technical support and updates (ie, criteria related to helping the user to solve problems in using the app), which contained four criteria; and technology (ie, criteria related to the proper functioning of the app), which contained four criteria (see Table 1).
+
+# Preliminary Analysis of the Set of Criteria
+A total of 18 individuals participated: 7 final users or potential patients, 6 health care professionals, and 5 developers, all of whom were approached and consented. Participants’ age ranged from 18 to 53 years, with an equal distribution of females and males in the sample. At the time of participation, all were attending school or working. They all had experience with mobile phones and in using mobile apps.
+
+The results of this analysis are summarized in Table 1, which includes information about the percentage of participants within each group that understood the criteria, and the mean of the perceived importance of each one.
+
+The criteria were understood by most of the participants in the three groups. However, at least one participant in one or more groups reported being unsure about the exact meaning. All the issues were related to the use of technical vocabulary or lack of some very specific (technical) knowledge; nevertheless, with additional explanation, the issues were solved. In addition, all criteria were perceived as important; 7 (on a 0-10 numerical rating scale) was the lowest rating received by any criterion, and most ratings were between 8 and 10 (Table 1 summarizes the information).
+
+JMIR Mhealth Uhealth 2020 | vol. 8 | iss. 3 | e13057 | p. 4
+(page number not for citation purposes)
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+https://mhealth.jmir.org/2020/3/e13057
+JMIR Mhealth Uhealth 2020 | vol. 8 | iss. 3 | e13057 | p. 5
+(page number not for citation purposes)
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+# Discussion
+# Principal Findings
+To the best of our knowledge, this study is the first one to provide a guide to help with the design, development, and analysis of mHealth-related apps, in the form of a list of criteria and categories. This guide is based on an in-depth analysis of criteria that have been described in published studies on pain-related mHealth apps, guidelines, and best practices, as designated on the websites of professional and regulatory organizations from the most significant regions and countries of the world mHealth market.

@@ -1,0 +1,70 @@
+# 5 ComDroid
+ComDroid  was proposed to detect application communication vulnerabilities. Since most of these vulnerabilities stem from the fact that Intents can be used for both intra and inter-application communication, ComDroid examines Android application interactions and identifies security risks in application components. Vulnerabilities include personal data loss and corruption, phishing, and other unexpected behaviors.
+
+ComDroid is a two-stage solution. First, it disassembles application DEX files using the publicly available Dedexer tool . After disassembling apps, it parses the disassembled output from Dedexer and logs potential component and Intent vulnerabilities. The results of the reported experimentation on 20 apps shows that ComDroid found 34 exploitable vulnerabilities; 12 of the 20 applications have at least one vulnerability.
+
+In addition to described works in this section, there are many other related works: FlowDroid , Amandroid , AppsPlayGround , ScanDroid , VetDroid , Pegasus , AppIntent.
+
+# Android Security Threats and Defenses
+Rashidi, Fung
+Mobile-Sandbox , PiggyApp , AnDarwin , Juxtapp , Stowaway , DNADroid , Androguard , APKInspector , JEB , Andrubis , AndroTotal , RobotDroid , CHEX , Androwarn , MAdFraud , DECAF , DroidChecker , MARVIN , Shinichi et al. , and ProtectMyPrivacy . These works all use static and dynamic analysis tools to detect apps’ vulnerabilities and detect malicious apps.
+
+Market Places
+- Bad Response Filtering
+- Seed/Savvy Users Search
+- Response Recommendation
+# Apps
+Permission Control Portal
+Server
+1 Process
+PEP
+PDP
+Permission responses
+&lt;AppID, PerReq, Response&gt;
+Thin OS Patch
+Permission Recommendation
+Mobile Clients
+# Figures
+# 5 Runtime Monitoring
+As we described before, at the middleware level, each application is sandboxed, i.e., it is running in its own instance of Dalvik VM, and interaction and sharing between apps are allowed only through an inter-process communication (IPC) mechanism. Android middleware provides a list of resources and services such as sending SMS, access to contacts, or internet access. Android enforces access control to these services via its permission mechanism. In Android permission mechanism, each service/resource is associated with a certain unique permission tag, and each app must request permissions to the services it needs at installation time. Everytime an app requests access to a specific service/resource, Android runtime security monitor checks whether the app has the required permission tags for that particular service/resource. In addition to privilege escalation protection, information leakage can be monitored too.
+
+In this section, we describe those works which are based on monitoring apps’ activities and permissions accesses. Proposed works in this category continuously run on a device to either prevent, detect malicious activity, or enforce fine-grained policy. It is worthy to note that policies can be defined either by users or systems.
+
+# 5 RecDroid
+RecDroid  is a resource access permission control framework through crowdsourcing. RecDroid tries to assist users to make a right decision as for whether a permission request should be accepted. RecDroid is a crowdsourcing recommendation framework that collects apps’ permission requests and users’ permission responses, from which a ranking algorithm is used to evaluate the expertise level of users and a voting algorithm is used to compute an appropriate response to the permission request (accept or reject). To bootstrap the recommendation system, RecDroid relies on a small set of seed expert users that could make reliable recommendations for a small set of applications. RecDroid also uses a game-theoretic Bayesian model to detect the malicious users and ignore their responses.
+
+17
+# Android Security Threats and Defenses
+# 5 RecDroid
+- Two app installation modes for apps that are about to be installed: trusted mode and probation mode. In probation mode, at run time, an app has to request permission from users to access sensitive resources (e.g. GPS traces, contact information, friend list) when the resource is needed. In trusted mode, the app is fully trusted and all permissions are granted.
+
+- An architecture to intercept and collect apps’ permission requests and responses, from which recommendations are made as for what permission from which apps should and should not be granted.
+
+- A recommendation system to guide users with permission granting decisions, by serving users with recommendations from expert users on the same apps.
+
+- A user-based ranking algorithm to rank security risks of mobile apps.
+
+# 5 FireDroid
+FireDroid , is a policy-based framework for enforcing security policies by interleaving process system calls. In FireDroid, an application monitor is created to track all processes spawned in Android and allow/deny them based on human managed policies. FireDroid identifies at runtime if an application is executing illicit or potentially dangerous actions by intercepting the system calls the application executes. No matter if the malware is new or a repackaged version of an existing one: when the malware executes dangerous system calls, FireDroid can detect and enforce the appropriate security policies.
+
+In FireDroid, they use the ptrace() function to monitor the applications’ behavior at runtime without modifying the application or Android framework. Figure 14 shows the architecture of the FireDroid and its existing components.
+
+The main advantage of FireDroid is that it is completely transparent to the applications as well as to the Android OS. This fact means that users are not involved with a heavy interaction. Users only need to define the policies for the applications and load them into the system through the FireDroid provided policy portal.
+
+# 5 MockDroid
+The aim of the MockDroid  is avoiding giving out sensitive data by granting fake permission and allowing the user to provide fake or 'mock' data to applications interactively as the application is being used. MockDroid allows users to revoke access to particular resources at execution time and encourages them to consider the trade-off between functionality and the disclosure of personal information whilst they use an application. For example, providing "no location fix available" for GPS location access could be a way to protect from sensitive data disclosure.
+
+While such approaches reduce the risk of leaking private information and critical resources, MockDroid requires users to make decisions on every resource permission request, which is difficult for inexperienced users and time-consuming for others.
+
+# Android Security Threats and Defenses
+# 5 Crowdroid
+Crowdroid  is a behavior based malware detection system. In Crowdroid, they detect anomalously behaving applications through a crowdsourcing framework. The authors propose a framework to analyze the behavior of Android applications to distinguish between applications that have the same names and versions, but behave differently.
+
+As Figure 16 shows, it has two components, a lightweight client application which needs to be installed on users’ devices and a remote malware detection server. The application records the behavior of the installed applications such as system calls and send them as a log file to the centralized remote server. The application records the system calls through a system utility called Strace. The log file consists of the device information, list of installed applications, and behavioral data. On the server side, the remote server will be in charge of parsing data and creating a system call vector per interaction for users within their applications. Finally, the collected data will be clustered by 2-means partition clustering to detect whether the applications are benign or malicious.
+
+Since the client applications must always be available, draining the available device resources is the main limitation of Crowdroid. The main drawback of this work is that they transfer the data on FTP protocol, which is not safe.
+
+# 5 TaintDroid
+TaintDroid  is a data flow tracking system, which allows users to track and analyze flows of sensitive data and potentially identify suspicious apps. TaintDroid provides a tool for expert users to discover misbehaving from potential apps. The sensitive data is automatically tainted in order to keep track whether the labeled data leaves the device. When the labeled data leaves the device, TaintDroid records the label of the data and the app which sent the data along with its destination address.
+
+TaintDroid uses fine-grained labels Variable-level, Method-level, File-level, and Message-level. Using Variable-level semantics provided by the interpreter provides valuable context for avoiding the taint explosion observed in the x86 instruction set. TaintDroid uses Message-level tracking between applications’ messages in order to minimize IPC overhead while extending the analysis systemwide. Method-level tracking is used for Android native libraries that are not directly accessible to apps but through modified firmware. Finally, TaintDroid uses File-level tracking to ensure persistent information conservatively retains its taint markings. The above scenario is displayed in Figure 15.

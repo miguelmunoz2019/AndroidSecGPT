@@ -1,0 +1,56 @@
+In order to feed the training malware samples to the machine learning models (denoted as M), we encode the string features of each malware sample as a numerical vector. After the string features for the training malware samples have been extracted, then we map all these features to a joint feature vector space. In this feature vector space, each malware x is embedded into vector representations. We employ the one-hot-encoding strategy to represent each malicious sample as a vector. For each feature fi, if it is presented in x, then the i-th dimension feature value is set to 1, otherwise the corresponding dimension feature value is 0. Iteratively, we map each Android malware into the joint feature vector space. In this space, the malware sharing similar impact characteristics (low impact or high impact) will lie close to each other, but low and high impact malicious samples are expected to be separated with long distances. In addition, due to the large number of API calls, permissions and other features, the one-hot-encoding embedding method will generate extremely high dimensional vector. In order to reduce the storage memory and improve the computation speed, the produced feature matrices of malware samples are stored in the Compressed Sparse Column (CSC) format.
+
+# G. IMPACT MODEL TRAIN AND PREDICTION
+This phase is to learn the Android malware impact predict model M. The collected Android malware impact dataset Mal_Impact Dataset (D) is class-imbalanced, however, the imbalanced rate is not too high, less than 5. Thus we expect the traditional machine learning classifiers can work well in this scenario. In this work, we employ the classical Linear Support Vector Machine (SVM)  and Deep Neural Network (DNN)  to train the malware impact prediction models.
+
+The Linear Support Vector Machine has been used in many cyber security related classification tasks. In addition, it is an inherent interpretable classifier which is suitable for feature explanation. We can easily obtain the core features which are helpful for us to figure out the core features in predicting the Android malware impact. The Deep Neural Network has been used to achieve many great successes in various applications, e.g., image recognition, machine translation or cyber security related areas , , , thus we design a specific Deep Neural Network to predict the impact of Android malware samples. As a nonlinear model, Deep Neural Network complements the Linear SVM to provide a comprehensive empirical evaluation.
+
+According to previous academic papers and engineering applications, Linear SVM model is suitable for the small dataset classification scenarios, while DNNs can learn the complex and accurate patterns from large-scale dataset. In our work, we construct an initial and relatively small Android malicious samples impact dataset with impact ground truth. Thus, SVM is expected to perform better than DNN. However, if we can collect more malicious samples together with impact ground truth, then DNN will achieve the best performance in Android malicious samples’ impact prediction task.
+
+The SVM aims to learn an optimal hyperplane which separates the high impact and low impact malware with maximal margin as presented in Fig. 3. To determine the optimal hyperplane, the following objective function Eq.(2) should be minimized.
+
+min 2 1||w||2 s.t., y(wT xi + b) ≥ 1, i = 1, . . . , ni (2)
+VOLUME 7, 2019 66309
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+The schematic depiction of the SVM malware impact prediction model.
+
+Once the SVM based impact prediction model M has been trained, it will be used to predict the testing malware into low or high impact by computing their distances to the separating hyperplane as shown in Eq.(3).
+
+The architecture of the Deep Neural Network based malware impact prediction model.
+
+The architecture information of the deep neural network designed in our work.
+
+&lt; w, φ(xi + b) ≥ +1 &gt;, for xi is high impact
+&lt; w, φ(xi + b) ≤ −1 &gt;, for xi is low impact (3)
+The learned weights w can also be used to evaluate the importance of features to the construction of the classifier. In this work, we will use the learned feature weights to measure the contributions of features to the Android malware impact prediction model.
+
+Deep Neural Networks have become an increasingly prevalent technique for malware analysis related applications. Their power of learning complex patterns and behaviors make Deep Neural Networks an appropriate technique for malware detection or classification. In this paper, we also create a Deep Neural Network structure to conduct the malware impact prediction task. To determine the structure and hyperparameters of Deep Neural Network, we have tried several combinations of the layer number and the related neurons number. The activation functions are selected from sigmoid, ReLU and tanh. The optimizer is selected from SGD, Adadelta, RMSprop and Adamax. We have also tried several loss functions, e.g., Mean_Squared_Error, Mean_Absolute_Error and Squared_Hinge. Based on the malware impact performance, we finally determined the structure of the network as presented in Fig. 4. The details of our designed Deep Neural Network can be found in Table 5.
+
+For our designed Deep Neural Network, suppose that the (l − 1)-th layer has m neurons, then the output of the l-th layer’s j-th neuron can be formulated as the following equation :
+Here σ is the activation function, ak1 is the k-th input feature xk for l = 2. The matrix formulation of Eq.(4) is:
+al = σ (zl ) = σ (W l al−1 + b)l (5)
+Then the final loss function can be represented as Eq.(6).
+
+J (W , b, x, y) = 1/2 ||σ (W L aL−1 + bL ) − y||2 (6)
+During the learning of W and b, we can compute their gradient with respect to J, and then apply the Back Propagation  optimization algorithm to train the network.
+
+Overfitting is a common problem of Deep Neural Networks . Once a Deep Neural Network is overfitted with the specific malware impact training set, the derived network becomes less useful. To address the overfitting problem, the dropout regularization strategy  is used in our designed Deep Neural Network impact prediction model. With a fixed probability, the Dropout strategy randomly removes a number of incoming and outgoing connections of some neurons. Using the Dropout strategy makes the network relatively independent on a particular set of neurons and the associated weights as well as the biases . In this paper, the dropout rate of the deep neural network is 0.
+
+# IV. EXPERIMENTAL ANALYSIS
+To validate the effectiveness of our approach, this section presents an empirical validation of our proposed method.
+
+66310
+VOLUME 7, 2019
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+To fully evaluate the effectiveness of our proposed solution, we will address the 3 research questions:
+- Research Question 1: How effective is it to represent both low and high impact Android malicious samples using AndroidManifest.xml based information (for example, requested permissions, application components or hardware components)?
+- Research Question 2: How good is the performance if we represent the low and high impact Android malicious samples exploiting the features decoded from the disassembled binary classes.dex codes (for example, suspicious API calls, critical API calls)?
+- Research Question 3: How can we make impact prediction for the newly identified Android malicious samples in the wild?
+# A. EXPERIMENTAL SETUPS
+The following experiments were implemented on a workstation equipped using two E5-2690 v3 2GHz CPUs, in total of 48 logical CPU cores. The workstation offers 3 TB storage and 64 GB memory which meets the required experiment conditions.
+
+In the reverse engineering part, we use the open sourced tool Androguard . Androguard is a tool developed using python language to reverse engineer Android application packages, e.g., parse AndroidManifest.xml files or disassemble classes.dex bytecodes. Using Androguard we can decode the semantic features to represent Android malicious samples.
+
+During the impact prediction stage, we employ the open-source python Machine Learning package scikit-learn  to perform the training and predicting task of SVM based impact model. We employ the grid search strategy to search the optimal parameters C and gamma for the impact prediction model. 50% of the constructed Mal_Impact Dataset is split as training dataset while the other 50% serves as the test data.
+
+To implement the Deep Neural Network based malware impact prediction model, we use the Tensorflow8 and Keras9 packages to perform the malware impact prediction task. When training the Deep Neural Network, 20% of the training dataset is divided as the validation dataset, then we track the accuracy trends of both the training and validation data. Meanwhile we keep checking whether the model training is finished successfully to prevent overfitting. Once the accuracy growing trend of training and validation data are not consistent, then the training process will be immediately stopped, and network weight parameters are then revised to retrain again to prevent the overfitting issue.

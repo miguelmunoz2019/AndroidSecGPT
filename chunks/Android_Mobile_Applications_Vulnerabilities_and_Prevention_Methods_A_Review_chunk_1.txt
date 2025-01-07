@@ -1,0 +1,80 @@
+# Android Mobile Applications Vulnerabilities and Prevention Methods: A Review
+Hilmi Abdullah
+Amedi Technical Institute
+Duhok Polytechnic University
+Duhok, Iraq
+hilmi.salih@dpu.edu.krd
+Subhi R. M. Zeebaree
+Culture Center
+Duhok Polytechnic University
+Duhok, Iraq
+subhi.rafeeq@dpu.edu.krd
+Abstract— The popularity of mobile applications is rapidly increasing in the age of smartphones and tablets. Communication, social media, news, sending emails, buying, paying, viewing movies and streams, and playing games are just a few of the many uses for them. Android is currently the most popular mobile operating system on the planet. The android platform controls the mobile operating system market, and the number of Android Mobile applications grows day by day. At the same time, the number of attacks is also increasing. The attackers take advantage of vulnerable mobile applications to execute malicious code, which could be harmful and access sensitive private data. Security and privacy of data are critical and must be prioritized in mobile application development. To cope with the security threats, mobile application developers must understand the various types of vulnerabilities and prevention methods. Open Web Application Security Project (OWASP) lists the top 10 mobile applications security risks and vulnerabilities. Therefore, this paper investigates mobile applications vulnerabilities and their solutions.
+
+Keywords— Mobile Applications, Android Security, Open Web Application Security Project (OWASP), Vulnerabilities.
+
+# I. INTRODUCTION
+Nowadays, people are using mobile applications more than ever, and their lifestyle is more dependent on them for shopping, entertainment, communication and many other areas. With the importance of these applications in our lives, the developers focus on improving the user experience at the expense of security. Mobile users leave a vast amount of sensitive and personal data in mobile devices, such as banking, health, photos, contacts and messages. When permission is granted to mobile applications to access services and data, there will be a potential risk of data gathering by untrustable parties that could harm the user -.
+
+Android is the Operating system for more than 2 billion devices , . It is forecasted that 228 billion mobile applications will be downloaded by 2022 , . Dealing with security issues of android mobile applications is a challenging and complex task , . At the same time, the lack of security awareness among developers increases security vulnerabilities day by day. As a result, mobile application vulnerabilities research has become an insistent necessity.
+
+In general, discovering vulnerabilities in Android applications can be via static and dynamic analysis . Static analysis is achieved by restoring the application's source code, and then the vulnerabilities are identified in the source code. On the other hand, the application is loaded dynamically with dynamic analysis and simulated hacking attacks to detect vulnerabilities -.
+
+This paper studies various vulnerabilities of android applications and their mitigation techniques. The paper is organized as follows. Section II, presents the background of Android and its components. Section III, provides a literature review of the android applications and the security architecture of the applications. Section IV, discusses different types of vulnerabilities and how to prevent them. Also, a comparison is made among the reviewed researches. The assessment and recommendations are provided in the end of this section. Finally, the conclusion is provided in section V.
+
+# II. BACKGROUND THEORY
+# A. Android
+Android is a Linux based operating system for smart devices. Android is open source and powers phones, tablets, cars and watches. The Linux kernel interacts with the hardware. On top of Linux, there are libraries and Dalvik Virtual Machine, which uses Linux core features such as multi-threading and memory management. The top layer of the Android operating system is the applications and application framework. Mobile applications interact with the phone via APIs -.
+
+# B. Android Run Time
+Android Run Time(ART) is a successor to Dalvik Virtual Machine which is used to execute applications written for Android. It takes the Android application and turns its java code to bytecode to be capable of running on a Linux system -.
+
+# C. Android Components
+Generally, there are four types of components in Android. Mobile applications could be composed on all of them are less depending on the complexity of the application. Below are the four types of components in Android , , :
+# 2nd International Conference of Information Technology to enhance E-learning and other Application, (IT-ELA2021)
+# Baghdad college of economic sciences University, Baghdad, Iraq
+# Sandbox
+# Activity
+This component is responsible for handling user interaction with the screen of the smartphone.
+
+# Services
+Services are responsible for the background processing associated with the mobile application.
+
+# Broadcast Receiver
+The communication between the Android OS and the applications is handled by broadcast receivers.
+
+# Content Providers
+They are responsible for handling the data and database management.
+
+# III. LITERATURE REVIEW
+There has been a lot of research in the field of mobile applications security. According to , , the number of vulnerabilities of Android Applications continues to grow. These vulnerabilities cause various types of attacks such as denial of service, sniffing, privilege escalation and non-authenticated access. Many participants contribute to the vulnerability market consisting of vendors, Mobile Applications, vulnerabilities, and hunters. The vendors release mobile applications, and the hunters discover the potential vulnerabilities. Hunters might take advantage of these vulnerabilities and sell them in the black market, which will cause damage to the consumers. It is also possible that hunters will inform the vendors to fix the vulnerabilities.
+
+Android Applications can be downloaded from Google Play as well as third-party sites. The downloaded applications are compressed as Android Packages (APK), which includes libraries, metadata and files necessary for the application to be installed and run. In order to protect the privacy of users and prevent malicious acts, Android enforces applications to request permissions from users to access sensitive information. Thus, the efficiency of the permission mechanism, together with the users' understanding, plays an essential role in Android security , . However, Android applications suffer from various threats such as intent spoofing, privilege escalation, phishing and others.
+
+In general, there are various causes for android vulnerabilities, such as libraries and the outdated version of android. According to , , , around 10% of mobile devices are running on Android 4 or lower, which means that millions of devices are vulnerable. These devices need to upgrade to the latest version of android to fix vulnerabilities. Moreover, another cause is the vulnerable libraries, as  stated that more than 50% percent of vulnerabilities in Android applications are due to vulnerable libraries.
+
+# The android security architecture consists of the following:
+- Permission Mechanism: By this mechanism, security interfaces such as Phone calls and SMS are protected, meaning that the application needs to have permission to perform an operation such as sending SMS.
+
+- Sandboxing: is a method to isolate application resources from system resources and from the components of other applications on the same device, as in fig. 1 ,.
+
+- Access control: with this mechanism, there are a set of rules for reading, writing and executing files by processes.
+
+# Fig 1. Mobile Application Sandboxing
+When developing mobile applications, it is important to maintain their security, and the mobile application developers should be aware of the vulnerabilities and how to mitigate them. Open Web Application Security Project (OWASP) is a foundation that focuses on Software and Mobile applications security and lists the vulnerabilities and their mitigation. Below is the list of OWASP top 10 mobile applications vulnerabilities:
+# A. Weak Server-Side Controls
+Even though most mobile applications are similar to client/server applications that depend on a connection with the server, many mobile application developers do not consider the security concerns of the traditional server-side applications.
+
+Solution: To prevent Weak Server-Side Controls, it is required to scan mobile applications with scanning tools to identify any security vulnerabilities. Generally, automated scanning tools are used. However, manually assessing is sometimes needed to detect any vulnerability which automated scanning tools haven't detected. In addition, it is recommended that mobile application developers follow secure coding standards and practices to reduce security vulnerabilities ,.
+
+# B. Insecure Data Storage
+Typically, mobile applications developers store client-side personal or sensitive data in databases and files. When these data are stored without a secure mechanism, attackers can get access these data by rooting or jailbreaking the mobile device. Several problems are associated with insecure data storage, such as fraud and identity or credential theft.
+
+Solution: As a common rule, sensitive data should not be stored in mobile applications unless necessary. For instance, the users should use APIs to authenticate instead of storing their credentials on the phone's file system. Furthermore, all local
+# 2nd International Conference of Information Technology to enhance E-learning and other Application, (IT-ELA2021)
+# Baghdad college of economic sciences University, Baghdad, Iraq
+# H. Security Decisions Via Untrusted Inputs:
+files should be encrypted, and the encryption keys should be stored securely ,.
+
+# C. Insufficient Transport Layer Protection
+This vulnerability means that the network traffic is not protected when data is transferred between the mobile application and the backend.

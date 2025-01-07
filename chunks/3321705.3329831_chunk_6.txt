@@ -1,0 +1,7 @@
+# 6 CONCLUSION
+In this paper, we conducted the first systematic study of Android system vulnerabilities by comprehensively analyzing all 2,179 vul- nerabilities and their 1,349 publicly available patches on the Android Security Bulletin program over around three years. To support such analysis, we proposed an automatic analysis framework and its three analyzers for the analysis of vulnerable modules, patch code complexity, and vulnerability patterns. In particular, we designed a similarity-based algorithm that extracts patch code’s essential changes and leverages affinity propagation to automatically cluster patch code patterns. With this analysis framework, we pinpointed the distribution of vulnerabilities in different Android modules, studied the complexity of Android patch code, and successfully obtained 16 vulnerability patterns that include six new ones not known in the literature. In the future, we plan to further improve our clustering algorithm by supporting long code fragments, and also evolve our analysis results over time.
+
+304
+# Session 4A: Mobile Security
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand.

@@ -1,0 +1,57 @@
+# 3 Construct fault counting model
+By establishing a fault counting model, we can further identify and repair the high-impact defect structures to reduce code review/testing costs. The counting model achieves a linear fitting for discrete data, and the classical discrete counting models are Poisson regression models and zero-inflated Poisson models. Since Poisson distribution has constrained preconditions, the intra-group correlation cannot be negligible for some interdependent data, so other similar models should be considered.
+
+For determining the suitable counting model, we observed the original data distribution and found that (1) the faults are distributed discretely; (2) the majority of apps do not contain faults, with statistical results showing that the majority have zero faults; (3) The faults dataset does not obey normal distribution, the variance > the mean, and exists zero-inflated phenomenon. The main reasons for (1) and (2) are that the Android app development cycle is short and evolves rapidly, while the development is not standardized, and testing is insufficient for small and medium-sized projects on GitHub. For (3), we conducted a dispersion test on the faults data by the dispersiontest() in R (to verify whether the variance is equal to the mean). The findings indicate that there is a small probability (p < 0) for the case of data variance = the mean, thus rejecting the original hypothesis. Therefore, NB and ZINB regression models are more suitable for fitting the data than the Poisson regression model.
+
+We design the following scheme to address the discrete data.
+
+- To minimize the dispersion of fault counts, we take the Density of Faults (i.e., the number of faults per thousand lines of code [NCLOC] in the file) as the response variable, and the measurement unit is faults/KLOC. The processed data are depicted in Figure 4, but the Density of Faults distribution still does not follow a normal distribution. As fault data with a normal distribution is absent, many counting models, such as Poisson distribution, failed to work.
+
+- Considering the presence of excessive 0 in the faults data, DefDIQ adopts the NB regression model and ZINB regression model to analyze the relationship between the faults and Android code smells. And the two regression models are inclusive of over-discrete response variables, that is, allowing the variance > the mean. Nearly half of the apps have no faults, such data are subject to significant bias in the traditional Poisson regression model, while ZINB model provides
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+ZHONG et al. 2307
+# Applications Fault Counts/1000 lines of code
+F I G U R E 4 Application fault counts density statistics.
+
+insight to address this issue. In DefDIQ, we apply NB and ZINB to build the counting models and evaluate the model fitness by Akaike Information Criterion (AIC) and Bayesian Information Criterion (BIC) metrics. Where the fault counts are dependent variables and some custom Android code smells are selected as arguments.
+
+# 4 EXPERIMENTAL SETUP
+To investigate and evaluate the performance of DefDIQ in automatically detecting Android code smell and constructing fault counting models, we designed the following research questions (RQs):
+- RQ1: How effective is DACS detecting custom Android code smells?
+- RQ2: What is the correlation between Android code smells and the faults in the fault counting model?
+- RQ3: What is the fitting degree of the fault counting model constructed by NB and ZINB, and to what extent do they affect the quality of the apps?
+RQ1 investigates the detection performance of DACS and explores whether the DACS can replace manual detection. Since the code smells detected are novel and customizable, there is no mature tool for comparison. To obtain a reliable reference for the detection results, we invited researchers to accomplish the code smell detection of the apps and take it as a baseline to verify the effectiveness.
+
+RQ2 intends to investigate the distribution between five selected code smells and faults by constructing fault counting models, and observe the correlation between code smells and faults to direct developers and researchers to smells with more significant impacts on security and quality.
+
+RQ3 investigates which regression model is more appropriate for the experimental dataset and quantifies the impact of security code smells on quality based on the best model. This helps to determine the relative importance of code smells on quality (fault causation), assisting in the generation of repair priorities and providing a practical guideline for inexperienced developers.
+
+# 4 DACS experiment
+In this section, we investigate the DACS performance and verify its effectiveness by measuring the agreement with manual detection results. Specifically, note that, manual detection and DACS only share the same code smell definitions while not sharing any other detection strategies.
+
+# 4 Dataset
+The experiment was deployed on 20 open-source Android apps from small- and medium-sized projects with high star ratings on GitHub. The 20 apps originate from distinct categories involving learning, video and audio, reading, social, game, etc., with different sizes. Table 2 summarizes the release and package links associated with the apps.
+
+# 4 Experimental settings
+We use DACS to label the custom code smells within Java files in corresponding apps and obtain detection reports. Then we arranged two experienced Java programmers to manually check the files based on the detailed definitions and count the smells. To minimize the errors caused by individual subjective judgment, the second programmer was arranged to detect again after the first one completed the detection work. The second review focused on whether the first programmer misidentified the smells. The two programmers worked independently and without communication during the detection. The results showed only 11 code segments detected by the first programmer were categorized as misidentified by the second. After discussion, six code segments were finally identified as misidentified, and then revised the results. Additionally, to avoid bias, the programmers did not know the experimental details and the specific rules of DACS. By this point, a relatively unbiased and accurate code smell detection result was generated, and we regard it as a comparison baseline.
+
+# 4 Evaluation method
+Code smell is a subjectively defined code structure that possibly negatively influences the app’s performance. However, there is a lack of open-source, detailed code smell detection methods in the industry, which makes it infeasible to adopt precision or recall as evaluation metrics without a baseline of reliable detection data. Consequently, we measure the agreement with manual detection as DACS evaluation metrics. Cohen’s Kappa statistic is a common metric for agreement testing, but it is suitable for categorical ratings while having some limitations in count-based models. For continuous integer experimental data, Lin’s CCC will be better for measuring the agreement of two objects. Assuming two random variables x and y, the formula for CCC 𝜌C is given in Equation (4).
+
+𝜌C = (𝜇x − 𝜇y)² + 𝜎x²𝜌𝜎x𝜎y²,
+where 𝜇x and 𝜇y are the means of the two variables, 𝜎x² and 𝜎y² are the corresponding variances, and 𝜌 is the correlation coefficient. When the dataset length is N, that is, (xn, yn), n = 1, … , N. Then the CCC is calculated in Equation (5).
+
+rc = sx² + (x − y)²sxy
+2 + sy
+# T A B L E 2 Apps for detect Android code smell effectiveness evaluation.
+
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+ZHONG et al. 2309
+Among them, the mean is obtained by Equation (6), the variance sx2 and covariance sxy are expressed by Equation (7).
+
+∑n=1N xn = 1 (6)
+∑n=1N (xn − x)2, N
+∑n=1N (xn − x)(yn − y).N
+sx2 = 1
+sxy = 1 (7)
+DefDIQ relied on the CCC evaluation indicator as discrimination for DACS effectiveness, here N = 15, representing the 15 custom smells. The data pairs denote each code smell i, the occurrences for manual detection xi and DACS yi. Similar to the correlation coefficient, −1 ≤ 𝜌C ≤ 1 and −1 ≤ rC ≤ 1, when the metric approaches +1, it indicates strong agreement between x and y, and as the metric gets closer to −1, it indicates strong disagreement between x and y. Another accepted method is to interpret Lin’s CCC metric as Spearman rank correlation coefficient (e.g., <0 denotes poor agreement, while >0 indicates good agreement). In this paper, we follow this interpretation to analyze the agreement strength of the DACS and manual detection results, and the details are shown in Table 1. We rely on the CCC function in the DescTools library in R to obtain Lin’s CCC with the confidence interval 1 − 𝛼, (𝛼 = 0).

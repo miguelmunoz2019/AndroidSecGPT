@@ -1,0 +1,15 @@
+# 3 Google security statistics
+In 2018, 0% of all downloads from Google Play were Potentially Harmful Applications (PHAs). In 2017, the number was 0%. This increase is due to the change in methodology of upgrading the severity level of click fraud applications from policy violations to PHAs. If we omit the addition of click fraud for a comparison, 2018 is at 0% which is still a reduction from 2017 (see Fig. 3). Now we look for click fraud inside and outside of Google Play and warn users about these apps. All other PHA categories have declined each year or increased at low levels.
+
+# 279
+# 2017        2018
+# Distribution of PHA categories in Google Play; 2018
+# 3 Quick Heal
+Quick Heal Annual Threat Report 2019 brings forth insights and intelligence gathered by Quick Heal Security Labs about all that unfolded in the realm of cybersecurity in 2018 – divided into two sections viz (see Fig. 4). Windows and Android. The threat report begins with significant cyber-attack predictions made by Quick Heal Security Labs in 2018 that proved to be true, flagging off the possibility for future cyber-attacks. The report also sheds light on detection highlights of 2018 for both Windows and Android, with a breakup of detections made per day, per hour, per minute, and the entire year, along with a list of top 10 Windows and Android malware.
+
+# Android security vulnerabilities in 2018
+# 280
+# Conclusions
+Based on the research results, it can be concluded that the ISO/IEC 27034 standard regulates that vulnerability testing should be carried out, but it is not specified how and what should be tested for vulnerabilities. NIST and NIAP both refer to OWASP MASVS and contain controls by which the mobile application is tested, mainly focusing on vulnerabilities that relate to vulnerabilities in data storage and authorization. This is confirmed by statistics provided by Digital Security. The most recognized is MASVS. One of the parts of MASVS describes what and how to test.
+
+It should be noted that all standards rather weakly assess vulnerabilities that relate to interaction with the API. As it can be seen from the tests described in Section 3, the most critical vulnerabilities are vulnerabilities that are associated with interaction with the application server..

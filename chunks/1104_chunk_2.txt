@@ -1,0 +1,51 @@
+# 2 Privacy Report Card for Parental Control Solutions
+This study was able to conduct the first comprehensive study that aims to analyze different parental control software and hardware solutions. The researchers analyzed the applications by deploying a set of privacy and security tests. The applications chosen for this study were popular representatives of parental control applications available for download on Windows and Android OS.
+
+Notable findings of the study revealed the uncovered vulnerabilities on each parental control application. The cross-platform comprehensive analysis of the selected application revealed the systematic problems in the deployment of the parental control application in terms of privacy and security which poses a grave threat to children’s online and real-world safety.
+
+The study was able to develop an experimental framework for analyzing and evaluating parental control applications. The developed framework was utilized to provide the first comprehensive study of parental control on different platforms. This paper was also able to present the suggested proof-of-concept exploits scenarios of each identified vulnerability. The experimental framework presented in this study may serve as a guide in the current study for evaluating parental control applications in terms of their safety and security.
+
+# 2 Angel or Devil? A Privacy Study of Mobile Parental Control Apps
+This study aimed to analyze and assess various privacy risks on the regulatory compliance of the 46 different parental control applications. Specifically, the study aims to determine if parental control applications have vulnerabilities in terms of dangerous permissions, having 3rd party libraries, and private data dissemination.
+
+The study searched for parental control applications and eliminated those that do not implement parental control functionalities until a total of 61 parental control apps is found. The researchers also discarded applications that have not been updated since 2016 and resulted in a final dataset of 419 versions of 46 parental control applications. The study used a static analysis wherein parsing of its android manifest file was done to understand the high-level behavior without analyzing the binary code. Dynamic analysis was also carried out to collect actual evidence on the dissemination of personal data.
+
+© IEOM Society International
+6465
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+The findings of the static and dynamic analysis show that the 46 applications in this study, the average tends to request more dangerous permission compared to the top 150 applications in the Google Play Store. Moreover, several dangerous permissions-protected methods are invoked embedded third-part libraries only. In the transmission of personal data, a total of 11% of the applications exploit personal data in the clear. 34% of the applications tend to send and gather personal information without the consent of the user. Moreover, 72% of the applications share user's data with third parties, including online advertisements and analytics services, without a proper indication of their presence in their privacy policies.
+
+The study summarized that parental control applications lack in terms of their transparency on their user and lacks compliance with the regulatory requirements. It calls into question the exposure of the users to privacy risks that are present in the application.
+
+# 3. Methods
+This research used a quantitative case study procedure to conclude findings. Certain formulas and measures were used to derive results from the data that has been collected. The case study was done by using the vulnerability assessment procedure to have an explanatory and descriptive analysis of the subject of this research.
+
+The Quixxi (2020) Security tool was used to identify the general security issues, their severity, assessment status, and their corresponding exploit definition and software weakness type. The severity level has three levels: HIGH, MEDIUM, and LOW. The automated assessment status has only binary values: FAIL or PASS. The security assessments that were marked as FAILED in the assessment status indicate the vulnerability of the scanned application.
+
+For the treatment of data, a tally system was utilized. The score of an item has been determined based on how many occurrences it has in the data set. Tallying is used to determine the top three used parental control software and the common vulnerabilities between those three. Since the FAILED assessments indicate the vulnerabilities of the mobile app, the fail rate has been determined and was computed using the formula:
+𝑅𝑅𝑇𝑇𝑇𝑇𝑇𝑇𝑇𝑇 𝐹𝐹𝑇𝑇𝐹𝐹𝑇𝑇𝐹𝐹𝐹𝐹 𝑅𝑅𝐹𝐹𝑇𝑇𝑇𝑇𝑇𝑇
+𝐹𝐹𝐹𝐹𝐹𝐹𝐹𝐹 𝑅𝑅𝐹𝐹𝑅𝑅𝑅𝑅 = 𝑅𝑅𝑇𝑇𝑇𝑇𝑇𝑇𝑇𝑇 𝑉𝑉𝑉𝑉𝑇𝑇𝑉𝑉𝐹𝐹𝑉𝑉𝑇𝑇𝑉𝑉𝐹𝐹𝑇𝑇𝐹𝐹𝑇𝑇𝐹𝐹𝐹𝐹𝑇𝑇
+Additionally, for the statistical validation, the mean of the fail rate of each of the top three applications was computed. The means of fail rate of each severity level has been identified and the overall fail rate has been identified. The values of means generally represent the quantitative value of fail rate which pertains to the vulnerabilities of the parental control mobile applications. The overall fail rate was determined whether to accept or reject the directional hypothesis “the parental control mobile applications are secured with a fail rate average of less than or equal to 40%”.
+
+# 4. Data Collection
+A questionnaire through Google Forms is the initial instrument for this research that aims to gather information on how many parents are using parental control tools, and which parental control software they are using. The top three most used software that has been gathered is the focus of the software vulnerability assessment. The respondents for the initial questionnaire are random parents or guardians with a child or children that access the Internet. Their response was treated as the input to identify the top three most used parental control mobile applications.
+
+The software vulnerability assessment of the parental monitoring tools was done through Quixxi (2020) Security. This is an automated web-based vulnerability scanning tool that provides a detailed analysis of the risks of a mobile application. Quixxi is using Open Web Application Security Project (OWASP) security requirements and guidelines. Quixxi checks the static and runtime behaviors of an app and identifies its severity level, associated risk, and security flaws. Out of the 8 Mobile AppSec Verification Standard (MASVS) requirements, only 6 are being checked by the Quixxi tool with a total of 30 vulnerability assessment items. The Quixxi Security scanning tool checks the security requirements of OWASP’s MASVS except for V1 and the V4.
+
+© IEOM Society International 6466
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+Singapore, March 7-11, 2021
+# 5. Results and Discussion
+# 5 Most Frequently Used Parental Control Application
+As shown in Figure 1, out of the fifty participants, only thirteen of them were using parental control software. Out of those thirteen, it shows that 7 (53%) of the participants were using Family Time, 2 (15%) participants were using Google Family Link, 2 (5%) participants were using OurPact, 1 (7%) participant was using AVG, 1 (7%) participant was using Norton, 1 (7%) participant was using Kaspersky Safe Kids, 1 (7%) participant was using Famisafe as their parental control application for monitoring their children.
+
+As a result, the top three most used parental control software are FamilyTime, OurPact, and Google Family Link. The APK files of these mobile applications were used as the samples for the vulnerability assessment using the Quixxi Security vulnerability scanning tool.
+
+# 5 Vulnerabilities of the Most Used Parental Control Application
+© IEOM Society International
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+Singapore, March 7-11, 2021
+As presented in Table 1, there are numerous failed assessments observable in every application tested. In the vulnerability assessment performed in the application FamilyTime, out of 10 issues with a severity level of 'High', there are six 6 assessments that have an assessment status of 'Fail' which yields a 60% fail rate. While out of the 13 issues with a severity level of 'Medium', there are seven 7 assessments that have an assessment status of 'Fail' that results in a 53% fail rate. Lastly, out of 7 issues with a severity level of 'Low', there are 2 assessments that have an assessment status of 'Fail' that earns a 28% fail rate. There is a total number of 30 scanned vulnerability assessments, and out of the 30 vulnerability assessments, 15 issues have an assessment status of 'Fail' which yields a 50% of the fail rate.
+
+For the vulnerability assessment and scanning for the application Family Link, out of the 10 discovered issues with a severity level of 'High', 6 have an assessment status of 'Fail' that results in a 60% fail rate. Out of the 13 discovered issues with a severity level of 'Medium', 7 has an assessment status of 'Fail' that results in a 53% fail rate. And out of the 7 discovered issues with a severity level of 'Low', 3 have an assessment status of 'Fail' which yields a fail rate of 42%. The total number of vulnerabilities scanned from Family Link is thirty 30 and 16 issues had an assessment status of 'Fail' that results in a 53% fail rate.

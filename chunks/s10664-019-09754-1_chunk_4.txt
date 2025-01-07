@@ -1,0 +1,55 @@
+Specifically, let p be a dependency included in depsc, i.e., the set composed of all the dependencies of a client (e.g., a mobile app), and t a point in time. Let available(p, t) be the set of all releases of p that are available at time t and installable(d, t) be the set of all available releases of the dependency d that satisfy the dependency constraint. It is worth noting that in this study the dependency constraints are defined in the GRADLE file of each app. Given available(p, t) and installable(d, t), we define missed(d, t) as the set of the releases of p that could not be updated in the client because of the dependency constraint.
+
+The technical lag t(d, t) for the dependency d at time t is equal to 0 if none of the releases of d was skipped (e.g., missed(d, t) = ∅). Otherwise, it is equal to the difference between the date of the first release that was skipped and t, i.e., t(d, t) = t - min{dater | r ∈ missed(d, t)}, where r is a missed release and dater its release date.
+
+Finally, given a client c (e.g., a mobile app) and the set of its dependencies depsc, its technical lag at time t is the maximal technical lag induced by all its dependencies, i.e., t(c, t) = max{t(d, t) | d ∈ depsc}.
+
+It is important to point out that previous studies  demonstrated that a high technical lag could lead to serious consequences such as backward incompatibilities and security vulnerabilities. Thus, studying the technical lag represents an opportunity to measure the extent to which mobile apps are prone to such undesired issues.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+# 2 Apps History Analysis Methodology (RQ 2)
+From a more practical point of view, we computed the number of days between the first release of the library that could not be used because of the dependency constraint and t.
+
+As for RQ2 and RQ 2, we manually categorized the libraries. We started from the taxonomy provided by MAVEN. Unfortunately, a category different from the ambiguous “Android Packages” was available only for ≈ 10% of the libraries. Therefore, we manually classified the categories of libraries in our dataset. This process was done by three authors of the paper, who jointly analyzed each library and classified it based on its characteristics and features. Such a process followed three iterations in which the authors discussed and continuously improved the taxonomy until ending up with the final set.
+
+Once assigned the investigated libraries to the corresponding category, we counted the number of updates for the libraries in a certain category and the number of upgrades and downgrades occurring in each category. Moreover, we complemented this analysis by means of qualitative examples aimed at understanding the likely reasons behind the higher/lower updates of libraries in given categories. To this aim, we manually analyzed commit messages and comments left on the repository by the developers of the apps presenting the higher and lower version change with respect to a certain category. It is important to note that this qualitative investigation had not the goal to systematically analyze and classify all the possible causes leading developers to update or not a library version, but instead that of finding likely reasons behind upgrades and downgrades occurring on specific categories.
+
+To determine the update patterns and answer to RQ 2, we adopted an “open coding” process (Strauss and Corbin 1998), which is a set of activities used to discover ideas, concepts and theories through the manual analysis of contents. We distributed between the participants the library version changes history of all the observed applications. Starting from the total 11626 library histories considered, four authors were assigned to the analysis of a sample of 3500 of them. This sample was composed of 2906 library histories that each author was required to analyze independently plus additional 594 library histories that were also evaluated by one of the other authors. Each author independently analyzed the way mobile developers update the version of the libraries, by relying on a graphical representation of the evolution of a library version change in a given mobile app. The classification results for the 594 library histories coming from each author (2374 in total) allowed us to study the inter-rater agreement  among them with respect to the assigned update patterns. To this aim, we computed the Krippendorff’s alpha agreement metric , which measured 0, that indicates a high agreement. Looking at the graphs, the involved authors independently classified an update-pattern using a label, e.g., “diligent update” when the version of a library was constantly changed during the evolution of a certain app.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+# 2351
+Once the first step of the open coding procedure was concluded, the authors discussed their codings in order to (i) double-check the consistency of their individual categorization, and (ii) refine the identified categories by merging similar categories they identified or splitting when it was the case. To evaluate the open coding process, we computed the level of agreement between the authors using the widely known Krippendorff’s alpha Kr α . As a result, the agreement was equal to 0, thus being considerably higher than the 0 standard reference score  for Kr α. In the other cases, the four authors opened a discussion in order to reach an agreement. In Section 3, we reported the percentage of times we classified specific update patterns, by also providing qualitative examples aimed at explaining the underlying reasons behind the observed behaviors.
+
+# 2 Developers’ Surveying Methodology (RQ 3)
+# Empirical Software Engineering (2020) 25:2341–2377
+Empirical Software Engineering (2020) 25:2341–2377 2353
+avoid lazy responses , that appears in case developers with no opin-
+ions on the topic still answer the questions, thus creating a form of bias in the interpretation
+of the results.
+
+In Section 3 we report statistics of the distribution of the developers’ answers over the
+categories present in the closed questions (i.e., where the possible answers are predefined),
+while we qualitatively analyzed the collected answers for open questions: to this aim, we
+first summarized in a short phrase the essential topic of each open answer; then, we iden-
+tified explanatory codes to create emergent themes that we discussed among the authors.
+
+# 3 Results
+In this section we discuss the results achieved aiming at answering our research questions.
+
+# 3 RQ1 – When Do developers Update Third-Party Libraries?
+Before discussing the results for RQ1, it is worth observing the diffuseness of third-party
+libraries usage in our dataset. Table 2 shows that all the apps rely on at least 1 external
+library. While this is quite expected (Android apps need to refer to the android.core
+library to be run), it is also important to observe that the average usage of libraries is almost
+4, with apps even reaching 44. It is worth noting that we did not took into consideration
+inherited dependencies, because they are not explicitly in control of the developers. Table 3
+shows the 33 categories of the 1043 libraries considered in our study. The table is sorted
+in descending order by the count of libraries. Over 30% of the libraries refer to the cate-
+gories GUI. It means that developers often rely on libraries providing a set of tools for the
+implementation of GUIs, rather than implementing their own GUI. The libraries that ease
+networking management and development (“frameworks”) follow.
+
+The analysis of the diffuseness is needed to support our work. Indeed, a better exploration
+of the phenomenon may be useful for researchers and practitioners to focus their effort on
+devising specific techniques and tools to support the evolution of libraries. The following
+subsections discuss the results for the sub-research questions formulated within RQ1.

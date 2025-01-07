@@ -1,0 +1,58 @@
+Various security measures can be implemented by developers, users, and app hosting providers to safeguard mobile devices from security threats . Developers play a critical role in ensuring app security by adhering to secure coding practices, including the use of robust cryptographic algorithms with long keys and TLS/SSL for secure communication. Regular issuance of security updates and the inclusion of security patches in their libraries are recommended practices. Users also have responsibilities in protecting their devices and data, such as keeping their operating systems and apps up to date, refraining from device rooting, and being cautious when installing unfamiliar apps. It is advisable for users to download apps exclusively from reputable sources like the Google Play Store, which conducts checks for malicious code. Downloading apps from third-party or internet sources can pose security risks.
+
+Hosting providers, like the Google Play Store, serve as trustworthy platforms for Android apps and actively monitor and disable apps with security vulnerabilities. Using techniques such as static and partial dynamic analysis, this app store can assign security scores to mobile apps based on their security measures, potentially influencing developers to implement robust security practices to improve their apps’ visibility in searches and recommendations. This approach empowers users to make informed decisions about app installations based on their security scores. While millions of apps are available on the widely used Google Play Store, the exponential growth of mobile app usage has raised concerns about security. Vulnerabilities that expose sensitive information have been identified in many apps, and even official app stores have hosted malicious apps. To address these issues, mobile app developers and device manufacturers should consider various security measures, including the adoption of blockchain technology, as suggested by our study.
+
+Many suggested solutions and recommendations have been made by researchers to enhance the security of data storage in Android OS. Physical and software threat solutions have been proposed, like using Clean OS, TinMan, Sentry, Armored, Deadbolt, and Droid-Vault for physical threats and Android Encryption for software threats . Still, more research is required as new technologies like blockchain are being developed to address the challenges facing data storage security and provide more secure, high-performance, scalable, cost-effective, and reliable data storage solutions.
+
+# 1. Structure of the Article
+This paper is structured into six main sections, it begins with an Introduction section where we provide an overview of the mobile app industry’s security challenges and the motivation for our study. In the Blockchain Technology and Data Storage section, we explore the fundamentals of blockchain technology, its components, types of networks, and data storage mechanisms. Moving on to the Related Work section, we conduct a literature review and history of blockchain in mobile apps and identify research gaps. The Blockchain-Based Mobile Apps Framework section introduces the need for blockchain in Android data storage, outlines the advantages of blockchain over traditional encryption methods, and presents our proposed framework—the Blockchain-based Secure Android Data Storage (BSADS) framework—with detailed discussions of its six layers. It also addresses various obstacles in adopting blockchain for mobile apps, from data storage costs to scalability and mobile-specific constraints with proposed solutions to these challenges, including blockchain pruning, off-chain solutions, and energy-efficient consensus algorithms. The Future Directions and Recommendations section explores potential paths forward, such as leveraging lightweight nodes and integrating with emerging technologies. Finally, we conclude with a recap of our key findings in the Conclusions section, emphasizing the promise of blockchain in enhancing Android mobile app data storage security, while noting that ongoing research holds the key to unlocking its full potential.
+
+# 2. Blockchain Technology and Data Storage
+Blockchain technology was introduced by Satoshi Nakamoto in 2008 [38–41]. Blockchains are decentralized digital record-keeping systems that consist of transactions that are verified using cryptography and grouped together into blocks [42–45]. Together, the blocks are linked in a secure way, making it easy to detect any tampering . As more blocks are added, it becomes harder to make changes to older blocks, making the chain of blocks tamper-resistant. The ledger is duplicated across the network, and any discrepancies are automatically resolved based on established protocols . The general architecture of a blockchain is shown in Figure 1.
+
+Away from blockchain technology, various approaches to data storage, including relational databases like MySQL or Oracle, NoSQL databases such as MongoDB or Cassandra, centralized storage solutions, and cloud-based storage solutions all offer a range of advantages and drawbacks. Relational databases provide strong consistency and transactional support but can be complex to manage and may not scale well for extensive datasets. NoSQL databases prioritize
+Sensors 2023, 23, 8749
+flexibility and scalability but may sacrifice some consistency for performance and can be chal-
+lenging to query and maintain. Centralized storage offers simplicity and high performance but
+is vulnerable to security risks and lacks transparency. Cloud storage, while cost-effective and
+convenient, raises concerns about data privacy and security due to offsite storage. In general,
+the choice of data storage approach will depend on the specific needs and requirements, as
+well as the available resources and expertise [48–53]. As we are concentrating on the use of
+blockchain for data storage security, let us explore that thoroughly.
+
+# 2. Blockchain Components
+In this subsection, we delve into the core components of the blockchain system to gain
+a better understanding of the technology . Transactions form the foundation of a
+blockchain, as data is organized into blocks and arranged in a specific order . In decen-
+tralized blockchain networks, transactions are initiated using private key cryptography,
+initially stored in an unconfirmed transaction pool. These transactions undergo validation
+by peers, and upon confirmation by miners and verification through the network’s consen-
+sus mechanism, they are added to a block and subsequently included in the immutable
+ledger maintained by each peer. Mining, a pivotal process, involves the validation and
+addition of transaction records to blocks using linked-list-based data structures. Miners
+undertake this task by solving computational puzzles through consensus algorithms like
+Proof of Work (PoW). While this process continually expands the blockchain, valid solutions
+can sometimes lead to delays or forks in the blockchain, with miners actively monitoring
+the network to choose which fork to mine on. Blockchain maintenance, therefore, becomes
+a collaborative and decentralized effort among miners . Achieving consensus poses
+a unique challenge in a trustless environment with no centralized authority. Various con-
+sensu protocols have been developed to address this challenge and ensure agreement
+among nodes on the blockchain’s current state and the validity of new transactions. These
+protocols draw parallels to the Byzantine generals problem, where generals must agree
+despite potential traitors in their midst. Multiple consensus algorithms are employed in
+blockchain systems, including Proof of Work (PoW), Practical Byzantine Fault Tolerance
+(PBFT), Tendermint, Proof of Stake (PoS), and Delegated Proof of Stake (DPoS), each with
+distinct characteristics and considerations. Finally, while not present in all blockchains,
+smart contracts play a pivotal role in networks like Ethereum. Smart contracts are self-
+executing agreements with contractual terms expressed in code . They can be stored
+on blockchain networks and facilitate asset exchanges without intermediaries [60–66]. Fur-
+thermore, smart contracts can serve as a means of data storage, encoding data directly
+into the contract to create a tamper-proof and permanent record accessible and verifiable
+by authorized parties using cryptographic keys. Smart contracts  offers a secure and
+transparent approach to decentralized data storage in mobile apps. However, they are
+not without limitations, such as deployment costs, execution complexity, and potential
+code vulnerabilities.
+
+# 2. Types of Blockchain Networks
+The type of blockchain network can be determined by its permission model, which
+decides who has the ability to maintain it (e.g., adding blocks).

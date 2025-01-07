@@ -1,0 +1,121 @@
+2. Andrus, J., Dall, C., Hof, A., Laadan, O. and Nieh, J. Cells: A Virtual Mobile Smartphone Architecture. In Proceedings of the 23rd ACM Symposium on Operating Systems Principles. ACM, 2011, 173-187.
+
+3. Backes, M., Gerling, S., Hammer, C., Maffei, M. and Styp-Rekowsky, P.V. AppGuard – Enforcing User Requirements on Android Apps. In Tools and Algorithms for the Construction and Analysis of Systems. Springer Berlin Heidelberg, 2013, 543-548.
+
+4. Balebako, R., Jung, J., Lu, W., Cranor, L.F. and Nguyen, C. "Little Brothers Watching You": Raising Awareness of Data Leaks on Smartphones. In Proceedings of the 9 th Symposium on Usable Privacy and Security. ACM, 2013, 12:1-12:11.
+
+6 http://comag.oulu.fi/securacy-understanding-mobile-privacy-and-security-concerns/
+# 5. BBC News - Can Europe go its own way on data privacy?
+http://www.bbc.com/news/technology-26228176, retrieved 23/01/2015.
+
+# 6. Becher, M., Freiling, F.C., Hoffmann, J., Holz, T., et al.
+
+Mobile Security Catching Up? Revealing the Nuts and Bolts of the Security of Mobile Devices. In Symposium on Security and Privacy. IEEE, 2011, 96-111.
+
+# 7. Benenson, Z., Gassmann, F. and Reinfelder, L.
+
+Android and iOS Users' Differences Concerning Security and Privacy. In CHI '13 Extended Abstracts on Human Factors in Computing Systems. ACM, 2013, 817-822.
+
+# 8. Benton, K., Camp, L.J. and Garg, V.
+
+Studying the effectiveness of android application permissions requests. In 5th Int. Workshop on Security and Social Networking. IEEE, 2013, 291-296.
+
+# 9. Beresford, A.R., Rice, A., Skehin, N. and Sohan, R.
+
+MockDroid: Trading Privacy for Application Functionality on Smartphones. In Proceedings of the 12th Workshop on Mobile Computing Systems and Applications. ACM, 2011, 49-54.
+
+# 10. Burguera, I., Zurutuza, U. and Nadjm-Tehrani, S.
+
+Crowdroid: Behavior-based Malware Detection System for Android. In Proceedings of the 1st ACM Workshop on Security and Privacy in Smartphones and Mobile Devices. ACM, 2011, 15-26.
+
+# 11. Chan, H. and Perrig, A.
+
+Security and privacy in sensor networks. Computer 36, 10, 2003, 103-105.
+
+# 12. Cisco Visual Networking Index Forecast Projects 18-Fold Growth in Global Mobile Internet Data Traffic From 2011 to 2016.
+
+http://newsroom.cisco.com/release/668380/Cisco-Visual-Networking-Index-Forecast-Projects-18-Fold-Growth-in-Global-Mobile-Internet-Data-Traffic-From-2011-to-2016, retrieved 05/09/2014.
+
+# 13. Consolvo, S. and Walker, M.
+
+Using the experience sampling method to evaluate ubicomp applications. IEEE Pervasive Computing 2, 2, 2003, 24-31.
+
+# 14. Dashboards for Android Developers.
+
+https://developer.android.com/about/dashboards/index.html, retrieved 1/05/2015.
+
+# 15. Edward Snowden urges professionals to encrypt client communications.
+
+http://www.theguardian.com/world/2014/jul/17/edward-snowden-professionals-encrypt-client-communications-nsa-spy, retrieved 17/09/2014.
+
+# 16. El-Khatib, K., Korba, L., Xu, Y. and Yee, G.
+
+Privacy and Security in E-Learning. International Journal of Distance Education Technologies (IJDET) 1, 4, 2003, 1-19.
+
+# 17. Enck, W., Gilbert, P., Chun, B.-G., Cox, L.P., et al.
+
+TaintDroid: An Information-flow Tracking System for Realtime Privacy Monitoring on Smartphones. In Proceedings of the 9th USENIX Conference on Operating Systems Design and Implementation. USENIX Association, 2010, 1-6.
+
+# 18. Fahl, S., Harbach, M., Muders, T., Baumgärtner, L., et al.
+
+Why Eve and Mallory Love Android: An Analysis of Android SSL (in)Security. In Proceedings of the 2012 ACM Conference on Computer and Communications Security. ACM, 2012, 50-61.
+
+# 19. Fahl, S., Harbach, M., Perl, H., Koetter, M. and Smith, M.
+
+Rethinking SSL Development in an Appified World. In Proceedings of the 2013 ACM SIGSAC Conference on Computer & Communications Security. ACM, 2013, 49-60.
+
+# 20. Felt, A.P., Egelman, S. and Wagner, D.
+
+I've Got 99 Problems, but Vibration Ain'T One: A Survey of Smartphone Users' Concerns. In Proceedings of the Second ACM Workshop on Security and Privacy in Smartphones and Mobile Devices. ACM, 2012, 33-44.
+
+# 21. Felt, A.P., Finifter, M., Chin, E., Hanna, S. and Wagner, D.
+
+A Survey of Mobile Malware in the Wild. In Proceedings of the 1st ACM Workshop on Security and Privacy in Smartphones and Mobile Devices. ACM, 2011, 3-14.
+
+# 22. Ferreira, D., Ferreira, E., Goncalves, J., Kostakos, V. and Dey, A.K.
+
+Revisiting Human-Battery Interaction with an Interactive Battery Interface. In Ubicomp. ACM, 2013, 563-572.
+
+# 23. Ferreira, D., Kostakos, V. and Dey, A.K.
+
+AWARE: mobile context instrumentation framework. Frontiers in ICT 2:6, (2015) DOI: 10/fict.
+
+# 24. Ferreira, D., Kostakos, V. and Dey, A.K.
+
+Lessons Learned from Large-Scale User Studies: Using Android Market as a Source of Data. International Journal of Mobile Human Computer Interaction 4, 3, 2012, 28-43.
+
+# 25. Fu, B., Lin, J., Li, L., Faloutsos, C., et al.
+
+Why People Hate Your App: Making Sense of User Feedback in a Mobile App Store. In Proceedings of the 19th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM, 2013, 1276-1284.
+
+# 26. Fu, H., Yang, Y., Shingte, N., Lindqvist, J. and Gruteser, M.
+
+A Field Study of Run-Time Location Access Disclosures on Android Smartphones. In USEC'14. 2014.
+
+# 27. Hill, R., Hansen, M. and Singh, V.
+
+Quantifying and Classifying Covert Communications on Android. Mobile Networks and Applications 19, 1, 2014, 79-87.
+
+# 28. Hornyack, P., Han, S., Jung, J., Schechter, S. and Wetherall, D.
+
+These Aren'T the Droids You'Re Looking for: Retrofitting Android to Protect Data from Imperious Applications. In Proceedings of the 18th ACM Conference on Computer and Communications Security. ACM, 2011, 639-652.
+
+# 29. Hubaux, J.-P., Capkun, S. and Luo, J.
+
+The security and privacy of smart vehicles. IEEE Security & Privacy Magazine 2, LCA-ARTICLE-2004-007, 2004, 49-55.
+
+# 30. IANA TCP/IP port specifications.
+
+http://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml?&page=126, retrieved 14/03/2014.
+
+# 31. Jing, Y., Ahn, G.-J., Zhao, Z. and Hu, H.
+
+RiskMon: Continuous and Automated Risk Assessment of Mobile Applications. In Proceedings of the 4th ACM Conference on Data and Application Security and Privacy. ACM, 2014, 99-110.
+
+# 32. Kelley, P.G., Consolvo, S., Cranor, L.F., Jung, J., et al.
+
+A Conundrum of Permissions: Installing Applications on an Android Smartphone. In Financial Cryptography and Data Security. Springer Berlin Heidelberg, 2012, 68-79.
+
+# 33. Kelley, P.G., Cranor, L.F. and Sadeh, N.
+
+Privacy As Part of the App Decision-making Process. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems. ACM, 2013, 3393-3402..

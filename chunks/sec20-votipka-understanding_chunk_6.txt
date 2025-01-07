@@ -1,0 +1,53 @@
+a competitor team actually found and exploited the vulnera- bility (Actual Exploitation). Figure 1 shows the number of vulnerabilities for each type with each bar divided by Exploit Difficulty, bars grouped by Discovery Difficulty, and the left and right charts showing partial and full attacker control vulnerabilities, respectively.
+
+To compare these metrics across different vulnerability types and sub-types, we primarily use the same set of planned pairwise Chi-squared tests described in Section 5. When necessary, we substitute Fisher’s Exact Test (FET), which is more appropriate when some of the values being compared are less than five . For convenience of analysis, we binned Discovery Difficulty into Easy (execution) and Hard (source, deep insight). We similarly binned Exploit Difficulty into Easy (single-step, few steps) and Hard (many steps, deterministic or probabilistic).
+
+Misunderstandings are rated as hard to find. Identifying Misunderstanding vulnerabilities often required the attacker to determine the developer’s exact approach and have a good understanding of the algorithms, data structures, or libraries they used. As such, we rated Misunderstanding vulnerabilities as hard to find significantly more often than both No Implementation (φ = 0, p < 0 ) and Mistake (φ = 0, p = 0) vulnerabilities.
+
+Interestingly, we did not observe a significant difference in actual exploitation between the Misunderstanding and No Implementation types. This suggests that even though Misunderstanding vulnerabilities were rated as more difficult to find, sufficient code review can help close this gap in practice.
+
+That being said, Misunderstandings were the least common Type to be actually exploited by Break It teams. Specifically, using a weak algorithm (Not Exploited=3, Exploited=2), using a fixed value (Not Exploited=14, Exploited=12), and using a homemade algorithm (Not Exploited=1, Exploited=1) were actually exploited in at most half of all identified cases. These vulnerabilities presented a mix of challenges, with some rated as difficult to find and others difficult to exploit. In the homemade encryption case (SL-61), the vulnerability took some time to find, because the implementation code was difficult to read. However, once an attacker realizes that the team has essentially reimplemented the Wired Equivalent Protocol (WEP), a simple check of Wikipedia reveals the exploit. Conversely, seeing that a non-random IV was used for encryption is easy, but successful exploitation of this flaw can require significant time and effort.
+
+No Implementations are rated as easy to find. Unsurprisingly, a majority of No Implementation vulnerabilities were rated as easy to find (V=42, 58% of No Implementations). For example, in the SC problem, an auditor could simply check whether encryption, an integrity check, and a nonce were used. If not, then the project can be exploited. None of the All Intuitive or Some Intuitive vulnerabilities were rated as difficult to exploit; however, 45% of Unintuitive vulnerabilities were (V=22). The difference between Unintuitive and Some Intuitive is significant (φ = 0, p = 0), but (likely due to sample size) the difference between Unintuitive and All Intuitive is not (φ = 0, p = 0).
+
+As an example, SL-7 did not use a MAC to detect modifications to their encrypted files. This mistake is very simple to identify, but it was not exploited by any of the BIBIFI teams. The likely reason for this was that SL-7 stored the log data in a JSON blob before encrypting. Therefore, any modifications made to the encrypted text must maintain the JSON structure after decryption, or the exploit will fail. The attack could require a large number of tests to find a suitable modification.
+
+Mistakes are rated as easy to find and exploit. We rated all Mistakes as easy to exploit. This is significantly different from both No Implementation (φ = 0 , p = 0 ) and Misunderstanding (φ = 0, p < 0 ) vulnerabilities, which were rated as easy to exploit less frequently. Similarly, Mistakes were actually exploited during the Break It phase significantly more often than either Misunderstanding (φ = 0 , p = 0 ) or No Implementation (φ = 0, p = 0 ). In fact, only one Mistake (0%) was not actually exploited by any Break It team. These results suggest that although Mistakes were least common, any that do find their way into production code are likely to be found and exploited. Fortunately, our results also suggest that code review may be sufficient to find many of these vulnerabilities. (We note that this assumes that the source is available, which may not be the case when a developer relies on third-party software.)
+No significant difference in attacker control. We find no significant differences between types or sub-types in the incidence of full and partial attacker control. This result is likely partially due to the fact that partial attacker control vulnerabilities still have practically important consequences. Because of this fact, our BIBIFI did not distinguish between attacker control levels when awarding points; i.e., partial attacker control vulnerabilities received as many points as full attacker control. The effect of more nuanced scoring could be investigated in future work. We do observe a trend that Misunderstanding vulnerabilities exhibited full attacker control more often (V=50, 70% of Misunderstandings) than No Implementation and Mistake (V=44, 61% and V=20, 51%, respectively); this trend specifically could be further investigated in future studies focusing on attacker control.
+
+# 6 Discussion and Recommendations
+Our results are consistent with real-world observations, add weight to existing recommendations, and suggest prioritizations of possible solutions.
+
+Our vulnerabilities compared to real-world vulnerabili- ties. While we compiled our list of vulnerabilities by explor- ing BIBIFI projects, we find that our list closely resembles
+USENIX Association 29th USENIX Security Symposium 119
+# Partial
+# Full
+# No
+# Impl;
+# Deep Insight
+# Source
+# Execution
+# Deep Insight
+# Source
+# Execution
+# Deep Insight
+# Misund
+# Source
+# Execution
+# Deep Insight
+# Mistake
+# Source
+# Execution
+of vulnerabilities introduced
+Single slep
+Few steps (deterministic)
+Many steps (deterministic)
+Many steps (probabilistic)
+both Mitre’s CWE and OWASP’s Top Ten  lists. Overlapping vulnerabilities include: broken authentication (e.g., insufficient randomness), broken access control, security mis-configuration (e.g., using an algorithm incorrectly or with the wrong default values), and sensitive data exposure (e.g. side-channel leak).
+
+Get the help of a security expert. In some large organizations, developers working with cryptography and other security-specific features might be required to use security-expert determine tools and patterns to use or have a security expert perform a review. Our results reaffirm this practice, when possible, as participants were most likely to struggle with security concepts avoidable through expert review.
+
+API design. Our results support the basic idea that security controls are best applied transparently, e.g., using simple APIs . However, while many teams used APIs that provide security (e.g., encryption) transparently, they were still frequently misused (e.g., failing to initialize using a unique IV or failing to employ stream-based operation to avoid replay attacks). It may be beneficial to organize solutions around general use cases, so that developers only need to know the use case and not the security requirements.
+
+API documentation. API usage problems could be a matter of documentation, as suggested by prior work . For example, teams SC-18 and SC-19 used TLS socket libraries but did not enable client-side authentication, as needed by the problem. This failure appears to have occurred because client-side authentication is disabled by default, but this fact is not mentioned in the documentation Defaults within an API should be safe and without ambiguity . As another example, SL-22 (Listing 2) disabled the automatic integrity checks of the SQLCipher library. Their commit message stated “Improve performance by disabling per-page MAC protection.” We know that this change was made to improve performance, but it is possible they assumed they were only disabling the “per-page” integrity check while a full database check remained. The documentation is unclear about this
+Security education. Even the best documented APIs are useless when teams fail to apply security at all, as we observed frequently. A lack of education is an easy scapegoat, but we note that many of the teams in our data had completed a cybersecurity MOOC prior to the competition. We reviewed lecture slides and found that all needed security controls for the BIBIFI problems were discussed. While only three teams failed to include All Intuitive requirements (5% of MOOC teams), a majority of teams failed to include Unintuitive requirements (P=33, 55% of MOOC teams). It could be that the topics were not driven home in a sufficiently meaningful manner. An environment like BIBIFI, where developers practice implementing security concepts and receive feedback regarding mistakes, could help. Future work should consider how well competitors from one contest do in follow-on contests.

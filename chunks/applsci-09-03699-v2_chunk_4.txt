@@ -1,0 +1,57 @@
+Kennedy et al.  studied the effects of removing permissions from Android apps using the old permission model and identified 39 out of 662 (5%) that crashed directly because of the removal. We did not obtain the data for the apps using the new permission model. This problem seems not so common, but on the one hand, it can lead to quite unpleasant results (app crashing); on the other hand, it is certain that the frequency at which permissions are denied at runtime would increase greatly. Thus, the issue of unprotected APIs should raise an important concern for developers in the future.
+
+# 3. Summary
+We summarized permission-related issues raised by previous work and also conducted program analysis to identify new issues. From the developers’ perspective, on the one hand, these issues typically lead to unpleasant results and should be tackled as early as possible in the development phase; on the other hand, the issues are difficult and time-consuming to solve only by developers. Thus, it is necessary to use automated methods to help developers fix those issues in the developing process. This motivated us to propose PerHelper, an IDE plugin to fix permission-related issues for developers automatically, effectively, and accurately.
+
+# 4. PerHelper Design and Implementation
+In this section, we present the detailed design and implementation of PerHelper, an IDE plug-in to help developers understand and fix permission-related issues.
+
+# 4. Overview
+The goal of PerHelper is to design a plugin for Android Studio and IntelliJ IDEA (the base of Android Studio) to help Android app developers make better decisions about permission settings. In particular, PerHelper has two main functions. The first one is to help the developer to decide the exact permission sets he/she should use, based on the analysis of the permission declared and used in each app. The second task is to detect permission-related bugs such as unprotected API calls and wrong permissions. Thus, PerHelper is designed to be invoked by app developers during the app development phase. For example, developers could perform a permission check to generate the precise permission sets before app release or they could invoke PerHelper to detect permission-related bugs once they have declared a permission set manually.
+
+In order to help developers understand the best way to declare permissions in the Manifest file, we first introduce two permission set concepts as follows.
+
+- A Required Permission Set (RPS) contains all the permissions that must be included for the code written by the developers (custom code) to function correctly. Permissions in this set must be declared to guarantee the overall functionality of the app. Actually, RPS is the same as UPS_dev defined earlier, but here, we introduce it from the perspective of developers.
+
+- An Optional Permission Set (OPS) is defined as the set of permissions used only by third-party libraries. Obviously, we have: OPS = UPSlib − UPSdev
+As shown earlier, permissions in this set are likely to be ignored by developers. The reason why we regard this permission set as “optional” is that previous studies  showed that some
+Appl. Sci. 2019, 9, 3699 10 of 17
+Third-party libraries (i.e., ad libraries) might want to retrieve all the details on a user, including location, contact list, viewing history, etc. Typically, they request many sensitive permissions. Rational developers would decide which permissions should be provided to these libraries, instead of giving the libraries full capability to access all sensitive information of a mobile user. Developers should make their decisions based on the tradeoff between giving library more access and protecting user privacy.
+
+One might question whether ignoring some permissions used by third-party libraries would cause the app to crash, as discussed in Section 3. To tackle this, we will first use our tool to detect and fix the code to avoid potential crashes caused by those permissions, whose details will be shown later. More good news is that according to Kennedy et al. , third-party libraries are often able to handle the situation gracefully when the permissions they requested are missed. In practice, we also find few cases when removing permissions in OPS leads to app crashing.
+
+After performing analysis on permissions based on the app source code, PerHelper calculates the RPS and OPS sets and makes suggestions to developers on permission declaration:
+- All permissions in RPS should be declared; the developer would be warned if any permissions in RPS was missing in the Manifest file.
+
+- Only permissions in RPS are required to be declared; the developer would also be warned if any permissions out of RPS have been declared in the Manifest file.
+
+- All permissions in OPS can be declared at the developer’s discretion, based on his/her understanding of the library functionality and privacy concerns of the potential users of his/her app.
+
+# 4. PerHelper Implementation
+An overview of the PerHelper architecture is shown in Figure 2. In particular, PerHelper includes the following main steps: (1) data preprocessing and collection, (2) calculating required and optional permission sets, (3) checking permission correctness, and (4) detecting unprotected APIs. In the following, we will discuss each of these steps in detail.
+
+# 4. Data Preprocessing
+PerHelper performs analysis on multiple sources, including Java source code, native source code, and JAR files to analyze permission usage in order to generate permission sets RPS and OPS.
+
+We take advantage of the parser integrated in IntelliJ IDEA to deal with Java codes. The IDE has a parser framework called PSI (Program Structure Interface), which represents the whole project as a tree of PSI elements, such as .java files and method-invoking expressions.
+
+For C/C++ code, due to the flexibility of these languages and the vagueness of the NDK documentation, we decided to roughly parse them with regular expressions and offer a conservative permission set. We summarized a list of sensitive APIs in native code and performed a broad matching of such APIs in the corresponding C/C++ code. Note that, as we only performed analysis on the source code, we thus did not handle native external libraries (.so), and we also could not handle reflection calls.
+
+Lastly, we wrote a Java bytecode parser to extract all APIs used in JAR files for permission analysis.
+
+# 4. Calculating Permission Sets
+In order to determine the permission sets RPS and OPS for each app, PerHelper checks data from all three sources.
+
+We first iterated through all Java method call expressions using IntelliJ IDEA’s PSI utility and searched for each method name in an API-to-permission mapping generated with PScout . When a method is found in the mapping, PerHelper checks the package name of the class containing that expression. If it is the name of a third-party library compiled from LibRadar , all permissions
+Appl. Sci. 2019, 9, 3699
+required by the API would be added to OPS. Otherwise, new permissions would be added to RPS, while the API name and the file containing that invoking expression would be recorded in case the developer wants to know why those permissions are required.
+
+JAR files were treated similarly. We assumed that developers would only use JAR files to import third-party libraries; thus, all permissions used by API calls in the JAR files would be added to OPS.
+
+If the project contains C/C++ source files, PerHelper assumes that they are all essential to the project. Android has very little documentation about native APIs; none of them have clearly clarified which permission is needed for each function. Therefore, we cannot provide an accurate mapping even though we have manually reviewed the comments in all stable NDK headers. Besides native APIs, the JNI function call, which is somewhat similar to Android Intents, is also a tricky mechanism. To make sure the app works correctly, PerHelper provides any permissions that appear useful for native codes. If the developer is sure that some permissions are unnecessary, he or she has the freedom to ignore the suggestions.
+
+# 4. Permission Correctness Checking
+When RPS and OPS are completed, PerHelper compares them with permissions requested in AndroidManifest.xml and presents their differences to the developer. Specifically, if an applied permission has less than two different letters with a required or optional permission, then PerHelper will present a warning indicating that it may be mistyped.
+
+# 4. Detecting Unprotected APIs
+Another important feature of PerHelper is to detect permission-related bugs, such as potentially uncaught SecurityException raised by API calls, which may crash the app. The IDE itself will give a warning for some of the APIs that can throw SecurityException, but for some reason, it fails to identify all of them. For instance, we have verified that LocationManager.requestLocationUpdates() will crash the application if the permission is missing; however, the analyzer returns an empty thrown list for this method.

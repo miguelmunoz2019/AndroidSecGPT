@@ -1,0 +1,71 @@
+can be employed by developers to include fingerprint recognition in their apps. Goode Intelligence predicts that 3 billion users will use biometric systems on their mobile devices by 2018 (Yldrm and Varol, 2014). Mobile fingerprint technology has been used in different mobile applications that mainly focus on authenticating users, such as phone lock, mobile payment, and mobile banking (Yldrm and Varol, 2014) . Fingerprint in mobile devices encompasses several advantages; it is a fast authentication model, it is entirely accepted in mobile devices, and it provides competitive performance rate . However, deploying biometrics in mobile devices faces several challenges such as limited computation power, small storage capacity, and finite battery life. The algorithm used in traditional biometrics systems needs to be simplified to adapt to small CPU processing power of mobile phones. The essential simplicity might reduce the accuracy and security level, which will affect the performance of mobile-enabled biometric techniques . Besides, authors in  have shown how the inappropriate usage patterns of the fingerprint API in most Android apps such as Google Play Store and Square Cash can make these apps vulnerable to several attacks. Another challenge is how to maintain safe storage of biometrics data in the device. Growing biometrics databases carry with them expanding worries about the likelihood of theft or misuse of individuals’ biometrics. To preserve the privacy of biometric technology users, biometric data must be efficiently secured during storage in a database.
+
+Other security solutions for saving sensitive data on Android mobiles are cloud-based or remote server-based which require a working network, as this makes the accessibility of the stored contents depends on the network. Also, there is a possibility of user data getting disclosed, if the cloud storage or the remote server database gets compromised.
+
+# 4. Summary
+# Summary of Android Data Storage Threats and Solutions.
+
+# 5. Conclusion
+The literature exposes a set of identified threats on Android data storage, along with solutions to mitigate the risk and improve the security. We can deduce that users can influence the security of the data either by deciding to root the device, which is a risky process, or by disabling the FDE option. Besides, the developer influences the security of the data by building legitimate vulnerable apps, or by building malware apps that can access sensitive data. Cryptography is the primary defense against data disclosure; it is highly recommended to encrypt data on the device. Android provides two types of encryption systems, FDE and KeyChain that use password-based encryption method and depend on user’s passcode. Choosing a strong lock screen passcode is a critical issue, but requiring the user to type encryption password every time to unlock the screen, renders it unlikely to choose a secure password. Moreover, security of conventional cryptographic techniques relies on the assumption that only a legitimate user knows the cryptographic keys, hence, maintaining the secrecy of keys is a big challenge. In the password-based encryption method, the key is vulnerable to offline brute force attack when the encrypted key stored in the device . An attacker who gains physical possession of the smartphone can extract the data and mount an offline attack, trying passcodes until one is found that produces a key, which decrypts the data successfully . Moreover, it is dangerous to depend on user’s passwords since it can be easily lost, stolen, forgotten, or guessed. Thus, how to protect data on mobile devices against software and physical attacks, is still a significant and urgent problem. A promising solution would be to use biometric cryptosystem to protect the storage of the encryption key in the device. Biometric cryptosystem substitutes password-based encryption method; the user is not prompting to enter a password, s/he is requested to present his/her biometric template instead. It can be used to secure data against software attacks since data is encrypted, and against physical attacks because the cryptographic key is never stored in the device, only an auxiliary data will be stored.
+
+As a future work, we will investigate the threats and vulnerabilities of using biometrics for authentication and data encryption on Android. Besides, Android is continuously updated, and new versions are published endlessly. New versions might prevent some of the vulnerabilities discussed in this survey and open others. Thus, Android security and its threats should continuously be investigated.
+
+#tab=Top_10_Mobile_Risks (accessed: 02).
+
+‘‘Remotely ring, lock, or erase a lost device - Accounts Help”, Support.google.com, 2016. [Online]. Available: https://support.google.com/accounts/answer/6160500?hl=en (Accessed: 21).
+
+‘‘Storing Application Data”, Google Developers, Online Available: https://developers.google.com/drive/web/appdata 2016 (accessed: 13).
+
+‘‘What is ARM processor? - Definition from WhatIs.com”, WhatIs.com, 2016. [Online]. Available: http://whatis.techtarget.com/definition/ARM-processor (accessed: 17).
+
+‘‘javax.crypto—Android Developers,” Developer.android.com, 2016. [Online]. Available: http://developer.android.com/reference/javax/crypto/packagesummary.html (accessed: 23).
+
+Ahvanooey, M., Li, Q., Rabbani, M., Rajput, A., 2017. A survey on smartphones security: software vulnerabilities, malware, and attacks. Int. J. Adv. Comp. Sci. Appl. 8 (10), 30–45.
+
+Avila, C., Casanova, J., Baallestros, F., Garcia, L., Gomex, M., Sierra, D., Pozo, G., 2014. State of the art of mobile biometrics, liveness and non-coercion detection. In: Project FP7-610713 (PCAS), Public Deliverable, The European Union’s Seventh Framework Programme for research, technological development and demonstration.
+
+Bianchi, A., Gustafson, E., Fratantonio, Y., Kruegel, C., Vigna, G., 2017 Exploitation and mitigation of authentication schemes based on device-public information. In: Proceedings of the 33rd Annual Computer Security Applications Conference (ACSAC’17), Orlando, FL, USA, pp. 16–27.
+
+Bianchi, A., Fratantonio, Y., Machiry, A., Kruegel, C., Vigna, G., Chung, P., Lee, W., Broken fingers: on the usage of the fingerprint API in android. In: Proceedings of Network and Distributed System Security Symposium (NDSS’18), San Diego, CA, USA.
+
+Brasser, F., Davi, L., Gens, D., Liebchen, C., Sadeghi, A., 2017. CAn’t touch this: software-only mitigation against Rowhammer attacks targeting kernel memory. In: Proceedings of the 26th USENIX Security Symposium, Vancouver, BC, Canada.
+
+Casati, L., Visconti, A., 2018. The dangers of rooting: data leakage detection in android applications. Mobile Inf. Syst. 2018, 6020461.
+
+Colp, P., Zhang, J., Gleeson, J., Suneja, S., de Lara, E., Raj, H., Saroiu, S., Wolman, A., 2015. Protecting data on smartphones and tablets from memory attacks. In: Proceedings of the 20th International Conference on Architectural Support for Programming Languages and Operating Systems, Istanbul, Turkey, pp. 177–189.
+
+Egele, M., Brumley, D., Fratantonio, Y., Kruegel, C., 2013. An empirical study of cryptographic misuse in android applications. In: Proceedings of the 2013 ACM SIGSAC Conference on Computer & Communications Security (CCS ’13), Berlin, Germany, pp. 73–84.
+
+Fang, Z., Han, W., Li, Y., 2014. Permission based Android security: issues and countermeasures. Comput. Secur. 43, 205–218.
+
+Faruki, P., Bharmal, A., Laxmi, V., Ganmoor, V., Gaur, M., Conti, M., Rajarajan, M., 2014. Android security: a survey of issues, malware penetration and defenses. Commun. Surveys Tutorials 17 (2), 998–1022.
+
+Gao, M., Hu, X., Cao, B., Li, D., 2014. Fingerprint sensors in mobile devices. In: Proceedings of the 9th IEEE Conference on Industrial Electronics and Applications, Hangzhou, China, pp. 1437–1440.
+
+M. Ghasempour, M. Lujan, J. Garside, ‘‘ARMOR: A Run-time Memory Hot-Row Detector,” 2015. [Online]. Available: http://apt.cs.manchester.ac.uk/projects/ARMOR/RowHammer/ (accessed: 29).
+
+Götzfried, J., Müller, T., 2014. Analysing android’s full disk encryption feature. J. Wireless Mobile Networks, Ubiquitous Comput. Dependable Appl. (JoWUA) 5 (1), 84–100.
+
+J. Hruska, ‘‘Android 6 Marshmallow makes full-disk encryption mandatory for most new devices | ExtremeTech”, ExtremeTech, 2016. [Online]. Available: http://www.extremetech.com/mobile/216560-android-6-0-marshmallow-makes-full-disk-encryption-mandatory-for-most-new-devices (accessed: 28).
+
+Kanade, S., Petrovska-Delacrtaz, D., Dorizzi, B., 2012. Enhancing information security and privacy by combining biometrics with cryptography. In: Synthesis Lectures on Information Security, Privacy, and Trust, pp. 1–140.
+
+Kaspersky Lab ‘‘Rooting your Android: advantages, disadvantages, and snags” 2017, Online Available: https://www.kaspersky.com/blog/android-root-faq/17135/ (accessed: 25).
+
+Khan, J., Abbas, H., AlMuhtadi, J., 2015. Survey on mobile user’s data privacy threats and defense mechanisms. Procedia Comp. Sci. 56, 376–383.
+
+Krivokuca, V., 2015. Fingerprint Template Protection using Compact Minutiae Patterns Ph.D. thesis. The University of Auckland, New Zealand.
+
+Li, X., Hu, H., Bai, G., Jia, Y., Liang Z., Saxena, P., 2014. DroidVault: A trusted data vault for android devices. In: Proceedings of the 19th International Conference on Engineering of Complex Computer Systems, Tianjin, China, pp. 29–38.
+
+Liu, X., Zhou, Z., Diao, W., Li, Z., Zhang, K., 2015. An empirical study on android for saving non-shared data on public storage. In: Federrath, H., Gollmann, D. (Eds.), ICT Systems Security and Privacy Protection, IFIP Advances in Information and Communication Technology. Springer, Cham, pp. 542–556.
+
+Mohini, T., Kumar, S., Nitesh, G., 2013. Review on Android and Smartphone Security. Res. J. Comput. Inf. Technol. Sci. 1 (6), 12–19.
+
+Müller, T., Spreitzenbarth, M., 2013. FROST. In: Jacobson, M., Locasto, M., Mohassel, P., Safavi-Naini, R. (Eds.), Applied Cryptography and Network Security (ACNS 2013), Lecture Notes in Computer Science. Springer, Berlin, Heidelberg, pp. 373–388.
+
+Poonguzhali, P., Dhanokar, P., Chaithanya, M., Patil, M.U., 2016. Secure storage of data on android based devices. Int. J. Eng. Technol. (IJET) 8, 177–182.
+
+Rashidi, B., Fung, C., 2015. A survey of android security threats and defenses. J. Wireless Mobile Networks, Ubiquitous Comput. Dependable Appl. (JoWUA) 6 (3), 3–35.
+
+Reddy, A.K., Paramasivam, P., Vemula, P.B., 2015. Mobile secure data protection using eMMC RPMB partition, In: Proceedings of the International Conference on Computing and Network Communications (CoCoNet), Trivandrum, India, pp. 946–950.

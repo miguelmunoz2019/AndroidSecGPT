@@ -1,0 +1,68 @@
+# 3 End-User Perspective
+The user workflow is designed to minimize the end user effort to specify flexible permissions. Users can download and install (7) apps that adopt the AFP system directly from the Google Play Store since no modifications to the Android OS are required. Upon the first launch of the newly installed app (8) they are redirected to the AFP App (9), which in turn invites them to configure the flexible permissions. Should the user be unwilling to do so, she can immediately abort the process, and the app usage will continue with the standard permission system provided by the Android platform. The same happens if, during the configuration process, the AFP App is not found installed on the user’s device.
+
+Once inside the AFP App, for each feature of the app the user can specify her own permission preferences (10). This aspect of AFP allows to address a well-known problem in the current Android permission model, i.e., the fact that users tend to not understand why they are being asked for certain permissions, often complaining about this aspect in their reviews in the Google Play store.
+
+# 3 Flexible Permission Data Model
+This section presents the AFP data model to which permission configurations conform (Fig. 2). It is based on the following core concepts:
+Resource represents a sensitive part of the Android platform whose access can be controlled by the AFP library. In AFP, resources are both physical parts of the device, such as the device camera and microphone, and logical ones, such as the user’s contacts book.
+
+Feature represents a user-level functionality of the app. Every Feature uses one or more Resources. In addition, every Feature is directly connected through the realizedBy relation with one or more AndroidComponent instances, each of them representing one or more source code files inside the app.
+
+A PolicyItem regulates access to the Resources used by the Feature. It represents a single access restriction rule that can be imposed upon one or more Resources. For instance, a PolicyItem could specify that the...
+
+# IEEE TRANSACTIONS ON SOFTWARE ENGINEERING, VOL. 47, NO. 10, OCTOBER 2021
+# 3 Features Specification
+The AFP approach involves (i) the automatic extraction of Android components composing the mobile app (step 2 in Fig. 1) and (ii) the definition of a mapping between features and the Android components implementing them in the app (step 3).
+
+For what concerns step 2, all relevant information is extracted from both the XML file of the Android manifest and the bytecode of the Java classes of the app. The output of this step is a fragment of configuration conforming to the flexible permission data model described in Section 3 containing only instances of the AndroidComponent class and its subclasses.
+
+In order to specify the mappings (step 3), the developer uses a form (Fig. 3) where she can declare the main features of the app and, by means of check boxes, associate them to the automatically extracted Android components. The final result of this step is the complete configuration, which also includes the required instances of the Feature class.
+
+# 3 App Instrumentation
+The AFP approach involves also the automatic instrumentation of the app (step 4 in Fig. 1). Such step is carried on by the AFP Instrumenter that performs a set of operations that can be grouped into three main phases: (i) decomposing the input APK, (ii) rewriting the app bytecode, and (iii) repackaging the rewritten app.
+
+The goal of the first phase is to extract, from the compiled binary files of the app under analysis, the app Java bytecode. Although the bytecode is a low-level representation, it is suitable to perform analysis and instrumentation. In turn, the third phase performs the reverse operation, transforming the instrumented bytecode back into a compiled binary file. The logic behind the first and the third phases is straightforward, and they are both carried out using freely available tools arranged in a pipe-and-filter pattern. The adopted tools are described in Section 4.
+
+# Feature
+# Android Components
+Showing 1 to 5 of 5 entries
+Previous Hext
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.
+
+# SCOCCIA ET AL.: ENHANCING TRUSTABILITY OF ANDROID APPLICATIONS VIA USER-CENTRIC FLEXIBLE PERMISSIONS
+# Algorithm 1. Rewriting Algorithm of AFP Instrumenter
+Input: App; an Android app
+C; set of Android components 2 App
+F; set of features 2 App
+M; mapping of elements of F to C
+Output: App0; AFP-compliant version of App
+1: begin
+2:    foreach c 2 C do
+3:      scan C to extract SC, set of sensitive calls 2 C
+4:      if SC 6 ¼ ; and c = M then2
+/* found sensitive call not mapped to any
+feature, raise error and terminate */
+5:         break
+6:      end
+7:      if c is App main activity then
+8:         add intent trigger towards AFP app to
+allow for permissions configuration
+9:      end
+10:      foreach sc 2 SC do
+11:         identify r, resource affected by sc
+12:         foreach f 2 F do
+13:            if c is mapped to f then
+14:               add r to f , set of resources used by fr
+15:            end
+16:         end
+17:         replace sc with sc0, call to AFP library wrapper
+18:      end
+19:    end
+20: end
+# 3 Permissions Enactment and Enforcement
+As described in Section 3 (see Fig. 1), a user can download and install AFP-enabled apps from the Google Play Store, as she would normally do for all apps. Upon starting a newly installed app for the first time, she is redirected to the AFP App, which enables permission enactment by allowing her to configure the flexible permissions associated to it. Two screenshots of the app are presented in Fig. 5. During the configuration, she is presented the list of features offered by the AFP-enabled app. For each feature, the accessed sensitive resources are listed and, for each one of them, she can set her preferences, hence regulating the access to the resources for that single feature. As an example, consider a user interested in the Facebook app. After downloading and installing it on her device, on the first run she is presented with the list of app features, i.e., Wall, Messaging, Events, etc. Assuming that she does not want her friends to know her exact location every time she posts on her Wall, she can restrict the precision of the Location resource for the Wall feature, while leaving it unchanged for Events in order to still discover ongoing events nearby.
+
+During the second phase, rewriting of the app bytecode is performed by an ad-hoc analyzer, following Algorithm 1. Given as input an Android app and its feature-component mappings, the algorithm returns an AFP-compliant version of the app. In order to do so, the algorithm iterates over all Android components that constitute the app (line 2 in Algorithm 1) and extracts from each of them the set of sensitive API calls performed inside its logic (line 3). Each call is analyzed for the purpose of identifying the affected resource (lines 10-16), and creating and binding instances of the Resource class in the AFP data model. Each sensitive call is then replaced with a corresponding call to the AFP library (line 17), which contains a proxy class for each of the Android APIs that enable access to restricted parts of the platform (further details in Section 3). While performing the rewriting, the algorithm also checks that all classes containing calls to restricted parts of the Android API belong to a feature (lines 4-6). This ensures that the developer does not leave some Android components out of the mapping. Additional code (via Android Intents) is added in the main activity (i.e., the app entry point) to set up communication between the app under rewriting and the AFP App. It enables the configuration of the flexible permissions on the startup of the app (lines 7-9).
+
+The illustrative example, given in Fig. 4, shows bytecode rewriting of an API call for reading the last registered user’s location. In the original version (Listing A), a Location-Manager object is loaded from a local variable and pushed onto the stack (instruction 1). Then, the constant string “network”, used as a parameter in the upcoming method invocation, is also pushed onto the stack (instruction 2). Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13,2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.

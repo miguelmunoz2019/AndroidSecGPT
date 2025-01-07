@@ -1,0 +1,52 @@
+# 4. Tracker Analysis
+This subsection centers on third-party trackers that may be present in each app. As already pointed out, for this task, we relied on MobSF, which uses the open source Exodus-Privacy  Web app to characterize in a coarse manner any tracker found in the app’s source code. We concentrate on 7 categories of trackers. The first is “Crash reporters”, which relates to the crashes that may occur during the normal operation of an app. That is, following an app crash event, they send a notification message to the developers, informing them about the error. The next category is known as “Analytics”. Such a tracker collects any information regarding the usage of the app by the end-users, say, the time each user spent in the app, which features they used, and so forth. Next, are “Identification” trackers, which basically attempt to identify the end-user.
+
+A “Customer support” tracker on the other hand provides the app with a chatbot, capable of assisting the users in real time; while this category may seem quite irrelevant, it should be pinpointed that the messages a user has exchanged with the chatbot is most probably in the possession of the tracker too. An “ads” tracker is specialized in serving personalized advertisements to the users. “Location” trackers gather data that stem from location services and the different sensors the mobile device may incorporate. For instance, after the tracker learns the geographical location of the user, they can be targeted with location-based ads. Lastly, a “Marketing” tracker, applies a set of personalization, identification, and location-based techniques to assist the app developers to better analyze the app’s users, i.e., profile them. Usually, this generic category embraces trackers that belong to at least two tracker categories. For instance, the Braze tracker is categorized as both analytics, ads, and location. For this reason, any such tracker is included in the marketing category.
+
+For more details regarding the third-party trackers’ phenomenon in the mobile ecosystem, the interested reader can refer to the works by [21–23].
+
+Our analysis showed that only two out of the total 41 apps contain zero trackers (4%). On the downside, a couple of apps utilize more than 10 trackers each. Overall, 39 unique trackers were identified across all apps. Among them, Google Firebase and Google Analytics are included in 32 (78%) and 5 (12%) apps, respectively. Additionally, all apps but two have at least one Analytics tracker. Another commonly met tracker is the Google CrashLytics one; 24 apps or 58% contain this tracker. Moreover, 11 or 26% of the examined apps incorporate at least one Facebook tracker, namely, Login, Analytics, Places, and Share, detected in 11, 6, 6, and 10 apps, respectively. Interestingly, 5 out of the 39 apps contain an Ads type of tracker, 11 of them embed Identification trackers, and only a couple of apps include a Customer support tracker.
+
+With reference to Figure 2, the AP category has mostly Analytics or Crash reporter trackers. Moreover, 2 out of the 9 apps in this category were found to have at least one Marketing tracker. On the other hand, the single app in the Smart TV category demonstrated an assortment of trackers, with the Marketing category to be the most populous. Analytics and Marketing trackers are common in the wireless IP cameras category, while Ads and Location type of trackers were rather scarce in the same category of apps. All apps, but two in the Smart wearable IoT category, contain Marketing trackers, most of them Analytics, and several of them Location ones. The Analytics type of trackers is also the most frequently met in the Smart assistant and Smart bulb/plug categories. Overall, the most frequently met categories of trackers across all the apps were the Analytics, Marketing, and Crash analytics (in that order).
+
+From a total of 39 unique identified trackers, the Analytics and the Marketing categories include the 27 (15 and 12) of the trackers, while the Crash reporters follow with 5 trackers. Every detected tracker is given in the following list.
+
+- Crash analytics: Bugsnag, Bugly, Google CrashLytics, Instabug, Microsoft Visual Studio App Center Crashes.
+
+- Analytics: Amazon Analytics, Dynatrace, Google Firebase, Google Analytics, Google Tag Manager, Keen, Metrics, Facebook Analytics, Microsoft Visual Studio App Center.
+
+# Sensors 2022, 22, 513
+# 17 of 41
+# Trackers Identified
+- Analytics: New Relic, Optimizely, OpenTelemetry, Sensors Analytics, Splunk MINT, Tencent Stats.
+
+- Identification: Facebook Login.
+
+- Customer support: HelpShift.
+
+- Ads: Amazon Ads, Flurry, Google AdMob.
+
+- Location: AutoNavi, Mapbox.
+
+- Marketing: Adobe Experience Cloud, Braze, Display, Facebook Places, Facebook Share, Huawei Mobile Services (HMS) Core, MixPanel, Salesforce Marketing Cloud, Segment, Swrve, Treasure Data, Urbanairship.
+
+# Discussion
+Overall, a total of 156 trackers were detected across all the examined apps. As observed from Figure 3, the Analytics and Marketing categories accumulate the majority of trackers; 62 or 40% and 40 or 26% trackers fall into these two categories, respectively. It is also perceived that the Ads, Identification, Location, and Marketing categories, which are considered more privacy-invasive from the rest, sum up to 40% or 62 trackers.
+
+From an IoT category perspective, two apps out of 10 in the AP set incorporate one Marketing tracker. The greater number of privacy-invasive trackers were detected in one app belonging to the Smart TV category. Regarding the Smart wearable and wireless IP cameras categories, 5 out of 12 apps (41%) and 9 out of 11 (82%) have at least one Marketing tracker, respectively. On top of this, the Smart wearable category presents the higher number of Identification and Location trackers. Precisely, 50% of apps in this category have at least one Identification or Location tracker. The privacy concerns here are graver because such apps are widely used to manage fitness trackers. On the positive side, the remaining two categories, namely Smart assistant and bulb/plug, present only one and two apps with a marketing tracker, respectively.
+
+Appendix A names all the identified trackers per app.
+
+# Sensors 2022, 22, 513
+# 4. Manifest Analysis
+Based on the results of the static analysis given in Section 3, we pinpointed the use of several potentially privacy-invasive permissions, with several of them not really necessary for the proper functioning of the app. In a further step, this section delves deeper in the manifest file of each app to possibly reveal any hidden weaknesses.
+
+# 4. Services, Activities, and Broadcast Receivers
+This subsection concentrates on services, activities, and broadcast receivers, which are materialized through intents and intent-filters. Based on the Android developer’s guide, this triad of components should be declared in the manifest file of the app.
+
+Intents comprise message objects for serving intra- or inter-app communication needs. Specifically, such objects can be used to launch an activity, start a service, or convey a broadcast. An intent can be either explicit or implicit. The first type is used for relevant messages within the app, while the second to deliver messages towards another app. An intent filter is an expression in the app’s manifest file that specifies the type of intents the specific component would like to receive. This means that an intent-filter takes care of implicit intents, including broadcast receivers, and capturing of system-oriented broadcast messages, where the corresponding broadcast message exists in an intent. Simply put, a matching intent-filter must be present in the manifest file of an app for the latter to receive such a broadcast message. In a few cases, such as the D-Link WiFi, the app implements a high intent priority, potentially overwriting any other intent-based request. This implementation can potentially enable a malicious actor to extract protected information, such as the passphrases of the Wi-Fi network.
+
+A service app component is able to execute operations without the aid of a User Interface (UI). A typical usage of such a component is to transparently transfer files from an app to another. Three types of services exist: foreground, which is visible to the user, background, which is not directly visible, and bound. The latter is used for binding a certain service with an app. An Activity on the other hand is an essential component of Android apps. Basically, it corresponds to an individual, specific action the end-user can carry out, and therefore it usually requires a UI. For example, opening an app normally involves the execution of the so-called main activity.
+
+In the course of app analysis, it was perceived that numerous of such components neglect to declare the corresponding permission in the app’s manifest file. That is, based on , for enabling a component to communicate with other apps, the developer must
+declare it in the manifest file. However, for curbing this functionality, the developer must also declare a matching permission. This means that only apps that also include the same permission will be able to communicate with this component. Naturally, this is a baseline protection and it is not adequate to bulletproof the component. In any case, skipping to include the correct permission to the component is reckoned as a weakness of high severity.

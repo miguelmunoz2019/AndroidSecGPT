@@ -1,0 +1,79 @@
+# Poster Session
+# Developing Secured Android Applications by Mitigating Code Vulnerabilities with Machine Learning
+Janaka Senanayake∗
+Harsha Kalutarage
+j.senanayake@rgu.ac.uk
+h.kalutarage@rgu.ac.uk
+Robert Gordon University
+Aberdeen, Scotland, UK
+Mhd Omar Al-Kadri
+omar.alkadri@bcu.ac.uk
+Birmingham City University
+Birmingham, England, UK
+Andrei Petrovski
+Luca Piras
+a.petrovski@rgu.ac.uk
+l.piras@rgu.ac.uk
+Robert Gordon University
+Aberdeen, Scotland, UK
+ASIA CCS ’22, May 30–June 3, 2022, Nagasaki, Japan
+# ABSTRACT
+Mobile application developers sometimes might not be serious about source code security and publish apps to the marketplaces. Therefore, it is essential to have a fully automated security solutions generator to integrate security-by-design into the development practices, especially for the Android platform. This research proposes a Machine Learning (ML) based highly accurate method to detect Android source code vulnerabilities. A new labelled dataset containing Android source code vulnerability samples was generated initially. The dataset was used to train binary and multi-class classification based ML models, to identify code issues by following a static analysis approach. The proposed model can detect code vulnerabilities with a 0 F1-Score and vulnerability categories (CWE) with a 0 F1-Score. By integrating this with the Android development environment, app developers can analyse source code and identify security vulnerabilities in real-time. The proposed framework can be extended to suggest suitable patches to overcome the source code issues by providing real-time fixes in future.
+
+# 1 INTRODUCTION
+With the increased use of smartphones, device manufacturers and Operating System (OS) vendors try to increase their market shares. As of February 2022, Google Android leads with a 70% market share, while Apple iOS has a 28% market share . Sometimes, mobile application developers try to develop applications and release them to the market in a rush, without having much concern about the security-by-design concepts. Therefore, some applications contain vulnerabilities that may lead to severe problems. However, the application developers and mobile OS vendors are responsible for securing users from vulnerabilities. Though Android has the highest market share, the applications are not thoroughly verified for security aspects, like iOS . The security of these applications is not guaranteed since they might not comply with extensive security protocols. According to the security development lifecycle , it is better to follow the security first development practices simultaneously as the code is being written , without waiting until the application is completely developed. Therefore, a proper vulnerability detection mechanism is required, which can be used to enhance their security when developing Android apps.
+
+Researchers used conventional and ML-based methods to detect and mitigate vulnerabilities with the three analysis methods: static, dynamic and hybrid . Due to the increasing popularity of ML, many studies have used ML methods compared to conventional methods . Nevertheless, many of these studies conducted their experiments to identify vulnerabilities in software written in Java, C++, Python. Few works have been conducted specifically for Android applications , but they were not comprehensive.
+
+# 2 BACKGROUND AND RELATED WORK
+There are two ways of analysing Android applications. The first way is to analyse the code by reverse-engineering the developed Android Application Packages (APKs). It is the most popular and the easiest way, but a pre-build application is required to follow this approach . The second way is to analyse the source code simultaneously as the code is being written, which is more valuable to the developers. Researchers have developed several automated tools to identify Android app vulnerabilities  with various scanning methods. However, these tools require deployment-ready APKs to perform the analysis, which is the main limitation of those methods.
+
+ACM Reference Format:
+Janaka Senanayake, Harsha Kalutarage, Mhd Omar Al-Kadri, Andrei Petrovski, and Luca Piras. 2022. POSTER: Developing Secured Android Applications by Mitigating Code Vulnerabilities with Machine Learning. In Proceedings of the 2022 ACM Asia Conference on Computer and Communications Security (ASIA CCS ’22), May 30-June 3, 2022, Nagasaki, Japan. ACM, New York, NY, USA, 3 pages. https://doi.org/10/3488932
+Permission to make digital or hard copies of part or all of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s).
+
+© 2022 Copyright held by the owner/author(s). ACM ISBN 978-1-4503-9140-5/22/05. https://doi.org/10/3488932
+# Poster Session
+# ASIA CCS ’22, May 30–June 3, 2022, Nagasaki, Japan
+# 2 Motivation of the Research
+As per our findings, there is no proper method to detect vulnerabilities with high accuracy at the Android application development time. Many of the studies only consider detection methods rather than mitigation methods. Furthermore, a properly labelled dataset that can be used to identify Android-specific vulnerabilities is also required to train an ML model to predict the vulnerabilities in each source code. This work proposes a method to detect Android source code vulnerabilities using ML with static analysis techniques. The proposed model can detect vulnerabilities in Android source code with an F1-Score of 0 in the binary classification and 0 in the multi-class classification when trained with the XGBoost algorithm. This work also proposes a comprehensive source code vulnerability dataset for Android, which the research community can use for further experiments. The current dataset contains vulnerable and non-vulnerable source code samples from over 1000 applications, along with attributes such as the standard identifiers, levels of severity, and descriptions. Furthermore, a thorough analysis of existing application reverse engineering and source code scanning methods is also introduced, used as the base method for this dataset generation stage.
+
+# 3 METHODOLOGY
+This research proposes a method for Android source code vulnerability mitigation using ML. There were two main stages in this approach: 1) Training dataset generation, 2) Pre-processing and ML model training to identify the accuracy of dataset generation and prediction model accuracy. Figure 1 illustrates the overall approach.
+
+Fossdroid
+@IF
+Web
+Storage
+crppcI
+APK
+Source Code
+GtHu
+Dataset
+Python Script Generation
+Vulnerability Analysis
+Data Frame Loading and Duplicates Removing
+CSV
+APK and Android
+Preprocessing
+Preprocessing & Model Training
+Initial Vulnerability Detection
+Source Codes
+Code Vulnerability Prediction Suggestions
+Engineering
+ML Model Training
+Trained Model
+CWE
+# 3 Training Dataset Generation
+By identifying the research gap through related studies and existing methods, it is identified that the lack of benchmark dataset to train an ML model for Android code vulnerability detection. Therefore, as the proof of concept, a novel dataset was created at the initial stage. The dataset generation process has two main steps: a) Scraping APKs and source code and b) Scanning APKs and generating the vulnerability dataset.
+
+# Scraping APKs and Source Code (Data Collection)
+The initial step of the dataset generation process was to scrape APKs and their source code from application repositories, including Google Play. With the use of python script, APKs were downloaded along with their source code from GitHub repositories. This study considered only the free and open-source Android applications since the source code can also be compared with the reverse-engineered APKs in subsequent studies to review the accuracy of the reverse engineering methods. Since the Fossdroid project  provides APKs and their GitHub repositories, it was scrapped to create a list of trending Android apps using the Python BeautifulSoup library. 1008 APKs and their source codes were successfully scrapped and downloaded by performing these operations. If necessary, it is possible to run the same script to increase the sample size of the APKs and source codes.
+
+# Scanning APKs for Vulnerabilities (Data Labelling)
+The second step was to scan the downloaded APKs to identify their vulnerabilities. To accomplish this, the APKs need to be re-engineered and then scanned. MobSF , and Qark  were used in this research as vulnerability scanning tools since they can provide high accuracy in identifying Android vulnerabilities. When using the combination of these tools, it is identified that the accuracy of the proposed model can be increased by avoiding the dependence of just one method. However, none of these tools can perform real-time source code vulnerability detection, requiring pre-built applications.
+
+A python-based script was developed to automate the scanning process using the tools mentioned earlier. All the applications were scanned through this script. Scanned source codes were stored as text lines, and if there is any identified vulnerability associated with the code line, they were mapped with the CWE identifiers. A description, type of the vulnerability, severity level, CWE ID, description of CWE ID, Open Web Application Security Project (OWASP) ID and a further reference link for the vulnerability were also recorded for the vulnerable source code lines.
+
+# 3 Pre-processing and ML Model Training
+The second stage is to pre-process the generated dataset and train ML algorithms to validate the possibility of using the dataset to train an ML model. Features to train the model were generated using 1-3 n-gram techniques.

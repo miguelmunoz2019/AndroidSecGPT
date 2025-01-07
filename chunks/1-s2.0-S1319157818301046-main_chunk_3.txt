@@ -1,0 +1,43 @@
+# Journal of King Saud University – Computer and Information Sciences
+# 32 (2020) 543–552
+# 4. Droidvault
+549
+# 4. Replay protected memory Block (RPMB) partition
+549
+# 4. CATT
+550
+# 4. ARMOR
+550
+# 4. Software threat solutions
+# 4. Android encryption systems
+550
+# 4. Other solutions
+550
+# 4. Summary
+551
+# 5. Conclusion
+551
+# 1. Introduction
+According to ‘‘Mobile Security Project” under ‘‘The Open Web Application Security Project (OWASP)” (‘‘OWASP Mobile Security Project – OWASP”, Owasp.org, 2016), insecure data storage is one of the leading top 10 security issues in smartphones since sensitive information can be revealed if it is not protected carefully. Unskilled Developers assume that access to the internal memory stores cannot be gained, but an attacker who accesses the device physically can attach the phone to a computer and retrieve sensitive personal information. Moreover, malware applications (apps) and legitimate vulnerable apps can be a threat to sensitive information leakage. A Trojan horse hidden behind legitimate app can perform imperceptible activities with the aim to steal user’s information. Furthermore, attackers who want to access the data might exploit vulnerable apps, such as apps with over-privileged permissions.
+
+Smartphone security has been subjected to intensive research work in the past years. Existing review papers presents the state of the art of popular smartphone operating systems   . Khan et al. showed that mobile malware, similar to Personal Computer (PC) malware, can cause system corruption or reveal private user information . Also, they demonstrated vital points to ensure mobile security based on restricting malicious activities at several levels; application developer level, application’s store level, and operating system level. Different types of mobile operating systems and software attacks have been discussed in . The authors provided a comprehensive overview of mobile threats, vulnerabilities, and countermeasures by reviewing published papers during the period 2011–2017. Authors in  studied smartphone security within 2010–2015. The authors categorized attacks into old and new attacks and presented possible solutions for each category. Moreover, they showed an estimation of mobile malware growth in 2020.
+
+Android is the most used mobile operating system in the world that dominates the smartphone market with a share of 82% in 2015 (‘‘IDC: Smartphone OS Market Share”, www.idc.com, 2016). The literature exposes a set of threats to Android data storage that can be exploited to perform attacks. For example, an unreliable factory reset in some Android devices is a significant threat to the security and privacy of the stored data since the data is not erased correctly. Several techniques are used to protect data stored in a mobile device, mainly based on password-based data encryption. Authors in  provided a survey of general Android security issues and defenses. They focused on Android malware growth within a specific timeline (2010–2013) and the suggested solution. They categorized the suggested solutions based on the goal, methodology to achieve this goal and deployment of the solution. They concluded that no single solution could efficiently address each issue. Rashidi et al. presented another survey that reviewed and discussed Android security threats and solutions between 2010 and 2015 . They surveyed techniques (e.g., based on static and dynamic code analysis) to deal with malware on mobile devices and investigate strengths and weaknesses of each technique. Moreover, Sufatrio et al. introduced a survey on Android security and provided a taxonomy of mitigation solutions with five main categories based on app’s deployment stages (app development, app availability in the market, app installation on a device, app execution on a device, and app security setting modification on a device) (Rashidi and Fung, 2015). They classified existing work into those five categories and thereby comparatively studied them and highlighted the limitation of each. Additionally, a general overview of Android security issues has been presented in  without any categorization.
+
+This paper aims to complement previous reviews about insecure data storage on Android smartphones by expanding the coverage of security threats and solutions. We believe an in-depth examination of Android data storage model is required. Therefore, we review Android attacks, threats, and their solutions over the period of 2013–2018. Additionally, we propose a distinctive categorization of Android data storage threats model based on physical and software threats and review a few works of each class. Moreover, mitigation solutions for each category are investigated.
+
+The paper is organized as follows. Section 2 introduces the Android data storage model. Section 3 presents the Android data storage threat model. It contains two main subsections, which are, Physical threats and Software threats. Section 4 outlines the solutions found in the literature to enhance data storage security and emphasizes on Android encryption system as a critical feature for protecting data. Finally, the conclusion and future work are drawn in Section 5.
+
+# 2. Android data storage model
+Android is an open source mobile operating system that was initially developed by Android Inc. and financially backed and later bought by Google. In November 2007, the initial beta version of Android was released, then the first stable version 1 followed in September 2008. Android is primarily designed for touchscreen devices such as smartphones and tablets, and it is currently developed under Android Open Source Project (AOSP) that is promoted by the Open Handset Alliance (OHA), led by Google . Android is based on the Linux Kernel, and its apps are written in Java. However, the native code and shared libraries are developed in C/C++ . In the Android framework, there are unique storage alternatives, which as indicated by their access control components, can be divided into three classes: system, application-specific, and public as shown in Fig. 1. The system storage is the catalog where the entire Android OS is located and is secured by the Linux access control component. The application specific storage is a spot that is under control of a particular application and can only be read and written by that app, generally mounted on /data/. It hosts apps private directories that are commonly used to store sensitive information such as login credentials. The other storage alternative is shared public storage (internal primary SD card), that is mounted on /sdcard/ or /mnt/sdcard/, which
+# H. Altuwaijri, S. Ghouzali / Journal of King Saud University – Computer and Information Sciences 32 (2020) 543–552
+# 3. Android data storage threat model
+This section demonstrates an assessment of Android Data storage threat model illustrated in Fig. 2. It identifies possible threats and vulnerabilities in Android Data storage, divided into physical threats and software threats.
+
+# 3. Physical threats
+Sets of researchers focus on Android smartphones physical threats since confidential data may exist in memory on mobile devices for a long time after being used. Thus, on the stolen device, the retrieval of sensitive information is possible and becomes a growing concern. The attacker who gains physical access to the device can quickly get the memory content (“javax.crypto—Android Developers,” Developer.android.com, 2016). Researchers in  studied data exposure issue in Android to emphasize that it is a real problem. They analyzed 14 favorite Android apps and found that they could retrieve sensitive data (e.g., passwords) by dumping either Random Access Memory (RAM) or internal storage in 13 apps after 10 min.
+
+More specifically, the literature exposes two types of attacks, Cold boot attack and Evil maid attack, which can be done against Android devices when the attacker gains physical access.
+
+# 3. Cold boot attack
+Cold boot attack depends on the fact that RAM retains data for a period after a computer is turned off. The amount of time relies on RAM chip’s temperature, and it can be increased as much as the RAM is cold. Thus, the RAM can be re-plugged to another computer to get its content such as encryption keys. This attack can be made against all software-based encryption technologies. In  researchers examined if this type of attack can be done against Android Full disk encryption (FDE) (described in).

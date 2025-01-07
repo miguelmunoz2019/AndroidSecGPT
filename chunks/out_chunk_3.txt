@@ -1,0 +1,76 @@
+# 4. The Results by E-Model Method (ITU-T G)
+The E-model method was used in favor of the results of measurement by the MOS method. Final estimation value in the E-model was called as R factor. R factor is defined as the factor of transmission quality to be affected by delay time. The reduced value of voice quality due to one-way delay time must be recognized before in order to find out the values of R factors. Equation 13 was used to calculate the delay time.
+
+Meanwhile, the results of the calculation of Id value in the application with TEA value were shown in Table 6.
+
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+It was explained that Ie value is closely related to packet loss where E is a decimal value of packet loss. In this case, the rate of packet loss should be as low as possible because what to be sent is a voice packet wherein the transmission process there was no retransmission.
+
+References The results of the calculation of value Ie in the application with TEA are shown in Table 7.
+
+After Id and Ie values were obtained, the values of R factors could be obtained.
+
+The values of R factors in application with TEA were shown in Table 9.
+
+The results of correlation between the measurements by the E-Model and the BOS method (in accordance with ITU-T) were shown in Table 10.
+
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+From the results of calculation, it can be concluded that the application without TEA had the MOS values of 4 to 4. According to ITU-T recommendation, the application was in a good category. Meanwhile, the application with TEA had the MOS values of 3 to 3.
+
+It can be clear from Table 2 in accordance with ITU-T recommendation, explaining that the results of the calculation of R factor in the application with TEA were in an acceptable category. Therefore, the effect of the application of the TEA algorithm showed that the application is feasible for use.
+
+# 4. The Results of the Measurement of QoS VoIP
+In general, there are important parameters that affect QoS of voice services in VoIP network. The parameters are used as the measures for the performance of VoIP network. The parameters were delay, jitter, packet loss, and throughput. In this research, only two parameters were used, i.e. delay and throughput. This was done because delay is a part of the jitter (variation in delay time) and throughput is a part of packet loss rate.
+
+# 4 Delay
+Delay is a time the data needed to arrive at the destination. The amount of delay can be measured at the time of the first bit transmitted until the last bit received at the receiver side.
+
+The resultant average delay as shown in Table XI indicates that the application with TEA had delay time greater than that without TEA. This proved that the delay was caused by the application of TEA algorithm. The encryption led to long data due to the addition of keys and XOR process. Thus, the delay was larger. However, the delay resulted from the applications with TEA was averagely ±0 seconds or, if converted, 30 millisecond, indicating that it met the standard of ITU-T. The standard of ITU-T categorizes that the delay of 0-150 milliseconds had still been acceptable for users.
+
+# 4 Throughput
+Throughput is the effective rate of data transfer measured in bps. It also refers to the amount of data that can be sent in a time unit. It is highly dependent on availability of bandwidth in the network. The following is throughputs generated from the applications with and without TEA.
+
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+IOP Publishing
+IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073 doi:10/1742-6596/1175/1/012073
+# 5. Conclusion
+From the results of analysis, measurement, calculation, and comparison between the applications with and without TEA, it can be concluded as follows:
+1. The application of TEA algorithm caused the lower values of R factors (from 72 to 75) compared to that without TEA (from 84 to 85). However, in accordance with the standard of ITU-T, the values of R factor were included into to an “acceptable” category. Thus, the application was feasible to use.
+
+2. The effect of the application of TEA algorithm resulted in the delay rates from 0 to 0 seconds higher than that of the application without TEA resulting in the delay rates from 0 to 0 seconds. It proved that the application of TEA algorithm led to long data due to the addition of keys and XOR process. Thus, the delay was larger. However, according to the standard of ITU-T, the delays resulted in the application with TEA were in an “acceptable” category.
+
+3. The effect of the application of TEA algorithm led to lower values of throughput, ranging from 53 to 126 kbps. This occurred due to the formation of packet with larger than usual bits. This is because the encryption process occurred changed the length of packet. The results proved that the application of TEA affected the quality of VoIP.
+
+# Reference
+1. H. P. Singh, S. Singh, J. Singh, and S. A. Khan, “VoIP: State of art for global connectivity - A critical review,” J. Netw. Comput. Appl., vol. 37, no. 1, pp. 365–379, 2014.
+
+2. Yi-Bing Lin and Meng-Hsun Tsai, “Eavesdropping Through Mobile Phone,” Veh. Technol. IEEE Trans., vol. 56, no. 6, pp. 3596–3600, Nov. 2007.
+
+3. E. Dondyk, L. Rivera, and C. C. Zou, “Wi-Fi access denial of service attack to smartphones,” Int. J. Secure. Networks, vol. 8, no. 3, pp. 117–129, 2013.
+
+4. C. Li, S. Li, D. Zhang, and G. Chen, “Cryptanalysis of a data security protection scheme for VoIP,” Vision, Image Signal Process. IEE Proc. -, vol. 153, no. 1, pp. 1–10, Feb. 2006.
+
+5. S. J. Shepherd, “The Tiny Encryption Algorithm,” Cryptologia, vol. 31, no. 3, pp. 233–245, 2007.
+
+6. A. Wahab, R. B. Bahaweres, M. Alaydrus, M. Muhaemin, and R. Sarno, “Performance analysis of VoIP client with integrated encryption module,” in Communications, Signal Processing, and their Applications (ICCSPA), 2013 1st International Conference on, 2013, pp. 1–6.
+
+7. S. A. Y. Hunn, S. Z. binti Md Naziri, and N. binti Idris, “The development of tiny encryption algorithm (TEA) crypto-core for mobile systems,” 2012, pp. 45–49.
+
+8. B. K. Mishra, M. C. Nikam, and P. Lakkadwala, “Feasibility of TEA in wireless sensor networks,” in IT in Business, Industry and Government (CSIBIG), 2014 Conference on, 2014, pp. 1–6.
+
+9. V. Venugopal and D. M. Shila, “High throughput implementations of cryptography algorithms on GPU and FPGA,” in Instrumentation and Measurement Technology Conference (I2MTC), 2013 IEEE International, 2013, pp. 723–727.
+
+10. A. C. Bagbaba, B. Ors, O. S. Kayhan, and A. T. Erozan, “JPEG image Encryption via TEA algorithm,” in Signal Processing and Communications Applications Conference (SIU), 2015 23th, 2015, pp. 2090–2093.
+
+11. Y. T. Ge, X. M. Liu, and X. T. Yin, “Study on TEA Encryption for Public Communication Network Wireless Remoter,” in Applied Mechanics and Materials, 2014, vol. 565, pp. 179–182.
+
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+IOP Publishing
+IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+doi:10/1742-6596/1175/1/012073.

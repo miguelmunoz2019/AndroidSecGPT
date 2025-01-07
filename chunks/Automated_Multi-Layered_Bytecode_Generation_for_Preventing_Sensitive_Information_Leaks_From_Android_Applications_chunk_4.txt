@@ -1,0 +1,54 @@
+The experimental result in Table 1 shows that around 50% of applications have more than one stem, and thus, they are vulnerable to the ReMaCi attack. Also, 23% of our dataset has more than 100 sinks to transfer sensitive data to outside, and thus, they can be valuable targets from attackers. If an application has a lot of sensitive data flows, the sensitive data can be easily identified and repacked by attackers. In other words, those applications really need proper protection to prevent sensitive information leaks.
+
+The accuracy of identifying stems or sensitive code relies on Flowdroid we employed for implementing AmpDroid. Tofighi-Shirazi et al.  showed Flowdroid has an accuracy of about 90% and 100% for DroidBench and ICC-bench, which is higher than other taint analysis tools. Therefore, we believe that our identification module would have high accuracy as well. Unfortunately, we do not have the ground truth of how many sensitive data flows exists in our dataset because we downloaded applications from the Google Play Store (we do not have the source code of them), and thus, it is not feasible to evaluate the accuracy of the identification module against the dataset.
+
+# B. EFFECTIVENESS OF AMPDROID
+To conduct the ReMaCi attack, attackers need to discover sensitive data flows via static analysis and/or dynamic analysis. To evaluate how effectively AmpDroid can mitigate the attack, we applied AmpDroid to a real-world application, Kyoungki Bus App, vulnerable to the ReMaCi attack. We, then, performed static and dynamic analyses for the applications to identify sensitive data flows.
+
+# 1) STATIC ANALYSIS
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+# 2) DYNAMIC ANALYSIS
+To demonstrate AmpDroid can protect sensitive data flows from being revealed by attackers through dynamic analyses, we performed a dynamic analysis on the same application used in Section VII-B1. To this end, we employed a dynamic binary instrumentation tool (DBI) for Android applications proposed by Wong and Lie et al. , by which we can directly monitor Smali instructions executed.
+
+# C. IDENTIFIED SENSITIVE DATA FLOWS
+We demonstrate that how AmpDroid identifies the sensitive data flows in an application and then finds a class that has the most instructions among the identified data flows as described in Section V-A. To this end, we used twenty applications and count the Class, Method, and Instruction identified by AmpDroid as the sensitive data flows and the most instruction class to isolate.
+
+Section 2 shows the experimental result. AmpDroid found that each application has 15 sensitive classes, 38 sensitive methods, and 1,393 sensitive instructions on average. Then, AmpDroid selected a class, which has the most instructions, including 3 methods and 291 instructions on average. Finally, AmpDroid isolates them from applications.
+
+# D. RECOGNIZABLE IDENTIFIERS
+We show that recognizable identifiers in classes.dex protected by AmpDroid, comparing with other obfuscation tools. To this end, we used the CallIndirection and Reflection of obfuscapk  and the code protection of Liapp  and the class encryption of Dexprotector . Then, we used a static analysis tool, AndroGuard , to extract identifiers from classes.dex files protected by AmpDroid and the other obfuscation tools.
+
+In Table 2, the Rate column means a rate that the instructions of the selected class occupy in the identified sensitive data flows. AmpDroid selected the most instruction class taking 32% of sensitive data flows on average.
+
+VOLUME 9, 2021 119585
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+We used twenty applications to measure how many sensitive data flows exist in applications and in a class that is going to be isolated by AmpDroid.
+
+can protect applications better than the other tools against ReMaCi attacks from being statically analyzed.
+
+# E. RUNTIME PERFORMANCE EVALUATION
+We evaluated the runtime performance of AmpDroid with 1,870 applications, comparing it with the performance impacts of the other obfuscation tools. Specifically, we first measured loading times of the applications until the MainActivity executes because the biggest performance impact of using obfuscation tools and AmpDroid is when an application is being loaded. Secondly, we evaluated the CPU and memory usages of loading times by using Simpleperf  and Dumpsys . To this end, we measured not only the main process’s CPU and memory usages, but also one of the sub-processes to reasonably conduct the evaluation.
+
+Next, Figure 9 shows the overhead of CPU and memory usages while the applications are loaded. In Figure 9–(a), CPU Cycles refer to the number of cycles to process instructions from the CPU. Instructions refer to the number of instructions executed from the CPU. Task-clock refers to the usage time of the CPU. Context-switch refers to the time used to replace the CPU’s register values. In Figure 9–(B), Private total refers to all memory sizes allocated in the process. Private dirty refers to the used memory. Private clean refers to the memory size allocated to the process, excluding dirty. SwapPss Dirty refers to the swapped size to obtain memory.
+
+On average, for loading applications, applications protected by AmpDroid used almost 170% of CPU cycles and 300% of instructions more than unprotected ones. Also, AmpDroid-protected applications showed the highest CPU usages among the obfuscation tools. We note that after loading an application has been completed, the performance overhead of AmpDroid-protected applications is nearly zero because no additional task is required to execute them. While the memory overhead of AmpDroid-protected applications is 16% higher than unprotected applications. However, the memory overhead of applications protected by AmpDroid lower than ones obfuscated by the other tools.
+
+These performance evaluation results demonstrate that AmpDroid takes the second most overhead of the load time and shows the highest CPU usages but the lowest memory usages among the protection tools.
+
+# F. LIMITATION
+AmpDroid relies on the static analysis result for selecting the sensitive code to isolate from an application. As a result, if our static analyzer fails to analyze sensitive data flows, AmpDroid cannot provide a proper defense to an application. Unfortunately, in our experiments using the real-world dataset, we cannot analyze 50% of applications and cannot start to execute 30% of applications after protecting them.
+
+119586 VOLUME 9, 2021
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+The runtime average overhead of the usage of CPU (a) and memory (b) between obfuscation tools.
+
+by using AmpDroid. Our dataset consists of applications downloaded from the Google Play Store within the last two years and most applications in our dataset were protected by various obfuscation schemes such as class encryption and string encryption. Therefore, AmpDroid failed to analyze around 50% of our dataset and to start to execute 30% of our dataset. To protect sensitive data on unanalyzable applications, we must identify sensitive data flows on them even though their codes are strongly obfuscated. But, we note that statically analyzing obfuscated applications is a challenging problem and leave this problem as our future work. However, except for such cases, AmpDroid can be generally used for protecting the application.
+
+# VIII. RELATED WORK
+We proposed AmpDroid, a system for preventing sensitive information leaks for Android applications. In this section, we introduce other protection mechanisms that can be used against the ReMaCi attack.
+
+Obfuscapk , which obfuscates bytecode to difficult the understanding of code stream such as our system, is a static obfuscation tool and proposes various functions such as CallIndirection and LibEncryption to secure the code. Also, they transform the identifier such as package, class, and method name to confuse the understanding of the code. Further, they insert a new method that invokes the original method (IndirectionCall) and supports encryption to protect library and asset files. It’s effective protection on static analysis. However, at runtime, decrypted files are loaded in memory and can be tracked from a dynamic analyzer.
+
+Dexpro  can confuse the flow of register data and combines opaque predicates to make it difficult to understand the control flow. Fundamentally, the control flow is obfuscated by inserting dummy code or by switching codes. Liapp , which is used as a commercial tool, is also a static obfuscation tool that receives an APK file as input. It not only protects the source code against anti-analysis but also supports anti-repackage so that the app cannot be decompiled. Although Liapp’s code protection hides the class in a specific location, when the binary is loaded on memory, the flow of sensitive data can be monitored from the dynamic analyzer (see Appendix).
+
+Another commercial tool, Dexprotector , provides code protection such as class encryption, string encryption, and API Hiding. Dexprotector uses encryption to protect bytecode such as Obfuscapk. Our protection scheme has differed from Dexprotector in that it identifies the flow of sensitive data and isolates the code, not encryption.

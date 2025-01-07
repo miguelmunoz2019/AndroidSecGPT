@@ -1,0 +1,44 @@
+# 3 RQ1 – To What Extent Mobile Developers Update the Version of Used
+# Third-Party Libraries?
+We found that ≈ 30% of the libraries are subject to at least one version change, while
+the version of the remaining ones has never been updated since its introduction. From the
+results, it seems that Android programmers tend to not update the version of used external
+libraries, being more prone to inherit bugs or vulnerabilities present in older versions of the
+used libraries. Moreover, starting from the change history information of each considered
+app, we also computed the number of commits involving a version change of a third-party
+library. We do this further step to complement our empirical overview of the extent to which
+# Empirical Software Engineering (2020) 25:2341–2377
+libraries are updated by mobile developers. In this case, we observed that a very low percentage of commits (on average 1%) involves the version change of a library. This somehow is consistent with the idea that Android developers are poorly interested in updating the version of used libraries. It is worth noting that we are aware that a missing update might be due to the library being not updatable (e.g., because no newer versions are available): a deeper investigation into this aspect is presented in RQ2.
+
+Looking more in depth at the types of version changes performed by developers, Table 4 and Fig. 3 show: (i) the version changes, (ii) changes toward newer versions (i.e., upgrades),
+# Empirical Software Engineering (2020) 25:2341–2377
+and (iii) changes toward older versions (i.e., downgrades) performed on each subject apps over the considered timeline. It is observable that the mean number of upgrades per app is significantly higher than the downgrades. Indeed, 81% of the version changes are represented by upgrades, while 18% of them are downgrades. This result matches common expectations, since the upgrade of a used library version should represent the normal situation in which developers get the latest available version.
+
+Nevertheless, the number of downgrades is surprisingly high. To better understand the reasons behind this anomalous phenomenon, one of the authors of this paper manually analyzed the apps having a higher number of downgrades. More specifically, he analyzed the third-party library update history of all the apps having a number of downgrades higher than 15; this threshold was based on the analysis of the box plot shown in Fig. 3: indeed, 15 is the number of downgrades that discriminates the outliers of the distribution. This led to the analysis of 13 apps. As a result, we found that in all cases, where a consistent number of downgrades was performed, a high number of upgrades was applied as well.
+
+It is the case of the COM.OWNCLOUD.ANDROID app, which is a system that allows the management and sharing of synced files and folder across devices. The app depends on the com.android.support:appcompat-v7 library, which is needed to implement a Material Design interface guaranteeing the compatibility with previous versions of Android. In the period that we considered, the version of this library was upgraded and downgraded (from version 19 to version 22, and vice versa) 33 times. This behavior was instigated by the fact that the upgrade broke the building process, as reported on the issue tracker:
+“Anyone, any idea why the build fails? The classes necessary for compile (even for the first commit!) need compile com.android.support:appcompat-v7 to resolve the imports which have been included in the gradle file... does maven need to be updated too?!”
+From this example, it seems that developers downgrade the version library only when a previous upgrade of that library caused issues not easily addressable for developers. We observed a similar behavior even when analyzing the other outliers. Nevertheless, a further analysis of the reasons sometimes leading developers to downgrade the version of their libraries is presented in the context of RQ 3, where we directly inquired mobile developers on this aspect.
+
+6
+# Empirical Software Engineering (2020) 25:2341–2377
+# Technical lag (days)
+# In summary
+Developers rarely update third-party libraries in mobile apps. When an update is performed, it is usually an upgrade toward a newer version. When a downgrade is performed, the reason seems to relate to incompatibilities with the newer versions of the library.
+
+# 3 RQ1 – What is the Technical Lag of Mobile Applications?
+Empirical Software Engineering (2020) 25:2341–2377 2357
+while the x-axis reports the time expressed in quarters. The continue green line represents the median values, while the dashed green line reports the mean. The technical lag has been computed as a time difference by following the algorithm provided by Zerouali et al. (2019). In short, for each commit of an Android application, first we computed the technical lags for each employed library, and then we aggregated these values using the maximum operator.
+
+A complete report of the technical lag of the single apps is available in our online appendix . From the chart, we could observe a steady increase of the average technical lag during the considered period; this is confirmed when considering the median that follows a similar behaviour. These results clearly indicate a notable delay with which mobile developers update the version of the third-party dependencies that they declared in their applications. Furthermore, the technical debt evolution seems to be worse with respect to what Zerouali et al. (2019) found in the npm package dependency network. Indeed, while they found that the technical debt tends to be stable after few years, we discovered that the evolution is linearly increasing. It is important to note that, while we presented an overall view of the phenomenon, we did not analyze the technical lag for specific apps over time. In other words, we can claim that the phenomenon of technical lag is constant over our dataset and that developers update third-party libraries consistently late with respect to the introduction of a newer version of those libraries.
+
+# In summary
+Mobile apps suffer from technical lag. On average, the technical lag is consistently increasing over time, thus suggesting that developers significantly delay the update of third-party libraries.
+
+# 3 RQ2 – How do developers update third-party libraries?
+The second research question aimed at analyzing, under different angles, how developers actually update third-party libraries in mobile applications. To ease the readability of the paper, we split the discussion of the sub-research questions in different subsections.
+
+# 3 RQ2 – What Types of Third-Party Library Uses are More Prone to be Updated?
+In our dataset, we found 33 categories for the 1043 external libraries version changes of the 2752 Android apps analyzed. Table 5 shows the categories sorted by the number of changes in descending order.
+
+Looking at the table, it is evident how most of the libraries whose versions are more frequently changed by developers relate to the GUI category. While this result may be a natural consequence of the high diffuseness of GUI libraries, it is also worth noting that this category is the one having the highest number of upgrades. Thus, we can confirm the previous findings achieved by Hou and Yao (2011) on the importance of such libraries for developers, as they represent the way in which they can communicate with end-users. The frequent version changes of these libraries can be explained in two ways. On the one hand, most of the comments received by developers from the GOOGLE PLAY STORE are related to the GUI of the application, as demonstrated in previous work (Pagano and Maalej 2013; Palomba et al. 2017; Grano et al. 2018). Thus, developers may be more interested in updating the GUI to fix issues experienced by users. On the other hand, the higher attention is motivated by the fact the developers want to keep the user interface up to date with the latest tendencies.

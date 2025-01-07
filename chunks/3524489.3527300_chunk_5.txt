@@ -1,0 +1,39 @@
+SIAT , a recent dynamic analysis tool that is based on Taint-Droid , tests apps for information leakage. SIAT modifies Android framework by adding a monitor and analyzer to detect leaks. Monitors generates logs when information is read from sensitive sources and when is read by sinks. Whereas Analyzer observes these logs to find tainted flow from these logs. To use SIAT, users need to configure their devices with SIAT custom Android framework, then users need to write an automation script for each app. SIAT is only able to detect leaks when information leaves an app and is received by another. As monitor generates logs for each sources when it’s read by an object and analyzer observes those logs to report leaks. In case of no communication it will not report that as a potential leak. So it has chances of missing some leaks if it does not find a suitable app pair. Another thing to consider with SIAT is that it was built on top of TaintDroid which was last updated on 2016 for Android 4 and same Android version supported by SIAT whereas Android Automotive is part of Android SDK 9. In that case, there tool is outdated.
+
+FlowDroid performs context, object and flow sensitive analysis by statically analyzing .apk or .dex files. It depends on SuSi  to collect sources and sinks. It’s a machine learning approach. It analyze Android SDK and searches for sensitive sources and sinks and generates sources and sinks files. Which we can use with FlowDroid to search for sources and sinks in an Android app. Also, to perform FlowDroid analysis, it requires Android SDK. Since, Android Automotive SDK is not available to third party developers. FlowDroid is not be able to detect Automotive sources and sinks.
+
+AmanDroid is another context and flow sensitive taint analysis tool which takes inspiration from FlowDroid, It models Android environment for both control and data. it build inter-procedural control flow graphs (ICFG) which includes ICC communications, it treat ICC communications same as method calls and use it to build data dependency graph (DDG) and then it uses both graphs to report vulnerabilities. To track sensitive sources and sinks AmanDroid also requires a source and sink file whereas the one that comes with it does not contains Android Automotive sources and sinks.
+
+# 6 CONCLUSION AND FUTURE WORK
+In this study, we reviewed existing vulnerabilities of the Android platform and verified their applicability to Android Automotive apps, we also explore some use cases which are specific to Automotive apps. In total, we investigate fourteen security vulnerabilities and their applicability in Automotive apps. Our future work includes mapping these vulnerabilities with secure coding standards as they are developed for automotive platform. Carry out testing of other Android vulnerabilities and verifying their existence in Android Automotive platform. Research about tools which can look into these vulnerabilities and their applicability in Android Automotive platform.
+
+#types
+3. Automotive Architecture Last accessed: November 30, 2021. Android Automotive Architecture. https://source.android.com/devices/images/vehicle_hal_arch.png
+4. Broadcast Receivers Last accessed: December 9, 2021. Broadcast Receivers in Android. https://developer.android.com/guide/components/broadcasts#security-and-best-practices
+5. Stephen Checkoway, Damon McCoy, Brian Kantor, Danny Anderson, Hovav Shacham, Stefan Savage, Karl Koscher, Alexei Czeskis, Franziska Roesner, and Tadayoshi Kohno. 2011. Comprehensive Experimental Analyses of Automotive Attack Surfaces. In SEC’11.
+
+6. Erika Chin, Adrienne Porter Felt, Kate Greenwood, and David Wagner. 2011. Analyzing Inter-Application Communication in Android. In MobiSys ’11. 239–252.
+
+7. Andrea Continella, Yanick Fratantonio, Martina Lindorfer, Alessandro Puccetti, Ali Zand, Christopher Kruegel, and Giovanni Vigna. 2017. Obfuscation-Resilient Privacy Leak Detection for Mobile Apps Through Differential Analysis. In NDSS.
+
+8. William Enck, Peter Gilbert, Byung-Gon Chun, Landon P. Cox, Jaeyeon Jung, Patrick McDaniel, and Anmol N. Sheth. 2010. TaintDroid: An Information-Flow Tracking System for Realtime Privacy Monitoring on Smartphones. In OSDI’10. 393–407.
+
+9. Benjamin Eriksson, Jonas Groth, and Andrei Sabelfeld. 2019. On the Road with Third-party Apps: Security Analysis of an In-vehicle App Platform. In VEHITS, 64–75.
+
+10. A. Fuchs, A. Chaudhuri, and J. Foster. 2009. SCanDroid: Automated Security Certification of Android Applications.
+
+11. Yupeng Hu, Zhe Jin, Wenjia Li, Yang Xiang, and Jiliang Zhang. 2020. SIAT: A Systematic Inter-Component Communication Analysis Technology for Detecting Threats on Android. arXiv:2006 [cs.CR]
+12. Keyur Kulkarni and Ahmad Y Javaid. 2018. Open Source Android Vulnerability Detection Tools: A Survey. arXiv:1807 [cs.CR]
+13. Long Lu, Zhichun Li, Zhenyu Wu, Wenke Lee, and Guofei Jiang. 2012. CHEX: statically vetting Android apps for component hijacking vulnerabilities. In CCS ’12. 229–240. https://doi.org/10/2382196
+14. Amit Kr Mandal, Federica Panarotto, Agostino Cortesi, Pietro Ferrara, and Fausto Spoto. 2019. Static analysis of Android Auto infotainment and on-board diagnostics II apps. Software: Practice and Experience 49, 7 (2019), 1131–1161.
+
+15. Sahar Mazloom, Mohammad Rezaeirad, Aaron Hunter, and Damon McCoy. 2016. A Security Analysis of an In-Vehicle Infotainment and App Platform. (2016).
+
+16. Abdul Moiz and Manar Alalfi. 2020. An Approach for the Identification of Information Leakage in Automotive Infotainment systems. SCAM (2020), 110–114.
+
+17. OWASP Last accessed: November 30, 2021. OWASP Mobile Top 10 2016. https://owasp.org/www-project-mobile-top-10/
+18. QARK Last accessed: December 9, 2021. QARK by LinkedIn. https://github.com/linkedin/qark
+19. R. Salvia, P. Ferrara, F. Spoto, and A. Cortesi. 2018. SDLI: Static Detection of Leaks Across Intents. In (TrustCom/BigDataSE). 1002–1007.
+
+20. SuSi Last accessed: Dec 16, 2021. SuSi - our tool to automatically discover and categorize sources and sinks in the Android framework. https://github.com/secure-software-engineering/SuSi
+21. Chris Valasek and Charlie Miller. 2015. Remote Exploitation of an Unaltered Passenger Vehicle. (2015), 93..

@@ -1,0 +1,58 @@
+# Case Study 1
+A credit card reader application is mishandling hundreds-of-thousands of customer’s credit card numbers: Credit Card Reader (com.ics.creditcardreader) is a popular Android application from Google Play store with 500k+ downloads. This application functions similarly to point-of-sale machines and allows the user to accept physical payments from customers. Cardpliance identified that this application was persisting credit card numbers without hashing or encrypting the information. A snippet of the source code for this application is shown in Listing 1.
+
+1 @Override // android.view.View$OnClickListener
+2 public void onClick(View v) {
+3     switch (v.getId()) {case 0x7F060002: { // id: action_next
+4         Intent i = new Intent(this, TipActivity.class);
+5         if (this.cc_sales_tax.isChecked()) {
+6             valueOf(Double.valueOf(this.sale_amt).doubleValue() + Double.valueOf(i.putExtra("sale_amount", String.format("%f", Double.valueOf(this.sale_amt) * this.sale_tax_per / 100))));}
+7         else {i.putExtra("sale_amount", this.sale_amt);}
+8         i.putExtra("cc_no", this.cc_no.getText().toString());
+9         i.putExtra("cc_exp", this.cc_exp.getText().toString());
+10        i.putExtra("cc_cvv2", this.cc_cvv2.getText().toString());
+11        i.putExtra("cc_zip", this.cc_zip.getText().toString());
+12        i.putExtra("cc_st_add", this.cc_st_add.getText().toString());
+13        this.startActivity(i);
+14    } break;
+15    }
+16    Log.d("CCR - Payment", this.cc_no.getText().toString());
+17 }
+Listing 1: Code snippet of Credit Card Reader logging customer’s credit card numbers from the EditText widget in the user interface and directly logging it to LogCat.
+
+Note that this scenario is substantially worse than other applications logging payment information, as it is exposing credit card numbers of unsuspecting customers. As the application has over 500k+ downloads and merchants may handle a wide range of customers, the amount of customers impacted is ultimately unbounded but likely in the hundreds-of-thousands. As discussed in Finding 8, this practice violates PCI-DSS guideline 3.d. Further, logging the credit card number also introduces additional risks of fraud. For example, if an adversary obtains physical access to the device, they can download all of the customers’ credit card numbers in plaintext. In addition, if the user’s device is compromised, a malicious application with escalated privileges could also potentially read all of the customers’ credit card numbers in plaintext. We recommend developers completely avoid writing credit card numbers to logging mechanisms.
+
+# Case Study 2
+An application for placing online orders at a restaurant franchise is persisting credit card numbers in plaintext along with CVCs: A franchise restaurant called Ben’s Soft Pretzels has an application on Google Play (com.rt7mobilereward.app.benspretzel) with over 10K+ downloads. Based on the developer identifier and website on Google Play, the development of the application appears to have been outsourced to a company called RT7 Incorporated.
+
+1528 29th USENIX Security Symposium USENIX Association
+# 5 Disclosure of Findings
+Cardpliance identified 15 PCI DSS violations in 6 applications from Google Play, which is listed in Table 3. For each of these applications, we tried to reach out to the developers through their email addresses mentioned in Google Play. All of the emails were successfully delivered to the corresponding email addresses listed on Google Play. In each email, we mentioned the application name, package name, timeline and the PCI DSS violations. For each PCI DSS violation, we reported why it was a violation with reference to the PCI DSS document and the source where the violation occurred.
+
+As of 75 days after disclosure, only one developer responded to our message. A 16% response rate is not unexpected considering the fact that responding could raise liability concerns. The responding developer agreed with all but one of the reported vulnerabilities, promising to fix them. We asked for clarification as to why the last issue was not a vulnerability, but did not receive a reply. At the time of camera-ready preparation of this paper, we have not seen an updated version of the application in Google Play.
+
+# 5 Threats to validity
+The PCI DSS standard is a human-readable document and does not provide precise requirements. Furthermore, the standard applies to a wide variety of payment technology, and it is not specific to mobile applications collecting credit card information from users. Sections 2 and 4 describe our interpretation of PCI DSS into a precise static analysis task.
+
+False Negatives: Due to the time needed for static program analysis, Cardpliance uses a lightweight filter based on credit card related keywords. Excluding applications during the filtering phase may result in false negatives. While we believe our keyword list is sufficiently comprehensive, it only contains keywords for the English language. Since a keyword search is also used by Test T3 to identify payment UIs, an incomplete keyword list may also result in false negatives for Test T3. Additional false negatives may occur when applications request user input through WebViews or use graphical icons to indicate the entry of a credit card number. Cardpliance is also reliant on UiRef  to identify taint sources. UiRef does not handle dynamically generated user interfaces.
+
+Static program analysis tools such as Amandroid  are neither sound nor complete. While any static analysis can be evaded with sufficient effort, we believe that most legitimate applications have little incentive to violate PCI compliance. We conservatively constructed our rules to mitigate false negatives and created test applications to thoroughly validate the logic for each test. Of note, Cardpliance detected when our test applications sent data over HTTP and sent an unprotected PAN through Android’s SMS API or implicit intent, neither of which were observed in real applications.
+
+validation, which is a common issue for Android applications. While we did not identify any URLs, this may have resulted from limitations in static analysis (e.g., string values not in the code). Our heuristics in Test T4 also did not consider the cryptographic keys or cipher suites when determining if data is safely obfuscated before writing to persistent storage.
+
+In Test T6, we assume explicit intents are used for ICC within an application. This assumption may introduce false negatives if applications use explicit intents to invoke components in external applications. However, doing so would require detailed knowledge of the external application’s APIs, which may change in subsequent versions. Therefore, we expect it will only occur in rare circumstances.
+
+False Positives: We used manual validation to eliminate false positives in our reported findings. False positives were observed in several situations. First, UiRef caused two false positives for Test T1 when determining UI input semantics (i.e., email address and card expiry). Second, a significant cause of false positives (particularly in tests T1 and T4) was tainting the context object in the findViewById(context,id) source. This context variable is a singleton for the entire Activity. When this common variable is tainted, the taint propagates to unrelated code where the context object is used, causing false positives. Third, several false positives in Test T5 resulted from the context-insensitive identification of vulnerable SSL libraries that were more generic rather than being specific to payment credentials. Fourth, false positives resulted from Test T3’s lightweight heuristic for masking, because identifying user input from the network is difficult to perform statically. Finally, Test T6 assumes that implicit intents are only used for ICC between applications. Therefore, Test T6 may produce false positives if an application invokes its own components using implicit intents. However, we did not encounter such false positives in our study.
+
+# 6 Recommendations for Developers
+PCI DSS v3 contains 139 pages of requirements, many of which are not relevant to mobile applications. This section seeks to provide a consolidated list of “best practice” recommendations for developers building Android applications that ask the user to enter a credit card number.
+
+1. Delegate responsibility of payment processing to established third-party payment providers. Where possible, we recommend developers consider using established third-party payment processors like Stripe, Square, or PayPal. By not requesting and processing payment information, developers can delegate much of the responsibility of PCI DSS compliance to the payment processor.
+
+2. Do not write the CVC to persistent storage or log files. PCI DSS explicitly states that Sensitive Account Data (see Table 1) should never be written to storage. This includes the CAV2, CVC2, CVV2, and CID values.
+
+3. Avoid writing the credit card number to persistent storage or log files. While PCI DSS does permit writing the credit card number to storage for a short period (if encrypted), it is safer to not write it all. If the user needs to save their card number, developers should consider storing it on a secure server along with the user’s account.
+
+4. Encrypt credit card numbers with secure randomly generated keys before storing locally. If the credit card number must be saved locally, it should be encrypted with a key managed by Android’s Keystore. Keys hard-coded in applications are easily discovered. Developers should use randomly-generated keys (e.g., SecureRandom class without a hardcoded seed) and follow PCI DSS recommendations for key length and using established cryptographic libraries like javax.crypto.
+
+5. Always send payment information over a secure connection when transmitting over the network. Applications should use HTTPS instead of HTTP when sending payment information over the network.

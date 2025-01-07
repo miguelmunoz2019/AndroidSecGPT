@@ -1,0 +1,83 @@
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+IOP Publishing
+IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073 doi:10/1742-6596/1175/1/012073
+The formulas for encryption and decryption were shown in Equations 3 and 4:
+L0 = L0 + f(R0, k, k, sum) (3)
+R0 = R0 + f(L0, k, k, sum) (4)
+Thus, L0 is the sum of L0 added by f(R0, k, k, sum). The encryption process for one round was run by using the formula as shown in Equations 1 and 2:
+y = y + (((z4 + k2z + sum2((z5) + k)) (5)
+z = z + (((y4) + k2y + sum2((y5) + k)) (6)
+The decryption process was run by using the formula as shown in Equations 7 and 8:
+L0 = L0 + f(R0, k, k, sum) (7)
+R0 = R0 + f(L0, k, k, sum) (8)
+Thus, L0 is the sum of L0 added f(R0, k, k, sum). The decryption process for one round was run by using the formula as shown in Equations 9 and 10:
+y = y + (((z4 + k2z + sum2((z5) + k)) (9)
+z = z + (((y4) + k2y + sum2((y5) + k)) (10)
+The formula of Y the above explained that Y was the result of Y added Z that was shifted to the left four times with the addition of key k. Then, the sum was made to be XOR where Z was summed with the sum (delta). The results of XOR process of both summations were made XOR again of shifted again with Z to be shifted to the right five times with the addition of key k. Thus, the formula of Z was similar to that of Y, only the keys of k and k were used.
+
+# 3. Method and Materials
+This research was conducted by the following methods to measure the quality of services in terms of MOS and VOIP.
+
+# 3. Mean Opinion Score (MOS)
+The study was conducted using qualitative and quantitative methods to measure VoIP. Qualitative test was carried out by a survey among a number of respondents about the quality of speech, while quantitative test was carried out by using a mean opinion score (MOS) method.
+
+The qualitative test was carried out to find the perception of average voice quality of a system. The test could be done by a survey among a number of respondents asking their opinion. They were asked to rate the voice quality by providing a value between 1 and 5 . Based on the result, mean opinion score (MOS) can be calculated . The difficulty encountered in the research was the subjectivity of different respondents, so that the quality of voice system was difficultly determined. In addition, the test required a lot of respondents, making the test expensive and time consuming.
+
+The following equation was used to calculate MOS:
+MOS = Na + Nb + Nc + ... + Nn (11)
+Na...j : Speech Quality Value
+N : Number of Respondents
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+IOP Publishing
+IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073 doi:10/1742-6596/1175/1/012073
+# 3. E-Model (ITU-T G)
+The research also applied E-Model method to support the results of measurements by using the MOS method. In a VoIP network, the reduced level of quality due to data transmission played an important role in the resultant quality of voice. The underlying causes of the reduced level of voice quality were delay, packet loss, and echo. The mathematical approach used to determine the quality of voice based on the reduced level of voice quality in VoIP networks was modeled in E-Model in accordance with ITU-T G. Final value of estimation in the E-model was called R factor. R factor is defined as the factor of transmission quality to be affected by parameters such as signal-to-noise ratio and echo devices, codec and compression, packet loss, and delay. R factor was defined in Equation 12.
+
+R = 94 Id Ie (12)
+Id value was determined from the following equation.
+
+Id = 0d + 0(d - 117)H(d - 1773) (13)
+Meanwhile, Ie value depends on the compression method used. The overall R factor value was calculated by Equation 14.
+
+R = 94 [0d + 0(d - 117)H(d - 1773)]Ie (14)
+where
+- R : factor of transmission quality
+- D : one-way delay (ms)
+- H (x) : 0 if x < 0, and 1 for x ≥ 0
+The value of R factor refers to the standard of MOS, where the relationships can be seen in Table 2. The following rules were applied to change estimation of values of R factor into MOS.
+
+- For R < 0, MOS = 1
+- For R = 100, MOS = 4
+- For 0 < R < 100, MOS = 1 + 0R + 7x10-6R(R - 60)(100 - R)
+Thus, a correlation between E-Model and MOS (in accordance with ITU-T) was shown in Table 2.
+
+5
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+IOP Publishing
+IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073 doi:10/1742-6596/1175/1/012073
+# 3 Parameter of Quality of Service (QoS) in VoIP Network
+In general, there are important parameters that affect QoS of voice services in VoIP network. The parameters are used as the measures for the performance of VoIP network . The parameters were delay, jitter, packet loss, and throughput. In this research, only two parameters were used, i.e. delay and throughput. This was done because delay is a part of the jitter (variation in delay time) and throughput is a part of packet loss rate.
+
+# 3 Delay
+Delay (latency) is a delay time the data needed to cover the distance from origin area to destination. In designing a VoIP network, the time delay is a problem that must be taken into account because the quality of good or bad voice depends on time delay . The maximum delay time to be recommended by ITU-T G for voice applications was 160 ms, while the maximum delay time with the voice quality that was accepted by the user was 250 ms. Equation 15 was used to calculate the delay time.
+
+Delay = Twf / P (15)
+Twf: Time between first and last packet
+P: Total packet
+# 3 Throughput
+Throughput is the rate of effective data transfer, which is measured in bps. Header in the data packet reduces this value. It is calculated by looking at the number of incoming packets to be sent . It is also the actual ability of a network for data transmission. Usually it is always associated with bandwidth, because it can be referred to as bandwidth in real conditions. Bandwidth is more definite and throughput is more dynamic, depending on the ongoing traffic. Equation 16 was used to calculate throughput.
+
+Throughput = Data / Time (16)
+# 4. Result and Discussion
+The study aims at analyzing the effect of the application of TEA algorithm for a comparison of the resultant quality of conversation voices between application with TEA encryption and that without TEA by MOS method as well as delay and throughput measurement method. The study used a bandwidth of 1 Mbps. The data collection was carried out 30 times using the key length of 128-bit. Each session of communication was held in a one-way manner for 1,280 seconds.
+
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+# 4. The Results by MOS Method
+MOS method was used as a qualitative test based on the quality of voices heard by the respondent. Each respondent did experiments and given values in accordance with the category of the quality of voices heard. The following was the results of measurement by MOS method.
+
+From the data in Table 3, it can be concluded that the quality of conversation voices was still high as they could be very clearly heard by respondents. This was seen from average value (RR) of MOS, i.e. 4. Meanwhile, the measurement by MOS in application with TEA was as follows.
+
+From the data in Table 4, it can be concluded that most respondents assessed that the application with TEA produced the sufficient good conversation, although it was rather noisy. They perceived that the noise was generated in a delay time between voice sent by the caller A and voice received by the caller B and the conversation voice was intermittently heard.

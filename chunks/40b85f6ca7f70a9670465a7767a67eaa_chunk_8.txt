@@ -1,0 +1,39 @@
+In summary, existing studies have often dealt with a specific issue, whereas we cover a broader range of issues, making the results more actionable for practitioners. Moreover, previous work often overwhelms developers with many identified issues at once, whereas we provide feedback during app development where developers have the relevant context. Such feedback makes it easier to react to issues, and helps developers to learn from their mistakes.
+
+# 6 Conclusion
+We have reviewed ICC security code smells that threaten Android apps, and implemented a linting plug-in for Android Studio that spots such smells, by linting affected code parts, and providing just-in-time feedback about the presence of security code smells.
+
+We applied our analysis to a corpus of more than 700 open-source apps. We observed that only small teams are capable of consistently building software resistant to most security code smells, and fewer than 10% of apps suffer from more than two ICC security smells. We discovered that updates rarely have any impact on ICC security, however, in case they do, they often correspond to new app features. Thus developers have to be very careful about integration of new functionality into their apps. Moreover, we found that long-lived projects suffer from more issues than recently created ones, except for apps that are updated frequently, for which that effect is reversed. We advise developers of long-lived projects to continuously update their IDEs, as old IDEs have only limited support for security issue reports, and therefore countless security issues could be missed.
+
+# Empirical Software Engineering
+A manual investigation of 100 apps shows that our tool successfully finds many different ICC security code smells, and about 43% of them in fact represent vulnerabilities, thus it constitutes a reasonable measure to improve the overall development efficiency and software quality.
+
+We recommend security aspects such as secure default values and permission systems, to be considered in the initial design of a new API, since this would effectively mitigate many issues like the very prevalent Common Task Affinity smell. We plan to explore the extent to which APIs can be made secure by design. While we analyzed the existence of ICC security smells in apps, studying their absence, i.e., secure ICC uses, could offer different insights that we plan to pursue in future. Moreover, we are interested in evaluating the usefulness of our tool during a security audit process, as well as in an app development session.
+
+# Publisher’s Note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+# Empirical Software Engineering
+Linares-Vásquez M, Bavota G, Escobar-Velásquez C (2017) An empirical study on Android-related vulnerabilities. In: Proceedings of the 14th international conference on mining software repositories, MSR ’17. IEEE Press, Piscataway, pp 2–13
+Mitra J, Ranganath V-P (2017) Ghera: a repository of Android app vulnerability benchmarks. In: Proceedings of the 13th international conference on predictive models and data analytics in software engineering. ACM, pp 43–52
+Octeau D, McDaniel P, Jha S, Bartel A, Bodden E, Klein J, Traon YL (2013) Effective inter-component communication mapping in Android with Epicc: an essential step towards holistic security analysis. In: Presented as part of the 22nd USENIX security symposium (USENIX security 13). USENIX, pp 543–558
+Reaves B, Bowers J, Gorski III SA, Anise O, Bobhate R, Cho R, Das H, Hussain S, Karachiwala H, Scaife N, Wright B, Butler K, Enck W, Patrick T (2016) Droid: assessment and evaluation of Android application analysis tools. ACM Comput Surv 49(55):1–55, 30
+Ren C, Zhang Y, Xue H, Wei T, Liu P (2015) Towards discovering and understanding task hijacking in Android. In: USENIX security symposium, pp 945–959
+Sadeghi A, Bagheri H, Garcia J, Malek S (2016) A taxonomy and qualitative comparison of program analysis techniques for security assessment of Android software. IEEE Trans Softw Eng PP(99):1–1
+Shekhar S, Dietz M, Wallach DS (2012) Adsplit: Separating smartphone advertising from applications. In: USENIX security symposium
+Tymchuk Y, Ghafari M, Nierstrasz O (2018) JIT Feedback — what experienced developers like about static analysis. In: Proceedings of the 26th IEEE international conference on program comprehension (ICPC’18)
+Wang R, Xing L, Wang X, Chen S (2013) Unauthorized origin crossing on mobile platforms threats and mitigation. In: ACM conference on computer and communications security
+Weir C, Rashid A, Noble J (2016) Reaching the masses: a new subdiscipline of app programmer education. In: Proceedings of the 2016 24th ACM SIGSOFT international symposium on foundations of software engineering, FSE 2016. ACM, pp 936–939
+Witschey J, Zielinska O, Welk A, Murphy-Hill E, Mayhorn C, Zimmermann T (2015) Quantifying developers’ adoption of security tools. In: Proceedings of the 2015 10th joint meeting on foundations of software engineering, ESEC/FSE 2015. ACM, pp 260–271
+Lei W, Grace M, Zhou Y, Chiachih W, Jiang X (2013) The impact of vendor customizations on Android security. In: Proceedings of the 2013 ACM SIGSAC conference on computer & communications security, CCS ’13. ACM, New York, pp 623–634
+Xie J, Lipford HR, Chu B (2011) Why do programmers make security errors? In: 2011 IEEE symposium on visual languages and human-centric computing (VL/HCC), pp 161–164
+Xie J, Xiao F, Xiaojiang D, Luo B, Guizani M (2017) Autopatchdroid: a framework for patching inter-app vulnerabilities in Android application. In: 2017 IEEE international conference on communications (ICC). IEEE, pp 1–6
+Meng X, Song C, Ji Y, Shih M-W, Lu K, Zheng C, Duan R, Jang Y, Lee B, Qian C, et al. (2016) Toward engineering a secure Android ecosystem: a survey of existing techniques. ACM Comput Surv (CSUR) 49(2):38
+Pascal Gadient is a PhD candidate in the Software Composition Group of the University of Bern (Switzerland). His research interests are security in mobile apps and mining software repositories.
+
+# Empirical Software Engineering
+Mohammad Ghafari is a senior research assistant in the Software Composition Group, and a lecturer in the Computer Science Institute of the University of Bern. He obtained a doctoral degree in Software Engineering from Politecnico di Milano (Italy) in 2015, and has been affiliated with the University of Bern since 2016. His research interest is at the confluence of program analysis, mining software repositories, and secure software engineering.
+
+Patrick Frischknecht is a software developer and a student of Computer Science at the University of Bern.
+
+Oscar Nierstrasz is a professor at the Institute of Computer Science of the University of Bern, where he founded the Software Composition Group in 1994. He is co-author of over 300 publications in diverse topics related to object-oriented software development and software evolution. He is co-author of the open-source books “Object-Oriented Reengineering Patterns” and “Pharo by Example”..

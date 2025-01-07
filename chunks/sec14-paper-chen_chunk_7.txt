@@ -1,0 +1,65 @@
+# 9 Defense Discussion
+In this section, we suggest more secure system designs to defend against the attacks found in this paper.
+
+Proc file system access control. In our attack, shared vm and features of Activity signature such as CPU and network all rely on freely accessible files in proc file system. However, as pointed out by Zhou et al. , simply removing them from the list of public resources may not be a good option due to the large amount of existing apps depending on them. To better solve the problem, Zhou et al.  proposed a mitigation strategy which reduces the attack effectiveness by rounding up or down the actual value. This can work for the network side channel, but may not be effective for shared vm and shared pm, which are already rounded to pages (4KB) but still generate a high transition detection accuracy. This is mainly because the window buffer size is large enough to be distinct and the side channel is pretty clean, as discussed in §3. Thus, Android system may need to reconsider its access control strategy for these public accessible files to better balance functionality and security. In fact, Android has already restricted access to certain proc files that are publicly accessible in the standard Linux, e.g., /proc/pid/smaps. However, our work indicates that it is still far from being secure.
+
+# Window manager design
+As described in §3, the existence of the shared-memory side channel is due to the requirement of the window buffer sharing in the client-drawn buffer design. Thus, a fundamental way of defending against the UI state inference attack in this paper is to use the server-drawn buffer design in GUI systems, though this means that any applications that are exposed to the details of the client-drawn buffer design need to be updated, which may introduce other side effects.
+
+# Window buffer reuse
+The Activity transition signal consists of shared vm increases and decreases, corresponding to window buffer allocations and deallocations. To eliminate such signal, the system can avoid them by pre-allocating two copies of the buffers and reuse them for all transitions in an app. Note that this is at the cost of much more memory usage for each app, as each buffer is several megabytes in size. However, with increasingly larger memory size in future mobile devices , we think this overhead may be acceptable.
+
+In this paper, the most serious security breaches are caused by follow-up attacks based on UI state inference. Thus, we provide suggestions as follows that can mitigate the attacks even if the UI state information is leaked.
+
+# Enforce UI state transition animation
+Animation is an important indicator for informing users about app state changes. In the Activity hijacking attack in §6, the seamless Activity injection is possible because this indicator can be turned off in Android. With UI state tracking, the attacker can leverage this to replace the foreground UI state with a phishing one without any visible indications. Thus, one defense on GUI system design side is to always keep this indicator on by enforcing animation in all UI state transitions. This helps reduce the attack stealthiness though it cannot fully eliminate the attack.
+
+# Limit background application functionality
+In GUI systems, background applications do not directly interact with users, so they should not perform privacy-sensitive actions freely. In §7, a background attacker can still get camera images, indicating that Android did not sufficiently restrict the background app functionality. With UI state tracking, an attacker can leverage precise timing to circumvent app data isolation. Thus, more restrictions should be imposed to limit background applications’ access to sensitive resources like camera, GPS, sensor, etc.
+
+To summarize, we propose solutions that eliminate dependencies of the attack such as the proc file side channel, which may prevent the attack. However, more investigation is required to understand their effectiveness and most of them do require significant changes that have impact on either backward-compatibility or functionality.
+
+# 10 Related Work
+Android malware. The Android OS, like any systems, contains security vulnerabilities and is vulnerable to malware [37–39]. For instance, the IPC mechanisms leave Android vulnerable to confused deputy attacks . Malware can collect privacy-sensitive information by requesting certain permissions . To combat these flaws, a number of defenses have been proposed , such as tracking the origin of inter-process calls to prevent unauthorized apps from indirectly accessing privileged information. Our attack requires neither specific vulnerabilities nor privacy-sensitive permissions, so known defense mechanisms will not protect against it.
+
+Side-channel attacks. Much work has been done on studying side channels. Proc file systems have been long abused for side-channel attacks. Zhang et al.  found that the ESP/EIP value can be used to infer keystrokes. Qian et al.  used “sequence-number-dependent” packet counter side channels to infer TCP sequence number. In memento , the memory footprints were found to correlate with the web pages a user visits. Zhou et al.  found three Android/Linux public resources to leak private information. These attacks are mostly app-dependent, while in this paper the UI state inference applies generally to all Android apps, leading to not only a larger attack coverage but also many more serious attacks. Timing is another popular form of side channels. Studies have shown that timing can be used to infer keystrokes as well as user information revealed by web applications [23, 42–44]. Sensors are more recent, popular side-channel sources. The sound made by the keyboard , electromagnetic waves , and special software  can be used to infer keystrokes. More recently, a large number of sensor-based side channels have been discovered on Android, including the micro-
+phone , accelerometer  and camera . Our attack does not rely on sensors which may require suspicious permissions. Instead, we leverage only data from the proc file system, which is readily available with no permission requirement.
+
+# 11 Conclusion
+In this paper, we formulate the UI state inference attack designed at exposing the running UI state of an application. This attack is enabled by a newly-discovered shared-memory side channel, which exists in nearly all popular GUI systems. We design and implement the Android version of this attack, and show that it has a high inference accuracy by evaluating it on popular apps. We then show that UI state tracking can be used as a powerful attack building block to enable new Android attacks, including Activity hijacking and camera peeking. We also discuss ways of eliminating the side channel, and suggest more secure system designs.
+
+#lmode.
+
+15. “Android Broadcast Receiver,” http://developer.android.com/reference/android/content/BroadcastReceiver.html.
+
+16. “Android Apktool,” http://code.google.com/p/android-apktool/.
+
+17. “Transparent Activity Theme,” http://developer.android.com/guide/topics/ui/themes.html#ApplyATheme.
+
+18. R. Templeman, Z. Rahman, D. Crandall, and A. Kapadia, “PlaceRaider: Virtual Theft in Physical Spaces with Smartphones,” in NDSS, 2013.
+
+19. “Android Camera,” http://developer.android.com/reference/android/hardware/Camera.html.
+
+20. “Samsung Wants to Cram 4GB of RAM into Your Next Phone,” http://www.pcworld.com/article/2083320/samsung-lays-groundwork-for-smartphones-with-more-ram.html.
+
+21. Y. Zhou and X. Jiang, “Dissecting Android malware: Characterization and evolution,” in IEEE Symposium on Security and Privacy, 2012.
+
+22. A. P. Felt, H. J. Wang, A. Moshchuk, S. Hanna, and E. Chin, “Permission Re-delegation: Attacks and Defenses,” in USENIX Security Symposium, 2011.
+
+23. Y. Zhou and X. Jiang, “Detecting Passive Content Leaks and Pollution in Android Applications,” in NDSS, 2013.
+
+24. W. Enck, P. Gilbert, B.-G. Chun, L. P. Cox, J. Jung, P. McDaniel, and A. Sheth, “TaintDroid: An Information Flow Tracking System for Real-Time Privacy Monitoring on Smartphones,” in OSDI, 2010.
+
+25. M. Dietz, S. Shekhar, Y. Pisetsky, A. Shu, and D. S. Wallach, “Quire: Lightweight Provenance for Smart Phone Operating Systems,” in USENIX Security Symposium, 2011.
+
+26. S. Chen, R. Wang, X. Wang, and K. Zhang, “Side-channel Leaks in Web Applications: A Reality Today, a Challenge Tomorrow,” in IEEE Symposium on Security and Privacy, 2010.
+
+27. Y. Zhang, A. Juels, M. K. Reiter, and T. Ristenpart, “Cross-VM side channels and their use to extract private keys,” in CCS, 2012.
+
+28. A. Bortz and D. Boneh, “Exposing private information by timing web applications,” in WWW, 2007.
+
+29. L. Zhuang, F. Zhou, and J. D. Tygar, “Keyboard acoustic emanations revisited,” in CCS, 2005.
+
+30. M. Vuagnoux and S. Pasini, “Compromising electromagnetic emanations of wired and wireless keyboards,” in USENIX security symposium, 2009.
+
+31. K. Killourhy and R. Maxion, “Comparing Anomaly-Detection Algorithms for Keystroke Dynamic,” in DSN, 2009..

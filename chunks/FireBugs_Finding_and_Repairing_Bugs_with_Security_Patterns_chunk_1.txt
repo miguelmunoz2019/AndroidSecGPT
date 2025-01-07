@@ -1,0 +1,90 @@
+# 2019 IEEE/ACM 6th International Conference on Mobile Software Engineering and Systems (MOBILESoft)
+# FireBugs: Finding and Repairing Bugs with Security Patterns
+Larry Singleton, Rui Zhao, Myoungkyu Song, Harvey Siy
+Dept. of Computer Science, University of Nebraska, Omaha, NE 68182, USA
+{larrysingleton, ruizhao, myoungkyu, hsiy}@unomaha.edu
+# Abstract
+Security is often a critical problem in software systems. The consequences of the failure lead to substantial economic loss or extensive environmental damage. Developing secure software is challenging, and retrofitting existing systems to introduce security is even harder. In this paper, we propose an automated approach for Finding and Repairing Bugs based on security patterns (FireBugs), to repair defects causing security vulnerabilities. To locate and fix security bugs, we apply security patterns that are reusable solutions comprising large amounts of software design experience in many different situations. In the evaluation, we investigated 2,800 Android app repositories to apply our approach to 200 subject projects that use javax.crypto APIs. The vision of our automated approach is to reduce software maintenance burdens where the number of outstanding software defects exceeds available resources. Our ultimate vision is to design more security patterns that have a positive impact on software quality by disseminating correlated sets of best security design practices and knowledge.
+
+# I. Introduction
+Developing and maintaining secure software is a difficult undertaking. Many mobile applications were written with little consideration for software security issues. As mobile applications become commonly used, the potential consequences of attacks that exploit these vulnerabilities also increase in severity and impact. Therefore, there is a need to repair these systems by detecting and patching the vulnerabilities. An automated approach is needed to cope with the scale of the work involved in repairing a large number of such systems.
+
+Although existing program repair approaches showed promising results, they have inherent limitations; their algorithms rely on random program generation that could produce nonsensical patches, and the techniques often repair minor or rare bugs that are only of academic interest. There is a need for automatic repair approaches which enable applications to safely recover from or avoid common security bugs or attacks. In addition, it is desirable for such approaches to help developers understand patches correctly so they can review and confirm that the repairs have addressed defects safely.
+
+In this paper, we introduce an automated approach, FireBugs. Our approach leverages security patterns to generate a repair patch automatically which is dynamically adapted into detected vulnerabilities at runtime.
+
+# II. Related Work
+# A. Encryption-related Security Problems
+Of the many types of vulnerabilities commonly encountered, encryption-related problems appear to be prevalent. Lazar et al. analyzed a sample of application bugs from the nationally curated Common Vulnerabilities and Exposures (CVE) database and found that 83% are caused by the misuse of cryptographic libraries. Nadi et al. found that it is hard for developers, who...
+
+978-1-7281-3395-9/19/$31 ©2019 IEEE
+DOI 10/MOBILESoft
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:29:07 UTC from IEEE Xplore. Restrictions apply.
+
+# Misuse Pattern
+TABLE I: Encryption misuse patterns detected by existing tools.
+
+lack of domain knowledge in cryptography, to determine the correct way to use Java cryptographic APIs, which are too complex to use.
+
+# B. Software Vulnerability Patterns
+Several tools have been shown to be effective at detecting cryptographic vulnerabilities by finding common patterns in the code and its execution, see Table I. For example, iCryptoTracer  uses static analysis techniques to identify crucial cryptographic APIs and analyzes the runtime logs to trace the use of cryptographic APIs in three patterns in iOS applications. Of 98 applications diagnosed by iCryptoTracer, 64 contain security flaws caused by cryptographic misuse. CryptoLint  is a lightweight static analysis tool for identifying cryptographic misuse in Android apps based on seven misuse patterns. In 11,748 Android applications, CryptoLint found 88% had used cryptography inappropriately. Crypto Misuse Analyzer  combines static and dynamic analysis techniques to monitor the cryptographic APIs invoked in Android applications and then determine if there is any cryptographic misuse based on 13 misuse patterns. In 45 applications, the tool found 40 applications had misused cryptographic APIs. In our paper, we investigated 2,800 repositories to analyze 200 Android apps as to whether they had misused javax.crypto APIs for their security implementations.
+
+# C. Automatic Detection and Program Repair
+The closest existing work is CDRep , a static analysis tool that searches and fixes cryptographic misuse in Android apps with seven rules from Egele et. al’s work , most of which are related to the use of constant values. CDRep repaired vulnerabilities by manually created templates. Different from CDRep, FireBugs processes the values weakly generated by problematic pseudorandom number generators besides the constant ones. In contrast to CDRep that only focuses on byte-code, our approach allows developers to interactively inspect the code changes for understanding repaired locations and debugging the root cause of vulnerabilities , . FireBugs is designed to provide the code inspection support during maintenance activities for code reviews by extracting edits  of bug-fixing changes, analyzing the impact and risk of the changes.
+
+Arzt et al.  proposed an automatic program generation tool, OpenCCE to guide adequate uses of cryptographic APIs. OpenCCE generates code for securely using cryptographic APIs in a program, and it also validates code that uses cryptography based on user’s specifications by answering high-level questions. In contrast, FireBugs focuses on isolating security bugs and generating safe repair patches by regression testing.
+
+# III. FireBugs: Finding and Repairing Security Bugs
+In this project, we create a software tool, FireBugs, such that, given a buggy program, it automatically locates vulnerabilities and generates a repair patch that passes a test suite encoding the required behavior and does not fail those encoding vulnerabilities. We leverage the notion that most common vulnerabilities have recurring patterns and thus the patch can be generated by utilizing a template-based approach. For applying the generated patch to vulnerable locations at runtime, we leverage a dynamic adaptation technique by using Aspect-Oriented Programming.
+
+# A. Security Patterns
+There are three requirements for secure use of cryptography on data protection.
+
+- The algorithm must be strong and resistant to cryptanalytic attacks.
+
+- The key required by the encryption algorithms, including both symmetric and public-key encryption schemes and some message authentication functions, must be distributed to the encrypter and decrypter in a secure fashion and must be kept secure.
+
+- The key and the nonce, e.g., the salt and the initialization vector (IV), in the use of the cryptography must generated by the true-random number generator (TRNG) or the pseudorandom number generator (PRNG) with a secure seed.
+
+Based on these requirements, FireBugs focuses on the
+TABLE II: Selection of Cryptographic Algorithms
+1      String                       secret                      = "Secret";
+2      String                       plaintext                              =       "PlainMessage";
+3      //          Generate                             a       key            from                the             secret
+4      SecretKeySpec                                            key            =       new             SecretKeySpec(secret.getBytes(),
+5      //          Select                       a       cipher                     algorithm
+6      Cipher                       cipher                      =Cipher.getInstance("AES/ECB/PKCS5PADDING");
+7      //          Encrypt
+8      cipher.init(Cipher.ENCRYPT_MODE,                                                                                                     key);
+9      byte[]                       ciphertext                                 =       cipher.doFinal(plaintext.getBytes());
+10        //          Hash
+11        MessageDigest                                            digest                     =       MessageDigest.getInstance("SHA-1");
+12        digest.update(plaintext.getBytes());
+13        byte[]                       hashValue                              =       digest.digest();
+which contains both weak encryption algorithms and
+the weak key value. An encryption key key is generated
+from a secret string secret at line 4. An AES-ECB en-
+cryption algorithm is initialized at line 6. The
+plaintext is encrypted by AES-ECB with the key at lines 8 and
+9. A SHA-1 hash function is used to obtain the hash
+value from the plaintext at lines 11–13. Based on our
+specification of cryptographic misuse shown above, this
+code example uses (1) the weak ECB mode of the AES
+encryption algorithm at line 6, (2) the weak SHA-1 hash
+function at line 11, and (3) a constant value for the key
+at line 1.
+
+ity detection.
+
+B. Security Bug Detection and Repair Patch Generation
+Static Analysis. FireBugs utilizes program slicing and
+data flow analysis techniques to only identify seman-
+tically dependent statements for finding vulnerabilities
+in each program. For example, Figure 3 shows how
+FireBugs tracks dependent statements, where Sn denotes
+a sequence of statements on control flow graph nodes;
+a dotted-line denotes a backward analysis direction;
+a solid line denotes a forward analysis direction; an
+dependence graphs generated from program slicing, FireBugs
+# IV. Experimentation and Preliminary Results
+To evaluate the effectiveness of our tool, we use existing open source projects, such as 2,800 Android app repositories where 200 apps use javax.crypto APIs to implement their security features. We wrote a batch script which crawls GitHub repositories based on four search queries: (1) Java programming language, (2) Android platform, (3) commits pushed after January 1st 2018, and (4) star rates more than 100. Table III shows the size of each subject project, measuring the number of LOC and the number of classes, methods, and fields. 200 subject projects are partitioned by 11 categories based on a manual review of the project descriptions.

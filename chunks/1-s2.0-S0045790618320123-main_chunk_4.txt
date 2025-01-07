@@ -1,0 +1,63 @@
+# 4. Model evaluation
+Ten-fold cross-validation technique is used to calculate the performance of the classifiers in various parallel combination strategies. As the name suggests, the dataset is divided into ten equal parts such that there is no overlapping. They can be termed as part1, part2, part3 up to part10. For the evaluation process, at every level, one portion is taken as the testing dataset and the other nine portions are supposed to administer the training model. The ML model is trained using the cross-validation training dataset and thereafter the accuracy of the model is calculated by validating the predicted results against the validation dataset. Accuracy of the ML model is estimated by averaging the accuracies derived in all the ten cases of cross-validation. The reason behind the selection of this technique is to ensure that our approach also helps identify the unknown harmful applications.
+
+# Confusion matrix.
+
+# Performance Metrics
+- True Positive Ratio (TPR)/ Sensitivity: The proportion of harmful APKs classified accurately to the total number of harmful APKs present in the dataset.
+
+TPR = a / (a + b)
+- True Negative Ratio (TNR)/ Specificity: The proportion of non-harmful APKs classified correctly divided by the total number of non-harmful APKs in the dataset.
+
+TNR = d / (c + d)
+- False Positive Ratio (FPR): The proportion of non-harmful classified incorrectly APKs to the total number of non-harmful APKs in the dataset.
+
+FPR = 1 − TNR = 1 − Specificity
+FPR = c / (c + d)
+- False Negative Ratio (FNR): The proportion of harmful apps classified incorrectly to the total number of harmful apps in the dataset.
+
+FNR = b / (a + b)
+- Accuracy (Acc): The proportion of correct predictions to the total number of predictions in the dataset.
+
+Acc = (a + d) / (a + b + c + d)
+- Error ratio (Err): The proportion of incorrect predictions to the total number of predictions in a dataset.
+
+Err = 1 − Acc
+# 5. Experimental setup and system configuration
+# 6. Results
+Sections 6 and 6 present the summary of results obtained using different ML classifiers.
+
+# 6. Results of individual classifiers
+The first part of the research is conducted using individual classifiers that are listed and discussed in the current section. Then, using the same individual classifiers, we create a combined model, known as parallel classifiers to obtain higher accuracy. Table 7 presents the result of the individual classifiers.
+
+It can be clearly seen from Table 7 that MLP is the best classifier amongst the four. TPR or the detection rate of MLP is 96% with the least FPR of 4% as shown in Fig. 7. The accuracy of MLP is the highest (95%) while the accuracy of SVM was the lowest (94%) as shown in Fig. 8. ROC curve for MLP (0) is shown in Fig. 9.
+
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# 6. Results of the parallel classifiers
+The second part of the research is conducted using the composite model where the results (obtained from Section 6) are executed in a parallel manner. Four parameters are considered to estimate the efficiency of the cumulative approach. Probability of detection of malware from individual classifiers is combined to create parallel classifiers. The two classes obtained are malicious (Mal) and benign (Ben).
+
+# 6. Average probabilities (AvgProb)
+It is an average of the probabilities of each class. If the average of the probabilities from malicious class Mal [(P1 + P2 + P3 + P4)/4] is greater than the average of the probabilities from benign class Ben [(P1 + P2 + P3 + P4)/4] then the APK is categorized as malicious, otherwise benign.
+
+# 6. Product of probabilities (ProdProb)
+It is a product of the probabilities of each class. If the product of the probabilities from malicious class Mal (P1 .P2 .P3 .P4) is greater than the product of the probabilities from benign class Ben (P1 .P2 .P3 .P4), then the APK is categorized as malicious, otherwise benign.
+
+# 6. Maximum probability (MaxProb)
+It is the maximum of the probabilities for each class. If the maximum of the probabilities from malicious class Max[Mal(P1, P2, P3, P4)] is greater than the maximum of the probabilities from benign class Max[Ben(P1, P2, P3, P4)], then the APK is categorized as malicious, otherwise benign.
+
+# 6. Majority vote (MVote)
+It is the decision that is taken when an individual classifier has obtained the highest majority of the vote. If the majority votes from the classifier MVote(C1, C2, C3, C4) = Mal, then the APK is categorized as malicious, otherwise benign.
+
+presents the result of the four different parameters used in the proposed methodology. After comparing Table 7 and Table 8, it is seen that TPR has improved in MaxProb and ProdProb.
+
+Performance metrics of parallel classifiers (in%).
+
+The results in Table 8 validate the need for implementing the parallel ML classifiers for detecting malware in Android. Parallel ML classifiers (MaxProb and ProdProb) not only improve the accuracy of detection of malware but also help overcome the gaps and limitations of the existing techniques (described in Section 1). As per obtained results, the best parallel classifier is MaxProd and the best individual classifier is MLP. The TPR of MaxProd stands at 98%, which is 2% higher than the TPR obtained from MLP. In addition, MaxProd shows an improvement in accuracy by 2% and reduction in error rate by 2% over MLP. Fig. 10 compares TPR and FPR for all parallel classifiers. Accuracy for different parallel classifiers is shown in Fig. 11. ROC curve for MaxProd (0) is shown in Fig. 12.
+
+# 7. Conclusion and future scope
+Android mobile platforms are susceptible to malware threats and, although previously researchers have handled such malware detection and categorization, the accuracy of their methods is not beyond improvement. Hence, the paper demonstrates the use of parallel classifiers to efficiently detect and classify malware (as malicious or benign) in Android applications. A number of static features (e.g., Permissions, API Calls, Version, Receiver Broadcast, Services and Libraries used), as well as dynamic features (e.g., battery temperature, battery charging percentage, network traffic, SMS sent and received, CPU and memory usage, etc.), were tested and correlated. The methodology proposed in the paper uses individual classifiers, namely, MLP, SVM, PART, and RIDOR and ensembles them to create a solution that is more accurate and efficient. This method not only detects the malware in the Android OS with an accuracy of 98% but also overcomes the gaps and limitations of the previous approaches. This methodology leverages the capabilities and strong-points inherent to each individual classifier and averages out their individual limitations. Hence, the overall method is more robust and has a lower error rate.
+
+As part of the future work, we aim to create more parallel classifiers by taking new combinations of individual classifiers. Our goal is also to detect and predict vulnerabilities and malware using deep-learning models on a large real-world dataset. There is a strong hypothesis that the existent malware can be clustered into various families and useful patterns can be drawn from them using advanced ML models. In addition, we also aim to perform an in-detail impact analysis of Android vulnerabilities on Confidentiality, Integrity and Availability triad at the architectural level.
+
+# Conflicts of interest
+The authors have no conflicts of interest to disclose..

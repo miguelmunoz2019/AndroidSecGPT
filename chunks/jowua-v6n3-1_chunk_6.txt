@@ -1,0 +1,89 @@
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Rules update
+# User Policy App
+# Context Providers
+# Policies
+# Android Framework
+# Set active context
+# Feedback
+# User-Space
+# App
+# Package Manager
+# Security Server
+# API access
+# Management
+# API / Hook
+# (Location, Telephony)
+# Policy Database
+# MAC queries
+# System
+# Apps
+# User
+# Logging
+# Untrusted App
+# Monitor
+# Update Boolean flags
+# Kernel Space
+# Low-Level MAC queries
+# SE Android
+# Resource
+# R
+# (Filesystem,…)
+# 5 AppGuard
+AppGuard , is a flexible system for the enforcement of user-customizable security policies on untrusted Android apps. Indeed, AppGuard works based on Inline Reference Monitoring (IRM) , and helps users to enforce pre-defined user policy on third-party apps. AppGuard, not only restricts the outreach of the third-party apps but also the operating system.
+
+In order to define the policies by user, AppGuard provides user with a standalone application, which is installed on the user device. Since AppGuard only modifies the application package and not the operating system, it allows for enforcing policies without rooting phones or modifying the operating system, which is the main advantage of this solution.
+
+# 5 FlaskDroid
+FlaskDroid  is proposed as a generic security architecture, in order to provide Mandatory Access Control (MAC) simultaneously on both Android’s middleware and kernel layers. FlaskDroid support as a flexible and effective ecosystem to instantiate different security solutions and multiple fine-grained security policies. In order to extract operational semantics at the Android middleware, they design a policy language inspired by SELinux  tailored to the specifics of Android’s middleware semantics.
+
+They evaluated the flexibility of the FlaskDroid by policy driven instantiations of selected security models such as the existing work Saint  as well as a new privacy protecting, user-defined and fine-grained per-app access control model. They also evaluated the efficiency and effectiveness of the work on SE Android 4 . Figure 18 illustrates FlaskDroid architecture and its components.
+
+# 5 Porscha
+In order to protect DRM-based contents (e.g., MP3-based MMS, SMS, or email), Ongtang et al. propose Porscha  as a system, developed in content proxies and reference monitors within the Android middleware to enforce DRM policies embedded in received content. The main goal of Porscha is improving the DRM policy enforcement mechanism to ensure: (1) authorized access to protected content (2) content
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Application Layer
+accessibility by provider-endorsed applications, and (3) ability to access contents under policy-defined contextual constraints, e.g., time limitation, a maximum number of viewings, etc.
+
+In Porscha, policy enforcing is a two-stage process: protection of transmitted content to the device, and the regulation of content use on the phone. For the first stage, Porscha binds policy and ensures content confidentiality “on the wire” using constructions and infrastructure built on Identity-Based Encryption . For the second stage, Porscha enforces policies by proxying content channels (e.g., POP3, IMAP, Active Sync) and placing reference monitor hooks within Android’s Binder IPC framework. They evaluated the Porscha using the three most popular content types: SMS messages, MMS messages, and email. In the reported experimentation, Porscha has low content delivery latency less than 1 second.
+
+# 5 QUIRE
+In order to deal with ICC-based attacks and regulating interapp ICC, Dietz et al. proposed QUIRE , a security mechanism, which is based on a call-chain tracking technique that provides important context in the form of provenance and OS managed data security to local and remote apps communicating by IPC and RPC respectively.
+
+QUIRE is developed based on two main techniques. The first technique, which is based on tracking the call chain of IPCs and annotating IPCs occurring within the phone such that the recipient of an IPC request can observe the full call chain associated with the request. Second, QUIRE uses simple cryptographic mechanisms to protect data moving over IPC and RPC channels. This way, QUIRE enables applications to propagate call chain context to downstream callees and to authenticate the origin of data that they receive indirectly.
+
+They evaluated QUIRE through performing a set of experiments were on the standard Android developer phone using two self-developed apps. In the reported experimentation the overhead of QUIRE for network RPC is practically insignificant.
+
+# 5 XManDroid
+In order to privilege escalation attacks Bugiel et al. presented XManDroid . XManDroid is a security framework that extends the monitoring mechanism of Android OS to detect and prevent application-level privilege escalation attacks at runtime based on a system-centric system policy.
+
+XManDroid monitors all interactions between apps and dynamically analyzes applications’ transitive permission usage. Monitored communication links should pass a verification process against a set of policy rules. Finally, depending on predefined policies, system representation allows for an effective de-
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Application Process
+tection of (covert) channels established through the Android system services and content providers while simultaneously optimizing the rate of false positives. XManDroid architecture is shown in figure 19.
+
+They evaluated the effectiveness of XManDroid on our test suite that simulates known application-level privilege escalation attacks (including Soundcomber), and demonstrate successful detection of attacks that use Android’s inter-component communication (ICC) framework (standard for most attacks).
+
+# 5 TrustDroid
+Bugiel et al. proposed TrustDroid , a security architecture, that enables lightweight domain isolation on each layer of the Android software stack. In the other words, TrustDroid tries to isolate data and applications of multiple trust levels in a lightweight way. Here, each domain stands for a security level of Android OS including kernel layer, middleware layer and network layer.
+
+In order to address the three domain isolations mentioned above, they modify three layers of the OS: extending the Android middleware and the underlying Linux kernel to mediate IPC apps associated to different domains, modifying the standard Android kernel firewall to filter network traffic using netfilter and managing the file system through extending the current Android Linux kernel with TOMOYO Linux based Mandatory Access Control  and corresponding TOMOYO policies. They evaluated TrustDroid on an Android devices (Nexus One) and in the reported results, TrustDroid performance has a low overhead, and a low butter consumption. Figure 20 depicts TrustDroid architecture.
+
+# 5 AdDroid
+AdDroid  is proposed to manage and to separate privileged advertising functionality from host applications in a way that applications show advertisements without requesting privacy sensitive permissions. AdDroid modifies the Android OS and tries to separate host application and the core advertising code run in separate protection domains. It also introduces a new advertising API and corresponding advertising permissions for the Android platform. It is worthy to note that, AdDroid introduces two new Android permissions, namely ADVERTISING and LOCATION_ADVERTISING. The AdDroid design and its key components are presented in Figure 21.
+
+AdDroid contains a new Android privilege separation service in order to manage advertising privileges. In this way developers can incorporate advertisements into their application using the predefined AdDroid advertising APIs. Therefore, apps are able to display advertisements without granting privacy-sensitive permissions. In the reported experimentation, using AdDroid, 27% of advertising-supported applications do not need Internet access, 25% do not need location information, and 8% do not re-
+22
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Logging data
+# 5 NativeGuard
+In NativeGuard , Sun et al. present a framework that utilizes Android’s process isolation to sandbox native libraries of an application. NativeGuard leverage the process-based protection in Android through isolating native libraries from other components in Android applications. Architecture of NativeGuard is shown in Figure 22.
+
+NativeGuard isolation process has two main aspects. First, it separates the native libraries within an Android application and a standalone application, where native code is not granted to have full access to the entire application address space and the interactions between the native libraries and Java code is fulfilled via IPC mechanism. Second, after the isolation process the native libraries are not granted the permissions which are granted to the app at the installation process. In this way, NativeGuard decreases the chance of permission misusing and over-privileging attacks.
+
+# 5 Paranoid Android
+Paranoid Android  is a security check system which is applied on a remote security server (cloud-based detection framework) that host exact replicas of the phones in virtual environments. Moving the checking process from the user device to a remote server is the main novelty of this work. It is worthy to note that the main reason for doing the security checks on a remote server is because of lack of enough computational resources and battery consumption on smartphones. Figure 5 shows the Paranoid Android architecture overview.

@@ -1,0 +1,57 @@
+In contrast, all of the 42 Ghera benchmarks used as inputs in our evaluation were authentic albeit synthetic. While DroidBench focuses on ICC related vulnerabilities and use of taint analysis for vulnerability detection, Ghera is agnostic to the techniques underlying the tools and contains vulnerabilities related to ICC and other features of Android platform, e.g., crypto, storage, web. While their evaluation focused on the usability of tools (i.e., how easy is it to use the tool in practice? and how well does it work in practice?), our evaluation focused more on the effectiveness of tools in detecting known vulnerabilities and malicious behavior and less on the usability of tools. Despite these differences, the effort by Reaves et al. is closely related to our evaluation.
+
+Sadeghi et al.  conducted an exhaustive literature review of the use of program analysis techniques to address issues related to Android security. They identified trends, patterns, and gaps in existing literature along with the challenges and opportunities for future research. In comparison, our evaluation also exposes gaps in existing tools. However, it does so empirically while being agnostic to techniques underlying the tools, i.e., not limited to program analysis.
+
+More recently, Pauck et al.  conducted an empirical study to check if Android static taint analysis tools keep their promises. Their evaluation uses DroidBench, ICCBench [Wei, 2017], and DIALDroidBench [Bosu, 2017] as inputs to tools. Since the authenticity of the apps in these benchmark suites was unknown, they developed a tool to help them confirm the presence/absence of vulnerabilities in the apps and used it to create 211 authentic benchmarks. Likewise, they created 26 authentic benchmarks based on the real-world apps from DIALDroiBench. Finally, they empirically evaluated the effectiveness and scalability of 6 static taint analysis tools using these 237 benchmarks. While their evaluation is very similar to our evaluation in terms of the goals — understand the effectiveness of tools, there are non-trivial differences in the approaches and findings. First, unlike their evaluation, our evaluation used Ghera benchmarks which are demonstrably authentic and did not require extra effort to ensure authenticity as part of the evaluation. Further, while their evaluation is subject to bias and incompleteness due to manual identification of vulnerable/malicious information flows, our evaluation does not suffer from such aspects due to the intrinsic characteristics of Ghera benchmarks, e.g., tool/technique agnostic, authentic Second, while they evaluated six security analysis tools, our evaluation is broader in scope.
+
+Refer to Sections 2 and 3 of the work by Mitra and Ranganath  for a detailed description of characteristics of Ghera.
+
+tools, we evaluated 14 vulnerability detection tools (21 variations in total; see Table 5) (including 3 tools evaluated by Pauck et al.) along with five malicious behavior detection tools. Further, while they evaluated only academic tools, we evaluated academic tools and non-academic tools. Third, while their evaluation focused on tools based on static taint analysis, our evaluation was agnostic to the techniques underlying the tools. Their evaluation was limited to ICC related vulnerabilities while our evaluation covered vulnerabilities related to ICC and other features of the Android platform, e.g., crypto, storage, web. Fourth, while their evaluation used more than 200 synthetic apps and 26 real-world apps, our evaluation used only 84 synthetic apps (i.e., 42 vulnerable apps and 42 secure apps). However, since each benchmark in Ghera embodies a unique vulnerability, our evaluation is based on 42 unique vulnerabilities. In contrast, their evaluation is not based on unique vulnerabilities as not every DroidBench benchmark embodies a unique vulnerability e.g., privacy leak due to constant index based array access vs. privacy leak due to calculated index based array access. Finally, their findings are more favorable than our findings; even when limited to ICC related vulnerabilities. Given the above differences in evaluations, the differences in findings are not surprising.
+
+Given all of the above differences between these two evaluations that pursued very similar goals, we strongly urge researchers to consider these differences and associated experimental aspects while designing similar evaluations in the future. Also, we believe a closer examination of existing empirical evaluations in software engineering is necessary to determine the pros and cons of the experimental setup used in these evaluations and identify the basic requirements of the experimental setup to create comparable and reproducible evaluations.
+
+Zhou and Jiang  conducted a systematic study of the installation, activation, and payloads of 1260 malware samples collected from August 2010 thru 2011. They characterized the behavior and evolution of malware. In contrast, our evaluation is focused on the ability of tools to detect vulnerable and malicious behaviors.
+
+# 7 Evaluation Artifacts
+Ghera benchmarks used in the evaluations described in this manuscript are available at https://bitbucket.org/secure-it-i/android-app-vulnerability-benchmarks/src/RekhaEval-3.
+
+The code and input data used in the evaluation of representativeness of Ghera benchmarks are available in a publicly accessible repository: https://bitbucket.org/secure-it-i/evaluate-representativeness/src/rekha-may2018-3. The repository also contains the output data from the evaluation and the instructions to repeat the evaluation.
+
+A copy of specific versions of offline tools used in tools evaluation along with tool output from the evaluation are available in a publicly accessible repository: https://bitbucket.org/secure-it-i/may2018. Specifically, vulevals and secevals folders in the repository contain artifacts from the evaluation of vulnerability detection tools using benign apps and secure apps from Ghera, respectively. malevals folder contains artifacts from the evaluation of malicious behavior detection tools using malicious apps from Ghera. The repository also contains scripts used to automate the evaluation along with the instructions to repeat the evaluation.
+
+To provide a high-level overview of the findings from tools evaluation, we have created a simple online dashboard of the findings at https://secure-it-i.bitbucket.io/rekha/dashboard.html. The findings on the dashboard are linked to the artifacts produced by each tool in the evaluation. We hope the dashboard will help app developers identify security tools that are well suited to check their apps for vulnerabilities and tool developers assess how well their tools fare against both known (regression) and new vulnerabilities and exploits. We plan to update the dashboard with results from future iterations of this evaluation.
+
+# 8 Future Work
+Here are a few ways to extend this effort to help the Android developer community.
+
+1. Evaluate paid security analysis tools by partnering with tool vendors, e.g., AppRay [App-Ray, 2015], IBM AppScan [IBM, 2018], Klocwork [Rogue Wave Software, 2017].
+
+# 2. Evaluate freely available Android security analysis tools that were considered but not evaluated in this tools evaluation, e.g., ConDroid [Anand et al., 2012], Sparta [Ernst et al., 2014], StaDyna [Zhauniarovich et al., 2015].
+
+# 3. Explore different modes/configurations of evaluated tools (e.g., Amandroid) and evaluate their impact on the effectiveness of tools.
+
+# 4. Extend tools evaluation to consider new lean and fat benchmarks added to Ghera repository. (Currently, Ghera contains 55 lean benchmarks: 14 new lean benchmarks and one deprecated lean benchmark.)
+# 9 Summary
+When we started this evaluation, we expected many Android app security analysis tools to detect many of the known vulnerabilities. The reasons for our expectation was 1) there has been an explosion of efforts in recent years to develop security analysis tools and techniques for Android apps and 2) almost all of the considered vulnerabilities were discovered and reported before most of the evaluated tools were last developed/updated.
+
+Contrary to our expectation, the evaluation suggests that most of the tools and techniques can independently detect only a small number of considered vulnerabilities. Even pooling all tools together, several vulnerabilities still remained undetected. Also, we made several interesting observations such as tools using shallow analysis perform better than tools using deep analysis.
+
+These observations suggest if current and new security analysis tools and techniques are to help secure Android apps, then they need to be more effective in detecting vulnerabilities; specifically, starting with known vulnerabilities as a large portion of real-world apps use APIs associated with these vulnerabilities. A two-step approach to achieve this is 1) build and maintain an open, free, and public corpus of known Android app vulnerabilities in a verifiable and demonstrable form and 2) use the corpus to continuously and rigorously evaluate the effectiveness of Android app security analysis tools and techniques.
+
+#getCallingPid(), 2018a. Accessed: 01-Jun-2018.
+
+Google Inc. Android developer documentation - Content Provider. https://developer.android.com/reference/android/content/ContentProvider.html#call(java.lang.String,%20java.lang.String,%20android.os.Bundle), 2018b. Accessed: 07-Mar-2018.
+
+Google Inc. Android Security Tips. https://developer.android.com/training/articles/security-tips, 2018c. Accessed: 01-Jun-2017.
+
+Michael I. Gordon, Deokhwan Kim, Jeff Perkins, Limei Gilham, Nguyen Nguyen, and Martin” Rinard. Information-flow analysis of Android applications in DroidSafe. In Proceedings of the 22nd Annual Network and Distributed System Security Symposium (NDSS’15), 2015. https://github.com/MIT-PAC/droidsafe-src, Accessed: 21-Apr-2018.
+
+Jim Gray. Benchmark Handbook: For Database and Transaction Processing Systems. Morgan Kaufmann Publishers Inc., 1992. ISBN 1558601597.
+
+Matthew Green and Matthew Smith. Developers are not the enemy!: The need for usable security apis. IEEE Security and Privacy, 14:40–46, 2016.
+
+IBM. IBM App Scan. https://www.ibm.com/us-en/marketplace/ibm-appscan-source, 2018. Accessed: 01-June-2018.
+
+Yunhan Jack Jia, Qi Alfred Chen, Yikai Lin, Chao Kong, and Zhuoqing Morley Mao. Open doors for bob and mallory: Open port usage in android apps and security implications. In EuroS&P, pages 190–203. IEEE, 2017.
+
+# Rubin Xu, Hassen Saïdi, and Ross Anderson. Aurasium: Practical policy enforcement for android applications.

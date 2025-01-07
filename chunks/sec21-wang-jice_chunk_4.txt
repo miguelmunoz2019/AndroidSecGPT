@@ -1,0 +1,52 @@
+In our implementation, we utilize AllenNLP constituency parser to generate the constituency tree related features for each sentence. Then, we built these features into the state-of-the-art conditional random fields (CRF) based NER model - Stanford NER. As these features are not built-in features in Stanford NER, we configure the feature variables of them using the SeqClassifierFlags class, and then read the feature set into the CoreLabel class. In addition, we updated training data using SDK ToSes. Particularly, we manually annotated 534 sentences from 6 SDK documents using IOB encoding to retrain the NER model.
+
+To evaluate the model, we perform 10-fold cross validation on the annotated sentences. Our result shows that by leveraging constituency tree features, the model achieves a precision of 95% and a recall of 90%. Compared with the model without constituency tree features, our model shows an increase of 1% and 2% for the precision and recall, respectively. After that, the model was also evaluated on additional 103 randomly selected and manually annotated sentences from two previously-unseen SDK ToSes, which yields a precision of 88% and a recall of 90%.
+
+Policy statement discovery. From each ToS, the analyzer identifies the sentences describing how restricted data items can be shared with or collected by other libraries. These sentences are selected based on restricted data identified by the
+# Data Sharing Policy Identification
+The aforementioned model, the subject (i.e., library developer) consists of noisy information, and the subtree is most relevant to the understanding of the relation.
+
+# Object Identification
+In our research, we observe object in the data sharing policy sometimes consists of more than one restricted data, e.g., “Don’t collect usernames or passwords". Hence, to extract the object from each policy statement, we first identify the restricted data d1, d2, ..., dn using the aforementioned method, and then use dependency tree to determine whether they have conjunctive relation and their coordinating conjunction (a.k.a., CCONJ ) is “OR". If so, we recognize them as n different objects.
+
+Similarly, for the restricted data d1, d2, ..., dn are with conjunctive relation but their coordinating conjunction (a.k.a., CCONJ ) is “AND", we recognize them as one object. However, things get complicated when the policy statement illustrates multiple objects can not GET at the same time, e.g., Don’t associate user profiles with any mobile device identifier. Here, we use specific verbs (e.g., associate with, combine with, connect to) to identify this relationship. In this way, we recognize them as one object, i.e., d1 ∧ d2... ∧ dn.
+
+In addition, we use the lexicosyntactic patterns discovered in  to find the object hyponym and then use the specified object hyponym in the policy tuple. For example, given the pattern “X, for example, Y1, Y2,...Yn”, where Y1, Y2,...Yn is the hyponym of X, and the sentence “device identifier, for example: ssaid, mac address, imei, etc", we will extract five policies of “device identifier", “ssaid", “mac address" and “imei".
+
+# Condition Extraction
+By manually inspecting 1K sentences from 10 SDK ToSes, we annotated 14 generic patterns (in terms of dependency trees), which describe the grammatical relation among object, condition and the operation. The annotated pattern list is shown in Table 9. Then, we fed them into the analyzer which utilizes these patterns to match the dependency parsing trees of the policy statements, using the object and operation nodes as anchors. More specifically, given a policy statement, we use the depth-first search algorithm, which starts at object and operation nodes, to extract all subtrees for pattern similarity comparison. Then we identify the most similar subtree of a policy statement by calculating a dependency tree edit distance between each subtree and the patterns in Table 9.
+
+Here we define a dependency tree edit distance D(t1,t2) = min(o1,...,o)∈O(t1,t2) k2 ∑k=1o where, O(t1,t2) is a set of tree edits (e.g., node or edge’s insertion, deletion and substitution) that transform t1 to t2, and we consider t1 and t2 are equal when all node types and edge attributes are matched. After that, we locate the condition node based on the matched subtree.
+
+For example, Figure 5a illustrates the dependency tree structure of the policy statement. In the tree, each edge has an attribute dep that shows the dependency relationship between nodes, and each node has an attribute type which indicates whether it is object, operation, or none of the above (other).
+
+USENIX Association
+30th USENIX Security Symposium
+4139
+you from
+leally vaild a consent member you have member s' Profile data must before
+# (a) Tree structure of policy statement
+consent our obtain ser vice data use
+# (b) Tree structure of matched pattern
+The subtree which consists of all green nodes is the most similar subtree with 0 edit distance to the pattern shown in the Figure 5b Traversing the matched pattern, we can locate condition node which is (have legally valid consent).
+
+As the graph matching problem is NP-complete, the computation time grows dramatically with the increase of node and edge. In our implementation, to reduce the matching time, when constructing subtrees using depth-first search, we define the search depth which will not exceed twice of pattern length and the threshold of edit distance’s threshold to be 3.
+
+# Discussion and evaluation
+DPA recognized 1,215 pairs (ob ject, condition) from 1,056 policy statements from 40 ToSes. We manually inspect all of the detected pairs based on the relevant policy statements. The results show that our method achieves a precision of 84%. However, still our technique misses some cases. We acknowledge that the effectiveness of the method can increase with more annotated sentences for pattern matching. In our research, to guarantee the diversity of the annotated patterns, we design a sample strategy for annotated sentence selection. Specifically, we keep randomly sampling sentences for annotation until not observing new patterns for continuous 200 sentences. In this way, we annotated 14 patterns by inspecting 1K sentences from 10 SDK ToSes. Another limitation is the capability to process long sentences. Our method utilized the dependency parsing trees of the sentences for condition extraction. However, the state-of-the-art dependency parser cannot maintain its accuracy when sentences become too long.
+
+Analyzing these 1,215 pairs of data sharing policies, we found that most are from Facebook SDK (9%), followed by Amazon (8%) and LinkedIn (7%). Also, 37 of them have the object with more than one restricted data. We observe the objects advertising ID and mobile device identifier always co-occur (7 pairs), because the user-resettable advertising ID will be personally identifiable when associated with mobile device identifier, which is not privacy-compliant . To understand the data sharing conditions, we manually analyzed all of the recognized data sharing policies and categorized them into five types: No access by any party, Requiring user consents, No third-party access, Complying with regulations (i.e., GDPR, CCPA, COPPA) and Others, as shown in Table 5. Note that 96% of the data sharing policy are with the first four types of data sharing conditions. The Others type of data sharing condition is rarely observed and sometimes associated with some vaguely-described condition, such as “Only certain application types can access.” In our policy compliance check (see Section 3), we did not check the policy compliance related to this type of condition. We acknowledge that checking those policies would allow for a more holistic view of XLDH activities. However, doing so will require subjective analysis of the vague and ambiguous policies and a large amount of manual efforts for corner cases.
+
+# Comparison with other policy analyzers
+Since there is no public-available ToS analyzer, we compared DPA’s policy statement discovery with two state-of-the-art privacy policy analyzer Polisis  and PolicyLint . Note that Polisis and PolicyLint are designed for privacy policy analysis, not ToS analysis.
+
+More specifically, we manually annotated 200 sentences from 3 SDK ToSes (e.g., Twitter, Google, Facebook), which yielded 83 sentences are associated data collection and sharing policy and the rest (117) are not. In our experiment, we evaluated the approaches on this dataset. Table 4 shows the experiment results. Our study shows that DPA outperforms both approaches in precision and recall.
+
+We also compared DPA’s restricted data object recognition module with PolicyLint . We use the aforementioned 534 IOB-encoded sentences to evaluate both DPA and PolicyLint via 10-fold cross validation. For PolicyLint, we retrained its NER model using our annotated corpora. We also show the performance of PolicyLint with its original model. Table 4 shows the precision and recall of both approaches. Our study shows that DPA has a much better recall (90% vs 82%).
+
+# 3 Cross-library Analysis
+To capture malicious data harvesting in an app, our Cross-library Analyzer (XLA) identifies cross-library API calls to find the data gathered by a third-party library from a co-
+PolicyCheck  shared the same policy analysis module with PolicyLint.
+
+4140 30th USENIX Security Symposium USENIX Association
+located SDK (within the same app), and then checks the compliance of such activities with the SDK’s data sharing policies recovered by DPA (Section 3). To this end, XLA runs a program analysis tool that integrates existing techniques.

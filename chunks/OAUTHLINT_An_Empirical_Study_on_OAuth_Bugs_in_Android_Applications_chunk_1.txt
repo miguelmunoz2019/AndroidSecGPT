@@ -1,0 +1,68 @@
+# 2019 34th IEEE/ACM International Conference on Automated Software Engineering (ASE)
+# OA UTH L INT: An Empirical Study on OAuth Bugs in Android Applications
+Tamjid Al Rahat
+Dept. of Computer Science
+University of Virginia
+U.S.A
+tr9wr@virginia.edu
+Yu Feng
+Dept. of Computer Science
+University of California, Santa Barbara
+U.S.A
+yufeng@cs.ucsb.edu
+Yuan Tian
+Dept. of Computer Science
+University of Virginia
+U.S.A
+yuant@virginia.edu
+# Abstract
+Mobile developers use OAuth APIs to implement Single-Sign-On services. However, the OAuth protocol was originally designed for the authorization for third-party websites not to authenticate users in third-party mobile apps. As a result, it is challenging for developers to correctly implement mobile OAuth securely. These vulnerabilities due to the misunderstanding of OAuth and inexperience of developers could lead to data leakage and account breach. In this paper, we perform an empirical study on the usage of OAuth APIs in Android applications and their security implications. In particular, we develop OA UTH L INT, that incorporates a query-driven static analysis to automatically check programs on the Google Play marketplace. OA UTH L INT takes as input an anti-protocol that encodes a vulnerable pattern extracted from the OAuth specifications and a program P. Our tool then generates a counter-example if the anti-protocol can match a trace of P's possible executions. To evaluate the effectiveness of our approach, we perform a systematic study on 600+ popular apps which have more than 10 millions of downloads. The evaluation shows that 101 (32%) out of 316 applications that use OAuth APIs make at least one security mistake. The security implications in OAuth, which leads to vulnerabilities that compromise user privacy. In the meantime, the original OAuth 1 protocol was first proposed for websites, and then got widely used in mobile applications. However, many security schemes cannot be directly mapped from the web to mobile platforms. Therefore, mobile application developers make many mistakes for using the OAuth protocol.
+
+# Index Terms
+Security, OAuth, Android, Static Analysis, Bug Finding
+# I. INTRODUCTION
+The OAuth protocol has been widely used for mobile developers to implement Single-Sign-On services. For example, many mobile game developers use OAuth to implement authentication with user’s major accounts in Google, Twitter, or Facebook. However, the OAuth protocol was originally designed for the authorization for third-party websites in 2009, not to authenticate users in third-party mobile apps. Since the security implications for authentication and authorization are fundamentally different, and mobile platforms have different security schemes comparing to the browsers, it is challenging for developers to implement the OAuth protocols in mobile platforms securely.
+
+Recent years, many widespread attacks for the OAuth implementation in popular mobile applications have been reported, causing users to lose their accounts or information. For example, Facebook has a bug for the insecure storage of OAuth tokens, which exposes a large number of user accounts to attackers. Studying such a critical and popular multi-party protocol will also provide insight for building other multi-party protocols securely.
+
+Previous studies have identified many security issues of the mobile OAuth implementations by manual or semi-automatic analyses. However, the entire process is very complex.
+
+time-consuming and error-prone as it requires security experts with domain knowledge in OAuth to inspect the implementations manually. On the other hand, there are several challenges for automatically finding OAuth vulnerabilities in Android platforms. First, verifying OAuth implementation requires precisely modeling the data- and control-properties of mobile applications which are highly asynchronous and interactive.
+
+Second, to precisely reason about the OAuth vulnerabilities in mobile applications, our system has to consider the interactions among multiple parties (i.e., Service Provider, Relying Party, SDK, etc) and the majority of their implementations are not available. Finally, a system would need a specification for finding the OAuth vulnerabilities, however, the specification of the latest OAuth 2 protocol  has over 75 pages which are extremely difficult to digest by developers.
+
+To understand the OAuth vulnerabilities in relying parties and help mobile developers to write secure code using OAuth, we perform the first empirical and systematic study on 600+ popular Android applications from Google Play. In particular, we propose OAUTH LINT, the first static analyzer for checking anti-protocols (i.e., vulnerabilities) in OAuth implementation. First, we present a simple but effective query language for describing common anti-protocols in OAuth implementations. Here, each anti-protocol is a class of vulnerabilities in OAuth implementation. Second, we perform a thorough study on specifications of the existing OAuth protocols and summarize five common anti-protocols. Third, given an anti-protocol expressed in our query language, we leverage a fully-automatic and demand-driven static analysis to identify the anti-protocols that appear in the Android applications from the relying parties. Formally speaking, an anti-protocol π for program P is true iff π matches a trace of P's possible executions. Our system will return a counter-example if the specified anti-protocol configuration is feasible in the application.
+
+Most of the anti-protocols that we check are logical flaws due to the misunderstanding of the OAuth protocol. Because of the misunderstanding of the security implications of the OAuth protocol, the developers can make logical errors that compromise user privacy. For example, in the OAuth 2 implicit flow, the bearer token represents that a user grants a set of permissions to an application. By its design, the bearer token is bound to the user and the set of permissions, but not to the application. Therefore, if developers just verify the bearer token, it’s not secure to authenticate the user because a malicious application might get the bearer token and reuse it in the OAuth process of another application to gain access to the user’s account.
+
+To evaluate the effectiveness of our approach, we perform a systematic study on 600+ popular applications which have more than 10 millions of downloads. Our evaluation shows that for those popular apps that use OAuth API, more than 32% of them contain at least one anti-protocol. For those anti-protocols identified by OAUTH LINT, we also reported them to the developers of corresponding mobile applications and get acknowledged by companies such as WordPress and GoFundMe.
+
+# Contributions
+In summary, this paper makes the following key contributions:
+- We devise a simple but effective query language for expressing common anti-protocols that violate the OAuth specification.
+
+- We propose five anti-protocols that widely appear in the implementations of relying parties.
+
+- Given an anti-protocol expressed in our query language, we design a demand- and query-driven static analysis for checking violations in the mobile applications from the relying parties.
+
+- We implement our proposed ideas in OAUTH LINT, and evaluate it on over 600 popular applications from Google Play. Our result shows that more than 32% of the applications contain at least one anti-protocol.
+
+# II. BACKGROUND
+The concept of OAuth protocol was proposed in 2007 and was designed as an authorization protocol which contains two major OAuth versions that are currently deployed: OAuth 1 and 2. The first version of the OAuth protocol (OAuth 1) was published in April 2010 . Since then, the protocol has gone through a few revisions. The most notable changes to the protocol were released as the OAuth 2 framework in October 2012.
+
+# A. OAuth 1
+OAuth 1 was released for around 10 years, however, some service providers such as Twitter are still using OAuth 1 . We illustrate the OAuth 1 protocol flow in Fig. 1. The dashed lines in our figures for OAuth represent redirection and solid lines represent direct server-to-server API calls (e.g., a REST API call). Also, parameters inside square brackets are signed using shared secrets.
+
+We summarize the OAuth 1 flow in the following:
+- Initialization: Relying party developers will need to register with the service provider and obtain shared secrets (consumer secret and consumer key). The shared secrets will be used in the following steps to sign packets and verify the signatures.
+
+- Unauthorized request token (Step 1,2): First, the relying party gets a request token from the service provider using a direct server-to-server call.
+
+# Authorized request token (Step 3-5)
+Then, the relying party redirects the user to the service provider (in mobile devices, it is done by inter-process communication such as Intent in Android) with the request token as a URI parameter. Then, the user grants the relying party access to their protected resource and is redirected back to the relying party.
+
+# Access token (Step 6,7)
+With the request token authorized, the relying party can exchange the request token for an access token using another direct server-to-server call with the service provider. Note that these two steps are very critical for the security of OAuth 1. The relying party needs to sign the packet with the shared secret (consumer secret/key) and the service provider needs to verify the signature to check the identity of the relying party.
+
+# Protected resource (Step 8,9)
+Finally, the relying party can use the access token to obtain the users protected resource.

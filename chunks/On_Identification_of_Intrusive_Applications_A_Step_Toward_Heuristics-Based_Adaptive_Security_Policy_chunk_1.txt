@@ -1,0 +1,52 @@
+# On Identification of Intrusive Applications: A Step Toward Heuristics-Based Adaptive Security Policy
+ZHIYUAN WEI 1, USMAN RAUF 2, VICTOR LAVRIC 1, ALEXANDER KOKUSHKIN 1, FADI MOHSEN 3, AND ADALYNN MARTINEZ 2
+1 Bernoulli Institute for Mathematics, Computer Science and Artificial Intelligence, University of Groningen, 9712 CP Groningen, The Netherlands
+2 Department of Mathematics and Computer Science, Mercy University, Dobbs Ferry, NY 10522, USA
+3 Rocky Mountain Robotech, Broomfield, CO 80020, USA
+Corresponding author: Fadi Mohsen (f.f.m.mohsen@rug.nl)
+This work was supported in part by the National Centers of Academic Excellence in Cybersecurity, which is part of the National Security Agency (NSA) under Grant H98230-22-1-0256.
+
+# ABSTRACT
+Android is widely recognized as one of the leading mobile operating systems globally. As the popularity and usage of Android OS and third-party application stores continue to soar, the process of developing and publishing applications has become increasingly accessible. However, the absence of a robust filtering mechanism to ensure that applications only request appropriate and secure permissions poses a significant concern. While extensive research has been conducted on malware analysis, the realm of intrusive applications remains largely unexplored. The lack of defensive measures to promptly identify invasive applications tilts the balance in favor of malicious actors and developers who may embed intrusive behavior within their products. It is imperative to develop new monitoring tools and techniques that address these privacy gaps. In light of this, we propose a Continuous Threat Monitoring Framework (CTMF) designed to safeguard mobile users from intrusive apps both before and after installation. Our framework, implemented and evaluated in the Android environment, offers practical deployability without imposing excessive overhead. It fills the void by considering the changes occurring within an app while it remains on a user’s device, setting it apart from existing anti-intrusiveness solutions primarily focusing on app installation.
+
+# INDEX TERMS
+Insider threats, intrusive applications, android applications, mobile security, threat analysis.
+
+# I. INTRODUCTION
+However, amidst this digital landscape, an alarming trend emerges—nearly 49% of U.S. consumers, as per McAfee’s report, neglect to employ mobile security software, rendering them susceptible to sophisticated cyber threats and data breaches . The Android permission system stands as the primary defense against these perils, intending to alert users to permission requests before granting them. However, its effectiveness has been questioned, especially due to users’ inattention and misunderstanding of the system’s prompts. This has been highlighted by prior studies , ,.
+
+To address these concerns, researchers have proposed supplementary solutions, such as improving the usability and effectiveness of the Android permissions system, particularly against intrusive third-party applications , , , , , , , , ,.
+
+The associate editor coordinating the review of this manuscript and approving it for publication was S. K. Hafizul Islam.
+
+2024 The Authors. This work is licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4 License. For more information, see https://creativecommons.org/licenses/by-nc-nd/4/
+37586 VOLUME 12, 2024
+# EEE Access
+# F. Mohsen et al.: On Identification of Intrusive Applications
+aim to assist users in selecting less invasive applications or replacing installed apps with more secure alternatives. However, a critical observation reveals that many of these solutions are limited in capturing the evolving permission requests across different app versions.
+
+Our investigation into existing works revealed a common limitation—they rely on a single snapshot of the declared configurations such as permissions and system actions , , , , , , , necessitate changes to the underlying operating systems , , or primarily target developers rather than end users . Thus, we believe that these solutions might fall short of capturing the dynamic evolution of permission requests over various app versions.
+
+In response, our research introduces the Continuous Threat Monitoring Framework for Android applications, leveraging a cutting-edge scoring mechanism proposed in . Unlike existing approaches, our framework adopts a live scoring approach, evaluating an app’s score based on its declared permissions as well as its actual usage over its lifespan on the device. We employ an altered growth rate formula to scrutinize changes in permissions usage across different app versions . Our work makes four novel contributions:
+1. adopting a scoring technique demonstrated to outperform counterparts in recent literature ,
+2. introducing the concept of live scoring,
+3. utilizing an altered growth rate formula to detect anomaly usage of permissions, and
+4. providing a detailed implementation addressing intricate technical challenges.
+
+This paper is structured as follows: Section II delves into related works, Section III discusses the technical background of our framework, Section IV provides insights into the implementation specifics, and finally, Section VII concludes our research. We would like to emphasize that the source code and data used in this research will be made available upon the paper’s acceptance.
+
+# II. RELATED WORKS
+This section summarizes the related works on risk assessment techniques and server-side-independent solutions.
+
+Before Android 6, numerous works in this research area existed, but we will not delve into them due to significant changes introduced in Android after that version. From Android 6 onward, several studies were conducted to devise risk assessment techniques. Yan Hu et al. employed the HITS page ranking algorithm to construct a static call graph of Android applications, aiding security analysts in identifying vulnerabilities and sensitive methods in malware . While their primary focus is on malware, their approach offers valuable insights. They encountered a similar challenge to ours in extracting permissions-related information from Google Play, opting for a third-party solution instead of developing their own. Another work targeting malware was Khariwal et al., who developed IPDroid, which takes another approach to malware detection, employing a combination of permissions and intents to identify the most effective mix for detecting malware . Chih-Chang et al. proposed a framework for estimating privacy risk scores of mobile apps, acknowledging the potential privacy concerns associated with their data collection practices . The authors devised an automated privacy risk assessment, focusing on data access permissions and privacy policies. The work leverages the UT CID ITAP dataset, which comprises identity assets, their vulnerabilities, and associated risk values. Identity assets are collected from apps through privacy policies and Android manifest XML files. We believe relying solely on the information declared in the privacy policy and manifest files may not accurately represent the app’s actual behavior. User behavior, such as denying permissions or not reaching specific functionalities, can impact the real-world privacy risks associated with an app.
+
+The scoring technique introduced by Mohsen et al. in their paper  holds relevance to our work, as our framework is built upon their ideas and concepts. Particularly the notions of using user preferences, broadcast receivers, and permissions to calculate the security score of an app. In their study, user preferences are characterized as a rating score the end user assigns to a permission group. Moreover, Mohsen et al. incorporate the prevalence of broadcast receivers’ actions in privacy score computations, representing a noteworthy enhancement over other approaches such as  and.
+
+However, it’s important to note that their approach relies solely on the information declared in the manifest file. As mentioned earlier, some of these declared permissions may never be activated or used. Additionally, their work lacks discussion on the technical details of obtaining this information directly from a mobile phone.
+
+On a similar conceptual basis as our approach, Rashidi et al. developed an advisory app that consistently monitors requested permissions, offers recommendations, and ranks applications . Nevertheless, unlike our application, which depends on a pre-computed seed dataset, their app targets highly qualified users.
+
+Several server-side solutions have been introduced, such as the Privacy-Palisade app by Quattrone et al. . This app identifies outliers, specifically apps employing uncommon permissions, using the Isolation Forest technique. The solution requires changes to the Android OS, specifically modifications to the Android Launcher. Our approach draws the intrusiveness score from an app’s permissions, actions, and user ratings. Importantly, extracting the app’s data mandates no modifications to the underlying operating system. João Marono et al. presented an additional solution , which comprises an Android app, a privacy quantification module, and a server. In this solution, the server is responsible for downloading and processing the source code of the specified app, along with its configuration file. Subsequently, the obtained results are forwarded to the quantification module for score calculation, and the calculated score is then transmitted back to the app. Notably, this approach has limitations, as it does not address paid applications, analyzes apps in isolation, without comparing them to similar apps.
+
+# F. Mohsen et al.: On Identification of Intrusive Applications
+or considering their descriptions, and overlooks the different states of an application after its installation.

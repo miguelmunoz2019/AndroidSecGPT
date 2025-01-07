@@ -1,0 +1,60 @@
+To evaluate students’ opinion on the module and answer question two, we examined students’ answers to a survey form with seven questions that related to the adequacy of the material presented in terms of organization, coverage and usefulness.
+
+# -Privacy of Geolocation:
+This section introduces the methods used for geolocation and the accuracy and precision of each. It also discusses the ways in which geolocation is implemented by the three major mobile environment players: Android, iOS and Microsoft Mobile. Security and privacy threats are also discussed.
+
+Students taking two different courses provided the data used for this work. All 24 students were majoring in.
+
+© 2019, Journal of Learning and Teaching in Digital Age, 4(2), 1-9
+# L. Ghemri & S. Yuan
+90% of the students were minority students (African Americans and Hispanics). There were 23 males and (sadly only) one female student.
+
+# Modules Presentation
+The two courses with which these modules were integrated, were 400 level CS electives: Wireless and Mobile Networks and Wireless Programming. The Wireless and Mobile Networks course covers these two main topics, namely wireless networks and mobile networks and had an enrollment of 14 students. The Wireless Programming course covers mobile website design and mobile applications programming using the Android platform and had 10 students enrolled. Neither course has coverage of security included in the curriculum.
+
+Each module presentation started with a short talk that sensitized the students to the importance of the topic. It was followed by a study of the instructional material with a question/answer period. Ideally, this portion of the module would be the student’s responsibility and done at his/her own pace. However, in our case, this was not a viable option. A relevant question was presented to elicit a group discussion. For the Wireless and Mobile Networks course, the group discussion question was: “Many firms conduct periodic risk assessment to identify cybersecurity threats, assume you are put in charge of assessing the security of the company mobile assets. What will you do?”
+For the Mobile Applications Privacy and Security course, the discussion question was “App cloning is becoming a real concern for app developers, not only because of loss of income, but also because the clones can hide malicious code. As an app developer how would you protect your work? As an app distributor, how would you protect your customers?”
+# RESULTS AND ANALYSIS
+# Student Performance
+Regarding the Mobile Devices Security Module, the average grade for Q1 was 50, with 90 as the highest grade and 20 as the lowest one. The average on Q2 was 80 with 100 as the highest grade and 40 as the lowest. The average student gain in learning for this module was 64%, based on the formula (Q2-Q1)* 100 /Q1. This gain is statistically significant at (p < 0).
+
+On the Mobile Applications Privacy and Security module, the average student grade on Q1 was 55, with 70 as the highest grade and 40 as the lowest. One week after the presentation of the module, Q2 was administrated to the students; the average was 67, with 100 as the highest grade and 40 as the lowest. The average student gain in learning was 22%; this result was not statistically significant.
+
+Students were then asked to work on learning activity 3. After they completed the activity, the multiple-choice questionnaire (Q3) was administrated. Results showed that the average grade on Q3 was 85, 50 being the lowest and 100 the highest grade. The average learning gain was 54%. This result was statistically significant (p < 0) and confirmed by a t-test on the null hypothesis that the means of the pre-test and post activity are equal.
+
+# Discussion of Student Performance
+Assessing the students’ learning was performed using a 10 question multiple choice test. The questions, included in the multiple choices, were designed so as to assess two aspects of learning. These two aspects, as described by the Bloom’s taxonomy of learning, are remembering (A) and understanding (B).
+
+© 2019, Journal of Learning and Teaching in Digital Age, 4(2), 1-9
+# Mobile privacy and security
+For the Mobile Devices Security, 4 out of the 10 multiple choice questions were about recall of facts (A).
+
+Q1: Pretest
+Module
+Q2: Post Test: Q1Hands-Activities
+Q3: Q2
+Results of the pre-test (Q1) showed that the correct answer was selected 2 times out of 4 for (A) and 3 times out of 6 for (B). The post-test results (Q2) indicated that students selected the correct answer 3 out of 4 for (A) and 4 out of 6 times for (B).
+
+The difference in results between the two modules results may be explained by the fact that the post-test was performed one week after the instructional material of the module which can be considered as a delayed response. The encouraging thing is that although the recall of information did not increase, it did not get worse and the students’ understanding of concepts (B), actually slightly improved. Another explanation may be that the type (A) questions included in the test were of too general a nature and did not strongly relate to the material presented. This observation actually requires a careful review of the test questions.
+
+# Results for the Mobile Applications Privacy and Security
+After the learning activity was performed, the students’ scores for post activity test (Q3) were as follows. For (A), students selected the correct answer 4 out of 5 times and 4 out of 5 for (B). These results indicate that the hands-on activity helped improve and advance students’ knowledge of the topic.
+
+The pre-test (Q1) results showed that students selected the correct answer 3 out of 5 for (A) and 3 out of 5 for (B). The post–test (Q2) results showed no difference in recall for (A), that is 3 out of 5 and a slight improvement to 3 correct answers out of 5 for (B). This modest improvement is in accordance with the slight increase in average grade between pre and post-tests. 6 questions were about identifying and recognizing concepts (B).
+
+# Students Survey on Modules Quality
+Each module content, presentation and suitability were assessed using a Likert scale survey containing seven questions in which answers ranged from 1 to 5, with 1 being the lowest rank and 5 being the highest rank. The survey results were analyzed and a scale of 5 or 4 was considered as “Good”, a score of 3 was considered as “Average” and a score of 2 or 1 was taken as “Poor”. Based on this, 96% of students found the modules content and presentation to be well organized and useful. Only about 61% of the students estimated that they had the necessary security background to understand the material presented in the two modules. This could indicate a gap in these students’ background that would need to be addressed through additional learning experiences. 69% of students estimated that the supporting material was adequate, which may be because students did not have sufficient time to work on the activities related to each topic.
+
+© 2019, Journal of Learning and Teaching in Digital Age, 4(2), 1-9
+# L. Ghemri & S. Yuan
+# CONCLUSION
+Mobile devices and applications present a new computing paradigm in which various security challenges need to be addressed. Two modules, with attending instructional material and learning activities, were presented that can help instructors in the task of informing their students about these topics. Results from testing these modules show that they hold promise in terms of complementing students’ knowledge in the areas of interest and that they can advantageously be integrated into a traditional instructional setting. Results also indicate that hands-on activities improve and enhance learning.
+
+Since modular teaching offers a comprehensive experience with practical learning activities, care has to be taken to make time for such activities. These modules are currently being tested for adoption and improvement at their home universities, as well as many other institutions.
+
+The instructional material is freely available, with more security related modules, at http://capex.cs.uh.edu.
+
+We hope that interested instructors will make use of this material and provide valuable feedback to the module developers.
+
+# Mobile privacy and security
+Heidelberg. 291-307..

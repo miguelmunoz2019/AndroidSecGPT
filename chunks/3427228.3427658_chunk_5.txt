@@ -1,0 +1,47 @@
+# Up2Dep: Android Tool Support to Fix Insecure Code Dependencies
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+# 4 Recruitment
+After we advertised Up2Dep’s prototype at an Android developer conference, we used Twitter and email as communication channels to keep in contact with developers and to recruit further developers. After we released Up2Dep with complete features, we advertised our tool on different Android developer forums, Android developers groups on Facebook, and in a related lecture at our institution to invite experienced students, who are working on real (non-study-related) Android projects4, into using Up2Dep. Finally, we sent an invitation email to an Android development team, with which we already had contact before, to ask the team to try out Up2Dep.
+
+We abstained from sending emails to the contact information harvested from Google Play apps, as done in prior studies, since those studies had an extremely low response rate and such mass emails may be considered as harmful/spamming behavior that would create a negative view from developers toward studies conducted by researchers.
+
+# 4 Ethical Concerns
+This study has been approved by our institution’s ethics review board. All telemetric information is gathered anonymously—we do not know who the developer is—and we do not collect the developer’s code. Furthermore, we clearly explain on our website which information we gather and provide developers the option to opt-out of our telemetry data collection at any time. Finally, all data is sent to our server over a secured connection.
+
+# 5 RESULTS
+In this section, we present our evaluation results, which provide the answers to our research questions (RQ) stated in Section 1. This covers both telemetric data of developers who filled out our exit survey as well as of developers who are using Up2Dep but did not answer our survey. Our evaluation has lasted for 81 days, the results we report in the following are from within this duration. All data related to Up2Dep tutorial was excluded from our results5. Finally, we briefly compare Up2Dep with LibScout and Cognicrypt.
+
+# 5 RQ1: Would it be technically feasible to support developers in keeping their project’s dependencies up-to-date?
+From the telemetric data and answers to our online survey, we can see that developers have made use of Up2Dep to keep their project dependencies up-to-date. In particular, Up2Dep helped developers upgrade their project’s dependencies (N=116) to the latest version in 34 real projects. We describe the data as well as the feedback developers have provided in details in the following.
+
+# 5 Telemetric Results
+As we included telemetric features in Up2Dep, we are also able to gather telemetric data from developers who did not participate in our survey. Of 56 developers who are using Up2Dep, 30 (53%) have applied quickfixes (N=116) provided by Up2Dep to update their project’s dependencies—i.e., updated an outdated third party library to the latest/newer compatible version or examined a library’s API dependencies (34 projects).
+
+Among all 30 developers who have applied suggested quick-fixes in their projects, 22 of them (73%) have provided us feedback through the feedback dialog (Figure 3). On average developers have spent 19 minutes working with Up2Dep before giving us the first feedback. The results from the 60 in-situ feedbacks we received from 22 developers confirm that 80% of the proposed fixes worked, and developers found the warning/quickfix useful while only 4 proposed fixes did not work as expected. Figure 5 lists all feedback provided by developers. We also observe that 5% of the feedback indicates that the developer did not understand the warning message (I don’t get it). We manually examined the corresponding third-party libraries and found that their warnings were about cryptographic API misuse. This suggests that we need to make the warning message more developer-friendly, e.g., make it easier to understand (similar to other domains such as browser security warnings).
+
+As each feedback came together with the dependency for which developers had given feedback, we manually investigated the feedback that belongs to False positive and Other. We noticed that transitive dependencies might be the reason for such feedback. When a third-party library A depends itself on library B in version v1 and developers use library B version v2 in their app code, this means this project has now two versions (v1, v2) of the library.
+
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+# Duc Cuong Nguyen, Erik Derr, Michael Backes, and Sven Bugiel
+# Features of Up2Dep that developers find useful.
+
+0        4         8       12        16       20
+Number of developers
+# B.
+
+This might break the app due to unresolved dependencies. We found transitive dependencies’ problems in: org.jsoup:jsoup:0 and com.jakewharton:butterknife:7 (found in the False positive feedbacks). Both of these dependencies have transitive dependencies that app code itself makes use of. Up2Dep suggests developers to update them to the latest versions. Although the latest versions provide all APIs that the apps are currently using, but they no longer contain the exact transitive dependencies (version) that the apps are using, this in the end breaks the functionality of apps. Since we do not collect developer’s code, we cannot evaluate which API of a library developers are using in their project. We decided to further study this problem on open source Android projects. We collected libraries (org.jsoup:jsoup:0 and com.jakewharton:butterknife:7) that are found in the False positive feedbacks, and found projects on F-Droid repository that have such dependencies. We further investigate the problems of transitive dependencies and report our finding in Section 5.
+
+# 5 Online Survey Results.
+
+Demographic data: Of 56 developers, 23 have shared their Up2Dep experience with us in our online survey. Developers have spent on average 48 minutes working with Up2Dep before joining our survey (see Table 1 in Appendix for details). Around half of the developers have less than one year of Android programming experience, while the other half has at least two years of experience. In particular, 11 developers developed more than 2 Android apps, while only 3 participants have not yet published any apps. About two-thirds of the developers have a security background, most of them are male, and their age ranges from 18 to 30 years. Among 23 developers, 9 of them are students (2 with at least 2 years of programming experience, 7 with less than 1 year of programming experience) who got to know Up2Dep after we advertised it in a related lecture at our institution.
+
+Usability score: To assess the usability of Up2Dep in our survey, we used the SUS (System Usability Scale) . A system with a SUS score of above 68 would be rated as above average. Up2Dep achieves a SUS score of 76, which is considered good in terms of usability  (see Figure ?? in Appendix).
+
+Useful features: Of Up2Dep’s features, the Compatible version check was named most often (see Figure 6). This supports the results of a previous study  that showed that developers abstain from updating their project’s dependencies due to (fear of) incompatible updates.
+
+# 5 RQ2: Could such a tool support have a tangible impact on the security and privacy of Android apps?
+# 5 Fixed Security Problems.
+
+We observe that there are 4 instances of the okhttp3 v3 library in developers’ projects, which contains a known security vulnerability. okhttp v3 allows man-in-the-middle attackers to bypass certificate pinning by sending a certificate chain with a certificate from a non-pinned trusted CA and the pinned certificate. Zhang et al. showed that nearly 10% of the most popular apps on Google Play store still used such an insecure version for more than 1 year after the fixed version had been released . In our study, those library versions were updated by developers with the support of Up2Dep to the latest, fixed version. Furthermore, there are 3 instances of an outdated version of the Glide library where developers used hash API without calling the complete sequence of function (see Section 3). Finally, one instance of okhttp3 v3 that misused a cryptographic API, and the developer in our study happened to re-use the correspond API of the library. This issue has been fixed in their latest, misuse-free version of the library. All in all, 6% of the outdated dependencies that Up2Dep has helped developers to migrate to their latest versions (8 out of 116) had security problems. Since we do not collect information of the developers’ projects (i.e., this may make developers skeptical to try Up2Dep), we therefore do not have information on the projects patched by Up2Dep. However, regardless of the project details, we consider this number non-negligible given the easy means that developers can employ to fix them. Therefore, by fixing projects containing these insecure library versions, Up2Dep directly benefits the security and privacy of Android apps.
+
+# 5 Security Problems of Transitive Dependencies.

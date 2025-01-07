@@ -1,0 +1,51 @@
+We establish two datasets to help conduct a comprehensive evaluation against APPCOMMUNE:
+- Lib Dataset: To generate library profiles for library detection, we collect 212 distinct popular third-party libraries with 3,774 different versions. We download the latest version of library SDKs along with their historical versions (if available) from their official website or github repositories.
+
+- App Dataset: In order to simulate the actual situation as far as possible, we invite 10 volunteers to provide their actual app lists (app name and version) in their mobile phones. According to these app lists, we download the corresponding apps from Google Play  and Tencent Android Market . Totally we collect 502 apps and establish 10 app groups to simulate the mobile environment of each volunteer. The number of each app group is between 34 and 83.
+
+# B. Library Detection
+**RESULT OF LIBRARY DETECTION**
+# C. App Trimming and Rewriting
+For each app, we first cut off its detected third-party libraries. Then we select the matched libraries from our lib dataset, try to replace the old version with a new version according to the strategy in Section III-C. In the end, we patch them into tailored apps and customized libraries. For each app,
+# TABLE II
+**TOP 10 DETECTED THIRD-PARTY LIBRARIES**
+# TABLE III DETAILS OF CODE PATCHING
+we patch each library API invocation point and add some extra code (IDL and Entry).
+
+Table III shows that, we find 541 different library APIs in each app on average. In response, for each app 4,350 lines of smali code are changed and 2,473 lines are added. Considering that a normal app often contains more than a million lines of smali code, the amount of our patched code is acceptable. The detailed distribution rate of invoked API type is shown in Figure 8. More than half (51%) of the APIs are in type of public methods.
+
+In our experiment, we find most detected third-party libraries are able to be updated (to a new version, may not be the latest one). 231 of 2,695 (8%) detected library instances are not used by app actually (App developer adds them into app but not invokes any of their APIs). For these “dead” libraries, we directly remove them without a further code patching.
+
+# D. App Running and Stability
+We prepare ten Android devices installed with Lib Manager to serve as client sides. According to each volunteer’s original app list, every device downloads and installs the corresponding tailored apps to simulate the actual situation. Then, we evaluate tailored apps’ stability in two steps.
+
+In the first step, we manually run each app for five minutes and try our best to trigger more app code. Since most apps need to log in at first, so we select manual operation instead of automated execution. To trigger more patched APIs, we would register and login accounts, click all buttons, and we use adb (Android Debug Bridge) tool to trigger all extra components added by third-party libraries. We also consider the functions of detected libraries while performing operations. For example, we make more sharing-related operations for facebook-share library, and make more payment-related operations for paypal library. Here we extra add some code for exception handling and logging code into each API invocation point to help us obtain more details. After the execution, we check the logs to determine whether each API is triggered or any exception has occurred.
+
+As a result, all 502 tailored apps run normally, no crash or exception occurs. Table IV shows the details about triggered APIs and the trigger ratio. Totally, we can trigger 63% of all patched APIs. Among all API types, public class and extra component have higher trigger ratios (93% and 89%). In most cases, public class contains the most commonly used functions so it’s easy to be triggered. For extra component, we will trigger it forwardly as mentioned above. Although we still miss 37% of all patched APIs, the missed ones have the similar code formats as the triggered ones, so we can believe their effectiveness. On the other hand, in average, each app has 10,684 API trigger logs within five minutes. This value is extremely high and draws our attention. After checking the logs, we find some libraries would provide special APIs which are invoked continuously with a high frequency. We summarize the top five frequently invoked APIs in Table V.
+
+In the second step, we request each volunteer to use our test device instead of their own mobile for 24 hours. In the meanwhile, volunteers just use each app as usual and notice whether any app is abnormal. In the end, they feedback their experiences. As a result, all tailored apps work normally and no functional abnormalities have occurred. This further proves
+# TABLE IV
+# API INVOCATIONS FOR EACH APP IN FIVE MINUTES APP RUNNING TEST
+# TABLE V
+# API WITH HIGH FREQUENCY
+that our conservative strategy for library updating can ensure the app’s stability. is shown in Table VII. Totally, for all 523 apps (502 different apps and 21 popular ones which exist in multiple groups), APPCOMMUNE can save totally 830MB device space. The space saving ratios for all groups vary from 87% to 89%. In average, 11% device storage and network flow is saved for a normal mobile.
+
+# TABLE VI
+# AVERAGE FILE SIZE CHANGES BEFORE → AFTER APPCOMMUNE
+# TABLE VII
+# SPACE SAVING FOR 10 EXPERIMENTAL GROUPS
+1) Space Saving: By managing the third-party libraries centrally, APPCOMMUNE can effectively reduce the size of app to save the network flow and device storage. We calculate the average file size changes of our samples, the result is shown in Table VI. On average, by separating all third-party libraries, the tailored dex file is only 25% of the original dex file in size (with a difference of 4 MB). And the tailored app is 85% of the original app in size (with a difference of 2MB). Compared with dex file, the difference reduces in app because the dex file would be compressed in an apk file. Due to the extra code IIL added into the library, the customized library is 101% of the original one in size.
+
+2) Security Promotion: To verify whether the library updating of APPCOMMUNE enhances the security of app, we select five publicly revealed security vulnerabilities to evaluate it. Table VIII gives the details about the vulnerabilities. The vulnerability of Dropbox is caused by an exposed Activity com.dropbox.client2.android.AuthActivity. Similarly, Mopub and Umeng also suffer from vulnerable components. Facebook has a vulnerability in its login process and Okhttp has a vulnerability that allows an attacker to bypass certificate pinning. According to the vulnerable library versions, we totally find 31 influenced apps. We utilize 360app-scan, an on-line app vulnerability scanning service, to help detect the potential vulnerabilities.
+
+As a result, the vulnerabilities of Dropbox, Mopub, and Umeng can be detected. According to the details of the other two vulnerabilities, we manually check the other apps and confirm that all selected apps are vulnerable. Then we use 360appscan or manual analysis to review the corresponding tailored apps. As expected, APPCOMMUNE has replaced all vulnerable libraries and all these tailored apps are safe. Therefore, APPCOMMUNE is effective in enhancing app security.
+
+# F. Performance
+The workflow of APPCOMMUNE can be divided into two parts: static process on server side and dynamic execution on client side. Complex and time-consuming code patching process is performed on Market Proxy, therefore APPCOMMUNE doesn’t bring much performance loss to app executions. Totally, we consume 9 hours to process 502 apps. Table IX shows the average time for each step of our static process on server side. In practice, the process of libraries (generating library profile and customized library) is pre-prepared. The average time to prepare a new uploaded app for downloading is only 68 seconds (library detection and generating tailored).
+
+# TABLE VIII
+# THE VULNERABILITY DETECTION RESULTS BEFORE AND AFTER THE LIBRARY UPDATING
+# TABLE IX
+# CONSUMED TIME IN STATIC PROCESS
+# V. DISCUSSION
+APPCOMMUNE makes third-party library sharing available and proves that automatic updates of third-party libraries are feasible in theory. However, some limitations still exist in practice. For example, the app developer doesn’t agree with the automatic update or some developers modify the original libraries personally which causes incompatibilities after automatic updates. Fortunately these are rare cases. It’s more important to raise app developers’ awareness of safety. APPCOMMUNE’s app trimming is based on static analysis, which means it would suffer from app code protections. To address this challenge, we can utilize AppSpear, an open-source unpacking system which can transform a packed app into unpacked one automatically.

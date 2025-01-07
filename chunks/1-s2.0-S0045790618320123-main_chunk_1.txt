@@ -1,0 +1,75 @@
+# Computers and Electrical Engineering 77 (2019) 12–26
+# Contents lists available at ScienceDirect
+# Computers and Electrical Engineering
+# A novel parallel classifier scheme for vulnerability detection in Android
+# Shivi Garga, Niyati Baliyana
+a Department of Information Technology, IGDTUW, Delhi, 110006, India
+b Department of Computer Engineering, J.C. Bose University of Science and Technology YMCA, Faridabad, 121006, India
+# Article information
+Article history:
+- Received 29 August 2018
+- Revised 24 April 2019
+- Accepted 24 April 2019
+- Available online 4 May 2019
+# Keywords:
+Android, Hybrid analysis, Machine learning, Malware, Parallel classifiers
+# Abstract
+Android is one of the most commonly used mobile operating systems; however, its open-source nature and flexibility of usage attract a lot of attention from cybercriminals. In recent years, the rapid increase in malware has become a major cause of concern amongst Android users. The cybercriminals either aim to exploit confidential information from users or try to corrupt their systems by infecting them with malicious code. In order to make Android systems more secure, several malware detection techniques using static, dynamic, and hybrid analysis have been introduced in recent times; however, these techniques are inaccurate and have low efficiency. The paper not only explains how distinctive parallel classifiers can be used for detecting zero-day android malware but also addresses the oncoming highly elusive vulnerabilities. The proposed methodology combines characteristics from various parallel classifiers using expectation maximization to achieve 98% accuracy.
+
+© 2019 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Internet of Things (IoT) has emerged as a strong communication link that interconnects a large number of devices like home-appliances, smartphones, etc., with people, processes, and data, thereby allowing them to communicate seamlessly. The smartphone-enabling technologies, such as built-in sensors, Bluetooth, Radio-Frequency Identification (RFID) tracking, etc. allow it to be an integral part of the IoT world . However, its use imposes severe security and privacy threats since smartphones usually contain and communicate sensitive private information. With an accelerated evolution in the field of mobile computing, smartphones have become more sophisticated in recent years. These days, smartphones are not only being used for personal conversations, but also for shopping, flight booking, Internet banking, etc., which makes users store their confidential information within smartphone applications. Therefore, a large number of new malware is being developed and introduced to steal sensitive data from users. This malware can steal personal information, encode or encrypt private data, and install fraudulent programs , as mentioned in Fig. 1.
+
+There were more than 2 billion smartphone users globally in 2017, and by 2019, this number is likely to increase to nearly 2 billion . Various mobile operating systems (OS) are available globally; however, Android and iOS are the most used . Android scores over other mobile OS since it is open-source in nature, has a Linux-based kernel, and is a
+✩ This paper is for regular issues of CAEE. Reviews processed and recommended for publication to the Editor-in-Chief by Area Editor Dr. G. Martinez Perez.
+
+∗ Corresponding author. E-mail address: niyatibaliyan@igdtuw.ac.in (N. Baliyan).
+
+https://doi.org/10/j.compeleceng
+0045-7906/© 2019 Elsevier Ltd. All rights reserved.
+
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# 13
+light-weight cost-effective platform. However, these features make Android susceptible to attacks. Google Play store and third-party unreliable resources majorly contribute to the expansion of malicious applications on Android . Google’s 2015 report1 claimed that almost 30 percent of all active Android phones and tablets (nearly 420 million out of 1 billion at that point of time) below 4 version did not receive patches. Also, 2016’s report2 mentioned that over 100 security researchers made public contribution to Android for a total of $1 million. In the year 2017, 50 malicious apps entered Google Play store that led to 4 million downloads3 of the rogue program. Fig. 2 explains the growth of Android malware from the year 2013 to 2017, where the count is in millions and Compound Annual Growth Rate (CAGR) is in percentage.
+
+# 1. Related work
+With an exponential increase in Android malware in recent years, several approaches are introduced to detect the inherent vulnerabilities present in the Android OS. The first Android malware detection technique used static analysis, where individual sections of the code are analyzed without actually executing the application on an external device or an Android Emulator. This is a cost-friendly, quick and resource efficient method for finding vulnerabilities. In static analysis, two main approaches are reviewed:
+- (i) Signature-based detection: It is the foundation of AndroSimilar , which is used to detect only the samples of known malware. DroidAnalytics  predominately carries out collection, extraction, and analysis of malware affected Android APKs.
+
+1 Google, “Android security 2015 year in Review,” Feb. 27, 2018. [Online]. Available: https://source.android.com/security/reports/Google_Android_Security_2015_Report_Final.pdf.
+
+2 Google, “Android security 2016 year in Review,” Feb. 27, 2018. [Online]. Available: https://source.android.com/security/reports/Google_Android_Security_2016_Report_Final.pdf.
+
+3 Liam Tung, “Android malware in Google Play racked up 4 M downloads: Are you a victim?,” zdnet.com. [Online]. Available: https://www.zdnet.com/article/android-malware-in-google-play-racked-up-4-2-million-downloads-so-are-you-a-victim/. [Accessed: March. 15, 2018].
+
+# 14
+S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# (ii) Permission-based detection:
+This method can detect unknown malware samples that remained undetected in Signature-based technique. Several tools are based on permission-based detection method, of which three were reviewed in detail. The first tool, Stowaway , can identify malware by tracking Application Programming Interface (API) calls. The second tool, proposed by R. Sato , is able to analyze AndroidManifest.xml file and calculate malignancy score. The third tool, PUMA  is able to take the extracted permissions into consideration to detect malware.
+
+However, the technique that uses static analysis has a drawback, i.e., code obfuscation makes matching pattern a major problem in detecting malicious behaviour of applications, also it does not allow dynamic loading of code. The similarity score in signature-based detection technique sometimes misclassifies non-harmful apps as malicious and thus, cannot detect unknown malware types. Permission-based detection technique neither analyzes reflective calls nor identifies adware and thereby gives a high false positive rate.
+
+# The second technique uses dynamic analysis
+which aims to overcome the limitations of the static analysis. In this technique, the behaviour of the application in a real-time environment is monitored. This approach checks the performance of the application in the running state, which successfully resolves the issue of dynamic code loading in static analysis. In dynamic analysis, there are three key approaches:
+# (i) Anomaly-based detection:
+It is used in various mechanisms like CrowDroid , Andromaly , and AntiMalDroid , etc. CrowDroid identifies malware by initiating and executing system calls in the client-server architecture. Andromaly detects malware by focusing on and observing the behaviour of events in the Android application. AntiMalDroid detects malware during run-time. It generates signatures by recording inputs and corresponding outputs based on the application features.
+
+# (ii) Taint Analysis:
+It is particularly used by TaintDroid , which is based on the scientific approach known as dynamic taint analysis. This tool monitors the movement of the tainted information and performs an automatic tagging of sensitive data, such as GPS or microphone.
+
+# (iii) Emulation-based detection:
+It is used by DroidScope  which has functionalities that depend on the inspection of the OS, Dalvik Semantics and AASandbox . It performs both static and dynamic analysis in the sandbox by working on the class.dex file. It breaks the file into an easily understandable form using the Monkey tool.
+
+However, dynamic analysis is not feasible for battery operated devices since they consume a lot of resources (e.g., time, memory, etc.). Anomaly-based detection techniques consume time and power, and fabricate incorrect results when a legitimate app invokes more system calls. Taint analysis does not track control flow, while emulation-based detection provides limited coverage and neglects new malware. The third technique combines both static and dynamic analysis methods and is known as hybrid analysis. It extracts information and executes application simultaneously. The hybrid analysis provides better results as compared to the results obtained from static and dynamic analysis; however, it increases the time complexity of the system. The paper reviews different tools used in the hybrid analysis:
+# (i) Mobile Sandbox 
+works on the principle of signature-based and permission-based methods, where it examines the manifest file, user permissions, and anti-virus to identify any malicious code and then checks the behaviour of the application in the running state.
+
+# (ii) Andrubis 
+feeds the result of a static analysis, which is obtained by analyzing byte-code and AndroidManifest.xml file, as an input to the dynamic analysis which further performs taint tracing, method tracing, and system level analysis while executing the application.
+
+# (iii) SAMADroid 
+a 3-level hybrid malware detection model for Android, is an accurate and efficient solution for malware detection. However, it depends on server communication and therefore, the malicious behavior of Android APKs is detected at the remote site.
+
+# (iv) DroidRanger 
+is a heuristics scheme that detects known malware sample through permission-based filtering and behavioral foot-printing. However, it focuses only on 10 permissions for each malware family.

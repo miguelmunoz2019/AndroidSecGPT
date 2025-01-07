@@ -1,0 +1,97 @@
+# Design Goals
+LIBBANDAID achieves the following goals:
+- No source code required. Our technique does not require any source code from Android app or the included TPLs. This is important because TPLs can be closed-source.
+
+- High coverage for security patches. LIBBANDAID aims for a high coverage in updating security related issues in outdated TPLs.
+
+- Non-intrusiveness. The generated updates do not change how the original app interacts with other components nor do they break the correctness of the app.
+
+# 3 System Overview
+In this section, we present a running example and use it to explain the work-flow of LIBBANDAID. Note that our approach
+278 22nd International Symposium on Research in Attacks, Intrusions and Defenses USENIX Association
+# 3 Running Example
+The example is based on Dropbox library , one of the most popular third-party libraries. Assuming that a given Android app is using Dropbox library version 3 (released in May 2017). There exist 50 commits from version 3 to the latest version 3 (released in Jan 2018), including 16 code commits1. Listing 1 displays two commits. Lines with colors show the code changes: lime indicates code insertions while pink and yellow specify code modifications.
+
+The first commit is a new security feature that adds a field accountId in the class DbxAuthFinish to identify Dropbox users instead of using userId in older versions. The second commit is a vulnerability fix that adds a body field and calls close() function of the body in a callback function onFailure(). When Internet access is cut off, the callback function onFailure() will be invoked to close body so that potential system hang is avoided.
+
+# 3 Overview of LIBBANDAID
+# Preprocessing
+This step is to filter out the unchanged functions and generate function pairs that are modified across the two versions. Preprocessing component takes as inputs an app with outdated library and a latest version of the library, and outputs a set of function pairs. More specifically, it extracts the outdated library within the given app, analyzes all classes in the two versions of the library and performs function level byte-by-byte comparisons.
+
+As shown in Figure 2, LIBBANDAID pulls out all the functions in the class and performs byte-by-byte comparisons for each function in old library with the functions in the new library as long as they share the same function name. Note that we use function name other than function signature to tolerate changes of modifier, parameter or return type. For example, DbxAuthFinish() in the old library is compared with DbxAuthFinish() and DbxAuthFinish(String, String, Body) in the new library. When the byte-by-byte comparison fails (two functions are not identical), we put them in the potential function mapping list and send it to diffing analysis for further analysis. This list signifies the functions in which the code changes between old and new versions reside.
+
+# Diffing Analysis
+Diffing analysis in LIBBANDAID is to perform function level matching with a granularity of code statement so as to comprehend the exact code changes between old and new versions of a given library. To achieve this goal, we leverage the Tracelet Execution  and use 3-tracelet to perform code matching at code statement level. Given the output of preprocessing, 3-tracelets are generated to capture partial flow information by breaking down the control-flow graphs for each function pair. Then, the distance between tracelets are calculated to match code statements.
+
+# Listing 1: Running example
+public class DbxAuthFinish implements CallBack {
+private String userId ;
+private String accountId ;
+private PipedRequestBody body ;
+public DbxAuthFinish(String uid) {
+this.userId = uid ;
+}
+public DbxAuthFinish(String uid,String aid,Body body) {
+this.userId = uid ;
+this.accountId = aid;
+this.body = body;
+}
+public DbxAuthFinish () {
+this.body = null;
+this.accountId = null;
+this.userId = null;
+}
+public void onFailure ( IOException ex ) {
+this.error = ex ;
+if(body) this.body.close();
+notifyAll () ;
+}
+public DbxAuthFinish read () {
+String accountId = null;
+String userId = null;
+while( getCurrentToken () ) {
+if(n.equals (" uid "))
+userId = readField () ;
+else if(n.equal("accountId"))
+accountId = readField();
+if(accountId == null)
+throw JsonReadexception;
+}
+return new DbxAuthFinish(userId) ;
+return new DbxAuthFinish(userId, accountId, body) ;
+}
+public String getAccountId() {
+return accountId;
+}
+}
+For LIBBANDAID, we need to further match the functions that have multiple candidates. For example, in Figure 2, DbxAuthFinish() in the old library can be matched to either DbxAuthFinish() or DbxAuthFinish(String, String, Body) in the new library. To understand the real change, LIBBANDAID leverages the distance information to further match the functions. Particularly, we consider it as a linear assignment problem and use Hungarian Algorithm  to find the optimal matching. Tracelet technique has demonstrated a 0 accuracy in comparing functions in binary code . In our case, byte-code matching is easier than binary code since it is more semantic-rich. Therefore, we observe no false positive during evaluation.
+
+1Other non-code commits include changes in README, build file, tutorial and tests.
+
+# Diffing Analysis
+# Update Generation
+# Selective Updating
+# Function Mapping List:
+(function in old lib -> function in new lib)DbxAuthFinish() -> DbxAuthFinish()DbxAuthFinish() -> DbxAuthFinish(String, String, Body)DbxAuthFinish(String) -> DbxAuthFinish()DbxAuthFinish(String) -> DbxAuthFinish(String, String, Body)
+# New Functions:
+DbxAuthFinish: getAccountId()
+DbxAuthFinish() and DbxAuthFinish(String) in the old library are then matched to DbxAuthFinish() and DbxAuthFinish(String,String,Body) in the new library respectively. The output of diffing analysis is the real mapping of the functions as well as a set of code changes (pairs of code statements) that precisely characterize the changes between the old and new versions of the third-party library. For our running example, the produced code changes are the same as the colored lines in Listing 1.
+
+# Update Generation
+Once LIBBANDAID identifies all the code changes between the old and new versions, it starts the update generation process. The whole process takes three inputs: 1). code changes generated by diffing analysis; 2). the old version of the library; and 3). the new version of the library, and generates one output (a set of updates). It first generates system dependence graphs (SDGs) for new and old library, and then generates a slice for each code change by performing impact analysis. Finally, it performs grouping based on the alias information gathered from points-to analysis to produce updates.
+
+The purpose of this indispensable step is two-fold. First, since many code changes have control and data dependencies with each other, LIBBANDAID should always put them together and perform updating collectively. For example, in Listing 1, Ln and 13 assign values to a newly added class field body (defined in Ln). Ln further calls a member function close() of the field. These code changes should be put into one group as they are the definition and usages of a same variable body. Second, to fulfill the non-intrusiveness design goal as described in Section 2, LIBBANDAID performs impact analysis, combines code changes with all the potentially affected code and further associates the group into one update so that our system can apply them as a whole if the update is indeed non-intrusive. As for our running example, after this step, the code changes in Listing 1 will be grouped precisely into two updates, one for each commit. More details are presented in Section 4 and 5.
+
+# Selective Updating
+The last component of LIBBANDAID is selective updating. It takes the updates generated in the previous step, performs filtering to discard the ones that could potentially break the non-intrusiveness, and eventually updates the old library to generate a new app with an updated library. The core part of this step is to systematically devise a set of pre-defined rules for filtering so that the non-intrusiveness of our generated updates can be preserved. As for the running example, two updates are generated and fed into selective updating. The one related to accountId can potentially be filtered out since it will change an interface DbxAuthFinish(String) and may cause incompatibility issue. More detailed information is presented in Section 6.
+
+# Update Generation
+In this section, we describe how LIBBANDAID performs update generation by presenting the three major steps: impact analysis, points-to analysis and grouping.
+
+# Impact Analysis
+Impact Analysis is to understand the impact (affected codes) of the code changes generated from diffing analysis. Once the impact of the code changes is known, LIBBANDAID groups code changes into updates and performs filtering to remove the ones that violate the non-intrusiveness.
+
+Starting from a subset of a program’s behavior, program slicing technique reduces the program to a minimal form that still produces that behavior . If we start slicing from a specific code change, it will conservatively includes all the
+280 22nd International Symposium on Research in Attacks, Intrusions and Defenses USENIX Association
+# 4 Points-to Analysis and Grouping
+After the impact analysis, LIBBANDAID performs points-to analysis to extract alias information and further groups code changes into updates. This step is to group slices that are accessing the same global variables or have overlapping code statements. We rely on the existing points-to analysis in Soot  to extract alias information.

@@ -1,0 +1,65 @@
+2. We also reviewed existing android security framework and penetration tools through systematic literature research. We evaluated existing penetration test tools and frameworks to figure out whether they can help an amateur designer/developer who do not have android OS security knowledge. We also discussed challenges faced by developers while developing android applications.
+
+A brief background and related work on android OS and vulnerabilities is given in Sect. 2. In Sect. 3, we presented
+VOLUME 9, 2021 87807
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+systematic literature review. Section 4 presents the results of systematic literature review and answers to research questions. Finally, Sect. 5 concludes the paper.
+
+# II. BACKGROUND AND RELATED WORK
+As discussed earlier, the three types of mobile applications (Native applications, Web Applications and Hybrid Applications) possess different attack surfaces and threat models. While developing an application, the developer has a responsibility to consider the safety of users’ data as well as threat models and other constraints such as battery usage, memory constraints and securing possible entry points for gaining access to mobile applications . Excessive permissions of an application can be vulnerable. Such permissions are granted at the time of app installation . Security implementations during software development receive less consideration and attention. For assuring security in web application development the emphasis should be given on security checks implementation during the entire web development life cycle . Shuaibu et al.  explain that 39 secure frameworks were studied and only 3 percent of the framework had security incorporated.
+
+Tondel et al.  surveyed various approaches regarding requirement elicitation from a security point of view. Developers do not consider security during the development of application and mainly focus on the completion of functionality. Requirement engineering phase does not focus on security objectives and identifying threats. Microsoft Security Development Lifecycle  is used for developing a secure application by integrating security in all phases of software development but it does not focus on how penetration testing should be performed at various stages of SDLC. SDLC is generic and is not android specific. Xiong et al.  proposed a web penetration framework using the grey-box approach which could be incorporated in SDLC but it does not help in securing android application during design and development. Denis et al.  explained different methods, tools and techniques of penetration testing and performed tests on smartphones. The attack results showed that 14% issues were due to the lack of application security hardening. It was also mentioned that despite Google play not allowing malicious applications, there are still applications that carry malware or malicious code.
+
+Unified Modeling Language (UML) helps in modelling the artefacts for a system . Eoin et al.  explained the limitations of UML as it does not have specific elements to model system interaction. However, UML profile can be enhanced for specific modelling so that the system can be modelled accordingly. Goel et al.  presented a new methodology for secure modelling but it does not have any information on how to model a secure application for Android. Minhyuk Ko et al.  extended the UML and defined new elements so that the relationship of entities can be defined. Bupki Min et al.  presented new profiles for Windows 7 phones and Android OS respectively but none of these profiles cover the security aspects on how permissions can be handled and secure IPC (inter-process communication) can be modelled. Bo et al.  presented mobile test using event-based approach for the automation of test cases. This tool does not help in identifying vulnerabilities and producing test case artefacts during development.
+
+Although penetration testing is gaining importance since the last few years, there are few systematic literature reviews available regarding penetration in android based applications. Mirjalili and Alidoosti  reviewed the penetration methodologies and vulnerability scanning tools for web-based applications. The review was based on 4 different web penetration methodologies and 13 different vulnerability testing scanners using evaluation criteria. The author further reviewed four test environments (Webgoat, DVWA, BodgeIt and WackoPicko). Based on the evaluation the author concluded that there are many vulnerabilities which existing tools are unable to identify.
+
+Shanley and Johnstone  reviewed six penetration test frameworks and methodologies. The author mapped ISO/IEC 25010:2013 quality model as evaluation criteria on two of the methodologies (OWASP’s OTG and ISSAF) and found that these frameworks lack domain coverage and have restrictions. Bertoglio and Zorzo  performed a systematic mapping study on a selection of 1145 papers. A detailed assessment of penetration testing methodologies, tools, and models was performed using evaluation criteria in a quantitative and qualitative way. The author concluded that how these tools and techniques may be applied for vulnerability assessment and what is the limitation of various models used in penetration testing for a web-based application.
+
+Shah and Mehtre  deliberated that in Penetration testing, potential entry points into a device are identified using standard hacking tools and techniques. Different hacking tools were discussed along with comparative analysis of techniques and methodologies and their implementation on Banking apps to identify vulnerabilities. Felderer et al.  examined various model-based testing techniques and reviewed 119 publications and concluded how coverage criteria can impact the feasibility and return on investment. Al-Ghamdi  reviewed various software security techniques and how flaws during software developments can be exploited. The author concluded that the software developers should take security measures by security validation and remove security flaws for the effectiveness of the software application.
+
+Xiao, Liang, et al.  proposed malware detection in mobile phones using Q-learning. The detection performance is improved using Dyna architecture and reinforcement learning process. However, the paper does not discuss how Q-learning can be used to improve detection using vulnerability repository during application development.
+
+# A. ANDROID THREATS CLASSIFICATIONS
+Android’s popularity is increasing and so is the android malware being developed more frequently. A huge number of
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+DoSCode ExecutionOverflowMemory CorruptionSQL InjectionXSSDirectory TraversalHttp Response SplittingBypass somethingGain InformationGain PrivilegesCSRFFile Inclusion
+Apart from these security vulnerabilities, there are many applications which provide attack surface through their behaviour. These applications include:
+- Spyware Applications which transmit data to the unauthorized destination as well as captures the user’s behaviour.
+
+- MUS (Mobile Unwanted Software) which collects information about files, accounts and other device information without user authorization.
+
+- Backdoor applications which allow remote operations and allow access to the device.
+
+- Downloader Applications display security alerts and force users to download malicious applications.
+
+- Call, SMS, Toll fraud Applications make unauthorized call or SMS by misleading and tricking users and charge users.
+
+# III. REVIEW PROCESS
+During systematic literature review (SLR) process, we will be identifying, evaluating and interpreting available research papers which relate to our research question and topic area. We will summarize existing researches for identifying gaps in the prevailing literature for positioning our research. We will follow guidelines by Kitchenham et al.  as shown in figure 3.
+
+# A. RESEARCH QUESTIONS
+In this paper, we present the results of systematic literature review (SLR) on the topic of model-driven penetration test framework and tools. We will be reviewing the literature of the software engineering and software security field. In the review, the following research questions (RQ) will be studied.
+
+VOLUME 9, 2021 87809
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+# RQ1. What are the different penetration test frameworks and tools and how they help in developing a secure application?
+# RQ2. What challenges Android app developers encounter and how to meet the secure coding practices in terms of confidentiality and authentication?
+We choose only two questions because we believe that these RQ could provide two distinct and actionable insight to the researchers.
+
+# B. SEARCH PROCESS
+These research repositories were searched for a combination of keywords i.e. Penetration testing, secure android applications framework, pen-test framework, android developer challenges, pen-test and Penetration test in android. Search keywords were derived from PICO as shown in Table 2.
+
+- Population (P): Mobile Application Security
+- Intervention(I): Android penetration testing
+- Comparison(C): Existing Pen-test and Security Frameworks
+- Outcome(O): Methodologies, Frameworks, tools, challenges
+# C. RESEARCH PROCESS
+The research process consisted of three main stages as shown and explained in Figure 5. The search process for the selection of research studies was done in two stages, first using keywords-based search from different following repositories and second, by manually filtering them.
+
+- ACM Digital Library
+- IEEE Explore
+- Google Scholar
+- HEC digital library
+- Springer link
+Identification of research from the above sources was manually filtered by the first author on the basis of inclusion and exclusion criteria. The full text was then analyzed and duplicates were removed. The entire process was mentored and audited by the second author.

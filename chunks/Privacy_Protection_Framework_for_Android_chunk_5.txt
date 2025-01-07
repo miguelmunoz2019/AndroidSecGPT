@@ -1,0 +1,101 @@
+(ii) On receiving a registration request &lt; C1 &gt;, the server S decrypts the message to read the identity of the client Ci and timestamp, (ID, T1) = Dsm (C1). Server S checks the freshness of the timestamp. If it is not fresh, S drops the registration process; otherwise, S checks for a collision in the verifier table. If the collision happens, the server S informs the client Ci to restart the registration process; else, the server S chooses a random number vi ′)).P, client’s anonymous secret key Ki = ((v)/(sm.IDii and computes the client’s identity AIDi = IDi ⊕ h2(v‖sm), and symmetric key KT = h2(ID‖T1) to communicate Ki and AIDi securely. After that, server S encrypts Ki and AIDi using KT, C2 = EKT (K‖AID‖T2) and sent &lt; C2 &gt; to client Ci over a public channel. Server S stores {ID, v, AIDi} in a table.
+
+(iii) After receiving C2 from the server S, the client Ci computes KT = h2(ID‖T1) and decrypts the message (K‖AIDi‖T2) = DKT (C2). Client Ci checks the freshness of T2, Ci will abort the current registration attempt and start the registration process from the start if T2 fails the freshness test; else, Ci stores {ID, K, AID} in device memory.
+
+# a: PROPOSED SCHEME
+In the proposed scheme, each mobile is treated as a client. The proposed scheme provides client authentication without revealing the real identity of the client and session key agreement for secure communication between client and server. The scheme consists of four phases: system setup phase, client registration phase, authentication phase, and client’s secret parameter updating phase. The working of the scheme is as follows:
+# SYSTEM SETUP PHASE
+This phase is to generate initial parameters for the client registration and authentication phase of the scheme. The system generates initial parameters as follows:
+(i) Choose two large prime numbers p and q, and an elliptic curve E over a prime field Fp (y2 = x3 + ax + b mod p, where a, b ∈ Fp, and 4a3 + 27b 6= 0). Define O
+# AUTHENTICATION PHASE
+In this phase, mutual authentication shall be accomplished between client Ci and server S, and a session key will be generated. To achieve this, server and client perform the following steps. The details are illustrated in Fig. 4.
+
+(i) The client Ci ′ = r.K, M1 = h3(ID‖R‖K′ ‖T3) and chooses a random number ri and computes Ri = ri.P, send &lt; AID, R, M1, T3 &gt; to the server S.
+
+(ii) On receiving the message, server S checks the freshness of T3. If T3 fails the freshness test, the session is terminated by the S; otherwise, the server searches the verifier table for AID. If AIDi is not in the verifier table, S sends an error message and terminates the session; else, server
+VOLUME 10, 2022
+7981
+# B. Mishra et al.: Privacy Protection Framework for Android
+# Client (Ci)
+Generate a random number Ti; and computes Ri = Ti.P
+K' = r.Ki
+Mj = h3(IDi || Ri || K' || T3)
+Check T3
+Check if Mj = h2(IDi || Ri || T3)
+Generate a random number rs and computes Rs = rs.Ti.P
+AIDi = new
+Check for collision in verifier table AIDi € h3(Rs || IDi)
+SK = h2(IDi || Rs || Ki || T2 || T4)
+Mz = h3(IDi || Rs || Ti || SK)
+Check T4
+Update AIDi with AIDi = new after receiving the first message encrypted with SK
+Rcs = n.Rs = n.Ts.P = Rsc
+SK = h2(IDi || Rcs || Ki || T2 || T4)
+Check Mz = h3(IDi || Rs || Ti || SK)
+AIDi = AIDi @ h3(Rcs || IDi)
+Replace AIDi with AIDi = new
+S checks if M1 =? h3(ID || R || (v)/(sm.ID)).R || T3.
+
+If M1 fails, the session is terminated by the S; otherwise, the server S chooses a random number rs and computes Rs = r.P, Rsc = r.Ri = r.r.P, AIDi = AIDi ⊕ s.
+
+h3(Rsc || IDi) and check for collisions in the verifier table. If the collision happened, S chooses new rs and computes again.
+
+Now, the server S computes session key SK = h3(ID || Rsc || (v)/(sm.IDi)).P || T3 || T4 and M2 = h3(ID || Rs || T4 || SK) and sends &lt; AID, Rs, M2, T4 &gt; to the client Ci through a public channel.
+
+Session key agreement suggests that the Ci wants to communicate securely with server S, subsequent session work as an acknowledgment, and server S updates the old AIDi with AIDi = new in the verifier table.
+
+If server S does not receive any message encrypted with SK from Ci after mutual authentication and key agreement, the server S will know the client Ci may have lost the message and stops AIDi.
+
+(iii) After receiving the message &lt; AID, Rs, M2, T4 &gt; from server S, client Ci checks the freshness of T4. If not, Ci drops the session; else, Ci computes Rcs = r.Rs = r.r.P = Rsc, session key SKi = h3(ID || Rcs || K || T3 || T4) and checks if M2 =? h3(ID || R || T4 || SK).
+
+If not, the Ci terminates the session; otherwise, the client Ci accepts SK and computes the anonymous identity AIDi = AIDi ⊕ h3(Rcs || IDi) and replaces the old AIDi with AIDi = new.
+
+# b: SECURITY ANALYSIS
+This section provides formal security verification using AVISPA and informal security analysis to prove that this scheme provides mutual authentication, client anonymity, session key agreement, and the scheme is secure against known attacks.
+
+# FORMAL SECURITY VERIFICATION USING AVISPA
+In the scheme execution, Client Ci receives the start signal and sends the identity IDi with timestamp T1 encrypted with the server’s public key as the registration request. Afterward, client Ci receives the security parameter Ki and anonymous identity AIDi with timestamp T2 encrypted with symmetric.
+
+# B. Mishra et al.: Privacy Protection Framework for Android
+# Role Client (C, S: agent)
+HI, H2, H3, MUL: hash func
+Ppub: public key
+Played_by channel (dy)
+Snd, Rcv:
+def= local State
+EIDi, IDi, Ki, AIDi, AIDinew, RPi, Knat
+RPs, Rsc, SK, P, T1, T2, T3, T4, Ui, Ri, Rs
+Ms, M2: text
+KT: symmetric_key
+const ctos, stoc, secl, sec2, sec3, sec4, sec5, sec6, sec7, sec8: protocol_id
+init State = 0
+transition
+1. State-0/1 Rcv (start) = l>
+State := HI(EIDi.Ui / VIDi = l / lUi' ~new)
+AATI := new
+AAKT
+/| Snd ({IDi.T1} Tl' = H2(IDi Ppub)
+Isecret ({Ui} secl, {C})
+AIsecret ({IDi} sec2, {C, S}) State-1/ Rcv({Ki.AIDi.T2}_KT) = |>
+State := MUL (Ri = new() {=2/Ri
+(ARPi = MUL (Ri Ki).P)
+2. State-1/ Rcv (AIDi, RPi, M1, T3) - l>
+State: Z/IRs = new()
+/1T3 := new()
+/AMI := H3(IDi.RPi T3)
+/| Snd (AIDi, RPi T3 M1)
+nIsecret ({Ri'}, sec3, {C})
+/1secret ({Ki} sec4, {C, S})
+[witness (C, S, ctos, Ri
+3. State-2/ |Rcv (AIDi, RPs, M2, T4) - l>
+State := 3/IRsc := MUL (Ri. RPs)
+/1SK' := H3(IDi.Rsc . Ki.T3.T4)
+/AM2 := H3(IDi.RPs.T4.SK'
+/AAIDinew' := xor(AIDi, H3(Rsc . IDi))
+request (C, S, stoc, Rs)
+end role
+Key KT from server S, and store IDi, Ki, and AIDi into memory. Server S stores IDi, vi, and AIDi in the verifier table.
+
+During the authentication phase, client Ci sends &lt; AIDi, Ri, M1, T3 &gt; to the server S. On receiving the message from client Ci, the server S computes session key SK and new anonymous identity AIDinew for Ci and sends a message &lt; AIDi, Rs, M2, T4 &gt;. Afterward, Ci computes session key SK using IDi, Rsc, Ki, T3, and T4 where Rsc is a session-specific shared secret between Ci and S. Role of Ci and S are given in Figs. 5 and 6, respectively.
+
+The constants sec1, sec2, sec3, sec4, sec5, sec6, sec7, sec8, ctos, and stoc are used to identify the goal of secrecy and authentication in the goal section (see Fig. 9). The communication channel (dy) used in the implementation of this scheme belongs to the Dolev-Yao threat model in which intruders (i) can intercept, analyze, reroute, and modify the message. The HLPSL code has been simulated using the SPAN (Security Protocol ANimator) to examine the results. HLPSL code of environment and session is given in Figs. 7 and 8, respectively. The simulation results are shown in Fig. 10 and Fig. 11 for the OFMC and CL-AtSe model. Results show that the proposed scheme is safe.

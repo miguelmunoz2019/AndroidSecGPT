@@ -1,0 +1,51 @@
+# Multimedia Tools and Applications (2023) 82:20269–20281
+https://doi.org/10/s11042-023-14400-6
+# The current state and future of mobile security in the light of the recent mobile security threat reports
+Ahmet Cevahir Cinar1 & Turkan Beyza Kara1
+Received: 30 January 2022 / Revised: 6 May 2022 / Accepted: 22 January 2023 / Published online: 30 January 2023
+# The Author(s), under exclusive licence to Springer Science+Business Media, LLC, part of Springer Nature 2023
+# Abstract
+Smartphones have become small computers that meet many of our needs, from e-mail and banking transactions to communication and social media use. In line with these attractive functions, the use of smartphones has greatly increased over the years. One of the most important features of these mobile devices is that they offer users many mobile applications that they can install. However, hacker attacks and the spread of malware have also increased. Today, current mobile malware detection and defense technologies are still inadequate. Mobile security is not only directly related to the operating system and used device but also related with communication over the internet, data encryption, data summarization, and users’ privacy awareness. The main aim and contribution of this study are to collect the current state of mobile security and highlight the future of mobile security in light of the recent mobile security threat reports. The studies in the field of malware, attack types, and security vulnerabilities concerning the usage of smartphones were analyzed. The malware detection techniques were analyzed into two categories: signature-based and machine learning (behavior detection)-based techniques. Additionally, the current threats and prevention methods were described. Finally, a future direction is highlighted in the light of the current mobile security reports.
+
+# Keywords
+Mobile threat report . Mobile security . Smartphone security . Security . Mobile applications
+# 1 Introduction
+Today the market of smart phones, which we use like mobile phones, tends towards tremendous sustainable growth . According to the International Data Corporation (IDC)
+# Contact Information
+* Ahmet Cevahir Cinar
+accinar@selcuk.edu.tr; ahmetcevahircinar@gmail.com
+* Turkan Beyza Kara
+218273001009@lisansustu.selcuk.edu.tr
+# Affiliation
+1 Department of Computer Engineering, Faculty of Technology, Selçuk University, Konya, Turkey
+# Multimedia Tools and Applications (2023) 82:20269–20281
+Worldwide Quarterly Mobile Phone Tracker, total shipment volumes of smartphones increased by 13% year-over-year, with the 2020 recovery continuing with 313 million device shipments in the second quarter of 2021.
+
+One of the biggest factors in the popularity of smartphone use is the increase in functionality and the decrease the costs. In addition to offering many connection options such as Bluetooth, Wi-Fi, GPS, the fact that smartphones allow third-party applications to be installed expands the functionality limit. These applications are officially distributed by online stores. There are Google Play Store for the Android operating system and Apple App Store for iOS.
+
+Attractive features such as unlimited internet access, numerous application options have become opportunities for malware developers. According to Kaspersky Security Network, 9,599,519 malware, adware, and riskware attacks on mobile devices were blocked in the third quarter of 2021 . There are several ways of malware infection. They can be transmitted through a multimedia messaging service (MMS) or an email. They can also pose threats by exploiting vulnerabilities in-network or mobile devices. Users are most affected by downloading applications that contain malicious code.
+
+Since 2019, there have been significant changes in education and business life due to the COVID 19 pandemic. This process, where online work from home has increased, has also provided an opportunity for malicious attacks. Due to the increase in communication over the Internet, data encryption and security have gained more importance. In addition, the expansion of the digital world, and the increase in the size of multimedia contents, along with encryption and security operations, have brought to the fore effective and efficient data summarization. Current studies in the field of data encryption and summarization continue increasingly.
+
+Koppanati and Kumar  developed a polynomial cohesion-based multimedia encryption technique (P-MEC) over the cloud. With this technique, which they developed by focusing on cubic and polynomial compatibility, they proved that multimedia data is better protected over the cloud than some existing models. Rayappan and Pandiyan  developed a lightweight Feistel structure-based substitution permutation crypto model to secure multimedia data on the cloud. They confirmed that this model, developed by leveraging the effectiveness of the block cipher approach, is suitable for secure multimedia data communication over the cloud. Since the model is resistant to different attack resistances, it can be used safely in an uncertain cloud environment. Jayapandian  proposed a method that provides the best encryption method to reduce the encoding and decoding time in multimedia data. This method proved to reduce the application time by more than 50%. It also provided the highest data security in multimedia data and reduce overall execution time in dynamic cloud tasks. Gupta et al.  proposed an advanced identity-based encryption approach that hides the identity of users using the Lagrange coefficient consisting of a polynomial interpolation function. They showed that this method takes less time in encryption and decryption compared to the competitive method. Kumar  has developed a method of generating event summaries in a cloud environment to help users access large volumes of video data effectively. It proved that the method with event summarization and event search outperformed the models with the best F-measure. Lalotra et al.  proposed a new method called iReTADS. With the summarization technique, they aimed to reduce network traffic and ensure network security through a real-time neural network. Experimental results showed that iReTADS is effective in monitoring network traffic and detecting anomalies. They also suggested that the developed method could also benefit efforts to control pandemics using medical datasets for smart healthy cities.
+
+The main aim and contribution of this study are to collect the current state of mobile security and highlight the future of mobile security in light of the recent mobile security threat.
+
+# Multimedia Tools and Applications (2023) 82:20269–20281
+reports. The studies in the field of malware, attack types, and security vulnerabilities concerning the usage of smartphones were analyzed. The malware detection techniques were analyzed into two categories: signature-based and machine learning (behavior detection)-based techniques. Additionally, the current threats and prevention methods were described. Finally, a future direction is highlighted in the light of the current mobile security reports.
+
+The remainder of this paper is organized as follows: Types of malwares and types of malicious attacks and mobile vulnerabilities are explained in Sections 2 and 3, respectively. In Section 4, the security solutions to be taken against mobile malware, and threat detection techniques are reviewed. Finally, the paper is concluded by how security studies will lighten the future in Section 5.
+
+# 2 Types of malwares
+Program pieces written with the aim of stealing users’ information and damaging the system by attacking them are called malicious programs. Malicious programs can be identified in two categories: threats that require host programs and threats that are independent of each other . The first is a piece of program linked to an application or program. The other is an independent program run by the system.
+
+In addition, mobile malware can be divided into three groups according to its behavior: propagation behavior, remote control behavior, and malicious attack behavior . The propagation behavior refers to the access of the malware to the users, the remote-control behavior refers to the use of the remote server, and the attack behavior refers to the attacking of the users with different applications after infecting their devices.
+
+Various types of mobile malware exist. Table 1 highlights the most common types of mobile malware with names and their descriptions.
+
+**Typical malware apps**
+# Multimedia Tools and Applications (2023) 82:20269–20281
+As previously mentioned, in the third quarter of 2021, 9,599,519 attacks on mobile devices were detected, including malware, adware, and riskware. Among all detected mobile threats, RiskTool applications constitute the largest share with a rate of 65%. Apart from that, 676,190 malware packages were detected. 12,097 of them are packaged mobile banking trojans, and 6 of them are packaged mobile ransomware trojans.
+
+# 2 Popular malwares
+The Android operating system is more exposed to malicious attacks due to the high number of users and is open source based. The Apple iOS platform, on the other hand, is less exposed to malicious threats than the Android platform. In this section, the most known malicious threats to smartphones are summarized and given in Table 2.

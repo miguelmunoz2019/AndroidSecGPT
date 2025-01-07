@@ -1,0 +1,58 @@
+# Expected Exploitability: Predicting the Development of Functional Vulnerability Exploits
+Octavian Suciu, University of Maryland, College Park; Connor Nelson, Zhuoer Lyu, and Tiffany Bao, Arizona State University; Tudor Dumitraș, University of Maryland, College Park
+https://www.usenix.org/conference/usenixsecurity22/presentation/suciu
+This paper is included in the Proceedings of the 31st USENIX Security Symposium.
+
+August 10–12, 2022 • Boston, MA, USA
+978-1-939133-31-1
+Open access to the Proceedings of the 31st USENIX Security Symposium is sponsored by USENIX.
+
+# Expected Exploitability: Predicting the Development of Functional Vulnerability Exploits
+Octavian Suciu, Connor Nelson†, Zhuoer Lyu†, Tiffany Bao†, Tudor Dumitras, University of Maryland, College Park†Arizona State University
+# Abstract
+Assessing the exploitability of software vulnerabilities at the time of disclosure is difficult and error-prone, as features extracted via technical analysis by existing metrics are poor predictors for exploit development. Moreover, exploitability assessments suffer from a class bias because “not exploitable” labels could be inaccurate.
+
+To overcome these challenges, we propose a new metric, called Expected Exploitability (EE), which reflects, over time, the likelihood that functional exploits will be developed. Key to our solution is a time-varying view of exploitability, a departure from existing metrics. This allows us to learn EE using data-driven techniques from artifacts published after disclosure, such as technical write-ups and proof-of-concept exploits, for which we design novel feature sets.
+
+This view also allows us to investigate the effect of the label biases on the classifiers. We characterize the noise-generating process for exploit prediction, showing that our problem is subject to the most challenging type of label noise, and propose techniques to learn EE in the presence of noise.
+
+On a dataset of 103,137 vulnerabilities, we show that EE increases precision from 49% to 86% over existing metrics, including two state-of-the-art exploit classifiers, while its precision substantially improves over time. We also highlight the practical utility of EE for predicting imminent exploits and prioritizing critical vulnerabilities.
+
+We develop EE into an online platform which is publicly available at https://exploitability.app/.
+
+# 1 Introduction
+Weaponized exploits have a disproportionate impact on security, as highlighted in 2017 by the WannaCry  and NotPetya  worms that infected millions of computers worldwide. Their notorious success was in part due to the use of weaponized exploits. The cyber-insurance industry regards such contagious malware, which propagates automatically by exploiting software vulnerabilities, as the leading risk for incurring large losses from cyber attacks . At the same time, the rising bar for developing weaponized exploits  pushed black-hat developers to focus on exploiting only 5% of the known vulnerabilities . To prioritize mitigation efforts in the industry, to make optimal decisions in the government’s Vulnerabilities Equities Process , and to gain a deeper understanding of the research opportunities to prevent exploitation, we must evaluate each vulnerability’s ease of exploitation.
+
+Despite significant advances in defenses , exploitability assessments remain elusive because we do not know which vulnerability features predict exploit development. For example, expert recommendations for prioritizing patches  initially omitted CVE-2017-0144, the vulnerability later exploited by WannaCry and NotPetya. While one can prove exploitability by developing an exploit, it is challenging to establish non-exploitability, as this requires reasoning about state machines with an unknown state space and emergent instruction semantics . This results in a class bias of exploitability assessments, as we cannot be certain that a “not exploitable” label is accurate.
+
+We address these two challenges through a metric called Expected Exploitability (EE). Instead of deterministically labeling a vulnerability as “exploitable” or “not exploitable”, our metric continuously estimates over time the likelihood that a functional exploit will be developed, based on historical patterns for similar vulnerabilities. Functional exploits go beyond proof-of-concepts (POCs) to achieve the full security impact prescribed by the vulnerability. While functional exploits are readily available for real-world attacks, we aim to predict their development and not their use in the wild, which depends on many other factors besides exploitability.
+
+Key to our solution is a time-varying view of exploitability, a departure from the existing vulnerability scoring systems such as CVSS , which are not designed to take into account new information (e.g. new exploitation techniques, leaks of weaponized exploits) that becomes available after the scores are initially computed . By systematically comparing a range of prior and novel features, we observe that artifacts published after vulnerability disclosure can be good predictors for the development of exploits, but their timeliness and predictive utility varies. This highlights limitations of prior features and a qualitative distinction between predicting functional exploits and related tasks. For example, prior work uses the existence of public PoCs as an exploit.
+
+# Expected Exploitability
+predictor . However, PoCs are designed to trigger the vulnerability by crashing or hanging the target application and often are not directly weaponizable; we observe that this leads to many false positives for predicting functional exploits. In contrast, we discover that certain PoC characteristics, such as the code complexity, are good predictors, because triggering a vulnerability is a necessary step for every exploit, making these features causally connected to the difficulty of creating functional exploits. We design techniques to extract features at scale, from PoC code written in 11 programming languages, which complement and improve upon the precision of previously-proposed feature categories. We then learn EE from the useful features using data-driven methods, which have been successful in predicting other incidents, e.g. vulnerabilities that are exploited in the wild , data breaches  or website compromises.
+
+However, learning to predict exploitability could be derailed by a biased ground truth. Although prior work had acknowledged this challenge for over a decade , no attempts were made to address it. This problem, known in the machine-learning literature as label noise, can significantly degrade the performance of a classifier. The time-varying view of exploitability allows us to uncover the root causes of label noise: exploits could be published only after the data collection period ended, which in practice translates to wrong negative labels. This insight allows us to characterize the noise-generating process for exploit prediction and propose a technique to mitigate the impact of noise when learning EE.
+
+In our experiments on 103,137 vulnerabilities, EE significantly outperforms static exploitability metrics and prior state-of-the art exploit predictors, increasing the precision from 49% to 86% one month after disclosure. Using our label noise mitigation technique, the classifier performance is minimally affected even if evidence about 20% of exploits is missing. Furthermore, by introducing a metric to capture vulnerability prioritization efforts, we show that EE requires only 10 days from disclosure to approach its peak performance. We show EE has practical utility, by providing timely predictions for imminent exploits, even when public PoCs are unavailable. Moreover, when employed on scoring 15 critical vulnerabilities, EE places them above 96% of non-critical ones, compared to only 49% for existing metrics.
+
+In summary, our contributions are as follows:
+- We propose a time-varying view of exploitability based on which we design Expected Exploitability (EE), a metric to learn and continuously estimate the likelihood of functional exploits over time.
+
+- We characterize the noise-generating process systematically affecting exploit prediction, and propose a domain-specific technique to learn EE in the presence of label noise.
+
+- We explore the timeliness and predictive utility of various artifacts, proposing new and complementary features from PoCs, and developing scalable feature extractors for them.
+
+- We perform two case studies to investigate the practical utility of EE, showing that it can qualitatively improve prioritization strategies based on exploitability.
+
+EE is available as an online platform at https://exploitability.app/.
+
+# 2 Problem Overview
+We define exploitability as the likelihood that a functional exploit, which fully achieves the mandated security impact, will be developed for a vulnerability. Exploitability reflects the technical difficulty of exploit development, and it does not capture the feasibility of launching exploits against targets in the wild , which is influenced by additional factors (e.g. patching delays, network defenses, attacker choices).
+
+While an exploit represents conclusive proof that a vulnerability is exploitable if it can be generated, proving non-exploitability is significantly more challenging . Instead, mitigation efforts are often guided by vulnerability scoring systems, which aim to capture exploitation difficulty, such as:
+1. NVD CVSS , a mature scoring system with its Exploitability metrics intended to reflect the ease and technical means by which the vulnerability can be exploited. The score encodes various vulnerability characteristics, such as the required access control, complexity of the attack vector and privilege levels, into a numeric value between 0 and 4 (0 and 10 for CVSSv2), with 4 reflecting the highest exploitability.
+
+2. Microsoft Exploitability Index , a vendor-specific score assigned by experts using one of four values to communicate to Microsoft customers the likelihood of a vulnerability being exploited.
+
+3. RedHat Severity , similarly encoding the difficulty of exploiting the vulnerability by complementing CVSS with expert assessments based on vulnerability characteristics specific to the RedHat products.

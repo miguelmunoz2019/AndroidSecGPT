@@ -1,0 +1,20 @@
+Only the vulnerability status, CWE-ID and the source code sample attributes in the dataset were considered for further analysis in this work. The source code samples should be processed appropriately to maximize the detection accuracy of the model since it is the independent variable of the model. The string values mentioned within the source code were replaced with “user_str”, except the IP address related details and encryption-related details stated as string values. These particular string values were substituted with matching templates (i.e. “0”, “AES”, “SHA1”, “MD5”) since they can cause vulnerabilities such as CWE-200 (exposure of sensitive information to an unauthorized actor), CWE-201 (insertion of sensitive information into sent data), and CWE-327 (use of a broken or risky cryptographic algorithm) . Additionally, all the comments in the source code were removed.
+
+# Poster Session
+# ASIA CCS ’22, May 30–June 3, 2022, Nagasaki, Japan
+# Model Training and Evaluating
+Once the pre-processing was completed, both binary and multi-class classification methods were used. Conversely, as the primary research goal, it is required to identify whether a given source code is vulnerable or not. If vulnerable, the CWE-IDs associated with it are required to provide suggestions for vulnerability mitigation.
+
+Several ML algorithms, including Naive Bayes, Logistic Regression, Gradient Boosting, Random Forest and XGBoost were considered and selected XGBoost as it provides a high accuracy compared to the others in this approach. Once the model is applied to the coding environment, it is possible to detect whether a given code line is vulnerable or not. If the code line is vulnerable, suggestions to mitigate the vulnerability by referring to the CWE are also provided.
+
+# PRELIMINARY RESULTS
+After training and testing the model, the binary and multi-class classification results are discussed in this section.
+
+# 4 Binary Classification
+By training 2,952,785 source code samples using XGBoost, the binary classification model provides an F1-Score of 0 as illustrated in Figure 2.
+
+# 5 CONCLUSION AND FUTURE WORK
+Based on the initial experiments for building a highly accurate Android vulnerability detection method, it is possible to see promising results for binary and multi-class classification approaches with the XGBoost algorithm. Therefore, the proposed model can be integrated with an Android development environment after training with more data. Furthermore, explainable artificial intelligence is planned to be integrated to identify the reasons for vulnerabilities.
+
+# 4 Multi-Class Classification
+By training XGBoost model using a multi-class classification approach with 46,333 vulnerable code samples, 0 F1-Score was achieved as illustrated in Figure 3..

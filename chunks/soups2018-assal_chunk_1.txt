@@ -1,0 +1,55 @@
+# Security in the Software Development Lifecycle
+# Hala Assal and Sonia Chiasson, Carleton University
+https://www.usenix.org/conference/soups2018/presentation/assal
+This paper is included in the Proceedings of the Fourteenth Symposium on Usable Privacy and Security.
+
+August 12–14, 2018 • Baltimore, MD, USA
+ISBN 978-1-939133-10-6
+Open access to the Proceedings of the Fourteenth Symposium on Usable Privacy and Security is sponsored by USENIX.
+
+# Security in the Software Development Lifecycle
+Hala Assal
+School of Computer Science
+Carleton University
+Ottawa, ON Canada
+HalaAssal@scs.carleton.ca
+Sonia Chiasson
+School of Computer Science
+Carleton University
+Ottawa, ON Canada
+Chiasson@scs.carleton.ca
+# ABSTRACT
+We interviewed developers currently employed in industry to explore real-life software security practices during each stage of the development lifecycle. This paper explores steps taken by teams to ensure the security of their applications, how developers’ security knowledge influences the process, and how security fits in (and sometimes conflicts with) the development workflow. We found a wide range of approaches to software security, if it was addressed at all. Furthermore, real-life security practices vary considerably from best practices identified in the literature. Best practices often ignore factors affecting teams’ operational strategies. Division of labour is one example, whereby complying with best practices would require some teams to restructure and re-assign tasks—an effort typically viewed as unreasonable. Other influential factors include company culture, security knowledge, external pressure, and experiencing a security incident.
+
+# 1. INTRODUCTION
+Software security focuses on the resistance of applications to malicious attacks resulting from the exploitation of vulnerabilities. This is different from security functions, which can be expressed as functional requirements, such as authentication . With increasing connectivity and progress towards the Internet of Things (IoT), threats have changed . In addition to vulnerabilities in traditional computing systems (e.g., Heartbleed ), vulnerabilities are found in devices and applications that are not necessarily considered security sensitive, such as cars , and medical devices . Moreover, the threat is no longer limited to large enterprises; Small and Medium Enterprises (SMEs) are increasingly becoming targets of cyberattacks.
+
+With increasing threats, addressing security in the Software Development Lifecycle (SDLC) is critical . Despite initiatives for implementing a secure SDLC and available literature proposing tools and methodologies to assist in the process of detecting and eliminating vulnerabilities (e.g. ), vulnerabilities persist. Developers are often viewed as “the weakest link in the chain” and are blamed for security vulnerabilities . However, simply expecting developers to keep investing more efforts in security is unrealistic and unlikely to be fruitful . Usable security research focusing on developers and the human factors of software security–a new area that has not been sufficiently investigated–has the potential for a widespread positive influence on security . Towards guiding research in this area, Acar et al.  proposed a research agenda for usable security for developers where they highlight important research questions.
+
+Our work is a step towards addressing one of the prominent research areas outlined by Acar et al.’s research agenda . This paper explores steps that teams are taking to ensure the security of their applications, how developers’ security knowledge influences the process, and how security fits in (and sometimes conflicts with) the development workflow. We interviewed 13 developers who described their tasks, their priorities, as well as tools they use. During the data analysis we recognized that our participants’ practices and attitudes towards security formed two groups, each with trends distinguishable from the other group. On comparing real-life security practices to best practices, we also found significant deviations.
+
+This paper makes the following contributions.
+
+- We present a qualitative study looking at real-life practices employed towards software security.
+
+- We amalgamate software security best practices extracted from the literature into a concise list to assist further research in this area.
+
+- We reflect on how well current security practices follow best practices, identify significant pitfalls, and explore why these occur.
+
+- Finally, we discuss opportunities for future research.
+
+# 2. RELATED WORK
+Green and Smith  discussed how research addressing the human factors of software security is generally lacking, and that developers are often viewed as “the weakest link”—mirroring the early attitude towards end-users before usable security research gained prominence. While developers are more technically experienced than typical end-users, they should not be mistaken for security experts . They need support when dealing with security tasks, e.g., through developer-friendly security tools  or programming languages that prevent security errors . To this end, Acar et al.  outlined a research agenda towards understanding developers’ attitudes and security knowledge.
+
+Exploring the usability of available security development tools, and proposing tools and methodologies to support developers in building secure applications. We now discuss relevant research addressing such human aspects of software security. Generally, studies in this area face challenges in recruiting developers and ensuring ecological validity. Developers are busy and must often comply with organizational restrictions on what can be shared publicly. To partially address these issues, Stransky et al.  designed a platform to facilitate distributed online programming studies with developers.
+
+Oliveira et al.  showed that security vulnerabilities are “blind spots” in developers’ decision-making processes; developers mainly focus on functionality and performance. To improve code security, Wurster and van Oorschot  recommend taking developers out of the development loop through the use of Application Programming Interfaces (APIs). Towards this goal, Acar et al.  evaluated five cryptographic APIs and found usability issues that sometimes led to insecure code. However, they found that documentation that provided working examples was significantly better at guiding developers to write secure code. Focusing on software security resources in general, Acar et al.  found that some available security advice is outdated and most resources lack concrete examples. In addition, they identified some underrepresented topics, including program analysis tools.
+
+Focusing on security analysis, Smith et al.  showed that tools should better support developers’ information needs. On exploring developers’ interpretation of Static-code Analysis Tool (SAT) warnings, they found that participants frequently sought additional information about the software ecosystem and resources. To help developers to focus on the overall security of their code, Assal et al.  proposed a visual analysis environment that supports collaboration while maintaining the codebase hierarchy. This allows developers to build on their existing knowledge of the codebase during code analysis. Perl et al.  used machine learning techniques to develop a code analysis tool. Their tool has significantly fewer false-positives compared to similar ones. Nguyen et al.  developed a plugin to help Android application developers adhere to, and learn about, security best practices without distributing their workflow. Despite their benefits , SATs are generally underused.
+
+Witschey et al.  investigated factors influencing the adoption of security tools, such as tool qualities, and developers’ personalities and experiences. They found that more experienced developers are more likely to adopt security tools, whereas tool complexity was a deterring factor. Additionally, Xiao et al.  found that the company culture, the application’s domain, and the company’s standards and policies were among the main determinants for the developers’ adoption of security tools. To encourage developers to use security tools, Wurster and van Oorschot  suggest mandating their use and rewarding developers who code securely.
+
+As evidenced, several research gaps remain in addressing the human aspects of software security. Our study takes a holistic perspective to explore real-life security practices, an important step in improving the status-quo.
+
+# 3. STUDY DESIGN AND METHODOLOGY
+We designed a semi-structured interview study and received IRB clearance. The interviews targeted 5 main topics: general development activities, attitude towards security, security knowledge, security processes, and software testing activities (see Appendix A for interview script). To recruit participants, we posted on development forums and relevant social media groups, and announced the study to professional acquaintances. We recruited 13 participants; each received a $20 Amazon gift card for participation. Before the one-on-one interview, participants filled out a demographics questionnaire. Each interview lasted approximately 1 hour, was audio recorded, and later transcribed for analysis. Interviews were conducted in person (n = 3) or through VOIP/video-conferencing (n = 10). Data collection was done in 3 waves, each followed by preliminary analysis and preliminary conclusions . We followed Glaser and Strauss’s  recommendation by concluding recruitment on saturation (i.e., when new data collection does not add new themes or insights to the analysis).

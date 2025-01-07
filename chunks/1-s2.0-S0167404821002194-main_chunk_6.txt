@@ -1,0 +1,51 @@
+On the other hand, although BabelView reported a total number of 19883 leaks (in 881 applications), only 26 leaks are related to interface classes (in 18 applications). Among the 26 leaks, only 18 leaks (in 11 applications) were of type 1 vulnerability. These leaks were reported by our technique, WebV Sec, as well. The remaining 8 leaks (in 7 applications) were not reported by WebV Sec because their paths include methods that are neither interfaces nor WebViewClient ones, which means they do not follow our threat model and they are not completely WebView vulnerabilities. However, the 8 leaks use interface classes. The full list of applications and analysis results are available online. BabelView did not report any leak related to WebViewClient as WebV Sec did. This is not surprising as BabelView does not target WebViewClient in the first place, which is a drawback of BabelView. These results confirm that WebV Sec is more efficient, precise, and general than BabelView.
+
+Together with vulnerabilities BabelView reports their types depending on their actions. These types include writing to the File System and violation of the Same Origin Policy. The reports provided by WebV Sec for each analyzed app are rich enough to straightforwardly extract similar vulnerability types. This is so because, for each reported vulnerability, WebV Sec provides its detailed execution path. The path includes the APIs of source and sink methods. Hence, a simple classification of these APIs is enough to obtain vulnerability classification.
+
+Performance. WebV Sec and BabelView take 27 hours and 63 hours, respectively, for the total sample of 2000 apps. On average, while WebV Sec needed 49 seconds to analyze an application, BabelView needed 114 seconds. Thus, WebV Sec is more efficient than BabelView, as also shown in Fig. 4.
+
+The Soot tool Vallée-Rai et al. (2010) that BabelView relies on is capable of optimizing the Java byte code during the decompilation of apk files. However, this optimization significantly increases the decompilation time. Although Soot optimization can be disabled, slow performance of the default configuration of Soot in many tools, such as ded Enck et al. (2011) and Dare.
+
+# 16
+# computers & security 109 (2021) 102395
+# Computers & Security 109 (2021) 102395
+# 8. Half vulnerabilities
+It is interesting to compare the effectiveness of WebV Sec versus BabelView in discovering half vulnerabilities. WebV Sec reported total number of 626 sourced variables, in 443 applications. The paths of WebViewClient classes hosted 472 of these sourced variables in 409 applications. WebV Sec also reported 3403 sinked variables in 744 applications. The paths of WebViewClient classes hosted 2016 of these sinked variables, in 668 applications. Considering the leaking paths reported by BabelView, we counted 564 sinked variables in interface classes of 184 applications and 72 sourced variables in interface classes of 34 applications. Therefore, WebV Sec is more effective and useful in discovering half vulnerabilities than BabelView.
+
+# 8. Manual validation
+We carried out a manual validation to evaluate the accuracy of WebV Sec which turned out to have no false positives as all reported vulnerabilities are the correct ones. We checked the interface and WebViewClient classes (in Dalvik code format) of randomly selected 50 applications among the ones that were reported OK by WebV Sec. We did not discover any error in the reports of WebV Sec for these applications. We also found that the analysis results of our toy application are in line with the source code we developed ourselves. Our manual verification confirms the high accuracy of WebV Sec.
+
+WebV Sec is conservative in its nature for two reasons. The first one is that WebV Sec is path-sensitive, which means that it does not approximate collected analysis data to obtain general results for multiple paths. For example, analysis results for each path resulting from conditional program-
+# Figures
+# 18
+# Computers & Security 109 (2021) 102395
+ming commands are built separately rather than approximat- by W ebV Sec occurred in webViewClient classes, these classes are responsible for much less percentages of source and sink APIs invocations.
+
+These reasons explain the high accuracy in the 50 apps sample. However, we must stress that the precision evaluation is concluded from analyzing results of 50 apps out of the 2000 apps of the dataset.
+
+# 9. Conclusion and future work
+Vulnerabilities of WebView objects have been widely studied by previous works, which identified the security issues associated with the JavaScript bridge. In particular, enabling the JavaScript code running in a remote webserver to access smartphone local sensitive data has paved the way for several attacks. Despite the solutions proposed by previous works to defend and detect such attacks, there are still new vulnerabilities affecting this feature of the Android ecosystem, which also impacts a large number of Android applications. The attacker’s motivation to design exploits relying on WebView vulnerabilities concerns the opportunity to access sensitive data on the phone, just by running some malicious JavaScript code on a remote web server.
+
+In this paper, we propose W ebV Sec a static analysis tool that relies on a set of heuristically designed inference rules to detect four types of vulnerabilities involving Android WebView objects. The evaluation of W ebV Sec over a set of 2000 applications led to the detection of 48 vulnerable applications (20 ones having Type 1 vulnerability and 36 having Type 3 vulnerability). On the contrary, BabelView, the state-of-the-art approach which we compared with, identified only 20 vulnerable apps (11 having Type 1 vulnerability and 0 having Type 3 vulnerability). Besides being more accurate in detecting vulnerabilities, W ebV Sec also overcomes BabelView in terms of efficiency, by requiring 27 hours for the analysis of the whole dataset concerning the 63 hours required by BabelView.
+
+# 8. Current state
+This section discusses the current state of Android applications using WebView, interfaces, WebViewClient, and other different elements that contribute to the vulnerabilities addressed in this paper.
+
+# 8. Interfaces.
+
+The number of classes containing methods annotated with @JavascriptInterface is 3110 classes. These classes belong to 991 applications (49% of the dataset). This reveals that annotating interface method is a common practice in implementing WebView. For applications that target minimum SDK less than 17, the number of defined interface classes is 3609 in 1320 applications (66% of the dataset). W ebV Sec counted 53367 methods in 1405 interface classes. The interface classes are used in 4444 classes in the 1404 application (70% of the dataset).
+
+# 8. WebViewClient.
+
+The dataset contained 9615 WebViewClient classes in 1749 applications (87% of the dataset). The number of methods found in WebViewClient classes is 43772. These classes were used by 15050 classes in 1774 applications (88% of the dataset). The number of applications that use WebViewClient is larger than the number of application defining WebViewClient classes because some applications use WebViewClient classes from libraries without needing to define them.
+
+# 8. Relevant methods.
+
+The number of elements of the set M of methods selected by the third phase of W ebV Sec (Identification of relevant methods) is 500152 (in 1797 applications). On average each application has 278 methods of these methods. By applying the heuristic described in phase 3, the number of methods became 366708 which reduced the average number of methods (needing analysis) to 204 per application. Android creates access methods (we denoted them in phase 3 of W ebV Sec as Ma) to access global variables. It is necessary to include these methods in M. W ebV Sec found 13525 access methods (in 148 applications).
+
+# 8. Sources and sinks.
+
+Among all analyzed methods, 2567 methods (in 827 applications) invoked a source-API. The total number of these invocations is 5079. Almost 18% of these methods are WebViewClient ones (in 410 applications) which are responsible for almost 29% of these source-API invocations. On the other hand, 18763 analyzed methods (in 1770 applications) contained 35839 sink-API invocations. Almost a quarter of these methods are WebViewClient ones (in 1276 applications) that are responsible for almost a quarter of the sink-API invocations. The exact numbers are shown in Table 9. It is worth noting that although almost 46% of the vulnerabilities discovered.
+
+# CRediT authorship contribution statement
+Mohamed A. El-Zawawy: Writing – original draft, Writing – review & editing. Eleonora Losiouk: Writing – original draft, Writing – review & editing. Mauro Conti: Writing – original draft, Writing – review & editing.

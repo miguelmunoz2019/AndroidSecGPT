@@ -1,0 +1,81 @@
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# RPK
+# PID
+# PKR
+# WMA
+# ADE
+# DCL
+# REF
+# FIO
+# NEX
+# DCI
+# Number of static Frameworks vs Evasions Techniques
+Full-size   DOI: 10/peerj-cs/fig-5
+Until today, many static analysis researchers depend on permissions (Arora, Peddoju & Conti, 2019; Dharmalingam & Palanisamy, 2021; Li et al., 2018; Şahin et al., 2021); however, many are relying on API calls (Alazab et al., 2020; Jung et al., 2018; Maiorca et al., 2017; Mirzaei et al., 2019; Pektaş & Acarman, 2020; Tiwari & Shukla, 2018; Zhang et al., 2020; Zhang, Breitinger & Baggili, 2016; Zou et al., 2021) and deep code analysis and other types of features as discussed earlier in Android evasion detection frameworks section.
+
+Many of the examined researches ignored the evasion techniques evaluation. Other frameworks assumed the impossibility of the evasion detection using static analysis and advised the research community to use dynamic analysis to detect it. Android Malware detection frameworks assumed their capability of detecting obfuscation techniques without evaluating their framework against obfuscated malware datasets. This paper examined 74 static frameworks, but only 35 research papers consider or evaluate their framework using at least one evasion technique, as shown in Fig. 6. The dynamic analysis evasion radar graph demonstrates the capabilities of dynamic analysis based.
+
+Researchers assume that dynamic analysis covers all the simple obfuscations and transformation techniques. Hence many of the dynamic analysis frameworks (Abuthawabeh & Mahmoud, 2019; Chen et al., 2018; de la Puerta et al., 2019; De Lorenzo et al., 2020; Feng et al., 2020; Feng et al., 2018; Pang et al., 2017; Sihag et al., 2021; Wang et al., 2019) ignored the metamorphic evasion techniques. The overall performance
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+38/61
+# TOTAL CONSIDERED EVASIONS
+72
+Full-size DOI: 10/peerj-cs/fig-6
+The accuracy of the most current malware detection frameworks is measured against randomly selected malware samples representing certain malware families. If the randomly chosen malware families overlook evasion techniques, the selected malware insufficiently reflect the actual robustness of the proposed detection framework against evasion techniques; this was the main reason behind excluding the accuracy in evaluation tables. This paper examined 35 Android malware detection using different dynamic techniques. However, only 14 of 35 dynamic analysis based detection frameworks have tried to include obfuscation into their evaluation processes, as shown in Fig. 7. Figure 8 shows the number of considered evasion techniques in each research is between 1 and 5 evasions. In its evaluation, Soh et al. (2015) considered three types of repackaging evasion, indirectly considered code reordering, and called indirection evasion. It defines many limitations to its approach and planned to consider the hybrid analysis in its future plan.
+
+However, a few researchers evaluate their frameworks against specific evasion techniques, as reflected in the radar graph of the hybrid malware detection frameworks, as shown in Figs. 9 and 10. For instance, four frameworks claimed that their method detected the CRE and DCI evasions (Grace et al., 2012; Lindorfer, Neugschwandtner & Platzer, 2015; Spreitzenbarth et al., 2015; Zhao et al., 2014), and three frameworks claimed the detection of CIN  and WMA (Grace et al., 2012; Petsas et al., 2014; Yuan, Lu & Xue, 2016). The hybrid based detection requires enormous effort to collect both static and dynamic characteristics and logs. RiskRanker  started highlighting the evasion problems and their impacts on detection accuracy. However, Petsas  in 2014 and Tap-Wave-Rub  battled anti-emulation evasions and used the device.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+39/61
+# RPK
+# ~O-Number of Dynamic Frameworks Vs Evasions Techniques
+# NUMBFR OF CONSIDERED EVASIONS
+1
+2
+MW1
+4
+1
+2
+3
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+40/61
+# Number of Hybrid Frameworks vs Evasions Techniques
+hardware (proximity sensor) to differentiate between maliciously driven actions and end-user physical interactions.
+
+Most of the recent dynamic analysis researches (Feng et al., 2020; Mahindru & Sangal, 2021; Sihag et al., 2021) confirmed the ability to detect obfuscated Android malware. Unfortunately, none of dynamic analysis based detection has evaluated their framework using specific evasion techniques; most of dynamic analysis studies just randomly select from the publicly available Android malware datasets. For example, Droidetec  proposed a dynamic analysis based framework by analyzing the process behavior in an ordered manner. Still, the evaluation process was generic and included few malware families that exclude obfuscated malware.
+
+The Hybrid analysis techniques are suggested by many researchers and have been set in their future plan to overcome the resiliency issue of complex obfuscation techniques. However, it is a shocking fact that the examined 26 Android malware detection frameworks using hybrid analysis, that only nine frameworks just consider few evasion techniques such as RiskRanker  that has initiated the issue in 2012, Mobile-Sandbox , Marvin (Lindorfer, Neugschwandtner & Platzer, 2015). Recently some hybrid analysis based detection Puerta (de la Puerta et al., 2019), Surendrean (Surendran, Thomas & Emmanuel, 2020), Lu , Dhalaria (Dhalaria & Gandotra, 2021), Zhu , Nawaz , Liu , PNSDroid (Kandukuru & Sharma, 2018), Bacci , DAMBA Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# NUMBER OF CONSIDERED EVASIONS
+7ARIGUMA
+PETSAS
+MARVIN
+STADYNA
+VE-RUB
+ABAID
+ has highlighted the complex evasions detection resiliency issue in their research literature; however, the proposed malware detection methods and experiments excluded the obfuscated malware from their evaluation sheets.
+
+The systematic evasion detection map is illustrated in Fig. 11; the horizontal axis represents each type of evasion in this study. The bubble size represents the accumulative number of detection techniques developed by the research community to fight each evasion technique. It is divided into three main categories in the vertical axis: static, dynamic, and hybrid detection techniques. For instance, the circle with the number “17” represents static Android malware detection frameworks, which consider CRE evasions on the framework evaluation process. As per the systematic map, the NEX, FIO, and ADE need more attention from the research community. Likewise, the overall dynamic analysis studies that considered evasion evaluation is shallow.
+
+Researchers have concentrated on Android malware static analysis in the last few years, which requires less time and effort than dynamic analysis. They tried to overcome the static analysis weaknesses against evasion attacks, which is why many researchers evaluated their frameworks to check the anti-obfuscation capabilities, as presented in Fig. 11. Dynamic analysis researchers concentrated on avoiding virtualization detection and random interaction, which is the main reason for False Negative malware detection.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+Systematic map of accumulative number of detection frameworks vs evasions techniques.
+
+available standard malware datasets cover some evasion techniques that are randomly selected during evaluation. In summary, all the above investigations demonstrate the absolute need for standard evasion benchmarking tools to evaluate the newly developed frameworks against all evasion techniques.
+
+# LESSONS LEARNED AND FUTURE DIRECTIONS
+Android malware development is always one step ahead of malware detection techniques, which means malware detection still requires many efforts to catch up with malware development. To achieve this objective, we share several insights drawn from our analysis.
+
+# (a) Obfuscation dataset
+One of the most important is to keep on updating and standardizing obfuscated malware datasets. We recommend standardizing this dataset by the research community trusted institutions and being available upon validated requests for research purposes. Despite some available obfuscated datasets such as PRAGuard (Karbab & Debbabi, 2021) sharing ten thousands obfuscated malware by obfuscating MalGnome and the Contagio MiniDump dataset, however the PRAGuard stopped sharing the dataset starting from April 2021.
+
+# (b) Obfuscation detection framework performance
+The performance of the Android malware framework degraded over time since new malware variants, and obfuscations techniques were generated PetaDroid (Karbab & Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Debbabi, 2021
+Hence, we recommend researchers extend their research to keep an eye on their framework performance over time.
+
+# (c) Metamorphism evasion:
+Static detection is unable to detect most of the metamorphism evasion techniques because of the dynamic characteristics of metamorphism. However, there is still a lack of dynamic and hybrid frameworks to detect metamorphism evasions. It is therefore beneficial to focus more on developing dynamic and hybrid methods.
+
+# (d) Standard Evasion Benchmarking:
+We suggest building a comprehensive and collaborative benchmarking framework for Android malware detection evasion techniques that aims to improve the quality of research and add to the body of knowledge in Android malware detection studies. The benchmark consists of a list of evasion techniques based on the detection methods that have been evaluated. As a result, detection methods are tested against a standardized list of malware evasion techniques to determine whether they are capable of detecting malware evasions.

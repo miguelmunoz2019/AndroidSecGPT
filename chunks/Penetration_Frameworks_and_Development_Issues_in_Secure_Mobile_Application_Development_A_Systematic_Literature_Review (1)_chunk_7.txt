@@ -1,0 +1,89 @@
+31. S. Vaupel, G. Taentzer, R. Gerlach, and M. Guckert, ‘‘Model-driven development of mobile applications for Android and iOS supporting role-based app variability,’’ Softw. Syst. Model., vol. 17, no. 1, pp. 35–63, Feb. 2018.
+
+32. B. L. V. V. Kumar, K. R. Kumar, and V. Santhi, ‘‘Penetration testing using linux tools: Attacks and defense strategies,’’ Int. J. Eng. Res. Technol., vol. 5, no. 12, Dec. 2016. [Online]. Available: http://dx.doi.org/10/IJERTV5IS120166
+33. J. Walden, ‘‘Integrating Web application security into the IT curriculum,’’ in Proc. 9th ACM SIGITE Conf. Inf. Technol. Educ. (SIGITE), Oct. 2008, pp. 187–192.
+
+34. H.-L. Wen, C.-H. Lin, T.-H. Hsieh, and C.-Z. Yang, ‘‘PATS: A parallel GUI testing framework for Android applications,’’ in Proc. IEEE 39th Annu. Comput. Softw. Appl. Conf., vol. 2, Jul. 2015, pp. 210–215.
+
+35. E. Woods, ‘‘Harnessing UML for architectural description—The context view,’’ IEEE Softw., vol. 31, no. 6, pp. 30–33, Nov. 2014, doi: 10/ms.
+
+36. P. Xiong and L. Peyton, ‘‘A model-driven penetration test framework for Web applications,’’ in Proc. 8th Int. Conf. Privacy, Secur. Trust, Aug. 2010, pp. 173–180.
+
+37. P. Vats, M. Mandot, and A. Gosain, ‘‘A comprehensive literature review of penetration testing & its applications,’’ in Proc. 8th Int. Conf. Rel., Infocom Technol. Optim. (Trends Future Directions) (ICRITO), Jun. 2020, pp. 674–680.
+
+38. T. Borja, M. E. Benalcázar, L. V. Caraguay, and L. I. B. López, ‘‘Risk analysis and Android application penetration testing based on OWASP 2016,’’ in Proc. Int. Conf. Inf. Technol. Syst. Cham, Switzerland: Springer, Feb. 2021, pp. 461–478.
+
+39. Z. Qu, S. Alam, Y. Chen, X. Zhou, W. Hong, and R. Riley, ‘‘DyDroid: Measuring dynamic code loading and its security implications in Android applications,’’ in Proc. 47th Annu. IEEE/IFIP Int. Conf. Dependable Syst. Netw. (DSN), Jun. 2017, pp. 415–426.
+
+40. S. Y. Yerima, M. K. Alzaylaee, and S. Sezer, ‘‘Machine learning-based dynamic analysis of Android apps with improved code coverage,’’ EURASIP J. Inf. Secur., vol. 2019, no. 1, Dec. 2019, pp. 1–24, doi: 10/s13635-019-0087-1.
+
+41. S. Bojjagani and V. N. Sastry, ‘‘STAMBA: Security testing for Android mobile banking apps,’’ in Adv. Signal Process. Intell. Recognit. Syst. Cham, Switzerland: Springer, 2016, pp. 671–683.
+
+42. A. Alanda, D. Satria, H. A. Mooduto, and B. Kurniawan, ‘‘Mobile application security penetration testing based on OWASP,’’ IOP Conf. Ser., Mater. Sci. Eng., vol. 846, no. 1, May 2020, Art. no. 012036.
+
+43. S. Aymaz, T. Cavdar, S. Aymaz, and E. Ozturk, ‘‘An analysis of load balancing strategies with wireshark in software defined networks,’’ in Proc. Int. Conf. Artif. Intell. Data Process. (IDAP), Sep. 2018, pp. 1–5.
+
+44. P. Shi, F. Qin, R. Cheng, and K. Zhu, ‘‘The penetration testing framework for large-scale network based on network fingerprint,’’ in Proc. Int. Conf. Commun., Inf. Syst. Comput. Eng. (CISCE), Jul. 2019, pp. 378–381.
+
+45. B. Mburano and W. Si, ‘‘Evaluation of Web vulnerability scanners based on OWASP benchmark,’’ in Proc. 26th Int. Conf. Syst. Eng. (ICSEng), Dec. 2018, pp. 1–6.
+
+46. M. B. Seyyar, F. Ö. Çatak, and E. Gül, ‘‘Detection of attack-targeted scans from the apache HTTP server access logs,’’ Appl. Comput. Informat., vol. 14, no. 1, pp. 28–36, Jan. 2018, doi: 10/j.aci.
+
+VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+#Top_Ten_Mobile_Risks
+6. Technical Guide to Information Security Testing and Assessment. Accessed: Sep. 4, 2019. [Online]. Available: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-115.pdf
+7. W. G. J. Halfond, S. R. Choudhary, and A. Orso, ‘‘Penetration testing with improved input vector identification,’’ in Proc. Int. Conf. Softw. Test. Verification Validation, Apr. 2009, pp. 346–355.
+
+8. L. Clapp, O. Bastani, S. Anand, and A. Aiken, ‘‘Minimizing GUI event traces,’’ in Proc. 24th ACM SIGSOFT Int. Symp. Found. Softw. Eng., Nov. 2016, pp. 422–434.
+
+9. Š. Packevičius, A. Ušaniov, Š. Stanskis, and E. Bareiša, ‘‘The testing method based on image analysis for automated detection of UI defects intended for mobile applications,’’ in Proc. Int. Conf. Inf. Softw. Technol. Cham, Switzerland: Springer, Oct. 2015, pp. 560–576.
+
+10. F. Palma, N. Realista, C. Serrao, L. Nunes, J. Oliveira, and A. Almeida, ‘‘Automated security testing of Android applications for secure mobile development,’’ in Proc. IEEE Int. Conf. Softw. Test., Verification Validation Workshops (ICSTW), Oct. 2020, pp. 222–231.
+
+11. R. Mahmood, N. Mirzaei, and S. Malek, ‘‘EvoDroid: Segmented evolutionary testing of Android apps,’’ in Proc. 22nd ACM SIGSOFT Int. Symp. Found. Softw. Eng., Nov. 2014, pp. 599–609.
+
+12. R. R. Asaad, ‘‘Penetration testing: Wireless network attacks method on Kali Linux OS,’’ Acad. J. Nawroz Univ., vol. 10, no. 1, pp. 7–12, 2021.
+
+13. A. Avancini and M. Ceccato, ‘‘Security testing of the communication among Android applications,’’ Proc. 8th Int. Workshop Automat. Softw. Test (AST), May 2013, pp. 57–63.
+
+14. O.-E.-K. Aktouf, T. Zhang, J. Gao, and T. Uehara, ‘‘Testing location-based function services for mobile applications,’’ in Proc. IEEE Symp. Service-Oriented Syst. Eng., Mar. 2015, pp. 308–314.
+
+15. P. Zhang and S. Elbaum, ‘‘Amplifying tests to validate exception handling code: An extended study in the mobile application domain,’’ ACM Trans. Softw. Eng. Methodology, vol. 23, no. 4, pp. 1–28, Sep. 2014.
+
+16. K. Yang, J. Zhuge, Y. Wang, L. Zhou, and H. Duan, ‘‘IntentFuzzer: Detecting capability leaks of Android applications,’’ in Proc. 9th ACM Symp. Inf., Comput. Commun. Secur., Jun. 2014, pp. 531–536.
+
+17. K. B. Dhanapal, K. S. Deepak, S. Sharma, S. P. Joglekar, A. Narang, A. Vashistha, P. Salunkhe, H. G. N. Rai, A. A. Somasundara, and S. Paul, ‘‘An innovative system for remote and automated testing of mobile phone applications,’’ in Proc. Annu. SRII Global Conf., Jul. 2012, pp. 44–54.
+
+18. (2019). Vetting the Security of Mobile Applications. Accessed: Aug. 9, 2019. [Online]. Available: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP-163r1.pdf
+19. P. Kong, L. Li, J. Gao, K. Liu, T. F. Bissyandé, and J. Klein, ‘‘Automated testing of Android apps: A systematic literature review,’’ IEEE Transactions on Reliability, vol. 68, no. 1, pp. 45–66, Sep. 2018, doi: 10/TR.
+
+20. E. A. A. Vega, A. L. S. Orozco, and L. J. G. Villalba, ‘‘Benchmarking of pentesting tools’’ Int. J. Comput., Elect., Automat., Control Inf. Eng., vol. 11, no. 5, pp. 602–605, 2017, doi: 10/zenodo.
+
+21. F. R. Muñoz, E. A. A. Vega, and L. J. G. Villalba, ‘‘Analyzing the traffic of penetration testing tools with an IDS,’’ J. Supercomput., vol. 74, no. 12, pp. 6454–6469, Dec. 2018, doi: 10/s11227-016-1920-7.
+
+22. Y. K. Lee, J. Y. Bang, G. Safi, A. Shahbazian, Y. Zhao, and N. Medvidovic, ‘‘A SEALANT for inter-app security holes in Android,’’ in Proc. IEEE/ACM 39th Int. Conf. Softw. Eng. (ICSE), May 2017, pp. 312–323.
+
+23. D. C. Nguyen, D. Wermke, Y. Acar, M. Backes, C. Weir, and S. Fahl, ‘‘A stitch in time: Supporting Android developers in Writing Secure code,’’ in Proc. ACM SIGSAC Conf. Comput. Commun. Secur., Oct. 2017, pp. 1065–1077.
+
+24. A. K. Jha and W. J. Lee, ‘‘Analysis of permission-based security in Android through policy expert, developer, and end user perspectives,’’ J. UCS, vol. 22, no. 4, pp. 459–474, 2016.
+
+25. A. Aldayel and K. Alnafjan, ‘‘Challenges and best practices for mobile application development,’’ in Proc. Int. Conf. Comput. Data Anal., May 2017, pp. 41–48.
+
+26. W. Ahmad, C. Kästner, J. Sunshine, and J. Aldrich, ‘‘Inter-app communication in Android: Developer challenges,’’ in Proc. 13th Int. Conf. Mining Softw. Repositories, May 2016, pp. 177–188.
+
+27. C. M. Prathibhan, A. Malini, N. Venkatesh, and K. Sundarakantham, ‘‘An automated testing framework for testing Android mobile applications in the cloud,’’ in Proc. IEEE Int. Conf. Adv. Commun., Control Comput. Technol., May 2014, pp. 1216–1219.
+
+28. A. Pandey, R. Khan, and A. K. Srivastava, ‘‘Challenges in automation of test cases for mobile payment apps,’’ in Proc. 4th Int. Conf. Comput. Intell. Commun. Technol. (CICT), Feb. 2018, pp. 1–4.
+
+29. A. K. Jha, S. Lee, and W. J. Lee, ‘‘Developer mistakes in writing Android manifests: An empirical study of configuration errors,’’ in Proc. IEEE/ACM 14th Int. Conf. Mining Softw. Repositories (MSR), May 2017, pp. 25–36.
+
+30. M. Linares-Vasquez, C. Bernal-Cardenas, K. Moran, and D. Poshyvanyk, ‘‘How do developers test Android applications?’’ in Proc. IEEE Int. Conf. Softw. Maintenance Evol. (ICSME), Sep. 2017, pp. 613–622.
+
+31. (2019). HTBridge/pivaa. GitHub. Accessed: Sep. 16, 2019. [Online]. Available: https://github.com/HTBridge/pivaa
+32. (2019). Yaazhini—Free Android APK & API Vulnerability Scanner | Vegabird. Vegabird.com. Accessed: Oct. 14, 2019. [Online]. Available: https://www.vegabird.com/yaazhini/
+33. L. Xiao, Y. Li, X. Huang, and X. Du, ‘‘Cloud-based malware detection game for mobile devices with offloading,’’ IEEE Trans. Mobile Comput., vol. 16, no. 10, pp. 2742–2750, Oct. 2017.
+
+34. S. Shah and B. M. Mehtre, ‘‘An overview of vulnerability assessment and penetration testing techniques,’’ J. Comput. Virol. Hacking Techn., vol. 11, no. 1, pp. 27–49, Feb. 2015.
+
+35. S. Bojjagani and V. N. Sastry, ‘‘VAPTAi: A threat model for vulnerability assessment and penetration testing of Android and iOS mobile banking apps,’’ in Proc. IEEE 3rd Int. Conf. Collaboration Internet Comput. (CIC), Oct. 2017, pp. 77–86.

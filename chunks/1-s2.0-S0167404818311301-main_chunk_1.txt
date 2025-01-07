@@ -1,0 +1,61 @@
+# Securing android applications via edge assistant third-party library detection
+# Zhushou Tang, Minhui Xue, Guozhu Meng, Yang Liu, Chengguo Ying, Yugeng Liu, Jianan He, Haojin Zhu
+# Article information
+Article history:
+- Received 17 February 2018
+- Revised 19 June 2018
+- Accepted 7 July 2018
+- Available online 15 October 2018
+# Keywords:
+- Third-party library detection
+- Edge computing
+- Mobile security
+- Malware detection
+- Vulnerability detection
+Third-party library (TPL) detection in Android has been a hot topic to security researchers for a long time. A precise yet scalable detection of TPLs in applications can greatly facilitate other security activities such as TPL integrity checking, malware detection, and privacy leakage detection. Since TPLs of specific versions may exhibit their own security issues, the identification of TPL as well as its concrete version, can help assess the security of Android APPs. However in reality, existing approaches of TPL detection suffer from low efficiency for their detection algorithm to impracticable and low accuracy due to insufficient analysis data, inappropriate features, or the disturbance from code obfuscation, shrinkage, and optimization.
+
+In this paper, we present an automated approach, named PanGuard, to detect TPLs from an enormous number of Android APPs. We propose a novel combination of features including both structural and content information for packages in APPs to characterize TPLs. In order to address the difficulties caused by code obfuscation, shrinkage, and optimization, we identify the invariants that are unchanged during mutation, separate TPLs from the primary code in APPs, and use these invariants to determine the contained TPLs as well as their versions. The extensive experiments show that PanGuard achieves a high accuracy and scalability simultaneously in TPL detection. In order to accommodate to optimized TPL detection, which has not been mentioned by previous work, we adopt set analysis, which speed up the detection as a side effect.
+
+PanGuard is implemented and applied on an industrial edge computing platform, and powers the identification of TPL. Beside fast detection algorithm, the edge computing deployment architecture make the detection scalable to real-time detection on a large volume of emerging APPs. Based on the detection results from millions of Android APPs, we suc-
+# Corresponding author
+E-mail addresses:
+ellison.tang@gmail.com (Z. Tang),
+minhui.xue@mq.edu.au (M. Xue),
+gzmeng@ntu.edu.sg (G. Meng),
+anjiannian@gmail.com (C. Ying),
+liuyugeng@sjtu.edu.cn (Y. Liu),
+13428466234@139.com (J. He),
+zhu-hj@cs.sjtu.edu.cn,
+zhuhaojin@gmail.com (H. Zhu),
+yangliu@ntu.edu.sg (Y. Liu).
+
+This work was partially supported by NSFC (Grant no. U1401253 and 61672350) and the Joint Funds of CETC (Grant No. 20166141B08020101).
+
+https://doi.org/10/j.cose
+0167-4048/© 2018 Elsevier Ltd. All rights reserved.
+
+# 258
+# c o m p u t e r s & s e c u r i t y 8 0 ( 2 0 1 9 ) 2 5 7 – 2 7 2
+cessfully identify over 800 TPLs with 12 versions on average. By investigating the differences amongst these versions, we identify over 10 security issues in TPLs, and shed light on the significance of TPL detection with the caused harmful impacts on the Android ecosystem.
+
+© 2018 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Mobile application development is undergoing a significant revolution. Functionalities of one APP are decoupled and modularized for code reuse and collaborative development, which leads to a burgeoning increase of third-party libraries (TPLs). According to the statistics by AppBrain2, there are 400 TPLs providing ample functionalities, such as advertisement, game engines, and social network integration. These TPLs are widely deployed and reused in Android APPs. WuKong  states that TPLs have taken more than 60% of code in Android APPs, and they contribute 41% of APP code as reported in Li et al. (2016). Therefore, TPLs have prominently facilitated the development of Android APPs.
+
+The use of TPL is a double-edged sword. In particular, the security of TPL has raised an increasing attention recently. In particular, during the high popularity of TPL, a vulnerable TPL may make thousands of APPs in the risk. According to a report released by PanguTeam, a severe vulnerability in TPL was found to widely exist in Tencent family APPs including Tencent Browser, QQ Hotspot, which can lead to unauthorized sensitive data access or application setup . Therefore, there is a large body of recent studies on TPL detection  and security analysis of TPLs.
+
+However, it still faces the following challenges to identify TPLs in Android Applications. Firstly, the hand-crafted ambiguous code by attackers is usually mingled with the TPL code, which makes it easily escape the security inspection and distort the integrity of TPL. Additionally, the vulnerable TPLs or a specific vulnerable TPL version carried out by an APP make the APP in a fragile stat. Since most original TPLs or their historical version is unavailable for downloading, we use historical collected APP to build TPL corpus. With a large volume APPs in hand, how to distinguish the TPL code from the APPs remains the first challenge. Secondly, obfuscation, shrinkage, and optimization are widely performed on TPLs that impede the TPL detection. For instance, ProGuard, which is able to obfuscate, shrink, and optimize code, is observed to being applied on 23% APPs. Although a handful of studies propose approaches  that are resilient to obfuscation, they fail to consider the impact by shrinkage and optimization to code; Lastly but not least, there are around 1,300 new APPs and their integrated TPLs emerging per day . This introduces a serious scalability issue especially when millions of detection instances should be supported. Therefore, an automated tool is demanding to identify TPLs in an accurate and scalable manner.
+
+To overcome the above challenges, we propose the approach PanGuard which has been integrated into the online APP analysis platform Janus3. To make the proposed architecture more scalable, we adopt edge computing architecture to deploy our TPL detecting tool. Each TPL is depict as bit vectors, which reduce the bandwidth requirement for deploying feature from cloud to edge and vice versa. On the edge side, policy for skip analyzing and the checking algorithm, namely set analysis, bit vector operation in practice, ensuring the real time TPL detection. In addition to the novel edge-assistant architecture, the proposed PanGuard has addressed the technical challenges from the following aspects.
+
+Firstly, to build TPL corpus, we propose a novel signature to depict the characteristics of TPLs, including both structural and content information. By recursively traversing the structure of packages in TPLs, and then computing their hash values, we obtain a signature for each node of the tree-like package. The signature demonstrates the hierarchy and content from this node, and is robust against literal changes (e.g., optimization) to TPLs. Therefore, the hash values serve to depict the concrete versions of TPLs. We apply our approach on a collected large dataset with 9,049,323 APPs to build the TPL corpus. The enormousness of our dataset is able to minimize the disturbance (e.g., a rare TPL variance) within TPLs, and makes the detection more accurate.
+
+Secondly, to handle the obfuscation issue, we conduct a comprehensive investigation on “mutated” (i.e., obfuscated, shrunk, or optimized) TPLs mainly by ProGuard. It is found that ProGuard removes unused classes, fields, methods in its shrinkage stage or changes the modifier of field or method, optimizes the code sequence, evaluates constant values in advance, propagates constant values to callee, etc. in its optimization stage, and attributes to the original code. These changes blur the boundaries between the primary code and TPL, which makes the extraction of TPLs difficult. Therefore, we employ a decoupling algorithm to separate TPLs from the primary code in advance. Then, we identify invariants that are stable during the mutation, for example, stable Android SDK API invoked by TPLs. Stable Android SDK API are those that build the basis of functionalities of TPLs. These APIs are deprived and serve as a distinguishing feature to depict the mutated TPLs.
+
+Lastly, to make the proposed architecture more scalable, we develop an off-the-shelf tool named PanGuard, which integrates all algorithms of TPL detection in Section 2. PanGuard generates features from APPs automatically, and performs a feature set matching algorithm to identify TPLs. PanGuard is also robust against multiple mutations (e.g., obfuscation, shrinkage, and optimization) to original TPLs. So far, PanGuard have analyzed over one million Android APPs, and
+Janus (http://www.appscan.io), a large-scale mobile APP analysis platform released by Pangu Team in April 2017.
+
+2 https://www.appbrain.com/stats/libraries
+# c o m p u t e r s & s e c u r i t y 8 0 ( 2 0 1 9 ) 2 5 7 – 2 7 2
+identified 800 TPLs with 9623 versions. Compared to other state-of-the-art tools of TPL detection. Moreover, by applying PanGuard to a real case, we find a buggy version of a TPL which is previously unknown to public and that the buggy version is integrated by over 13,000 APPs; even the APP enclosing the buggy TPL is shrunk and optimized by ProGuard, our tool can still detect them successfully.

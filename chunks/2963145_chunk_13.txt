@@ -1,0 +1,71 @@
+# 13. New Features
+We believe that at the core of the next-generation Android ecosystem should be collaboration and openness. To be specific, the new ecosystem should have three distinctive features: (1) leveraging collaborative efforts, (2) promoting the openness of security-related data, and (3) providing egalitarian roles to participating entities. With these features, the proposed ecosystem can solicit more independent and diverse parties in the Android ecosystem, such as Antivirus (AV) vendors that can provide scalable malware scanning and research institutes that can test and evaluate the latest developments of detection and mitigation techniques with real-world samples. We illustrate this collaboration and openness effort with a few examples.
+
+# 13. Service APIs
+Unlike the current ecosystem that largely depends on Google’s initiative and effort on security enhancement, our new model proposes a collaborative means to solicit more participants to the Android ecosystem security. Through the open access to the Service APIs infrastructure, various entities, including AV vendors and research institutes, can now contribute to the security evaluation of uploaded apps. Following the principle of open source security, which states more bugs can be caught by more eyes, we believe this openness in our new ecosystem can enhance.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 38:35
+The overall security to an unprecedented level. The Service APIs can either be developed and maintained by Google or the Open Handset Alliance, as an official initiative or by independent third parties following a community-driven model and interface with related parties in the ecosystem, as demonstrated by the success of VirusTotal [VirusTotal Team 2012].
+
+# 13. Open Ranking
+Furthermore, the security scores evaluated by independent participants will be accumulated as an Open Ranking, which is shared across the ecosystem and will ultimately be consumed by end-users. This cumulative security ranking will open up new opportunities in improving the closed reputation system in the current Android app market. For example, we cannot only consolidate scores from multiple independent parties, but also consider the time domain or history of each app.
+
+# 13. Security Test Suite
+Since the new ecosystem promotes the egalitarian roles of participants, each player, including carriers, developers, or even AV vendors, can initiate new security updates streamlining to end users without reliance on other parties, hence, bypassing the lengthy update procedure (as shown in Figure 3) and dramatically shrinking avoidable vulnerability windows of known attacks. However, to enable this ideal update scenario, patch effectiveness and compatibility must be thoroughly tested before being released to end users. A new patch should neither break the functionalities required by law (e.g., calling emergency numbers without the presence of SIM card) nor compromise existing security mechanisms (e.g., violating the invariants defined by SEAndroid policies). To address this problem and enable a faster update procedure, the new ecosystem should provide Security Test Suite, which is similar to Compatibility Test Suite in AOSP in its form with a focus on testing the effectiveness and compatibility of each security update against as many device models as possible, even if the update is not developed by Google, OEM, or carriers. After a security patch is certified by the Security Test Suite, it can be delivered directly to end users from any entity (e.g., AV vendors, security researchers, etc.) instead of solely relying on Google and OEM to distribute the patch.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 13. Overall Protection
+Our new Android ecosystem also embodies the state-of-the-art research projects, as shown in Figure 4, particularly in hardening the devices security (S–S), in detecting malicious apps at app store (A–A), and in assisting developers with security tools (D–D).
+
+# 13. System Hardening on User’s Device
+On-device hardening techniques should consider (1) potential security holes due to device fragmentation; (2) increasing demands on private vault, a conceptual private store to regulate accesses to personal information (e.g., health and fitness info); (3) new separation/isolation mechanism for personal and enterprise uses; (4) countermeasures against feature abuse; and (5) side/covert-channel.
+
+# 13. Detecting Malware in the App Store
+To support Service APIs and Open Ranking, the ecosystem requires groundbreaking algorithms to tackle current problems, including (1) repackaging detection, (2) malware detection, and (3) app rating. Our new ecosystem is flexible enough to embody prospective algorithms and experimental research proposals, as a field test.
+
+# 13. Security Tools for Developers
+In the current Android ecosystem, mistakes by app developers often directly impair the security of end-users (e.g., leaking private information). Considering the lack of security tools for app developers, our new ecosystem incorporates various techniques to assist developers in avoiding trivial, but security-critical mistakes on the course of app development: for example, enforcing PoLP and checking component hijacking vulnerabilities. Repackage prevention service is also provided to ensure app developers can harvest full credits for their original work.
+
+# 14. CONCLUSION
+In this article, we give a comprehensive narrative of the research landscape of Android security, with an analysis of security issues and solutions in the Android software stack and the Android ecosystem. We identify a number of intensively researched methodologies taking real effects such as kernel hardening (Section 3), dynamic or static program analysis (Section 8), and app repackaging detection (Section 9).
+
+However, more fundamental problems are revealed from our evaluation of existing solutions: redesigning the permission model (Section 4), re-engineering system and app update procedures (Section 7), devising new algorithms to analyze user intention for malware detection (Section 8), preventing app repackaging attacks (Section 9), and eliminating attackers’ monetization schemes (Section 11). In the meantime, emerging security threats such as the baseband attack and new practices like BYOD deserve more research attention (Section 12). We believe that solutions to these issues are indispensable and pressing for a secure ecosystem in the future.
+
+Based on our findings, we propose a holistic approach at the level of the ecosystem, composed of three distinct parts: (1) building the Service API infrastructure to encourage diverse participants to the Android ecosystem security playground; (2) sharing and consolidating security-related data through an Open Ranking mechanism; and (3) promoting egalitarian roles among participants by sharing the Security Test Suite and flattening the update flow. We also present guidelines for validating how existing and future solutions fit into Android ecosystem security. We believe this work will open up new opportunities to facilitate state-of-the-art security research into Android, enhancing its security for the advent and growth of the IoT.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# APPENDIX
+# A. PAPER SOURCES
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+Roman Schlegel, Kehuan Zhang, Xiaoyong Zhou, Mehool Intwala, Apu Kapadia, and XiaoFeng Wang. 2011.
+
+Soundcomber: A stealthy and context-aware sound trojan for smartphones. In Proceedings of the 18th Annual Network and Distributed System Security Symposium (NDSS). The Internet Society, 1:1–1:17.
+
+Daniel Schreckling, Joachim Posegga, and Daniel Hausknecht. 2012. Constroid: Data-centric access control for android. In Proceedings of the 27th ACM Symposium on Applied Computing (SAC). ACM, 1478–1485.
+
+Sebastian. 2011. Zimperlich Sources. (Feb. 2011). http://c-skills.blogspot.com/2011/02/zimperlich-sources.html.
+
+Jaeback Seo, Daehyeok Kim, Donghyun Cho, Taesoo Kim, and Insik Shin. 2016. FlexDroid: Enforcing in-app privilege separation in android. In Proceedings of the 2016 Annual Network and Distributed System Security Symposium (NDSS). The Internet Society, San Diego, CA, 53:1–53:15.
+
+Yuru Shao, Xiapu Luo, and Chenxiong Qian. 2014a. RootGuard: Protecting rooted android phones. Computer 47 , 32–40.
+
+Yuru Shao, Xiapu Luo, Chenxiong Qian, Pengfei Zhu, and Lei Zhang. 2014b. Towards a scalable resource-driven approach for detecting repackaged android applications. In Proceedings of the 30th Annual Computer Security Applications Conference (ACSAC). ACM, 56–65.
+
+Roy Choudhary Shauvik, Gorla Alessandra, and Alessandro (Alex) Orso. 2015. Automated test input generation for android: Are we there yet? In Proceedings of the 30th IEEE/ACM International Conference on Automated Software Engineering (ASE). IEEE Computer Society, 429–440.
+
+Shashi Shekhar, Michael Dietz, and Dan S. Wallach. AdSplit: Separating smartphone advertising from applications. In Proceedings of the 21st USENIX Conference on Security Symposium (Security’12) USENIX Association, 553–567.
+
+Dongwan Shin, Huiping Yao, and Une Rosi. 2013. Supporting visual security cues for webview-based android apps. In Proceedings of the 28th ACM Symposium on Applied Computing (SAC). ACM, 1867–1876.
+
+Hao Shuai, Liu Bin, Nath Suman, G. J. Halfond William, and Ramesh Govindan. 2014. PUMA: Programmable UI-automation for large-scale dynamic analysis of mobile apps. In Proceedings of the 12th ACM International Conference on Mobile Computing Systems (MobiSys). ACM, 204–217.
+
+Silent Circle. 2016. Blackphone 2 and Silent OS. (Feb. 2016). https://www.silentcircle.com.

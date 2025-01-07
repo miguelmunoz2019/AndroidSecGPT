@@ -1,0 +1,70 @@
+# 6 RQ4: Are Instant Apps robust to Instant App Hijacking?
+We relax the evaluation of instant app hijacking attack based on the following concerns: first, in §4, we illustrate the vulnerability by investigating Android source code. The vulnerability is verified by providing evidence from Android source code; second, the subtlety of this attack is using certain settings in the MIA and exploiting the platform (a.k.a. Android) defects. It means that all instant apps are vulnerable to instant app hijacking.
+
+Though we find the clue that instant apps are not robust to the hijacking from the Android source code, we still test instant app hijacking on all 36 real-world instant apps out of 200,000 apps from Google Play. The instant app hijacking can attack all these instant apps. Note that instant apps can only be published with Google Play rather than other app stores as they require Google Play for installing the victim instant apps . Therefore, we do not consider the apps from Tencent Myapp market for this attack.
+
+# Answer to RQ4:
+All instant apps are vulnerable to instant app hijacking attack.
+
+# Implications.
+
+This defect implies that Android must carefully select the instant app to respond to a URL if there are more than one instant apps can respond to a link. First, if a link is associated with an instant app, only the instant app that passes the app link verification can respond to the link (in our attack, our malicious instant app claims the app via a deep link rather than an app link. Therefore, Google does not force our malicious instant app to verify the link claimed). Second, Android has to ask users to select an instant app to handle if there are multiple instant apps can respond to the URL. Note that, if two instant apps from the same developer/company, it is possible that they can process the same link. Therefore, asking users for their preferences is the solution for this case. Moreover, allowing multiple instant apps for the same URL is an anti-pattern in design.
+
+# 6 RQ5: What is the accuracy of MIAFinder?
+# Motivation.
+
+In this paper, we develop MIAFinder to find apps that are vulnerable to proposed attacks. In this RQ, we evaluate the accuracy of the MIAFinder.
+
+# Methodology.
+
+To evaluate the accuracy of MIAFinder, we randomly select 800 apps from Google Play and then manually checked whether they can be attacked successfully in order to build a benchmark for evaluating our tool. Next, we run the MIAFinder to find vulnerable apps. Note that, for an app, if it can be attacked by at least one attack (out of three proposed attacks), we consider it as vulnerable.
+
+# Results.
+
+As a result, our tool reports 276 vulnerable apps and all of them can be exploited. Therefore, the precision of our tool is 100%.
+
+The recall of our tool is 87%. There are 2 main reasons why our tool misses some vulnerable apps:
+- Since the current version of our tool cannot handle native code, it may miss vulnerable apps that define and handle the UI elements through native code. For example, if a vulnerable game app is based on Unity, the UI elements can be defined and handled through C code, and thus our tool misses it;
+- Since our tool currently focuses on the default Android UI framework, it misses vulnerable apps that use third-party UI frameworks.
+
+# Answer to RQ5:
+Based on the experiments of 800 apps, we find that the precision of our tool is 100% and the recall is 87%.
+
+# 7 COUNTERMEASURE
+# Preventing Link Hijacking with STS.
+
+To prevent link hijacking with STS attack, we propose 4 solutions.
+
+- Solution 1. If a developer plans to use TextView (a.k.a, label) in an app, (s)he can use the setTextSelectable(false) to prevent users from selecting any text in a label;
+- Solution 2. If a developer plans to use EditText (users can edit text in EditText), (s)he can use setMovementMethod(null) to prevent users from selecting any text in an EditText.
+
+- Solution 3. Developers can override the isSuggestionsEnabled() method in default TextView or EditText. The isSuggestionsEnabled() returns a Boolean value to indicate whether or not suggestions are enabled on this TextView or EditText.
+
+- Solution 4. Another solution is using the setCustomSelectionActionModeCallback API. This API allows developers to customize the popup menu if a piece of text is selected.
+
+All these approaches aim at preventing users from selecting any text in UIs or customizing the popup menu for STS. Once users cannot select any text in UIs, the STS cannot work.
+
+# Preventing Link Hijacking without STS.
+
+To address this, we propose a novel API named verifyDomainPackage. As shown in Fig. 11, Android can invoke verifyDomainPackage, whose arguments are the received an Intent and an Activity. The Intent contains the target URL to open. The Activity represents a candidate component to respond to the Intent. First, it retrieves the package name of the candidate app (e.g., the MIA) that can respond to the Intent (Fig. 11: 1). Second, it extracts the candidate app’s signature stored in Android (Fig. 11: 1-1). Third, it downloads the DAL for the URL given in the Intent (Fig. 11: 1-1). Last, it exams whether the candidate app can respond to the URL by checking the package name, signature with the DAL downloaded (Fig. 11: 1). The verifyDomainPackage can be used to check whether there is an MIA that intends to hijack URLs.
+
+With the verifyDomainPackage API, Android can check whether a candidate app (i.e., Activity) can be used to respond to a URL.
+
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+It worth mentioning that using verifyDomainPackage can prevent the link hijacking attack with STS.
+
+# Preventing Instant App Hijacking Attack
+To prevent the instant app hijacking attack, Android can scan all instant apps installed. If Android finds an instant app that claims a URL that is not owned by the instant app, Android must inform app users about this case. To check whether an instant app owns all URLs claimed, Android can use the verifyDomainPackage API. If an instant app claims a URL that it does not own, the instant app can be a malicious one. Android can notify users of the potential risk of this MIA.
+
+To wrap up, the novel API verifyDomainPackage proposed can be leveraged to prevent all three attacks aforementioned. We also build our patch and verify it with Android 10.
+
+# 8 RELATED WORK
+# Deep Links
+Ma et al. ’s work Aladdin helps developers automatically release deep links for an app. Aladdin first computes the paths to reach each Activity and Fragment in a given app. Then, it constructs a proxy Activity to bind all deep links to the proxy Activity. The proxy Activity is also in charge of managing all deep links. Hu et al.  proposed a framework called Elix, which aims at extracting all valid deep links that are defined in an app. Elix extracts app links with a path-selective taint analysis. It leverages a taint analysis that starts from the Activity.getIntent() for taint analysis and prunes infeasible paths with the symbolic execution. Liu et al.  conduct an empirical measurement on various mobile deep links across apps and websites to explore the incorrect configurations for deep links. Different from all these works, our work aims at revealing the defects in app links rather than leveraging (or constructing) app links (or deep links).
+
+# Instant App
+The only work that related to instant apps is proposed by Aonzo et al. . In , Aonzo et al. reported the design defects in password manager apps and mentioned the misuse of accessibility service can result in security problems. Even though work  leverages instant app as an attack vector, our work has different research targets and unique contributions:  aims at using instant apps for phishing rather than uncovering defects in the app link schemes. Whereas, our work targets at exploring the defects rooted in Android, including link verification, access control, and priority ranking.
+
+# App Browser Security
+Some works aim at attacking mobile browsers and in-app browsers . Chin et al.  reveal two WebView vulnerabilities, including excess authorization and file-based cross-zone scripting. Tuncay et al.  present that Draco, which enables developers to specify a set of policies to only allow desired access. Wang et al.  reveal the cross-origin risk in Android and iOS browsers and in-app browser apps. With the cross-origin attack, malicious apps can obtain a mobile user’s authentication credentials and record users’ behavior. Different from all these works, our work targets at measuring the vulnerability of app links in terms of using an instant app as an attack vector.

@@ -1,0 +1,52 @@
+# 2019 19th International Working Conference on Source Code Analysis and Manipulation (SCAM)
+# Permission Issues in Open-source Android Apps: An Exploratory Study
+Gian Luca Scoccia*, Anthony Peruma†, Virginia Pujols†, Ivano Malavolta‡, Daniel E. Krutz†
+*Gran Sasso Science Institute, L’Aquila, Italy
+gianluca.scoccia@gssi.it
+†Rochester Institute of Technology, Rochester, NY, USA
+{axp6201, vp2532, dxkvse}@rit.edu
+‡Vrije University, Amsterdam, The Netherlands
+i.malavolta@vu.nl
+# Abstract
+Permissions are one of the most fundamental components for protecting an Android user’s privacy and security. Unfortunately, developers frequently misuse permissions by requiring too many or too few permissions, or by not adhering to permission best practices. These permission-related issues can negatively impact users in a variety of ways, ranging from creating a poor user experience to severe privacy and security implications. To advance the understanding permission-related issues during the app’s development process, we conducted an empirical study of 574 GitHub repositories of open-source Android apps. We analyzed the occurrences of four types of permission-related issues across the lifetime of the apps.
+
+Our findings reveal that (i) permission-related issues are a frequent phenomenon in Android apps, (ii) the majority of issues are fixed within a few days after their introduction, (iii) permission-related issues can frequently linger inside an app for an extended period of time, which can be as high as several years, before being fixed, and (iv) both project newcomers and regular contributors exhibit the same behaviour in terms of number of introduced and fixed permission-related issues per commit.
+
+# Index Terms
+Mobile Permissions, Android, Mobile Software Engineering, Software Repository Mining
+# I. INTRODUCTION
+The apps on our mobile devices enable us to do everything from trade stocks to record vital health information. Although these apps provide immense amounts of power, they also present an unparalleled opportunity for security and privacy threats. Due to the magnitude of these threats, it is imperative that developers create apps that sufficiently protect our privacy and security.
+
+The sensitive data and functionality used by an app is protected through permissions. Android apps use a permission-based system where an app requires specific permissions to carry out specific operations . A developer must explicitly state the permissions an app may request, and the end-user can accept a subset of requested permissions that are deemed dangerous . Example dangerous permissions include the ability to read SMS messages, record audio, and access the user’s location. It is crucial for developers to make proper permission-related decisions since improperly used permissions (under and over-permissions) carry a wide range of ramifications. These include increased app susceptibility to malware and unwanted data leakage to ad libraries , , . Additionally, not adhering to permissions best practices may have a wide range of implications. These may range from hurting the user experience, to creating functional defects and privacy and security-related issues , , ,.
+
+Unfortunately, developers do not always correctly use permissions for numerous reasons, including a lack of permissions-related knowledge  and even confusion over the permission’s name . There is substantial work examining the detrimental effects of permissions misuse , ,  and tools to assist in the identification of a variety of permission-related issues (PRIs) , . However, none of the existing works examine when, why and who is making permissions-related mistakes when developing apps.
+
+In this paper, we provide a better understanding of how developers are creating and fixing permissions-related issues and the types of mistakes developers were making. To this aim, we analyzed the GitHub repositories of Android 574 apps. Using custom-built software along with the existing permission analysis tools M-Perm  and P-Lint , we identified a variety of PRIs ranging from not correctly adhering to permissions best practices to apps requesting too many permissions. This empirical information provides us with a history of the app’s development life cycle including (i) When permissions and their related issues were introduced and fixed, (ii) who is making these decisions, (iii) file-change history that we could examine using permissions analysis tools, and (iv) all other commit information such as commit messages.
+
+Our results reveal that (i) PRIs are a frequent phenomenon in Android apps (~50% of examined apps exhibit at least one PRI, with over-permissions being the most prevalent), (ii) the majority of issues are fixed in a timespan of a few days after their introduction, (iii) in many cases, permission-related issues can linger inside an app for an extended period of time, that can be as high as several years, before being fixed, and (iv) in total regular contributors introduce and fix a larger number of PRIs along the lifetime of Android apps, but this phenomenon is due to the fact that regular contributors commit more code changes.
+
+To summarize, the main contributions of this study are:
+2470-6892/19/$31 ©2019 IEEE
+DOI 10/SCAM
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:27:22 UTC from IEEE Xplore. Restrictions apply.
+
+• a characterization of the frequency of PRIs and their decay time in the context of 574 open-source Android apps;
+• an objective assessment of whether PRIs are introduced or fixed differently depending on the status of the developer within the project;
+• the replication package of the study containing its results, raw data, and mining- and data analysis scripts.
+
+The target audience of this paper includes both Android researchers and developers. Researchers are provided an evidence-based understanding of the phenomenon of permission-related issues in Android apps. Additionally, Android developers may use our findings to better plan their development activities (e.g., planning refactoring sessions or assigning code reviews).
+
+# II. THE ANDROID PERMISSION MODEL
+Each Android app operates with a distinct Linux UID that is associated with a set of permissions. Services verify if the app’s UID is permitted to access the requested functionality. An objective of this process is to ensure that the app adheres to the principle of least privilege – granting the least amount of privilege that the app needs to properly function . For example, before an app may read SMS messages it must be granted the READ_SMS permission. To use the camera, the app would require the CAMERA permission. This is designed to limit the app from accessing unintended and non-user permitted functionality, and also to limit the effects that malware may have on a device . Some permissions are considered to be less risky and are referred to as normal permissions. However, other permissions carry significantly more potentially hazardous risks and are known as dangerous permissions . The AndroidManifest.xml file contains all permissions an app requests.
+
+Deciding on the permissions an app should request is considered to be one of the most sensitive activities undertaken during development due to the potential security and privacy risks , and possible negative effects on the user’s perception of the app , . Studies have found that developers frequently misuse permissions by either not adding enough permissions to support requested functionality, or by adding unnecessary permissions that are not needed for any functionality in the app , . Felt et al.  found that Android developers often mistakenly add unnecessary permissions in a counterproductive and futile attempt to make the app work correctly, or due to confusion over the permission name (i.e., they add it incorrectly believing its functionality is necessary for their app). Developers should also ensure that they are using permissions correctly from various best practice perspectives . Developers must also do their best to avoid permission smells  and user security fatigue . Unfortunately, there is no permission enforcement mechanism that prevents developers from posting apps with improper permissions to Google Play or other app stores.
+
+Example of permission-related issue. Listing 1 illustrates an example of PRI called Missing Check (MC) . When the method showAppointments() is called by the app (line 3), the app is requesting permission to read the user’s calendar (line 4). Beginning with Android 6, the call to requestPermissions() is necessary because users can revoke permissions at any time and developers cannot assume that the app currently has access to a specific permission, even if it previously had access to it . However, each time requestPermissions() is called, a standard Android dialog is shown to the user for requesting the needed permission, even for permissions already granted . Therefore, Android guidelines suggest that prior to running code that requires a specific permission, the method checkSelfPermission() should be called to determine if the user has already granted access to the needed permission . Not adhering to this guideline can lead to a degradation of the user experience since the user is overwhelmed with messages requesting already granted permissions ,.
+
+// Method for listing appointments saved in the user’s calendar
+void showAppointments(){
+ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALENDAR},
+PERMISSION_READ_CALENDAR);
+// other tasks using information in the user’s calendar
+}
+Listing 1: Apps should call CheckSelfPermission() to verify that it currently has access to the user’s calendar.

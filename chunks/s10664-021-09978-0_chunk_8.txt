@@ -1,0 +1,46 @@
+In this paper, we defined the concept of vulnerability-proneness of an app and investigated if different vulnerability warnings and vulnerability-proneness levels are observed in apps belonging to different Google Play’s categories (RQ 1). Moreover, we also explored the extent to which vulnerability-proneness of mobile apps can affect the overall app success, measured in terms of average app rating and number of app downloads (RQ2). Finally, we proposed to use app contextual information to predict the vulnerability-proneness level of an app (RQ3).
+
+The results of our study demonstrated that most of the considered apps exhibit at least one critical vulnerability warning. On a positive side, (i) apps in the Medical category, that usually handle very sensitive information, tend to be less prone to potentially critical vulnerabilities, while (ii) there is not the same attention on security warnings in apps belonging to other categories that also deal with sensitive data (e.g., Finance, Shopping, etc.). Our work also proved that, while no strong relations could be observed between the
+9 https://github.com/pxb1988/dex2jar
+10 https://www.charlesproxy.com/
+# Empir Software Eng (2021) 26: 78
+vulnerability-proneness of an app and its average rating, apps with a higher number of downloads tend to have higher vulnerability-proneness levels, but a lower vulnerability-proneness density. Finally, we also showed how an app’s contextual information can be used to predict, in the early stages, its vulnerability-proneness level.
+
+Our work can have important implications for app markets, developers and users. Indeed, on the one hand, the proposed classification could help users selecting apps that exhibit lower risk levels. On the other hand, the app markets could integrate approaches similar to ours, to provide timely and relevant information about security and privacy risks to users before installing an app. We believe that the usage of such mechanisms can stimulate developers (interested in promoting their apps) to apply the best security practices and carefully avoid known security flaws.
+
+As future work, we plan to study the vulnerability-proneness of apps developed for different platforms (e.g., iOS). In this context, it could be interesting to investigate if the same apps exhibit different vulnerability-proneness levels when considering different versions (e.g. Android vs. iOS). Moreover, further information from the app store (e.g. interactive elements, developer-related information, user review comments, etc.)  could be collected to improve the classification results. Very important, as future work, is also to empirically investigate the extent to which users are unaware of the level of vulnerability-proneness of apps as well as the extent to which our approach can actually help them understanding more about the potential risks of downloading or using an app. In this context, we plan to (i) leverage summarization  techniques to generate reports on the vulnerability-proneness levels of mobile apps, and (ii) use such reports to support users in making decisions on downloading (or using) specific apps. Moreover, we plan to explore the extent to which an app’s contextual information is useful to predict the presence or absence of specific security flaws.
+
+# Empir Software Eng (2021) 26: 78
+Felt AP, Wang HJ, Moshchuk A, Hanna S, Chin E (2011b) Permission re-delegation: Attacks and defenses. In: USENIX security symposium
+Gajrani J, Tripathi M, Laxmi V, Somani G, Zemmari A, Gaur MS (2020) Vulvet: Vetting of vulnerabilities in android apps to thwart exploitation. Digit Threats Res Practice 1(2):1–25
+Gao J, Li L, Kong P, Bissyand´e TF, Klein J (2019) Understanding the evolution of android app vulnerabilities. IEEE Trans Reliab:1–19. https://doi.org/10/TR
+Gartner (2015) Gartner Says More than 75 Percent of Mobile Applications will Fail Basic Security Tests Through 2015. https://tinyurl.com/uavh5nq. Online; accessed 20 January 2020
+Giger E, D’Ambros M, Pinzger M, Gall HC (2012) Method-level bug prediction. In: International Symposium on Empirical Software Engineering and Measurement, pp 171–180
+Gorla A, Tavecchia I, Gross F, Zeller A (2014) Checking app behavior against app descriptions. In: International Conference on Software Engineering, pp 1025–1035
+Grano G, Di Sorbo A, Mercaldo F, Visaggio CA, Canfora G, Panichella S (2017) Android apps and user feedback: a dataset for software evolution and quality improvement. In: Proceedings of the 2nd ACM SIGSOFT International Workshop on App Market Analytics, WAMA@ESEC/SIGSOFT FSE 2017, Paderborn, pp 8–11
+Grissom RJ, Kim JJ (2005) Effect sizes for research: A broad practical approach, 2nd edn. Lawrence Earlbaum Associates
+Guerrouj L, Azad S, Rigby PC (2015) The influence of app churn on app success and stackoverflow discussions. In: International Conference on Software Analysis, Evolution, and Reengineering, pp 321–330
+Harman M, Jia Y, Zhang Y (2012) App store mining and analysis: MSR for app stores. In: Working Conference of Mining Software Repositories, pp 108–111
+Hay R, Tripp O, Pistoia M (2015) Dynamic detection of inter-application communication vulnerabilities in android. In: International Symposium on Software Testing and Analysis, pp 118–128
+Holm S (1979) A simple sequentially rejective multiple test procedure. Scand J Stat 6(2):65–70
+Islam MR (2014) Numeric rating of apps on google play store by sentiment analysis on user reviews. In: International Conference on Electrical Engineering and Information & Communication Technology. IEEE, pp 1–4
+Jimenez M, Papadakis M, Bissyand´e TF, Klein J (2016) Profiling android vulnerabilities. In: International Conference on Software Quality, Reliability and Security, pp 222–229
+Johann T, Stanik C, B. AMA, Maalej W (2017) SAFE: A simple approach for feature extraction from app descriptions and app reviews. In: International Requirements Engineering Conference, pp 21–30
+Kallis R, Di Sorbo A, Canfora G, Panichella S (2019) Ticket tagger: Machine learning driven issue classification. In: 2019 IEEE International Conference on Software Maintenance and Evolution, pp 406–409
+Kantola D, Chin E, He W, Wagner DA (2012) Reducing attack surfaces for intra-application communication in android. In: Workshop on Security and Privacy in Smartphones and Mobile Devices, Co-located with CCS 2012, pp 69–80
+Kaur A, Kaur I (2014) Empirical evaluation of machine learning algorithms for fault prediction. Lect Notes Softw Eng 2(2):176
+Khalid H, Nagappan M, Hassan AE (2016) Examining the relationship between findbugs warnings and app ratings. IEEE Softw 33(4):34–39. https://doi.org/10/MS
+Kochhar PS, Thung F, Nagappan N, Zimmermann T, Lo D (2015) Understanding the test automation culture of app developers. In: 8th IEEE International Conference on Software Testing, Verification and Validation, ICST 2015, Graz, Austria, April 13-17, 2015, pp 1–10
+Kruskal WH, Wallis WA (1952) Use of ranks in one-criterion variance analysis. J Amer Stat Assocss 47(260):583–621
+Krutz DE, Munaiah N, Meneely A, Malachowsky SA (2016) Examining the relationship between security metrics and user ratings of mobile apps: a case study. In: Proceedings of the International Workshop on App Market Analytics, pp 8–14
+Li L, Bartel A, Bissyand´e TF, Klein J, Le Traon Y, Arzt S, Rasthofer S, Bodden E, Octeau D, McDaniel P (2015) Iccta: Detecting inter-component privacy leaks in android apps. In: IEEE International Conference on Software Engineering, vol 1, pp 280–291
+Lu L, Li Z, Wu Z, Lee W, Jiang G (2012) CHEX: statically vetting android apps for component hijacking vulnerabilities. In: the ACM Conference on Computer and Communications Security, pp 229–240
+Lyu Y, Gui J, Wan M, Halfond WGJ (2017) An empirical study of local database usage in android applications. In: 2017 IEEE International Conference on Software Maintenance and Evolution, ICSME 2017, Shanghai, China, September 17-22, 2017, pp 444–455
+# Empir Software Eng (2021) 26: 78
+# Empir Software Eng (2021) 26: 78
+Page 31 of 31  78
+# Publisher’s note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+# Author Information
+Andrea Di Sorbo is a research fellow at the University of Sannio, Italy. He received the PhD degree in information technology from the University of Sannio, in 2018. His research interests include software maintenance and evolution, mining software repositories, empirical software engineering, text analysis and software security and privacy. He authored (or co-authored) several papers appeared in flagship international conferences (ICSE, FSE, ASE, ICSME) and journals (TSE, JSS, IST, JSEP). He serves and has served as review editor and guest associate editor for Frontiers in Big Data, guest editor for the Information and Software Technology journal, and reviewer for several journals in the field of software engineering, such as Transactions on Software Engineering, edited by IEEE, Transactions on Software Engineering and Methodology, edited by ACM, and the Empirical Software Engineering journal edited by Springer. He is also a program committee member of some international conferences (ARES, MOBILESoft, SEAA).

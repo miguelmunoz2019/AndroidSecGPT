@@ -1,0 +1,114 @@
+As mentioned above, one of the Top-3 risks identified by OWASP is insecure communication due to poor configuration of an SSL/TLS channel. However, SSL/TLS is not a vulnerability-free protocol . SSL/TLS attacks may come from MiTM Attacks, against the handshake or from the SSL implementation. Moreover, it is demonstrated that most of the Android applications use the default SSL implementations provided by Android . Similarly, most of the applications are susceptible to be attacked by intercepting communications by MiTM attacks. Thus, SSL/TLS implementations can be broken by MiTM attacks . When the client is in a public network, it is possible for an attacker to be in the middle of the communication and impersonate the server. MiTM attacks occur due to the lack of validation or an incorrect validation in the protocol.
+
+In SSL/TLS, certificates are verified to check whether they are signed by proper CA. With a MiTM attack using a spoofed certificate, SSL/TLS may be mislead (see Figure 1). If this is done with a valid certificate, the client’s system checks the certificate and considers it valid. Then, the attacker may capture all the plaintext data that are exchanged between client and server. The certificate is trusted, even though its origin is unknown. Once the certificates are accepted and the handshake is finished, the SSL/TLS communication is established as secure. Meanwhile, a third party is bypassing the channel intercepting and deciphering all the packets in the communication.
+
+# Man-in-the-Middle
+Spoofed cert.
+
+SERVER
+SSL/TLS channel
+USER
+The pinning technique or HTTP Public Key Pinning (HPKP)  has emerged in the last years as a security control to fortify HTTPS-based pinnings against MiTM attacks. The SSL pinning techniques have been widely used as a complement to enforce the security of SSL/TLS communications for mobile applications.
+
+# Entropy 2019, 21, 1136
+# 5 of 19
+# CLIENT
+# SERVER
+1. client hello
+2. server hello
+3. Calculate hashing
+4. Match hashing
+5. Pinning or not
+Match
+Not match
+The second stage is called pinning. The mobile device follows a verification process where the certificate is received from the server. When the client receives a message from the server, it checks its authenticity using the server’s public key, which is stored in the client. The received public key has to match the one that is stored. If so, the client opens a negotiation or sends packages signed with that public key. When the client does not coincide, it cuts off the communication. Thus, it does not send anything to the server.
+
+SSL pinning techniques has been proved as good countermeasures against MiTM attacks [27 – 29]. Most of the works in the literature focused on improving SSL/TLS implementations. The utilization of SSL pinning techniques against weak and default implementations of secure communications and MiTM attacks is usual. However, SSL pinning techniques are not invulnerable since it can be circumvented.
+
+# 2. Bypassing SSL Pinning
+SSL pinning is also vulnerable when it is not well implemented. Although bypassing techniques are quite well-known in the professional world, there are not many studies about bypassing SSL pinning. Andzakovic used reverse engineering to bypass SSL pinning on Android, but the technique was applied to an only app . Sierra and Ramirez  also used different techniques to bypass certificate pinning, but only achieved it with dynamic library manipulation. D’Orazio et Choo defined five methods for SSL circumventing on iOS, and their study is the starting point for ours . Finally, Anthi and Theodorakopoulos used some techniques to bypass SSL validations in iOS and Android, but could only bypass SSL in iOS apps . Moreover, several methods can be used to bypassing SSL pinning:
+- Dynamic analysis of code. The code that is being executed in memory is extracted and its behaviour is low-level analysed, evaluating registers, the data that are loaded in memory and functions, among others. An example of a dynamic analysis tool is SSL Unpinning by Xposed framework. This tool takes advantage of the fact that the code that implements SSL Pinning is known. In general, pinning developers use a well-known or common template. In this case, an attacker may guess this and use SSL Unpinning to bypass SSL Pinning in the pinning stage. In addition, tools such as Frida or Cycript enable the modification of some functions of pinning at runtime.
+
+- Static analysis of code. It consists in extracting and analysing the app code when not at runtime. As we explain in Section 3, if pinning does not implement anti-tampering or exceptions for the modification of pinning, SSL Pinning functions can be replaced to bypass the pinning process.
+
+# 3. Security Controls to Protect against Bypassing SSL Pinning
+Certain countermeasures, such as security controls, may help an app to avoid the bypassing of the SSL pinning process. With four security measures or controls, apps can be fortified against SSL bypass. Here, we present some good/best practices or guidelines as a set of several steps to implement an adequate security solution to secure SSL Pinning. This way, bypassing SSL pinning is avoided. Although OWASP proposes to use a set of controls to ensure channels of communications, our guideline demonstrates and ensures that, with only three steps, mobile pinnings can be fortified against bypassing SSL pinning, and no more controls need to be checked.
+
+The proposed process (In BPMN, the +−symbol indicates parallel execution of tasks) is shown in Figure 3, which presents the measures that have to be taken to protect an app from SSL pinning bypassing. In the implementation phase of the app, root detection, debug detection and anti-tampering measures must be implemented. Finally, the code must also be obfuscated. All these security measures should be applied to guarantee that SSL pinning is not bypassed. They are described in detail below.
+
+1. Root Detection is a security control consisting of checking the blocks of the execution code that turn the pinning into the supervisor mode. Thus, root detection helps prevent the execution of code in supervisor mode. This control improves the effectiveness of reverse engineering and anti-tampering processes.
+
+There are several ways to detect root  but the most common one is checking some files (i.e., binaries and apk files) that are present on a rooted device, such as /system/app/Superuser.apk or /system/bin/su. A piece of the code used to check the root execution on the pinning is given in Code 3.
+
+Code 3: Example of code to detect root
+1    public static boolean checkRoot(){
+2        for(String pathDir : System.getenv("PATH").split(":")){
+3             if(new File(pathDir, "su").exists()) {
+4                 return true;
+5             }
+6        }
+7        return false;
+8    }
+9
+10    public static boolean checkRunningProcesses() {
+11        boolean returnValue = false;
+12        // Get currently running pinning processes
+# Entropy 2019, 21, 1136
+# 7 of 19
+13         List&lt;RunningServiceInfo&gt; list = manager.getRunningServices(300);
+14         if(list != null){
+15              String tempName;
+16              for(int i=0;i&lt;list.size();++i){
+17                   tempName = list.get(i).process;
+18                   if(tempName.contains(&quot;supersu&quot;) || tempName.contains(&quot;superuser&quot;)){
+19                        returnValue = true;
+20                   }
+21              }
+22          }
+23         return returnValue;
+24    }
+# 2.
+
+Debug Detection is used to prevent the app code from being controlled. If a device in debug mode is detected, the execution of the pinning is stopped. This measure stops an attacker from seeing the step-by-step behaviour of our code. Together with the obfuscation of code, described below, it allows hiding the internal functioning of the pinning. Functions such as the one we provide in Code 3 are used for Android applications. This piece of code is an adaptation of the guidelines OWASP for debug detection, although there are other ways to detect the debug mode. Indeed, it is always possible to compile an app in debug mode (i.e., changing the Android Manifest file and modifying the corresponding label). In this case, the entire device is not in debug mode, but the app. Code 3 detects debugging mode with different functions: finding the Debugger flag, detecting debugger, detecting if execution has stopped because of debugging and checking running processes.
+
+# Code 3: Example of code to avoid debugging mode.
+
+1     public static boolean isDebuggable(Context context){
+2
+3         return ((context.getApplicationContext().getApplicationInfo().flags &
+4         ApplicationInfo.FLAG_DEBUGGABLE) != 0);
+5    }
+6
+7    public static boolean detectDebugger() {
+8              return Debug.isDebuggerConnected();
+9    }
+10
+11    static boolean detect_threadCpuTimeNanos(){
+12         long start = Debug.threadCpuTimeNanos();
+13         for(int i=0; i&lt;1000000; ++i)
+14              continue;
+15              long stop = Debug.threadCpuTimeNanos();
+16              if(stop - start &lt; 10000000) {
+17                  return false;
+18              }
+19              else {
+20                   return true;
+21         }
+22    }
+23
+24    public boolean checkRunningProcesses() {
+25         boolean returnValue = false;
+26
+27         try {
+28              Process process = Runtime.getRuntime().exec(&quot;ps&quot;);
+29              BufferedReader reader = new BufferedReader(new
+30              InputStreamReader(process.getInputStream()));
+31              int read;
+32              char[] buffer = new char;
+33              StringBuffer output = new StringBuffer();
+34              while ((read = reader.read(buffer)) &gt; 0) {
+35                   output.append(buffer, 0, read);
+36              }
+37              reader.close();
+38
+39              // Waits for the command to finish.

@@ -1,0 +1,68 @@
+Within each group, GLACIATE compares enriched call graphs mutually, and computes similarity scores by applying pairwise comparison . Two enriched call graphs are deemed to be similar only if their flow sequences are similar. To check for this similarity, GLACIATE proceeds in the following steps:
+1. GLACIATE constructs a pairwise comparison matrix to find the highest similarity score between two enriched call graphs. The flow sequences F S of an enriched call graph ECGi are listed on top row of the pairwise comparison matrix, and the flow sequences F S′ of another enriched call graph ECGj are listed on the left hand column of the pairwise comparison matrix.
+
+2. GLACIATE compares flow sequences of two enriched call graphs by extracting the longest common substring (LCS)  and fills the corresponding blank matrix cell with the LCS length L of two flow sequences.
+
+3. From each column, GLACIATE extracts the cell with the highest value Lmax. The column and row of each cell should be unique. If two cells from the same row are picked, GLACIATE then selects the next highest value Lnext in each column and computes Lmax + Lnext interlaced. GLACIATE chooses the pair (Lmax, Lnext) with the highest sum value.
+
+4. Finally, ∑ Lmax GLACIATE computes the similarity score as SSim(ECGi, ECGj) =.
+
+# Group Clustering
+Given the similarity scores, GLACIATE performs agglomerative hierarchical clustering , which works by measuring pairwise distances between data points and grouping the data points one by one on the basis of selecting nearest neighbours. GLACIATE uses the ECGs as a set of data points and then applies the following steps to cluster them. We use the reciprocal of the similarity score as the distance between two ECGs.
+
+1. Given the ECGs, GLACIATE first labels each ECG as a single cluster C(ECG).
+
+2. For two enriched call graphs ECG1 and ECG2, GLACIATE uses the reciprocal of the similarity score to denote the distance between them as dist(1, 2).
+
+3. Next, GLACIATE finds the closest pair of clusters C(ECG)m and C(ECG)n from those single clusters, according to dist(m, n) = distmin(i, j), where the minimum is over all pairs of clusters in the current clustering.
+
+4. GLACIATE merges clusters C(ECG)m and C(ECG)n to form a new cluster, and repeats from Step 2 until all the data points are merged into a single cluster.
+
+5. GLACIATE finally picks a distance threshold Tdist to cut the single cluster into several different clusters, each of which is a learning cluster, used to generate rule templates.
+
+# Finding Flaws from Password Authentication Code in Android Apps
+# 3 Detection Rules Mining
+GLACIATE learns a rule template from each learning cluster. A rule template consists of a set of indicator instructions, which specifies methods that are invoked by all enriched call graphs, and a rule sequence, which specifies a subsequence of vectors that is executed by all enriched call graphs.
+
+To create a rule template from a learning cluster, GLACIATE executes an iterative pattern mining which captures higher-order features from flow sequences. A vector in a flow sequence, corresponding to a method invocation and a data flow, can be treated as a feature. We apply an algorithm to mine closed unique iterative patterns , which can capture all frequent iterative patterns without any loss of information. In each learning cluster, GLACIATE compares enriched call graphs and proceeds in the following steps:
+1. GLACIATE observes the frequent vectors appeared in all enriched call graphs and creates a set of indicator instructions. We manually selected nine indicator instructions from the document provided by Android5, which are listed in Table 1.
+
+5 Android Doc: https://developer.android.com/training/articles/security-ssl#java.
+
+# 2. Starting from a frequent vector, GLACIATE creates a rule sequence.
+
+GLACIATE searches for the following vector that appears in every enriched call graph, and if found, includes it in the rule sequence. The rule sequence is created successfully only if its length is longer than a threshold minrule. Step (2) is executed recursively until the rule sequence is closed (i.e., does not grow).
+
+# 3 Flaws Detection
+GLACIATE detects authentication flaws by selecting the most suitable template in two steps as follows. These two steps are iterated until no further vulnerable code segments are detected.
+
+# Authentication Identification.
+
+To detect whether there is any implemented password authentication protocols, GLACIATE checks for matches with the sets of indicator instructions. It compares flow sequences with each set of indicator instructions and computes how many indicator instructions in the set match. However, “noise” or unrelated vectors are present among the indicator instructions. The “noise” can correspond to unrelated method invocations, such as toString(), &lt;init&gt;, etc. In view of this, we decide that a flow sequence matches a set of indicator instructions if at least 80% of the indicator instructions are matched.
+
+# Rules Matching.
+
+There are likely to be multiple rule templates which match an enriched call graph. Instead of analyzing all the flow sequences of an enriched call graph, GLACIATE applies program slicing  to compare flow sequences with the corresponding matched rule templates one by one and in the following three steps.
+
+1. GLACIATE first identifies where the indicator instructions are located.
+
+2. Beginning with each indicator instruction, GLACIATE compares the vectors in the flow sequence F S with the vectors in the rule sequence R S by performing forward program slicing. If sequences in F S can be matched with sequences in R S, this enriched call graph will be labeled the same as R S, that is, secure, flaw 1, flaw 2, flaw 3, or flaw 4. Noting that F S may include some redundant vectors (i.e., redundant method invocations), F S and R S are matched if R S is a subsequence of F S.
+
+3. GLACIATE proceeds to the next detection template which matched, and executes Step (2) until all matched rule templates have been analyzed.
+
+# 4 Evaluation
+In this section, we report the results of two experiments. The first experiment assesses the performance of GLACIATE and compares it with MalloDroid  and
+# Finding Flaws from Password Authentication Code in Android Apps
+SMV-Hunter , state-of-the-art tools for identifying flaws in the implementation of SSL/TLS validation in Android apps. MalloDroid is a semi-automated detection tool, which requires manually-defined templates. SMV-Hunter is an automatic detection tool that requires the manually generated inputs are accurate enough to trigger vulnerabilities accurately. Differently, GLACIATE is designed to detect violations in authentication code automatically, and as far as we are aware, there are no other tools that can learn rules and detect authentication flaws in this way. The second experiment demonstrates how GLACIATE automatically analyzes a large collection of Android apps to gain further insights on the prevalence of authentication implementation flaws in these apps.
+
+# 4 Assessment of GLACIATE
+Dataset. We randomly collected 1,200 free apps from Google Play. In order to ensure that our dataset has a wide coverage and does not have a bias towards any particular type of app, we included apps from six categories: Communication, Dating, Finance, Health & Fitness, Shopping, and Social Networking, and 200 apps from each category.
+
+Due to the lack of an open source labeled dataset of apps with identified authentication flaws, we created our own. As most implementations of password authentication protocols follow the same structure, we believed that the structures are generalizable enough for our purpose.
+
+For creating this ground-truth dataset, we asked a team of annotators (1 PhD student and 2 postdoctoral research fellows), all with more than 7 years of programming experience in Java, to check whether implementations of password authentication protocols in apps followed the rules that we created. We first required team members to label apps independently. Then all members went through the labels together and discussed any apps that were labeled differently. The team had to come to an agreement before an app could be included in the dataset. To evaluate whether the agreement was good enough, we computed the Fleiss’s Kappa score . The kappa score of the agreement is 0, which means there was almost perfect agreement. Ultimately this procedure found a total of 1,205 implementations of password authentication protocols in 742 Android apps (since some apps implement multiple protocols), and 1,087 authentication flaws were identified in 695 apps (Flaw 1: 284, Flaw 2: 736, Flaw 3: 67).
+
+# Experiment Design
+We used 10-fold cross validation  to evaluate the effectiveness of GLACIATE. Furthermore, we compare GLACIATE with MalloDroid  and SMV-Hunter . While detecting authentication flaws, we set Tdist = 1 to ensure that enriched call graphs in each cluster would be highly similar to each other, and minrule = 2.
+
+To assess the performance of GLACIATE, we generated an evaluation matrix of the precision, recall, and F1 metrics. Precision is for measuring how accurate our tool performs, recall reflects how many vulnerabilities are actually detected, and F1 is used to balance precision and recall.

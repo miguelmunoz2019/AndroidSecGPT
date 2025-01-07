@@ -1,0 +1,62 @@
+32 http://www.sonarqube.org
+https://code.google.com/p/androguard
+# Risk Levels
+# Calculation
+# New APKs
+# Java
+# Static Code Metrics
+# Applying Machine Learning
+# Model Building
+# Feature Standardization
+# Algorithm
+# Predicting Model
+# Solving Class Imbalance Problem
+# Android Code Smells
+# Risk levels
+# TABLE II
+# ANDROID CODE SMELLS
+# Androrisk
+# Calculating Risk Scores
+# APK Analysis
+Check ZIP Files, Check Shell Scripts, Check DEX Files, Check XML Files
+# APKs with Risk Scores after Manual Checks
+# Calculating Risk Levels with K-means Clustering
+# APKs with Low Risk
+# APKs with Medium Risk
+# APKs with High Risk
+including ZIP files, APK files, DEX files, XML files, and so on. Androrisk is one of the Androguard modules, which is a widely-used risk assessment tool , . It has two risk assessment modules. These two modules are used to analyze APK files and XML files, respectively. After we obtained the analysis result of each module, we manually checked the result and modified the code of the Androrisk to get a relatively fair risky score.
+
+For the analysis of APK files, Androrisk calculates the risk score based on the presence of files including ZIP files, shell scripts, and DEX files. Within Androrisk, these files are believed to be easy to be exploited by hackers. However, the presence of these files does not mean an APK is definitely risky. If an APK itself has a pre-coded checking mechanism in handling potential risks of these files, then the APK could also be free of security threats. Hence, to avoid possible false positive warnings from Androrisk, we manually checked each APK to see whether they have corresponding checks. Specifically, for ZIP files, we mainly checked whether an APK checked if the ZIP file names have a special string.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:27:06 UTC from IEEE Xplore. Restrictions apply.
+
+like “../” (“../” may cause the decompressed files to overwrite files in other directories, eventually leading to arbitrary code execution). For shell scripts, we mainly checked whether an APK conducted checks on external parameters passed to shell scripts. For DEX files, we mainly checked when an APK tried to load a DEX file, whether this APK checked the integrity (through CRC32 or hash code) of this DEX file. Only those APKs which lack necessary checks in our study are considered as risky.
+
+For the analysis of XML files, Androrisk assigns a weight to each permission based on its sensitivity and risk (i.e., access to the Internet, manipulate SMS or manipulate your location). However, it is unreliable to only analyze sensitive permissions of applications to evaluate the security of applications, as many sensitive permissions are used by many benign applications. To reduce false-positive errors, we manually checked Androrisk’s analysis of permissions. More specifically, we manually checked whether there is a difference between the application description and its permissions, and took unnecessary permission as a risk.
+
+# 2) Calculating Risk Levels:
+After we obtained risk scores of individual applications in Section II-B1, we further discretized these continuous numeric values to get their risk levels as their final class labels. In order to discretize the continuous risk scores, we apply K-means clustering  on risk scores of Android applications. The input to the k-means clustering includes the number of clusters k and n data objects. In our study, the risk scores of the 3,680 Android applications are used as the data to create the clusters. The number of clusters k is determined by using the Elbow method . Elbow would run k-means clustering on the dataset for a range of values for k. For each k, Elbow would calculate the sum of squared errors (SSE) of prediction results. SSE is the clustering error of all data points. The lower SSE is, the better the clustering quality is. The way to compute SSE is as follows:
+K
+SSE = ∑∑ |p − m|²
+i
+i=1 p∈Ci
+Ci represents the ith cluster; p is one sample point in Ci; mi is the centroid of Ci (the mean value of all samples in Ci). When k is smaller than the actual number of clusters, increasing k would greatly increase the degree of aggregation of each cluster, and further largely decrease the whole SSE. While k reaches the number of real clusters, the increment of the degree of aggregation obtained by increasing k will rapidly become smaller; the decline of SSE will also become slower and tend to be flat as k continues to increase. That is, the relationship between SSE and k is the shape of an elbow, and the elbow corresponds to the k value is the actual number of clusters of a dataset.
+
+# C. Model Building
+After we get the original features (i.e., Java code metrics and Android code smells) and class labels (security risk levels) of individual instances (Android applications), we can theoretically build a machine learning model on them. However, given that the values of extracted features in our study are quite different in their scales, and there may exist a multicollinearity problem among those features, we decide to do some preprocessing on those features first, to avoid the relevant negative effect on model building. Besides, we also observe that our dataset is quite imbalanced, i.e., the numbers of instances of different classes are quite different, such an imbalanced-classes problem should also be resolved during model building as it would greatly affect the performance of a machine learning model . After the above steps, we could then apply typical machine learning algorithms to build prediction models. Below are the details.
+
+# 1) Feature Standardization:
+In our study, the numerical values of our instance features (i.e., Java code metrics and Android code smells) are quite different in their range scales. For example, some Android code smells metrics are within the range of 0 to 10, while code line metrics are as large as several thousand. Without handling the scale problem, the predicted results might be dominated by some features with large values; and it would also affect the rational comparison of individual features and the training speed. To overcome the scale problem, we decided to standardize features during model building. There are usually two ways to standardize features. One is called Min-max standardization, which limits all features to a scale of 0 to 1. Another one is called z-score standardization. It is based on the mean and standard deviation of the original features for data standardization. In this paper, we decided to adopt the z-score standardization way. By applying z-score standardization, the standard deviation of features of each dimension would be 1 and the mean value would be 0. This could help us avoid the problem of predicted results being dominated by some features with large value ranges.
+
+# 2) Metric Independence and Dimension Reduction:
+Generally speaking, it is not uncommon that some instance features may correlate with some other features (so does our case). For example, Android application with a larger number of lines of code tends to have a higher complexity. A prediction model that does not fully deal with the multicollinearity problem among features may increase the variability of dependent variables and thus reduce its performance . In this paper, we used PCA (Principal Component Analysis)  to solve the multicollinearity problem. The features generated from PCA are not related to each other. With PCA, we could not only reduce the feature dimension but also achieve competitive prediction performance.
+
+# 3) Imbalanced classes:
+In our study, the numbers of instances of risk level classes are imbalanced. Learning algorithms that do not take account of class imbalance are often overwhelmed by the majority class and ignore the minority class. For example, a learning algorithm that minimizes error rates may classify all examples into the majority class. In this way, all examples of minority classes will be misclassified. In order to obtain a well-performed prediction model, the class imbalance problem should be carefully handled.
+
+33
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:27:06 UTC from IEEE Xplore. Restrictions apply.
+
+# III. EXPERIMENT
+# A. Dataset Preparing
+Our experimental projects are crawled from GitHub4. Specifically, we first searched a list of projects from GitHub through keyword "Android application" as candidate projects. Then from those candidate projects, we took those which are developed mainly in Java as our experimental projects. 3,680 Android applications are used in our experiments. These applications are from various domains and are of different sizes. For each Android application, we then used the tool SonarQube to collect Java code metrics and the tool aDoctor to collect Android code smells, respectively.

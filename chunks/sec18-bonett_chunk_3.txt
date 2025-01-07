@@ -1,0 +1,64 @@
+- G3 Minimize manual-effort during analysis. While μSE is certainly more feasible than manual analysis, we intend to significantly reduce the manual effort spent on evaluating undetected mutants. Thus, our goal is to dynamically filter inconsequential mutants, as well as to develop a systematic methodology for resolving undetected mutants to flaws.
+
+1266 27th USENIX Security Symposium USENIX Association
+# One-time cost
+# GENERIC SECURITY GOAL-BASED SECURITY OPERATOR VARIATIONS
+# Step 1: Specification
+# Step 2: Mutation
+# Step 3: Analysis
+Security operator(s) mutate apps test security tool(s) on apps
+Filter non-executing mutants
+# A] FlowDroid (expressing data leaks)
+1. Export location using any network API
+2. Export IMEI using any network API
+3. Export data via a network connection
+# B] MalloDroid (detecting vulnerable SSL use)
+1. Export any data using vulnerable TrustManager
+2. Export any data using vulnerable SocketFactory
+Android Security Flaw Software Patches
+# 4 Security Operators
+A security operator is a description of the unwanted behavior that the security tool being analyzed aims to detect. When designing security operators, we are faced with an important question: what do we want to express? Specifically, the operator might be too coarse or fine-grained; finding the correct granularity is the key.
+
+Note that tools sharing a security goal (e.g., FlowDroid, Argus , HornDroid  and BlueSeal  all detect data leaks) can be analyzed using the same security operators and mutation schemes, and hence the mutated apps, significantly reducing the overall cost of operating μSE (Goal G4). The rest of this section describes the design contributions of μSE. The precise implementation details can be found in Section 5.
+
+For instance, a security operator that reads information...
+
+# 1 Inject:
+String dataLeak## = java.util.Calendar.getInstance().getTimeZone().getDisplayName();
+android.util.Log.d("leak-##", dataLeak##);
+Listing 1: Security operator that injects a data leak from the Calendar API access to the device log.
+
+from a private source (e.g., IMEI, location) and exports it to a public sink (e.g., the device log, storage) would be appropriate to use for all the tools that claim to detect private data leaks (e.g., Argus , HornDroid , BlueSeal ). For instance, one of our implemented operators for evaluating tools that detect data leaks is as described in Listing 1. Moreover, security operators generalize to other security goals as well; a simple operator for evaluating tools that detect vulnerable SSL use (e.g., MalloDroid) could add a TrustManager with a vulnerable isServerTrusted method that returns true, which, when combined with our expressive mutation schemes (Section 4), would generate a diverse set of mutants.
+
+To derive security operators at the granularity of the security goal, we must examine the claims made by existing tools; i.e., security tools must certainly detect the unwanted behavior that they claim to detect, unless affected by some unsound design choice that hinders detection. In order to precisely identify what a tool considers as a security flaw, and claims to detect, we inspected the following sources:
+1. Research Papers: The tool’s research paper is often the primary source of information about what unwanted behavior a tool seeks to detect. We inspect the properties and variations of the unwanted behavior as described in the paper, as well as the examples provided, to formulate security operator specifications for injecting the unwanted behavior in an app. However, we do not create operators using the limitations and assumptions already documented in the paper or well-known in general (e.g., leaks in reflection and dynamically loaded code), as μSE seeks to find unknown assumptions.
+
+2. Open source tool documentation: Due to space limitations or tool evolution over time, research papers may not always have the most complete or up-to-date information considering what security flaws a tool can actually address. We used tool documentation available in online appendices and open source repositories to fill this knowledge gap.
+
+3. Testing toolkits: Manually-curated testing toolkits (e.g., DroidBench ) may be available, and may provide examples of baseline operators.
+
+# 4 Mutation Schemes
+To enable the security evaluation of static analysis tools, μSE must seed mutations within Android apps. We define the specific methods for choosing where to apply security operators to inject mutations within Android apps as the mutation scheme. The mutation scheme depends on a number of factors: (1) Android’s unique abstractions, (2) the intent to over-approximate reachability for coverage, and (3) the security goal of the tool being analyzed (i.e., similar to security operators). Note that while mutation schemes using the first two factors may be generally applied to any type of static analysis tool (e.g., SSL vulnerability and malware detectors), the third factor, as the description suggests, will only apply to a specific security goal, which in the light of this paper, is data leak detection.
+
+We describe each factor independently, as a mutation scheme, in the context of the following running example described previously in Section 2: Recall that FlowDroid , the target of our analysis in Section 2, detects data leaks in Android apps. Hence, FlowDroid loosely defines a data leak as a flow from a sensitive source of information to some sink that exports it. FlowDroid lists all of the sources and sinks within a configurable “SourcesAndSinks.txt” file in its tool documentation, from which it first selects a simple source java.util.Calendar.getTimeZone() and a simple sink android.util.Log.d(). We then design a data leak operator, as shown in Listing 1. Using this security operator, we implement the following three different mutation schemes.
+
+# 4 Leveraging Android Abstractions
+The Android platform and app model support numerous abstractions that pose challenges to static analysis. One commonly stated example is the absence of a Main method as an entry-point into the app, which compels static analysis tools to scan for the various entry points, and treat them all similarly to a traditional Main method.
+
+Based on our domain knowledge of Android and its security, we choose the following features as a starting point in a mutation scheme that models unique aspects of Android, and more importantly, tests the ability of analysis tools to detect unwanted behavior placed within these features (Goal G2):
+1. Activity and Fragment lifecycle: Android apps are organized into a number of activity components, which form the user interface (UI) of the app. The activity lifecycle is controlled via a set of callbacks, which are executed whenever an app is launched, paused, closed, started, or stopped . Fragments are also UI elements that possess similar callbacks, though they are often used in a manner secondary to activities. We design our mutation scheme to
+1268 27th USENIX Security Symposium USENIX Association
+# 1 final
+Button button = findViewById(R.id.button_id);
+button.setOnClickListener(new View.OnClickListener() {public void onClick(View v) {// Code here executes on main thread after user presses button}});
+# Listing 2: Dynamically created onClick callback
+place mutants within methods of fragments and activities where applicable, so as to test a tool’s ability to model the activity and fragment lifecycles.
+
+1. Callbacks: Since much of Android relies on callbacks triggered by events, these callbacks pose a significant challenge to traditional static analyses, as their code can be executed asynchronously in several different potential orders. We place mutants within these asynchronous callbacks to test the tools’ ability to soundly model the asynchronous nature of Android. For instance, consider the example in Listing 2, where the onClick() callback can execute at any point of time.
+
+2. Intent messages: Android apps communicate with one another and listen for system-level events using Intents, Intent Filters, and Broadcast Receivers . Specifically, Intent Filters and Broadcast Receivers form another major set of callbacks into the app. Moreover, Broadcast Receivers can be dynamically registered. Our mutation scheme not only places mutants in the statically registered callbacks such as those triggered by Intent Filters in the app’s Android Manifest, but also callbacks dynamically registered within the program, and even within other callbacks, i.e., recursively. For instance, we generate a dynamically registered broadcast receiver inside another dynamically registered broadcast receiver, and instantiate the security operator within the inner broadcast receiver (see Listing 3 in Appendix B for the code).
+
+3. XML resource files: Although Android apps are primarily written in Java, they also include resource files that establish callbacks. Such resource files also allow the developer to register for callbacks from an action on a UI object (e.g., the onClick event, for callbacks on a button being touched). As described previously, static analysis tools often list these callbacks on par with the Main function, i.e., as one of the many entry points into the app. We incorporate these resource files into our mutation scheme, i.e., mutate them to call our specific callback methods.
+
+# 4 Evaluating Reachability
+The objective behind this simple, but important, mutation scheme is to exercise the reachability analysis of the tool being evaluated. We inject mutants (e.g., data leaks from our example) at the start of every method in the app. While the previous schemes add methods to the app (e.g., new callbacks), this scheme simply verifies if the app successfully models the bare minimum.

@@ -1,0 +1,74 @@
+3. Pass data as arguments on a transition into a screen.
+
+# 3 Support pre-defined security properties
+We do not want to burden app developers or designers with specifying the security properties required for verification because specifying such properties may initially be a non-trivial burden for the average app developer or designer. Moreover, requiring app developers or designers to specify such properties will unnecessarily complicate the existing design process. Therefore, we envision SeMA will initially support the checking of pre-defined security properties that are based on classes of common vulnerabilities  e.g., listed in Section 4.
+
+# 3 Leverage existing tooling framework
+Android Lint  is a static code analysis tool that helps analyze Android project source files. We have extended Android Lint with customized checks on navigation graphs. Currently, our extension to Android Lint can check the following properties:
+1. Data accepted as input via an exported screen2 is used to perform a sensitive operation in the app.
+
+2. Data from an untrusted source (e.g., app’s external storage) is used to perform a sensitive operation in the apps.
+
+To check these properties, we rely on Android Lint to identify data sources and sinks. Then, our Lint extension tracks the data flow between data sources and data sinks. A violation is flagged when data flows from a potential malicious data source into a data sink associated with sensitive operations.
+
+We use the JavaPoet library  to translate the verified navigation graph into Android source code. The generated source code can be extended by developers with business logic. Such extensions might introduce behavioral inconsistencies between the storyboard and the implementation. To detect such inconsistencies, we plan to generate characterization tests based on the behavioral specifications captured in the storyboard.
+
+Further, not all security properties can be checked statically at the design stage. Such properties can be checked preemptively at runtime, and we plan to explore this possibility.
+
+2An exported screen can be triggered by any component outside the app.
+
+# 3 Stitching a Workflow
+As described in Section 2, the methodology will help the user build an app iteratively. First, the user uses the extended version of AJN to create an app’s storyboard. Second, this storyboard is refined with behavioral properties. Third, the storyboard is verified against pre-defined properties after every refinement. Fourth, the structural code is generated once the refined storyboard satisfies the desired properties. Finally, the user extends the structural code to build a working app. The extended code is then tested against the generated characterization tests to ensure that the implementation is consistent with the design. Currently, we have prototyped the methodology (with the exception of characterization test generation step) in Android Studio.
+
+# 4 What lies in the future?
+Going forward, we plan to extend AJN with more features that will enable the analysis of navigation graphs. We will also extend the custom lint checker with more properties based on known vulnerabilities that plague Android apps.
+
+Existing efforts have identified vulnerabilities that commonly plague Android apps  and have developed benchmarks to capture them . Most known vulnerabilities can be classified as follows:
+1. Reliance on Data from Potentially Malicious Sources: If an app X blindly trusts input from an external component not in the app and uses it to manipulate data or perform a critical task, then the app is vulnerable.
+
+2. Disclosure of Sensitive Information: An app can accidentally expose sensitive information.
+
+3. Exposure of Privileged Resources: An app with access to privileged resources can accidentally allow other apps to access to such resources and enable privilege escalation.
+
+The above classes of vulnerabilities can be prevented by SeMA. As for vulnerabilities that stem from implementation errors (e.g. using HTTP instead of HTTPS when contacting a server). They can be prevented by smart code generation techniques.
+
+# 5 Challenges
+To successfully realize the proposed methodology, the following interesting challenges need to be addressed while developing SeMA.
+
+1. Storyboard Extensions to Capture Non-UI Behavior: Today, storyboards of Android apps capture only the UI components of an app and behavior triggered by user actions. However, Android apps also exhibit non-UI related behavior, e.g., reading a file from the app’s storage as shown in the earlier illustrative example. Therefore, existing storyboards will have to be extended with features to capture behavior that stem from non-UI elements without disrupting the workflow and the mental model associated with storyboards.
+
+2. Context-Aware Analysis: Android apps do not run in isolation. They communicate with remote servers, other apps on the device, and the underlying Android framework. Therefore, the security of an app depends on the context in which it is operating. Security analysis of app storyboards will have to be aware of such contexts; otherwise, the analysis will be imprecise.
+
+3. Reactive Nature of Android Apps: Android apps interact with the underlying platform via platform-defined application lifecycle methods to handle the numerous system and user events. These events could trigger the execution of an app from different entry points. Also, apps have the ability to persist information across different executions. This allows for different executions of an app that start at different entry points to be implicitly related by persisted data. This possibility should be considered to accurately reconstruct the behavior of an app for the purpose of security reasoning.
+
+# 4. Scalability of Analysis:
+To be accurate and effective, security analysis of Android apps will have to consider various contexts and rich features of the Java (or Kotlin) programming language used to implement the apps. Such analysis is neither scalable  nor accurate  as they are plagued by the challenges faced by non-trivial source code analysis.
+
+# 5. Checking Richer Security Properties:
+Given the limitations of simple static checkers like Android Lint and the richness of security properties (e.g., temporality), more involved analysis/checking techniques may be needed to check/enforce richer security properties. Such techniques could be adopted from program analysis/verification community or custom techniques could be developed from scratch.
+
+#page-1.
+
+3. Robert France and Bernhard Rumpe. Model-driven development of complex software: A research roadmap. In 2007 Future of Software Engineering, pages 37–54. IEEE Computer Society, 2007.
+
+4. Maria Gomez, Romain Rouvoy, Martin Monperrus, and Lionel Seinturier. A Recommender System of Buggy App Checkers for App Store Moderators, 2014. Available at Online Tech Report.
+
+5. John Hatcliff, Xinghua Deng, Matthew B. Dwyer, Georg Jung, and Venkatesh Prasad Ranganath. Cadena: An integrated development, analysis, and verification environment for component-based systems. In Proceedings of the 25th International Conference on Software Engineering, pages 160–173. IEEE Computer Society, 2003.
+
+6. Google Inc. Android lint overview. Available at http://tools.android.com/lint/overview.
+
+7. Google Inc. Navigation. Available at https://developer.android.com/guide/navigation.
+
+8. Li Li, Tegawend F. Bissyand, Mike Papadakis, Siegfried Rasthofer, Alexandre Bartel, Damien Octeau, Jacques Klein, and Le Traon. Static analysis of android apps: A systematic literature review. Information and Software Technology, pages 67 – 95, 2017.
+
+9. Ambrose Little. Storyboarding in the software design process. https://uxmag.com/articles/storyboarding-in-the-software-design-process, 2013. Accessed: 05-Feb-2019.
+
+10. Joydeep Mitra and Venkatesh-Prasad Ranganath. Ghera: A repository of android app vulnerability benchmarks. In Proceedings of the 13th International Conference on Predictive Models and Data Analytics in Software Engineering, pages 43–52. ACM, 2017.
+
+11. Arvind Padmanabhan. Storyboards for designing mobile apps. https://indianengineeringdesignforum.wordpress.com/2015/11/07/storyboards-for-designing-mobile-apps/, 2015. Accessed: 05-Feb-2019.
+
+12. Felix Pauck, Eric Bodden, and Heike Wehrheim. Do android taint analysis tools keep their promises? In Proceedings of the 2018 26th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering, ESEC/FSE 2018, pages 331–341. ACM, 2018.
+
+13. Dmitry Prudnikov. UX design techniques for mobile apps. https://yalantis.com/blog/ux-design-techniques-mobile-app-design/, 2019. Accessed: 05-Feb-2019.
+
+14. Venkatesh-Prasad Ranganath and Joydeep Mitra. Are free android app security analysis tools effective in detecting known vulnerabilities? CoRR, 2018..

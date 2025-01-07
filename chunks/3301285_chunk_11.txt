@@ -1,0 +1,66 @@
+P. Bhat and K. Dutta
+anti-virus products, with a minimum detection ratio of 5% (3/58). AVPASS uses a binary obfuscation method to infer the features and rules of anti-virus running on the targeted system. After learning the rules, it can behave in a way such that the anti-virus tool is not able to detect the malicious application, as they behave like any other normal application. Code obfuscation techniques are used by malware developers to create polymorphic and pligomorphic malware that can easily bypass such anti-virus applications and tools, thus limiting the utilization area of these anti-virus applications. Moreover, many anti-virus tools are freely available and can be downloaded from app stores, which can themselves be malicious programs, and even in case of genuine anti-virus applications, once installed they become an integral part of the system. The attacker can then look for the vulnerabilities in these programs to exploit them and gain access to the system. Zero-day exploits, used by malware developers for attacking the system, are extremely hard to detect by anti-virus applications and other tools developed for malware detection. Much work is required in the direction of making strong anti-virus products that are almost impenetrable for the malicious content to pass through.
+
+# 5 FUTURE SCOPE AND DISCUSSION
+As discussed in this article, the Android platform still has security vulnerabilities that need to be improved. Following are some of the steps that can be taken to provide a more secure Android environment to its users.
+
+1. The application developers should restrict the number of permissions to safeguard the system from privilege escalation attacks. The requested permissions should be specific to the tasks that the application needs to perform. It will help in reducing attacks that use third-party libraries and dd libraries. Also, Google should come out with a more robust permission system to stop its exploitation. In Reference , the author listed some of the standard permissions and explained how they are a potential threat for the system. In this case, even a selective privilege technique fails. Hence, only a more robust permission system is the solution that will also require a review of current standard permissions.
+
+2. The developers should mandatorily follow the security protocols like an SSL certificate that helps in securing the data.
+
+3. A secure system also requires vigilant users. The users should follow the directions issued regarding strong passwords, phishing sites, and not sharing personal information like phone banking details. They should also verify whether the permissions requested by an application are related to its job.
+
+4. Further, Google Play should employ a robust static detection mechanism within its framework using pattern recognition, machine learning, and artificial intelligence. Google Play has already started verifying applications using machine learning based on “peer groups,” which automatically groups applications with similar functions into a group and compares their static features such as the permissions these applications request. If some applications request a higher number of permissions or strange permissions from their peer groups, then the tool flags them as malicious. The tool should also employ Op-Code analysis using SVM classifiers to detect malware, as this detection process has provided accuracy of nearly 99% in various research.
+
+5. Android should not allow its users to install applications from any place other than the Google Play Store. The applications installed from other sources cannot be verified, which makes them a potential threat to the system.
+
+6. Though it is possible to detect much malware using pattern matching and machine learning on the Google Play Store, some malware may still go undetected such as malware that uses
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+# A Survey on Various Threats and Current State of Security in Android Platform
+code obfuscation or a newly developed attack strategy such as KSMA. However, a dynamic detection approach can help detect these attacks based on anomaly detection and gather information about them that can help in preventing them. The information can subsequently be forwarded to Google, and Google can use the features of new malicious application to further train its classifier, thus making the process automatic. One of the main reasons for not using dynamic detection mechanisms is that it takes a significant amount of resources during runtime, which may slow down the device. However, the processing power of a smartphone is increasing multifold each year; it is not as challenging now to employ a dynamic detection mechanism in each device as it was a few years ago. The latest Snapdragon 845 processor has 25% better processing power than its predecessor, Snapdragon 835, as claimed by Qualcomm and tests conducted by tech reviewer magazine CNET . Developers may also utilize this rapid increase in processing power to develop malware detection tools. However, researchers need to focus on the efficiency and accuracy of these tools.
+
+# 6 CONCLUSION
+The main idea of this article is to present the current state of the Android security domain. Researchers and developers are formulating novel techniques for protecting the Android system from attackers’ malevolent inclinations to destroy it. This article explains attacks on different layers of Android in detail along with their present solutions, which will help researchers and software developers formulate their strategies for future malware detection and prevention. The article includes tabular explanations of various threats and detection approaches to provide a better understanding and comparative analysis. Some of the important findings of this article include the necessity of using original hardware products to keep the system secure; the need for a robust two-step malware detection approach; employing both static and dynamic detection strategies, which can detect known as well as unknown attacks; and making it compulsory for developers to follow important security protocols. Unlike other surveys, this article also provides an in-depth analysis of various vulnerabilities in the Android system exploited by attackers. The Android operating system will continue to evolve over time for a number of reasons and so will various applications running on it. There is always a huge gap between the two. This leads to research gaps to which there is no complete solution provided by present tools. Continuous research and innovation is required in this area to deal with the latest threats.
+
+#hal.
+
+Sven Bugiel, Lucas Davi, Alexandra Dmitrienko, F. Thomas Fischer, and Ahmad-Reza Sadeghi. 2011. XManDroid: A new android evolution to mitigate privilege escalation attacks. Technical Report, Center for Advanced Security Research Darmstadt.
+
+Zero-day vulnerability in google Android. 2013. Retrieved from https://www.zero-day.cz/database/253/.
+
+Android malware gooligan/ghost push. Cyber Swachhta Kendra. 2017. Retrieved from https://www.cyberswachhtakendra.gov.in/alerts/gooligan.html.
+
+Xuxian Jiang. 2011. Security alert: New sophisticated Android malware droidkungfu found in alternative chinese app markets. NC State University. Retrieved from http://www.csc.ncsu.edu/faculty/jiang/DroidKungFu.html.
+
+Security-enhanced Linux in Android. 2017. Android Developers Blog. Retrieved from https://source.android.com/security/selinux/.
+
+Android security bulletin, December. 2017. Android Developers Blog. Retrieved from https://source.android.com/security/bulletin/2017-12-01.
+
+Hovav Shacham. 2007. The geometry of innocent flesh on the bone: Return-into-libc without function calls (on the x86). In Proceedings of the 14th ACM Conference on Computer and Communications Security (CCS’07), New York, NY. ACM, New York, NY, 552–561. DOI:http://dx.doi.org/10/1315245
+ Tyler Bletsch, Xuxian Jiang, Vince W. Freeh, and Zhenkai Liang. 2011. Jump-oriented programming: A new class of code-reuse attack. In Proceedings of the 6th ACM Symposium on Information, Computer and Communications Security (ASIACCS’11), New York, NY. ACM, New York, NY, 30–40. DOI:http://dx.doi.org/10/1966913
+ Minh Tran, Mark Etheridge, Tyler Bletsch, Xuxian Jiang, Vincent Freeh, and Peng Ning. 2011. On the expressiveness of return-into-libc attacks. In Proceedings of the 14th International Conference on Recent Advances in Intrusion Detection (RAID’11), Berlin, Heidelberg. Springer-Verlag, Berlin, 121–141.
+
+Vasileios P. Kemerlis, Georgios Portokalidis, and Angelos D. Keromytis. 2012. kGuard: Lightweight kernel protection against return-to-user attacks. In Proceedings of the 21st USENIX Conference on Security Symposium (Security’12). USENIX Association, Berkeley, CA, 39–39. Retrieved from http://dl.acm.org/citation.cfm?id=2362793.
+
+Dmitry Evtyushkin, Dmitry Ponomarev, and Nael Abu-Ghazaleh. 2016. Jump over ASLR: Attacking branch predictors to bypass ASLR. In Proceedings of the 49th Annual IEEE/ACM International Symposium on Microarchitecture (MICRO-49). IEEE Press, Piscataway, NJ, Article 40, 13 pages. http://dl.acm.org/citation.cfm?id=3195638
+ Jonathan Salwan. 2011. ROPgadget—Gadgets finder and auto-roper. ROP. Retrieved from http://shell-storm.org/project/ROPgadget/.
+
+Axel Souchet. 2017. rp++ is a full-cpp written toor. Retrieved from https://github.com/0vercl0k/rp.
+
+Black Hat USA. Payload already inside: Data re-use for ROP exploits. 2010. Retrieved from http://ropshell.com/ropeme/.
+
+PAKT, Patroklos Argyroudis, and Edward J. Schwartz. Ropc—A turing complete rop compiler. 2013. Ropc. Retrieved from https://github.com/pakt/ropc.
+
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+# A Survey on Various Threats and Current State of Security in Android Platform
+#why-and-how-does-vsyscall-emulation-work.
+
+19. The PaX Team. RAP: RIP ROP. 2015. Retrieved from https://pax.grsecurity.net/docs/PaXTeam-H2HC15-RAP-RIPROP.pdf.
+
+20. Intel. Control-flow enforcement technology preview. 2016. Retrieved from https://software.intel.com/sites/default/files/managed/4d/2a/control-flow-enforcement-technology-preview.pdf.
+
+21. Mingshen Sun, John C. S. Lui, and Yajin Zhou. 2016. Blender: Self-randomizing address space layout for Android apps. In Proceedings of the 19th International Symposium on Research in Attacks, Intrusions and Defenses (RAID’16).
+
+22. Vasileios P. Kemerlis, Michalis Polychronakis, and Angelos D. Keromytis. 2014. Ret2Dir: Rethinking kernel isolation. In Proceedings of the 23rd USENIX Conference on Security Symposium (SEC’14). USENIX Association, Berkeley, CA, 957–972. Retrieved from http://dl.acm.org/citation.cfm?id=2671225.

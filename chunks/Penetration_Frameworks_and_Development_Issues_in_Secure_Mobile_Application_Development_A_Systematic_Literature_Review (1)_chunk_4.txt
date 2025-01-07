@@ -1,0 +1,81 @@
+MASVS-R signifies discretionary protective layer for obstructing reverse engineering and app tampering. MASVS-R can be applied on apps which handle sensitive data and functionality is applied. The app can have state of art security if it has clearly defined tempering and reverse engineering attacks. To achieve this level, the application can leverage verifiable techniques for software protection and hardware security features.
+
+OWASP identifies top ten serious application security risks and their technical and business. It also provides methods to deal with these security risks. OWASP top ten security checklist for secure programming is a great resource for developers . OWASP provides resources to the developers to develop controls for the security risks and build secure applications.
+
+# c. NIST ISAM (Information Security Assessment Methodology)
+NIST Pen-test methodology consists of Four Phases which include (1) Planning (2) Discovery (3) Attack (4) Reporting. During Planning phase objectives are defined, information about the SUT (System under test) is gathered and vulnerability analysis is performed. During execution, various tests are performed to determine vulnerabilities and finally identified vulnerabilities are reported. NIST ISAM focuses on developing policies for penetration test and security assessment. Policies and technical considerations along with standardized testing techniques can result in improved security . NIST standard NIST 800-163  provides guidelines for the security vetting of mobile application. The application vetting process is a series of activities to check if the mobile app security conforms to the security standards of the organisation. App vetting is done in following steps:-
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+# Research Questions
+# Phases of Study Selection
+# Search Strategy
+Keyword
+Android Pen-Test OR Android Penetration OR Mobile Penetration Testing OR Model-based penetration testing OR Penetration Testing Tools OR Security issue OR Android challenges OR Pen Secure Android App AND (methodology OR framework) AND (Android developers Design OR Development)
+# Data Source
+# Results
+- Security Artifacts are reviewed
+- App vulnerability testing is done and report is generated (Test tools are used)
+- Compliance with organization security standards is checked and recommendations are given.
+
+# d. Information Systems Security Assessment Framework (ISSAF)
+ISSAF methodology is a peer-reviewed framework designed to assess security and suggest standards for each domain by reflecting actual scenarios. ISSAF consists of activities which include information gathering, network mapping, vulnerability assessment, penetration testing, privilege escalation, enumeration, gaining access and covering the tracks. ISSAF, however, does not provide security guidelines for mobile phone app development.
+
+# e. PTES (Penetration Testing Execution Standard)
+Penetration Testing Execution Standard includes several other standards and guidelines such as OWASP for web penetration testing for conducting tests in web and other applications. PTES framework consists of:
+1. Pre-engagement Interactions to define scope
+2. Intelligence Gathering to gather information about the target system
+3. Threat Modelling for pen-test execution
+4. Vulnerability Analysis for discovering vulnerable behavior and flaws in SUT
+5. Exploitation for establishing unauthorized access
+6. Post Exploitation for covering the tracks
+7. Reporting for the customer with suggestions.
+
+# 3. Penetration Test Frameworks Evaluation
+The shortlisted above listed penetration test methodologies and frameworks are evaluated on the basis of following criteria from ISO/IEC 25010:2013 software quality model to check if these frameworks provide any model-based support to the developers/ designers:
+- Coverage: It refers to the scope of the methodologies to deal with every aspect of pen-testing ranging from a web-based application to mobile native apps.
+
+- Flexibility: Flexibility refers to the ability of penetration test methodologies to allow community developers and testers to extend pen-tests capability by adding/extending guidelines.
+
+- Adaptability: The framework should have well defined and non-ambiguous guidelines so that testing can be performed on android OS-based apps.
+
+- Modelling: Modelling comprehends the realization of MDE (model-driven engineering) and provides Model-based support to embed security in design using prebuild stereotypes and class diagrams.
+
+- Usability for amateur developers: The methodology provides a knowledge base and tools which can help in automatically identifying vulnerabilities during the modelling of application.
+
+# 4. Evaluation Results
+OSSTMM 3, NIST-ISAM, ISSAF, and PTES show coverage issues of various application domains from
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+87814
+# VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+VOLUME 9, 2021
+87815
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+87816
+VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+VOLUME 9, 2021
+87817
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+penetration testing point of view. Whereas, OWASP covers all the aspects of web, software and mobile application development domains and can be implemented in all the phases of SDLC. NIST allows profiling for implementing flexibility in the framework by defining cybersecurity outcomes to achieve the desired risk management goals. OSSTMM, OWASP, ISSAF and PTES have limited flexibility in various pen-test execution criteria.
+
+OWASP and OSSTMM have well defined and detailed processes and guidelines for covering differing vulnerabilities in software applications. OWASP framework allows and provides guidelines that can help the developers to implement security in all the phases of SDLC.
+
+NIST, OSSTMM, OWASP, ISSAF and PTES do not mention any modelling tools nor do they provide any technique on how to embed security and design different threat models during designing of the application. OWASP and NIST provide a guideline on vulnerabilities and how to mitigate certain risks by secure coding but none of the above has the knowledge base and tools which can help the designers and developer to design a secure application by automatically identifying vulnerabilities during the modelling of an application.
+
+Based on the evaluation tabulated in Table 5, it is evident that these penetration test frameworks provide guidelines, tools and techniques to assess security and focus on penetration testing after the completion of an application. These methodologies are generic and mainly focused on web-based applications. Developers and testers cannot use them without having the expertise and knowledge of change effect. Hence, it is believed no such model-driven methodology for penetration testing in an Android application is available which can help the designer to use a threat-model knowledge-base to model vulnerabilities.
+
+# 5. Penetration test Tools (RQ1-part 2)
+Penetration testing tools help in identifying and eliminating security issues present in the application. The model-based penetration test methodology is performed by auto-generated test cases on the basis of SUT models. During our systematic literature review, it was revealed that more than 50% of the tools used model-based methodology and test cases were automatically generated and executed. We observed during the review that these pen-test tools use various test methodologies which include model-based, search-based, fuzzing and mutation-based testing. For better test coverage, there are many tools which use multiple test methodologies (EVODRIOD) ,.
+
+There are three types of testing: 1) White Box testing is done at the early stages by testing internal structures. Full knowledge of source code is required to develop test cases. 2) Black box testing tests the functionality of the application and 3) Gray box testing can be done with limited knowledge of internal structure and functionality. i.e. for android apps, tests can be developed by going through manifest file. Vega et al.  benchmarked tools by dynamic analysis of vulnerabilities and observed that knowledge bases and search algorithm are periodically updated for improvement in accuracy but they still leave some vulnerabilities unaccounted. Although reviewers and bloggers publish the review about tools accuracy in various websites, it is difficult for the developers and users to know which tool is suitable for them and what sort of vulnerabilities are captured. Munoz et al.  have compared the accuracy of model-based penetration test tools and compared the result of the vulnerability reported by the tools. It was observed that a number of tools are not accurate and show false-positive results.
+
+During our research, we identified and analyzed following thirteen (13) tools from the selected literature.
+
+87818
+VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+- Metasploit  is a GUI and command-line tool and has an advance framework for penetration testing. It uses a payload to perform exploit on target machines and can be used on network application and servers etc. Metasploit can also perform manual brute-forcing and static and dynamic code analysis.
+
+- Core Impact is used for mobile device penetration testing. It also performs network device penetration through password identification and cracking.
+
+- W3af is a web penetration framework that helps in penetration testing through vulnerability discovery, attack and vulnerability audit. W3af has proxy support and performs HTTP response cache, DNS cache, and cookie handling and user agent faking.

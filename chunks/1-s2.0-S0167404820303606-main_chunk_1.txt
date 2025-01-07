@@ -1,0 +1,66 @@
+# Android security assessment: A review, taxonomy and research gap study
+Shivi Garg a,b,∗, Niyati Baliyan a
+a Information Technology Department, Indira Gandhi Delhi Technical University for Women, Delhi, India
+b Faculty of Informatics and Computing, J.C. Bose University of Science and Technology YMCA, Faridabad, India
+# Article information
+Article history:
+- Received 30 June 2020
+- Revised 8 September 2020
+- Accepted 13 October 2020
+- Available online 28 October 2020
+# Keywords
+Android, Dynamic analysis, Hybrid analysis, Machine learning, Security, Static analysis, Systematic literature review
+Security threats are escalating exponentially posing a serious challenge to mobile platforms, specifically Android. In recent years the number of attacks has not only increased but each attack has become more damaging to the platform. Therefore, it is important to develop more stringent counter-measures to defend the mobile systems. Although in the last few years significant research progress is seen in the field of the detection and mitigation of Android security, yet numerous challenges and gaps still exist. This paper presents a comprehensive and sound taxonomy to review the state-of-the-art approaches used in Android security. We have highlighted the trends and patterns of different analysis approaches, identified the key aspects in terms of objectives, analysis techniques, code representations, tools and frameworks used, etc. and enumerated the research areas for future work. To carry out this study, the proper systematic literature review process is followed and the results of nearly 200 research publications have been comprehended based on different security aspects.
+
+© 2020 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Google’s Android is the most prevalent mobile platform among different smartphone platforms. Android’s market share is ∼73% as of 2020 (Statcounter GlobalStats 2020). According to Google, there are ∼2 Bn active Android devices in 2019, making Android the most popular mobile platform amongst users . Growing mobile app markets have increased security threats and are specifically targeting mobile platforms. A large number of Android app markets contain vulnerable and malicious apps, thereby compromising millions of mobile devices. The malicious apps can cause severe repercussions such as privacy leaks, app crashes, financial losses (caused by malware triggered premium rate SMSs) and arbitrary code installation, etc. Hence, Android security is a major concern amongst researchers as seen in the last few years.
+
+# 1. Motivation
+The researchers have investigated Android’s security features that overlap with different domains like software engineering, programming language analysis, and mobile computing. The existing knowledge base in this field is present as published literature. However, the current literature is not comprehensive and does not provide a holistic view of state-of-the-art approaches. This paper provides an exhaustive review of all the existing approaches in a structured format. The objectives of this paper are:
+1. To identify different purposes of Android security assessment techniques
+∗ Corresponding author at: Information Technology Department, Indira Gandhi Delhi Technical University for Women, Delhi, India. E-mail addresses: shivi002phd16@igdtuw.ac.in (S. Garg), niyatibaliyan@igdtuw.ac.in (N. Baliyan).
+
+https://doi.org/10/j.cose
+0167-4048/© 2020 Elsevier Ltd. All rights reserved.
+
+# Computers & Security 100 (2021) 102087
+# 1. Introduction
+# 1. Objectives
+To propose a taxonomy of Android security analysis approaches employed a centralised network topology where a centralised server controlled the scheduling of tasks. Although cluster computing reduced execution time and increased the system performance, yet the standalone computer systems were not able to handle large computations. Hence, this led to the development of grid computing (GC) in the 1990s. GC networks were distributed and had decentralised network topology. It offered three-pronged benefits i.e. resource shareability, system scalability, and computing reliability, but it suffered from data confidentiality and integrity issues (Agarwal and Srivastava, 2017). In 1999 introduction to Salesforce.com provided a breakthrough in cloud computing (CC) that allowed users to avail remotely accessible services as a platform (PaaS), infrastructure (IaaS), and software (SaaS) (Bhatia and Verma, 2017). CC helped in offloading resource-heavy tasks to cloud servers however, there were security and privacy issues. Therefore, the ubiquitous computing (UC) paradigm became popular in the 2000s. UC introduced seamless access to remote information resources with high fault tolerance, availability, and security. However, the major drawbacks of UC were energy consumption and human-machine interference . The year 2006 marked the inception of the concept of the Internet of Things (IoT) in which the computing devices are interconnected via the Internet. IoT provides support for complex event processing (CEP) (García-Valls et al., 2018) and is a unique feature in comparison to other computing paradigms.
+
+# 1. Our contributions
+The unique contributions of this paper are:
+1. Better publication coverage from 2013 – 2020
+2. Proposing more deep and comprehensive taxonomy of Android security analysis approaches
+3. Covering all the program analysis approaches from static to Machine Learning (ML) including semi-supervised, reinforced and Deep Learning (DL)
+4. Focusing on all the major security issues such as vulnerabilities, privacy leaks, app cloning, permission misuse, cryptographic issues, malware detection, test case generation, code verification and energy consumption
+# 1. Paper organization
+The structure of the paper is as follows. Section 2 talks about the evolution of computing paradigms and mobile phones over a period of time. Section 3 presents related surveys carried out in the Android security domain. Section 4 mentions the research methodology and fundamental protocol for this SLR. Section 5 presents the taxonomy constructed from the existing literature. Section 6 presents the research gaps and provide future directions for the Android security research community. Potential threats to validity and multiple ways to mitigate those are discussed in Section 7. Finally, the paper is concluded in Section 8.
+
+# 2. Evolution of computing paradigms and mobile phones
+With technological advancements, Internet speed and bandwidth have improved considerably over the years. The computing paradigms have evolved and gone through multiple stages of advancements. Fig. 1 reflects this evolution of computing paradigms and their effect on mobile phones (and Android).
+
+The 1980s marked the era of cluster computing, during which the same type of standalone computer systems were interconnected using a high-speed local area network (LAN) (van Steen and Tanenbaum, 2016). Cluster computing de-
+Despite security improvements over the years, Android still suffers from multiple vulnerabilities, potential threats, and malware attacks. Users can detect malicious applications by analyzing the permissions model of Android. Malware in An-
+# Computers & Security 100 (2021) 102087
+# Computing
+# Small Homogenous Cluster
+# Grid Computing
+# Cloud Computing
+# Ubiquitous Computing
+# IoT & Decentralized Ledger
+# Evolution of Mobile Phones
+droid can exploit vulnerabilities to obtain root-level access and can do nasty things. Different layers in Android OS software stack are affected by multiple vulnerabilities (Mazuera-Rozo et al., 2019). Fig. 2 shows the distribution of different vulnerabilities across the Android OS layers. The enhancements in the software stack of Android have reduced the number of vulnerabilities, however the basic framework is same in all the Android versions. The threat of malware on Android is real and will continue to grow, therefore it is important to study different analysis techniques, which can provide some real benefits and protection to the users.
+
+# 3. Related Surveys
+It is important to identify, examine, and understand the contributions in the field of mobile security since the emergence of mobile phones. To the best of our knowledge, this study is first of its kind dealing with Android security analysis. There is no other survey that particularly focuses on all the aspects of Android security. Multiple works and surveys related to Android security have been proposed in the literature. There are very few SLRs existing in the Android security domain however, they lack completeness and comprehensiveness.
+
+Suarez-Tangil et al. (2013) reviewed the malware evolution and analyzed 20 research efforts that detected mobile malware. Haris et al. (2014) presented a survey on mobile computing that addressed issues related to privacy. This study comprised of 16 user studies and 13 privacy leak detection tools in mobile privacy. Shrivastava et al. (2019) surveyed on the privacy issues caused by permissions in Android application.
+
+The survey of Rashidi and Fung (2015) focused on the current security threats in Android and security implementation solutions. They classified security mechanisms in Android into four different dimensions: Denial of Service (DoS) attacks, Information Leaks, App Cloning and Vulnerabilities.
+
+Another survey of Tan et al. (2015) discussed static and dynamic analysis approaches. They proposed taxonomy with five categories of existing security solutions on Android. They concluded that static analysis is the most leveraged technique for addressing Android security issues.
+
+In another survey, Martin et al. (2016) analyzed the works based on the app store in the field of software engineering. The authors reported the technical and non-technical learning behaviors of software repositories. In particular, they analyzed existing works in 7 dimensions such as feature analysis, API analysis, review analysis, store ecosystem, security, size and effort prediction, and others.

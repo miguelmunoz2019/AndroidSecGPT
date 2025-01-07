@@ -1,0 +1,59 @@
+# (In)Secure Android Debugging: Security analysis and lessons learned
+Krzysztof Opasiaka,b, Wojciech Mazurczyk*
+a Warsaw University of Technology, Nowowiejska 15/19, 00-665 Warszawa, Poland
+b Samsung R&D Institute Poland, plac Europejski 1, 00-844 Warszawa, Poland
+# Article information
+Received 13 September 2018
+Revised 4 December 2018
+Accepted 20 December 2018
+Available online 25 December 2018
+# Keywords
+Mobile security, Android, USB, ADB, MITM
+# Abstract
+Universal Serial Bus (USB) is currently one of the most popular standards that controls communication between personal computers (PCs) and their peripheral devices. Thus, it is important to establish whether such connections are properly secured especially when USB is used to connect devices like smartphones, tablets, etc. where sensitive user data can be potentially stored. For this reason, this paper evaluates security of the recent Android versions with respect to the USB-related attacks. In particular, we present a novel approach to compromise Android-based devices by exploiting Android Debug Bridge (ADB) protocol using Man in the Middle (MitM) attacks. Comprehensive analysis of those types of attacks have revealed five novel security vulnerabilities in the Android OS. Security gaps found in this paper cannot only be used to bypass the lock screen security and to gain unauthorized access to the user’s private data but also to enable future ADB attacks by incorporating a backdoor to bypass phone security at any time. We also developed a tool which exploits all discovered vulnerabilities and can serve as a security mean to assess current ADB implementations as well as future protocol improvements. By disclosing new security weaknesses we want to raise security awareness of the users, researches, security professionals, and developers related to the USB-related attacks and to the threat they pose not only to PCs but also to the USB devices.
+
+© 2018 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Using USB (Universal Serial Bus) to bypass a modern personal computer (PC) security mechanism is an interesting but not a novel idea. First malware that used this kind of attack vector was Conficker  discovered in 2008. Its direct successor – Stuxnet (Nicolas Falliere and Chien, 2011) – managed to infect more than 60,000 computers in Iran only. Back in 2014 USB users were thrilled once again due to BadUSB (Karsten Nohl and Lell, 2014) disclosure. It became very popular and many people started developing their own versions of BadUSB attack.
+
+At the same time people put some effort in developing tools  to protect against evil USB devices. The USB security is of a particular concern when abundance of devices utilizing this standard is considered. There is currently billions of devices which employ USB, some which are more sensitive than others – smartphones, tablets and all other mobile devices. They are equipped with high performance CPUs and have a lot of storage which is often filled up with users’ private data. USB in these devices is widely used to easily access photos, videos, documents, etc. from the users’ desktops without uploading private data to the third-party cloud.
+
+* Corresponding author. E-mail addresses: k.opasiak@tele.pw.edu.pl (K. Opasiak), wmazurczyk@tele.pw.edu.pl (W. Mazurczyk).
+
+https://doi.org/10/j.cose
+0167-4048/© 2018 Elsevier Ltd. All rights reserved.
+
+# Computers & Security 82 (2019) 80–98
+Android, with its 88% market share  is unquestionably the most common mobile operating system, widely used in all kinds of mobile devices. Apart from being ergonomic, flexible and feature-rich the real strength of any successful operating system lays also in the number of available applications. Android with its 2 millions of applications easily fulfills the number of application criterion (number, 2017). Such a huge number of available programs is a result of the existing, vibrant Android Application Developers Community. It is estimated that there is more than 12 millions mobile apps developers worldwide and more than half of them focuses their attention on Android (app, 2016).
+
+Mobile app development process differs from a typical software creation because the code is usually written on a PC machine, often initially tested using mobile OS emulator and then uploaded to the target mobile device for final testing and debugging. Thus, a dedicated communication mechanism between the developer’s machine and the target device is necessary. Bootloader and kernel developers use dedicated low level interfaces like JTAG which allows them to stop the CPU and access the RAM memory. JTAG is also used by security researchers to perform forensic analysis of the device using for example JoKER . Unfortunately it requires expensive equipment and direct access to device’s PCB (Printed Circuit Board). That is why, for app development, more convenient and high level tool is required. In Android, this requirement is fulfilled by the custom USB protocol called Android Debug Bridge (ADB). ADB provides many functionalities which are useful for mobile apps developers, including:
+- file transfer,
+- shell access,
+- application installation and debugging,
+- port forwarding,
+- generating input and sensors events.
+
+of them activate it once and then forget to disable it later. In this case, their only protection is a Secure USB Debugging feature. To the authors’ best knowledge no security analysis of this mechanism is currently available. Therefore, the main contribution of this paper is to fill this gap by evaluating security of the Secure USB Debugging from the USB connectivity perspective. This is achieved by:
+- Introducing a classification of the known USB-related security threats.
+
+- Providing up-to-date documentation of the ADB protocol and its current security mechanisms.
+
+- Performing security evaluation and discussing vulnerabilities found in the ADB protocol itself and its implementations in Samsung Galaxy S7 and Google Nexus 9 mobile devices.
+
+- Introducing a new tool called adb_mitm which exploits discovered vulnerabilities.
+
+- Discussing lessons learned and proposing potential countermeasures.
+
+- Analyzing performance impact of the proposed ADB protocol modification and suggesting a method to minimize the overhead.
+
+The rest of this paper is structured as follows. Section 2 describes the necessary basics of the USB standard. Then, in Section 3 an up-to-date overview of the ADB protocol is provided. Section 4 discusses related work on the ADB and USB security. Next, in Section 5 experimental test-bed used for our research is presented. Section 6 reveals new security vulnerabilities and introduces adb_mitm tool which exploits them. Then, Section 7 proposes modification to the ADB protocol in order to prevent against discussed attacks. Finally, Section 8 concludes the paper and suggests potential future work in this area.
+
+Although, as mentioned above, ADB functionality is extremely useful for developers and advanced users, in its current form, it should be considered as a serious threat for Android-based devices’ security. Security threats can arise as ADB connection has a direct access to all user’s private data without the need to unlock the device. Even though it is sometimes useful to be able to retrieve such data, for example, in case when the mobile device display gets broken, when used with malicious intentions it may easily lead to the private data leakage. Additionally, there are dedicated tools (e.g. within the Metasploit package) which allow for an arbitrary code execution via ADB (met, 2016). In the past there were also several exploits which allowed to gain root access to the device using ADB connection (dir, 2016; Vidas et al., 2011).
+
+To mitigate the ADB-related security risks manufacturers incorporated two main security improvements. Firstly, ADB is now disabled by default. In order enable it user has to explicitly activate the option hidden under developer options submenu. Secondly, from the Android version 4 a secure USB debugging feature has been introduced. This mechanism is aimed at preventing unauthorized ADB access to mobile devices when the ADB is turned on.
+
+# 2. USB fundamentals
+The USB standard (usb, 2000) is one of the most popular external interfaces. Most of the consumer home electronics is able to communicate over USB. Also communication between the mobile device and developer’s machine is usually realized over the USB bus. In order to be able to perform its security analysis it is important to understand how USB protocol works.
+
+The first version of USB standard has been published in 1996. It offered Low Speed (1 Mb/s) and Full Speed (12 Mb/s) signaling rates. Then in 2000, USB 2 standard has been released. It introduced significantly faster signaling speed named High Speed (480 Mb/s). Its later revisions introduced a lot of features important for USB adoption in mobile devices including minimizing the connector size, improved battery charging etc. Next generation of USB standards started by publishing USB 3 specification in 2008. This standard is a first one to introduce full duplex communication and increased signaling speed to 5 Gb/s (SuperSpeed). It also increased the current limit for the USB device to 900 mA. Further minor revisions of this standard (3 and 3) increased the speed even more up to 20 Gb/s in USB 3 SuperSpeed+ mode.

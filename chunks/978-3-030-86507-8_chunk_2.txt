@@ -1,0 +1,85 @@
+# AndroidPerm
+# AndroidApps
+Each permission belongs to one Category by permLevel (→ is a total function). This category can be explicitly defined by decPermLevel (it is optional since → is a partial function) and only the considered permissions have one dom permLevel ⊆ Permissions. If no category is explicitly given, the level is normal ((Permission → {normal })⊕decPermLevel). All considered Permissions are associated to applications or components by (permApp ∪ ran permComp = Permissions). Intents permissions are related to them by permIntent ⊆ Permissions. Component permissions are declared or required (permComp = cpermDec ∪ cpermReq) but only active components require permissions. Passive components provide read and write access permissions (rpermDec, wpermDec) of the declared permissions of passive components ((rpermDec ∪ wpermDec) = (CompPas cpermDec)). In the next section we formally specify security properties using the above formal descriptions.
+
+# 4 PermDroid Security Properties
+Referring to standards such as CIA (Confidentiality, Integrity, Availability) or AAA (Authorization, Authentication, Accounting) , we target confidentiality and authorization properties. Again for sake of space, only two properties are used in this paper but others are given in the web appendix (See Footnote 6). We refer here to  that investigated the mistakes committed by developers.
+
+# Assisting Developers in Preventing Permissions Related Security Issues
+Component Invocation. As a component could perform sensitive actions, it should be protected against unauthorized accesses. (p1) Two interacting components must have compatible permissions. Every required permission of a called component must be fulfilled by the caller component.
+
+P 1
+AndroidPerm ca, cp : COMPONENT (ca, cp) ∈ interactions ⇒ cpermReq(| {co} |) ⊆ cpermDec(| {ca} |)
+# Unprotected Components - Privilege Escalation.
+
+Exported components can be accessed by other applications including malicious apps. Referring again , a significant number of non protected exported components was found in on-line Android open source projects (19039 components overall 8749 application).
+
+(P2) An exported component must declare permissions to be protected.
+
+P 2
+AndroidPerm cpermDec(| expComp |) = ∅
+Many related research studies  explore the dynamic behaviour of interacting applications to find permission related security flaws. Based on static analysis, we could only (1) determine the requested permissions declared in the manifest configuration file, (2) generate permissions used by the application through inspecting the permission related APIs, (3) inspect methods involving sending and receiving intents, (4) and methods involving the management of content providers. Whereas dynamic analysis could assist in (1) handling the dynamic loading of classes from embedded jar or apk files, (2) handling Java reflection (used by more than 57% of Android apps ).
+
+Z/EVES System  enables not only syntax and type checking verification, but also the proof of operation assertions (pre/post conditions vs the state schema invariants) and theorems. The effective verifications are not provided here but the formalisation is an input for the implementation, where the rules will be written in OCL which is inspired from Z.
+
+# 5 PermDroid Design and Implementation
+In Sect. 4 we formalized five specific security related permissions issues coming from: permissions naming violations, unprotected components, components invocation, over-privileged permission use, and unprotected implicit intents. To assist
+# 138
+# M. E. A. Tebib et al.
+
+developers (especially third party ones) to automatically prevent these issues in their implementations, we propose in this section a model-based approach using a security meta-model inspired from the formal model presented in Sect. 3 with some additional technical aspects7. The proposed approach is given in Fig. 1. It is based on three main steps (see Fig. 1): (1) Reverse engineering, (2) Model to Model (M2M) transformations, and (3) Analysis phase.
+
+# Reverse Engineering Phase (Model Discovery)
+Reverse engineering provides abstract models that capture the pertinent information for reasoning purposes. We used MoDisco8 tool to perform the reverse engineering process. Basically, MoDisco provides a graphical representation of the program Abstract Syntax Tree AST9 which makes the corresponding models it generates correct and perfectly conform to the source code. In addition, MoDisco supports this process for Java and XML based applications, which is relevant to study Android applications. We developed a set of Java scripts that take as input the manifest and the Java source files of an Android application, and generate as output the xmi corresponding model.
+
+# Model Transformation Phase
+At the end of the first step, we apply a M2M transformation process using ATL10 tool which is based on the OCL formal language. As a result of the model transformation process, we obtain the Android security model used for the analysis phase. A schematic view showing the whole model-driven chain is presented in phase 2 of Fig. 1.
+
+The transformation engine we implemented is composed from a set of rules. Each one serves to read a specific part from the source model “Java or manifest models” and write the corresponding element in the target model following a well defined semantic. The following small OCL code shows the main rule of the transformation script that aims to generate an instance of application element.
+
+7 See the web appendix (See Footnote 6).
+
+8 https://wiki.eclipse.org/MoDisco.
+
+9 https://www.vogella.com/tutorials/EclipseJDT/article.html.
+
+10 https://www.eclipse.org/atl/.
+
+# Assisting Developers in Preventing Permissions Related Security Issues
+structure presented in the meta-model of Fig. 1 from the root XML element of the manifest file.
+
+−−@nsURI MM=www.eclipse.org/MoDisco/Xml/0.incubation/XML
+−−@path MM1=/safetyProperties/metamodels/androidapp.ecore
+rule mainRule {
+from manifest : MM!Root (manifest.name="manifest")
+to securityModel : MM1!Application (
+name <− manifest.name,
+permissions <− MM1!Permission.allInstances(),
+components <− MM1!Component.allInstances() ) }
+# Security Properties Analysis Phase
+For the analysis phase, we implemented using ATL a set of rules called helpers (like methods in Java but with a formal constraint format) to implement the security properties we specified in Sect. 4. To make clear the idea of how to use OCL for the analysis phase, we present in the following a simple part of the implemented helpers, but we do not put the whole rules due to space limitation.
+
+helper def: permission_name_conflict() : Boolean =
+if ((thisModule.normalPermissions->intersection(thisModule.dangerousPermissions))->isEmpty())
+then true else false endif;
+The permission name conflict() is an example of helper that is used to implement permission property (P1). It parses the instance security model representing the Android application under analysis, to inspect if there is such permission with normal protection level that is also declared for a second time as dangerous permission. If the helper return type is true, our tool will notify the developer. We give an example on the use of PermDroid at the end of Sect. 6.
+
+# 6 Experimentation
+To experiment the ongoing work on PermDroid tool, we select a simple open source application called Telegram extracted from F-Droid11, a famous repository for Android open source applications. It represents a messaging app with a main focus on speed and security. We add some modifications to the application in order to inject the security flaws we want to raise at the analysis phase. The goal is to validate the followed steps based on a simple case study.
+
+# Reverse Engineering (RE) Phase
+As mentioned before, in the RE phase PermDroid will have as input the Android application code files (manifest.xml and Java classes). MoDisco provides an abstract representation of the manifest file. It exposes the root instance that represents the composite element by which we can access children items such as: components, intents, permissions and their attributes. For sake of space, we add on a the web appendix a detailed screenshot.
+
+11 https://f-droid.org/app/org.telegram.messenger
+140 M. E. A. Tebib et al.
+
+that presents the generated model representing the manifest configuration file of Telegram application.
+
+# Modelling Phase
+Once the corresponding Telegram demo app models are generated, PermDroid launches the transformation process to generate the application security model displayed in Fig. 7 of web appendix, where types specified on our security meta-model are presented on the left side, and the existing instances for each type are presented on the right side. Based on these representations, we notice that the demo app is composed only from background components: 15 services, 18 broadcast receivers and 3 content providers.
+
+# Analysis Results
+The final step is to launch the analysis of the security properties. Figure 2 shows the analysis results raised by PermDroid tool. The analysis report raises the unsatisfaction of the security property related to naming conflicts. It indicates that perm1 = “BIND TELECOM CONNECTION SERVICE” with Nrml perm is duplicated in: “Content Provider”:“notification image provider” with “Dangerous” protection level.
+
+# 7 Related Works
+During the last decade, many research works exploring security gaps in Android permission system have been published. These works can be classified into two main classes.

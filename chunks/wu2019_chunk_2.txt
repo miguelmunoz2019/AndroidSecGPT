@@ -1,0 +1,50 @@
+In a word, Android permission mechanism is essentially an access control mechanism, with the aim to restrict Apps from accessing important functionality of a smartphone such as telephony, network, camera and GPS location . Every permission name is a unique identifier to one kind of system resources, for example, android.permission.INTERNET and android.permission.CAMERA stand for accessing the Internet and the camera separately. An App must declare the permission it wants to obtain using permission tags in AndroidManifest.xml file, otherwise the operation of corresponding functionality will meet an exception.
+
+# Dangerous Permissions
+Android permissions are divided into several protection levels: normal, signature and dangerous . Only dangerous permissions require user’s authorization since dangerous permissions cover areas where the App wants data or resources that involve the user’s private information, or could potentially affect the user’s stored data or the operation of other Apps. For instance, the ability to read the user’s contacts is a dangerous permission. If an App declares that it needs a dangerous permission, the user has to explicitly grant the permission to the App. Until the user approves the permission, the App cannot provide functionality which depends on that permission. Due to lack of the knowledge that whether the permission declared by an App is indispensable or not, most users usually authorize all the permission requests. As a result, users’ private information useless to the normal operation of the App is stolen unknowingly because of the App’s overprivileged behavior.
+
+# III. Methodologies
+# A. Overall Methodology
+If an App wants to perform some specific functionalities, it must access the related permissions. Therefore, the permission list implies the App’s function and behavior. Google Play divides Apps into 32 categories and those Apps belonging to the same category realize similar function, thus Apps of the same category have similar permissions. According to this, we develop a tool to detect App’s overprivileged permission. Our research focuses on the dangerous permissions highly associated with user privacy, and the information of latest dangerous permissions are listed in Table I. We selected 17 categories of which the Apps are wildly used by users, and from these categories we crawl a great number of APK (Android Package) files. After extracting the dangerous permissions of these APK files, we make use of FP-growth algorithm to deal with the data and obtain the output results. Finally, the detection tool is developed on the basis of the results.
+
+# B. Maximal Frequent Item Set
+Frequent item set mining is one of the best-known and most popular data mining methods, which plays an important role in data mining field . In the beginning, frequent item set mining aimed at finding regularities in the purchase behavior of consumers of supermarkets. In particular, it is exploited to identify sets of products frequently bought together. Once such sets are found, the supermarket will optimize the organization of products on the shelves by putting associated products together or conveniently sell bundled products. Even though frequent item set mining is originally developed for market basket analysis, nowadays it is widely applied for almost any task requiring to discover regularities between variables in a given data set.
+
+# Google Play
+# Internet
+# Local APK file
+# Downloading Program
+Permission list
+Input App name. Select local file.
+
+Computer APK file
+User
+Checkbox Checking program
+Store results. Show results.
+
+Permission list Checkbox
+Store results.
+
+Database
+Checking program
+Online Module
+Offline Module
+The tool Droidtector has two modules: online module and offline module. In online module, the tool accesses the Google Play website to search the App with the name input by user. Error information will be returned if the App cannot be found. Otherwise the downloading program will be activated to download the APK file and the App’s category will be recorded. Then the permission list of the App will be dumped by aapt, with which the checking program can operate and show user the detection results as well as store the results in database. Offline module needs no connection to the Internet, user should have got the APK file and known its category before detection. The concrete detection process is similar to that of online module, but the checking program will first look up the App’s category in the database. If the database has no information about the App, the checking program will operate with the category specified by user. Otherwise, the detection will be completed with the category stored in the database.
+
+# Frequent Item Set Mining
+Combining with our research, frequent item set mining is the following task: a set A = {a1, ..., an} of items stands for the set of Android dangerous permissions, a database T = {t1, ..., tm} of transactions in which each transaction represents the set of dangerous permissions declared by an App of a certain category. The term item set refers to any subset of A, so each transaction is an item set. Given a user-specified minimum support s ∈ N, an item set I ⊆ tk(k ∈ 1, ..., m) is called frequent if and only if the number of transactions containing I is no less than s. The purpose of frequent item set mining is to find all item sets I ⊆ A that are frequent in the database T. Maximal frequent item set refers to the maximum I, and the number of maximal frequent item set may not be unique.
+
+gives a simple example of frequent item set. Here, we take dangerous permissions for example. Each number corresponds to one dangerous permission listed in Table I. Each transaction is a set of dangerous permissions declared by an App of a certain category, and there are 10 transactions/Apps in all. With a minimum support of s = 3, a total of 15 frequent item sets can be found, which are shown in the table on the right in Fig. 1. Of course, all 3-items sets are called maximal frequent item set. We merge all the maximal frequent item sets and we think the dangerous permission outside the merged set is overprivileged under this category.
+
+# C. Frequent Permission-Sets Mining
+Studies of frequent item set mining are acknowledged in the data mining field because of its broad applications . The most popular algorithm publicly available is called FP-growth, which was introduced by . In the algorithm, a data structure called the FP-tree is used to store frequency information of the original database in a compressed form. The FP-growth algorithm needs no candidate generation and only two database scans are required. FP-growth algorithm has been used in the field of mobile application successfully. In  authors use FP-growth algorithm to mine the permission correlation between cognate malicious softwares and in  the algorithm is applied to understanding the interdependency of mobile applications usage.
+
+To construct App datasets, we gathered a collection of 3767 Android Apps of 17 different types from Google Play. Since Google Play is the official Android market and examines the uploaded App more strictly than the third market, experiments based on the Apps from Google Play are more accurate and convincing. The App in Google Play can be scored by users and the full score is 5. To make sure the App samples are representative, we choose to download the App whose score is no less than 4 at the same time downloads is no less than 100000.
+
+The tool named aapt (Android Asset Packaging Tool) can be used to extract the App’s permissions from the
+# IV. Droidtector Implementation
+# C. Effectiveness Verification
+APK decompiling is a process of obtaining the source code from an APK file. Hackers usually decompile an APK file and modify the source code or insert malicious code to achieve their purpose, which may result in negative impact on users. To avoid the occurrence of these cases, most developers adopt code encryption to protect their APK file, which is called shell protection. With the development of shell technology, the APK decompiling is becoming more and more difficult. Sometimes, even though the APK file can be decompiled successfully, the decompiled code cannot be repackaged, which also protects the APK file.
+
+# A. Online Module
+Online module needs the tool to access the Internet. User should input the name of the App he wants to check. Once the detection button is clicked, the tool will access the website of Google Play to search the App. If the App cannot be found, the tool will return error information to user or return those App names containing the string typed by user so as to remind user of correct App name. If the App exists, the tool will record its category, at the same time the downloading program will be activated. After the APK file is downloaded, aapt is used to dump its permission list. Finally, checking program will detect the permissions with category information and permission list. Detection results will be shown to user, meanwhile stored in database. The left of Fig. 2 shows the working process of online module of Droidtector.

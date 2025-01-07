@@ -1,0 +1,5 @@
+# 7 DISCUSSION: CHALLENGES, LIMITATIONS AND RESEARCH IDEAS
+The construction of datasets such as the one proposed in this paper faces some challenges, big or small, including the automated downloading of all the selected APKs and the prior allocation of sufficient storage. Most of the effort resides in the coding of the scripts necessary to recover metadata of the app, set up the reverse engineering of the apk and execute the parsing of various artefacts. In particular, when it comes to the metadata, AndroZoo does not.
+
+# CASCON ’19, November 2019, Markham, Ontario, Canada
+# Z. Namrud, S. Kpodjedo, C. Talhi.

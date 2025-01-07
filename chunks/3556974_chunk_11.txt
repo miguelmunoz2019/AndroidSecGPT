@@ -1,0 +1,22 @@
+10. Matthew J. Page, Joanne E. McKenzie, Patrick M. Bossuyt, Isabelle Boutron, Tammy C. Hoffmann, Cynthia D. Mulrow, Larissa Shamseer, Jennifer M. Tetzlaff, Elie A. Akl, Sue E. Brennan, Roger Chou, Julie Glanville, Jeremy M. Grimshaw, Asbjørn Hróbjartsson, Manoj M. Lalu, Tianjing Li, Elizabeth W. Loder, Evan Mayo-Wilson, Steve McDonald, Luke A. McGuinness, Lesley A. Stewart, James Thomas, Andrea C. Tricco, Vivian A. Welch, Penny Whiting, and David Moher. 2021. The PRISMA 2020 statement: An updated guideline for reporting systematic reviews. BMJ 372 (2021), 1–9. DOI: https://doi.org/10/bmj.n71
+11. Fabio Palomba, Dario Di Nucci, Annibale Panichella, Andy Zaidman, and Andrea De Lucia. 2017. Lightweight detection of Android-specific code smells: The aDoctor project. In IEEE 24th International Conference on Software Analysis, Evolution and Reengineering (SANER). IEEE, 487–491. DOI: https://doi.org/10/SANER
+12. Bob Pan. 2022. dex2jar. Retrieved from https://github.com/pxb1988/dex2jar.
+
+13. Yulei Pang, Xiaozhen Xue, and Huaying Wang. 2017. Predicting vulnerable software components through deep neural network. In International Conference on Deep Learning Technologies. Association for Computing Machinery, New York, NY, 6–10. DOI: https://doi.org/10/3094243
+14. Manisha Patil and Dhanya Pramod. 2021. AndRev: Reverse engineering tool to extract permissions of Android mobile apps for analysis. In Computer Networks and Inventive Communication Technologies. Springer Singapore, 1199–1207. DOI: https://doi.org/10/978-981-15-9647-6_95
+15. Serena Elisa Ponta, Henrik Plate, Antonino Sabetta, Michele Bezzi, and Cédric Dangremont. 2019. A manually-curated dataset of fixes to vulnerabilities of open-source software. In IEEE/ACM 16th International Conference on Mining Software Repositories (MSR). IEEE, 383–387. DOI: https://doi.org/10/MSR
+16. Ivan Pustogarov, Qian Wu, and David Lie. 2020. Ex-vivo dynamic analysis framework for Android device drivers. In IEEE Symposium on Security and Privacy (SP). IEEE, 1088–1105. DOI: https://doi.org/10/SP40000
+17. Jiawei Qin, Hua Zhang, Jing Guo, Senmiao Wang, Qiaoyan Wen, and Yijie Shi. 2020. Vulnerability detection on Android apps-inspired by case study on vulnerability related with web functions. IEEE Access 8 (2020), 106437–106451. DOI: https://doi.org/10/ACCESS
+18. Muhammad Sajidur Rahman, Blas Kojusner, Ryon Kennedy, Prerit Pathak, Lin Qi, and Byron Williams. 2021. SoURCERER: Developer-driven security testing framework for Android apps. In 36th IEEE/ACM International Conference on Automated Software Engineering Workshops (ASEW). IEEE, 40–46. DOI: https://doi.org/10/ASEW52652
+19. Venkatesh-Prasad Ranganath and Joydeep Mitra. 2020. Are free Android app security analysis tools effective in detecting known vulnerabilities? Empir. Softw. Eng. 25, 1 (2020), 178–219. DOI: https://doi.org/10/s10664-019-09749-y
+20. Renas. 2016. RobotiumTech/robotium: Android UI Testing. Retrieved from https://github.com/RobotiumTech/robotium.
+
+21. Claudio Rizzo, Lorenzo Cavallaro, and Johannes Kinder. 2018. BabelView: Evaluating the impact of code injection attacks in mobile webviews. In International Symposium on Research in Attacks, Intrusions, and Defenses. Springer, Cham, 25–46. DOI: https://doi.org/10/978-3-030-00470-5_2
+22. Vlad Roubtsov. 2005. EMMA: a free Java code coverage tool. Retrieved from http://emma.sourceforge.net/.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+187:35
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+187:37.

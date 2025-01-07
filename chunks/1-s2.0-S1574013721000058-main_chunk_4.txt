@@ -1,0 +1,71 @@
+# 3. Android application hardening
+Application developers employ various hardening techniques to prevent analysis of their code. With the term stealth, we refer to modifications or enhancements employed by an Android application to make its structure and behavior inconspicuous, i.e. to deter tampering or reverse engineering.
+
+Hardening technique such as obfuscation is a double-edged sword as it protects legit developers against code cloning as well the malware authors against a range of analysis engines . For this survey, we used search engines and databases to identify high quality refereed articles from journals and conference papers. We employed keywords (such as Android obfuscation, hiding, hardening, protection etc.) and regular expression based search for literature identification. The research was focused to identify articles in the domain of Android application hardening. Correspondingly, the application hardening is classified into Trivial APK techniques, code obfuscation, preventive and other techniques. Categories and sub-categories are outlined in Fig. 8. Trivial APK techniques contains enhancements that modify the structure or packaging of an APK file. Code obfuscation in agreement with current literature contains obfuscation techniques that target source code or byte code. Preventive techniques focus on detecting and preventing application execution in a test (i.e. virtual, emulator, etc.) environment. We have also considered Other techniques, which consists of strengthening network interaction and resource centric obfuscations, where focus is on securing the application communication over the network to prevent eavesdropping and traffic analysis. And resource centric targets resource files an application requires for execution.
+
+In the following subsections, existing Android application hardening approaches are detailed.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# 3. Trivial APK techniques
+Trivial APK techniques are called so because they require less technical skills and are easier to apply. The purpose of these techniques is to evade application detection engines based on signatures of complete or specific segments of an application. They comprise of transformations which do not require code-level modifications but simple operations, like signing the APK file with a new signature.
+
+Such transformations include unpackaging and repackaging the APK file, renaming application packages, reassembling the byte code.
+
+# 3. Repackaging
+Anti-malware scanners often rely on APK digests for malware identification. Repackaging includes unzipping the APK, adding junk code or resources and rezipping to a functionally identical APK. Malware authors often repackage popular applications to receive its purchase and advertisement profit [32–35]. Previous studies have shown that 86% of over 1200 malware families were repackaged to induce malicious payloads . Popular applications are repackaged with malicious payloads in order to steal user information, make purchases, or send premium SMS.
+
+As depicted in Fig. 9 repackaging includes decompilation of DEX file extracted from the APK using tool baksmali . The decompiled smali code is then modified, recompiled and repacked. It is then self signed by the attacker to generated forged APK to be hosted on market places.
+
+Recall from Fig. 5 that Android applications are signed by developer’s certificate that will be lost after disassembling and
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# 3. Disassembling and reassembling
+Disassembling and reassembling of the DEX code (i.e., classes.dex) residing in APK archive also creates a functionally equivalent application yet with a different digest like repackaging. Dalvik byte code is disassembled and reassembled with apktool to generate reordered byte code . Application identification methods relying on code orders are likely to be ineffective against it . Malware authors use this technique to generate malware instances with different file based and code order based signatures to circumvent detection engines.
+
+# 3. Realignment
+Recall from Fig. 5, zipalign tool is used to align signed applications. Zipalign is an alignment tool for APK file optimization. It particularly aligns uncompressed data such as media and raw files w.r.t. start of the file to be matched to 4-byte limits . Realignment reduces RAM consumption during application execution . Aligning an APK creates a functional equivalent but slightly different file. Digest of a realigned file is different from its original APK.
+
+# 3. Manifest file modification
+As explained in 2, each application contains AndroidManifest.xml file specifying application components, features and permissions . During APK compilation the manifest is compiled into a binary XML file. This transformation modifies the XML file by altering permissions, intent filters and components. Code listing in 5 illustrates modification in manifest file of Plankton malware to evade detection as demonstrated in . Package, activity and service are renamed to non-readable text. For it to work, components in byte code are required to be renamed.
+
+A popular technique available in literature is package renaming, which is a subset of manifest file modification.
+
+Android uses the package name to determine if an application has been installed or not. Usually, packages are defined by using hierarchy separated by dots. General package nomenclature followed is: &lt;com.companyname.applicationname&gt;. Listing 5 illustrates package renaming used by Plankton malware. It modifies package name to a predefined random string format.
+
+1 &lt;manifest ... package = " com.hDEWJu . oYlCvk . hFYkwc.
+
+FgDOHA. UPkmVF " ... &gt;
+2    &lt;application android :label= " @string / app_name "
+android :icon= " @drawable /icon " &gt;
+3       &lt;activity android :label= " @string / app_name "android :name= " . LncHMH " ... &gt;
+4       :
+5       &lt;/activity &gt;
+6       &lt;service android :name= " com. rawJbA . DKPTQc.aaMYse.
+
+QUivSk " ... /&gt;
+7    &lt;/application &gt;
+Listing 5: Manifest file with renamed packages.
+
+# 3. Code obfuscation
+Code obfuscation is a popular and effective technology to make reverse engineering harder. Code obfuscation was introduced to prevent intellectual property violations of the source code . But since then it also has been extensively employed by malware authors for evasion . Malware authors use obfuscation techniques to conceal working and protect information such as strings, domain names and web addresses, which may be used as artifacts for detection.
+
+The objective of code obfuscation is to make it harder to interpret the code. It transforms the given code into a functionally identical one of the original but difficult to follow . The theoretical perspective of code obfuscation is well studied in [48–50] to define its limits. To make their apps more difficult for analysis, Android application developers use different obfuscation strategies. First defined by Barak et al. , an obfuscator is a program that transforms a given code or application into a new one satisfying functionality property (must be functionally equivalent), slowdown property (be polynomially slower than the original) and virtual black-box property (be as hard to analyze and reverse as a black-box version of the application) . Code obfuscation methods accounted are applicable on java source code or dalvik byte code. We have also included existing methods which have been applied in other OS environments but can be applied on Android application source code. The prevailing code obfuscation methods  as outlined in Fig. 8 are discussed below.
+
+# 3. Constant data obfuscation
+As the name suggests, this technique targets constants data types. It includes methods whose objective is to obscure the constant values by different arithmetic, logical or cryptographic transformations.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Literal encoding
+An easy way to hide a constant is to transform it into a function that generates the constant during runtime . The literal encoding includes an invertible function f, a constant d as an input to f and storage for the output. The inverse function f−1 is required during runtime to generate the constant value d from the stored output. Basic literal encoding function induces low computation overheads . Opaque expressions which always have a certain fixed value during program execution can also be used to encode constant value. For example cos2(x) + sin2(x) is always equal to 1, regardless of the value of x. Therefore, the literal int flag = 1; can be encoded as shown in listing 6.
+
+1 double x = Math.random();
+2 double s = Math.sin(x);
+3 double c = Math.cos(x);
+4 int flag = s*s + c*c;
+Listing 6: Literal encoding
+# Mixed boolean arithmetic
+Mixed Boolean Arithmetic (MBA) technique for code obfuscation is suggested in . MBA encodes data using arithmetic (addition, multiplication, etc.) and boolean operations (XOR, AND, OR). The resulting encoding relies on external inputs so that compiler optimization strategies do not deobfuscate it.
+
+For example, a linear MBA expression as A = (x⊕y)+2×(x∧y) which simplifies to A = x + y can be used for encoding.

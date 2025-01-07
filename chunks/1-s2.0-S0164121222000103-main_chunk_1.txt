@@ -1,0 +1,48 @@
+# Taxonomy of security weaknesses in Java and Kotlin Android apps
+Alejandro Mazuera-Rozo a,b,∗, Camilo Escobar-Velásquez b, Juan Espitia-Acero b, David Vega-Guzmánb, Catia Trubiani c, Mario Linares-Vásquez b, Gabriele Bavota a
+a Università della Svizzera Italiana, Lugano, Switzerland
+b Universidad de los Andes, Bogotá, Colombia
+c Gran Sasso Science Institute, L’Aquila, Italy
+# Article history:
+Received 3 March 2021
+Received in revised form 14 July 2021
+Accepted 20 January 2022
+Available online 31 January 2022
+# Keywords:
+Security
+Android
+Android is nowadays the most popular operating system in the world, not only in the realm of mobile devices, but also when considering desktop and laptop computers. Such a popularity makes it an attractive target for security attacks, also due to the sensitive information often manipulated by mobile apps. The latter are going through a transition in which the Android ecosystem is moving from the usage of Java as the official language for developing apps, to the adoption of Kotlin as the first choice supported by Google. While previous studies have partially studied security weaknesses affecting Java Android apps, there is no comprehensive empirical investigation studying software security weaknesses affecting Android apps considering (and comparing) the two main languages used for their development, namely Java and Kotlin. We present an empirical study in which we: (i) manually analyze 681 commits including security weaknesses fixed by developers in Java and Kotlin apps, with the goal of defining a taxonomy highlighting the types of software security weaknesses affecting Java and Kotlin Android apps; (ii) survey 43 Android developers to validate and complement our taxonomy. Based on our findings, we propose a list of future actions that could be performed by researchers and practitioners to improve the security of Android apps.
+
+© 2022 The Authors. Published by Elsevier Inc. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4/).
+
+# 1. Introduction
+Mobile apps and devices are nowadays omnipresent in daily life activities, supporting many crucial tasks (e.g., banking, social networking, etc.) involving the manipulation and storage of sensitive and private data. The usage of mobile operating systems has already exceeded the usage of desktops/laptops operating systems (StatCounter, 2020a,b; Google, 2019a). As a consequence, mobile apps and devices have become a very attractive target for malicious attacks aimed at stealing private and sensitive information from apps/devices and to exploit on-device capabilities such as processing, data collection via sensors, and networking. Also, according to the CVE details portal1 the number of vulnerabilities in the Android operating system has seen a steep growth in the last years, with a total of 2563 reports in 10 years (2009–2019). As a natural reaction to such a rising of vulnerabilities in the mobile ecosystem, original equipment manufactures (OEMs), operating system designers (e.g., Google), researchers, and companies have devoted efforts to improve the security of mobile OSs, devices and apps.
+
+A paramount example is the volume of research focused on detecting vulnerabilities in Android apps (see e.g., Arzt et al., 2014; Li et al., 2015; Sadeghi et al., 2017; Lee et al., 2017; Singleton et al., 2019; You et al., 2016; Bello-Jiménez et al., 2019; Ren et al., 2015; Novak et al., 2015; Gadient et al., 2018). The Android OS and devices have been also investigated in the context of previous studies aimed at categorizing their security weaknesses and exploits (e.g., Huang et al., 2015; Thomas et al., 2015; Cao et al., 2015; Wang et al., 2016; Jimenez et al., 2016; Bagheri et al., 2018; Meng et al., 2018; Mazuera-Rozo et al., 2019). Even datasets with malicious apps have been built (Allix et al., 2016; Zhou and Jiang, 2012).
+
+Still, to the best of our knowledge, there is no comprehensive taxonomy of security weaknesses exhibited in Android apps. With security weaknesses we refer to flaws or gaps in a software that could be exploited to violate its security policy, thus eventually causing a disruption of the confidentiality, integrity, or availability of the system in question. As compared to desktop applications, Android apps may suffer of specific vulnerability types since they (i) run on a mobile device, thus usually collecting a larger amount of information about the user (e.g., location, video/audio, as well as biometric information); (ii) are built on top
+https://doi.org/10/j.jss
+0164-1212/© 2022 The Authors. Published by Elsevier Inc. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4/).
+
+# A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+# The Journal of Systems & Software 187 (2022) 111233
+of a specific framework and programming model, that, as we will show, requires to carefully handle specific types of resources and components (e.g., Activities, Intents, Broadcast Receivers, etc.); (iii) despite the Android OS is built on top of the Linux kernel, several modifications have been done to the kernel, and there is a set of specific OS layers built on top of the kernel that makes Android apps programming different from web and desktop app programming, even the programming model is different from the iOS model. In this paper, we focus on Android apps written in Java and in Kotlin, the two main programming languages officially supported for the development of Android apps.
+
+Despite previous individual efforts for analyzing, detecting and fixing specific sets of security weaknesses, the research community still lacks a body of knowledge characterizing the types of weaknesses affecting Android apps. Also, some of the empirical investigations performed in the past could become outdated due to the frenetic evolution of the Android ecosystem. Indeed, the programming models include now the possibility of creating native, hybrid, cross-platform, and mobile web apps for the Android platform. Previous studies on specific security vulnerabilities have focused on analyzing Android Java apps, because of the availability of code bases and APKs in this language. Given the rising interest for Kotlin apps and its status of official Android language, investigating security weaknesses in Kotlin becomes a required avenue for research. While Dart/Flutter also represent interesting targets for research, their diffusion is still limited, with ∼18k GitHub repositories as compared to the ∼75k Kotlin repositories.
+
+In this paper, we present the first empirical study characterizing software security weaknesses in Android Java and Kotlin apps. To this end, we build a taxonomy of security weaknesses by (i) manually analyzing 681 commits in open source Android Java/Kotlin apps (i.e., mining-based study), and (ii) surveying 43 Android developers to collect their experience with security weaknesses, and in particular with the types they frequently faced (i.e., survey-based study). The output of the mining-based study is a taxonomy on multiple levels featuring a total of 74 categories of security weaknesses.
+
+As results of the developers’ survey, we identified 28 types of security weaknesses, of which 22 were already covered in our taxonomy, and six more were added. We use the defined taxonomy to discuss interesting directions for future research in the area, and lessons learned for practitioners.
+
+Note that, while catalogues of security weaknesses in mobile apps have been previously defined (CWE, 2020; The OWASP Foundation, 2020), they are not based on the empirical observation of weaknesses affecting real mobile apps and, as a result, they are less comprehensive than the taxonomy we derive in this work.
+
+# 2. Study design
+The goal of the study is to investigate software security weaknesses affecting Java and Kotlin Android apps. The context consists of (i) 681 commits performed by software developers of Android apps to fix software security weaknesses, and (ii) answers to a survey conducted with 43 Android developers to investigate the software security weaknesses they face and how they deal with their identification and fixing.
+
+Our study addresses the following research question:
+RQ1: What are the types of software security weaknesses faced by the developers of Java and Kotlin Android apps?
+To answer RQ1, we combine two orthogonal analyses. We start by manually analyzing a set of 681 commits fixing security weaknesses performed in 315 Java and Kotlin open source Android apps with the goal of defining a taxonomy of software security weaknesses faced by Android developers. We analyze both apps written in Java and in Kotlin, by presenting the differences (if any) in the distribution of security issues across the two languages. Then, we run a survey with 43 Android developers. The survey has a dual goal. First, we “validate” the taxonomy defined in the first step, by asking developers which security weaknesses they address more often. This allows to assess the comprehensiveness of our taxonomy and to complement it with new categories of security weaknesses if needed. Second, we collect additional data reporting how developers perceive security weaknesses in Android apps.
+
+# 2. Manual analysis of commits
+We present the procedure to collect the data needed for our study (i.e., commits fixing security weaknesses we manually validated) and the process performed to derive our taxonomy.

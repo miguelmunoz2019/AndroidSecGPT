@@ -1,0 +1,32 @@
+In this section our emphasis is on the impact of GDPR/CCPA on tracking. All websites must comply with GDPR  when accessed from any EU member state. GDPR is an opt-in privacy regulation (e.g., user consent must be obtained before tracking known tracking scripts; note that we visit these sites via OpenWPM from a VPN in the Netherlands). Most tracking scripts (524, 27%) on these sites are served by Google, followed by Facebook (54, 2%), Cloudflare (24, 1%), and Twitter (23, 1%).
+
+We also observed companies (e.g., CookieLaw and Cookiebot) that provide solutions (e.g., provision of cookie banners) to adhere to GDPR, included scripts on EU government websites that are categorized as trackers by EasyList/EasyPrivacy . Notably, 24 (out of 1942) government sites (e.g., Germany, Lithuania, Denmark) include tracking cookies that are valid for 7984 years; see Table 6.
+
+California websites. Websites accessed from California are subjected to CCPA , which is an opt-out privacy regulation. For example, CCPA does not require websites accessed from the state of California to provide explicit cookie consent (unlike GDPR). We observed 306/444 (69%) California government websites include known trackers and unknown trackers.
+
+# PRIVACY POLICIES IN GOVERNMENT WEBSITES WITH TRACKERS
+For this analysis we leveraged 551 privacy policy URLs extracted from the government Android apps (see Section 3). We found only 41% (227/551) of the corresponding government sites included trackers (scripts/cookies). 23/227 sites do not mention the use of tracking services in their privacy policies — based on matching the policy content with a set of predefined keywords (e.g., analytics, 3rd party, Google, Facebook, Twitter, Linkedin) using Policy Highlights.
+
+Ironically, many governments fail to lead by example as apparent from our results. The unique tracking domains in these government sites include facebook.com, facebook.net, google.com, google-analytics.com, googletagmanager.com, gstatic.com, youtube.com, ytimg.com, wp.com. There were 9% (21/227) privacy policies of government sites that are not written in English (we could not translate 6 of them). There were also 11 privacy policy URLs of government sites that no longer exist.
+
+# FOREIGN-HOSTED GOVERNMENT SITES
+We extract the DNS resolution information of the crawled government sites from OpenWPM to find the IP of each domain. Then using geoiplookup, we determine the geolocation and Autonomous System Number (ASN) details of each IP address. Singanamalla et al.  found 94% (127,327/134,685) of government sites are either hosted privately or by an unknown hosting provider. In contrast, our analysis focused on government sites hosted in foreign countries.
+
+# WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Samarasinghe et al.
+
+# Malicious type
+# # Govt. sites (example countries)
+# Validity period
+# Validity period
+We observed 194 countries host their site content using services from a foreign country; e.g., 2% (489/22,506) websites from the United States and 2% (370/12,583) websites from China are hosted outside these countries. These sites are hosted by cloud providers (i.e., hosting/CDN providers) with data centers around the globe; Wix (102) and Akamai (67) host most of these sites for the United States, while Quantil (202), Cloudflare (39) and Alibaba (25) hosted most sites for China. Some countries in Africa host all their government sites (in our dataset) outside: Chad (5), Congo (9), Equatorial Guinea (2), Somalia (16), Togo (3). Most prominent government sites (10) in Somalia (e.g., centralbank.gov.so, as.parliament.gov.so) were hosted by a provider (Unitedlayer) in the US.
+
+We analyzed 1466 government websites, which are likely to be hosted at a foreign provider, not at CDNs due to the fact that ASN names of these websites did not contain a CDN listed in , and their IP addresses remained static and at a foreign geolocation when accessed both from IP addresses in Canada and in the Netherlands. We also found the categories  of these websites by parsing the text within meta tags of request headers–to determine if these sites serve any sensitive/critical purposes. Notable categories of these sites include: election (e.g., US/Delaware’s election website elections.delaware.gov hosted in the UK); defence (e.g., Australia’s army.defencejobs.gov.au hosted in the US); police (e.g., Australia/Victoria’s policecareer.vic.gov.au hosted in the US); courts (e.g., a New Zealand district court website: districtcourts.govt.nz hosted in the US); immigration (e.g., Papua New Guinea’s immigration.gov.pg hosted in Australia); and airports (e.g., Kenya’s kaa.go.ke hosted in the Netherlands).
+
+# FINGERPRINTING APIS
+We found many instances of calls to various fingerprinting APIs on government websites. Examples include: Storage (5,355,626), CanvasRendering2D (7,615,438), window.navigator (3,349,296), HTMLCanvasElement (1,102,482), hardware related APIs (230,426), window.screen (99,504), audio related APIs (16,274), window.navigator.geolocation (8334), RTC (2655). APIs related to Audio, hardware, RTC and window.screen can track users for a relatively longer period as the characteristics of those fingerprints generally remain static for a long time. We found other privacy implications from the fingerprinting APIs: Window.navigator.geolocation gives a website access to the location of user device (called 8334 times), and RTC is used to discover local IPs without user permission (called 498 times). Such a combination of multiple fingerprinting APIs can be used to identify a user with a high precision, and reportedly being used to bypass EU GDPR cookie restrictions.
+
+# POTENTIALLY MALICIOUS DOMAINS HOSTED BY TRACKERS
+We list potentially malicious domains including scripts and cookies on government sites in Table 4 and Table 5 respectively.
+
+Hardware fingerprinting APIs include: window.navigator.hardwareConcurrency, window.navigator.mediaDevices, window.navigator.getGamepads, window.navigator.oscpu, window.navigator.platform, window.navigator.vibrate and window.navigator.maxTouchPoints..

@@ -1,0 +1,92 @@
+# Challenges and Failed Attempts of verification
+Before coming up with state change technique for the cross-site scripting attack in the WebView, we attempted many techniques to come up with reliable way of verifying the cross-site scripting attack in the Android WebView which eventually failed or had limitations tied to the application specific implementation. In this section, we will be discussing the challenges, approaches and failed attempts with limitation which may be helpful for future optimization and building reliable verification techniques for the cross-site scripting vulnerability categories.
+
+# 1. Client Server Verification Model
+As shown in the figure 3, the traditional approach followed in the Web application security model is to attach a command and control script with the malicious script to self detect and execute in the client side which the communicates with the command and control server to extract the information from the client-side and then transmitted to the server-side. The similar approach will be helpful for the Android WebView context to setup and host a command and control server to execute and extract information from the client-side. However, this approach has few major limitations which are listed below
+# Drawbacks
+- Most of the Android Application built using HTML5 framework requires allow-list based host which blocks communication between the compromised client and command & control server
+- The Asynchronous verifier script requires co-ordination between the command & control script and exploit verification script that may often lead to timeout in test case based verification setup.
+
+# Poll every few seconds
+# CommandServer Control
+# Exploit Verifier
+# Payload connecting
+# Vulnerable
+# CommandServer Control
+This client server model requires Internet permission as they are communicated over the network to share the exploit results.
+
+Thus, Client Server verification model has major drawback in terms of verifying the exploit in more generic way instead of targeting the specific application behaviour.
+
+# 2. Inspecting Application WebView Model
+As shown in the figure 3, inspecting application WebView from the emulator is a common model used by the security engineers to manually verify the scripting attacks and property changes using debugging tools such as developer console, proxy for networking with overall JavaScript execution context. Using the developer console scripting execution engine, the security engineers verify their payload results by either using Logging API calls or making any evidence particularly distinguishing the payload execution results from the trusted script execution context. It is a lot more easier to understand the execution context and verify them easily using this inspection method. But the main issues are described below.
+
+# Drawbacks
+- The hooks for WebView JavaScript execution context aren’t publicly available for automating the script detection from the client-side.
+
+# Malicious Code
+# Property Modifier
+# Exploit Verifier
+# Code
+# Cookies
+# Device
+# Android WebView
+# Bridge
+# Cache
+# FileSystem
+# Session Storage
+# WebView Sellings
+# Android APIs
+- Since Android WebView is closely tied with open-source chromium developer tools, the version changes may affect the debugging and detection scripts since the developer tools are modified regularly.
+
+- The lifecycle of the WebView and remote inspecting hook and context should be mapped together which is manually done by the security engineers which requires a lot of heavy-lifting from client-side.
+
+Thus, Application Inspection verification model has successfully been used in manual debugging but has major drawbacks in terms of verifying the exploit in an automated manner utilizing the available APIs from the client-side.
+
+# 3 Content Provider Vulnerability Overview
+Content provider is an application level component of Android Development ecosystem which helps to communicate securely between applications from the sandbox environment.
+
+However, this content provider has many attack surfaces due to security mis-configurations, outdated input sanitization techniques. In this section, we will be looking into approaches for detecting exploits and verifying them from the security engineer view-point.
+
+# Path Traversal in Content Provider
+As per Open Web Application Security Project (OWASP), a path traversal attack (also known as directory traversal) aims to access files and directories that are stored outside the web root folder. By manipulating variables that reference files with “dot-dot-dot-slash (.../)” sequences and its variations or by using absolute file paths, it may be possible to access arbitrary files and directories stored on file system including application source code or configuration and critical system files. It should be noted that access to files is limited by system operational access control (such as in the case of locked or in-use files on the Microsoft Windows operating system).
+
+In Content Provider, file name handling and parsing the uniform resource indicator is so complex. Here are the step by step guidelines followed by the developers to keep the application secure but they fail in most implementation:
+- Sanitizing the user inputs by clearing path traversal based special characters.
+
+- Resolving internal sandbox references for the given uniform resource indicator and rejecting them.
+
+- Checking for symbolic reference to the internal sandbox files and rejecting them.
+
+- Checking for access control and permissions before accessing the files.
+
+However, most of the implementations are prone to these errors and that creates attack surface over the content provider. In upcoming section, we will discover the process to identify and verify the content provider vulnerability in detailed manner.
+
+# 3 Manual Detection Technique
+As shown in figure 3, content provider vulnerability attack surface is well-defined and has single entry point class which primarily extends ContentProvider or FileProvider and they are primarily exposed to the other applications. So, the payloads are executed directly either from the Provider APIs or Android Debug Bridge APIs by adding vulnerable inputs.
+
+21
+# Sandbox
+# Test Case Driver
+payload
+# Android
+# Provider Interface
+Debug
+# Dridge
+# Security Report
+# Vulnerable App
+and target implementation. As a result, these providers either respond with the leakage of internal sandbox files that may contain sensitive information such as tokens, cookies or overwrite the internal files explicitly. The response format of the providers are often Parcelable file descriptors or binary data which can be easily modified and verified the security engineer to prove the existence of the security vulnerability with the content provider.
+
+# 3 Automated Detection Technique
+In-order to detect the content provider leakage attacks, the Android API are well documented and stable to retrieve and access them for the verification process. Content provider classes are part of Android Development Kit and Android Debug Bridge supports querying the provider interfaces directly from the command-line which helps security engineers to test and craft the payload directly without interacting with the emulator process.
+
+# Automated Exploitation Process Steps
+Initially, the core test-case framework establishes connection with the Android Debug Bridge process and installs vulnerable application and the test-case driver application separately. Then the core framework accepts the corresponding payload which is specific to the application from the actual security test cases and constructed with the existing framework intent to query the provider interface. The corresponding intents are then passed on to the Android Debug bridge by creating malicious intent to the Test case driver application. The corresponding payload is once again proxied to the vulnerable application by targeting the exact component class. This particular content provider vulnerability is limited to the information leakage only but they do not verify security vulnerability associated with content provider pollution attacks.
+
+# Verification Steps
+Once the malicious intents are delivered to the application provider component, the verification steps are then triggered from the client-side of the core test-case driver framework. The provider response are then captured by the test-case driver application process as soon the file permission or parcelable file descriptors are exchanged between the vulnerable application and test-case application. Then the parcelable file descriptors and binary information are processed with the help of the vulnerable application process as String. The final results are then passed on to Android Debug Bridge which helps in verifying the file content and exploitability of the reported issue.
+
+# 3 Teardown Test-case
+After the verification process completes, the result objects are passed as callback to the original test-case caller which helps the actual test-case to verify them with the expected results. Often the results are cross checked by the security engineers with different payloads and test results in action to determine the vulnerability severity, range which may helps in creating Common Vulnerability Scoring System (CVSS) score. Finally, the test-case teardown method is called to uninstall or remove the properties in the emulator setup, clear the Android Debugging session with emulator which facilitates isolation between multiple test-case suite and identify any false positive behaviours.
+
+# 3 Test-case Reporting
+The final step of the DEVAA workflow is generating test-case report based on the exploit verifier results. Most of the vulnerabilities have different implementation of exploit verification technique as discussed in our previous sections. However, the results are normalized and shared with the actual security test-case with result object containing the actual information and meta data about the vulnerability.

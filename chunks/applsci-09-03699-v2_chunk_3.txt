@@ -1,0 +1,64 @@
+- A used permission set (UPS) contains all the permissions required by all the APIs that may be invoked during the execution of a particular Android app. We can divide this set into two subsets, the set that contains the used permissions for the code written by developers (UPSdev) and the set
+that contains the used permissions for the third-party libraries included in the app (UPSlib). It is not difficult to know that:
+UPS = UPSdev ∪ UPSlib
+Please note that there might be overlaps between these two sets as one permission might be used both in the developer’s code and library code.
+
+The perfect scenario would be when DPS equals UPS, which ensures not only that all the data accesses protected by permissions work well, but also that there are no unused permission declarations that might introduce various security threats. On the contrary, If DPS does not equal UPS, there exists a permission gap between the declared and the used permissions.
+
+# 3. Types of Permissions Issues
+There are three types of permissions issues we focus on in this paper.
+
+- Permission overprivilege occurs in an app when |DPS − UPS| > 0. This means the app declares more permissions than it actually uses. An app with permission overprivilege violates the principle of least privilege (POLP) , which may introduce potential security vulnerabilities.
+
+- Permission underprivilege occurs in an app when |UPS − DPS| > 0. This means the app uses more permissions than it declares. As a matter of fact, permission underprivilege happens much more often than we expect. We will discuss this later.
+
+- An unprotected API occurs when developers forget to add an exception handler to some API methods, which may throw exceptions. Figure 1 is an example code snippet in which developers failed to protect a privileged API, so that the app would crash if the API were called.
+
+private void acquireWakeLock() {
+PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+int wakeFlags;
+if (mPedometerSettings.wakeAggressively()) {
+wakeFlags = PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP;
+}
+else if (mPedometerSettings.keepScreenOn()) {
+wakeFlags = PowerManager.SCREEN_DIM_WAKE_LOCK;
+}
+else {
+wakeFlags = PowerManager.PARTIAL_WAKE_LOCK;
+}
+wakeLock = pm.newWakeLock(wakeFlags, TAG);
+wakeLock.acquire();
+}
+# 3. The Permission Gap Problem
+As proposed above, the problem of the permission gap can be generally classified into two sub-problems, permission overprivilege and permission underprivilege.
+
+# 3. Permission Overprivilege
+The issue has been explored by several previous studies on permission gaps [6, 8–11, 45–47]. Recent studies showed that this is a quite prevalent problem. For example, in a recent study  that leveraged a combination of static analysis and dynamic analysis, people found that 83% of apps suffered from permission overprivilege.
+
+Declaring more permissions than needed seems to have no influence on developers, since it does no harm to the functionality of an app. However, Bartel et al.  showed that malware can leverage the unused permissions to achieve their malicious goals. Meanwhile, several approaches [15,39,40,48–50] have explored methods to detect malware or ranking apps according to the permission usage of each app to recommend apps to users. Especially, over-declaring sensitive permissions like ACCESS_FINE_LOCATION (A kind of Android permission used for collecting precise locations of app users), has a high probability of being recognized as malware.
+
+# 3. Permission Underprivilege
+In contrast to permission overprivilege, the issue of permission underprivilege has not been raised very often. Generally, related functionalities in the app would be affected if certain permissions are missing. Furthermore, these apps may throw SecurityException when it invokes an API method that requires a certain permission, but the developer has forgotten to declare it. This would lead to the app crashing, which is the last thing a developer wants to see.
+
+In order to explore this issue, we analyzed 958 popular apps from 10 app categories on Google Play. For each app, we first calculated the DPS for an app from the Android Manifest file. Then, we used methods in [ 12 ] to estimate the UPS for each app. Finally, we compared the differences between the two sets to determine whether permission underprivilege exists.
+
+The statistics on underprivileged apps are shown in Table 1. It is somewhat surprising to discover that more than 90% of apps are underprivileged; in particular, more than 98% of apps in the ENTERTAINMENT category are underprivileged. On average, an underprivileged app uses nearly four permissions that are not declared.
+
+When we looked into this issue, we found that there were generally two reasons behind it: ignoring the permissions required by third-party libraries and using the wrong permissions.
+
+Third-party libraries. Developers include third-party libraries in their apps to enrich the functionality or meet other purposes [ 36]. Third-party libraries have occupied a large portion of code in Android apps [ 50 ]. Third-party libraries of Android also follow the Android permission model, so developers are required to include permissions used by these libraries in the Android Manifest file as well. However, when developers declare permissions in the corresponding manifest file, they typically consider only their custom-written code, instead of the requirements of other libraries. Thus, it is possible that developers miss some permissions requested by third-party libraries, which would lead to permission underprivilege, whose implications for developers have been discussed above.
+
+Another phenomenon, first introduced in [51 ], is that some ad libraries may try to dynamically check certain permissions and make use of these permissions to invoke certain API methods if they
+are available to the apps. For example, the app “cn.leave.sdclean” is a cleanness tool for the SD card. It does not declare any location permissions, but we find that there are some location-related API invocations in the libraries it contains, such as “baidu/mobstats”, “google/ads”, “inmobi”, and “kyview”. According to a recent study on ad libraries, 27% of apps among 63,105 apps have at least one permission used by the libraries, but unused by the apps’ main logic . This indicates that developers would need to declare extra permissions for third-party libraries after completing the declaration of their own code, which can be annoying and may cause mistakes.
+
+Wrong permission usage. Another reason behind the permission underprivilege is that some permissions are not declared because of the carelessness of or mistakes by developers. For example, the developer typed the wrong permission or deprecated permissions, which was also raised by . A misused permission may cause both permission overprivilege and underprivilege at the same time. In the worst case, the app with the wrong permissions may be recognized as a potential threat to users’ privacy and also crashes when users are running it, which harms the popularity of the app.
+
+To investigate this issue in detail, we analyzed 7982 popular apps from 10 categories in the Google Play market. For each app, we first extracted the DPS from the Android Manifest files. We then checked each permission in the DPS to see if it was misspelled or had been deprecated in the SDK version the app was using. Overall, we found 472 apps with the wrong permissions, which represents about 6% of the apps. Although this was a small portion, it is still surprising that the developers of these apps failed to correct these trivial mistakes.
+
+Besides misspellings, there are also some deprecated permissions, such as ACCESS_GPS, which is replaced by ACCESS_FINE_LOCATION. This can also be attributed to the carelessness of developers, when they forget to update the permissions or copied out-of-date code.
+
+# 3. The Problem of Unprotected APIs
+In previous Android API levels (before 23), the permissions of an app were granted at anytime as long as they were accepted by users at install time. However, many approaches [26 – 28, 52 – 57] have been proposed to offer more fine-grained permission control. One typical functionality of these mechanisms is to allow users to control the permissions of each app after installation. The removal of permissions proposes challenges to those apps with unprotected APIs, which would cause crashing.
+
+Appl. Sci. 2019, 9, 3699 9 of 17
+The new Android system, which was released in summer 2015, proposed a brand-new permission system . Users grant permissions to apps while the app is running, not when they install the app. There were also some changes to the way developers write the code. Every time a developer uses an API that requires a “dangerous” permission (permissions that grant access to sensitive resources, e.g., contacts), he/she needs to use a combination of APIs ContextCompat.checkSelfPermission() and ActivityCompat.requestPermissions() to make sure the permission has been granted by users. Otherwise, the program would also throw SecurityException and lead to the app crashing.

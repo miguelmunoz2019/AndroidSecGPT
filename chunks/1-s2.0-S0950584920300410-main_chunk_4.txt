@@ -1,0 +1,52 @@
+# 5. RQ1: Functionality scope distribution and interaction
+This research question examines how benign and malicious apps exercise their behaviors in the three layers of functionality (i.e., UserCode, SDK, and 3rdLib), as well as how these layers collaborate (interact) in order to fulfill the app functionalities.
+
+# 5. Execution composition
+The composition of an app’s execution is characterized through the percentage distribution of all method call instances over the three code layers. This is essentially done by uplifting each node of the app’s dynamic call graph to its enclosing code layer and then computing the code-layer distribution by counting nodes in each layer.
+
+A closer look reveals that the average percentage of benign-app execution in SDK had an overall slight growth while the percentage slightly declined in malware (especially since year 2013). As a result of this trend, third-party libraries were increasingly (albeit also in small increments) used in malware and decreasingly in benign apps. On the other hand, the fluctuations were at best unsubstantial, resulting in the generally stable dominance of the Android framework during the executions of both app groups.
+
+A relatively clear trend was that user code kept shrinking in app executions, despite the security of the apps, although the magnitude of decrease over the entire eight-year span was slightly greater in benign apps. This trend implies that developers of Android apps, benign or malicious, tend to write less and less code for building an app, possibly because of the continuous enrichment of features offered by the Android platform.
+
+Overall, functionality scope distribution in malware was not significantly different from that in benign apps, as our statistics (St) showed (bottom of Fig. 1).
+
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+# Finding 1: Benign apps and malware had very similar functionality distribution over user code, third-party libraries, and the Android SDK, which was also consistent over time.
+
+In both app groups, user code accounted decreasingly, and SDK stably, for exercised app functionalities.
+
+# 5. Cross-scope collaboration
+The method-level calling relationships we profiled reveal collaboration among the three functionality layers/scopes, when we uplift each node of the dynamic call graph to its enclosing scope/layer and then count the edges. This collaboration within each app indicates the internal dynamics of the app with respect to its use of library functionalities through the user code. We characterize the cross-scope collaboration via the distribution of the dynamic calls (i.e., edges) on the graph over the nine possible calling relationships among the three scopes. Note that we focus on characterizing call pairs (i.e., a caller and a direct callee), rather than call chains (e.g., a user-code method calls a third-party library method which then calls back to user code)—with respect to direct calling relationships, the call chains are subsumed by the call pairs we characterize.
+
+Moreover, benign apps saw steady decrease in calls to the SDK launched from user code, yet this change experienced much greater variations in malware. Also, there were always much greater portions of 3rdlib → SDK calls, but always much smaller portions of SDK → SDK in malware than in benign apps. This observation was consolidated by our p and Δ statistics that showed significant and large differences (highlighted in boldface) between benign and malware apps with respect to these two types of cross-scope interaction. Along with the results on functionality scope distribution, these differences imply that, although both groups were similarly dominated by calls targeting SDK APIs, malware tended to make such calls more via third-party libraries while benign apps tended to do so more within the Android framework.
+
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+Statistical analysis revealed that percentages of calls from SDK to user code executed versus code for data management, which is complementary to studying the execution composition with respect to the three functionality scopes/layers in RQ1.
+
+# Finding 2
+Over time, both benign apps and malware had decreasing calls within user code and increasing calls within the SDK, yet malware had significantly less calls to user code from SDK. Constantly, malware had more calls to SDK from third-party libraries than did benign apps, yet benign apps had more such calls within the Android framework.
+
+# 5. RQ2: Component distribution and communication
+This research question concerns the distribution of app executions over the four types of components. In essence, these four component types represent separation of concerns in app design. Thus, this question investigates the composition of app executions from a semantic perspective (e.g., how much code dealing with user interface was executed).
+
+# 5. Component distribution
+Compared to the steady decrease in the use of Activity components in benign apps, the trend in malware was more of a zigzag shape—the use of Activities in malware had continuous drop during the years 2010–2012 and years 2013–2015 periods, followed a steady growth since 2015. Meanwhile, use of Content Providers was constantly more prevalent.
+
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+lent, and also growing faster, in benign apps, whereas Service components were used more substantially in malware. The p and Δ values highlighted that these two differences were significant and large statistically. One plausible explanation for these differences is that Service components effectively provide a latent, collaborative environment for committing malicious behaviors as they perform long-running operations in the background (i.e., without user interface); thus they are preferably exploited by malware to launch attacks in an unnoticeable and reliable manner. Content Provider components are more prevalently used in benign apps than in malware, likely because legitimate functionalities tend to more rely on dedicated data management than do malicious behaviors.
+
+of external implicit and internal explicit ones, than benign apps. This implies that when communicating with built-in apps, malware tended to do so more often explicitly while benign apps more often implicitly. Yet, none of these differences were significantly large as the p and Δ values indicated. In both malware and benign apps, components within apps rarely communicated implicitly, hence the negligible portion of internal implicit ICCs.
+
+# Finding 4:
+Overall use of ICCs has been steadily dropping, but always with similarly small portions of all method calls, in both malware and benign apps. Over the years, malware used mostly larger portions of explicit, but lesser of implicit, external ICCs than benign apps did.
+
+# Finding 3:
+For the execution of Activity components, malware experienced two diminishing periods, followed by a recent rise, as opposed to a continuous reduction in benign apps. Over time, malware used significantly more Services, but less Content Providers, than benign apps.
+
+# 5. Component communication
+Communication between app components informs about the internal dynamics of apps with respect to how semantically different code regions interact. Since the component-level communication in apps is realized through ICC APIs, we characterize such communications through a particular kind of method calls—calls targeting ICC APIs. Given our focus on app execution structure, we study how components connect within individual apps and how components interact across apps. We limited our study focus not to include inter-app communication, yet there were built-in apps in Android (e.g., Camera, Photo Viewer, etc.) which may communicate with our sample apps when exercised. Thus, external ICCs did present in our app executions. We are also concerned about the messages transferred between components—the data carried by the ICC Intents.
+
+Counting all ICC API calls during app executions, Fig. 4 reveals that despite the varying absolute numbers of such calls, ICC calls were only a tiny portion of all method calls. In both benign app and malware, the percentage of ICCs of any types was at most 1% across the past eight years. What is also noteworthy is that total use of ICCs in both benign apps and malware experienced a rise in the period of year 2010 to 2011, and dropped continuously ever since. This can be explained by the possible movement that newer apps, regardless of their security orientation, tend to enhance their maintainability/changeability by improving their cohesion while reducing coupling, at least at component level; thus, individual components are increasingly independent of other components to fulfill their functionalities, resulting in less needs for ICCs. Also, in absolute terms, malware exercised ICCs more frequently than benign apps did. However, the differences between the two groups were not significant at all, as per the p and Δ values.

@@ -1,0 +1,77 @@
+# 1 Limitation of the study
+In the development of Android applications, students must learn Java language, especially object programming in advance, as a basic language in the development of Android applications, and must learn Java before using the proposed system.
+
+In this proposed system, the researchers provide a training material for the development of Android applications since it is presented in English only. Examples and practical exercises will be implemented through the Android Studio program and give the final answers to the proposed system.
+
+Perhaps the most prominent focus of the researchers that the proposed system is an assistant system for the teacher in the educational process for students and not a complete substitute for the human teacher.
+
+# 2. Theoretical Background
+# 2 Intelligent Tutoring Systems
+The "Technological Revolution" indicates that reliance on traditional education (which is static lectures in time and space) will gradually decrease.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+Three components drive this educational infliction point. They are artificial intelligence (AI), cognitive science, and the internet :
+- AI, is the science making computers to take the place of the intelligence of human, with inmost understanding of knowledge, mainly representation and reasoning about "how to" knowledge, like procedural knowledge.
+
+- Cognitive science, or research into understanding how people act intelligently, leads to a deeper understanding of how people think, solve problems, and learn.
+
+- The Internet provides an unlimited source of information, available anytime, anywhere.
+
+AI and cognitive science, two sides of one coin that is, understanding the nature of intelligent work, in any clear entity. Often, AI techniques are used to build software models of cognitive processes, while cognitive science results are used to develop more artificial intelligence techniques to simulate human behavior.
+
+AI techniques are used in education to model student knowledge, academic subjects, and teaching approaches as shown in Figure 1.
+
+# 2 Definitions of ITS
+There are many definitions of ITS such as:
+- Intelligent Tutoring Systems (ITSs) are computer software designed as combined methods from Artificial Intelligence (AI) community to deliver expert tutors which recognize the material to teach, the target students and the technique used.
+
+- Intelligent Tutoring Systems (ITSs) are computer-based instructional systems with models of instructional content that specify what to teach, and teaching strategies that specify how to teach.
+
+- Intelligent tutoring systems (ITSs) are computer programs that are designed to incorporate techniques from the AI community in order to provide tutors which know what they teach, who they teach and how to teach it.
+
+- ITS is a system based on artificial intelligence that can think about useful knowledge models in promoting and evaluating learning. The main function of intelligent tutoring systems is to adapt to the learner by understanding or understanding their cognitive, meta-cognitive or cognitive states.
+
+- ITS is a computer system that tutors a student on some subject matter by presenting course content based on a model of the student. An ITS typically has four components: interface model, instructional model, expert model, and student model.
+
+- ITS is a computer program that contains some intelligence and it can be used in learning. Moreover, ITS is an outgrowth of the earlier computer-aided instruction.
+
+- From the researchers point of view: Any computer system providing direct customized instruction or feedback to students while using artificial intelligence strategies. It is made of three models: student, tutor and expert. The first implements students feature like knowledge and behavior (including misconceptions and mental schemes). The second adapts teaching strategies to the various contexts and to the students (i.e., uses the feedback from evaluation surveys to plan recovery actions for the students). The third contains a description of the knowledge or behaviors of the expert.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 2 Architecture of ITS
+The ITS architecture contains a domain model that contains the material to be learned, an expert model that intelligently controls all system roles, a student model that contains learner information, and a user interface model that is user-to-application communication as shown in Figure 2.
+
+Student Model
+Interface Model
+Expert Model
+Domain Model
+# 2 Domain Model
+The domain form contains relevant knowledge. The intelligent tutoring system uses its own domain knowledge to solve problems, or to answer questions posed by students. Different knowledge representations may be integrated into the same domain knowledge to support alternative teaching strategies.
+
+The domain usually refers to the field of study, the goal of most intelligent tutors is to teach part of the domain. The creation of a domain model is often the first step in representing students' knowledge, which may represent the same knowledge of the domain model and solve same problems. Domain models are qualitative representations of expert knowledge in a particular area. May represent facts, procedures, or methods that experts use to accomplish tasks or solve problems. The student's knowledge is then represented as explanatory versions of the information for that domain.
+
+# 2 Expert Model
+The Expert Model was carried out to collect information needed to generate feedback . The expert model is able to solve the resulting problems by analyzing the template. Because the expert model can execute any code, it can create the correct answer to a problem of its own, and determine if the user answer is correct / incorrect. In addition to whether the user answer is correct / incorrect, the model can provide the student with the correct answer when requested. In addition, the model provides the student with appropriate feedback in response to the student's response.
+
+# 2 Student Model
+Student model in intelligent teacher monitors student behavior and creates a qualitative representation of their cognitive and emotional knowledge. this is partially model calculations for student performance (time on task, observed errors) and reasons for modifying the comments. In itself, the student model achieves very little. Its purpose is to provide knowledge that is used to determine the conditions for adjust the feedback. It provides data to other tutor models, especially teaching alone. The long-term goal of artificial intelligence and education is to support learning students who have a range of abilities, disabilities, interests, backgrounds, and other characteristics.
+
+# 2 User Interface Model
+The user interface model is a way to communicate between students and computers (graphical interfaces, animated agents, or dialogue mechanisms).
+
+From the user's point of view, most of an intelligent tutoring system can be considered as a user interface. It is therefore important to highlight the aspects of ITS that are concerned with user interaction and domain knowledge, particularly in the presentation of text and graphics as well as user input acceptance. It should be noted that starting already since the early days of the development of ITSs has given insufficient consideration to the interaction between student and teacher and knowledge; this is still Achilles' heel for most ITSs.
+
+Graphical user interfaces, often supported by visual programming facilities, are recent answers to the problems of interaction in this area, the result of the technological maturity of existing computer systems. The importance of graphical user interfaces in education can best be described by the following quote: "People keep about 25 percent of what they hear, 45 percent of what they see and hear, and 70 percent of what they see, hear and do".
+
+# 2 History of ITS
+The microcomputer revolution of the late 1970s and early 1980s helped revive the development of the Computer-Assisted Instruction (CAI) system and the development of ITSs. Personal computers such as Apple 2, Commodore PET and TRS-80 have reduced resources for computer ownership. By 1981, 50% of American schools were using computers. Apple 2 as a system to
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+provide CAI programs in secondary schools and universities including the British Columbia Project and the California State University Project in 1981.

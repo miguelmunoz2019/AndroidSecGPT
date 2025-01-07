@@ -1,0 +1,96 @@
+3. Reputation Damage. In addition, hacktivists may seek to publish on dedicated platforms (e.g. Pastebin) information about how to obtain free tickets, simply due to a certain ideology.
+
+4. Privacy Breach. Attackers may also seek to leak databases or files containing information about the users of the m-tickets app. This would be done for financial gains or, again, to harm the company’s reputation.
+
+# 4 Methodology
+# 4 Vulnerability Analysis
+To study the app, we employ both Static Analysis, reverse-engineering and code auditing whilst the app is not running, and Dynamic Analysis, which covers any activity and tests done whilst the app is running.
+
+Static Analysis: We first reverse-engineer the Android application package (APK) of m-ticket by using dex2jar1 and jd-gui2. dex2jar is a tool that decompiles the .dex file inside the APK to a .jar file, which is a combination of Java.
+
+1 dex2jar Github
+2 Java Decompiler
+# 238
+# J. Sanz Maroto et al.
+
+classes aggregated as a single file; jd-gui further unpacks a .jar file into separate .class files. Some degree of obfuscation is inherently implemented during the compilation of the APK, which means our reverse-engineered code loses all the method and property names. However, given the fact that Java is a static strong typed language, class names are still well preserved, which can reveal sufficient information for subsequent analysis.
+
+A careful analysis reveals that no functionality is implemented in Java per se. Instead a NOTICE file indicates that the core functionality is implemented using the Xamarin cross-platform C# application development tool,3 which allows creating a single application in C# that can be compiled into Android, iOS, and Windows apps. Indeed, C# code was compiled with MonoVM to shared objects and the Java code is responsible for linking the classes in the shared objects and constructing the overall functionality of the app.
+
+Knowing that the overall functionality lies in the shared objects, we extract the C# code from these objects, seeking to understand the functionality of the app and reverse-engineer its features. Shared objects built with Xamarin act as wrappers of Dynamic-Link Libraries (DLLs), which hold the actual functionality of the app. We extract these DLLs using a small script. Lastly, we use JetBrains dotPeek4 to decompile DLLs and retrieve the original source code.
+
+Overall, the app consists of 88 DLLs with a total of 9,990 classes. However, the main functionality of the app is within the Core DLL, with 282 classes.
+
+# Dynamic Analysis:
+We split the dynamic analysis into two different phases: one concerning the communications between the app and the server, and the second focusing on analysing the internals of the app and what is stored in the phone once the app is installed.
+
+# Phone Internals:
+Android is a mobile operating system based on the Linux kernel. The default installation restricts the access to multiple files, in order to prevent novice users from deleting/modifying critical functionality. However, this also means that the default version of Android does not allow a user to view the files any app uses/creates. Therefore, in order to further analyse the behaviour of the app, we use a rooted Android phone. Rooting is the process of allowing Android smartphone users to attain privileged control of the operating system; this can be done by asking the manufacturer of the phone to provide a code to de-activate the smartphone’s protections. With a rooted phone, we can see what files our target m-tickets app would use upon execution. All the app-related information is stored in the /data/data folder as shown below:
+3 Xamarin, https://dotnet.microsoft.com/apps/xamarin.
+
+4 dotPeek – Free .NET Decompiler and Assembly Browser, https://www.jetbrains.com/decompiler/.
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+net.corethree.lothianbuses
+- cache
+- code cache
+- com.android.opengl.shaders cache
+- databases
+- com.microsoft.appcenter.persistence
+- corethree
+- google app measurement.db
+- files
+- .config
+- activated tickets.xml
+- alert notifications.xml
+- data.json
+- ticket last opened
+- ticket open dts
+- .local
+- share
+- appcenter
+- database large payloads
+- shared prefs
+- AppCenter.xml
+- net.corethree.lothianbuses preferences.xml
+We are now able to read and analyse all information the app saves and how information storage is handled. Nevertheless, to be able to modify this information, we first need to disable Security-Enhanced Linux, a kernel security module that provides a mechanism for supporting access-control security policies. In this case, it would not allow the execution of any program, if there was any tampering of the files by an external process. This avoids malicious apps from stealing data from other apps. In order to disable SE-Linux, it is sufficient to obtain a root shell via the Android Debug Bridge (adb), and type setenforce 0.
+
+Additionally, there are occasions where the behaviour of the app may be unexpected, therefore we also use Frida to trace events. Frida is a dynamic code instrumentation toolkit that allows the injection of snippets of JavaScript or own library into native Android apps. We use this tool to trace the files being opened at certain points or which functions were triggered at certain times.
+
+# Communications
+Modern day apps consist of two main parts: the app itself and the server with which it communicates. On the app side, we perform static analysis and examine the phone internals. However, the extraction of information from the server is not straightforward and we can only attempt “black box” penetration testing. This consists of performing a vulnerability analysis without access to any of the server’s source code. As such, we can observe what messages go to and come from the server, but not the server’s inner logic, which makes it hard to identify flaws.
+
+5 Fida analyzer.
+
+240 J. Sanz Maroto et al.
+
+For this part, we built a man-in-the-middle (MITM) setup, using an Alfa Atheros AR9271 Wi-Fi adaptor to set up a controlled hot spot on a laptop, to which the phone connects. We then route the traffic from the adaptor to Burp,6 an integrated platform for performing security testing of web applications. Additionally, we install Burp certificates on the phone, so that the phone would trust the communications. Finally, the laptop connects to the Internet using its integrated Wi-Fi adopter, thereby allowing to intercept and modify whatever the app running on the phone sends and receives from the server.
+
+We notice the phone compresses requests prior to transmission, hence we load a dedicated module into Burp to decompress requests for inspection.
+
+# 4 Connectivity and Availability Analysis
+A key concern for Lothian Buses app users is the app’s availability. It has been reported that in some cases the app would stop working and require Internet connection in order to start, or would take too long to launch even when a connection is available . Therefore, we analyse the minimum Internet connection speed required and the amount of bandwidth consumed when the app launches.
+
+To this end, we use BradyBound7, an app that throttles the phone’s Internet connection speed down to a user-defined value. Furthermore, we track the amount of data consumed by simply accessing Settings&gt;Apps&gt;m-tickets&gt;Data usage before and after starting the application, and calculating the difference. We execute all tests with a Motorola Moto G (3rd Generation) running Android v6.
+
+# 5 Security Analysis
+In this section we describe in detail the vulnerabilities found using the methodology described previously. Most weaknesses are exploited when the phone is off-line, taking advantage of the fact that the app can work without Internet access. We reveal how to predict, duplicate, and modify tickets as explained next. We also describe several functionality problems encountered in the app.
+
+# 5 Generation of Tickets
+One of the main goals of our study is to assess how securely ticket generation is handled and how difficult it would be for an attacker to craft valid tickets while evading payment. In order to accomplish this, we first need to understand how the app generates a legitimate ticket.
+
+Once a ticket is purchased, the user has the option to activate it whenever they board the bus. An activated ticket has a certain expiration time, which depends on ticket type (e.g. single ticket, day ticket, etc.), which bus drivers can check when presented with a view of the running app, as exemplified in Fig. 2. The ticket comprises several distinctive elements:
+6 Burp analyzer, https://portswigger.net/burp.
+
+7 BradyBound, https://m.apkpure.com/bradybound/com.oxplot.bradybound.
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+(a) Ticket time view.
+
+(b) Ticket token view.
+
+- Top Title – Describes the ticket type at the top of the ticket.
+
+- Watermark – Visible in the central part of the ticket, comprising the m-tickets logo and a dynamic text block showing the current time and a numeric token on a changing background, in an alternating fashion. The numeric token is the same for all tickets activated during the same day, i.e. it is not unique to a ticket.
+
+- Remaining time – Small countdown in the centre showing the remaining time until the ticket becomes invalid.

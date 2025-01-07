@@ -1,0 +1,34 @@
+# Experimental Setup
+To evaluate the obfuscation-resilient capability of ATVHUNTER regarding different obfuscation techniques, we select 100 apps from the public dataset  including multiple categories, and use a popular obfuscation tool, Dasho , to obfuscate these apks with four widely-used obfuscation techniques (i.e., renaming obfuscation, control flow randomization, package flattening, and dead code removal).
+
+# V. LARGE-SCALE ANALYSIS
+By leveraging ATVHUNTER, we further conducted a large scale study on Google Play apps to reveal the threats of vulnerable TPL-Vs in the real world.
+
+# Dataset Collection
+We collected commercial Android apps from Google Play based on the number of installations. For each installation range, we crawled the latest versions of apps from Aug. 2019 to Feb. 2020 for this large-scale experiment.
+
+We only consider popular apps whose installation ranges from 10,000 to 5 billion, because the vulnerabilities in apps with large installations can affect more devices and users. Note that the number of apps in each installation range is unequal; in general, the number of apps with higher installations usually is relatively smaller.
+
+# C. Lessons Learned
+Based on our analysis, we found many apps include vulnerable TPLs leading to privacy leakage and financial loss.
+
+# Conclusion
+ATVHUNTER offers better resiliency to code obfuscation than existing tools, especially for identifier renaming, package flattening, and control flow randomization. In our dataset, we find that about 12% (9,050/73,110) of apps include TPL-Vs, involving 53,337 known vulnerabilities and 7,480 security bugs from open-source TPLs. The known vulnerabilities are from 166 different vulnerable TPLs with corresponding 10,362 versions and the security bugs are from 27 vulnerable TPLs with 284 different versions.
+
+These vulnerable apps use a total of 58,330 TPLs and approximately 18% of them are vulnerable ones. Among the 9,050 vulnerable apps, 329 apps (37%) with TPLs contain both vulnerabilities and security bugs. There are 778 apps containing the TPLs with security bugs and each app contains about 2 security bugs in their TPLs. Furthermore, we also find many education and financial apps use the popular UI library “PrimeFaces” that include severe vulnerability (CVE-2017-1000486). Primefaces 5.x is vulnerable to a weak encryption flaw resulting in remote code execution. For more analysis result, you can refer to our website.
+
+However, developers seem unaware of the security risks of TPLs. We explore the reasons from the following points:
+For TPL developers, according to our result in § V-A, the reuse rate of vulnerable TPLs is pretty high (> 75%). Many TPL developers also develop their own TPLs based on existing ones, especially popular ones, but seem seldom to check the used components for any known vulnerabilities. Even worse, we find 210,727 TPLs use vulnerable TPL versions, indicating many TPL developers may be unaware of tracking these vulnerability fix solutions in these open-source products. Although some TPL developers have patched the vulnerabilities in later versions, many affected apps still use the old versions with vulnerabilities, which indirectly expands the threats of the vulnerabilities in TPLs. The lack of centralized control of these open-source TPLs also poses attack surfaces for hackers.
+
+For app developers, we reported some TPL versions with severe vulnerabilities to the corresponding app developers via emails. We wrote 50 emails to these app developers or companies and received 5 replies in 2 months. Based on their feedback, we find 1) most of the developers only care about the functionalities provided by the TPLs and are unaware of the security problems in these TPLs. In fact, it is reasonable since one is unlikely to analyze all the used libraries before using them, which eliminates the convenience of using these components or libraries. However, based on our analysis, some commonly-used TPLs contain severe vulnerabilities and ATVHUNTER could be helpful for them to detect vulnerable TPL versions.
+
+2) Some app developers or companies do not know how to conduct security detection of these imported TPLs. They also hope “our team can help them conduct the security assessment of the used TPLs or tell them the specific analysis processes.” 3) Some app developers did not know that some vulnerable TPLs have been updated or patched and they still used these old TPL versions. Even if they noticed the upgraded versions, some of them are reluctant to change the old ones due to the extra cost. They said that “If a TPL adds many new functions, they have to spend much time understanding these new features and change too much of their own code. Thus, they prefer to keep old TPLs.”
+For app markets, we found that many app markets do not have such a security assessment mechanism to warn developers about the potential security risks in their apps. As far as we know, only Google provides a service named App Security Improvement (ASI) program that provides tips to help app developers of Google Play to improve the security of their apps. Previous research  reported that vulnerabilities listed on ASI program could draw more attention from developers.
+
+However, the vulnerabilities reported by ASI program are limited due to the lack of a comprehensive vulnerability database and such a vulnerable TPL detection tool, like ATVHUNTER.
+
+# VI. DISCUSSION
+Limitations: (1) If the Java code of several versions is the same, ATVHUNTER would provide several candidates instead of a specific one, leading to some false positives. (2) Another threat comes from the analysis on only free apps. We believe that it is meaningful to study the vulnerable TPLs used by both free and paid apps, which is left for future work.
+
+# VII. CONCLUSION
+In this paper, we proposed ATVHUNTER, a TPL detection system which can precisely pinpoint the TPL version and find the vulnerable TPLs used by the apps. Evaluation results show that ATVHUNTER can effectively and efficiently find in-app TPLs and is resilient to the state-of-the-art obfuscation techniques. Meanwhile, we construct a comprehensive and large vulnerable TPL version database containing 224 security bugs and 1,180 CVEs. ATVHUNTER can find the vulnerable TPLs in apps and reveals the threat of vulnerable TPLs in apps, which can help improve the quality of apps and has profound impact on the Android ecosystem..

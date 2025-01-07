@@ -1,0 +1,80 @@
+# A. COMPATIBILITY
+In Section IV, we explained our implementation choices to accommodate for compatibility. Our app has undergone rigorous testing by running it on both real and emulated smartphones. While our main focus was on Android 11, we also ensured compatibility with Android 12 by testing the framework’s performance on this version as well. Below is the device that we used the most during the testing:
+- Samsung Galaxy Note S20 Ultra, running Android 12 on One UI 4 (baseband version N986BXXU4F VE7 with Android security patch level: 1 June 2022), Qualcomm Snapdragon 865 Octa-core, 12 GB RAM/128 GB of internal and 128GB of SD storage.
+
+Furthermore, our inclusion of the XML Extractor, Section IV-A as a backup aims to accommodate any changes that might arise in the future.
+
+# H. ADAPTING TO IMPLICIT BROADCAST RECEIVER LIMITATIONS
+In earlier Android versions, implicit broadcast receivers could monitor installation, update, and uninstall events. However, since Android 8, Google has restricted the use.
+
+# B. PERFORMANCE
+The acceptability of the Privacy Watcher app by the end users relies on many factors, one of which is performance. To evaluate the execution time, we conducted tests on specific features of the Privacy Watcher app, namely (i) Evaluate.
+
+37594
+VOLUME 12, 2024
+# F. Mohsen et al.: On Identification of Intrusive Applications
+The Diff column indicates the difference between the two scores, with a ’−’ indicating that the market score is smaller than the device score, and a ’+’ indicating the opposite.
+
+Installed Apps, (ii) XML extraction, (iii) Genre extraction, (iv) Download & Evaluate, and (v) Evaluate In-the-Market.
+
+For operations 1-3, we used a dataset of 169 applications, while for operations 4 and 5, we considered popular apps such as Booking.com, Reddit, Telegram, Spotify, and Viber.
+
+The tests were conducted on the Samsung device, refer to Section VI-A. To make a fair comparison, we will use the maximum values obtained during each category’s testing.
+
+Our evaluation criteria include CPU usage, memory usage, network consumption, and execution time. We used the Android Profiler tool to collect all execution data concerning CPU, Memory, and Network usage.
+
+On average, the Privacy Watcher app has the following overhead upon evaluating 169 installed applications: 30% CPU usage, 229 MB memory usage, and 0 and 0 MB/s incoming and outgoing network usage, respectively. It is worth noting that this overhead occurs only when the Privacy Watcher app is run for the first time or when there is a change in the list of applications. Table 3 shows the results of our runtime analysis, indicating that the solution does not impose significant execution or resource overhead, making it reasonably practical to use.
+
+# C. EFFICIENCY
+We aim to evaluate the efficiency of our framework by primarily testing its scoring mechanism. While previous studies have demonstrated its superiority over comparable methods , we opted to further validate these findings through experimentation with real datasets. Our efficiency testing comprises two main aspects: approximation accuracy and detection accuracy.
+
+# 1) APPROXIMATION ACCURACY OF CTMF
+In this section, our focus is on evaluating the Evaluate In-the-Market approach, which relies solely on permissions retrieved from the app store and mapped to corresponding Manifest permissions (see Section III-C4). To assess its accuracy, we evaluated a diverse set of 30 applications spanning various genres such as communication, finance, social, and card games. Table 2 depicts the results of our analysis. While the permission scores obtained through the Evaluate In-the-Market approach generally tend to be slightly lower compared to those acquired through the Download and Evaluate method (which provides ground truth scores), they still offer valuable insights for users. Despite the minor differences, the Market Evaluation scores provide a reliable method for users to compare applications before installation, facilitating informed decision-making. Additionally, users who prioritize utmost accuracy can utilize the Download and Evaluate feature of the Privacy Watcher app.
+
+# 2) DETECTION ACCURACY
+This evaluation aims to assess our chosen scoring mechanism’s ability to identify malicious applications and compare it with existing literature accurately. We utilized two datasets containing labeled applications for this purpose. Initially, we computed intrusiveness scores for all applications in both datasets using our approach and the counterparts in recent literature . Subsequently, each application was assigned an intrusiveness label based on these scores. To establish thresholds for label prediction, we employed five-point statistical analytics, dividing the data into quartiles represented by specific percentile ranges. Table 4 illustrates these ranges and their corresponding labels, with red-highlighted rows indicating intrusive apps and green ones denoting safe or non-intrusive ones. This evaluation methodology was chosen due to the literature’s inability to assess intrusiveness across multiple app updates, prompting us to adopt a threshold-based labeling approach using single instances of apps to ensure consistency in evaluation criteria. It’s essential to note that despite the classification criteria, the underlying metrics remain consistent.
+
+# a: EVALUATION USING LARGE DATASET
+The first dataset comprised manifest and store data of 870,515 Android mobile applications, including their status, sourced from . The status denotes whether an application was removed from the market during the collection period, serving as our ground truth. Of the 485,738 apps removed by the
+VOLUME 12, 2024 37595
+# F. Mohsen et al.: On Identification of Intrusive Applications
+Package Namede.nineergysh quickarttwogb painnt moonlightingninegb.twentynine redaktorideade photoground twentysixshotde xnano:photoexifeditorninede.hitopgop sixtyeightgxde.sixtyonecollice camerarollde.instgang fiftyggfifede fiftyninecamera rollredactorcom neonthemekeyboard.appcom androidneonkeyboard.appcom- cachecleanereasytool.appcom fancyanimatedbatteryappcom fastcleanercashecleanerappcom funnycallercustomtheme appcom.callercallwallpaperappcom mycallcallpersonalization.appcom funnywallpapaerslive.appcom newscrean4dwallpapers apphungerfourk thinkmobileprostudio.newcameracom_helphomestickers heartcarejingchatcom waxwell saunders pistaphotoeditorcom marinabradley pocolauncherdailyyoga yogago.loseweight:yogacom_cliffbradley youtooncartooneffect
+Google Store, our approach successfully labeled 378,480 as intrusive, achieving an accuracy of 77%. In comparison, the literature’s scoring metric identified only 339,729 apps as intrusive, resulting in an accuracy of 69%. These findings underscore the superiority and heightened sensitivity of our scoring mechanism in detecting apps prone to future removal due to their inherent intrusiveness.
+
+# b: EVALUATION USING KNOWN INTRUSIVE APPS
+While our approach has demonstrated superiority in accurately identifying apps removed from the Google Store using a literature dataset, this phase of evaluation focuses on directly scrutinizing known intrusive applications recently reported by media and news agencies , . To achieve this, we extracted permission and broadcast receiver data from these notorious intrusive apps (refer to Table 5) and used the aforementioned five-point criteria for threshold-based classification to predict labels of these known intrusive apps.
+
+# D. ADDRESSING THREAT ACTOR UTILIZATION OF PREVALENT PERMISSIONS
+Concern: Threat actors may exploit the prevalence of specific permissions in legitimate apps to evade detection by privacy assessment mechanisms.
+
+Response: We believe that our approach is unsusceptible to this threat because it introduces user preferences (g(p)) associated with permissions. This ensures that a rogue app will not necessarily pass privacy assessment solely based on the prevalence of permission. The abnormality score considers both permission prevalence and user preferences, providing a more nuanced evaluation. Additionally, our method offers the option to combine scores from permissions and broadcast receivers. By averaging these scores, our approach delivers a comprehensive assessment that factors in abnormality based on receivers and the influence of user preferences on granted permissions. Finally, we acknowledge
+37596 VOLUME 12, 2024
+# F. Mohsen et al.: On Identification of Intrusive Applications
+# Privacy Watcher
+DOWNLOAD
+EVALUATE
+EVALUATE IN THE MARKET
+EVALUATE INSTALLED APPS
+VIEW EVALUATIONS
+The significant effort required by attackers to identify popular permissions across a large number of apps within a specific category. The resource-intensive and time-consuming nature of this process acts as a deterrent, increasing the difficulty for potential attackers to exploit prevalent permissions effectively.
+
+# Privacy Watcher
+# Privacy Watcher
+# Privacy Watcher
+# First evaluation:
+Tue Apr 18 09:27:07 GMT+02:00 2023
+# Mean value of evaluations:
+0
+# Median value of evaluations:
+0
+# VII. CONCLUSION
+In this study, we have developed a framework for continuously monitoring Android applications, overcoming restrictions on certain Android APIs, and enabling evaluation of
+VOLUME 12, 2024 37597
+# F. Mohsen et al.: On Identification of Intrusive Applications
+newly installed or updated apps. Our framework also allows users to evaluate applications on Google Play before installation and detect anomalous apps using the growth rate metric.
+
+We emphasize the importance of developing privacy-scoring apps and urge the Android development team to enhance tools for analyzing the AndroidManifest.xml. Additionally, we highlight the need for a dedicated Google Play API to extract application information effectively without resorting to web scraping. Our work contributes to promoting better privacy practices and robust monitoring in the Android ecosystem, driving advancements in application security and privacy evaluation.
+
+# APPENDIX
+# A. SCREENSHOTS
+See Figures 3–5.

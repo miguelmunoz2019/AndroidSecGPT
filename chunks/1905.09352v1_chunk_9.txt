@@ -1,0 +1,68 @@
+Apart from the full paths, we also use component name and category name to identify the stack layers of patched vulnerabilities. Component name is presented as a column of each patched vulnerabilities. Note that there might be such cases where it does not have the component name. Category name, on the other hand, is the title of each category on the Android security bulletins. For instance, in September 2017 , the first category name is Framework which consists of only one patched vulnerability. The second category name is Libraries that contains three different patched vulnerabilities. Although the component and category names do not provide too much detailed information, we benefit from them to identify external components and kernel stack layer vulnerabilities.
+
+The following subsections describe the classification methods for each stack layers.
+
+# A Kernel Layer
+All the kernel layer changes are implemented under the branch name kernel/ . Thus, a patched vulnerability can be classified as a kernel layer by looking at this branch name. In case of where a patched vulnerability does not have any references, then we look at its category name and the component name. If either of these names has the name kernel, we consider it as a Kernel Layer patched vulnerability. For example, CVE-2014-9322, published in April 2016, has the branch name kernel/  which makes it a kernel layer patched vulnerability. On the other hand, CVE-2017-0648, published in June 2017, does not have any references . However, it has the category name kernel. Thus, this patched vulnerability is classified as a kernel layer. As a result, we check the branch name, category name, and component name of the patched vulnerabilities to classify them as kernel layer.
+
+# A Hardware Abstraction Layer
+“Hardware Abstraction Layer (HAL) defines a standard interface for hardware vendors to implement, which enables Android to be agnostic about lower-level driver implementations” . An interface description language (IDL) that determines the interface between users and HAL is called HAL interface definition language (HIDL). This also specifies types and method calls, collected into interfaces and packages.
+
+Based on the Android source , if a patched vulnerability has the following branch names, then it can be classified as HAL: hardware/, hidl/ and hwservicemanager/. The branches vendor/ and device/ can also be counted as HAL-related branches, according to  and  Page 88. Moreover, the branch system/bt/ also indicates a Bluetooth stack located in HAL.
+
+For instance, CVE-2017-0767, published in September 2017, has two references . One of them has the branch name hardware/. Therefore, we classify this patched vulnerability as HAL. The second example, CVE-2017-0812, published in October 2017, has the branch name device/ . Hence, we also classify this as HAL.
+
+# A External Layer
+Android uses external libraries that are developed by third-parties. These externals might affect different Android stack layers. However, they need further analyses in order to classify them as one of the Android Stack Layers. Thus, we consider them separately. External-related patched vulnerabilities have their own unique branch name external/. Thus, we use this branch name to classify the patched vulnerabilities as an external-related one. It consists of all external libraries such as chromium-libpac and v8. For example, CVE-2018-9490, published in October 2018, has two references . Both of them have the branch name external/. Therefore, we classify this patched vulnerability as an external-related patched vulnerability.
+
+# A Applications Layer
+Applications Layer is the top layer on all Android stack layers. It consists of different stock applications such as Calculator and Email that the end user interacts with. Based on  (page 88, Figure 3), we consider all the changes implemented in the branch packages/apps as application layer patched vulnerabilities. For instance, CVE-2018-9501, published in October 2018, has one reference under the branch name packages/apps.
+
+# A Application Framework Layer
+Application framework layer consists of abstractions and APIs in order to provide a communication between the applications and the native libraries . According to  (page 65, Figures 2-4), there are Java-built services under the system servers. Java providers and managers are also under the application frameworks layer  (page 73).
+
+# A Native Libraries Layer
+Native libraries consist set of native headers and shared library files in order to provide a solid connection between the upper layers and lower layers . Audio and Media are two examples that part of native libraries  The branch /platform/frameworks/av/ indicates the media related libraries . We also count platform/frameworks/base/ since it is the old version of platform/frameworks/av/. Further, the branch platform/frameworks/native/libs/ consists of several native libraries as well  (page 89).
+
+We also consider some parts of the Android architecture, such as Native Daemons and Init/Toolbox as parts of the native libraries layer. Since we analyze the patched vulnerabilities by attaching to the Android stack layers and Android stack layer schema does not explicitly indicate these parts, we consider these parts as native libraries as well. For instance, CVE-2018-9491, published in October 2018, has the branch platform/frameworks/av  and CVE-2017-0426, published in February 2017, has the branch /platform/system/core/ . Therefore, we consider both of them as native libraries patched vulnerabilities.
+
+# A Android Runtime
+Android Runtime (ART) is an application runtime environment. Replacing Dalvik, the process virtual machine originally used by Android, ART performs the translation of the application’s bytecode into native instructions that are later executed by the device’s runtime environment . According to  Page 88 Figure 3, /dalvik/ branch is under ART. Besides, with the investigation of the directories, we also see files/directory names androidruntime or android_runtime in some references. Therefore, we look at these branches and directories/file names to consider a patched vulnerability as ART. For instance, CVE-2015-3865, published in August 2015, has the directory android_runtime in its reference . Similarly, CVE-2016-3758, published in July 2016, has the branch platform/dalvik.
+
+In Appendix A, we list all branches and directories that we use for the classification of the vulnerabilities published in Android security bulletins.
+
+# A All Branches and Directories for the Classification of the Patched Vulnerabilities
+- Kernel Layer Branches and Directories
+- platform/kernel/
+- HAL Branches and Directories
+- platform/hardware/
+- platform/device/
+- platform/vendor/
+- platform/system/bt/
+- platform/system/nfc/
+- External-Related Branches and Directories
+- platform/external/
+- Applications Layer Branches and Directories
+- platform/packages/apps/
+- Application Framework Layer Branches and Directories
+- platform/packages/providers/
+- platform/frameworks/base/
+- platform/packages/services/
+- platform/frameworks/opt/
+- platform/cts/
+- platform/libcore/
+- platform/frameworks/base/services/
+- Native Libraries Layer Branches and Directories
+- platform/frameworks/av/
+- platform/frameworks/base/lib/
+- platform/frameworks/native/
+- platform/frameworks/base/core/
+- platform/frameworks/base/media
+- platform/frameworks/minikin/libs/
+- platform/system/
+- platform/frameworks/ex/
+- platform/bionic/
+- platform/bootable/
+- Android Runtime Layer Branches and Directories
+- platform/dalvik/
+- platform/frameworks/base/include/android_runtime.

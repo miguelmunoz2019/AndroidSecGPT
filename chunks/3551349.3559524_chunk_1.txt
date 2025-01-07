@@ -1,0 +1,93 @@
+# AUSERA: Automated Security Vulnerability Detection for Android Apps
+Sen Chen, Yuxin Zhang, Lingling Fan
+College of Intelligence and Computing, Tianjin University, Tianjin, China
+senchen@tju.edu.cn
+Jiaming Li, Yang Liu
+College of Intelligence and Computing, Tianjin University, Tianjin, China
+Nanyang Technological University, Singapore, Singapore
+# ABSTRACT
+To reduce the attack surface from app source code, massive tools focus on detecting security vulnerabilities in Android apps. However, some obvious weaknesses have been highlighted in the previous studies. For example, (1) most of the available tools such as AndroBugs, MobSF, Qark, and Super use pattern-based methods to detect security vulnerabilities. Although they are effective in detecting some types of vulnerabilities, a large number of false positives would be introduced, which inevitably increases the patching overhead for app developers. (2) Similarly, static taint analysis tools such as FlowDroid and IccTA present hundreds of vulnerability candidates of data leakage instead of confirmed vulnerabilities. (3) Last but not least, a relatively complete vulnerability taxonomy is missing, which would introduce a lot of false negatives. In this paper, based on our prior knowledge in this research domain, we empirically propose a vulnerability taxonomy as the baseline and then extend AUSERA by augmenting the detection capability to 50 security vulnerability types. Meanwhile, a new benchmark dataset including all these 50 vulnerability types is constructed to demonstrate the effectiveness of AUSERA. The tool and datasets are available at https://github.com/tjusenchen/AUSERA and the demonstration video can be found at https://youtu.be/UCiGwVaFPpY.
+
+# CCS CONCEPTS
+• Security and privacy → Software and application security.
+
+# KEYWORDS
+Android Apps, Security Vulnerability, Vulnerability Detection
+# ACM Reference Format:
+Sen Chen, Yuxin Zhang, Lingling Fan, Jiaming Li, and Yang Liu. 2022. AUSERA: Automated Security Vulnerability Detection for Android Apps. In Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+ASE ’22, October 10–14, 2022, Rochester, MI, USA © 2022 Association for Computing Machinery. ACM ISBN 978-1-4503-9475-8/22/10. . . $15 https://doi.org/10/3551349
+37th IEEE/ACM International Conference on Automated Software Engineering (ASE ’22), October 10–14, 2022, Rochester, MI, USA. ACM, New York, NY, USA, 5 pages. https://doi.org/10/3551349
+# 1 INTRODUCTION
+Nowadays, with the rapid development of smartphones, more and more Android applications (apps) are being developed for different daily tasks, such as shopping, reading, and banking . Actually, Google Play Store contains more than 3 million Android apps to gain mobile users. Consequently, with the growth of Android apps and their users, security and privacy concerns are increasingly becoming the focus of great concern to various stakeholders . For example, more and more users store sensitive data via Android apps, including personal data and financial transfer data. Attackers attempt to exploit app vulnerabilities in order to gain financial gains or sensitive data from Android users, which is one of the most severe security threats in the app ecosystem. Security risk assessment of apps is not only of great significance to Android users but also of significance to guiding app developers during the development process. For example, as shown in Listing 1, in a popular banking app  from Google Play, users are asked to register with their personal identity information (e.g., first name, last name, password, and address), which will be sent (in plain text) via SMS to authenticate the user. Unexpectedly, such registration data is also stored in the SMS outbox, attackers with permission to read SMS can easily intercept the sensitive data and impersonate that user to manipulate her legitimate banking account.
+
+Actually, app security vulnerabilities with domain-specific characteristics are different from Android Operating System (OS) vulnerabilities. Vulnerabilities in Android OS are mainly thrown from Linux kernel or architecture design, while the main root cause of app vulnerabilities is due to the improper implementation in Java/Kotlin implementation code, C/C++ native code (.so files), and third-party libraries . Although it is an urgent need to provide an automated security risk assessment system for Android apps, there lacks a comprehensive solution to do this task based on the existing static security analysis tools, such as AndroBugs , MobSF , Qark , Super , FlowDroid , IccTA , JAADAS , and CogniCrypt. For example, (1) some existing tools only rely on the pattern-based method to scan the
+# ASE ’22, October 10–14, 2022, Rochester, MI, USA
+# Chen et al.
+
+# Sensitive Data
+app code, which introduces a lot of false positives and is imprecise.
+
+# Tagging
+Identification expression, the newly-defined set of sources and sinks guided by
+# Analysis
+Besides, they are not able to identify security vulnerabilities related to sensitive data in Android apps such as SMS data leakage and SharedPreference data leakage. (2) Although the static taint analysis tools such as FlowDroid  and IccTA  can alleviate the false positive problem to some extent, they also output hundreds of vulnerability candidates instead of confirmed vulnerabilities such as logging data leakage, which cannot provide insights for app developers to patch the corresponding vulnerabilities. (3) Last but not least, a relatively complete vulnerability taxonomy is missing, which would introduce many false negatives. All in all, existing tools are not precise with low detection accuracy (high false positive and false negative rate).
+
+# Keywords
+Security Vulnerability Taxonomy
+# We conclude our contributions as follows:
+1. We propose a relatively complete vulnerability taxonomy of app source code in Android apps, which includes 5 main categories and 50 vulnerability types.
+
+2. We extend and release an automated security risk assessment tool for vulnerability detection in Android apps, named AUSERA, which effectively reduces the false positives and false negatives compared with the existing tools.
+
+# Listing 1: Pseudo code that leaks sensitive data by SMS 
+// Get sensitive data from EditTexts
+public String getregisterSms() {
+StringBuilder m = new StringBuilder("REG");
+m.append(getPin() + "/");
+m.append(getFirstName() + "/");
+m.append(getLastName() + "/");
+m.append(getAddress() + "/");
+return m.toString();
+}
+// Send the sensitive data via SMS
+public void execute() {
+sendSmsMessage(getRegisterSms());
+}
+private void sendSmsMessage(String message) {
+this.smsManager.setMessage(message);
+this.smsManager.setDestinationAddress("...");
+SmsHandler.builder().activity(this.activity);
+smsManager(this.smsManager).build().send();
+}
+# Security Vulnerability Taxonomy
+We previously proposed a vulnerability taxonomy specific for banking apps . However, in this paper, the taxonomy of app vulnerabilities is more general for all types of Android apps in the wild. Therefore, one of the most important criteria is to include as many vulnerability types as possible. To do this, we propose the taxonomy according to the following criteria:
+1. We keep all of the summarized vulnerability types for the banking apps.
+
+2. We take almost all the vulnerability types implemented in the open-source tools such as AndroBugs and MobSF into the taxonomy.
+
+3. We refer to the international mobile security standards such as NIST.
+
+4. We also integrate the industrial best practice defined in OWASP and security vulnerability database such as CVE  and weakness database such as CWE.
+
+5. Last but not least, we take the authors’ prior knowledge in this research domain into account to make the taxonomy more complete and accurate.
+
+# Used Techniques in AUSERA
+For the techniques used in AUSERA, we also integrate the basic design from . The main updates are as follows:
+1. We first update the keywords of sensitive data to make it more general for common apps instead of only for one type of those apps.
+
+2. We update the set of sinks to map more vulnerability types introduced in the category of data storage security such as android.database.sqlite.SQLiteDatabase: void execSQL for SQLite leakage.
+
+3. For the phase of function identification, we add more APIs to help locate the functional implementations.
+
+# AUSERA
+As shown in Figure 1, AUSERA takes as input each app, and the keyword set of sensitive data with a formal representation of regular expression, the newly-defined set of sources and sinks guided by the proposed vulnerability taxonomy, and ultimately outputs the set of security vulnerabilities in the app under test, the damage, potential attacks, and patch methods.
+
+# AUSERA: Automated Security Vulnerability Detection for Android Apps
+# ASE ’22, October 10–14, 2022, Rochester, MI, USA
+# ASE ’22, October 10–14, 2022, Rochester, MI, USA
+# Chen et al.
+
+# Sensitive Data
+# Keywords of sensitive data
+# Chen et al.

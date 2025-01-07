@@ -1,0 +1,66 @@
+4 https://github.com/CLD2Owners/cld2
+5 see the list of common English stopwords at www.ranks.nl/stopwords
+Empirical Software Engineering (2020) 25:5084–5136 5095
+(Fig. 7b) using the Stanford CoreNLP lemmatizer6 to abstract the words having similar meanings in the descriptions so that they can be analyzed as a single item. For instance, the words “car”, “truck”, “motorcycle” appearing in the descriptions can be lemmatized as “vehicle”. Last, it applies stemming (Fig. 7c) technique  to transform the different forms of a word such as “travel”, “traveling”, “travels”, and “traveler” into a common base form such as “travel”.
+
+# Topics Discovery
+After the original app descriptions are preprocessed, the approach applies a topic modeling technique called Latent Dirichlet allocation (LDA)  to discover the topics in the descriptions. LDA is a generative statistical model that represents a collection of text as a mixture of topics with certain probabilities, where each word appearing in the text is attributable to one of the topics. For instance, given a preprocessed app description “travel Italy group tour include dinner lunch pizza pasta restaurant”, LDA generates the following topics with probabilities:7 “Travel (20%)”, “Food (37%)”, “Restaurant (30%)”, “Italy (13%)”. We use the Mallet framework (McCallum 2002) to perform this step. The framework allows us to choose the number of topics to be identified by LDA. Following Gorla et al. (2014), we chose 30, the number of Google Play Store categories covered by our training and test apps
+# Apps Clustering
+After the topics are discovered, a probability-based clustering algorithm described in Witten et al. (2011) and implemented in the Weka tool , is used to group together apps based on common topics. This algorithm applies expectation maximization algorithm  and cross validation method. It is as follows:
+1. The number of clusters is set to 1.
+
+2. The dataset is split randomly into 10 folds.
+
+3. Expectation maximization is performed 10 times (in an attempt to escape local maximum).
+
+4. The log-likelihood is averaged over all 10 results (log-likelihood is a measure of the “goodness” of the clustering).
+
+5. If the log-likelihood has increased, increase the number of clusters by one and continues at step 2.
+
+Expectation maximization is performed as follows: it starts with an initial guess of the cluster parameters (e.g., means and standard deviations of the clusters). It computes the probabilities for assignments of each instance to a cluster using the current parameters (expectation step). Then, using these cluster probabilities, it re-estimates the parameters (maximization step), and repeat the two steps again until the cluster parameters and cluster assignments stabilize.
+
+The advantage of using this clustering algorithm is that it not only clusters data but also estimates the adequate number of clusters, for given data. Hence, we do not need to predefine the number of clusters. The clustering resulted in 30 clusters of similar sizes, each cluster containing between 3% and 4% of total apps. We manually sampled a few apps from a few clusters and verified that apps from the same clusters are indeed similar in terms of their functional descriptions.
+
+6 http://stanfordnlp.github.io/CoreNLP/
+7 To simplify the example, topics are represented by meaningful labels, which is not available in LDA.
+
+8 We acknowledge that choosing a different number of topics may result in different clusters. Investigating the impact of different numbers of topics is out of our scope.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+We did not consider using Google Play categories as clusters. Some security analysis approaches such as Sadeghi et al. (2014) use them to avoid clustering effort. But prior result (Al-Subaihin et al. 2016) reported that clustering by common topics produces more cohesive clusters than clustering by Google Play categories because, while an app belongs to one Google Play category, an app’s functional description may in fact incorporate multiple topics at once, which is a much richer information for clustering. Based on own experience  and related work , categories based on topic analysis of app descriptions are more adequate than app-store categories for our security analysis purpose.
+
+# 5 API Reachability Analysis
+This step takes an app as input and produces a list of privileged APIs reachable from public entry points as output. A public entry point is an interface through which other apps, including malicious ones, can request an action via IPC. Privileged APIs are those Android APIs that require special permissions. A privileged API reachable from public entry point is a path in the call graph of the app that originates from a public entry point and that leads to a call to a privileged API.
+
+To identify these APIs, we carry out the following tasks:
+# Public Entry Points Identification
+Public entry points are defined by intent-filters or the exported boolean attribute associated to components in the app manifest file, as described in Section 2. We model Activities, Broadcast Receivers and Services9 as possible public interfaces and their corresponding lifecycle starting methods (e.g., onCreate() for Activities and onReceive() for Broadcast Receivers) as entry points. The sample manifest in Fig. 1 defines a single public interface — DialerActivity, because it defines the tag &lt;intent-filter&gt; without specifying the exported attribute (if a component specifies an intent-filter, by default the exported attribute is set to true). Our approach parses the manifest file using XOM10, an open source library to parse XML files. Intent-filters are extracted using XPath queries.
+
+# Privileged APIs Identification
+The list of privileged APIs is predefined in our configuration, which is provided in the literature . To identify uses of these APIs in an app, we use Soot11 to convert the Dalvik bytecode of an app into an intermediate representation called Jimple. The Jimple code is traversed to identify invoke statements to those APIs that match our predefined list.
+
+# Reachable Privileged APIs Identification
+We use FlowDroid , which extends Soot, to generate the call graph of the app. We then run a reachability analysis algorithm  on the call graph to identify the privileged APIs that are reachable from public entry points.
+
+9 Dynamically registered broadcast receivers are not supported by our tool currently; so they are not part of our model. This represents a limitation of our current implementation.
+
+10 http://www.xom.nu
+11 https://sable.github.io/soot/
+# 5 Learning the Model
+Once the safe apps are clustered and the permission re-delegation behaviors are identified (reachable, privileged APIs), we need to learn the permission re-delegation model of each cluster.
+
+The permission re-delegation model characterizes the permission re-delegation behaviors of the apps in the cluster, i.e., which privileged APIs are (and are not) commonly called when servicing action requests. Information about reachable APIs is stored as the matrix M, as shown in Fig. 8, with apps as rows and privileged APIs as columns. A cell in M is assigned to value 1 when the app in the row exposes the privileged API in the column when servicing action requests; otherwise it is assigned to value 0.
+
+A column with many cells set to 1 represents a reachable API that is commonly used by many safe apps when servicing action requests; so it can be considered as a legitimate permission re-delegation behavior. Conversely, a column with many cells set to 0 represents a reachable API that is uncommon; so it should be considered as an anomalous behavior.
+
+The notion of common/uncommon reachable APIs is captured by the frequency vector *m˜ that reflects the mean of the columns in M. Each element j of *m˜* is the mean of the j*-th column of matrix M:
+*m˜j = (1/n) ∑i=1n Mi,j*
+Note that the lengths of frequency vectors vary across clusters. On average, *m˜* has 218 elements.
+
+For example, regarding the matrix shown in Fig. 8, we have: *m˜ = [1, 0, 0, 0]. The first and second elements of m˜ corresponding to the APIs openConnection() and connect() have the value 1 or the value close to 1 since the APIs are frequently used while the third and the fourth elements corresponding to the APIs sendTextMessage() and setWifiEnabled()* are close to the value 0 because the APIs are uncommon.
+
+We compute a threshold called *tcomApi to define what is common (and what is not). It is computed as the median of the values in the frequency vector, tcomApi = median(m˜). APIs whose frequency is greater than tcomApi* are considered as common and vice versa.
+
+In our example, *tcomApi = 0. The frequency of openConnection() is 1 and of connect() is 0; so the use of these APIs when servicing action requests is common and thus, considered as legitimate. On the other hand, the frequency of both sendTextMessage() and setWifiEnabled() is 0, which is less than tcomApi*; so they are considered as APIs uncommonly subject to permission re-delegation.
+
+To simplify the approach, we could have set *tcomApi = 0*. In this way, we would identify APIs that are never used when servicing action requests in the given cluster as anomalous.

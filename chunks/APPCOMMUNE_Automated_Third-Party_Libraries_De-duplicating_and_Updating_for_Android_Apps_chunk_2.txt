@@ -1,0 +1,61 @@
+}
+}
+# (a) Direct Invocation
+DexClassLoader loader = new DexClassLoader(dexpath, ...);
+class clz = loader.loadClass("com.facebook.FacebookSdk");
+Method mth = clz.getDeclaredMethod("sdkInitialize", Context.class);
+mth.invoke(clz, context);
+# (b) Reflective Invocation
+# (b) Implementation in App Code
+Resist most layout obfuscations (which is the most common kind of code obfuscations in Android). Then we disassemble libraries from the dex file and still keep the code of main functionalities. After the identification, we remove all code of third-party libraries for a further tailored app rebuilding.
+
+# How to Share Third-party Libraries Between Different Apps:
+Originally, third-party libraries are not designed for app sharing, and an app also does not support the API invoking of shared third-party libraries outside its own sandbox. In order to enable such mechanism, a series of app and library rewriting measures must be provided. Since third-party libraries are removed from the original app, the API invoking of those libraries should adopt a new pattern. That requires the rewriting of all instructions related to third-party library API invoking.
+
+Moreover, app often utilizes a dynamic loading mechanism to invoke a shared library other than a statically integrated library. However, not all kinds of API invoking can be rewritten with a dynamic loading.
+
+As shown in Figure 2, the interface-typed FacebookCallback API is implemented directly by FacebookCallbackAdapter. This interface must be initialized before the implementation, so it is not allowed to be loaded afterwards through a dynamic loading.
+
+# How to Handle API Changes Among Different Versions of Third-party Libraries:
+The updating of third-party libraries should also concern about the API compatibility issue. If the new version of library changes too much compared to the old one, the updating may affect the normal functionalities of the app. So the updating not only should consider the accuracy of third-party library identification, but should also consider how to choose a proper version of the library to adapt the app.
+
+# Library Updating and Version Adapting:
+To guarantee the stability of app execution, here we adopt a conservative updating strategy. We divide the update of library into three types according to the study of Erik et al. . A major change indicates that backwards incompatible API changes or additions are added. A minor change indicates that the changes or additions are backwards compatible. A patch change indicates that there are only bug fixes or code-only changes that do not affect APIs.
+
+For an app which contains an outdated library, only when the used APIs contain no major changes between the new version and the old one, the updating would be adapted. According to this principle, we try to update the third-party libraries to new versions. In this way, there would be more than one versions of certain library installed in the same device (according to the detailed installed).
+
+# III. APPCOMMUNE
+# A. Overview
+We propose APPCOMMUNE as a new Android app market model to achieve our third-party library sharing strategy. Figure 4 depicts the architecture of APPCOMMUNE. On the server side (i.e., app market), APPCOMMUNE introduces a Market Proxy to trim an app and update the third-party libraries. The updated libraries and the tailored apps will be sent to devices of end-users respectively. On the client side (i.e., local device), APPCOMMUNE introduces a Lib Manager to manage third-party libraries in a centralized manner and stitches those tailored apps with libraries of proper version.
+
+When APPCOMMUNE is deployed, it first collects most mainstream third-party library SDKs. These third-party libraries are collected from network resource or uploaded by third-party library developers. After the collection of libraries, APPCOMMUNE starts to serve as a normal app market. App developers can upload their apps to the server side. Moreover, APPCOMMUNE would request app developers to help re-sign the tailored apps since it needs to repack each app on the server side.
+
+On the server side, the Market Proxy performs three main tasks: 1) It trims all identified third-party libraries in an app and rebuilds the rest part as a tailored app; 2) According to the detailed used APIs, it determines whether a library should be updated and the proper version. 3) It patches the corresponding collected library with proper version to add a wrapper layer for tailored apps to invoke. As a result, the tailored apps and customized libraries are ready to be downloaded.
+
+On the client side, the Lib Manager helps build an execution environment for tailored apps. When an end user downloads an app, the Market Proxy handles the request and provides the tailored app instead of the original one. At the same time, the Lib Manager automatically checks local environment and downloads necessary third-party libraries. The downloaded libraries are individually stored on the device, and tailored apps then invoke these libraries through a dynamic loading mechanism.
+
+APPCOMMUNE reduces the consuming of both network traffic and local storage through this sharing mechanism. In this way, the same library file will not be downloaded repeatedly. And through a centralized management of third-party libraries, APPCOMMUNE could immediately update the library and avoid the security threats due to the use of outdated libraries.
+
+# B. App Trimming
+To achieve a centralized management of third-party libraries, we need to separate the integrated third-party libraries out from app. Figure 5 depicts the process of app trimming. There are two types of third-party libraries: java library (.jar
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:31:15 UTC from IEEE Xplore. Restrictions apply.
+
+or .aar3) and native library (.so). We can directly extract native libraries because they are individually stored in an apk file. For each java library, we generate a library profile. According to this library profile, we identify the library code from the dex file then cut it off. At last, we find and adjust all library API invocation points in app code and generate a tailored dex file.
+
+# 1) Library Profiling:
+We generate the profile of library by utilizing the open-source project LibScout , which selects class hierarchy as the base feature to generate the profile which is capable of identifying library and even pinpointing the exact library version. Considering that LibScout is originally designed for library identification, we further extend its implementation to make it suitable for app trimming and further app rewriting. In details, we add API statistics as another feature into the profile which helps us to locate the used APIs in app code. The API statistics include each API’s parameter type, return value type, and the class hierarchy it belongs to. It contains no detailed class or method names (all user-defined names are marked as unified symbol), so it can still resist most code obfuscations.
+
+# 2) Library Separating:
+By matching the dex file with all library profiles generated before, we can determine the detailed integrated libraries in the target app. Then, we decompile the dex file into smali  files, and resect the library code according to the class hierarchy of matched profile.
+
+# 3) Invocation Points Patching:
+Finally, we utilize the API statistics in each matched library profile to locate library API invocation points in remained smali code (app code). We will modify these invocation points later in app rewriting (Section III-D).
+
+# C. Library Updating and Version Adapting
+After app trimming, we abandon all integrated third-party libraries. Then we need to prepare the libraries with proper versions to match the trimmed app. As mentioned in Section II-C (insight c), we adopt a conservative updating strategy. On the premise of stability, we try to update them to latest versions as far as possible.
+
+- For each detected library in a target app, if a new version is available, we first need to determine which APIs of this library are actually used in app code. We have obtained this information while app trimming as mentioned in Section III-B.
+
+- Then we need to compare the new APIs provided by new version library and the ones used in app code. According to the detailed change types of APIs, we determine the compatibility between app and the new version library.
+
+- If a major change exists in one of the used APIs, the update will not be accepted. Only when all used APIs have the same signatures with the ones provided by new library, we regard the new library compatible. Here we compare the new library with app code instead of old library, because only actually used APIs impact the compatibility. Even if there is a major change between two versions of library, it’s still updatable as long as the major change isn’t used by app code.

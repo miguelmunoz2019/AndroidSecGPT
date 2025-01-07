@@ -1,0 +1,61 @@
+# Dynamic Analysis
+The dynamic analysis algorithm resets the physical device to factory settings to make sure the analysis captures only the suspected application’s behaviour. It overcomes the limitations of using emulators and uses physical devices to analyze suspicious applications  dynamically.
+
+Android malware dynamic analysis faces some challenges; some malware families evade the dynamic malware analysis environment by halting the malicious download until the dynamic analysis finishes the monitoring period. The sandbox environment suffers from the computational time required to load the Android operating system, create log files, install APK, capture system logs and network traffic, and copy the log files to form understandable characteristics. User gestures emulation using Android tools, such as monkeyrunner, is less precise and partially covers the code of an application. Phone calls, SMS, GPS, and NFC hardware emulation is another challenge in Android malware dynamic analysis, as they are not as realistic as a physical device. The dynamic analysis kills the emulator after the dynamic analysis time. Therefore, the dynamic analysis launches a new emulator instance needs for every App analysis. These challenges prevent the dynamic analysis from performing effective malware detection. Some studies have considered dynamic analysis to overcome the limitations of static analysis (Afonso et al., 2015; Amos, Turner & White, 2013; Desnos & Lantz, 2014; Enck et al., 2014a, 2014b; Lindorfer, Neugschwandtner & Platzer, 2015; Spreitzenbarth et al., 2015; Wang & Shieh, 2015; Zhao et al., 2014).
+
+# Hybrid Analysis
+The hybrid-based detection frameworks, like Mobile-Sandbox , Droiddetector (Yuan, Lu & Xue, 2016), and Andro-Dumpsys , combine the dynamic analysis and static analysis techniques to reconcile the limitations of the static analysis. The hybrid analysis extracts static features using reverse engineering techniques . Static features are apps permissions, code analysis, intent, network address, string, and hardware features. Likewise, it extracts the dynamic analysis of the application by capturing the network traffic, system calls, user interaction, and system components using sandbox methodologies. Later, it combines a group of static and dynamic features, driving the machine learning algorithms to classify the application to benign or malware.
+
+# Android Malware Dataset
+Most Android malware detection frameworks adopt machine learning algorithms to build a detection model; hence researchers crawl apps from the official apps market store Google Play to build its dataset (Arp et al., 2015; Parkour, 2013; Yajin & Xuxian, 2012). It also crawls sample applications from third-party application stores, such as Soc.io Mall, Samsung Galaxy apps, SlideME, AppsLib, GetJar, Mobango, Opera Mobile Store, Amazon Appstore, and 1Mobile markets. To label the crawled applications as benign or malware, researchers employ online security scanning tools as listed in Table 3. For instance, Virustotal and AndroTotal, and the online service are used to scan the crawled apps and cluster the found malware apps into malware families. Researchers label all crawled apps.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Started Scanning Services License
+using VirusTotal to build Android malware detection datasets. Many of the dataset are published for future academic research such as Drebin , Genome (Yajin & Xuxian, 2012), Kharon , AMD , AAGM , PRAGuard , AndroZoo  datasets.
+
+# Machine learning in android malware detection
+Based on collected characteristics or so-called features , different machine learning classification techniques classify APK as benign or malware. However, deep insight into machine learning techniques is outside the scope of this study. Android malware detection classifies Android apps into two classes benign and malware. However, some papers detect Android Ransomware (Andronio, Zanero & Maggi, 2015; Maiorca et al., 2017) considering three classes benign, malware, and ransomware. Hence, we briefly explain the evaluation measures of ML classification. Machine learning comprises three main categories, namely supervised, unsupervised, and reinforcement learning.
+
+# (a) Supervised Model:
+Supervised machine learning bases its model on a labelled dataset. The framework splits the dataset into two subsets; first subset is for training and creating the classification model, and the second subset is for testing and validating the trained classification model. Most researchers split the data into 70% training and 30% testing subsets, but some split the data into 50% for training and 50% for testing (Adebayo & AbdulAziz, 2014).
+
+# (b) Unsupervised Model:
+In the unsupervised model, apps are unlabeled. The unsupervised model recognizes the class of the applications without knowing which App is malware or benign. Researchers use unsupervised models to learn the covert pattern of the unlabeled data.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+Notes:21 TP True Positive.
+
+3FN False Negative.
+
+4FP False Positive.
+
+TN True Negative.
+
+(Akpojaro, Aigbe & Onwudebelu, 2014; Kohout & Pevny, 2015; Tang, Sethumadhavan & Stolfo, 2014).
+
+# (c) Reinforcement Learning:
+The machine exposes itself to an environment where it trains itself continually using trial and error. This machine learns from experience and tries to capture the best possible knowledge to make accurate business decisions. An example of reinforcement learning is the Markov Decision Process (Kaelbling, Littman & Moore, 1996).
+
+To understand the supervised model classification performance, ML introduces the confusion matrix to calculate the performance measures as per Table 4. Let D be the total number of test apps, which we use to examine the supervised ML model performance that classifies apps as benign or malware, let M be the number of malware samples, and B the number of benign samples.
+
+True Positive (TP) represents the number of malware correctly classified.
+
+False Positive (FP) accounts for the number of benign apps classified erroneously as malware.
+
+True Negative (TN) represents the number of correctly classified benign apps.
+
+False Negative (FN) accounts for the number of malware apps classified erroneously as benign.
+
+The ML performance measures represent the accuracy of the Android malware detection classification frameworks. Table 5 explains the ML performance measure formulas and their direct mathematical relation to the confusion matrix.
+
+The Receiver Operating Characteristic (ROC) curve plots the TPR against FPR where TRP is the y-axis and FPR is the x-axis. Every point in the ROC curve represents one confusion; it is all based on TP and FP values. Area Under the Curve (AUC) is the area under the ROC curve representing the aggregation of the ML trained model (Afifi et al., 2016; Baskaran & Ralescu, 2016; Feizollah et al., 2015).
+
+# Evasion test benches tools
+Researchers or commercial companies have developed the evasion test benches to study the robustness of the currently available anti-malware applications or protect their software packages from piracy issues. The first test benches trials were ADAM.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+(Zheng, Lee & Lui, 2013a) and Droidchameleon Rastogi (Rastogi, Chen & Jiang, 2013), which conclude that there is a detection performance degradation when applying trivial obfuscation techniques. However, researchers developed evasions tools to evaluate commercial anti-malware performance, such as PANDORA (Protsenko & Muller, 2013), Mystique , AAMO (Preda & Maggi, 2016), ProGuard , and others as listed in Table 6. Evasion tools were initially aiming to protect commercial software companies’ applications from piracy, such as DexGuard , which is an extension of ProGuard , and Klassmaster . Recently, a pretty good number of researchers develop frameworks targeting obfuscation and malware variant resiliency. PetaDroid (Karbab & Debbabi, 2021) introduces the severe first obfuscation dataset, which is a good initial. However, it proves that the accuracy degrades with time and needs malware variant and obfuscation adaptations. Dynamic analysis frameworks (Chen et al., 2018; Cho, Yi & Ahn, 2018; De Lorenzo et al., 2020; Feng et al., 2018; Sihag et al., 2021; Xue et al., 2017) declare the ability to detect all types of obfuscated malware; however, most of it misses the evaluation report of each obfuscation technique using obfuscated malware datasets. Researchers who evaluated their framework against particular evasions are identified by mentioning the detected evasion, which represents that the respective study either evaluated or presumed its ability to detect the evasion technique, while “Failed to detected or ignored” means the respective study is defeated the corresponding evasion technique. The “stared” cell indicates the framework that ignores the evaluation experiments on evasion techniques or assumptions to that effect, or the study misses evaluating its framework performance against this evasion technique.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+Note: RPK, Repacking; PKR, Package Renaming; IDR, Identifier Renaming; DEN, Data Encryption; BEN, Bytecode Encryption; PEN, Payload Encryption; CRE, Code Reordering; CIN, Call Indirections; DCI, Dead Code Insertion; NEX, Native Exploits; FIO, Function Inlining and Outlining; API (REF), Reflection; DCL/DCM, Dynamic code loading/Modification; ADE, Anti-debugging; VMA, Virtual Machine Aware; PID, Programmed Interaction Detection.

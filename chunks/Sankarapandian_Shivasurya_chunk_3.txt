@@ -1,0 +1,79 @@
+Exposed Content Provider which is accessible from the other third party application may have some use-case of sharing data between multiple applications such as authentication and syncing use-cases. However, mis-configurations or bad implementation may cause leakage of sensitive user information from these content providers.
+
+# Content Provider Vulnerability
+As shown in the Table 3 content provider is one of the basic components in the Android development toolkit which is mapped to resource access directly via special schemes internally within the Android operating system. This implements few methods such as Query, Update, Delete, Insert and OpenFile to access raw information directly from the secure sandbox of the application. However, the OpenFile method is commonly abused for the reading sensitive files by utilizing path traversal mechanism.
+
+# FileProvider Vulnerability
+FileProvider basically extends the ContentProvider class and implements secure access to the internal sandbox files by eliminating known security vulnerability such as Path Traversal issues , guessing and brute-forcing file name attacks, symlink attacks.
+
+# 3 Android Components with vulnerability warnings
+With the generated flows from the CodeQL with the related source and sink in the source code, We try to extract the component information from the results. Additionally, the Android component information is cross-checked with the Manifest file for its existence and access to the component. This component information particularly refers to the Class name or alias, Package, URI schemes, permission information. This extracted component information is represented as JSON by the CodeQL which are then processed manually by the security engineer and check for accessibility from the third party perspective attack surface. This process can be further automated by parsing the JSON information and related mappings to the manifest file.
+
+# Application Sandbox
+# Content Provider
+# Third party Applications
+# Implementation
+# Data Storage
+# 3 Vulnerability Runner Component
+The vulnerability runner component acts as a bridge between driving test-case and communicating with the Android Debug Bridge. Vulnerability runner components help security engineers and developers to extend and implement scenarios with payloads for testing the vulnerability to verify the exploit. Similar to Junit Runner, the vulnerability runner class can be extended and implemented with runnable methods and provides APIs to communicate with the emulator system. The core capabilities of this component are crafting unique Intent with payloads, specifying Android specific components class, installing Android packages, driving test suite and verifying the exploit.
+
+# 3 Android Debug Bridge Interface
+Android Debug Bridge Interface which belongs to debugging tools of official Android SDK is the primary communication channel through which interaction between the DEVAA framework and the Emulator system is made. Additionally, exploit verification leverages Android Debug Bridge interface to extract the results from the emulator system and test-case Driver component to verify the exploits.
+
+# 3 Test-case Driver Component
+Test-case driver component helps the Android Debug Bridge connector to launch the crafted payload to the Android emulator and additionally acts as an proxy for the malicious application. The crafted intent which holds information regarding the payloads, and the components of the vulnerable application are received via Android Debug Bridge and they are converted into native intent before reaching the actual vulnerable application. Additionally, the test-case driver component is helpful in performing data ex-filtration after the attack is successfully executed on the vulnerable application which helps the exploit verifier in the exploit driver component to verify the test-case in realtime. Test-case driver component is an important part in the exploit verification step as they close the loop by extracting the necessary information from the vulnerable application process which is further required for the verification.
+
+# 3 Android Emulator System
+Android emulator system belongs to official Android development kit and is primarily used for executing all our test-cases against the vulnerable application. Both the vulnerable app and test-case Driver components are executed in a separate sandbox to simulate the exact environment similar to production system. All communication to the emulator system is managed by the Android Debug Bridge interface and shell commands to control the applications.
+
+# 3 DEVAA Workflow
+As shown in the figure 3, the DEVAA workflow starts with scanning for the known vulnerable patterns in the source code with the help of static code analyzer such as CodeQL. With the help of the warnings from the static code analyzer, we manually extract the Android component information such as class name, intent parameters which is then used by the security engineers to test against different payloads and conditions. Upon successful launch of the crafted intent with the payloads, our test-case driver delivers the payload to the vulnerable application in the emulator system which is then verified by the exploit verifier component by either extracting information from the vulnerable app process or verifying the modification of properties within the application.
+
+# 3 Vulnerability Runner and Installation Process
+In-order the try exploiting the actual flow returned from the CodeQL, we need to generate a crafted Intent  or payload carrier to deliver them from the test driver application to the vulnerable application directly. The vulnerability runner module primarily focuses on accepting payloads, navigating between Android components and initiating the session with the Emulator via Android Debug Bridge interface. Our driver framework acts as base class with number of Android related functions are developed and implemented to facilitate the testing and helping engineers to adopt APIs for developing their own test case scripts for testing the exploits.
+
+function HTMLEncodingXSSTestCase ( package , activity , payload , button_id , domain ) {
+initateSession ( package , activity )
+setPayload ( payload )
+clickbyButtonID ( button_id )
+executePayload ()
+verifyScriptingAttack ( domain )
+teardownSession ()
+}
+Listing 3: example exploit driver API
+We’ve added considerable API function support that will be helpful for developers and security engineers to write customized security test case to test the application continuously and generate reports. The class diagram in fig 3 gives complete overview of the Exploit driver API and its extendability for developing developer owned security test case scripts.
+
+# 3 Exploit Verification
+Exploit verification is the core logic of DEVAA framework as it needs to accurately determine the changes in the process and detect for the compromise in the application layer. While comparing it to the fuzzing tools in general, DEVAA primary goal is to verify the security vulnerability exploit-ability from the attack surface and reporting them to the security test-case to reduce the false positive. However in the fuzzing tools, we only check for crashes and not silent exploits. In this section, we discuss about the verification of the vulnerabilities in the application layer by simulating exactly the behaviour of security engineer manually verifying the security vulnerabilities.
+
+# 3 Cross-Site Scripting Attack Overview
+Cross-site scripting attacks are prevalent and common in the web application context. However, Mobile Webview attack surface are becoming more targeted with a rise in development of Hybrid mobile application using Javascript and HTML5 frameworks. Exposing the whole webview to the Android API makes the attack surface more vulnerable and exploiting the hardware resources such as microphone, and camera. In this subsection, we discuss about the detection of Cross-Site scripting attack and verifying the context of the vulnerability in the Android WebView.
+
+# PhoneGap Application
+# WebView
+# Malicious Code
+# Cookies
+# HTTP
+# HTML
+# API
+# Location
+# Request
+# Render Engine
+# Attack
+# Auacker
+# Attack
+# PhoneGap JavaScript Interface (Wi-Fi SMS BlueTooth)
+# Atnck
+# Data
+# Malicious
+# Steal Contacts
+# Send Message
+# External Data
+# Steal Location Information
+# Manual Detection Technique
+Whenever a cross-site scripting attack is executed in the WebView context, security engineers tend to verify the issue by adding an executable Javascript in the malicious code to verify both the context of the execution framewindow and the result of the execution. The context of the execution framewindow is important as it increases the vulnerability severity as it may hijack user sessions, cookies and information stored within the sandbox environment. The result of the framewindow context and available Android APIs exposed to the WebView are accessed by the WebView console and they are manually verified by the security engineer to determine the severity.
+
+# Automatic Detection Technique
+In order to automatically verify the cross-site scripting vulnerability, the malicious code injected into the WebView process should permanently change or alter the state of the application within the sandbox. For instance, the cross-site scripting payload can add or modify the cookie  state in the webview which is further preserved by the webview.
+
+cookie document. This state change within the WebView context should be natural and preserved automatically by the Android framework to prevent false positive cases. These state changes are then automatically verified by the Android Debug Bridge APIs that analyze the result of the attack within the Android application sandbox. Since cross-site scripting rarely extracts or writes to arbitrary internal files in the sandbox, the more generic way is to modify the properties of the WebView which can be further verified even if the application crashes or closes after executing the payload.

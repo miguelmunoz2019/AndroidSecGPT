@@ -1,0 +1,10 @@
+Prof. Bruhadeshwar Bezawada has received his B.E. (ECE, Distinction) from Osmania University, India; M.S. (Electrical and Computer Engineering) and PhD from the Dept. of Computer Science and Engineering at Michigan State University, USA. He is currently Professor of Computer Science at Mahindra Ecole Centrale, India. Previously he was an Assistant Professor at the International Institute of Information Technology, India, Visiting Scholar at Nanjing University, China, University Professor (visiting) at K.L. University, India, and Senior Research Associate at Colorado State University, USA. His research interests are in the areas of information security, Internet-of-Things, Cyber-physical systems, cloud computing security and malware analysis. His paper has won the Best Student Paper award at DBSec 2019.
+
+Prof. Manoj Singh Gaur completed his Master’s degree in Computer Science and Engineering from Indian Institute of Science Bangalore, India and Ph.D. from University of Southampton, UK. Prof. Gaur has been a faculty in Department of Computer Science and Engineering, Malaviya National Institute of Technology Jaipur, India and currently Director, IIT Jammu. His research areas include Networks-on-Chip, Computer and network security, Multimedia streaming in wireless networks.
+
+# J. Gajrani, U. Agarwal and V. Laxmi et al. / Computers & Security 90 (2020) 101688
+# Dr. Meenakshi Tripathi
+Dr. Meenakshi Tripathi is currently an associate professor at Computer Science and Engineering Department, Malaviya National Institute of Technology Jaipur, India. She has been teaching UG and PG courses in the area of mobile computing and wireless communications. Her research interests are in the areas of security, wireless sensor networks and software defined networks. She is also a member of IEEE and ACM.
+
+# Akka Zemmari
+Akka Zemmari has received his Ph.D. degree from the University of Bordeaux, France, in 2000. He is an associate professor in computer science since 2001 at University of Bordeaux, France. His research interests include machine and deep learning, randomized algorithms, security and distributed algorithms and systems..

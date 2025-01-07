@@ -1,0 +1,53 @@
+# Penetration Sample
+# Application Virtualization Framework
+# Attack Reports
+# Reference Reports
+# Comparison
+# Vulnerability Reports
+Android operating system, and design a set of penetration test samples that carry a set of malicious behaviors. Then, we run the samples on various virtualization frameworks. We also execute the sample on a clean Android system as a reference. If a malicious behavior fails in the reference system but succeeds in a virtualization framework, we report that the framework is vulnerable to the corresponding behavior. Figure 3 reveals our methodology to systematically study the security of virtualization frameworks.
+
+# 3 Studied virtualization frameworks
+Our crawling process that collects virtualization frameworks works as follows: first, we locate a popular virtualization framework (Parallel Space). Then, we search this app in Google Play, where a list of apps are reported as similar apps. We manually check them and identify new virtualization frameworks. By repeatedly searching for similar apps, we successfully locate 32 app virtualization frameworks. We list the ten most popular virtualization frameworks in Table 1.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+# 3 Penetration test configuration
+Permissions. As aforementioned, permissions are granted to apps by the Android framework. However, when using app virtualization, all the virtualized apps are executed on the virtualization framework, instead of the Android system. Thus, no matter how many virtualized apps are executed, the only app installed to Android devices is the framework itself. As a result, all the virtualized apps can inherit the permissions granted to the virtualization framework. To prevent apps from abusing privileged system resources, virtualization frameworks should implement Android permission model themselves. Our experiments evaluate whether an app with no permission can access a permission protected resource. Specifically, our penetration test sample attempts to access the precise device location (which is protected by a dangerous permission ACCESS_FINE_GRAINED_LOCATION) without explicitly granted permissions. It also runs a background service and stealthily sends an SMS message without requesting for the corresponding permission android.permission.SEND_SMS. Furthermore, our sample attempts to access the resources in the Amazon app, which is protected by a signature level 3rd party permission (com.amazon.CONTENT_PROVIDER_ACCESS).
+
+Internal storage. The internal data of each Android app is stored in its local storage directory /data/data/package_name/, and Android prevents an app from accessing the directories owned by other apps (e.g., /data/data/Facebook/). In the environment of app virtualization, the app data are stored in the subdirectories of the virtualization framework (i.e., /data/data/Parallel_Space/parallel/0/package_name/). Our penetration test sample scans the directories of the virtualization frameworks (/data/data/framework_name/), and attempts to access the local storage of another virtualized app (such as Facebook).
+
+Protected external storage. Like the internal storage, the data of apps can also be stored to the system-protected external storage directory /sdcard/Android/data/package_name/, and Android access control policies prevent this directory from being accessed by other apps. However, in virtualization frameworks, this directory is also redirected to a subdirectory of the framework itself. Thus, we also scan it to evaluate whether a malicious app can access the data of another app (Dropbox in our experiment). Actually, Dropbox uses a temporary file (e.g., share.jpg) in the external storage to cache the user shared files, and our penetration test sample attempts to locate and read it.
+
+Private app component. As practice of modularity programming, many Android apps consist of multiple components that communicate with each other. Most of the components are private to the app itself, and cannot be accessed outside the app. For example, many apps use content providers as databases to store user private data. In the Firefox app, sensitive data (i.e. browser history, search history and bookmarks) are stored in a content provider org.mozilla.gecko.db.BrowserProvider. Once executed in a clean Android system, this component can only be accessed by Firefox itself through a specific URI (content://org.mozilla.firefox.db.browser/). Our penetration test sample attempts to query this content provider and steal the sensitive information.
+
+System services. Android system services provide various sensitive operations, for example, user accounts are managed by the AccountManagerService, app downloads are managed by the DownloadManagerService. To isolate data from different apps, these services verify the app’s identity before it accesses a specific sensitive resource. Our penetration test sample attempts to access the account of another app (Twitter) by querying the system service AccountManagerService.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+L. Zhang et al.
+
+# Shell commands
+Inherited from Linux, Android supports a set of shell commands, for example, ps and ptrace. Since malware can leverage the responses of shell commands and steal private information from other apps (e.g., side channel attacks ), Android enforces a set of fine-grained access controls to restrict the usage of these commands. Our experiment detects whether an app on the virtualization framework can breach the access controls and obtain log history of other virtualized apps from the shell command logcat, or monitor the execution environment with commands ps and top.
+
+# Socket
+Android apps can utilize sockets to transfer sensitive data between different processes or communicate with remote cloud servers. Commonly, these sockets are private and inaccessible by other apps. For example, a map navigator app (BaiduMap) uses a private socket to accept commands from its voice assistance, such as starting or stopping the navigation, or changing the navigation destination. Thus, to test the protection of private sockets, we design an experiment which connects to the socket of other virtualized apps. Specifically, our penetration test sample scans and locates the sockets of a popular VPN app (openVPN).
+
+# 3 Results & findings
+We run our penetration test sample on 32 commercial virtualization frameworks and a clean Android 8 system. The following results are collected on Google Pixel. As the result shows, all the tested virtualization frameworks are vulnerable to most of the attacks. Our penetration test is successful on most of the attack targets. The only exception is info.cloneapp.mochat.in.goast, which provides effective defense against our attacks to system service and content provider. On the other hand, although com.lbe.parallel.intl and com.parallel.space.lite enforce some sorts of protections so that our simple attack fails to attack an unauthorized external storage, these protections can be bypassed by our relative attack and link attack. We detail the successful attacks as well as our findings as follows:
+# Inherit permissions from the virtualization framework
+Our experiment shows that no virtualization framework checks the permission of the virtualized apps. More severely, Table 2 shows the number of permissions declared by the 10 most popular virtualization frameworks, and almost all the frameworks over-claim a large amount of permissions. Our experiment shows that an app installed in virtualization frameworks without any granted permission can easily access highly privileged system resources like device locations and SMS.
+
+Additionally, in Android, signature level permissions are commonly used as higher privileged permissions than normal or dangerous ones. Such permissions are granted by the system only if the requesting app is signed with the same certificate as the app that declared the permission. For example, an app with com.amazon.CONTENT_PROVIDER_ACCESS permission can access user’s shopping history on Amazon. Unfortunately, we observed that all signature level permissions are downgraded to normal in virtualization frameworks. Thus, malware can easily access various sensitive resources, causing severe data leakage to end users.
+
+# Arbitrarily access the internal/external storage of apps
+All the 32 studied commercial frameworks do not restrict the accesses to the internal storage of apps. That is, a malicious app can easily read/write the cookies of WhatsApp, login token of Facebook, etc. Besides, many apps store their executable files (such as .so or .jar files) in their private directories (/data/data/package_name/). Attackers can replace these files with their own crafted ones, causing code injection attacks.
+
+Likewise, most of the virtualization frameworks do not verify accesses to the protected external storage (i.e. /sdcard/Android/data/package_name/). Although com.lbe.parallel.intl and
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+# Permissions
+com.parallel.space.lite enforce access controls and can defend against our simple test, we find that they can be bypassed with the following attacks.
+
+- Relative Attack. To verify an app’s accessibility to a protected external file, some of the virtualization frameworks compare the package name of the requesting app with a substring of the file name. For example, suppose the external files of Facebook are stored in /sdcard/Android/data/virtualization_framework/Facebook/, and an app Mal requests to access the file. The virtualization framework denies the access since it assumes that Mal can only access files whose name is started with /sdcard/Android/data/virtualization_framework/Mal/. However, such mechanism accepts a relative path /sdcard/Android/data/virtualization_framework/Mal/../Facebook/, although it also directs to the same path as before.

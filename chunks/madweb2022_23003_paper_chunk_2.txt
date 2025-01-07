@@ -1,0 +1,66 @@
+# c) The file scheme:
+allows accessing files and directories on a host machine. Due to the SOP, remote hosts cannot query the scheme to access local files . A file URI is structured as follows:
+file://# /
+Where #  is the mount point on the host machine (e.g., drive name or /sdcard on mobile devices) and  is the path to the requested file. Each file accessed by a file URI is assigned a unique origin based on the system’s Globally Unique IDentifiers (GUID). This prevents files from accessing each others’ contents by means of the SOP policy.
+
+# C. Related work
+In this section, we give an overview of related work regarding previously reported attacks on browsers using URI schemes.
+
+# a) Vulnerabilities in the JavaScript scheme
+Improper handling of JavaScript URIs enables attacks including Cross-Site Request Forgery (CSRF) and Cross-Site Scripting (XSS). CSRF refers to an attack where the adversary causes the browser to initiate a request to a certain server without user consent, while XSS is an attack that allows an adversary to inject malicious scripts into the visited (legitimate) website . In both attacks, a victim can be affected by the attacks unintentionally by visiting a vulnerable website or using vulnerable services (e.g., plugins, browsers) . XSS is classified into several subtypes that include reflected XSS, stored XSS, DOM-based XSS and self-XSS . Among them, the one that relates to the JavaScript scheme is self-XSS: it is a social engineering attack in which victims are tricked into executing scripts that compromise their web accounts or leak their data . Figure 1 illustrates an example of a self-XSS attack. First, the adversary sets up a server to accept requests and instructs the victim to use a malicious JavaScript URI 1. The victim accesses benign target websites 2. Then, they copy-paste the malicious URI into the browser address bar 3. Based on the script, the adversary can forward sessions data and cookies to his server 4. Adversaries rely on obfuscation, minification and encoding of JavaScript code to increase the willingness of the victim to execute the scripts . Cao et al. measured the effectiveness of various obfuscation techniques for JavaScript URIs. They found that obfuscated JavaScript URIs achieve 10% more execution by participants (38%) compared to regular JavaScript URIs (29%).
+
+In Android, Terada demonstrates an issue with the JavaScript scheme in Google Chrome and Android browsers: because the browsers did not sanitize the JavaScript scheme URIs in incoming Android intents, an adversary can perform XSS attacks by sending multiple intents to the browsers to first request a target domain and then to obtain personal data (e.g., session cookies) via the JavaScript scheme.
+
+Improper implementation of SOP in browsers can equally introduce security issues: as demonstrated by Wu and Chang, 63 Android browsers improperly implemented SOP, resulting in leaking sensitive data from local files (e.g., HTML) . In Chrome, Barth et al. showed that remotely hosted XML files can retrieve contents of local files due to the same root issue.
+
+# b) Phishing with the data scheme
+In contrast to the JavaScript scheme, the data scheme focuses on data representation. A common issue with it relates to the user.
+
+# d) Browsers analysis and detection tools
+Conventional automated unit tests are often insufficient to detect the aforementioned issues. As a result, the research community has developed according testing and debugging tools. Google developed a remote debugger for troubleshooting Chromium-based mobile browsers and Android Webviews. The debugger provides a developer console for inspecting components and a log monitor . Wu and Chang implemented an automated test tool to check for their file URI issues. The tool interacts with the browser-under-test and the adversary’s app using Android Debug Bridge (ADB) and can find certain issues automatically.
+
+Scenario showing a self-XSS attack to steal a victim’s session cookie. The adversary sets up a server to accept requests from any origin 1. The victim logs into his bank account 2 and copy-pastes a malicious self-XSS URI into the address bar 3. The session cookie is sent to the adversary server via an XML HTTP request 4.
+
+# SUMMARY OF HOW THE CONSIDERED BROWSERS HANDLE JAVASCRIPT, FILE AND DATA SCHEMES
+(*C) INDICATES CHROMIUM BROWSERS. (*1) INDICATES THAT JAVASCRIPT EXECUTED ONLY IN THE NULL ORIGIN WHERE NO WEBSITE IS LOADED. (*2) INDICATE SUPPORT OF THE FILE SCHEME BUT WITHOUT AN IMPLEMENTATION OF AN INDEX PAGE THAT LISTS THE INTERNAL STORAGE FILES.
+
+# III. CASE STUDIES
+We focused our analysis on three browser schemes (JavaScript, data, file), because these have been the most common sources of vulnerabilities in the past and because they expose the largest attack surface compared to functionally limited schemes (e.g., about:). We analysed the implementation of each considered scheme in the top-15 mobile browsers (based on Google Play downloads). As an initial step, we reviewed how each considered browser handles JavaScript, data, and file URIs. The results are shown in Table I and are further elaborated in the following sections.
+
+# A. Self-XSS using the JavaScript scheme
+The JavaScript scheme, as described in Section II, allows JavaScript code to be executed in the context of the currently loaded origin. This enables numerous JavaScript-based threats, in particular self-XSS, which we investigate in the following.
+
+# a) Threat model
+We consider the threat model of Facebook, Cao et al., in which an adversary tricks a victim into performing a “self-XSS” by sending them a malicious URI, e.g., through a messenger of social network. The attack does not require the victim to install apps and proceeds as follows:
+1. The adversary sends a URI containing the JavaScript scheme with malicious code to the victim and tricks them into copy-pasting the URI.
+
+2. The victim copies the URI using the clipboard and pastes it into a vulnerable web browser.
+
+3. The script is executed, potentially in the context of the current origin.
+
+Obviously, self-XSS requires social engineering: the practice of copy-pasting URIs is common, especially in emails where.
+
+# Only on null origin
+JavaScript URI are executed only on a null origin, i.e., when no website loaded in the browser.
+
+# Not supported
+JavaScript URIs are not supported at all. This was only the case for the Mint and MX6 browsers.
+
+As can be seen in Table I, Chromium-based browsers adopt the clipboard trimming approach: The browser detects paste events and trims the scheme if required. Nevertheless, we noticed that the Android Clipboard Manager does not provide an event listener for intercepting paste events . Therefore, it appears that Chromium employs a custom solution based on the address bar to sanitise pasted URIs, leading us to a potential security problem:
+# Potential issue #1: The Android Clipboard Manager does not
+provide a mechanism to listen to paste events. Chromium-based browsers use a custom solution to sanitise pasted URI, which might contain security issues in the implementation.
+
+# Chromium browsers, because they are the only browsers inc)
+Intercepting clipboard events: We focused on our set to implement clipboard trimming (apart from Samsung Internet, cf. Table I). Rather than analysing each Chromium browser individually, we examined the Chromium source code as the likely base . From this, we found that the JavaScript scheme is handled as follow:
+1. The URI address bar is a custom field that inherits the functionality of AutoCompleteEditView.
+
+2. The onTextContextMenuItem method is overridden to listen for context menu events (e.g., cut, copy, and paste).
+
+3. The so-called omnibox API sanitises the pasted text, trimming the JavaScript scheme.
+
+We reviewed the omnibox unit test cases and found that the sanitisation properly handles even obfuscated scheme expressions, where special characters or spaces are used, e.g., java\x0d\x0ascript:alert(0) and java script:alert(0). However, we noticed that paste interception only works for paste events from the context menu. Therefore, trimming will not be applied if the paste events originates from a different source.
+
+# d) Bypass clipboard trimming:
+Since Android 7, Android supports Input Method Editor (IME) keyboards . IME keyboards are custom keyboards that extend the functionality of the default keyboard e.g., with emojis and pictures. Several IME keyboards are shipped with a custom clipboard implementation that is not context menu-based. Respective keyboards are pre-installed as the primary keyboard by major manufacturers, e.g., Gboard for Google devices and the Samsung keyboard for Samsung devices.
+
+As suspected, we found that using the paste operation of IME keyboards does not trigger the JavaScript sanitisation of Chromium-based browsers. This issue can thus be exploited to enable self-XSS attacks against Chrome, Opera, Brave, Edge and Vivaldi if the user pastes from the IME keyboard clipboard as shown in Figure 3.

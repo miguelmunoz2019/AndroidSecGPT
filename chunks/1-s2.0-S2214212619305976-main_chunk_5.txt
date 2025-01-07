@@ -1,0 +1,49 @@
+# 5. Subjects apps
+For our large-scale analysis, we employed two different datasets of top-category Android apps. We built both of them following the same process in 2015 and 2019. First, we crawled the Google Play Store to collect the package names of the top Android apps for each category. The Google Play Store limits the number of top apps for each category to 540. There were 29 categories in 2015 and 57 categories in 2019. Then, we searched for these apps in AndroZoo, a collection of Android apps, and we downloaded those that were available. In the end, our datasets consist of 14,173 apps from 2015 and 23,610 from 2019. Fig. 4 (page 12) shows the distribution of the collected apps into the available categories in 2015 and 2019. To answer RQ1, RQ2, RQ3 and RQ4, we consider only apps from 2019. Instead, to answer RQ5, we use apps from both years 2015 and 2019.
+
+# 5. Analysis procedure
+We launched ATADetector on the subjects apps in a High-Performance Computing (HPC) cluster available in Fondazione Bruno Kessler (FBK). In this way, we could run several threads in parallel to complete the analysis faster. On average, ATADetector analyzes one app per minute. The overall analysis took around two weeks. ATADetector produces two reports for each analyzed app, i.e. a long and a short version of the results of the analysis. The longest one is more detailed and it contains the protection atoms described in Section 3 along with the number of times ATADetector detected each protection atom in the app. The shorter one is general and it reports, for each fingerprint, whether ATADetector identified the related protection in the app. In Fig. 5 (page 13), we present an example of a short report. The short report lists the protection, indicated with the number 1, or not, indicated with the number 0. For each protection, the short report specifies whether it is at Java or at Native level. For the former, the short report further specifies whether ATADetector identified the protection in third-party libraries (Java_1) or in the app developers’ code (Java_2). We present the analysis results as barplots, commenting on the trends that are evident in the graphs. Moreover, when comparing trends for protections RQ3 (developers’ code Vs libraries code),
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# 5. RQ1 - Adoption of AD and AT protections
+consider a 95% significance level, i.e. we accept a 5% probability of committing a Type I error.
+
+RQ4 (Java Vs Native) and RQ5 (2015 Vs 2019), we need to assess whether any observed difference is statistically significant and not due to random variation. To analyze whether this difference is significant, we use the Fisher’s exact test , more accurate than the χ2 test, which is another possible alternative to test the presence of differences in categorical data. In this statistical test, we measure the relative percentage and not the absolute number.
+
+On average (red columns), 90% of top category Android apps implement AT protections and 58% of apps implementing AD protections. The most protected categories are Games, Dating and Social while the less protected are related to Family and Libraries. Surprisingly, also the Medical category is among the ones less protected. We can infer that developers are more inclined to deploy AT rather than AD protections and that the vast majority of apps is equipped with AD and AT protections.
+
+Furthermore, we examine how many times shortATADetector identified the protections singularly. For each report related to an app, we count the detected protections summing these occurrences in Fig. 7 (page 14).
+
+The most deployed protection is Signature Checking with 88% Android apps implementing it. Then, there are Installer Verification (74%) and Emulator Detection (49%) protections. The least deployed protections are Debuggable Status Detection (2%), Code Integrity Checking (1%) and Altering Debugger Memory Structure, never detected in the analyzed apps. The last is a particularly complicated protection to be implemented at Native level.
+
+# 5. RQ2 - Integration of multiple protections
+We now examine the overall number of protections an app implements. Note that we do not differentiate by category or type of protection (i.e. AD or AT). Therefore, we count the detected protections reported in the short versions of the reports and sum them in Fig. 8 (page 15).
+
+There are 1,769 apps out of 23,610 apps (7%) that implement no protections, while the vast majority usually implements two (5,630 or 23%), three (5,653 or 23%) or four protections (6,575 or 27%). Apps implement three protections on average. From the statistics, we can infer that developers are likely to deploy more than one protection.
+
+We also analyzed how each protection integrates with others. For each pair of protections, regardless of the scope and level, we counted the occurrences ATADetector detected it. Table 6 (page 16) summarizes the results of this analysis. Each cell contains the number of times ATADetector identified the two protections together.
+
+The most popular pair is Signature Checking and Installer Verification protections with 17,329 apps implementing both of them.
+
+# 5. RQ3 - Protections in developers’ code and third-party libraries
+The results that we presented so far suggests that AD and AT protections are quite popular among Android apps, given that most of the apps deploy at least one protection. Their developers employ both AD and AT protections and even more protections at the same time. However, we want to investigate whether the protections come from the developers of the apps or derive from third-party libraries. We collect the names of the packages of many of the most used third-party libraries. Moreover, we search online for similar libraries and collect their package names too. In total, we collect 83 library packages. The complete list is reported in Appendix D.
+
+We empirically observed that apps are likely to retain the names of the Java packages even though the apps are obfuscated. Wang Yan et al.  found that ProGuard is the most widely used tool to obfuscate Android apps, while Wermke
+11 https://www.guardsquare.com/en/products/proguard.
+
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+Count of how many times two protections are deployed together.
+
+et al.  found that the vast majority of Android app developers fails to correctly configure ProGuard. Since developers have to configure ProGuard to obfuscate third-party libraries explicitly, we can suppose that these are the reasons why we observed many not-obfuscated Java package names. Being so, we can distinguish between third-party libraries and developers’ code in the app. Consequently, we can understand where ATADetector identified the protections. Fig. 9 (page 17) reports the results of this analysis.
+
+Only 28% (17,979 over 63,858 identified protections) of the protections come from the developers, while the remaining 72% (45,879 over 63,858 identified protections) derive from third-party libraries. Unexpectedly, we notice that most of the detected protections derive from third-party libraries.
+
+To assess if the difference in the observed trends is statistically significant, we use the Fisher’s exact test, and the resulting p-value is < 0. Considering that the p-value is below 5%, we can conclude that the difference in the observed distribution of protections in developers code and library code is statistically significant and not just due to random errors.
+
+We also investigate which kind of protections third-party libraries implement and report the results in Fig. 10 (page 18). By comparing these results with the results of RQ1 reported in Fig. 7 (page 14), we can speculate that there is no substantial difference between the protections chosen by app developers and libraries developers. Indeed, the most deployed protection is still Signature Checking with 65% of Android apps including third-party libraries that implement it, followed again by Installer Verification (51%). The only difference is that third-party libraries developers prefer to implement Debugger Detection (32%) rather than Emulator Detection (31%) protections.
+
+Concerning protections derived from third-party libraries, the vast majority of apps (19,780 over 23,610 apps) employs libraries with at least one protection. Unfortunately, these protections do not cover the logic of the app but only the functioning of the library itself. Therefore, their effectiveness reduces to that scope only.
+
+# 5. RQ4 - Protections deployed at Java and Native level
+Another important aspect is the ratio between protections implemented at Java and Native levels. We examine it by considering the number of protections identified at these two different levels. Fig. 11 (page 19) reports the results of this comparison.
+
+Considering the protections implemented at Java while (blue-level bars), we see many apps with 2, 3 and 4 protections, very few apps have no Java protection. Conversely, if we consider protections implemented at Native level (red bars), we see that the majority of the apps have no Native protection. Only a few apps have 1 or more protections at the native level. According to the result of the Fisher’s exact test, this difference in the trends of Java and Native protections is statistically significant (p-value < 0).

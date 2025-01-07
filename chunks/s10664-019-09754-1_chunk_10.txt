@@ -1,0 +1,54 @@
+# 6 Conclusions and Future Work
+In this paper we reported on an empirical investigation on when, how, and why mobile developers update third-party libraries in their code. We mined the evolution history of 2752 open-source applications to study the problem. Firstly, we studied whether mobile developers perform external libraries version changes as well as what is the technical lag occurring at app- and dependency-level. Secondly, we identified which categories of used libraries developers are more or less prone to update in their apps; we also extracted the common patterns followed by mobile developers to update third-party libraries and investigated the distribution of such update patterns in high- and low-rated apps. Finally, we surveyed 73 mobile developers in order to collect their opinions on third-party libraries updates, and particularly on the motivations behind their decisions to update or not. The results indicate that:
+# Empirical Software Engineering (2020) 25:2341–2377
+1. developers rarely update the used version of third-party libraries in mobile apps, i.e., only 1% of commits are related to a version change;
+2. most of the apps have a high technical lag and its evolution is linearly increasing over time;
+3. most version changes are usually an upgrade to a newer version, however if an upgrade introduces an issue, a downgrade is performed;
+4. the version of libraries related to graphical user interface or support tools are more likely to be updated;
+5. only 15% of library uses are constantly updated by developers;
+6. in 66% of the cases the authors do not update the versions of used libraries after their introduction;
+7. 85% of diligent update patterns are done on high-rated apps, while low-rated apps present 73% of the used once patterns;
+8. according to the surveyed developers, most of the updates are done with the aim of avoiding bug propagation or making an app compatible with the Android releases;
+9. our participants explained that some libraries are never updated because of high cost/benefit ratio or to not break existing code.
+
+These results have a number of implications for the research community, tool vendors, and practitioners:
+- More empirical research is needed. A key finding of our study is related to the low frequency of third-party library updates, sometimes dictated by the willingness of developers to not break existing functionalities. This recalls the need for empirical studies able to show the (negative) impact of missing updates on functional and non-functional properties of the source code, so that developers may acquire knowledge on the topic and be more aware of the possible consequences that the choice of non-updating libraries has. Similarly, further research is needed to investigate the causality of the relation between libraries updates and ratings assigned by end users.
+
+- Enabling automatic support. One of the main challenges that both researchers and tool vendors should face is concerned with providing automatic support for third-party library updates. This includes the creation of auto-update systems or notification mechanisms allowing developers to know about the existence of a new version of a library.
+
+- Prioritizing update effort. Our findings suggest that a high cost/benefit ratio discourage developers in updating third-party libraries. Thus, devising methodologies and tools able to properly capture how complex an update will be might help developers in the decision-making process, ranking the update opportunities accordingly.
+
+- Predicting trends and impact on source code. We were able to discover specific trends in the way developers update third-party libraries. As each of them has its own peculiarities, researchers might exploit this information in order to create prediction models able to preventively alert developers of the potential impact of missing updates on non-functional attributes of source code.
+
+These findings and implications represent the main input for our future research agenda, mainly focused on designing and developing new techniques and tools able to automatically identify opportunities of version change, and apply them flawlessly. Moreover, we plan to extend the empirical study to proprietary and larger applications, with a particular focus on the relationship between user ratings and third-party library updates. Finally, we plan to investigate the impact of the developers’ behavior looking in particular at security vulnerabilities, as already done in the traditional context.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+# Empirical Software Engineering (2020) 25:2341–2377
+# Empirical Software Engineering (2020) 25:2341–2377
+Palomba F, Salza P, Ciurumelea A, Panichella S, Gall H, Ferrucci F, De Lucia A (2017) Recommending and localizing change requests for mobile Apps based on user reviews. In: IEEE/ACM International conference on software engineering (ICSE), pp 106–117
+Palomba F, Linares-Vásquez M, Bavota G, Oliveto R, Di Penta M, Poshyvanyk D, De Lucia A (2018a) Crowdsourcing user reviews, to support the evolution of mobile Apps. J Syst Softw 137:143–162
+Palomba F, Panichella A, Zaidman A, Oliveto R, De Lucia A (2018b) The scent of a smell: an extensive comparison between textual and structural smells. IEEE Trans Softw Eng 44:10
+Palomba F, Di Nucci D, Panichella A, Zaidman A, De Lucia A (2019) On the impact of code smells on the energy consumption of mobile applications. Inf Softw Technol 105:43–55
+Pascarella L, Geiger FX, Palomba F, Di Nucci D, Malavolta I, Bacchelli A (2018) Self-reported activities of android developers. In: IEEE/ACM International conference on mobile software engineering and systems (MOBILESoft), pp 144–155
+Raemaekers S, van Deursen A, Visser J (2012) Measuring software library stability through historical version analysis. In: IEEE International conference on software maintenance (ICSM), pp 378–387
+Robbes R, Lungu M, Rötlisberger D (2012) How do developers react to API deprecation? The case of a smalltalk ecosystem. In: ACM SIGSOFT international symposium on the foundations of software engineering (FSE), p 56
+Salza P, Palomba F, Di Nucci D, D’Uva C, De Lucia A, Ferrucci F (2018) Do Developers update third-party libraries in mobile Apps? In: IEEE/ACM International conference on program comprehension (ICPC), pp 255–265
+Salza P, Palomba F, Di Nucci D, De Lucia A, Ferrucci F (2019) Third-party libraries in mobile Apps: when, how, and why developers update them - appendix. https://doi.org/10/m9.figshare
+Scalabrino S, Bavota G, Russo B, Oliveto R, Di Penta M (2017) Listening to the crowd for the release planning of mobile Apps. IEEE Trans Softw Eng, 68–86
+Seneviratne S, Kolamunna H, Seneviratne A (2015) A measurement study of tracking in paid mobile applications. In: ACM Conference on security & privacy in wireless and mobile networks (WiSec), p 7
+Sommerville I (2006) Software engineering. Addison-Wesley
+Strauss A, Corbin J (1998) Basics of qualitative research techniques. Sage Publications
+Syer MD, Nagappan M, Hassan AE, Adams B (2013) Revisiting prior empirical findings for mobile Apps: an empirical case study on the 15 most popular open-source android Apps. In: Conference of the center for advanced studies on collaborative research (CASCON), pp 283–297
+Tian Y, Nagappan M, Lo D, Hassan AE (2015) What are the characteristics of high-rated Apps? A case study on free android applications. In: IEEE International conference on software maintenance and evolution (ICSME), pp 301–310
+Vassallo C, Panichella S, Palomba F, Proksch S, Zaidman A, Gall HC (2018) Context is King: the developer perspective on the usage of static analysis tools. In: IEEE International conference on software analysis, evolution and reengineering (SANER), pp 38–49
+Viennot N, Garcia E, Nieh J (2014) A measurement study of Google Play. ACM SIGMETRICS Perform Evalu Rev 42:221–233
+Yau SS, Collofello JS, MacGregor TM (1993) Ripple effect analysis of software maintenance. In: Shepperd M (ed) Software engineering metrics I: measures and validations, pp 71–82
+Zerouali A, Constantinou E, Mens T, Robles G, González-Barahona J (2018) An empirical analysis of technical lag in Npm package dependencies. In: International conference on software reuse (ICSR), pp 95–110
+Zerouali A, Mens T, González-Barahona J, Decan A, Constantinou E, Robles GA (2019) Formal framework for measuring technical lag in component repositories and its application to NPM. Journal of Software: Evolution and Process, e2157
+Zhang J, Sagar S, Shihab E (2013) The evolution of mobile Apps: an exploratory study. In: International workshop on software development lifecycle for mobile (DeMobile), pp 1–8
+Publisher’s note Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+# 2375
+# Pasquale Salza
+is a Senior Research Associate at the University of Zurich, Switzerland. He received his Ph.D. degree in Computer Science from the University of Salerno, Italy, in 2017. His research interests are mainly focused on software engineering, cloud computing, evolutionary computation, machine learning, and mobile computing, with the aim of efficiently joining solutions and approaches to improve information technology systems and supply software solutions of better quality, cost-effectively.

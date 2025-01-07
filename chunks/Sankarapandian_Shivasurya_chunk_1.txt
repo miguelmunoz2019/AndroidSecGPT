@@ -1,0 +1,118 @@
+# Detecting Exploitable Vulnerabilities in Android Applications
+by
+# Shivasurya Sankarapandian
+# A thesis presented to the University of Waterloo
+in fulfillment of the thesis requirement for the degree of
+# Master of Mathematics in Computer Science
+Waterloo, Ontario, Canada, 2021
+© Shivasurya Sankarapandian 2021
+# Author’s Declaration
+I hereby declare that I am the sole author of this thesis. This is a true copy of the thesis, including any required final revisions, as accepted by my examiners.
+
+I understand that my thesis may be made electronically available to the public.
+
+ii
+# Abstract
+The world is moving towards remote-first and giving rise to many mobile tools and applications to get the work done. As more applications are moving towards the cloud and therefore require remote access, the attack surface is getting wider. This results in more security vulnerabilities and pain for organizations to manage them. So, organizations have to scale their security operations, and engineers work overtime to detect, verify and mitigate security vulnerability at scale. This includes codebase, infrastructure, corporate assets.
+
+For detecting and reporting, security tools are readily available in the market. However, they tend to produce many false-positive results, which are then manually verified by the organization’s security engineers. Reproducibility of the security vulnerability and reducing the false positive are the primary goals of the security engineer.
+
+To overcome this challenge, we propose the Detecting Exploitable Vulnerabilities in Android Application framework (DEVAA) to help security engineers to automate security test cases and verify security vulnerabilities at scale. We envision the solution to be incorporated within continuous integration and continuous delivery pipeline. By extending the DEVAA framework similar to JUnit testcase framework, security engineers could automate security testing and verify the actual exploit with feedback from the system without fuzzing them. Additionally, the extension is per vulnerability category type rather than exact vulnerability location which helps security engineers to detect and verify them by leveraging the common framework.
+
+DEVAA helps verify security vulnerability flagged by the security scanners by reducing the false positives and confirming security vulnerability reproducibility at scale. Our primary goal while implementing DEVAA is extendability by which security engineers and developers could leverage the base framework to add their application-specific payloads and flows to verify the security vulnerability. Most of the organizations who primarily manage application security and bug bounty programs can leverage DEVAA in implementing well-known security test cases and verifying them in the automated approach.
+
+iii
+# Table of Contents
+- List of Figures viii
+- List of Tables x
+- 1 Introduction 1
+- 2 Background and Related Work 3
+- 2 Background 3
+- 2 Static Application Security Testing & CodeQL 3
+- 2 Dynamic Application Security Testing 3
+- 2 Offensive Penetration testing tools 4
+- 2 Related Work 5
+- 2 Fuzz Testing 5
+- 3 Methodology 6
+- 3 Overview 6
+- 3 Source Code 7
+- 3 Static Code Analyzer 7
+- 3 Android Components with vulnerability warnings 11
+- 3 Vulnerability Runner Component 12
+- 3 Android Debug Bridge Interface 13
+# 3 Test-case Driver Component
+# 3 Android Emulator System
+# 3 DEVAA Workflow
+# 3 Vulnerability Runner and Installation Process
+# 3 Exploit Verification
+# 3 Cross-Site Scripting Attack Overview
+# 3 Content Provider Vulnerability Overview
+# 3 Manual Detection Technique
+# 3 Automated Detection Technique
+# 3 Teardown Test-case
+# 3 Test-case Reporting
+# 4 Results
+# 4 Initial Experiment
+# 4 DEVAA with Baseline
+# 4 Open-source Project security vulnerability
+# 4 Cross-Site Scripting on IRCCloud Android Application
+# 4 ContentProvider Attack on VLC Android Application
+# 5 Discussion
+# 5 Research Questions
+# 5 Reducing False Positives
+# 5 Contributions
+# 5 Threats to Validity
+# 6 Conclusions
+# 6 Future Work
+# A Our Tools, Artifacts, Results
+38
+# A Figures
+38
+# List of Figures
+# A Example Security Testcase for VLC Android App - ContentProvider vulnerability
+41
+# List of Tables
+# Chapter 1
+# Introduction
+This thesis focuses on building a generic framework for verifying exploitable security vulnerabilities in Android apps. Many open-source security scanners and static application security testing tools  generate many false-positive results, which require manual verification by the security engineers. However, this does not eliminate the false positive results  and they are validated by the security engineers within the organizations. Often, this particular verification, detection process is time consuming and is prone to error as we add manual work to the monotonous verification process. Whereas, our DEVAA framework accepts the results from the static code analysis, processes the information to exploit the issue further, and verifies them in real-time. This includes a framework to drive malicious payloads, create and launch malicious intents and verify the issue post exploiting in the Android app.
+
+Instead of improving the static analysis itself, we suggest to exploit the exact vulnerability automatically. We built a framework which attempts to verify the vulnerability warning at scale and which can be seamlessly integrated within the continuous integration pipelines. Moreover, this particular framework can be adopted by the security engineer and developer to test the code continuously with project specific payloads and detect any abnormal behaviour when the code changes. This common framework is coined as Detecting Exploitable Vulnerabilities in Android Applications (DEVAA) for identifying vulnerabilities in cross-site scripting and content provider categories.
+
+In this thesis, our framework accepts the results from the static code analysis, processes the information to exploit the issue further, and verifies them in real-time. This includes a framework to drive malicious payloads, create and launch malicious intents and verify the issue post exploiting in the Android app. Dynamic Application Security Testing (DAST) 
+has been widely adopted for finding vulnerabilities in the application by tainting source and sink. However, they are just utilized for identifying vulnerabilities without giving flexible options to execute payloads by the security engineers. Most of the dynamic application security testing tools operate on predefined vulnerable patterns and payloads which do not offer much customization and extendibility based on static code analysis. As shown in the figure 2, DEVAA is built for solving detect and verify vulnerability problem that’s overlapping between static analysis, dynamic analysis and offensive pen security testing tools.
+
+# The main contributions of this thesis are,
+- Building core framework that helps in driving the security test cases.
+
+- Developing test case driver application that can launch crafted intents directly to the vulnerable application in the emulator.
+
+- Building a robust exploit test verification pattern for two example vulnerability types cross-site scripting and content provider attacks.
+
+- Evaluating our framework on three real applications for finding and verifying common cross-site scripting and content provider attacks.
+
+The thesis is divided into following chapters. In chapter 2, relevant literature needed to create this thesis is discussed. In chapter 3, the methodology, process and vulnerability exploits are explained. In chapters 4 and 5, results and implications are discussed. Finally, we conclude our thesis by summarizing our contributions and discussing potential future work.
+
+# Chapter 2
+# Background and Related Work
+# 2 Background
+Our thesis is an attempt to semi-automate the task of detecting and testing exploitable security vulnerabilities. Though we borrow concepts from unit testing & fuzz testing , our thesis’s ultimate aim is to confidently help engineers determine the security vulnerability in the source code without dealing with the setup or filtering for false positive cases every time.
+
+# 2 Static Application Security Testing & CodeQL
+Static Application Security Testing (SAST)  is often used by developers and security engineers to find security vulnerability with the well-known vulnerable patterns based on history. These SAST scanner tools helps in generating call-graphs and control-flow graphs. However they don’t verify the actual security vulnerability and may contain lot of false positives. CodeQL  from Semmle is one of the primary Static Application Security Testing tool which helps to detect common security vulnerability patterns in the source code with predefined query language exposed to the developers, security engineers.
+
+# 2 Dynamic Application Security Testing
+With rise in more false positive security vulnerability in SAST tools, Dynamic Application Security Testing  can be used to detect the security vulnerabilities by scanning and
+# YulnerebkleshNdroUJ(DEVM
+# CifensNveSecurly
+# SacuntyTesing
+# DynammkNplkatlon
+# Tooks
+# Secufity
+# Testhng
+# Exploit
+# Vulnerability
+# Verification
+# Detection
+# Runtimesrplkaatkon
+# Self-Fuoteatlon
+analyzing the application at runtime. DAST tools don’t necessarily require source code as they rely completely on runtime data to detect malicious attacks. Such an analysis is also called Black-box testing. However, DAST tools don’t offer customization and extendability to detect and verify exploits in realtime which is major disadvantage.

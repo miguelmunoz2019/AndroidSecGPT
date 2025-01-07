@@ -1,0 +1,54 @@
+# August 2015 - January 2019
+# The Number of Vulnerabilities Patched Grouped By Their Severity Levels
+Monthly means between years, we perform several different Analysis of Variance (ANOVA) tests. Note that we exclude low severity patched vulnerabilities as we do not have enough samples to justify a meaningful result. Our null hypothesis for all of our tests is the same: For each of these three severity levels, the population means of their monthly patched vulnerabilities are the same in every year, given confidence level α = 0. For the first ANOVA test, we consider the absolute number of patched vulnerabilities in each month for a severity level and compare between different years. Table 4 depicts the results of our ANOVA analysis. F-values are relatively high and p-values are lower than our confidence level, so we can reject the null hypothesis. This means that the mean number of patched vulnerabilities in each year is different from other years for moderate, high, and critical severity levels.
+
+We also perform an ANOVA test on the monthly percentage of each severity level (as a fraction of all vulnerabilities) whose results are shown in Table 5. Here, we cannot reject our null hypothesis. This means that if we consider the percentages of patched vulnerabilities of a severity level (as a fraction of all vulnerabilities) instead of their absolute values, the means of each severity level are uniform over the years.
+
+To examine whether Qualcomm-related vulnerabilities have a significant effect on the mean numbers, we also perform ANOVA tests by excluding these vulnerabilities. Based on Figure 4, there are peak points that Qualcomm patched vulnerabilities cause. Table 6 and Table 7 show the ANOVA test results for absolute and percentage values, respectively. Here, we observe results that are similar to those including the Qualcomm vulnerabilities. For absolute values, the means are not equal, while for percentage values, the population means are equal in different years. In sum, our analysis shows that even though the average number of patched vulnerabilities for each severity level changes annually, their average percentage (as a fraction of all vulnerabilities) is the same over years. Therefore, we can expect distributions with the same average percentages in the future.
+
+# 5 Common Weakness Enumerations
+CWE is a formal list which describes a common language to classify software security weaknesses. Buffer Overflows, Structure and Validity Problems, and Authentication Errors are some examples of enumerations.
+
+# Severity Level
+Distribution of CWEs of Patched the Bounds of a Memory Buffer
+RalluneConstraln Operations within Vulnerabilities Information Exposure
+AccC scontro (Authorization) Issucs
+Improper Input Validation
+# Severity Level
+Distribution of CWEs of Patched Vulnerabilities
+tion categories . We analyze these enumerations because they specify what causes vulnerabilities. Therefore, we can determine what are the common software weaknesses among the patched vulnerabilities. Note that CWE information is not indicated on security bulletins. Thus, we use the field CWE ID and its details, which we scrape from the web page CVEDetails.
+
+Based on Figure 5, the four most frequent CWE categories make up more than 50% of all the vulnerabilities patched. Among the 2,470 patched vulnerabilities, 109 do not have any details listed on the CVEDetails web page. In addition, 58 vulnerabilities have details but do not have any CWE. After excluding these, we continue our analysis with the remaining 2,303 patched vulnerabilities.
+
+Among the common weakness enumeration categories, there is a parent-child hierarchy . For instance, CWE-306: Missing Authentication for Critical Function is a child of CWE-285: Improper Authorization. Furthermore, this relation can be one-to-many. In other words, there are enumerations that are a child of more than one other enumeration. For instance, CWE-358: Improperly Implemented Security Check for Standard is a child of both CWE-693: Protection Mechanism Failure and CWE-254: Security Features. Moreover, CWE-693 is a child of CWE-254: Security Features. Hence, CWE-254 should also be considered when a vulnerability belongs to the CWE category of CWE-358.
+
+For a concrete example, consider CVE-2017-0757, which was published in September 2017 . According to the CVEDetails web page, this vulnerability has the enumeration of CWE-284: Access Control (Authorization) Issues. Since CWE-284 has three different parent enumerations, which are CWE-693: Protection Mechanism Failure, CWE-264: Permissions, Privileges and Access Control, and CWE-664: Improper Control of a Resource Through its Lifetime, we also consider these three parent enumerations.
+
+Annual ratios of the four most frequent CWEs
+# 5 RQ2: Security Support Duration
+The Android Open Source Project (AOSP) is a ready to be released version of Android. The source code of AOSP can be customized and adapted by original equipment manufacturers (OEMs) to run on their devices . In this subsection, we investigate the number of patched vulnerabilities that affect each AOSP versions. Android has 28 different API levels and 63 different AOSP versions. In our security bulletins dataset, there exist 15 different AOSP versions. Note that Android was released in 2008 and the first security bulletin was published in August 2015. Thus, some AOSP versions have reached their end of life before the first bulletin, so we only see a limited number of AOSP versions in the Android security bulletins. Further, we exclude AOSP version 6 from our analysis because we only see two patched vulnerabilities for this version: CVE-2016-2496 and CVE-2016-3843, which were published in June 2016 and August 2016, respectively . Therefore, in our analysis, we consider only 14 different AOSP versions.
+
+Early Android security bulletins do not specify AOSP versions but instead use the terms 5 and below, 6 and below, 5 and above, and 6 and above. As a result, we first need to map the terms below and above to AOSP versions. We use a conservative approach which is as follows: For the term X and below, we consider version X as well as versions that were introduced earlier than version X. For the term X and above, on the other hand, we consider version X as well as versions that were introduced later than version X but earlier than the security bulletin that we are studying. For example, we replace the expressions 5 and below and 5 and above with {4, 4, 5, 5, 5} and {5, 5, 5}, respectively.
+
+As we mentioned earlier, there are 2,470 patched vulnerabilities. Among these, 889 have an entry in the field for updated AOSP versions in the Android security bulletins. Figure 7 shows the number of vulnerabilities for each AOSP version from August 2015 to January 2019.
+
+# 5 Release Date and Update Duration
+In this subsection, we conduct pairwise comparisons for consecutive AOSP versions focusing on the gap in release time between the two versions vs. the gap in the time when the final patch for a particular version was released. If all versions are treated equally in terms of support, we would expect that these two gaps are identical. Also, we would expect that the data is similar over time for different pairs of versions.
+
+In our analysis, we exclude the versions 7, 7, 7, 8, 8, and 9 because these versions are still receiving updates at the time of our data collection . The result of our analysis is presented in Figure 8. In this figure, the horizontal axis shows the time difference of end-of-life (EOL) between two versions in months. Note that we calculate the EOL based on the last time that we see an update for an AOSP version on Android security bulletins. The vertical axis represents the time difference in the release time of two versions in months. Each point indicates these two differences for two versions. The blue line represents the point where the time difference of EOL and release time for the two versions are equal.
+
+According to Figure 8, the pair consisting of version 5 and version 5 is the only one located on the blue line. Version 5 was introduced 4 months after version 5. Also, version 5 stopped receiving updates 4 months sooner than version 5.
+
+Points that are under the blue line are those pairs of versions where the newer version continues receiving updates comparatively longer than the difference in their release dates would indicate.
+
+There are three points in that region. We describe each of them in detail in the following.
+
+- The difference in introduction date of version 4 and 4 is about 8 months. However, version 4 stopped receiving updates 22 months sooner.
+
+- Version 5 was introduced one month after 5. Version 5 continued receiving updates 21 months after the last update date of version 5.
+
+- Version 5 was introduced one month before version 5. The former stopped receiving updates 27 months sooner than version 5.
+
+The points above the blue line are those pairs of versions where the gap between release times is larger than the gap between EOL times. We have 4 pairs of such situations that are also plotted in Figure 8.
+
+• Version 6 and version 6 stopped receiving updates at the same time while 6 was introduced 2 months after version 6.

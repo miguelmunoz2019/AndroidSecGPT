@@ -1,0 +1,65 @@
+# 3. Proposed solution: EspyDroid+
+The main contribution of EspyDroid+ is a better slicing algorithm, which enables more reflective calls to be covered by pruning components not leading to reflective calls, and without any loss of accuracy. This makes EspyDroid+ well suited for large applications. The next important contribution is that, EspyDroid+ added the solution for handling anti-analysis constraints. Moreover, EspyDroid+ can trigger more reflective calls because of the handling of non-UI events/actions. EspyDroid+ can handle reflective calls present in both UI and non-UI components unlike state-of-the-art, which mainly focus on UI components. In summary, our approach helps to achieve scalability, which was otherwise a constraint for dynamic analysis. We discuss these aspects in further detail in this section.
+
+# 3. Reflection guided static slicing
+We describe and implement Reflection Guided Static Slicing (RGSS) to prune those components of the app, which are not directly or indirectly relevant for the execution of reflection code during dynamic analysis. Specifically, we aim to prune GUI components.
+
+Intelligent UI Sliced Exploration Instrumented APK Run-time values of reflection targets Reform Reflection APIs by Instrumentation
+# J. Gajrani, U. Agarwal and V. Laxmi et al. / Computers & Security 90 (2020) 101688
+# Inter-Component Callers (DialDroid Analysis)
+We describe a coarse-grained approach of component level slicing, which does not remove any code from any component except breaking links towards components not containing any relevant API. Our aim is not to compute the smallest slices based on instruction-level slicing but in contrast a safe slice to avoid any loss in the computation of target parameters. RGSS includes five steps to construct sliced apk as shown in Fig. 4.
+
+We represent an app as a 5 tuple state diagram (Q, , δ, q0, F), where each state q ∈ Q represents the app’s class and each input event e ∈ () is an instruction whose execution leads to another state. On execution of e, there will be a transition (δ) from one state to another state. The start state q0 is the launcher activity of app that is always unique for any app in Android and defined in the manifest file. EspyDroid+ is implemented on top of Soot , a bytecode analysis and optimization framework. We extract q0 using ProcessManifest final states class provided by Soot. All the states having reflective calls are (F).
+
+We generate a reduced state diagram by eliminating irrelevant transitions and call it Reflection Guided State Diagram (RGSD). We first describe an approach to model standard state diagram from an Android app and then an algorithm designed for generating RGSD from the original state diagram.
+
+# Step 1: Components transition analysis
+This step constructs state diagram from app bytecode. We only include the app’s classes as states. In Android, the communication between two components is through ICC methods, which are standard and predefined. A large body of research including IccTA , Epicc, Amandroid , A3E (Azim and Neamtiu, 2013), Dial-Droid  worked on finding ICC links and targets of ICC calls. We found DialDroid the most suitable as it provides the instruction along with ’caller state’ and ’called state’ relation. We leverage DialDroid to extract information of ICC links. DialDroid provides information of communication among all four types of Android components using explicit intents, implicit intents, content providers, call to broadcast receivers. The extracted information of ICC links is used to construct state diagram. Reflection APIs can be part of component classes or simple Java classes.
+
+The communication between two non-components is possible through remote procedure calls (RPC). As none of the above tools works on processing RPC calls, we identified RPC links using callgraph and bytecode analysis. We added code for capturing unsupported edges of Thread and AsyncTask in Soot generated callgraph. Similar to ICC, the extracted RPCs are added in the state diagram. Our implementation stores the state diagram as Maps (key-value pairs) having caller component name + method name + (i.e., instruction) as key and callee as value. According to Soot’s terminology, each instruction of Jimple is called unit. The state diagram for example of Fig. 1 is shown in Fig. 5.
+
+# Step 2: Extraction of final states
+While processing application classes for the presence of RPC calls from their intermediate code, we also parse reflection APIs and store the result in the form of “CN-MN” where MN is a method of class CN containing reflection APIs. All of Android’s framework classes are excluded while parsing reflection APIs. These classes are the final states (F) of state diagram and given as input to the next step. The reflection APIs are maintained in the configuration file which is the input of this step along with apk. For the example of Fig. 1, this step generates F = {A, B, C, D}.
+
+# Step 3: State Diagram to RGSD conversion
+This step is converting State Diagram to RGSD, which means removal of all transitions not relevant to reach the final states. We do not remove any code or class from the app except the irrelevant transitions. Instruction level slicing is not always safe because sometimes the slices do not execute correctly or generate exceptions due to various features of Android as discussed in Section 2. The key idea is to apply depth-first backward traversal from F for finding useful transitions. The complexity of the Algorithm is O(Q + δ), which is the complexity of the backward depth-first traversal.
+
+Algorithm 1 describes this step. The results of previous steps, i.e., state diagram and F are input to this step. The algorithm uses a queue, called processQueue for maintaining the states to be processed. Initially, we add F to processQueue as the backward analysis starts with final states (Line 1). RQ is the list for storing all relevant states such that RQ⊆Q. As all the final states are also relevant.
+
+states, so we add these to RQ (Line 2). Rδ, initialized empty, is the set of all relevant transitions such that Rδ⊆δ (Line 3). The traversal starts with processing initialized processQueue and continues until the queue becomes empty. The empty queue signifies that the processing has finished. The algorithm dequeues one element at a time from the processQueue at a time, stores in CQ and finds its predecessors (Line 6). If the node has predecessors, then all the predecessors that are not already present in the queue, are enqueued to processQueue. This check is done to ensure that loops are not created during the traversal. These predecessors are added to RQ list. All the transitions among each of the predecessors and CQ are relevant transitions, and so these are added to Rδ (Lines 9–15).
+
+# Algorithm 1: State diagram to RGSD.
+
+Input: SD - State Diagram (Output of Step 1), F - Final States (Output of Step 2)
+Output: RGSD
+/* Analysis of Relevant Transitions */
+1. processQueue.enque(F); // processQueue for maintaining states to be processed
+2. RQ ← F; // RQ for storing relevant states
+3. Rδ ← ∅; // Rδ for storing relevant transitions
+4. UnlinkedStates ← ∅;
+5. while processQueue.empty() is not TRUE do
+6. &nbsp;&nbsp;CQ ← processQueue.deque(); // CQ for storing current state
+7. &nbsp;&nbsp;PRE ← Predecessors of CQ;
+8. &nbsp;&nbsp;if PRE.size > 0 then
+9. &nbsp;&nbsp;&nbsp;&nbsp;for pre ∈ PRE do
+10. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if processQueue.contains(pre) is not TRUE then
+11. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;processQueue.enque(pre);
+12. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RQ.add(pre);
+13. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rδ.add(δ(pre, CQ, unit));
+14. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end
+15. &nbsp;&nbsp;end
+16. end
+17. else
+18. &nbsp;&nbsp;if CQ != q0 then
+19. &nbsp;&nbsp;&nbsp;&nbsp;UnlinkedStates.add(CQ);
+20. &nbsp;&nbsp;end
+21. end
+/* Pruning of Irrelevant Transitions */
+1. for each δ in SD do
+2. &nbsp;&nbsp;if !δ.in(Rδ) then
+3. &nbsp;&nbsp;&nbsp;&nbsp;Remove δ by swapping corresponding unit with NOP;
+4. &nbsp;&nbsp;end
+5. end
+App components like broadcast receivers and services may be invoked based on system events like SMS_RECEIVED, POWER_LESS if the apps register for intent filters for events in manifest files. However, these components may be final states or predecessors of some final states. These components may not have any incoming transition in state diagram as they do not have any call through implicit or explicit Intent. During the path computation, we come across such states, and these are not initial states (q0) either. This implies that there is no path to these states from launcher activity.
+
+We aim not to miss any such paths during dynamic analysis. Therefore, we prepared a separate list, UnlinkedStates containing all such states that do not have any paths from the start state, using inter-procedural analysis within the class using callgraph. The callgraph has caller-callee relation within the class. By root method, we mean the topmost caller of the method that contains.

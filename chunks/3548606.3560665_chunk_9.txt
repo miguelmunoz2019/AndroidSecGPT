@@ -1,0 +1,107 @@
+# Defense against anti-reverse engineering techniques
+Android apps are prone to efficient reverse engineering, as apps are written in a high-level language (i.e., Java) that can be decompiled into simple bytecode . To protect apps from reverse engineering, past studies  have discussed different obfuscation, dynamic code loading, packing, encryption and anti-debugging techniques and their detection and evasion. We use Frida  API hooking to implement evasion techniques to protect against dynamic anti-reverse engineering bypassing detection techniques (e.g., the use of root access, package installer, mock location, certificate pinning, ADB). Some of our techniques are more effective (e.g., mock location detection) compared to existing anti-evasion measures.
+
+# Summary of differences with existing work
+AGRIGENTO  is closest to our work; however, we cannot compare with it experimentally (developed for now outdated Android 4). In terms of methodology, AGRIGENTO detects leakage of eight predefined, deterministic privacy-sensitive values: AndroidID, contacts, ICCID, IMEI, IMSI, location, MAC-address, and phone-number. We detect both fixed and dynamic values from deterministic/non-deterministic sources, as we have access to the plaintext corresponding to the full request. Also, due to the use of differential analysis in AGRIGENTO, there are a significant number of false positives.
+
+Reardon et al.  looked into unauthorized access and transmission of private data where an app does not have the necessary permissions. However, they did not address authorized/unauthorized privacy leakage via encrypted (beyond HTTPS) or non-HTTP channels, which is the focus of ThirdEye. More concretely, from our results as summarized in Table 2, everything except the “Regular” channels will be missed by other tools, except AGRIGENTO (albeit partial detection-only, as discussed above). Note that AGRIGENTO also does not consider security problems, and as such, issues reported under “Credentials” and “Key Transmission” in Table 2 will be missed. We also detect more privacy-sensitive data types (a total of 30 in the current implementation), compared to existing work (a total of 11 types in ). This can be attributed to our use of various known techniques in combination, such as bypassing runtime evasion, collecting non-HTTP traffic via tcpdump, logging non-SDK encryption/decryption methods and cryptographic APIs using rule based API-hooking (which can capture any runtime activities based on predefined criteria).
+
+# 9 CONCLUSION
+While considering the significant threat arising from non-standard and covert channels in the Android ecosystem, a better understanding of privacy exposures and security issues is necessary. However, identifying privacy exposure via such channels is not straightforward. Thus, users and app market providers would remain unaware of such privacy leakages, and security problems introduced by these channels. We introduce ThirdEye, a tool that can detect covert channels with multiple levels of obfuscation (e.g., encrypted data over HTTPS, encryption at nested levels). We also found security weaknesses caused by the use of custom-encrypted/covert channels (e.g., vulnerable keys and encryption algorithms). With the findings and contributions from our study, we hope to spur further research in the context of non-standard and covert channels.
+
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# Sajjad Pourali, Nayanamana Samarasinghe, & Mohammad Mannan
+#pm.
+
+19. Google. 2022. Cmd in Android native framework (cmd). https://android.googlesource.com/platform/frameworks/native/+/
+593991bfd9747692c09ebd980ddc50dc29d86d5d/cmds/cmd/cmd.cpp.
+
+20. Google. 2022. dumpsys. https://developer.android.com/studio/command-line/dumpsys.
+
+21. Google. 2022. Google Admob. https://developers.google.com/admob.
+
+22. Google. 2022. Google Play Protect. https://developers.google.com/android/play-protect.
+
+23. Google. 2022. monkeyrunner. https://developer.android.com/studio/test/monkeyrunner.
+
+24. Google. 2022. View class - Android Developers. https://developer.android.com/reference/android/view/View.
+
+25. Google. 2022. Work with data more securely. https://developer.android.com/topic/security/data.
+
+26. Huffpost.com. 2011. Google’s Wi-Fi Database May Know Your Router’s Physical Location. News article (Apr. 25, 2011). https://www.huffpost.com/entry/android-map-reveals-router-location_n_853214.
+
+27. Kyeonghwan Lim, Younsik Jeong, Seong-je Cho, Minkyu Park, and Sangchul Han. 2016. An Android Application Protection Scheme against Dynamic Reverse Engineering Attacks. J. Wirel. Mob. Networks Ubiquitous Comput. Dependable Appl. 7, 3 (2016), 40–52.
+
+28. Linux.die.net. 2022. tcpdump. https://linux.die.net/man/8/tcpdump.
+
+29. Aravind Machiry, Rohan Tahiliani, and Mayur Naik. 2013. Dynodroid: An input generation system for android apps. In Joint Meeting on Foundations of Software Engineering (ESEC/FSE’13). Saint Petersburg, Russia.
+
+30. Medium.com. 2016. Rotate Android device screen using adb commands (not emulator). https://medium.com/@navalkishoreb/rotate-android-device-screen-using-adb-commands-not-emulator-94ab1a749b87.
+
+31. Mitmproxy. 2022. mitmproxy. https://mitmproxy.org/.
+
+32. Mohammad Naseri, Nataniel P Borges Jr, Andreas Zeller, and Romain Rouvoy. 2019. AccessiLeaks: Investigating Privacy Leaks Exposed by the Android Accessibility Service. Proceedings on Privacy Enhancing Technologies 2 (2019), 291–305.
+
+33. Dario Nisi, Antonio Bianchi, and Yanick Fratantonio. 2019. Exploring Syscall-Based Semantics Reconstruction of Android Applications. In International Symposium on Research in Attacks, Intrusions, and Defenses (RAID’19). Beijing, China.
+
+34. Oracle. 2020. Object (Java platform SE 7. https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html#hashCode()).
+
+35. Oracle. 2022. Class Cipher. https://docs.oracle.com/javase/7/docs/api/javax/crypto/Cipher.html.
+
+36. Gerald Palfinger, Bernd Prünster, and Dominik Julian Ziegler. 2020. AndroTIME: Identifying Timing Side Channels in the Android API. In ACM Conference on Trust, Security and Privacy in Computing and Communications (TrustCom’20). Guangzhou, China.
+
+37. Priyam Patel, Gokul Srinivasan, Sydur Rahaman, and Iulian Neamtiu. 2018. On the effectiveness of random testing for Android: or how i learned to stop worrying and love the monkey. In International Workshop on Automation of Software Test (ICSE’18). Gothenburg, Sweden.
+
+38. Anh Pham, Italo Dacosta, Eleonora Losiouk, John Stephan, Kévin Huguenin, and Jean-Pierre Hubaux. 2019. HideMyApp: Hiding the Presence of Sensitive Apps on Android. In USENIX Security Symposium (USENIX Security’19). Santa Clara, CA, USA.
+
+39. Sajjad Pourali, Nayanamana Samarasinghe, and Mohammad Mannan. [n. d.]. Hidden in Plain Sight: Exploring Encrypted Channels in Android Apps. Extended report (Oct. 1, 2022). https://users.encs.concordia.ca/~mmannan/publications/ThirdEye-CCS2022.pdf.
+
+40. Pypi.org. 2022. googletrans 3. https://pypi.org/project/googletrans/.
+
+41. Python-magic. 2021. python-magic. https://github.com/ahupp/python-magic.
+
+42. Joel Reardon, Álvaro Feal, Primal Wijesekera, Amit Elazari Bar On, Narseo Vallina-Rodriguez, and Serge Egelman. 2019. 50 ways to leak your data: An exploration of apps’ circumvention of the android permissions system. In USENIX Security Symposium (USENIX Security’19). Santa Clara, CA, USA.
+
+43. Red Hat. 2022. Chapter 24. Creating a dummy interface. https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/creating-a-dummy-interface_configuring-and-managing-networking.
+
+44. RIP Tutorial. 2022. Turn on/off Wifi. https://riptutorial.com/android/example/5113/turn-on-off-wifi.
+
+45. Rootbeer. 2021. Rootbeer. https://github.com/scottyab/rootbeer.
+
+46. RootCloak. 2016. RootCloak. https://github.com/devadvance/rootcloak.
+
+47. Rootcloakplus. 2014. Rootcloakplus. https://github.com/devadvance/rootcloakplus.
+
+48. Erik Rye and Rob Beverly. 2021. IPvSeeYou: Exploiting Leaked Identifiers in IPv6 for Street-Level Geolocation. BlackHat USA (July 31 - Aug. 5, 2021). https://www.blackhat.com/us-21/briefings/schedule/#ipvseeyou-exploiting-leaked-identifiers-in-ipv-for-street-level-geolocation-22889.
+
+49. Shadowsocks. 2022. shadowsocks. https://shadowsocks.org/en/index.html.
+
+50. Similarweb. 2022. similarweb. https://www.similarweb.com/.
+
+51. Raphael Spreitzer, Gerald Palfinger, and Stefan Mangard. 2018. Scandroid: Automated side-channel analysis of android apis. In Proceedings of the 11th ACM Conference on Security & Privacy in Wireless and Mobile Networks. 224–235.
+
+52. San-Tsai Sun, Andrea Cuadros, and Konstantin Beznosov. 2015. Android rooting: Methods, detection, and evasion. In ACM CCS Workshop on Security and Privacy in Smartphones and Mobile Devices (SPSM’15). Denver, Colorado , USA.
+
+53. Symantec. 2022. WebPulse Site Review Request - dt.beyla.site. https://sitereview.bluecoat.com/#/lookup-result/dt.beyla.site.
+
+54. Symbolics Cambridge Research Center. 1984. RFC0894: Standard for the transmission of IP datagrams over Ethernet networks. https://dl.acm.org/doi/pdf/10/RFC0894.
+
+55. Theiphonewik. 2015. xCon. https://www.theiphonewiki.com/wiki/XCon.
+
+56. Tldp.org. 1996. The dummy interface. https://tldp.org/LDP/nag/node72.html.
+
+57. UlionTse. 2021. translators. https://pypi.org/project/translators/.
+
+58. Unity. 2022. Unity AdUnits. https://docs.unity.com/monetization-dashboard/AdUnits.html.
+
+59. Yingjie Wang, Xing Liu, Weixuan Mao, and Wei Wang. 2019. DCDroid: Automated detection of SSL/TLS certificate verification vulnerabilities in Android apps. In ACM Turing Celebration Conference (TURC’19). Sichuan, China.
+
+60. Dominik Wermke, Nicolas Huaman, Yasemin Acar, Bradley Reaves, Patrick Traynor, and Sascha Fahl. 2018. A large scale investigation of obfuscation use in google play. In Annual Computer Security Applications Conference (ACSAC’18). San Juan, Puerto Rico, USA.
+
+61. Wikipedia. 2022. Decimal degrees. https://en.wikipedia.org/wiki/Decimal_degrees.
+
+62. Junfeng Xu, Li Zhang, Yunchuan Sun, Dong Lin, and Ye Mao. 2015. Toward a secure android software protection system. In CIT/IUCC/DASC/PICOM’15. Liverpool, UK.
+
+63. Zhemin Yang, Min Yang, Yuan Zhang, Guofei Gu, Peng Ning, and X Sean Wang. 2013. Appintent: Analyzing sensitive data transmission in Android for privacy leakage detection. In ACM Conference on Computer and Communications Security (CCS’13). Berlin, Germany.
+
+64. Cong Zheng, Shixiong Zhu, Shuaifu Dai, Guofei Gu, Xiaorui Gong, Xinhui Han, and Wei Zou. 2012. Smartdroid: an automatic system for revealing ui-based trigger conditions in android applications. In ACM CCS Workshop on Security and Privacy in Smartphones and Mobile Devices (SPSM’12). Raleigh, NC, USA..

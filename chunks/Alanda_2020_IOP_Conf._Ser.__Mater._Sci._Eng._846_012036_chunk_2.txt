@@ -1,0 +1,129 @@
+# A. Improper Platform Usage
+Testing conducted for this weakness is an abuse of one of the android features, Intent. The intent is used to move from one activity to another. Testing to be done is to do sniffing or tapping the application to get data from the intent that is processed when there is change inactivity. This can happen if the developer implements BroadcastReceiver which is used to communicate with other systems or applications, so that broadcast messages are sent through interprocess-communication and can be tapped, so developers shouldn't use BroadcastReceiver to send sensitive or confidential data.
+
+android donranclonei fron Windonnnimato iovj:12 Dottcrs-0 1405 Lactivit Hanareri 509): Disoloycu 2266) : BetslotfrorBufterlocked: Unkiowu butier RTM_NENNEIGH STaLE] Ohoaco:15555718135 Iasyster out ( 2266 ] change usseord phonenunber: 15555218115 0Jss4 Vndated Pisshu baaehano 595 ( 177] : nedaas Genoni (NZA) J{baicbanc indcx:l^ Jodatod WEGL 2266) : Jnplerentcu
+The results of the test are in the form of data sent to the system log. The data sent can also be known by the application, so it can cause danger if the data contains sensitive information. The summary table of the test is listed in Table 3.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+# doi:10/1757-899X/846/1/012036
+# B. M2-Insecure Data Storage
+Testing of unsafe data storage is done in many ways, namely by testing the security of internal storage, external storage, content service providers, log files, XML data, binary data, cookies, SQL database (SQLite). The stored data can be used by attackers and malicious applications to obtain sensitive and confidential data that can result in misuse of data. One that will be discussed is regarding internal storage, which is shared preference. Developers often use MODE_WORLD_READBALE & MODE_WORLD_WRITABLE for storing data in applications that can be accessed by other applications or attackers and also do not use encryption to store sensitive information.
+
+The results of the above test allow a user's login account to be stolen and used by other applications for certain purposes. As for the summary of the above test described in Table 4.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Publishing
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+# doi:10/1757-899X/846/1/012036
+# C. M3-Insecure Communication
+Security testing is done by analyzing the use of communication in sending data between the backend and the client-side.
+
+Burp Project ntruder Repeater indow Help
+Dashboard Target Proxy Intruder Repeater Sequencer Decoder
+Intercept HTTP history WebSockets history options
+Request to https {{192
+Forward Drop Intercept is on Action
+Raw Params Headers Hex
+POST /fourgoats/api/vl/login/authenticate HTTP/1
+Content Length:
+Content-Type application/X-MNw-form-urlencoded
+Host: 192:9888
+Connection= close
+rMame goatdroidepassword goatdroid
+The results of the above test are in the form of login account information that is sent in the form of the original text so that the information could be stolen and can harm the user. The summary of the tests above is described in table 5.
+
+# D. M4-Insecure Authentication
+Insecure authentication is the weakness of the application regarding the user management of the application. Weaknesses that occur caused by users who are not entitled to access the application features without having to perform authentication. This can be done by bypassing the application and exploiting weaknesses in the application authentication process.
+
+shell
+PostLogin
+Transfer
+View Statement
+Change Password
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+doi:10/1757-899X/846/1/012036
+The results of testing obtained are bypass logins that can be performed so that users can enter the main page of the application without authentication. The summary of the tests is described in table 6.
+
+# E. M5-Insufficient Cryptography
+The use of cryptography on data or information contained in the application is highly recommended so that the data can be safer and cannot be easily obtained by irresponsible users. Poor use of cryptography will not be able to protect the data or confidential information, because irresponsible users can easily obtain the data or information. Tests on M5 are performed to provide a description of poor cryptographic examples.
+
+The results obtained in testing the weaknesses of the use of cryptography are poor cryptographic implementation so it is easy to decrypt. The summary of the test is described in Table 7.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+# doi:10/1757-899X/846/1/012036
+# 3. Use a strong cryptographic algorithm in accordance with NIST's recommendations.
+
+# F. M6-Insecure Authorization
+The issue of authorization has a close relationship with the problem of authentication and is sometimes combined. Managing the wrong authorization can result in unauthorized use of the feature and can cause problems for other users. Tests on M6 are carried out to give an idea of the application of bad authorization.
+
+InsecureBankv?
+Username
+Password
+Create User
+Login
+Autofill Credentials
+A summary of the test results regarding authorization issues is explained in Table 8
+# G. M7-Poor Code Quality
+Poor code quality can cause errors in the application so that the application does not run as it should even stop working. Applications that cannot filter input can cause irresponsible parties to run services without the need for authentication or authorization, change the application workflow and do what they want.
+
+Jrozer Console (v2)
+Jz> run app. service. infogoatdroid tourgoats owasp.goatdroid.fourgoatspackage org
+Package org_owasp
+org.owasp goatdroid fourgoats. services.Locationservice
+Permission: null
+Jz>
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+doi:10/1757-899X/846/1/012036
+The results of testing regarding poor code quality are application services that can be run through applications or other sources aside from the application itself and do not need to authenticate even run applications. A summary of the test results regarding authorization issues is explained in Table 9.
+
+# H. M8-Code Tampering
+Code tampering is a problem that occurs with an application due to changing and tampering with the application code by another party. This can cause changes to the logic and running of the application so that unauthorized parties can benefit from changing the application code.
+
+GhU nano                      postlofin.Sma
+line
+local vo  "isrooted":Z
+:Coto_
+#if-ne          cond
+goto cond
+line
+iget-object v1,     Lcon/ android/ insecurebankv2/PostLogin;->root_statusp
+conststring v2, "Rooted Devicel
+invoke-virtual {v1, v2} , Landroid/widget/TextView;->settext (Ljavaflang
+line
+returnev0jo
+The result of testing regarding bad code tampering is that the process and logic in the application can be changed with the desire so that it can make the application no longer detect the root of the device. A summary of the test results regarding the problem of code tampering is explained in Table 10.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+# doi:10/1757-899X/846/1/012036
+# Recommendation
+1. The application must be able to check changes or additions to the code in the application.
+
+2. Using anti-tampering.
+
+# I. M9-Reverse Engineering
+Reverse engineering is a technique that is widely used to make changes to behavior and analysis of source code in the field of application development. Using reverse engineering techniques each party can get important information about the application starting from the application flow, application algorithms, cryptography used, information about backend server and other valuable information.
+
+The results of tests regarding reverse engineering are important information from the application, namely the user database management process. A summary of the test results regarding authorization issues is explained in Table 11.
+
+# J. M10-Extraneous Functionality
+Extraneous Functionality that is usually found in applications is a backdoor. This backdoor planted by the developer on the application is developed, it could aim to facilitate the developers to improve the application when it was damaged, but can also be used to break into systems or applications for malicious purposes.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+hlic ostData(String paranistring) ClientProtocolexception HttoResponsc httpResponse Detaulthttoclicnt ( E Httopo httopos Httopo thi#
+Code
+M10
+Vulnerability
+Extraneous Functionality
+Risk Level
+High
+Impact
+Unauthorized access to sensitive functions and theft of intellectual property.
+
+Recommendation
+1. Check the application configuration to find hidden functions. 2. Did not enter a trial code in the production application. 3. Check the application log so that it does not display sensitive data from the backend.

@@ -1,0 +1,55 @@
+# B. Phases of SO{U}RCERER
+We present SO{U}RCERER as a three-phased guiding framework for security testing of an Android app before the app is published on the marketplace. We assume that an app developer does not require formal security training to follow the process prescribed by the SO{U}RCERER framework. We also assume that the developer (or security tester) has complete access to the app source code for code review and business requirements documentation for reviewing app requirements. Followings are the activities involved in the three phases of the SO{U}RCERER framework that an app developer needs to follow through for app security testing:
+1. Phase 1 - Asset Identification: Identification of assets from app requirements documentation.
+
+2. Phase 2 - Vulnerability-to-Asset Mapping: Source code analysis for vulnerability detection and prioritization based on assets.
+
+3. Phase 3 - Mitigation: Apply mitigations based on the vulnerability-to-asset mapping.
+
+# 1) Phase 1 - Identification:
+In the first phase, an app developer analyzes the app’s functional/business requirements and
+# identifies an Android app’s critical assets and asset containers
+which provide or support certain functionalities in a particular business domain. An asset could belong to multiple asset families based on the app’s domain-specific requirements. For example, system-level Android API permissions can belong to both app-asset and platform-asset families, depending on the permission level. Consider a hypothetical fitness app, Very-Fiitt, asking a user to grant LOCATION permission to track user’s activities. The app needs to safeguard this permission so that no other apps can collude. App collusion happens if VeryFiitt sends the location data via an implicit intent (action=android.intent.action.SEND, MimeType = text/plain), and a malicious app without location permission can define an intent filter to accept the location intent, leading to escalated privilege violation. In this context, the app developer of the VeryFiitt app should consider LOCATION permission as both an app asset (malicious app collecting user location, thus violating user privacy) and a platform asset (malicious app accessing privileged permission API).
+
+In essence, asset identification can be defined as a function of an event where a system-level/third-party API accesses a sensitive system resource or data type to provide a service defined by the app’s business requirements.
+
+# 2) Phase 2 - Vulnerability-to-Asset Mapping:
+In Phase-2, an app developer focuses on source code analysis to detect vulnerabilities to map the vulnerabilities to assets identified in Phase-1. For example, a developer uses the source code analysis engine to check whether the app suffers from vulnerabilities such as cross-site scripting (XSS) and remote debugging enabled in WebView. In addition, the source code analysis engine determines whether private data (e.g., user credentials, device identifiers) are logged or sent over an insecure network connection. The source code analysis engine comprises multiple static analysis tools to provide a comprehensive and comparative security report that examines the codebase from multiple angles. A comparative security analysis is required because static analysis tools differ in sensitivity and vulnerability ranking, and not all static analysis tools can guarantee to cover all types of vulnerabilities . The comparative security analysis reports vulnerabilities based on majority-voting of static analysis tools (a detailed walk-through of creating a consolidated report based on comparative analysis is described in §III). This list of vulnerabilities is further inspected to verify whether they are exploitable to cause adverse impacts on assets identified on Phase-1. At the end of Phase-2, the developer is able to form a prioritized list of vulnerabilities that could impact assets (i.e., vulnerability-to-asset map).
+
+# 3) Phase 3 - Mitigation:
+With the knowledge of vulnerability-to-asset mapping, the app developer can implement security controls and mitigations advocated by bodies of industry-standard groups (e.g., NIST, OWASP, and MITRE). For our discussion, we choose OWASP Mobile Security as our knowledge base to find mitigation techniques for the following reasons: i) Unlike other standards bodies, the OWASP Mobile Security project primarily focuses on common vulnerabilities that can be exploited client-side (i.e., end-user device). ii) The vulnerabilities usually arise from implementation-specific errors resulting from developers’ misuse, abuse, or misunderstanding of security instrumentation on a mobile device.
+
+# III. CASE STUDY
+To evaluate the SO{U}RCERER framework, we conducted a case study to seek answers to the following questions:
+1. RQ1: How long does it take to conduct the three-phase activities of SO{U}RCERER?
+2. RQ2: How does the vulnerability report obtained by following the SO{U}RCERER activities differ from a static analysis tool?
+3. RQ3: How do the available open-source static analysis tools compare with each other?
+4. RQ4: What are the common vulnerabilities in mobile money apps? Which assets are getting affected by these vulnerabilities?
+5. RQ5: What are the common mitigations for these vulnerabilities?
+Three members from the authors ran the case study by following the prescribed activities of SO{U}RCERER, as defined and explained in § II. All participants had intermediate to advanced level experience in Java programming language and intermediate level experience in Android app reverse engineering.
+
+We chose Android mobile money apps for the case study as these apps have revolutionized people’s access to the economy and financial independence in developing countries in the last decade, yet the security posture of these apps is found vulnerable . Based on GSMA mobile banking report , we chose 36 Android fintech apps that are geographically diverse and are currently operational in developing countries from South-East Asia, Middle East, North and Central Africa, Central America, and South America.
+
+Each participating evaluator was assigned to conduct security testing of twelve apps based on the SO{U}RCERER framework. For a comparative static analysis, participants were instructed to use three static analysis tools: MobSF, AndroBugs, and QARK. These tools were chosen because they are open-sourced, well documented, and extensively used in academic and industry app analysis for benchmarking open-source static analysis tools , . In the absence of standard project requirement documents, we instructed participants to use the app descriptions available from the Google Play store as a proxy to identify the functional requirements and services provided by the apps.
+
+We asked each participant to measure time during each phase of the study and to take notes of any challenges faced during the study. Since the case study was based on static app analysis, no unexpected damage or any harm was not incurred to the affiliated financial institutions or end-users. In the following, we describe the activities that a participant, Alice (pseudonym), conducted for security testing of the A2 app (a mobile banking app in India).
+
+# A. Phase 1: Asset Identification
+In this stage, Alice manually examined the A2 app’s description from the Google Play store to identify the keywords that defined either an action the end-user could perform or the type of service provided by the app. She identified the following text snippets which show the functionalities of the app:
+...instant digital payments through your mobile phone...link Mobile number with Bank account...phone should have an active SIM card...The active SIM card is linked to a bank account...You have a valid Debit Card for your Bank Account...Use your PIN to unlock device.
+
+Based on these functional use cases, Alice listed the following asset family members:
+- User Assets: SIM card no., bank account no., PIN, phone no., phone contacts, debit card no.
+
+- App Assets: Proprietary access control mechanism (e.g., using PIN) to login the device/app, proprietary cryptographic algorithms to keep data safe, secure communication channel.
+
+- Platform Assets: Access to sensitive data via dangerous permission APIs (e.g., READ_CONTACTS, READ_PHONE_STATE).
+
+[Note: Figure 1 lists the compilation of common assets found across three asset families by our participants.]
+# B. Phase 2: Vulnerability-to-Asset Mapping
+Alice used three tools for comparative static analysis: MobSF, AndroBugs, and QARK. Since the security warning reports produced by each tool were heterogeneous in terms of reporting style and vulnerability ranking , Alice followed this heuristic of majority-voting inclusion criteria to reconcile the security reports and create an initial list of vulnerabilities for further inspection: a vulnerability V would be considered if at least two out of the three tools could detect V in exact source code locations (e.g., same class or methods).
+
+To verify these vulnerabilities, Alice used a Java decompiler IDE jd-gui2 to inspect the source code manually. She checked the reported vulnerable methods and code snippets to verify that they were not part of unreachable code. Alice manually checked the data flow of the vulnerable code location and verified if any assets identified in the previous stage are reachable. For confirming the exploitability of vulnerabilities, she looked up code samples from a vulnerability benchmarking repository named Ghera . After verification, she mapped each vulnerability to the asset categories that were found to be affected.
+
+# C. Phase 3: Mitigation
+To implement security controls based on the vulnerability-to-asset mapping, Alice browsed and searched by vulnerability keyword (e.g., SSL cert. error, insecure WebView) in OWASP mobile app security verification standard (MASVS)  guidelines to identify prescribed security requirements. After finding the security requirement, she further searched into OWASP mobile security testing guideline (MSTG)  to find and implement recommended security practices.

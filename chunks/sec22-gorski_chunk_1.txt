@@ -1,0 +1,62 @@
+# Identifying File Re-Delegation in Android System Services
+Sigmund Albert Gorski III, Seaver Thorn, and William Enck, North Carolina State University; Haining Chen, Google
+https://www.usenix.org/conference/usenixsecurity22/presentation/gorski
+This paper is included in the Proceedings of the 31st USENIX Security Symposium.
+
+August 10–12, 2022 • Boston, MA, USA
+978-1-939133-31-1
+Open access to the Proceedings of the 31st USENIX Security Symposium is sponsored by USENIX.
+
+# FRED: Identifying File Re-Delegation in Android System Services
+Sigmund Albert Gorski III, Seaver Thorn, William Enck
+North Carolina State University
+{sagorski,swthorn,whenck}@ncsu.edu
+Haining Chen
+Google
+hainingc@google.com
+# Abstract
+The security of the Android platform benefits greatly from a privileged middleware that provides indirect access to protected resources. This architecture is further enhanced by privilege separating functionality into many different services and carefully tuning file access control policy to mitigate the impact of software vulnerabilities. However, these services can become confused deputies if they improperly re-delegate file access to third-party applications through remote procedure call (RPC) interfaces. In this paper, we propose a static program analysis tool called FRED, which identifies a mapping between Java-based system service RPC interfaces and the file paths opened within the Java and C/C++ portions of the service. It then combines the Linux-layer file access control policy with the Android-layer permission policy to identify potential file re-delegation. We use FRED to analyze three devices running Android 10 and identify 12 confused deputies that are accessible from third-party applications. These vulnerabilities include five CVEs with moderate severity, demonstrating the utility of semi-automated approaches to discover subtle flaws in access control enforcement.
+
+# 1 Introduction
+Android is a dominant computing platform with more active devices than Microsoft Windows . It is well known for its application-centric security model  where each application is granted high-level permissions based on functional needs. Prior work has deeply studied this permission model , how applications request permissions , and how users approve them.
+
+Less discussed are the protected resources behind those permissions. Android has a robust security architecture that has evolved significantly over the past decade . A key attribute of Android’s security is a middleware framework that is highly privilege-separated to mitigate the effects of software vulnerabilities. Much of Android’s core functionality is broken into separate service components and system daemons. This framework provides an abstraction layer that allows third-party applications to safely and indirectly access protected resources. For example, while Android devices have a number of sockets in /dev for accessing GPS information, the Unix file permissions only allow the Location Manager Service to access the sockets directly. The Location Manager Service provides a remote procedure call (RPC) interface for lesser privileged applications to access location information. It is at this interface where permissions are checked.
+
+Research has begun to analyze the correctness of permission checks within the Android framework. Stowaway , PScout , and Arcade  derive a mapping between APIs for third-party applications and permissions. Kratos , ACEDroid , and ACMiner  approximate correctness using consistency. They use static program analysis of system services to identify the different access control checks that occur for each RPC entry point and then determine if specific entry points are missing checks. ARF  builds on these works by considering improper re-delegation between RPC entry points. ARF found that Android’s RPC entry points frequently call one another, and when the ambient authority of the execution changes (e.g., crossing between processes), confused deputy vulnerabilities can result. Our work extends these prior works by considering sensitive files that can be accessed indirectly through system services.
+
+In this paper, we propose a tool called FRED, which performs a static program analysis of the Java-based system services in the Android framework to identify a mapping between RPC entry points (i.e., deputies) and concrete file paths that may be accessed when the RPC is invoked. Our static program analysis includes both the Java and C/C++ code for these system services. We then combine the Linux-layer Unix file permissions with the Android-layer permission check policy to identify when file access is re-delegated to third-party applications. By manually studying these file re-delegations, we are able to identify confused deputy vulnerabilities.
+
+We applied FRED to three devices running Android 10: an AOSP Pixel 3a, a Google Pixel 3a, and a Samsung Galaxy S20. We found 12 confused deputies that allow third-party
+# applications to modify or read information from files or directories with a system UID or GID.
+
+These 12 deputies include three CVEs assigned moderate severity by Google and two CVEs assigned moderate severity by Samsung. The other seven deputies represent minor security issues.
+
+# We make the following contributions in this paper:
+- We design FRED, which uses static program analysis to identify security-sensitive file paths accessed by the RPC entry points of Android’s Java-based system services. FRED identified 23 RPC entry points of the total 6287 RPC entry points in AOSP 10 potentially relegating access to 51 files. The source code for FRED is available at https://github.com/wspr-ncsu/fred.
+
+- We use FRED to study file re-delegation vulnerabilities in the Android framework. We identify 12 confused deputy vulnerabilities which can be accessed by third-party applications. Google and Samsung have assigned five CVEs with moderate severity based on these vulnerabilities.
+
+We note that the vast majority of the RPC interfaces in Android’s framework exist within the Java-portions of the code base. For these RPC interfaces, FRED extends its data flow and control flow analysis through the Java Native Interface (JNI) bridge to capture file operations that occur within C/C++ code. However, the Android framework also includes a collection of system services written entirely in C/C++ (e.g., the Camera Service). FANS  recently performed fuzz testing of these native system services, primarily looking for memory safety vulnerabilities. We leave extending FRED to entirely native system services to future work.
+
+The remainder of this paper proceeds as follows. Section 2 provides background and a motivating example. Section 3 overviews FRED. Section 4 describes the design of FRED. Section 5 evaluates FRED by applying it to three device firmware images. Section 6 discusses limitations. Section 7 overviews related work. Section 8 concludes.
+
+# 2 Background and Problem
+The Android platform is built on Linux primitives, including its traditional Unix-based system calls, file system, and access control. However, unlike traditional Linux distributions, Android provides an extensive application runtime environment that strongly controls software execution. Both Android applications and most of the framework are built upon four types of components: activities for user interfaces, broadcast receivers for asynchronous communication, content providers for data sharing, and services for daemon-like servers.
+
+The framework primarily consists of service components, which provide an abstraction layer for accessing sensitive resources including system files and device nodes. Applications make remote procedures calls (RPCs) to service entry points.
+
+boolean removeSharedAccountAsUser ( Account ac , int userId ) {
+int uid = getCallingUid ();
+userId = handleIncomingUser ( uid );
+UserAccounts acs = getUserAccounts ( userId );
+boolean deleted = acs . accountsDb . deleteSharedAccount ( ac );
+if ( deleted )
+removeAccountInternal (acs , ac , uid );
+}
+return deleted ;
+using Android’s custom binder inter-process communication (IPC) message passing system. Services then perform access control checks on RPCs using conditional statements that consider the Android permissions  granted to the calling application (usually at install-time). This abstraction layer allows Android to significantly privilege separate functionality into different services running as separate processes and assign least-privilege access control policy to sensitive files using traditional Unix permissions, user identities (UIDs), and group identities (GIDs). Recent versions of Android also use a version of SELinux designed for Android . In a small number of cases where using a framework abstraction layer is not practical, the Android runtime will add GIDs to applications based on the permissions they are granted. In such cases, the application can access associated files directly.
+
+In this model, Android’s system services act as privileged deputies, which are expected to perform authorization checks before accessing sensitive resources. Failing to perform proper authorization checks at RPC entry points may result in confused deputy vulnerabilities. ARF  identifies confused deputy vulnerabilities that result when an RPC entry point calls a different (privileged) RPC entry point. The authors found that Android’s RPC entry points are highly interconnected and that the calling identity often changes as the execution passes between RPC entry points. However, ARF does not consider confused deputies where an RPC entry point accesses a privileged file. Since file access is determined based on the authority of the service’s process and not the original calling application, confused deputy vulnerabilities may result if proper checks are not made.
+
+1526 31st USENIX Security Symposium USENIX Association
+nts_ce.db and /data/system_de/[userId]/accounts_de.db (where [userId] is the RPC argument). Ultimately, removeSharedAccountAsUser deletes rows in these files to remove the shared accounts of a specified user. It is a confused deputy, because both files are only accessible by system UID processes, and it does not ensure the removal is safe (e.g., by calling isAccountManagedByCaller). We reported this vulnerability to Google and were assigned CVE-2020-0208.

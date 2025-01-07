@@ -1,0 +1,70 @@
+# Understanding open ports in Android applications: Discovery, diagnosis, and security assessment
+Daoyuan WU
+Singapore Management University, dywu@phdis.smu.edu.sg
+Debin GAO
+Singapore Management University, dbgao@smu.edu.sg
+Rocky K. C. CHANG
+En HE
+Eric K. T. CHENG
+See next page for additional authors
+# Follow this and additional works at:
+https://ink.library.smu.edu.sg/sis_research
+# Citation
+WU, Daoyuan; GAO, Debin; CHANG, Rocky K. C.; HE, En; CHENG, Eric K. T.; and DENG, Robert H.. Understanding open ports in Android applications: Discovery, diagnosis, and security assessment. (2019). Network and Distributed System Security Symposium 26th NDSS 2019: February 24-27, San Diego, CA: Proceedings. 1-14. Available at: https://ink.library.smu.edu.sg/sis_research/4317
+This Conference Proceeding Article is brought to you for free and open access by the School of Computing and Information Systems at Institutional Knowledge at Singapore Management University. It has been accepted for inclusion in Research Collection School Of Computing and Information Systems by an authorized administrator of Institutional Knowledge at Singapore Management University. For more information, please email cherylds@smu.edu.sg.
+
+# Author
+Daoyuan WU, Debin GAO, Rocky K. C. CHANG, En HE, Eric K. T. CHENG, and Robert H. DENG
+This conference proceeding article is available at Institutional Knowledge at Singapore Management University: https://ink.library.smu.edu.sg/sis_research/4317
+# Understanding Open Ports in Android Applications: Discovery, Diagnosis, and Security Assessment
+# Daoyuan Wu1, Debin Gao1, Rocky K. C. Chang2, En He3, Eric K. T. Cheng2, and Robert H. Deng1
+# 1Singapore Management University
+# 2The Hong Kong Polytechnic University
+# 3China Electronic Technology Cyber Security Co., Ltd.
+
+# Abstract
+Open TCP/UDP ports are traditionally used by servers to provide application services, but they are also found in many Android apps. In this paper, we present the first open-port analysis pipeline, covering the discovery, diagnosis, and security assessment, to systematically understand open ports in Android apps and their threats. We design and deploy a novel on-device crowdsourcing app and its server-side analytic engine to continuously monitor open ports in the wild. Over a period of ten months, we have collected over 40 million port monitoring records from 3,293 users in 136 countries worldwide, which allow us to observe the actual execution of open ports in 925 popular apps and 725 built-in system apps. The crowdsourcing also provides us a more accurate view of the pervasiveness of open ports in Android apps at 15%, much higher than the previous estimation of 6%. We also develop a new static diagnostic tool to reveal that 61% of the open-port apps are solely due to embedded SDKs, and 20% suffer from insecure API usages. Finally, we perform three security assessments of open ports: (i) vulnerability analysis revealing five vulnerability patterns in open ports of popular apps, e.g., Instagram, Samsung Gear, Skype, and the widely-embedded Facebook SDK, (ii) inter-device connectivity measurement in 224 cellular networks and 2,181 WiFi networks through crowdsourced network scans, and (iii) experimental demonstration of effective denial-of-service attacks against mobile open ports.
+
+# I. INTRODUCTION
+A network port is an abstraction of a communication point. Servers on the Internet offer their services by “opening” a port for clients to send requests to, e.g., web servers on TCP port 80. A TCP/UDP port is regarded as open if a server process listens for incoming packets destined to the port and potentially responds to them. Since mobile devices are generally not suitable for providing network services due to their non-routable addresses and lack of CPU and bandwidth resources, one may argue that mobile apps are not suitable for hosting open ports. However, a few recent studies have shown otherwise and these open ports are susceptible to various attacks. Lin et al. demonstrated the insecurity of local TCP open ports used in non-rooted Android screenshot apps. Wu et al. found that the top ten file-sharing apps on Android and iOS typically do not authenticate traffic to their ports. Bai further revealed the insecurity of Apple ZeroConf techniques that are powered by ports such as 5353 for mDNS.
+
+# Network and Distributed Systems Security (NDSS) Symposium 2019
+24-27 February 2019, San Diego, CA, USA
+ISBN 1-891562-55-X
+1NetMon is short for “Network Scanner & Port Monitor” and is available at https://play.google.com/store/apps/details?id=com.netmon
+https://dx.doi.org/10/ndss
+www.ndss-symposium.org
+# Static Detection of Open-Port SDKs (§IV.D)
+# Discovery
+# Open Port Devices with NetMon installed (§III.A)
+# Monitoring via NetMon (§III.B)
+# Raw Analytic results (§III.C)
+# Crowd-sourced Open Ports
+# Diagnosis via OPTool (§IV.A-C)
+# Identification of Insecure API Usages (§IV.E)
+# Security Assessment
+# Vulnerability Analysis (§V.A)
+# Denial-of-Service Attack Evaluation (§V.B)
+# Inter-device Connectivity Measurement (§V.C)
+phone manufacturers. Besides the built-in apps missed by OPAnalyzer, NetMon also covers both TCP and UDP ports.
+
+We further quantify the efficacy of crowdsourcing through a comparison with static analysis. Out of the 1,027 apps that are confirmed with TCP open ports by our crowdsourcing, 25% of them use dynamic or obfuscated codes for open ports, and only 58% can be detected by typical Android static analysis techniques. With the help of NetMon, we manage to quantify the pervasiveness of open ports in a controlled set of the top 3,216 apps from Google Play, and find TCP open ports in 492 of them. This level of pervasiveness (15%) is more than twice previously reported (6%) using static analysis . Moreover, we are the first to measure the distribution of open-port apps across all 33 Google Play categories.
+
+While crowdsourcing is effective in port discovery, it does not reveal the code-level information for more in-depth understanding and diagnosis. As the second contribution, we include a diagnosis phase through OPTool, a new static analysis tool enhanced with open-port context and semantics, to understand the code-level open port constructions and the corresponding security implications. We focus on two kinds of diagnoses: whether an open port is introduced by developers themselves or embedded via a third-party SDK (Software Development Kit) by default, and whether developers apply secure open-port coding practice. The detection results are quite alarming. First, 13 popular SDKs are identified with open ports and 61% of open-port apps are solely due to these SDKs, among which Facebook SDK is the major contributor. Second, 20% of the open-port apps make convenient but insecure API calls, unnecessarily increasing their attack surfaces.
+
+In the last phase of our pipeline, we perform three novel security assessments of open ports:
+- Vulnerability analysis. Unlike OPAnalyzer which concentrates on the pre-defined vulnerability pattern, our vulnerability analysis aims to identify popular apps’ vulnerabilities that may not contain a fixed pattern — therefore more difficult to detect. The five vulnerability patterns identified by us present themselves in apps, such as Instagram, Samsung Gear, Skype, and the widely-embedded Facebook SDK.
+
+- Denial-of-service attack evaluation. We experimentally evaluate the effectiveness of a generic denial-of-service (DoS) attack against mobile open ports. We show that DoS attacks can significantly and effectively downgrade YouTube’s video streaming, WeChat’s voice call, and AirDroid’s file transmission via their open ports.
+
+- Inter-device connectivity measurement. Remote open-port attacks require the victim device to be connected (intra- or inter-network). To measure the extent to which this requirement is satisfied, we extend NetMon to conduct inter-device connectivity tests. With 6,391 network scan traces collected from devices in 224 cellular networks and 2,181 WiFi networks worldwide, we find that 49% of the cellular networks and 83% of the WiFi networks allow devices to directly connect to each other in the same network. Furthermore, 23 cellular networks and 10 WiFi networks assign public IP addresses to their users, which allows inter-network connectivity from the Internet.
+
+# II. BACKGROUND AND THREAT MODEL
+Before presenting our analysis pipeline, we first introduce the necessary background and our threat model.
+
+An open port, in this paper, is defined as a TCP/UDP port that binds to any legitimate IP address and is configured to accept packets. Legitimate IP address includes public, private, any (0), and also the local loopback IP address. We use such a generalized definition primarily due to the threat model in smartphones — any third-party apps running on the phone could be untrusted and could utilize even the local loopback address for attacks. To make it simple, we use host IP address to refer to all IP addresses except the loopback IP address, which will be explicitly stated. Under such a convention, a local open port refers to one that binds to the loopback address.
+
+Open ports on Android are typically created using TCP stream or UDP datagram sockets. BluetoothSocket  (in Android SDK), NFCSocket  (an open-source library), and in particular, the previously studied UNIX domain socket  are out of our scope because they do not use network ports. For example, Unix domain sockets use file system as their address name space, and therefore there are no IP addresses and port numbers. The communication also occurs entirely within the operating system between processes.
+
+We consider three types of adversaries in our threat model:
+- A local adversary is an attack app installed on the device on which the victim app (with open ports) runs. Such a adversary does not require sensitive permissions but needs the INTERNET permission to access the open ports.

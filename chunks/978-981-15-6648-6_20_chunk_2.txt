@@ -1,0 +1,59 @@
+# Inter-component Communication (ICC)
+Android employs ICC mechanism or Binder for apps to communicate with each other or system. It is responsible of request migration from the originating process to the target process. Using ICC an application component can request data access from another component within the same application or other application within the same device or a remote service. For example, a product delivery application may use Map application for device’s location by ICC.
+
+# Signature Based Malicious Behavior Detection in Android
+# 2 Android Security Threats
+Android smartphones being hub of users’ private data is always under the lense of app developers. Users now have high probability of facing information leakage such as mobile number, email address, IMSI (International Mobile Subscriber Identifier), IMEI (International Mobile Equipment Identifier), Contact list, and other personal identification information. IMEI or IMSI numbers do not immediately expose user identity, but with malicious service or app having access to it there is always a risk of privacy violation . Android security being based on permission model, lacks fine permission control and management.
+
+Apart from threat on user’s private information, there is always a threat on exploiting the underlying Android system. Attackers may exploit a vulnerability in the underlying linux system to gain root privilege of the device. Attackers with root privileged can easily over powers Android security framework. These attacks can result in unauthorized actions from malicious applications, which thus will cause security and privacy violations.
+
+# 3 Proposed Solution
+Our aim is to design and implement a system, that can collect and select real-time app interactions specific for a target application and check the behavioral activity for malicious nature.
+
+The proposed solution offers a dynamic analysis approach to analyse application behavior. Figure 2 gives overview of the proposed architecture containing an Android system and a server. System generated logs are collected from the Android device at kernel-level. Thus any attempt by malicious application to evade application level logging would be detected. Collected logs are filtered and then matched with signatures for analysis.
+
+# 256
+# V. Sihag et al.
+
+# Logging
+Android OS and app activities of different types can be logged using the Android system debugger called logcat. It logs both system and application generated logs as depicted in Fig. 3. A log entry from logcat includes tag and its priority. A tag indicates the component responsible for its generation (for example, OpenGLRenderer). The priority defines the priority level amongst Assert (A), Error (E), Warning (W) and Verbose (V) from high to low.
+
+A log entry format of logcat contains:
+&lt;date&gt; &lt;time&gt; &lt;PID&gt;-&lt;TID&gt;/&lt;package&gt; &lt;priority&gt;/tag: &lt;message&gt;
+PID stands for process identifier and TID is thread identifier. Below is a sample logcat entry.
+
+14-11 17:31:21 74-113/com.example.application I/Application: IN CLASS: (ENAppn.java:27)
+Application generated logs are events logged by apps running on the OS. Information logged in application logs is determined by the app developer not the OS. Malicious app developers can easily avoid detection by not logging its activities. Application logs thus cannot be relied upon for behavior detection.
+
+# Log Filtering
+The quantity of logs prevents manual analysis of kernel-level logs. A logging module at the kernel level gather records of log information from all events which take place on the operating system. The collected information consists of entries irrelevant w.r.t. our target activity. Furthermore, given the restricted storage capability on a smartphone the quantity of record information needs to be reduced. We only gather logs associated to interested system calls for malware detection in order to address these issues. Linux OS has around 300 system calls, which can be categorized based on their functionality.
+
+# Signature Based Malicious Behavior Detection in Android
+calls responsible for critical activities (such as process, memory and device management) are considered for further analysis. This enables us to acquire log data containing entries of concerned system calls. But it includes system calls related to all processes running on the OS. We therefore further remove entries related to irrelevant process by selecting only the concerned process entries. Using logcat tool process ID of concerned app and child processes are selected for filtering. Critical permissions accessed by application during runtime are captured in logs (Fig. 4).
+
+# Signature Matching
+The proposed system is based upon pattern matching of signatures with the filtered logs from the above step. Signatures are carefully crafted for high detection accuracy. They if designed to be too specific will lead to high false negative, and if too considerate of various activities will lead to high false positive. Keywords responsible personal information such as mail account, IMEI, phone number, etc. were considered for user’s personal identifiable information. For detecting jailbreak application and applications exploiting root privilege, name of known exploit binary files and commands respectively were selected for signatures. And for detecting requested critical permissions at runtime, critical permission request command were listed as signatures. List of signature is given in Table 1.
+
+# 4 Results and Analysis
+A system prototype of the proposed solution was implemented. System logs for the targeted application were generated and filtered, followed by pattern matching with the signatures. Popular applications of different categories were collected.
+
+In total 260 applications were collected from Google Play Store and other Third party app stores for analysis. Selection of applications was done on the basis of popularity. Popular applications from each category (social networking, games, productivity, messaging, etc.) were selected. Apart from the above,
+# 258
+# V. Sihag et al.
+
+# Signature Based Malicious Behavior Detection in Android
+42 applications listed malicious by Government of India were also selected for analysis. Analysis results are shown in Table 2 and 3.
+
+Of 260 applications, 43 applications which taking sensitive data from device and 2 application fetching email data. 21 applications were also detected showing advertisement services. Additionally we have found 10 applications which try to jailbreak the device, 4 applications which is try to root the device, 4 applications run rageagainthecage which is used to root the device. Additionally, we found out 16 applications which use superuser activity in the device.
+
+# 5 Related Work
+Takamasa et al. in  describe the system architecture for signature pattern based detection of malicious applications for Android. Ma et al. in  introduces a novel attack vector called as “shadow attacks”, which tries to evade the behavior based detection by partitioning a process into multiple shadow processes. Deguang Kong et al. in  describes a system which automatically assess the review to behaviour reliability of mobile applications. According to author, Autoreb uses artificial intelligence to identify linkage between user reviews and privacy compromises. They collected reviews from multiple sources thus to identify issues from reviews towards the application. Burguera et al. in  describes the system and framework to perform behavioral analysis of application to detect malware. Crowdroid collected information traces about application from multiple real-time users. It employs crowdsourcing approach to differentiate normal.
+
+260 V. Sihag et al.
+
+and malicious behavior. It also illustrated similarity between newly generated test malware and real samples.  considered system calls as they give low level information. They were able to detect all malicious execution for their self developed malicious apps. Andrea et al. in  presents the behaviour based detection system which analyses and correlates function. The functions selected were responsible for package-level, user-level, application-level and kernel-level interactions. A framework based on machine learning is introduced in  by Kong and Jin to address permission prediction problem. It captures the relations amongst textual descriptions, permissions, and app category. They tested the approach on 11k applications ranging from 30 categories.  and  classified malicious and benign applications based on system calls captured using strace tool. They then employ machine learning for classification. Wu et al. in  used call frequency and dependency for detection. They then fed LASSO, RF and SVM based machine learning classifiers to achieve accuracy of 93%. System logs and system calls are employed by Jang et al. in  for malware detection and familial classification. They reported accuracy of 99% for their approach.
+
+# 6 Conclusion
+We have presented a behavior based android malware detection approach. System generated logs are collected and filtered at runtime for application under analysis to be further matched with generated signatures. Signatures were generated taking into account the application behavior responsible for information leakage, jail break attempt, privilege escalation attempt and access of critical permissions at runtime. Behavior based detection approaches provides insight into running applications as compared to static analysis approaches and thus need to be employed by market places for detecting behavior diversion of applications from intended behavior. Our approach was found to be effective as it gives considerable insight into malware interactions responsible for security and privacy compromises.
+
+In future, a multi level hybrid approach including static analysis can be envisioned to improve scalability and efficiency of the detection system.

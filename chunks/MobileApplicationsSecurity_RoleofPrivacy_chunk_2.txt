@@ -1,0 +1,65 @@
+# Improper Access
+A significant aspect of customers’ concern is related to their doubt about whether mobile app service providers have enough ability to prevent unauthorized access to their personal information . Individuals are fully sensible of such threat to the extent that monetary incentives would not diminish their concerns about unauthorized access to their information which individuals share with a third party . Improper access is known for its effect on privacy concern, but we believe it also comes with an influence on perceived security . By extension, we anticipate improper access negatively affects perceived security. Consequently, we hypothesize that:
+# H5:
+Improper access has a negative impact on the perceived security of mobile apps.
+
+# H6:
+Improper access has a positive impact on perceived privacy concerns of mobile apps.
+
+We also adopt several control variables in our study based on privacy and security literature to examine the relationships of our model rigorously. We included age, gender, internet experience, invasion of security, and media exposure as the control variables in the proposed model.
+
+# Twenty-fourth Americas Conference on Information Systems, New Orleans, 2018
+# Mobile Applications Security: Role of Privacy
+# Methodology
+The target population of this study is mobile app users in the U.S. An online survey would be administered through Amazon Mechanical Turk. Prior literature emphasized that mTurk is reliable, easy to access, affordable, and superior to both the traditional data collection methods and other similar digital respondents’ pools . In designing the survey, we adopt the previously developed measures for perceived security, trust, privacy concerns, privacy policy effectiveness, and improper access from the prior literature. The process of data collection involves: (1) a preliminary pilot study with less than 50 mobile apps users (university students) to get feedback about the questions; and (2) distributing the revised survey on Amazon Mechanical Turk among mobile apps users so that we can collect data from mobile apps users with different gender, age groups, and educations. Finally, we use multivariate techniques, especially structural equation modeling (SEM) to analyze the research model after reliability and validity checks.
+
+# Discussion and Conclusion
+The key objective of this paper is to develop and test a nomological model to understand what factors influence the security perceptions of mobile apps users. The model posits that perceived trust, perceived privacy policy effectiveness, perceived privacy concerns, and improper access affect mobile app users’ security perception. We contribute to mobile apps security literature by employing privacy-related factors as the predictors of security perception. By mitigating the security concerns of mobile apps users, developers can eliminate barriers and hurdles that can change the users’ decision to discontinue the use of mobile apps. We recommend that future researchers dedicate more attention to the role of security which seems to remain an issue as technology moves forward.
+
+# Mobile Applications Security: Role of Privacy
+Jin, B., Yong Park, J., and Kim, J. 2008. “Cross-Cultural Examination of the Relationships among Firm Reputation, E-Satisfaction, E-Trust, and E-Loyalty,” International Marketing Review (25:3), pp. 324-337.
+
+Johnson, D., and Grayson, K. 2005. “Cognitive and Affective Trust in Service Relationships,” Journal of Business research (58:4), pp. 500-507.
+
+Kees, J., Berry, C., Burton, S., and Sheehan, K. 2017. “An Analysis of Data Quality: Professional Panels, Student Subject Pools, and Amazon's Mechanical Turk,” Journal of Advertising (46:1), pp. 141-155.
+
+Kehr, F., Kowatsch, T., Wentzel, D., and Fleisch, E. 2015. “Blissfully Ignorant: The Effects of General Privacy Concerns, General Institutional Trust, and Affect in the Privacy Calculus,” Information Systems Journal (25:6), pp. 607-635.
+
+Keith, M. J., Thompson, S. C., Hale, J., Lowry, P. B., and Greer, C. 2013. “Information Disclosure on Mobile Devices: Re-examining Privacy Calculus with Actual User Behavior,” International Journal of Human-Computer Studies (71:12), pp. 1163-1173.
+
+Kim, C., Tao, W., Shin, N., and Kim, K. S. 2010. “An Empirical Study of Customers’ Perceptions of Security and Trust in E-Payment Systems,” Electronic Commerce Research and Applications (9:1), pp. 84-95.
+
+Kim, G., Shin, B., and Lee, H. G. 2009. “Understanding Dynamics between Initial Trust and Usage Intentions of Mobile Banking,” Information Systems Journal (19:3), pp. 283-311.
+
+Liao, Z., and Cheung, M. T. 2003. “Challenges to Internet E-Banking,” Communications of the ACM (46:12), pp. 248-250.
+
+Luo, X., Li, H., Zhang, J., and Shim, J. P. 2010. “Examining Multi-Dimensional Trust and Multi-Faceted Risk in Initial Acceptance of Emerging Technologies: An Empirical Study of Mobile Banking Services,” Decision support systems (49:2), pp. 222-234.
+
+Ooi, K. B., and Tan, G. W. H. 2016. “Mobile Technology Acceptance Model: An Investigation Using Mobile Users to Explore Smartphone Credit Card,” Expert Systems with Applications (59), pp. 33-46.
+
+Ponte, E. B., Carvajal-Trujillo, E., and Escobar-Rodríguez, T. 2015. “Influence of Trust and Perceived Value on the Intention to Purchase Travel Online: Integrating the Effects of Assurance on Trust Antecedents,” Tourism Management (47), 286-302.
+
+Roca, C. J., García, J. J., and de la Vega, J. J. 2009. “The Importance of Perceived Trust, Security and Privacy in Online Trading Systems,” Information Management & Computer Security (17:2), pp. 96-113.
+
+Shankar, A., and Kurami, P. 2016. “Factors Affecting Mobile Banking Adoption Behavior in India,” The Journal of Internet Banking and Commerce (21:160), pp. 1.
+
+Shen, Y. C., Huang, C. Y., Chu, C. H., and Hsu, C. T. 2010. “A Benefit–Cost Perspective of the Consumer Adoption of the Mobile Banking System,” Behaviour and Information Technology (29:5), pp. 497-511.
+
+Shin, D. H. 2010. “The Effects of Trust, Security and Privacy in Social Networking: A Security-Based Approach to Understand the Pattern of Adoption,” Interacting with computers (22:5), pp. 428-438.
+
+Smith, H. J., Dinev, T., and Xu, H. 2011. “Information Privacy Research: An Interdisciplinary Review,” MIS Quarterly (35:4), pp. 989-1016.
+
+Smith, H. J., Milberg, S. J., and Burke, S. J. 1996 “Information Privacy: Measuring Individuals' Concerns about Organizational Practices,” MIS Quarterly (20:2), pp. 167-196.
+
+Statista. 2014. "Share of Global Internet Users Who Are Concerned about Criminals Hacking into Their Personal Bank Accounts as of November 2014, By Country" (available online at http://www.statista.com/statistics/373422/global-opinion-criminal-hacking-personal-bank-account/; accessed August 29, 2017).
+
+Susanto, A., Chang, Y., and Ha, Y. 2016. “Determinants of Continuance Intention to Use The Smartphone Banking Services: An Extension To the Expectation-Confirmation Model,” Industrial Management and Data Systems (116:3), pp. 508-525.
+
+Zhou, T. 2011a. “An Empirical Examination of Initial Trust in Mobile Banking,” Internet Research (21:5), pp. 527-540.
+
+Zhou, T. 2011b. “The Impact of Privacy Concern on User Adoption of Location-based Services,” Industrial Management and Data Systems (111:2), pp. 212-226.
+
+Zhou, T., Lu, Y., and Wang, B. 2010. “Integrating TTF and UTAUT to Explain Mobile Banking User Adoption,” Computers in Human Behavior (26:4), pp. 760-767.
+
+Twenty-fourth Americas Conference on Information Systems, New Orleans, 2018
+View publication stats.

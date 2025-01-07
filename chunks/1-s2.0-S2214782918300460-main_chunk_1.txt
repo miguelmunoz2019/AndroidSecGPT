@@ -1,0 +1,49 @@
+# Reviewing the data security and privacy policies of mobile apps for depression
+# Kristen O'Loughlina,b,⁎, Martha Neary b,c , Elizabeth C. Adkins b, Stephen M. Schueller b,c
+a Virginia Commonwealth University, Department of Psychology, United States of America
+b Northwestern University, Feinberg School of Medicine, Department of Preventive Medicine, Center for Behavioral Intervention Technologies, United States of America
+c University of California, Irvine, Department of Psychological Science, United States of America
+# A R T I C L E I N F O
+# A B S T R A C T
+Keywords: Depression, Mental health, Mobile apps, mHealth, Review, Data privacy
+Background: Mobile apps have become popular resources for mental health support. Availability of information about developers' data security procedures for health apps, specifically those targeting mental health, has not been thoroughly investigated. If people are to use and trust these tools for their mental health, it is crucial we evaluate the transparency and quality around the data practices of these apps. The present study reviewed data security and privacy policies of mobile apps for depression.
+
+Methods: We reviewed mobile apps retrieved from iTunes and Google Play stores in October 2017, using the term “depression”, and evaluated the transparency of data handling procedures of those apps.
+
+Results: We identified 116 eligible mobile phone apps. Of those, 4% (5/116) received a transparency score of acceptable, 28% (32/116) questionable, and 68% (79/116) unacceptable. Only a minority of the apps (49%) had a privacy policy. The availability of policies differed significantly by platform, with apps from iTunes more likely to have a policy than from the Google Play store. Mobile apps collecting identifiable information were significantly more likely to have a privacy policy (79%) compared to those collecting only non-identifiable information (34%).
+
+Conclusion: The majority of apps reviewed were not sufficiently transparent with information regarding data security. Apps have great potential to scale mental health resources, providing resources to people unable or reluctant to access traditional face-to-face care, or as an adjunct to treatment. However, if they are to be a reasonable resource, they must be safe, secure, and responsible.
+
+# 1. Introduction
+The increasing use and integration of mobile apps into our daily lives provides opportunity for public health innovation and community benefit. As of 2017, five million mobile phone applications were available through iTunes and Google Play , and over 10,000 are for mental health (Torous and Roberts, 2017). These mental health apps provide an array of supportive services. These features include: inputting and organizing user data, accessing or transmitting that information, receiving didactic material to promote psychoeducation, and using interactive tools to promote self-management (BinDhim and Trevena, 2015b). These features impact users' ability to understand, communicate, and treat their mental health symptoms.
+
+People appear willing and interested to use mobile apps for mental health support. Both community samples and out-patient psychiatric patients report positive attitudes towards the use of apps to monitor their mental health symptoms and conditions . Indeed, the number of downloads for mental health apps has doubled over the course of just four years (Research2guidance, 2016). Many apps target common mental health conditions that are widespread and undertreated. Depression, for example, affects 8% of Americans at any given time ; however, only 21% of those affected receive effective treatment (González et al., 2010). Mobile health app developers reported that as of 2017, depression was in the top three health conditions with the best market potential for digital health apps (Research2guidance, 2017). This is matched by development, with reportedly 18% of mental health apps targeting depression (IMS Institute for Healthcare Informatics, 2015). As such, examining depression apps is likely an important cross-section of currently available mental health apps.
+
+Due to user acceptability and demand, new mental health apps are being developed rapidly, though with limited regulatory oversight.
+
+⁎ Corresponding author at: Virginia Commonwealth University, Department of Psychology, 806 W. Franklin Street, Richmond, VA 23223, United States of America. E-mail address: oloughlink@mymail.vcu.edu (K. O'Loughlin).
+
+https://doi.org/10/j.invent
+Received 10 July 2018; Received in revised form 18 October 2018; Accepted 17 December 2018; Available online 20 December 2018
+2214-7829/ © 2019 The Authors. Published by Elsevier B.V. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/BY-NC-ND/4/).
+
+# K. O'Loughlin et al.
+
+# Internet Interventions 15 (2019) 110–115
+# App Selection
+Indeed, 2016 saw a 57% increase in mental health apps across all major app stores (Research2guidance, 2016). It is unfeasible to completely regulate this enormous and growing volume of apps. To combat this issue, the US Food and Drug Administration (FDA) has made three distinct categories of mobile health apps: (1) apps that are not medical devices, (2) apps that are medical devices but the FDA will exercise enforcement discretion (i.e., will not be regulated), and (3) those which are medical devices and require regulatory oversight. Most mental health apps do not fall into this third category and thus receive little attention (BinDhim and Trevena, 2015a). The second category includes mobile apps that help people with diagnosed mental health conditions maintain their coping skills through regular tips or audio messages. The Federal Trade Commission compiled a list of best practices to advise the development of mental health apps, such as minimizing collection of user data and limiting both access and permissions to the users' phone. However, these practices are not adequately enforced . Consequently, many mental health mobile apps fall outside of formal regulation in the US, and therefore, there are few checks on these products before being made available to consumers.
+
+The lack of regulation around the dissemination of mobile health apps raises concern about their quality and practices. One practice that requires careful scrutiny is that of developers' privacy policies and data security practices. Data security for mental health apps is a widespread concern . A survey of mental health app users found that over 70% rated both the presence of a privacy policy and data encryption as important to them . Data security is also a primary concern among mental health professionals when recommending mobile apps to clients (Aguilera and Muench, 2012). Thus, user privacy and data security are of utmost importance. The American Psychiatric Association's App Evaluation model  has risk, privacy, and security as one of the foundational levels of their review pyramid. This model lists a series of questions that can help users ensure that an app will not cause harm by violating user safety, security, and privacy. However it does not provide guidance as to the relative weighting of each question or the user's perception of potential harm associated with each.
+
+The availability and adequacy of information about developers' data security procedures for apps, specifically those targeting mental health, has not been thoroughly investigated. Rosenfeld et al. (2017) evaluated the data security and privacy of publicly available mobile phone apps targeting dementia. Results showed fewer than half of the apps that collect user information had a privacy policy and the policies were missing important information regarding data handling. This paper sheds important light on the unavailability of privacy policies and deficiency in transparency around developers' practices with data security. However, Rosenfeld et al. (2017) only explored mobile phone apps for dementia, and to this point, more research is needed to understand apps for other clinical issues, especially those that are common.
+
+# K. O'Loughlin et al.
+
+# Internet Interventions 15 (2019) 110–115
+Scoring:
+- If any dark grey checked -> score unacceptable
+- If all white checked -> score acceptable
+- If any light grey (but no dark grey) -> score questionable
+ID: identifiable information; which can be used to trace or identify a person, such as full name or e-mail.
+
+and have a multitude of apps that claim to address them. Given the widespread use of mobile phone apps as well as their ability to provide support for depression, it is crucial we evaluate the transparency and quality around their data practices. To date, no studies have reviewed data security and privacy policies of publicly available mobile apps for depression. The present study sought to understand the availability and thoroughness of privacy policies for mobile apps targeting depressed users, and if those practices differed based upon which app store they were developed for or the type of data collected. Building on established guidelines, we used a checklist-based approach for evaluation that produced three levels of conclusions similar to those proposed by the American Psychiatric Association's App Evaluation Model. Based upon the findings of Rosenfeld et al. (2017), we anticipated to find a significant number of mobile apps with either no privacy policy or a poor-quality privacy policy. This hypothesized outcome represents a broader problem with developers' communication to users of data security procedures.

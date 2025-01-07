@@ -1,0 +1,78 @@
+The first example in Listing 1 was not part of a targeted attack but more in the idea of a widespread malicious application. Let’s now consider a State-Sponsored Attack or an Advanced Persistent Threat  which targets specific devices. Those devices could embed seemingly legitimate applications that contain, e.g., an SMS-bomb and remain undetected by most of the analysis tools.
+
+# Listing 1. Time-Bomb Example.
+
+1 protected void onStart() {
+2    Date now = new Date();
+3    Date attackDate = installDate.plusDays(14);
+4    if(now.after(attackDate)){attack();}|
+5 }
+# Listing 2. SMS-Bomb Example.
+
+1 public void onReceive(Context c, Intent i) {
+2       SmsMessage sms = getIncomingSms(i);
+3       String body = sms.getMessageBody();
+4       if(body.startsWith(“!CMD:“))
+5            {processCmd(getCmdFromBody(body));}|
+6 }
+Such a logic bomb could be used as a backdoor to steal sensitive user data. Indeed, if it is a well prepared targeted attack, the attacker could send an SMS with a specific string recognized by the application. Then the application would leak wanted information and stop the broadcast of the SMS to other applications supposed to receive it. This example shows how important it is to detect as many logic bombs as
+# IEEE TRANSACTIONS ON DEPENDABLE AND SECURE COMPUTING, VOL. 19, NO. 6, NOVEMBER/DECEMBER 2022
+# APK
+possible in applications, especially in mobile devices, which nowadays store a lot of personal information.
+
+Listing 2 shows an implementation of such a threat in the method onReceive(Context c, Intent i) of BroadcastReceiver class which is triggered when, in this case, an SMS is received by the device. First, the body of the SMS is retrieved in line 3. Then, at line 4, it is compared against ”!CMD:” which is a hardcoded string matched against the body of an SMS. This check is considered suspicious because the application can match a hardcoded string against any incoming SMS. Hence it can wait for external commands to be executed by the malicious part of the application. Note that it could be harmless. That is why it is suspicious and not malicious. If the condition is satisfied, the command is retrieved from the SMS, and the malicious code is activated at line 5.
+
+# 3 OVERVIEW
+In this section, we explain TSOPEN, an open-source implementation of TRIGGER SCOPE, at the conceptual level. The approach is summarized in Fig. 1.
+
+# 3 Applications Representation
+Android apps do not have a single entry point like usual Java programs. They are made of components, each one having its life-cycle managed by the Android framework. Modeling life-cycles and how components are connected is not trivial. That is why TSOPEN relies on FLOWDROID . Indeed, FLOWDROID handles intra-component communications by introducing dummy main methods and opaque predicates to guarantee that any execution order would not influence any static analysis over the model. FLOWDROID also relies on ICCTA  to model the inter-component communications thanks to EPICC . Using state-of-the-art solutions allowed us to avoid reimplementing the Android framework modeling reducing implementation errors. Thus, we retrieve an interprocedural control flow graph on which we can run static analysis algorithms (step A in Fig. 1).
+
+Now that we have a model of the application that can be seen in Appendix D, which can be found on the Computer Society Digital Library at http://doi.ieeecomputersociety.org/10/TDSC, we can run our analysis, starting with the symbolic execution.
+
+# 3 Symbolic Execution
+When classifying predicates, the program has to make decisions depending on the type of objects in conditions, i.e., the condition’s semantics. Therefore, this analysis models, using symbolic execution (step B in Fig. 1), the values and the operations performed over Java objects. More precisely, as we faithfully implemented TRIGGER SCOPE, we focus on modeling strings, integers, location, SMS, and time-related objects. Also, these interesting objects are annotated in order to ease the classification.
+
+Furthermore, the classification cannot be done without retrieving the instructions guarded by a condition, that is why the next step, i.e., the predicate recovery, is essential.
+
+# 3 Predicate Recovery
+An essential step of the analysis is to construct the intra-procedural path predicate related to each instruction to build the logical formula leading to the instruction. For this, we operate as follows:
+Let ICFG = (I, Er) be the directed graph describing the interprocedural control flow graph given by FLOWDROID where, I represents the set of reachable instructions of the program and Er ⊆ I × I corresponds to the set of reachable directed edges of the program represented by a pair of instructions (ia, i) indicating that the flow goes from ia to i. Let Cr the set of reachable conditions of the program and Gb(i) = {x | (x, i) ∈ Er} the predecessor function.
+
+The algorithm to retrieve the full path predicate of each instruction is described as follows:
+1. For all i ∈ I; for all e = {(x, i) | x ∈ G(i)} ⊆ E, annotate e with the closest preceding condition c ∈ Cr (step C in Fig. 1).
+
+2. For all i ∈ Ir, fW(getFormula(x) ∧ c) | x ∈ G(i); c annotate i with p = getFormula(i) = the condition annotated on edge (x, i) (step C in Fig. 1).
+
+3. For all i ∈ I; simplify the formula p with the basic laws of Boolean algebra, p is the full intraprocedural path predicate annotated on i (step C in Fig. 1).
+
+The last step is essential in order to remove false dependencies of instructions. Indeed, consider the following formula: (p ∧ q) ∨ (¬p ∧ q) which could have been calculated after step 2. The instruction annotated with this formula would have a false dependency on predicate p because (p ∧ q) ∨ (¬p ∧ q) = q ∧ (p ∨ ¬p) = q ∧ 1 = q as defined by the distributive and complementation laws of boolean algebra. Hence, the elimination of false dependencies.
+
+Now that we have retrieved path predicates and eliminated false dependencies, we can classify predicates.
+
+# SAMHI AND BARTEL: ON THE (IN)EFFECTIVENESS OF STATIC LOGIC BOMB DETECTION FOR ANDROID APPS
+# 3 Predicate Classification
+In order to classify predicates, i.e., their potential suspiciousness, two essential characteristics are taken into account (step D in Fig. 1). First, we verify that the predicate involves a previously computed time-, SMS- or location-related object. Second, we verify the type of check performed over the object. The focus is set to comparisons with relevant previously modeled objects and hardcoded values/constants in the application. If a condition corresponds to these criteria, it is flagged as suspicious. Note that the Jimple intermediate representation of the Java bytecode is convenient for this stage as it allows analysts to access explicit object types. This step acts as a filter for the final control dependency step as it reduces the conditions to analyze by ruling out not suspicious conditions.
+
+# 3 Control Dependency
+The last step of the approach consists in characterizing whether a condition is defined as a logic bomb (step E in Fig. 1). For this, every guarded instruction of a considered condition is checked to verify if it invokes a sensitive method. Also, whether a variable would be modified and later involved in another check, which, in turn, its guarded instructions would be similarly checked. This idea extends the range of possibilities regarding the search for logic bombs. Our implementation takes all these steps into account.
+
+The interested reader can find further details about the implementation in Appendix A, available in the online supplemental material. Furthermore, Appendix H, available in the online supplemental material, shows an execution example of the analysis.
+
+# 4 EVALUATION
+In this section we evaluate TSO PEN and address the following research questions:
+- RQ1: Does TSOPEN’s approach scale?
+- RQ2: What parameters can impact the false positive rate?
+- RQ3: Is it possible to locate the malicious code with logic bomb detection?
+- RQ4: Do benign and malicious applications use similar behavior regarding the approach under study and why?
+- RQ5: Are TRIGGER S COPE’s results reproducible?
+Our analyses were run on a server with an Intel Xeon E5-2430 2GHz processor with 24 cores, and 95GB of RAM and the High-Performance Computing equipment available at the University of Luxembourg.
+
+# 4 RQ1: Does TSO PEN’s Approach Scale?
+We perform the large scale analysis on a large dataset containing 508122 applications. This dataset has been created by randomly extracting applications from the 10 million applications of Androzoo. This analysis is necessary to understand why it could or could not be deployed in real-world analyses, e.g., before being accepted into a store.
+
+# IEEE TRANSACTIONS ON DEPENDABLE AND SECURE COMPUTING, VOL. 19, NO. 6, NOVEMBER/DECEMBER 2022
+Correlation Coefficients of the Data of Fig. 3 (PCC: Pearson Correlation Coefficient, SCC: Spearman Correlation Coefficient)
+brought by obfuscation, for example, the analysis still stays efficient.
+
+On the other hand, other features directly influence the execution. Regarding the approach used in this analysis, the most troublesome consequence of having many branches (path minimization is an NP-hard problem) is that it considerably slows down the analysis.

@@ -1,0 +1,148 @@
+- Dynamic analysis framework detection (Java implementation, in Fig. A2, page 26, Native implementation in Fig. A3 page 27): The simplest way to detect a dynamic analysis framework is to scan package names, files or binaries to look for resources known to be components of these frameworks. An app can throw an exception and check whether Xposed is present in the stack trace  (lines 2-27 Java). It can also iterate through the list of running processes to check whether the Frida server is running  (lines 30-45 Java). At Native level, an app can ping the TCP port 27047, used by the Frida server as default, to see whether it is open  (lines 1-11 Native). Also, it can check if Frida-related libraries are mapped into  (lines 13-28 Native).
+
+- Debugger detection (Java implementation in Fig. A4, page 27, Native implementation in Fig. A5, page 28): an app can discover the presence of a JDWP debugger through the Debug.isDebuggerConnected API (lines 1-3 Java). The app can invoke the same API through the gDvm structure at Native level (lines 1-6 Native) . An app can detect the GDB debugger by checking if there are processes attached to the process of the app by reading the TracerPid value in the /proc/self/status file (lines 5-22 Java) . Besides reactive protections, there are also preventive ones. For instance, an app can attach a mock debugger process to itself to prevent a real debugger process from functioning properly (lines 8-30 Native) . For what concerns a GDB debugger, remember that the best protection is to prevent it from attaching to the process of the app.
+
+- Debuggable status detection (Java implementation in Fig. A6, page 28): The attackers, to allow JDWP flag debugging, have to alter the value of the debuggable in the manifest of the app. In this way, the Android operating system starts an extra thread for handling the value of JDWP flag the protocol. An app can access and check this either through the ApplicationInfo.FLAG_DEBUGGABLE.
+
+16 S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+Fig. A1. Java example implementation of Emulator Detection protection.
+
+# A2. AT protections
+- Signature checking (Java implementation in Fig. A8, page 29, Native implementation in Fig. A9, page 30): A tampered app does not have the same digital signature anymore. Therefore, an app can compare the current signature of the APK file with the original one. The app can implement this protection both at Java and Native level. In the former case, the app can obtain the current signature through dedicated APIs using the PackageManager.GET_SIGNATURES and the PackageInfo.signatures (API &lt; 28) or the PackageManager.GET_SIGNING_CERTIFICATES and the PackageInfo.signingInfo. (API latter28)≥ APIs (lines 1-16 Java) Alexander-Bown. In the case, the app can extract and parse the CERT.RSA file.
+
+- Code integrity checking (Java implementation in Fig. A10, page 30): Similarly to the Signature Checking protection, an app can compute a digest value on a resource or file and then compare it with the expected one. Therefore, an app could access and hash the file containing the Java code (i.e. the .dex file) and check whether this value is the original one or not. App developers can use standard libraries like “Zipentry”15 to automatically obtain useful values like the CRC code (lines 1-7 Java).
+
+15 https://developer.android.com/reference/java/util/zip/ZipEntry.
+
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# 17
+# Figures
+Fig. A2. Java implementation of Dynamic Analysis Framework Detection protection.
+
+Fig. A3. Native implementation of Dynamic Analysis Framework Detection protection.
+
+# Installer verification
+(Java implementation in Fig. A11, page 31): Usually, attackers publish tampered and repackaged apps in third-party app stores . When installing an app, the Android operating system keeps track of the source of the APK file. This value is available through the PackageManager method getInstallerPackageName. In particular, this returns the package name of the app through which the end-user installed the current app. An app can obtain this value and check whether it is consistent with the app.
+
+# 18
+S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+Fig. A4. Java implementation of Debugger Detection protection.
+
+Fig. A5. Native implementation of Debugger Detection protection.
+
+Fig. A6. Java implementation of Debuggable Status Detection protection.
+
+stores where the developers published the app (lines 1-6 Java) . Suppose the developers published their app only in the Google Play Store. Therefore, end-users should have installed the app through the Play Store app that has “com.android.vending” as the package name. If the value returned by the getInstallerPackageName API is “cm.aptoide.pt”, the app was installed from Aptoide, 16 an independent Android app store. Therefore, some attackers likely tampered the app.
+
+16 https://www.aptoide.com/en/home.
+
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# 19
+Fig. A7. Native implementation of Altering Debugging Memory Structure protection.
+
+Fig. A8. Java implementation of Signature Checking protection.
+
+SafetyNet attestation: An app can invoke SafetyNet to verify the integrity of the smartphone in which it is running. SafetyNet can provide information on alterations such as rooting or bootloader unlocking. Usually, attackers exploit these features to install dynamic analysis frameworks. Furthermore, SafetyNet can also provide information about the app that invoked the service, like the signature. This information can be used to perform integrity checks on the app itself. The example implementation for this protection is rather long and we do not report it here. Therefore, we leave the reference for further insights Instead, we report a sample output JSON in Fig. A12 (page 31). The ctsProfileMatch and basicIntegrity fields provide spot checks for device integrity. The apkPackageName and the apkDigestSha256 fields give indications on the integrity of the package of the app. The apkCertificateDigestSha256 field contains information on the integrity of the certificate of the app.
+
+17 https://github.com/googlesamples/android-play-safetynet.
+
+# Appendix B. Protection atoms
+# B1. AD protections
+This appendix contains the protection atoms extracted from the protections. For each protection, we report the protection atoms in a table. We divide the Java protection atoms into sets of classes, methods, attributes and strings and the Native protection atoms into sets of imported symbols and strings. Note that not every protection has extended Java protection both and Native protection atoms. Note also that we the atoms with code with similar functionalities of the example implementation.
+
+- Emulator detection - Java protection atoms in Table B, page 32, Native protection atoms in Fig. B, page 33
+- Dynamic analysis framework detection - Java protection atoms in Table B, page 33, Native protection atoms in Fig. B, page 34
+- Debugger detection - Java atoms in Fig. B, page 34 protection atoms in Table B, page 34, Native protection
+- Debuggable status detection - Java protection atoms in Table B, page 34, Native protection atoms in Fig. B, page 34
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# Table B1
+# Protection Atoms for the Emulator Detection protection at Java level.
+
+# Table B2
+# Protection Atoms for the Emulator Detection protection at Native level.
+
+# Imported symbols
+s1 ro.hardware
+s2 ro.boot.hardware
+s3 ro.kernel.androidboot.hardware
+s4 ro.product.board
+s5 ro.board.platform
+s6 ro.product.brand
+s7 ro.product.device
+s8 ro.cm.device
+s9 ro.bootimage.build.fingerprint
+s10 ro.build.fingerprint
+s11 ro.product.manufacturer
+s12 ro.product.model
+s13 goldfish
+s14 ranchu
+s15 vbox86
+s16 ttVM_x86
+s17 unknown
+s18 generic
+s19 nox
+s20 FRF91
+s21 google_sdk
+s22 generic_x86
+# Strings
+s23 generic_x86_64
+s24 Andy
+s25 Droid4X
+s26 vbox
+s27 Genymotion
+s28 ro.kernel.qemu
+s29 qemud
+s30 qemu.sf.lcd_density
+s31 qemu.hw.mainkeys
+s32 qemu.sf.fake_camera
+s33 /dev/socket/qemud
+s34 /dev/qemu_pipe
+s35 /system/lib/libc_malloc_debug_qemu.so
+s36 /sys/qemu_trace
+s37 /system/bin/qemu-props
+s38 /dev/socket/genyd
+s39 /dev/socket/baseband_genyd
+s40 ro.kernel.android.qemud
+s41 ro.kernel.qemu.gles
+s42 init.svc.qemud
+s43 init.svc.qemu-props
+s45 init.goldfish.rc
+# Notes
+- Altering debugger memory structure - Native protection atoms in Table B, page 35
+- Signature checking - Java protection atoms in Table B, page 34, Native protection atoms in Table B, page 36
+- Code integrity checking - Java protection atoms in Table B, page 36
+- Installer verification - Java protection atoms in Table B, page 36
+- SafetyNet attestation - Java protection atoms in Table B, page 33
+# Table B3
+Protection Atomss for the Dynamic Analysis Framework Detection protection at Java level.
+
+# Table B4
+Protection Atomss for the Dynamic Analysis Framework Detection protection at Native level.
+
+# Table B5
+Protection Atomss for the Debugger Detection protection at Java level.
+
+# Table B6
+Protection Atomss for the Debugger Detection Protection at Native level.
+
+# Table B7
+Protection Atomss for the Debuggable Status Detection protection at Java level.
+
+# Table B8
+Protection Atomss for the Debuggable Status Detection protection at Native level.
+
+Imported symbols
+Strings
+s1
+ro.debuggable
+# Table B9
+Protection Atomss for the Altering Debugger Memory Structure Protection at Native Level.
+
+# Table B10
+Protection Atomss for the Signature Checking protection at Java level.
+
+# Table B11
+Protection Atomss for the Signature Checking protection at Native level.
+
+# Table B12
+Protection Atomss for the Code Integrity Checking protection at Java level.

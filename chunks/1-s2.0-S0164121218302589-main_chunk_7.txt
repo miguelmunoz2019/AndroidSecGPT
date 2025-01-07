@@ -1,0 +1,53 @@
+# 6. RQ3. Efficiently generating ECA rules
+# 6. RQ4. Performance
+We measured the execution time of running DelDroid on the 10 bundles of apps shown in Table 2. These experiments were conducted on a MacBook Pro with 2 GHz Intel Core i7 processor and 16GB DDR3 RAM. We repeated our experiments 33 times to achieve a 95% confidence interval. Table 7 summarizes the results. On average, for an Android system with 30 apps, it takes less than 70 min. to execute DelDroid and obtain the ECA rules, but the great majority of this time is spent in the one-time effort of recovering the architecture of an Android system from its implementation artifacts. A less precise but more efficient forms of program analysis could be substituted for architecture recovery, at the expense of a higher rate of false positives.
+
+To evaluate the runtime overhead of DelDroid, we measured the time it takes to check the ECA rules for an intercepted ICC transaction on a Nexus 5X phone. To that end, we created a script that sends 200 requests (e.g., start an app, click a button) to an Android system, simulating its use. Each request causes the system to perform an ICC of some sort. We found that, on average, the performance overhead is 6 ms with 5 ms standard deviation, which accounts for 3% performance overhead as depicted in Fig. 9. Most users cannot perceive delays of this magnitude, per Android development guidelines Keeping your app responsive, and thus, we believe DelDroid poses an acceptable overhead.
+
+# 6. Threats to validity
+We provide an overview of the threats to validity of our experimental setup and the evaluation results as well as the actions we have taken to mitigate these threats.
+
+One threat to validity of our work is whether the obtained results can be generalized to apps outside our study. To mitigate this threat, we derived benign, vulnerable, and malicious apps from diverse sources. Benign apps vary across application domains (see Fig. 8), application popularity (see Fig. 7), and in terms of app size DELDroid website. For example, Gemmy Lands app is one of the included apps in our dataset. The size of this app is 57 MB and it has 10,000,000 downloads with 4 star-rating Gemmy lands app. The vulnerable apps in our study have been discovered and verified in a previous study . Similarly, our malicious apps are drawn from repositories containing apps manually labeled as malicious by security experts.
+
+A threat regarding RQ4 is the selection of Nexus 5X phone to measure the performance of DelDroid at runtime. The runtime performance using another Android device might be different than the reported one. However, since this device has been released in 2015, it is not the most advanced Android device. Therefore, we
+The ability of DelDroid to detect ICC security attacks.
+
+The ability of DelDroid to prevent ICC security attacks at runtime.
+
+Comparing the number of generated ECA rules between DelDroid and the Naïve approach.
+
+DelDroid’s offline performance.
+
+M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+believe that the reported performance would be similar or even better on the currently available Android devices in the market.
+
+Finally, the reported accuracy of DelDroid, in terms of precision and recall, depends on the quality of our experimental dataset, e.g., whether vulnerabilities and attacks are representative of true vulnerabilities and attacks in real world. To reduce this threat and to also challenge DelDroid, we did not use benchmarks that contain hand-crafted apps such as DroidBench  or ICC-Bench Icc bench, instead we used real-world benign and malicious Android apps with security attacks implemented by experts from outside of our research group.
+
+# 7. Limitations of DELDROID
+There are of course limitations in our approach. Despite numerous benefits of giving the security architect the ability to adjust the architecture, including the ability to grant/revoke privileges to/from the apps based on their corresponding trust level, such manual adjustments are subject to unintentional errors. For instance, the architect’s revision of the system may result in granting unnecessary permissions, which in turn breaks the principle of least privilege, or revoking a necessary permission, which may lead to an app malfunction. To reduce the risk of such an error-prone human intervention, we recommend limiting it to situations where the adjustments are necessary; recall from Section 2 that the manual adjustment feature is entirely optional in DelDroid and the enforcement process can exclusively rely on automatically determined least-privilege architecture.
+
+Although DelDroid is compatible with the existing apps, the user needs to install our modified version of Android on a mobile device, which potentially voids the manufacturer warranty. Conceivably, DelDroid could be adopted in future versions of Android or by Original Equipment Manufacturer companies, e.g., Samsung and Huawei, for installation on devices.
+
+Another limitation of our approach is the possible false positives our approach may produce. These possible false positives are due to two facts. The first fact is that the current prototype implementation of DelDroid does not support analysis of dynamically loaded code. We believe a fruitful avenue of future research is to complement DelDroid with dynamic analysis techniques that can check the integrity of loaded code Poeplau et al. (2014) and hence reducing the possible false positives.
+
+The second fact is that the static analysis tools  that DelDroid relies upon are not (1) path-sensitive and (2) they cannot analyze obfuscated code nor ICC calls made by native binaries within an Android app leading to possible false positives. Our future work involves integration of dynamic analysis techniques as well as analysis of native binaries to effectively support recovery of the architecture from, and enforcing policies on, those aspects of the system.
+
+This paper introduces a technique that broadly supports detection and mitigation of a wide range of ICC-based vulnerabilities . Android apps, however, can communicate through other types of mechanisms, including remote procedure calls. While this paper provides substantial supporting evidence for addressing permission-induced vulnerabilities that arise due to the Intent-based event messaging—shown to be the primary communication mechanism in Android—it would be interesting to see how DelDroid fares when applied to other types of vulnerabilities, which forms a thrust of our future work.
+
+# 8. Related work
+A large body of research has focused on Android security. Here, we provide a discussion of the related efforts in light of our research.
+
+Much work focuses on performing program analysis over Android applications for security. Epic  is a static analysis technique for detecting ICC attacks in Android apps. CHEX  is a static analysis tool for detecting component hijacking vulnerabilities. FlowDroid  is another precise static taint analysis approach for Android apps. Chin et al. (2011) discussed several ICC attacks that can be achieved through receiving an Intent by unauthorized receipt or spoofing an Intent, and they have provided ComDroid, a tool that is meant to be used by developers to analyze their apps before releasing them. Felt et al. (2011) studied permission re-delegation security attacks (aka, privilege escalation) in mobile systems and web.
+
+# 9. Conclusion
+Many autonomous and smart software systems, particularly those intended for execution in mobile and IoT settings, are developed and deployed on top of Android. As such systems permeate every facet of our society, their security grows in prominence. This paper presents DelDroid, an automated approach for determining the least-privilege architecture for an Android system and its enforcement at runtime. The least-privilege architecture narrows the attack surface of an Android system, making it easier to evaluate its security posture, and thwarts certain class of security attacks.
+
+DelDroid utilizes static analysis techniques to automatically extract the inter-component communication and resource-access privileges each component needs to fulfill its task. The determined LP architecture is elegantly represented as an MDM matrix. This representation further allows a security architect to adjust the identified LP architecture as needed to establish the proper privileges for each component. DelDroid, finally, enforces automatically obtained/expert-supplied LP architecture at runtime, governing privileges obtained by each component as prescribed by the architecture.
+
+Our experiments on hundreds of real-world apps show between 94% to 99% reduction of attack surface and the ability to thwart security attacks exploiting the over-privileged nature of Android with a recall of 100% and a precision of 97%.
+
+Android apps increasingly use both dynamically loaded code and native binaries. Being able to model those aspects of the apps...
+
+in MDMs and building related security rules for their associated vulnerabilities, along with modeling the interactions among managed and native code in MDMs can provide further attack detection and prevention. At the same time, it may complicate analyses and in turn may lead to scalability issues. Such challenges constitute interesting avenues of future work.
+
+Our research artifacts, including tools and evaluation data, are available publicly DELDroid website.

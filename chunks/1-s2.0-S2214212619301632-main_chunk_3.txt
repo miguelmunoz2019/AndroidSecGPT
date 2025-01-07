@@ -1,0 +1,58 @@
+We find that although the whole payment process of four cashiers are somewhat different, they can be concluded as two in-app payment process models (in Figs. 1 and 2). Both platforms (Android and iOS) of one cashier adopt the same model. Among the four cashiers, WexPay and UniPay follow the process model I (in Fig. 1), while AliPay and BadPay follow the other. We first choose process model I as an example to illustrate a complete third-party in-app payment process in detail. It is a simplified model only including essential steps and parameters of a transaction. The whole process of the model contains nine steps in general.
+
+1. The MS receives a merchant order (orderm) and the type of cashier after a user selects the commodities and chooses a third-party cashier in the MA. orderm contains order information only related to merchant (e.g., the type and the amount of
+2 com.alipay.sdk.app.PayTask- > pay()
+3 AlipaySDK payOrder:fromScheme:callback:
+4 _wxapi_payreq_appid, _wxapi_payreq_partnerid, etc.
+
+5 uppayuri, com.unionpay.uppay, etc.
+
+4 W. Yang, J. Li and Y. Zhang et al. / Journal of Information Security and Applications 48 (2019) 102358
+9. The MS validates the signature of the notification, and makes an extra query of the notified payment order to the CS to confirm details of the order including order ID, merchant ID, total amount, etc.
+
+After all the above steps, the transaction is settled and the merchant can ship commodities or provide services to user.
+
+When adopting process model I, WexPay and UniPay implement similar process with nuance differences. Both cashiers require different extra parameters for orderp and orderm. Also, UniPay does not require the TN message to be signed and does not include Step 8 (in Fig. 1) as a necessary step in its suggested process.
+
+When adopting process model II, however, AliPay and BadPay have relatively larger differences to WexPay and UniPay. The main difference occurs in Step 2. The MS just sends the generated signed payment order (orderp) back to the MA other than to the CS after receiving the merchant order (orderm) request from the MA. Compared with model I, in which the MA can only receive TN, the MA in Fig. 2 receives the complete payment order information including order ID, total amount of the payment, the notify URL address of the MS, etc. And it transfers all the information to the integrated TP-SDK, which is responsible for dealing with all the detailed parameters of the payment order in this process.
+
+In Figs. 1 and 2, messages with bold and italics text need to be signed by the sender to prevent being tampered. So another important factor in the transaction process is the signing method of messages adopted by cashiers. AliPay and UniPay regulate the SHA1-RSA as their signing method. Merchant generates its RSA key pair, and sends the public key to the cashier. Also, cashier informs every merchant its public key. The MS verifies the received signed message with the cashier’s public key, and sends message signed with its private key to cashier or to the MA. However, WexPay and BadPay adopt hash function (e.g., MD5) with a secret key (as the salt of the hash function) to generate the signature. The secret key is shared between the merchant and the cashier. In the later part of this paper, we denote both the secret key of hash function and the merchant’s RSA private key as KEY.
+
+# 3. Security analysis
+In this section, we describe the conducted security analysis against the process models we concluded above. The security of third-party payment has been studied before in previous works . However, all of them focus on web service. In the prevailing mobile platform, the in-app payment introduces new multi-party models and thus, faces new security challenge. The merchant client application and the embedded TP-SDK play more significant roles which do not exist in traditional web model. So it’s necessary to re-consider the security threats of the in-app payment on mobile platform.
+
+Although the payment process models that regulated by cashiers have been vetted before releasing and are supposed to be secure, such multi-party models still struggle against various unexpected security threats due to the information asymmetry in the transaction process. Moreover, the whole transaction process involves multiple parties including not only cashiers but also merchants and users. Due to the ambiguous documents and confusing sample code released by cashiers, developers of merchants often disobey the process model regulated by cashiers and implement diversified payment processes, which may lead to potential security flaws. Any mistake committed by any party in the multi-party model may lead to a vulnerable process. Therefore, it’s necessary to conclude security rules to regulate all parties in the model.
+
+In the following, we first describe the adversary model, and then define the security rules that a secure in-app payment must comply. In addition, we clarify what the cashier and the merchant...
+
+should pay extra attention to throughout the entire transaction process of in-app payment. Finally, we describe four concrete attacks in detail under our reasonable adversary model if the cashier or merchant violates the security rules, which may lead to the loss of multiple participants in the model.
+
+# 3. Adversary model
+Before discussing security rules must be followed by third-party payments and corresponding attacks, we first define the adversary model as follows: We assume that an attacker can always reverse-engineer an MA and the embedded TP-SDKs, since the app can be easily acquired from both Android and iOS app markets (even if the app is protected, techniques have already developed to circumvent it ). Even though the attacker is not able to sniff or tamper the network traffic between the MS and the CS under any circumstances, he can forge a request or a message to either the MS or the CS in our model, because such destination URL is not difficult to be obtained (by reverse-engineering apps or reading cashiers’ documents).
+
+When the attack targets a cashier or a merchant, the attacker plays as a malicious user and tries to get profit (e.g., acquiring secret information from merchant/cashier or even purchasing things without paying) from either the merchant or the cashier. In this case, the attacker is assumed to use his own smartphone to do the shopping, which indicates that he can arbitrarily modify the mobile system (e.g., rooting the Android phone, jailbreaking the iOS device, debugging apps, etc) and thus manipulate the execution and data of both the merchant app and the embedded TP-SDKs.
+
+When the attack involves other users of the MA, the attacker aims to fraud other users (e.g., deceiving other users to pay). In this case, the attacker is not able to control other users’ devices, i.e., not able to install malicious apps or repackaged MA on victim’s phone by subterfuge. However, the attacker is assumed to control the data transmission between them (e.g., conducting an MITM attack with the ARP spoofing or deceiving users to attacker’s malicious Wi-Fi). Signature-based or anomaly-based IDS for smartphones  may reduce the possibility of users being phished in this case. However, it is not common to deploy an IDS on a real world smartphone, and an IDS cannot protect merchants or cashiers.
+
+comprehensive and consider not only multiple parties such as MA, TP-SDK, MS, but also the connection between them. To the best of our knowledge, our proposed security rules are the very first ones for third-party in-app payments.
+
+There are four types of attack that the payment process may suffer if one or more violation of security rules occur, and the victims involve normal users of MA and the merchant. Then we will describe them in details.
+
+# 3. Security rules
+According to the two types of process model adopted by four cashiers and the adversary model, we conclude the following security rules that must be obeyed throughout the whole process involving both cashiers and merchants, no matter how cashier regulates the process model or which cashiers MA chooses to use. Otherwise, the process will be breached.
+
+1. Payment orders must be generated (Fig. 1) or signed (Fig. 2) by the MS only.
+
+2. Never place any secret (e.g., private key for signing) in the MA.
+
+3. TP-SDK must inform user detailed information of the payment order.
+
+4. TP-SDK must verify the transaction belonging to the MA.
+
+5. Always use secure network communication between client and server.
+
+6. MS should make an extra query to confirm notified payment’s details.
+
+7. Always verify the signature of received messages.
+
+We conclude the above security rules by considering both the security requirements of a secure mobile payment mentioned in official documents of SDKs, and the best practices of building a robust online payment system . Particularly, our security rules are...

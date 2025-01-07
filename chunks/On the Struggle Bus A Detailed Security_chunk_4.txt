@@ -1,0 +1,53 @@
+# 5 Hard-Coded Keys and Tokens
+After decompiling the app, we notice that some of the information being stored is encrypted, since the developers included custom cryptography classes in addition to imported C# crypto libraries. Although our proposed attacks do not exploit any encrypted information, it is still worth analysing the encryption algorithms, so as to understand if any potential weakness may exist once new functionalities or features are integrated into m-ticket.
+
+The app adopts the Advanced Encryption Standard with Cipher Block Chaining (AES-CBC), a block cipher encryption scheme commonly used to provide strong confidential guarantees . This algorithm uses three key instruments to ensure secrecy: a salt, an Initialisation Vector (IV), and a key. The salt is used to avoid brute-force attacks against the resulting cipher-text, the IV ensures semantic security, and the key is used to encrypt the actual plain-text. This algorithm by design is robust against both passive and active adversaries, but unfortunately, our analysis reveals that it is not utilised correctly, resulting in possible information leakage.
+
+As shown in Fig. 9, both the key and IV are derived from a salt and a shared secret, which turn out to be hard-coded right above the encryption function (lines 1–2). That is to say, as long as an attacker obtains these strings, any encrypted information can be easily deciphered on Android phones. Whilst it is obvious that the seeds and secrets have to be stored locally for the program to work in an offline environment, the developers should have been mindful of how easy it is to decompile apps.
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+Finding: Although state-of-the-art encryption is adopted, key elements aimed at ensuring secrecy are hard-coded in the m-tickets app. Hence cipher-text is straightforward to reverse.
+
+# 5 Root Checker Bypass and Enabling Screenshots
+A key step in exploiting the re-activation and modification of tickets is the ability to have full control of the phone (root access), while maintaining full use of the app. For this reason, checking whether the app has a root checker was one of our first priorities after decompiling. Corethree implement a root checker function that looks for certain files or binaries, denying access to the app if found, as revealed in Fig. 10. Unfortunately, having a rooted phone, the system is not to be trusted. In this case the app asks the system to look for certain files, but since an attacker controls the system, they can manipulate the response stating that the relevant files do not exist. To showcase this, we use Magisk hide, a module of the Magisk manager, which hides the root files from whatever app it is instructed to.
+
+Another feature Corethree implemented in the app is the inability to take screenshots whilst the app is in use, so as to prevent users from sharing screenshots of purchased tickets. However, if an attacker has root access to their phone, they can disable the permission granted to apps to block screenshots. In our case we used the smali patcher module from the Magisk rooter.
+
+Finding: The app root checker can be bypassed, thereby enabling reverse-engineering and modifying of the original app functionality.
+
+# 5 Password Reset Issues
+The majority of vulnerabilities found up to now were in the app source code. However, one part of the ticketing ecosystem we do not have access to is the source code of the server logic. Hence, we carry out a “black box” analysis, by which we intercept the network traffic towards/from the server and seek to
+Magisk, https://magiskmanager.com/.
+
+J. Sanz Maroto et al.
+
+make sense of the back-end. In particular, we uncover two main problems with the password reset procedure.
+
+To understand the vulnerabilities, let us first examine the standard behavior of a password reset. After requesting a password reset, the user would receive a URL of the form ">https://passwordreset.corethree.net/&lt;11upper-lower-casecharacters&gt;. This link would expire within 75 min after the reset request. However, it appears the user could request a password reset as many times as desired and the server would send a new link to reset the password, without invalidating the old one. This means that an attacker could request many resets and increase the probability of guessing the victim’s password reset link. Argueably, the probability of brute-forcing a valid URL online is relatively small. For instance, assuming a brute-force rate of 105 attempts/s and a reset password rate of 105 requests/s, the probability of guessing a valid URL is
+pguess = (105 × (60 × 75))25211 = 2 × 10−4.
+
+However, any further increase in compute power could lower the work factor.
+
+Aside from this threat, the fact that the server allows a user to request as many password resets as desired, creates an opportunity for malicious actors who may exploit this weakness to launch Denial of Service (DoS)/Email flood attacks towards other companies or individuals, using the Lothian Buses server resources, further damaging the transport operator’s reputation in the process.
+
+Finding: Poorly implemented password reset mechanisms lowers the barrier to brute-forcing user credentials and launching DoS/Email flood attacks using the transport operator’s computing infrastructure.
+
+# 5 Availability
+The main purpose of an e-ticket app for public transport is to enable users to purchase tickets and use them at any point in time. The service must be thus available at all times. Following recent reports about app availability issues , we decide to run a network test and analyse the Internet connection needed to run the app and amount of data exchanged over this. Unsurprisingly, during 10 tests whereby we open and close the app, the average amount of data consumed is 45 kB and the time required to load the app did not vary with download speeds of 19 kB/s and above. However, examining the source code again, we notice that whenever the app is opened and any error occurs for whatever simple reason, the app closes and all information is erased, as when a tamper attempt is detected. As a result, the app has to re-download all data and validate it before displaying it to the user when re-opened. This leads to a 400 kB increase in data consumption and approximately 12 s boot-up time with an un-throttled connection.
+
+To avoid this nuisance, modern programming languages force the user to implement try-catch statements, which permit a program to continue executing even if a small part of it encounters an exception. However, the m-tickets app is
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+peppered with try instructions that are not followed by an appropriate catch logic. This leads to frequent occasions where the program crashes or gets stuck.
+
+# Findings
+A combination of aggressive error handling practice and inappropriate use of try-catch statements leads to a history of poor app availability. Occasional users will always be forced to have an Internet connection.
+
+# Recommendations
+Given the security vulnerabilities identified in the m-tickets app, we propose a set of solutions that can be deployed to address the exposed problems. We also explain why some of the implementation decisions made by Corethree are insecure, and suggest simple alternatives.
+
+# 6 Tickets
+Clearly, the whole purpose of the app is the secure purchase and use of tickets. Security is largely an abstract concept that is not straightforward to measure . However, in essence it should reflect how hard it is for an attacker to read or modify information they are not authorised to. Taking a look at the current design of an e-ticket in the m-tickets/Lothian Buses app and the weaknesses described in Sect. 5–5, to begin with, the validation of a ticket should not rely on the bus driver. This is because the process is prone to error, as the driver may fail to recognise the difference between a valid and a crafted ticket. Indeed, previous studies show that humans are the weakest link in information security.
+
+Secondly, users can be selfish and app decompiling is increasingly accessible. Therefore, the process of ticket generation should not be client-side, to avoid users tampering with it in order to circumvent payment. Instead, this process should be entirely server-based, whereby the user receives a valid ticket upon purchase, but remains unaware of how it was created.
+
+Thirdly, there is currently no way of knowing whether active e-tickets are being re-used. The task of deleting a used ticket is handled by the app, yet as shown in Sect. 5, a user can control the app’s behaviour on their phone. The same applies to the illicit modification of the characteristics of tickets (Sect. 5). Once again, to circumvent these problems, the user should be provided with a ticket generated on the server side and which cannot be modified by the app.

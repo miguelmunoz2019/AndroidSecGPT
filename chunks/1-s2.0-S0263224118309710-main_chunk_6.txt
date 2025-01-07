@@ -1,0 +1,17 @@
+15. N.B. Anuar, M. Papadaki, S. Furnell, N. Clarke, Incident prioritisation using analytic hierarchy process (AHP): Risk Index Model (RIM), Secur. Commun. Networks 6 (2013) 1087–1116, https://doi.org/10/sec.
+
+16. J. Westenberg, Facebook now allowing Google to index its mobile app, Android Authority, 2015. http://www.androidauthority.com/facebook-allowing-google-to-index-its-mobile-app-655958/ (accessed April 4, 2017).
+
+17. K. Tam, A. Feizollah, N.B. Anuar, R. Salleh, L. Cavallaro, The evolution of Android malware and Android analysis techniques, ACM Comput. Surv. 49 (2017) 1–41, https://doi.org/10/3017427.
+
+18. Université du Luxembourg, AndroZoo, 2018. https://androzoo.uni.lu/ (accessed July 3, 2018).
+
+19. P. Faruki, V. Ganmoor, V. Laxmi, M.S. Gaur, A. Bharmal, AndroSimilar: robust statistical feature signature for Android malware detection, in: Proceedings of the 6th International Conference on Security of Information and Networks, ACM, 2013, pp. 152–159.
+
+20. A. Firdaus, N.B. Anuar, A. Karim, M.F.A. Razak, Discovering optimal features using static analysis and genetic search based method for Android malware detection, Front. Inf. Technol. Electron. Eng. (2017) 1–27, https://doi.org/10/FITEE.
+
+21. B. Rashidi, C. Fung, E. Bertino, Android resource usage risk assessment using hidden Markov model and online learning, Comput. Secur. 65 (2017) 90–107, https://doi.org/10/j.cose.
+
+22. A. Feizollah, N.B. Anuar, R. Salleh, G. Suarez-Tangil, S. Furnell, Androdialysis: analysis of Android intent effectiveness in malware detection, Comput. Secur. 65 (2017) 121–134, https://doi.org/10/j.cose.
+
+23. S. Learning, F. Orphan, A. Problemsoftware, A. Recovery, M. Bibi, O. Maqbool, J. Kanwal, Supervised learning for orphan adoption problem in software architecture recovery, Malaysian J. Comput. Sci. 29 (2016) 287–313..

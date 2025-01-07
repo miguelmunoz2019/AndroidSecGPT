@@ -1,0 +1,80 @@
+# 5 Setup
+To build a confusion matrix, we use the sample set of 150 packages included in our obfuscated test app. The set is large enough to feature a variety of different packages and sufficient to visualize confusion. We compute the similarity score between each app package with each library package we learned before.
+
+# 5 Results
+As depicted in Figure 3, we derived three matrices that show confusion when only AST vectors or sanitized signatures are used for code identification, and with both features combined. The x and y-axes are sorted by package particularity (see Section 4). Packages with small particularity are located on the top/left, whereas packages on bottom/right have high particularity.
+
+With AST vectors, code similarity is confident on the main diagonal but overall prone to confusion. The upper right part of the matrix shows many packages that have been mislabeled with high confidence. We can explain this observation by the fact that a small app package can be easily mapped to a large library package. The other way around does not hold: large app packages are not confused with small library packages.
+
+The confusion matrix for sanitized signatures shows that the similarity measure is either absolutely confident that a package is included (see Section 4) in another one, or otherwise not confident at all. Compared to AST vector similarity, we observe less confusion in the upper right part of the matrix, where less particular app packages are compared to more particular library packages. Confusion, however, occurs with small app packages as large packages are likely to contain all signatures of small packages.
+
+With both features combined, confusion is mostly eliminated aside from low particularity packages in the top rows of the matrix. The small clusters around the main diagonal in the top left area result from packages that implement the same interfaces and are, thus, semantically related. Overall, we see that the combination of AST vectors and sanitized signatures can identify code almost without confusion and, thereby, paves the way for accurate recognition.
+
+# 5 Threshold for Package Particularity
+The confusion matrix for AST vectors and sanitized signatures combined showed that the remaining confusion was caused by packages with low particularity. As a remedy for confusion and to improve accuracy, we introduce the threshold for minimum package particularity (tpp). It decides whether a particular package is sufficiently expressive to be used for learning and matching.
+
+7 https://f-droid.org
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# Johannes Feichtner and Christof Rabensteiner
+# AST Vectors
+# Sanitized Signatures
+# Combined
+Before processing an app package, we check if the package is particular enough. If not, we simply ignore it as we cannot rely on its matches. The higher we choose tpp, the more accurate recognition becomes. However, with a high tpp we ignore more packages and, thus, identify fewer code fragments overall. In the following, we measure this influence with the keep ratio:
+keep ratio = |Analyzed Packages of App| (13)
+Our goal is to find a reasonable value for tpp that represents a compromise between recognition accuracy and keep ratio.
+
+Question: How much particularity is needed for precise recognition?
+# 5 Setup.
+
+We use our set of real-world apps and iteratively try recognition with values between 0 and 200 for tpp. After each round, we build a confusion matrix and compute accuracy and keep ratio.
+
+# 5 Results.
+
+As also observed in Figure 3, confusion arises below a certain package particularity but decreases above a specific particularity. Hence, we see that a tpp value of 80 delivers the highest accuracy without dropping too many packages. If a high keep ratio is targeted instead of accuracy, any value for tpp below 80 would be reasonable.
+
+# 5 Threshold for Matching Confidence
+As explained in Section 4, we express the similarity between an app package pa and a library package pl with the similarity score s(pa, pl). This score depends both on how similar and on how particular packages are: More particular packages result in a higher score, whereas less particular packages are scored lower. This imbalance is problematic when deciding on whether a recognition result is significant. A constant threshold for all packages favors more particular packages over less particular ones with no regard to the actual similarity. To counteract, we derive the confidence we put into a match from the package similarity as follows:
+confidence(pa, pl) = s(pa, pa)s(pa, pl) (14)
+The resulting value is ∈  because 0 ≤ s(pa, pl) < s(pa, pa).
+
+Our goal is to find a reasonable threshold (tmc) that indicates if a recognition result is significant enough to be accepted.
+
+# 5 Setup.
+
+To find the best value for tmc, we use our sample set of FOSS apps and remodel the multi-class problem into a binary classification problem with the One-Vs-All approach. The binary classifier tells whether a package is known (positive, +) or unknown to the system (negative, -). We transform each match into the new problem domain by expressing learned library packages as positive, and all others, e.g., unlearned packages or app packages, as negative.
+
+With our recognition results transformed into binary classifications, we build Receiver Operational characteristics (ROC) curves that can illustrate the performance of a binary classifier and reveal how the accept threshold for confidence influences both true and false positive rate. The ROC curves shed light on the separability of known and unknown packages and help in finding a reasonable threshold value for matching confidence tmc. We repeat this process for all app samples to determine how well we can distinguish known from unknown packages if code transformations are used.
+
+# 5 Results.
+
+# Obfuscation-Resilient Code Recognition in Android Apps
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# True Positive Rate
+with obfuscation, shrinking and optimizations activated. In this build type the AUC is 87%, which is still acceptable.
+
+# 5 Code Recognition
+In Section 4, we elaborated a workflow to recognize learned code by computing fingerprints of methods, aggregating them in package hierarchies and testing for similarity with known packages. Question: How well does our approach recognize app packages?
+# 5 Setup.
+
+For this scenario, use our FOSS sample set and analyze all apps in all build types. Aimed at highest recognition accuracy, we set the thresholds for matching confidence tmc to 0 (see Section 5) and for package particularity tpp to 80 (see Section 5). To all obtained results, we apply the following multiclass performance metrics  by using the formulas shown in Figure 7:
+- Accuracy: Determines how many app packages have been labeled correctly in relation to all recognition matches.
+
+- Precision: Ability of our solution to not mislabel packages.
+
+- Recall: Ability to find all instances of a package.
+
+- F1 Score: Harmonic mean between Precision and Recall.
+
+n . . . amount of matches, l . . . amount of known packages, pi . . . app package.
+
+# 5 Results.
+
+The recognition results are summarized in Table 1. As shown, all metrics perform well in all build types except for the set of obfuscated, shrunken, and optimized apps. By manually investigating classifications, we noticed that the optimization technique Method Parameter Removal causes the weaker performance with this build type (see Section 3). With this code transformation enabled, ProGuard prunes method signatures from unused parameters, leading to different sanitized signatures. Nonetheless, the use of AST vectors ensures that recognition is still feasible.
+
+# 5 Summary
+We examined how AST vectors and sanitized signatures align with real-world apps that use code transformations. First, we assessed how well our techniques describe obfuscated code fragments. Three confusion matrices revealed that although each technique is capable of identifying obfuscated code on its own, results are significantly improved when both features are combined. We also noticed that most confusion arises in packages with low particularity. Therefore, we introduced a threshold tpp value that indicated how much code was relevant to keep high accuracy high while not dropping too much packages. We also introduced a match confidence threshold tmc to decide on whether to accept or to reject a recognition result. To find a reasonable value for tmc we remodeled our problem into binary classification. ROC curves underlined how well we can distinguish known from unknown packages despite code transformation. In our final study, we tested code recognition with a set of Android app samples and found that our solution delivers high values for accuracy, precision, recall, and F-Score in all scenarios.
+
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# Johannes Feichtner and Christof Rabensteiner
+# 6 CONCLUSION
+The use of third-party libraries and the integration of code snippets from public sources have become common practices in Android application development. Security issues and vulnerabilities in such components reach a high number of end-users and put sensitive data at risk. However, a precise recognition of such program parts is challenging if code transformation techniques were applied.

@@ -1,0 +1,61 @@
+According to researchers and agencies, mobile computing is the phenomenon worth observing since our habits as consumers, a few of which are listed in the following and are radically changing [17–19]:
+- Over 73%, depending on the age group, of all emails are opened on mobile devices
+- Already in 2017, around 95% of Facebook users accessed the social network via mobile devices
+# Mobile Information Systems
+9071, 2020, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2020/8828078 by Cochrane Colombia, Wiley Online Library on [08/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# Figures
+# Key Statistics
+- (iii) 80% of users used a mobile device to search the internet in 2019
+- (iv) 40% of online transactions are done using mobile devices
+- (v) More than 50% of websites now use responsive web design technologies that work for all devices
+- (vi) More than 75% of shoppers use mobile devices along with physical shopping
+- (vii) Global mobile data traffic is more than 30 exabytes per month
+- (viii) Mobile devices now account for half of the web traffic globally, and this grew 68% between Q3 2018 and Q3 2019
+Our consumption of information is growing exponentially. We have, as users, changed our search and information consumption habits—we are able to search for information whenever and wherever we want, depending only on signal availability.
+
+All these data suggest that users are gladly installing mobile apps on their mobile devices, and their mobile data consumption is growing. This trend is visible not only to developers, who are constantly trying to offer a smooth and convenient app experience, but also to all sorts of hackers, who are interested in obtaining personal information to use in a malicious way against the unaware user.
+
+# 2. Usability and User Experience vs. Security
+The main reference definition of usability in both desktop  and mobile settings  is given by the ISO 9241-11 norm, which states that usability is “the extent to which a product can be used by specified users to achieve specified goals with effectiveness, efficiency, and satisfaction in a specified context of use.”  More recently, user experience (UX) has...
+
+9071, 2020, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2020/8828078 by Cochrane Colombia, Wiley Online Library on [08/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# Mobile Information Systems
+become a vital reference for studying human-computer interaction. By definition, UX is a “person’s perceptions and responses resulting from the use and/or anticipated use of a product, system, or service,” including “all the user’s emotions, beliefs, preferences, perceptions, physical and psychological responses, behaviors, and accomplishments that occur before, during, and after use.” 
+Firstly, it can be noticed that none of the usability and user experience definitions include or point to security. Indeed, in the light of the results from our latest study , security is barely discussed in the area of product quality. On the contrary, security requirements typically impose barriers to users (such as passwords or other authentication mechanisms), while designers and developers attempt to minimize their impact on both application performance and user experience.
+
+Secondly, security is a subject of study from two perspectives: technical and human factors . The former focuses on the development of the systems, methods, and techniques which aim at mitigating risks associated with application code, user data, network traffic, and others, as well as, on the contrary, testing and evaluating existing mechanisms and solutions. The latter examines the relationships between security and factors such as design , ease of use , and human disabilities . Therefore, we distinguish between security, which is generally a technical concern, and privacy, which is mostly a social concern. Naturally, these two notions are often related and interdependent.
+
+Last but not least, it is frequently suggested  that “users are hopelessly lazy and unmotivated on security questions,” while, on the contrary, they “perform an implicit cost/benefit calculation when deciding whether to follow security advice or not.” There is no tradeoff established, which means that, in order to design and develop both usable and secure mobile applications, we must first understand user attitudes toward security and privacy. We address this issue in further reflection and discussion, hoping to engage researchers and practitioners in a broader dialogue to this extent.
+
+# 3. Mobile Security Threats
+Users of mobile devices or so-called mobile users are increasingly subject to malicious activity, mainly concerning pushing malware apps to smartphones, tablets, or other devices using a mobile OS. These handheld devices, carried in our pockets, are used to store and protect sensitive information. Even though Google and Apple offer distribution environments that are closed and controlled, users are still exposed to different kinds of attacks. A few of them are given in the following :
+1. Phishing in an app: we observed that one way criminals can bypass the app market source code checks was not by including anything malicious in the app itself, but rather by making an app that, in essence, is a browser window to a phishing site. Such apps, in this case, are designed in tandem with the phishing site so that the user has a seamless experience.
+
+2. Supply chain compromise: it was observed that a trojanized version of a legitimate app had been included in the factory firmware from a small mobile phone manufacturer and shipped to customers on brand new phones. The original app, called Sound Recorder, was found to have been modified to include code that was not part of its stated purpose: it could intercept and send SMS messages secretly. The malicious version of the app could have been inserted into the supply chain in a number of different places. It was never made available through any app store, but only in a specific firmware image on a specific model of an inexpensive Android phone.
+
+3. Cryptominer code in games or utilities: we encountered a significant jump in the number of apps that, without notification to the user, included cryptominer code in the app. The code would run whether or not the app itself was running and functioned as a constant drain on the phone’s (or other device’s) battery.
+
+4. Click-fraud advertising embedded in apps: advertisement fraud is, surprisingly, one of the most profitable criminal enterprises nowadays, and mobile apps appear to be a key part of this subtle crime. The advertising industry estimates that, today, the cost to advertisers of fraudulently “clicked” ads, according to data published by the World Federation of Advertisers, tops US $19 billion each year.
+
+According to Landmann , the unprecedented growth in the number of smartphones and mobile workers has a direct impact on the number of attacks deployed on mobile devices. Smartphones today store hefty amounts of data and operate over international cellular networks, WLANs, and Bluetooth PANs. They run a diverse set of complex operating systems such as Symbian, iOS, BlackBerry OS, Android, and Windows Mobile. Most smartphones also support the Java platform for mobile devices, J2ME, with a variety of extensions. All this network connectivity and diverse rich code makes these devices more vulnerable than traditional PCs, which typically run standard operating systems for which many security products are readily available.
+
+It is also crucial to mention top 10 web application security risks according to the most prominent security community worldwide named OWASP Foundation. Mitigation of these threats would be the first step in the production of secure code of mobile apps :
+1. Injection
+2. Broken Authentication
+3. Sensitive Data Exposure
+4. XML External Entities (XXE)
+5. Broken Access Control
+6. Security Misconfiguration
+# Mobile Information Systems
+# 3. Threats to Mobile Security
+# 3. Malware
+Smartphones are quickly approaching PC capabilities, and the same incentives exist for hackers: fraud, stealing personal and business information, and extortion—hackers are poised for the attack, with many different avenues available to spread malware. The following brief review of smartphone malware shows that the malicious capabilities of hackers have been clearly demonstrated; these are just some of the malware threats listed in the report by MobileIron:
+- Android GMBot—spyware, usually from third-party app stores, which tries to trick users into giving up their bank credentials
+- AceDeceiver iOS malware—malware that works to steal a user’s Apple ID
+- Marcher Android malware—malware that pretends to be a bank website in the hope that users will give up their login credentials
+- Backdoor families—distributed via Google Play Store as trojanized apps hidden within different types of applications
+- Mobile miners—distributed via spam e-mail or SMS, an application which uses processing powers of mobile devices
+- Fake applications—a malware category of apps that mimics popular and useful applications, once installed asks the user for mobile verification or redirects to a link with instructions
+Last but not least, applications and the given OS should be kept up to date to maximize their protection, and running an antimalware app is also recommended.

@@ -1,0 +1,60 @@
+• Case2: For 𝑃𝑛 = 0 the limit behave as follows 𝑃𝑚→0lim𝑅(𝑃𝑚, 0) = 2 (12)
+• Case 3: This case is the consequence of the boundary behave of the risk function 𝑅 discussed in cases 1 and 2. Thus, for any value 𝑅(𝑃𝑚, 𝑃𝑛) ∈ (0] is considered as moderate risk region.
+
+The effectiveness of our model was tested by computing the risk score of all permissions requested by the applications in the dataset. Due to the limited pages of the paper, only result and evaluation of Books & Reference category is discussed. Therefore, it is clearly seen from Figure 5 and Table 2 that PUREDroid assigned high risk scores to the permissions that are significantly requested by malware applications within Books & Reference category. On contrary, the permissions that are significantly requested by benign applications were assigned to lower risk scores.
+
+# ACCESS _ BATTERY1~STATE~WIFI_~STATE
+# BLUETOOTH_ADMIN ~CONFIGURATION~StATS   ~CAMERA1
+# GET_ACCOUNTS _BACKGROUNDGET_TASKS INTERNET~FILESYSTEMS1 ~PHONE READREAD_LOGS READ~STATE~SYNC_STATS~SMS~COMPLETEDRECEIVERECORD_4~AUDIO SEND_:1 WRITE~SMS~VIBRATE _CONTACTS SETTINGSWAKE_LOCK ~SETTINGSWRITE_~SYNC_:
+# ACCESS ACCESS~COARSE_LOCATIONACCESS_NETWORK_S
+# CHANGE;CHANGE_~NETWORK_STATE KILL_INSTALL_PACKAGES_UNMOUNT_E
+# ~READ RECEIVE_BOOT_(
+# ~WRITE MOUNT_L
+# Permission
+Most of the permissions, especially the ones frequently requested by malware applications, have potential security and privacy risk, such as personal information leakage or financial loss. As shown in Figure 6, malware applications usually request permissions that can potentially harm the user privacy, such as identifying the user location, accessing user messages, and changing the device setting. Granting those permissions can effectively give the application the power to access critical resources. Therefore, PUREDroid assigned the permissions that are frequently requested by malware applications and rarely by benign applications with high risk to avoid and mitigate such risks. This can help the user to understand the level of risk of the permissions requested and if these permissions have high risk regardless of the application, the user should deny them.
+
+To fairly and accurately evaluate our model and show how it efficiently assigns high risk scores to permissions that are mostly requested by malware applications, PUREDroid was compared to a previously proposed work by . For this evaluation, same dataset is used to evaluate both methods, which includes top downloaded 600 benign applications and 200 malware applications from the same category. As shown in Table 3, based on PUREDroid model, ACCESS_FINE_LOCATION was assigned to the highest risk score because it was frequently requested by malware applications. On the other hand, WAKE_LOCK was assigned to the lowest risk score since it was frequently requested by benign applications. Furthermore, using Deypir method , READ_PHONE_STATE and WAKE_LOCK were assigned to the same risk score. However, READ_PHONE_STATE was frequently requested by malware applications compared to WAKE_LOCK, which was frequently requested by benign applications. Practically, the risk score of READ_PHONE_STATE permission should not only be different from the risk score of WAKE_LOCK permission, but also much higher, which was not achieved by Deypir method  due to the symmetric property. In contrast, PUREDroid accurately assigned different risk score for the aforementioned permissions.
+
+# 6. CONCLUSION
+Android applications pose many potential risks that may harm users’ privacy. Malicious applications usually request permissions that are not related to their main functionality to access sensitive resources. Therefore, ordinary users grant permissions without understanding the potential harm that may occur upon using those applications. Therefore, it is imperative to assess the security risks of nonnotarized applications and the permissions that an application may request through a risk assessment model that can intimate the users about the potential threats an application may pose to users’ privacy. This paper introduces PUREDroid, a risk assessment method that can be used to increase user’s awareness of the risk involved with granting permissions to Android applications. This model has shown that permissions that perform suspicious activities are assigned to high risk scores unlike those of normal activities. In our future work, more features such as API calls and intents will be considered in our model to introduce a sophisticated model to measure the risk score of each application.
+
+# 8. REFERENCES
+1. Apktool. 2018. https://github.com/iBotPeaches/Apktool.
+
+2. K. Allix, T. F. Bissyandé, J. Klein, and Y. L. Traon. 2016. AndroZoo: Collecting Millions of Android Apps for the Research Community. In 2016 IEEE/ACM 13th Working Conference on Mining Software Repositories (MSR). 468–471. https://doi.org/10/MSR.
+
+3. Ali Alshehri, Anthony Hewins, Maria McCulley, Hani Alshahrani, Huirong Fu, and Ye Zhu. 2017. Risks behind Device Information Permissions in Android OS. Communications and Network 9, 04 (2017), 219.
+
+4. Android Developer. 2018. Request App Permissions. https://developer.android.com/training/permissions/requesting.
+
+5. Mahmood Deypir. 2018. Entropy-based security risk measurement for Android mobile applications. Soft Computing (04 Aug 2018). https://doi.org/10/s00500-018-3377-5.
+
+6. Gianluca Dini, Fabio Martinelli, Ilaria Matteucci, Marinella Petrocchi, Andrea Saracino, and Daniele Sgandurra. 2018. Risk analysis of Android applications: A user-centric solution. Future Generation Computer Systems 80 (2018), 505–518.
+
+7. Adrienne Porter Felt, Elizabeth Ha, Serge Egelman, Ariel Haney, Erika Chin, and David Wagner. 2012. Android Permissions: User Attention, Comprehension, and Behavior. In Proceedings of the Eighth Symposium on Usable Privacy and Security (SOUPS ’12). ACM, New York, NY, USA. https://doi.org/10/2335356.
+
+8. Elli Fragkaki, Lujo Bauer, Limin Jia, and David Swasey. 2012. Modeling and enhancing android’s permission system. In European Symposium on Research in Computer Security. Springer, 1–18.
+
+9. C. S. Gates, N. Li, H. Peng, B. Sarma, Y. Qi, R. Potharaju, C. Nita-Rotaru, and I. Molloy. 2014. Generating Summary Risk Scores for Mobile Applications. IEEE Transactions on Dependable and Secure Computing 2014. https://doi.org/10/TDSC.
+
+10. H. Hao, Z. Li, and H. Yu. 2015. An Effective Approach to Measuring and Assessing the Risk of Android Application. In 2015 International Symposium on Theoretical Aspects of Software Engineering. 31–38. https://doi.org/10/TASE.
+
+11. Q. H. Mahmoud, D. Kauling, and S. Zanin. 2017. Hidden android permissions: Remote code execution and shell access using a live wallpaper. In 2017 14th IEEE Annual Consumer Communications Networking Conference (CCNC). 599–600. https://doi.org/10/CCNC.
+
+12. Alessio Merlo and Gabriel Claudiu Georgiu. 2017. RiskInDroid: Machine LearningBased Risk Analysis on Android. In ICT Systems Security and Privacy Protection, Sabrina De Capitani di Vimercati and Fabio Martinelli (Eds.). Springer International Publishing, Cham, 538–552.
+
+13. Pragati Ogal Rai. 2013. Android Application Security Essentials. Packt Publishing.
+
+14. A. Sadeghi, R. Jabbarvand, N. Ghorbani, H. Bagheri, and S.Malek. 2018. A Temporal Permission Analysis and Enforcement Framework for Android. In 2018 IEEE/ACM 40th International Conference on Software Engineering (ICSE). 846–857.
+
+15. Yidong Shen, Ming Xu, Ning Zheng, Jian Xu, Wenjing Xia, Yiming Wu, Tong Qiao, and Tao Yang. 2018. Android App Classification and Permission Usage Risk Assessment. In Collaborative Computing: Networking, Applications and Worksharing, Imed Romdhani, Lei Shu, Hara Takahiro, Zhangbing Zhou, Timothy Gordon, and Deze Zeng (Eds.). Springer International Publishing, Cham, 567–577.
+
+16. StatCounter. 2019. Mobile Operating System Market Share Worldwide. http://gs.statcounter.com/os-market-share/mobile/worldwide.
+
+17. Ryan Stevens, Jonathan Ganz, Vladimir Filkov, Premkumar Devanbu, and Hao Chen. 2013. Asking for (and About) Permissions Used by Android Apps. In Proceedings of the 10th Working Conference on Mining Software Repositories (MSR’13). IEEE Press, Piscataway, NJ, USA, 31–40. http://dl.acm.org/citation.cfm?id=2487085.
+
+18. Symantec. 2017. Internet Security Threat Report. https://www.symantec.com/content/dam/symantec/docs/reports/istr-23-2018-en.pdf.
+
+19. Franklin Tchakounté. 2014. Permission-based malware detection mechanisms on android: Analysis and perspectives. Journal of Computer Science 1, 2 (2014).
+
+20. Yang Wang, Jun Zheng, Chen Sun, and Srinivas Mukkamala. 2013. Quantitative Security Risk Assessment of Android Permissions and Applications. In Data and Applications Security and Privacy XXVII, Lingyu Wang and Basit Shafiq (Eds.). Springer Berlin Heidelberg, Berlin, Heidelberg, 226–241..

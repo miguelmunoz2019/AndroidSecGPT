@@ -1,0 +1,120 @@
+Android apps must request permission to access sensitive resources. In addition, custom permissions may be introduced by developers to limit the scope of access to specific features that they provide based on the protection level given to other apps. Depending on the feature, the system might grant the permission automatically without notifying the user, i.e., signature level, or after the user approval during the app installation, i.e., normal level, or may prompt the user to approve the permission at runtime, if the protection is at a dangerous level.
+
+Issue: An app declaring a new permission may neglect the selection of the right protection level, i.e., a level whose protection is appropriate with respect to the sensitivity of resources (Mitra and Ranganath 2017).
+
+Consequently, apps with inappropriate permissions can still use a protected feature.
+
+Symptom: Custom permissions are missing the right android:protectionLevel attribute in the manifest file.
+
+Detection: We report missing protection level declarations for custom permissions.
+
+Limitation: We cannot determine if the level specified for a protection level is in fact right.
+
+Mitigation: Developers should protect sensitive features with dangerous or signature protection levels.
+
+# SM04: Unauthorized Intent
+Intents are popular as one way requests, e.g., sending a mail, or requests with return values, e.g., when requesting an image file from a photo library. Intent receivers can demand custom permissions that clients have to obtain before they are allowed to communicate. These intents and receivers are “protected”.
+
+Issue: Any app can send an unprotected intent without having the appropriate permission, or it can register itself to receive unprotected intents.
+
+Consequently, apps could escalate their privileges by sending unprotected intents to privileged targets, e.g., apps that provide elevated features such as camera access. Also, malicious apps registered to receive implicit unprotected intents may relay intents while leaking or manipulating their data.
+
+Symptom: The existence of an unprotected implicit intent. For intents requesting a return value, the lack of check for whether the sender has appropriate permissions to initiate an intent.
+
+Detection: The existence of several methods on the Context class for initiating an unprotected implicit intent like startActivity, sendBroadcast, sendOrderedBroadcast, sendBroadcastAsUser, and sendOrderedBroadcastAsUser.
+
+Limitation: We do not verify, for a given intent requesting a return value, if the sender enforces permission checks for the requested action.
+
+Mitigation: Use explicit intents to send sensitive data. When serving an intent, validate the input data from other components to ensure they are legitimate. Adding custom permissions to implicit intents may raise the level of protection by involving the user in the process.
+
+# SM05: Sticky Broadcast
+A normal broadcast reaches the receivers it is intended for, then terminates. However, a “sticky” broadcast stays around so that it can immediately notify other apps if they need the same information.
+
+Issue: Any app can watch a broadcast, and particularly a sticky broadcast receiver can tamper with the broadcast (Mitra and Ranganath 2017).
+
+# Empirical Software Engineering
+Consequently, a manipulated broadcast may mislead future recipients.
+
+# Symptom:
+Broadcast calls that send a sticky broadcast appear in the code, and the related Android system permission exists in the manifest file.
+
+# Detection:
+We check for the existence of methods such as sendStickyBroadcast, sendStickyBroadcastAsUser, sendStickyOrderedBroadcast, sendStickyOrderedBroadcastAsUser, removeStickyBroadcast, and removeStickyBroadcastAsUser on the Context object in the code and the android.permission.BROADCAST_STICKY permission in the manifest file.
+
+# Limitation:
+We are not aware of any limitations.
+
+# Mitigation:
+Prohibit sticky broadcasts. Use a non-sticky broadcast to report that something has changed. Use another mechanism, e.g., an explicit intent, for apps to retrieve the current value whenever desired.
+
+# SM06: Slack WebViewClient
+A WebView is a component to facilitate web browsing within Android apps. By default, a WebView will ask the Activity Manager to choose the proper handler for the URL. If a WebViewClient is provided to the WebView, the host application handles the URL.
+
+# Issue:
+The default implementation of a WebViewClient does not restrict access to any web page (Mitra and Ranganath 2017). Consequently, it can be pointed to a malicious website that entails diverse attacks like phishing, cross-site scripting, etc.
+
+# Symptom:
+The WebView responsible for URL handling does not perform adequate input validation.
+
+# Detection:
+The WebView.setWebViewClient() exists in the code but the WebViewClient instance does not apply any access restrictions in WebView.shouldOverrideUrlLoading(), i.e., it returns false or calls WebView.loadUrl() right away. Also, we report a smell if the implementation of WebView.shouldInterceptRequest() returns null.
+
+# Limitation:
+It is inherently difficult to evaluate the quality of an existing input validation.
+
+# Mitigation:
+Use a white list of trusted websites for validation, and benefit from external services, e.g., SafetyNet API, that provide information about the threat level of a website.
+
+# SM07: Broken Service Permission
+Two different mechanisms exist to start a service: onBind and onStartCommand. Only the latter allows services to run indefinitely in the background, even when the client disconnects. An app that uses Android IPC to start a service may possess different permissions than the service provider itself.
+
+# Issue:
+When the callee is in possession of the required permissions, the caller will also get access to the service. Consequently, a privilege escalation could occur (Mitra and Ranganath 2017).
+
+# Symptom:
+The lack of appropriate permission checks to ensure that the caller has access right to the service.
+
+# Detection:
+We report the smell when the caller uses startService, and then the callee uses checkCallingOrSelfPermission, enforceCallingOrSelfPermission, checkCallingOrSelfUriPermission, or enforceCallingOrSelfUriPermission to verify the permissions of the request. Calls on the Context object for permission check will then fail as the system mistakenly considers the callee’s permission instead of the caller’s.
+
+Furthermore, reported are
+5 https://developer.android.com/training/safetynet/safebrowsing.html
+# Empirical Software Engineering
+calls to checkPermission, checkUriPermission, enforcePermission, or enforceUriPermission methods on the Context object, when additional calls to getCallingPid or getCallingUid on the Binder object exist.
+
+Limitation: We currently do not distinguish between checks executed in Service.onBind or Service.onStartCommand, and we do not verify custom permission checks based on the user id with getCallingUid.
+
+Mitigation: Verify the caller’s permissions every time before performing a privileged operation on its behalf using Context.checkCallingPermission() or Context.checkCallingUriPermission() checks. If possible, do not implement Service.onStartCommand in order to prevent clients from starting, instead of binding to, a service. Ensure that appropriate permissions to access the service have been set in the manifest.
+
+# SM08: Insecure Path Permission
+Apps can access data provided by a content provider using path specifications of the form /a/b/c. A content provider may restrict access to certain data under a given path by specifying so called path permissions. For example, it may specify that other apps cannot access data located under /data/secret. The Android framework prohibits access to unauthorized apps only if the requested path strictly matches the protected path. For instance, //data/secret is different from /data/secret, and therefore the framework will not block access to it.
+
+Issue: Developers often use the UriMatcher for URI comparison in the query method of a content provider to access data, but this matcher, unlike the Android framework, evaluates paths with two slashes as being equal to paths with one slash. Consequently, access to presumably protected resources may be granted to unauthorized apps (Mitra and Ranganath 2017).
+
+Symptom: A UriMatcher.match() is used for URI validation.
+
+Detection: We look for path-permission attributes in the manifest file, and UriMatcher.match() methods in the code.
+
+Limitation: We are not aware of any limitation.
+
+Mitigation: As long as the bug exists in the Android framework, use your own URI matcher.
+
+# SM09: Broken Path Permission Precedence
+In a content provider, more fine-grained path permissions e.g., on /data/secret take precedence over those with a larger scope e.g., on /data.
+
+Issue: A path permission never takes precedence over a permission on the whole content provider due to a bug that exists in the ContentProvider.enforceReadPermissionInner() method. For example, if a content provider has a permission for general use, as well as a path permission to protect /data/secret from untrusted apps, then the general use permission takes precedence. Consequently, content providers may mistakenly grant untrusted apps access to presumably protected paths.
+
+Symptom: A content provider is protected by path-specific permissions.
+
+Detection: We look for a path-permission in the definition of a content provider in the manifest file.
+
+Limitation: We are not aware of any limitation.
+
+Mitigation: As long as the bug exists in Android, instead of path permissions use a distinct content provider with a dedicated permission for each path.
+
+# SM10: Unprotected Broadcast Receiver
+Static broadcast receivers are registered in the manifest file, and start even if an app is not currently running. Dynamic broadcast receivers are registered at run time in Android code, and execute only if the app is running.
+
+# Empirical Software Engineering
+# SM11: Implicit Pending Intent
+A PendingIntent is an intent that executes the specified action of an app in the future and on behalf of the app, i.e., with the identity and permissions of the app that sends the intent, regardless of whether the app is running or not.

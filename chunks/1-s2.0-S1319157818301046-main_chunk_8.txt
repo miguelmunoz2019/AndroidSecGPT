@@ -1,0 +1,25 @@
+Simon, L., Anderson, R., 2015. Security analysis of android factory resets. In: Proceedings of the 3rd Mobile Security Technologies Workshop (MoST), San Jose, CA, USA.
+
+Skillen, A., Barrera, D., van Oorschot, P., 2013. Deadbolt: locking down android disk encryption. In: Proceedings of the 3rd ACM workshop on Security and privacy in smartphones & mobile devices (SPSM’13), Berlin, Germany, pp. 3–14.
+
+Stirparo, P., Fovino, I.N., Taddeo, M., Kounelis, I., 2013. In-memory credentials robbery on android phones. In: Proceedings of 2013 World Congress on Internet Security (WorldCIS), London, UK, pp. 88–93.
+
+Sufatrio, D.J.J., Tan, T.-W., Chua, V.L.L., 2015. Thing, ‘‘Securing android: a survey, taxonomy, and challenges. ACM Comput. Surveys 47, (4) 58.
+
+Tang, Y., Ames, P., Bhamidipati, S., Bijlani, A., Geambasu, R., Sarda, N., 2012. Cleanos: Limiting Mobile Data Exposure with Idle Eviction. Hollywood, CA, USA, pp. 77–91.
+
+Teufl, P., Fitzek, A., Hein, D., Marsalek, A., Oprisnik, A., Zefferer, T., 2014. Android encryption systems. In: Proceedings of the International Conference on Privacy and Security in Mobile Systems (PRISMS), Aalborg, Denmark, pp. 1–8.
+
+Tiwari, P., Singh, U., 2015. Android users security via permission based analysis. In: Abawajy, J., Mukherjea, S., Thampi, S., Ruiz-Martínez, A. (Eds.), Security in Computing and Communications (SSCC 2015), Communications in Computer and Information Science. Springer, Cham, pp. 496–505.
+
+van der Veen, V., Fratantonio, Y., Lindorfer, M., Gruss, D., Maurice, C., Vigna, G., Bos, H., Razavi, K., Giuffrida, C., 2016. Drammer: Deterministic Rowhammer Attacks on Mobile Platforms. Vienna, Austria, pp. 1675–1689.
+
+Wang, S., Liu, J., 2011. Biometrics on mobile phone. In: Yang, J. (Ed.), Recent Application in Biometrics. IntechOpen, Rijeka, Croatia, pp. 3–22.
+
+Xia, Y., Liu, Y., Tan, C., Ma, M., Guan, H., Zang, B., Chen, H., 2015. TinMan: Eliminating Confidential Mobile Data Exposure with Security Oriented Offloading. Bordeaux, France.
+
+Yldrm, N., Varol, A., 2014. Mobile biometric security systems for today and future. In: Proceedings of the 2nd International Symposium on Digital Forensics and Security (ISDFS’14), Houston, TX, USA, pp. 86–91.
+
+Zaidi, S., Shah, M., Kamran, M., Javiad, Q., Zhang, S., 2016. A survey on security for smartphone device. Int. J. Adv. Comp. Sci. Appl. 7 (4), 206–219.
+
+Zhao, S., Zhang, Q., Hu, G., Qin, Y., Feng, D., 2014. Providing root of trust for ARM TrustZone using on-chip SRAM. In: Proceedings of the 4th International Workshop on Trustworthy Embedded Devices (TrustED’14), Scottsdale, AZ, USA, pp. 25–36..

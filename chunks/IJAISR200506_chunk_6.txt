@@ -1,0 +1,146 @@
+- Figure 9: The basic data interface is specific to the teacher, through which he enters the name of the intelligent tutoring system in English and Arabic in addition to the creator of the system. It also contains a dropdown list to choose the main language of the smart educational system and has the option to add a background image of the system login interface.
+
+- Figure 10: The interface is to add a new student and review the data of students in the system with the possibility to modify the student data or delete it permanently from the system.
+
+- Figure 11: A teacher interface where he can add the lesson title and then choose the lesson file.
+
+- Figure 12: A teacher-specific interface where he can add the examples of the lesson that has been added before, with the possibility of adding an audio file optionally.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+- Figure 13: A special interface to add questions and answers to each specific lesson by the teacher, in addition to specifying the difficulty level of the question in addition to the basic processes add, modify and delete.
+
+- Figure 19: The interface to show the student's statistics in terms of level and score of specific lesson.
+
+- Figure 20: Teacher-specific interface for basic operations on lessons (add-edit-delete).
+
+# 2- Student interfaces:
+- Figure 5: This window contains text boxes to enter the student's ID and name and then press the login button to move it to the main window.
+
+- Figure 7: The student's main interface enables him to browse the lessons.
+
+- Figure 14: A student interface that shows lessons and examples of lessons.
+
+- Figure 15: A student interface to view the lesson to be presented.
+
+- Figure 16: A student interface based on the previous interface in which to view questions.
+
+- Figure 17: An alert message showing that the student has exceeded the difficulty level of a given lesson successfully in addition to the score.
+
+- Figure 18: An alert message showing that the student failed to exceed the difficulty level of a particular lesson.
+
+- Figure 19: The interface to show the student's statistics in terms of level and score of specific lesson.
+
+# ITSBLanguage was created by Prof. Dr; Samy $. Abu Naser
+# Android ITS by Eng- Hazem A. S.Al Rekhawi
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# TTSB Language was created by Prof; Dr; Samy $. Abu Naser
+# Android ITS by Eng- Hazem A. S. Al Rekhawi
+Login Exit
+www.ijeais.org/ijaisr
+45
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+www.ijeais.org/ijaisr
+48
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+www.ijeais.org/ijaisr
+49
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Figures
+www.ijeais.org/ijaisr
+50
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 5. Evaluation And Result Discussion
+# 5 System Evaluation
+The system evaluation is used to measure the quality of an application that refers to efficiency, effectiveness, and user satisfaction to perform tasks performed using the application. Usability assessment is a vital part of the system development process, and a set of questions to evaluate the ITS has been developed by people interested in learning about the effectiveness of the intelligent tutoring system for teaching Android application development.
+
+An evaluation of the proposed ITS was conducted by the lecturers and students who joined the Android Application Development Course during the second semester of 2018/2019 in the Mobile Applications Development Department of the University College of Applied Sciences (UCAS) in Gaza.
+
+A questionnaire consisting of the items in Table 1 was filled out by each evaluator (lecturers and students). A group of 4 lecturers and 20 students divided into two groups participated in the system evaluation, one group containing 10 males and the
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 5 Results of Lecturers group:
+# 5 Results of Students groups:
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+Results of questions asked to the Android Applications Development Students
+150
+100
+50
+0
+q1 q2 q3 q4 q5 q6 q7 q8 q9 q10 q11 q12 q13
+Males       Females
+In assessing the proposed ITS, evaluators were required to use the proposed ITS. They were then asked to provide feedback on the proposed ITS by filling out the questionnaire consisting of the 13 questions listed above in table 1 and table 2.
+
+In this way, the efficiency and satisfaction of the proposed ITS were measured as described in the above figure 21 and figure 22. The Overall evaluation of lecturers and students was very positive and can be seen from the figure 32.
+
+Overall Average Rating
+Lecturers        Male Students         Female Students
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 5 Evaluator Comments in the questioner about the proposed system
+There are some observations and recommendations for the development of the smart educational system presented by the lecturers and students where the recommendations were as follows:
+- Addition of training material to teach the development of android applications by the Kotlin language.
+
+- Adding a voice tone if the student's answer to the question is correct and add another voice tone if the student's answer to the question is wrong.
+
+- Some questions have only one answer and the current design of the intelligent tutoring system allows the student to choose more than one answer.
+
+- The possibility of providing a training material in Arabic to learn the development of Android applications.
+
+- The possibility of providing a copy of the intelligent tutoring system presented to the web.
+
+- The possibility of providing a means of direct communication with the teacher through the intelligent tutoring system in the case of some questions.
+
+- The possibility of providing mobile application for the intelligent tutoring system offered to students.
+
+The development recommendations and observations will be taken into account in the future work of developing the proposed Intelligent Tutoring System.
+
+# 6. Conclusion
+In this study, theory and architecture of the Intelligent Tutoring System were described in details. The ITS was designed and developed to teach Android application development by encouraging lecturers and students to use this system to increase their ability and knowledge about Android applications development. The ITS addressed some of the problems’ students and lecturers face in learning about Android application development. In addition, it provides an integrated training material to learn the development of Android applications prepared by the researchers.
+
+The proposed ITS was presented to two groups: lecturers and students (male and female) enrolled in the Android Application Development Course during the second semester of 2018/2019 in the Mobile Application Development department of the University College of Applied Sciences (UCAS) in Gaza to test the system and provide feedback by filling out a questionnaire. The results of the evaluation were promising.
+
+It is necessary to follow up existing results in the development of artificial intelligence and Android applications development at the same time in order to produce a reasonable method for efficient and effective purposes. In addition, It recommends using intelligent tutoring system in teaching many modern programming languages.
+
+# 7. Future Work
+For future work, I am planning to convert the ITS into a mobile application, provide a web application as well and add direct communication through chat between the student and the teacher when there are some questions. In addition to solving the problems written by participants in the evaluation process, including adding a voice tone to the success or failure of the answer and solve the problem of questions that have only one answer not to allow the student to choose more than one answer.
+
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Language." EUROPEAN ACADEMIC RESEARCH 6(10): 8795.
+
+20. G. Weber, P. Brusilovsky. (2016). ELM-ART-An interactive and intelligent Web-based electronic textbook, International Journal of Artificial Intelligence in Education, Vol. 26, No. 1, pp. 72-81.

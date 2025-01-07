@@ -1,0 +1,74 @@
+294 29th USENIX Security Symposium USENIX Association
+# CogniCrypt Issue
+Count
+- Log (count + 1)
+Misuse Score
+# FlowDroid Issue
+Count
+- Log (count + 1)
+Privacy Leak Score
+# MalloDroid Issue
+Count
+# Server SSL Issue
+Count
+- Log (total + 1)
+SSL Security Score
+wherever possible; we ran the full set of scanning tools on each, and counted the issues (reports of possible vulnerabilities) generated. Appendix A lists the versions of the tools we used.
+
+# 4. Application Statistical Analysis
+As in the previous phase, we used graphical tools to explore the data, and linear analysis to explore relationships between the data.
+
+To investigate RQ2, we defined further scores to represent the outcome “fewer security defects” in each app analyzed. Figure 3 shows the processing involved. We anticipated that the issue counts would have a Poisson distribution; to permit linear analysis we used a log transformation5. As with the scores for developer behavior, we wanted scores that increase with increasing app security and privacy, and we therefore negated the log value.
+
+We used the same method as previously (Section 3) to look for relationships between these scores and the scores from Figure 2 covering the “need for security, involvement of specialist roles, and use of assurance techniques in a development team” in RQ2.
+
+# 4. Ethical Considerations
+Our institutions’ Institutional Review Boards approved this study, including the use of publicly available contact details for the survey invitations. Additionally, we modeled our research plan and survey procedure to adhere to the strict data and privacy protection laws in the UK and Germany and the General Data Protection Regulation in the E.U. We provided all participants with a form that informed them about the study purpose, the data we collected and stored, and an email address and phone number to contact the principal investigators in case they had questions or concerns.
+
+# 4. Survey Limitations
+As with most studies of this type, our work has limitations.
+
+The response rate for our online developer survey was very low, as might be expected from sending unsolicited emails to prospective participants. However, our recruitment approach was incorporated by relevant previous work . The low response rate may introduce some self-selection bias, but since the invitations made no mention of security, we have no reason to believe a priori that those who responded differ meaningfully in terms of security or privacy behavior from those who did not.
+
+All the survey data—except download count and last app update date—is self-reported. Though we addressed this by keeping questions as fact-oriented as possible, this is an important limitation.
+
+In terms of the population, the survey reached app owners rather than all app developers; so, data about the respondents’ own experience is not representative of all Android developers, nor of software developers in general.
+
+# 4. App Analysis Limitations
+The static analyses we chose each consider specific categories of vulnerabilities. This may disregard other categories of issues which may also be security critical. Indeed, many vulnerabilities—especially privacy ones—will tend to be in the intended app functionality rather than in the detailed implementation, and we have no way to estimate these. However, we used detectors for a range of implementation issues which may be found through other methods, and which developers who consider security or privacy important would be expected to address.
+
+Static program analysis tools often report false positives, and the tools we used are no exception. Our approach for this survey, however, was to assume that the reported issue counts will correlate with the numbers of true vulnerabilities, and therefore that such counts can be used as a proxy for aspects of app security in statistical analysis.
+
+We were able only to analyze ‘free’ and ‘freemium’ apps, not ones where Google Play Store charges for download; this may introduce a bias. In cases where respondents have more than one app, the app we downloaded may not be one requiring the security practices and priorities described in the survey.
+
+We considered improving the app analysis by ranking vulnerabilities based on severity. However, the analysis did not identify vulnerabilities; it reported counts of ‘issues’ detected, where an ‘issue’ is a potential vulnerability. To determine whether an issue represents a vulnerability would require detailed analysis of the source code; this source code was not available to the researchers, and decompilation was infeasible due to the widespread use of obfuscation tools.
+
+Specifically, log(𝑥& + k), where k is chosen to minimize skewness ; in practice we trialed different values of k, finding no difference to the results, so used the conventional research practice of k=1.
+
+USENIX Association 29th USENIX Security Symposium 295
+# 5. Results
+This section describes our results, both from the survey and from the app analysis.
+
+# 5. Sample Validity
+Comparing the box plots for invitees with those for participants in Figure 4, we see that the average user rating and number of downloads for apps produced by the 345 developers who completed surveys are very similar to those for the 55,000 invited.
+
+One survey question asked the respondent’s years of experience in software development. Figure 5 compares the results with answers to a similar question addressed to the 21,000 Android developers out of the 89,000 developers who answered the 2019 Stack Overflow developer survey . As will be seen, the respondents are generally more experienced than the corresponding general population (median 12 years; population median of 8 years; Mann Whitney 𝑝 = 10234).
+
+One concern was whether our app selection criterion (over 100 downloads and one update) was too lenient, since little-used apps may well have poor security. To test this, we used the Mann Whitney test comparing less than 1000 downloads against the rest. We did this for all developers of apps with of the scores (Sections 3 and 4) and for all the numerically analyzable survey questions to see if the distribution was different for low-download apps. In the survey results and scores we found small p-values (<0) only for questions whose answers we expected to correlate with download counts: ‘How many apps have you developed’, ‘How many Android apps have you developed’ and ‘Is developing apps your primary job’, and we concluded that the populations were essentially the same. Doing the same Mann Whitney test on the scores in Phase 2, we found low p-values only for the Cryptographic API Misuse and Privacy Leak scores (p ~ 0 for each). Though suggestive, these values are not statistically significant given the number of tests done on that same data. We concluded that there was no justification for changing our app selection criteria.
+
+Finally, to check the accuracy of respondents’ replies, we compared the respondent-stated app update interval with objective evidence. App update histories are not generally available from Google Play, but we did collect the last update date for each app we considered. We correlated the time since that last update with the participant-stated update interval using log scales: Pearson R=0, P=1e-9 (n=242). The tiny P value corroborates the assumption that the stated update frequencies reflect reality; the moderate R value reflects that respondents were asked about updates to ‘their most frequently updated app’ and not the app we considered, plus the randomness of where each app was in the release cycle.
+
+# 5. Findings on Self-Reported Developer Behavior
+The next sections describe the survey results for individual survey questions, without considering associations between answers.
+
+Importance of Security and Privacy: Figure 6 shows respondents’ ratings of the importance of security and privacy in their apps. For comparison, we also asked and show the importance of other functional and non-functional requirements. We were surprised how many developers considered security and privacy important, with ratings comparable with multi-platform support and higher than for many features.
+
+We specified this analysis after data gathering; accordingly, significance in any of the correlations should be considered suspect. However, a lack of significance in a wide range of correlation calculations is a valid finding.
+
+296 29th USENIX Security Symposium USENIX Association
+Team Structure: Only 42% of respondents were working in teams, the remainder being solo developers. Only 17% of respondents received support from professional security experts. So, for RQ3 we calculate the ninety-five percent confidence interval  for the proportion working with security experts in the Android app developer population as a whole as:
+Lower bound = 14%, Upper bound = 22%
+# Developer Security Knowledge
+# Use of Assurance Techniques
+# Combinations of Assurance Techniques
+We investigated the extent to which teams used combinations of assurance techniques. Figure 9 summarizes how many and how often the techniques are used. It shows the proportion of respondents using each number of the techniques (at least), separated out to show how often they used them. As will be seen, less than half had used even one technique; about a quarter used one or more regularly; and very few used as many as four regularly.

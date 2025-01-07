@@ -1,0 +1,50 @@
+# 8. Open Problems
+# 8. False Alerts
+All proposed algorithms for identifying privacy leakage suffer from false positives: incorrectly reporting legitimate privacy disclosures as suspicious or malicious leakages [Livshits and Jung 2013; Yang et al. 2013], which usually dominate the detection results [Lu et al. 2015]. Unfortunately, humans have little patience for false alerts. No warning will be attended after malware detectors report a few incorrect alerts. To be effective and practical, future solutions should consider such false alerts seriously.
+
+# 8. Malicious Behavior Triggering
+A fundamental problem on test automation tools is how to guarantee that all malicious behaviors can be triggered during testing. In this sense, merely measuring the code/path coverage might not be sufficient as malware can easily hide malicious behaviors deep inside the program, for example, executing malicious activities after 1 hour of app launching (time bomb) or only when no debugger is attached (logic bomb). Another common scenario is: if the app starts with a login screen, none of the test automation tools we surveyed will be able to process further without valid credentials. Furthermore, if malicious behaviors or privacy leakage only manifests after the login activity, it will never be triggered during testing. However, obtaining login credentials inevitably involves human interaction, which compromises scalability.
+
+Harvester [Rasthofer et al. 2016] sheds light on this problem based on the assumption that the path that leads to a predefined set of potential malicious behaviors (e.g., send SMS or make phone calls) generally has no data dependence on the anti-analysis techniques used. Therefore, through precise program slicing, the aforementioned time bomb and logic bomb can be sliced out, preserving only code sections that trigger the target behavior.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 8. Analyzing Native Code
+A majority of proposed algorithms do not assume the use of native code in Android apps, which is hardly true in the current Android ecosystem. Although NDroid [Qian et al. 2014] proposes a new taint-tracking algorithm that can identify dataflows in the presence of native code, it still suffers from high false negative and incurs nonnegligible runtime overheads. Native code must also be considered in developing new detection and analysis algorithms due to its wide presence in real-world apps.
+
+# 8. Strong Adversary
+Due to the diverse features of Android malware, no detection technique can be a panacea, and many of them can be bypassed if attackers correspondingly adjust their offensive techniques. (1) Many antitaint analysis techniques have been developed in order to cleanse taints during dynamic tracing, as reported in Sarwar et al. . (2) Static data analysis cannot resist intentional code obfuscation techniques, such as using code encryption, dynamic code loading, Java reflection, and JNI. (3) WYSIWYX is an intuitive policy but is hard to enforce as extracting the criteria behaviors is nontrivial. (4) Model checking-based algorithms usually require manual specifications of policies, which are neither precise nor complete. (5) Even though using machine learning seems an attractive direction, we still need a systematic way of collecting training and evaluation data to avoid biases [Allix et al. 2014].
+
+# 8. Place of Detection
+Given the plethora of privacy violation and malware detection tools, it is a natural question on where these tools should be deployed. On-device detection, restricted by CPU power, memory, and battery, might suffer from low precision, while cloud-based detection might suffer from high communication overhead and late response. Devising a hybrid approach will be beneficial to the Android community.
+
+# 9. APP REPACKAGING
+App repackaging is prevalent among Android malware; according to Zhou and Jiang , 86% of malware samples are repackaged versions of benign apps.
+
+The pervasiveness of app repackaging among malware can be explained in three ways: (1) A repackaged app can boost its infection rate leveraging the victim app’s popularity. (2) It can also achieve stealthiness by preserving original app functionalities. (3) It is technically easy to repackage an Android app (unless it is heavily obfuscated, which few developers can do or will do). All these properties help malware writers meet their motivations directly (e.g., stealing credit card numbers) or indirectly (e.g., bumping ad’s click counts).
+
+Recent years have witnessed many solutions to tame this problem, and in general, these solutions can be classified into two categories: repackaging detection and repackaging prevention.
+
+# 9. Repackaging Detection
+All repackaging detection algorithms surveyed in this article follow a general procedure: (1) features of the target app, such as logics and UI, are extracted and deterministically transformed into a special representation format, a.k.a., birthmarks, and (2) a subsequent comparison between two app birthmarks determines the similarity between two apps. Table VIII summarizes existing works. As shown in Table VIII, we perform a subjective comparison on their performance using two criteria: transformation resilience and scalability.
+
+Transformation resilience measures how an algorithm might be defeated if an attacker uses one of the following common evasion techniques: ©point-of-interest minor modifications, ©control flow changes, ©data dependency changes, and ©heavy obfuscation (encryption).
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Table VIII. Repackage Detection Techniques
+In the Resilience Column, © –© Denotes Obfuscation Techniques1 Discussed in Section 9. In the Scalability Column, S Denotes DEX Bytecode Size; C Denotes Program Complexity, in Number of Methods [Crussell et al. 2012, 2013a; Desnos and Gueguen 2012; Hanna et al. 2012], or Number of Activities and Intents [Zhang et al. 2014a]; P Denotes Parameter of the Detection Technique
+The general observation is that sequence-based approaches are less resilient to code obfuscation techniques as code streams do not contain any higher level semantic knowledge, and hence are more likely to be defeated with control flow changes such as method restructuring, statement re-ordering, or dead code insertion. Program Dependency Graph (PDG) based approaches generally have better resilience, but they can still be defeated by data dependency changes, for example, massive aliasing of variables. User-interaction-based approach leverages the user-interaction/event-driven nature of Android apps and is more resilient to code-level obfuscations.
+
+DroidMOSS [Zhou et al. 2012] applies fuzzy hashing to each app’s opcodes to generate the birthmark. For each sequence of opcodes, it partitions them into smaller chunks and aggregates the hash of each chunk to get the final hash. It then measures the similarities of two apps using a custom formula with both hash values as input. Similarly, Androguard [Desnos and Gueguen 2012] uses several standard similarity metrics to hash app functions and basic blocks for comparison. Juxtapp [Hanna et al. 2012] characterizes apps through k-grams of opcodes and feature hashing and clusters corresponding bitvectors to identify app repackaging. PiggyApp [Zhou et al. 2013b] is designed to detect piggybacked apps, a special kind of repackaged app with code injected into victim apps. It first deconstructs an app into modules according to their dependency relationship and then constructs a fingerprint for the primary module by collecting various features, such as requested permissions and Android API calls.
+
+Desnos  uses Normalized Compression Distance (NCD) to compare app signatures, including external API usages, exceptions, and CFG. Potharaju et al.  proposes an approach to detect plagiarized apps based on symbol tables and method-level AST fingerprints. This approach can handle obfuscation techniques that mangle symbol tables or insert random methods with no functionality. DroidSim [Sun et al. 2014] utilizes Component-Based Control Flow Graph (CB-CFG) to quantify the similarity between apps. DNADroid [Crussell et al. 2012] constructs a PDG for each method and performs subgraph isomorphism comparison on PDGs after filtering out unnecessary methods. To speed up DNADroid and AnDarwin, Crussell et al. [2013a] splits PDGs into connected components (i.e., semantic blocks), each of which will be represented by a semantic vector containing the number of specific types. After that, it employs a Locality Sensitive Hashing (LSH) algorithm to identify code clones that have similar semantic vectors. Crussell et al. [2013b] proposes a novel approach that uses the centroid of control dependency graph to measure similarity between methods in order to detect cross-market app clones.
+
+Besides the aforementioned works that analyze program logic, Zhang et al. proposes ViewDroid [Zhang et al. 2014a] that first constructs a feature view graph and then...
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 9. Repackaging Detection
+applies subgraph isomorphism to measure similarity between two apps. ResDroid [Shao et al. 2014b] follows a similar approach, it extracts information about UI elements with minor granularity differences. Besides, Shao et al. [2014b] leverages the fact that attackers often use code loading for app repackaging—simply packing bytecode into JNI at deliver time and recovering bytecode at runtime—and presents a tool to dump the memory at runtime. The analysis is done on the runtime bytecode, which solves the problem of heavy obfuscation to some extent.

@@ -1,0 +1,49 @@
+In the end, our interactor spent about 7 minutes (444 seconds) on average for each app, while Monkey used the full 10-minute window (600 seconds) for each app. We compared our UI interactor and Monkey in terms of the detected various privacy-related items (a total of 24 types): on average, ThirdEye detected approximately 6% more apps with privacy leaks with our UI interactor compared to Monkey. Most apps transmitted more privacy items when instrumented with our UI interactor. We also found that Monkey sent more duplicate items to the same host, or to new hosts (not detected by us). Most new hosts in Monkey received device names that appeared in the user-agent of an app’s WebView pages that we intentionally avoided interaction with (e.g., ad windows, non-Google 3rd-party logins).
+
+Additionally, we manually checked the support of login for these apps as the UI interactor can detect privacy leaks from app features available only after a successful login. We detected that 77/115 apps require authentication: 40 only supported app-specific authentication; 34 supported both Google and app-specific authentication; and 3 supported only Google sign-in. We succeeded to automatically login to 19 apps with Google sign-in and to 4 apps with app-specific registration/sign-in. This partial support of login helps us to explore more app features and related leaks compared to Monkey.
+
+# Hidden in Plain Sight: Exploring Encrypted Channels in Android Apps
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+Analysis time threshold: 5 vs. 10-minute window. From the UI interactor vs. Monkey experiment, we estimate the undetected privacy leaks due to our 5-minute test window by comparing leaks that occur before and after the threshold. Overall, there are more leaks detected with a higher threshold, but the difference is not very significant. 6/115 apps sent the following privacy-related items after the 5-minute threshold: 1 sent the device name, 2 device email, 1 WiFi info (router BSSID, ESSID, and neighbor router ESSID), 1 dummy0 interface, 1 device name; i.e., 109/115 apps did not leak any new privacy-related items after the 5-minute threshold (and before the end of the 10-minute window). We also observed that most apps requiring over 5 minutes, are WebView apps with lots of pages/widgets. Note that, the analysis duration is configurable—a trade-off between coverage vs. total analysis time/resources.
+
+# Limitations.
+
+1. Although we were able to identify PII information sent over the network with multiple forms of obfuscations (e.g., encryption, encoding, hashing), our results are a lower bound as we may not have identified traffic with more complex or unknown obfuscation techniques.
+
+2. Besides obfuscated PII, obfuscated method names may also reduce ThirdEye’s effectiveness, as we rely on method names for hooking possible encryption/decryption functions. Obfuscation tools such as ProGuard cannot modify method names in the Android cryptographic SDK (or any Android Framework APIs), allowing us to hook such functions successfully. However, these tools may hide from us the names of the custom-developed cryptographic functions, and as such, ThirdEye cannot (automatically) find and hook these functions. From our measurement, we found a total of 119 apps that used non-SDK encryption; these apps either did not use obfuscation, or used some tools which did not obfuscate the method names. However, we could not measure how many apps with non-SDK encryption that we missed. Past studies measured the overall use of obfuscation tools by app developers, e.g., 24% of 1M apps were obfuscated according to Wermke et al.  (but no data on the use of non-SDK cryptographic implementations).
+
+3. Our instrumentations do not cover apps built solely using the native NDKs. Instead, our methodology indirectly covers NDK functions that are wrapped in SDKs.
+
+4. The AndroidViewClient that we used to automate UI interactions, cannot handle animated UI elements (e.g., a button with an animation). We also do not handle UI elements created with third-party views (i.e., not extending View  class) and images. Our support for authentication is also limited to Google sign-in and custom registrations, and our UI interactor currently does not complete steps that require verification via SMS/email for registration/login. For apps with unhandled UI elements and logins, we currently fail to detect privacy and security issues in features behind these elements or logins.
+
+5. As we do not know which apps, or which app features in an app may use non-standard/custom-encrypted channels, there is no guarantee that our UI interactor would trigger all such covert channel related behaviors/features. We systematically go through all app UIs and trigger as many actions as we can to find these channels, if used by a target app.
+
+6. Our network instrumentation currently does not support HTTP/3 (QUIC), DTLS, and TLS without HTTPS.
+
+7. Our Frida instrumentation works for the evaluated apps; however, if apps use advanced techniques, such as observing the memory map, our instrumentation can still be detected.
+
+# 7 CASE STUDIES AND DISCUSSION
+In this section, we summarize privacy implications of the use of non-standard and covert channels to collect/send sensitive personal/device information. We also discuss the new security vulnerabilities introduced by these channels. We highlight such critical privacy and security implications using high-profile apps/SDKs as examples.
+
+# Hiding privacy exposures.
+
+As we observed, a significant number of apps use non-standard and covert channels to hide the collection of PII/device information — shared with their own app servers or third-party servers/trackers, or both. This may be due to increased scrutiny by the app markets, e.g., Google Play Protect , or due to the added privacy measures in newer versions of Android (10 and up); we cannot be certain about app developers’ motivation on this. However, such practices are certainly detrimental to user privacy. We list a few examples below.
+
+- Dailyhunt (com.eterno, 100M+ installs), a top news app in India, sends users’ contact list to its servers using an additional encrypted channel over HTTPS. It compresses and encrypts each contact’s details using AES-128-CBC with a random key and a null IV, and sends the encrypted contacts to its server. The random key is also sent encrypted under a hard-coded RSA-1024 key.
+
+- SHAREit (com.lenovo.anyshare.gps, 1B+ installs), an extremely popular app to securely share/manage large files, sends device GPS location to third-party adv/tracking domains (adcs.rqmob.com  and dt.beyla.site ) under custom encryption over HTTP, and to mcds.wshareit.com over regular HTTPS. For custom encryption, SHAREit uses an AES-128 random key generated on the target device, which is sent encrypted via HTTP under a hard-coded RSA-1024 key. Similarly, the Amazon Alexa (com.amazon.dee.app, 50M+ installs) app sends the device email and the WiFi IP address (as cookie parameters) to their servers, only under custom encryption over HTTPS. This app is used to set up Alexa-enabled devices for automated tasks (e.g., creating shopping lists).
+
+- With IPv6, the device interface’s hardware MAC address is embedded in the IPv6 address , which is made available via the dummy interface (dummy0) . Although the MAC address is randomized (by default from Android 10), the corresponding IPv6 address is fixed until the next reboot of the device , and as such, can be used to track users between device reboots (a relatively infrequent event). This technique is apparently being used by 202 apps, including very high-profile apps such as com.baidu.searchbox, and com.paypal.android.p2pmobile, where the apps explicitly collect the dummy0 interface information but use IPv4 for communication; 14/202 (6%) of them send such info via non-standard channels.
+
+# New security vulnerabilities.
+
+We list example apps where new vulnerabilities resulted from the use of custom encrypted channels.
+
+- UC Browser (com.UCMobile.intl), a mobile browser with 500M+ installs, sends device information (e.g., device ID, operator, WiFi MAC, advertisement ID), and GPS location over a custom encryption channel under plain HTTP protocol with fixed-keys, and thus exposes the collected information to any network adversary.
+
+- CamScanner (com.intsig.camscanner), a widely-used app for document scanning (3M+ installations), encrypts a user’s Firebase token using a random symmetric key, which is then encrypted using a hard-coded RSA-512 public key; the resulting ciphertext (the
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+Sajjad Pourali, Nayanamana Samarasinghe, & Mohammad Mannan
+Firebase token and random key) is then sent to 54:8090 and 54:8090 using a non-standard protocol over TCP. We extracted the corresponding RSA-512 private key, and then we could recover the symmetric key and in turn, access the plaintext Firebase token, just by collecting ciphertext from the network.
+
+• We found 22 apps that sent authentication tokens over a secure HTTPS channel initially, but then exposed such tokens over an insecurely-implemented encrypted channel over HTTP or non-HTTP; e.g., com.peppermint.livechat.findbeauty (a dating app, 5M+ installations) sent the user token over a non-HTTP channel that is AES-ECB encrypted with a hard-coded key.

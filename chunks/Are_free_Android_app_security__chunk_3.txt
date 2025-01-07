@@ -1,0 +1,51 @@
+At the time of this tools evaluation, Ghera benchmarks targeted API levels 19 thru 25 excluding 20 So, we decided to select only apps that targeted API level 19 or higher and required minimum API level 14 or higher Since minimum and target API levels of apps were not available in the AndroZoo APK list, we decided to select apps based on their release dates. As API level 19 was released in November 2014, we decided to select only apps that were released after 2014. Since release dates of APKs were not available from AndroZoo APK list, we decided to use dex date as a proxy for the release date of apps.
+
+Based on the above decisions, we analyzed the list of APKs available from AndroZoo to select the APKs to download. We found 2 million APKs with dex date between 2015 and 2018 (both inclusive). In these APKs, there were 790K, 1346K, 156K, and 17K APKs with dex date from the years 2015, 2016, 2017, and 2018, respectively. From these APKs, we drew an unequal probability sample without replacement and with probabilities 0, 0, 0, and 0 of selecting an APK from years 2015 thru 2018, respectively. We used unequal probability sampling to give preference to the latest APKs as the selected apps would likely target recent API levels and to adjust for the non-uniformity of APK distribution across years. To create a sample with at least 100K real-world Android apps that targeted the chosen API levels, we tried to download 339K APKs and ended up downloading 292K unique APKs. Finally, we used the apkanalyzer tool from Android Studio to identify and discard downloaded apps (APKs) with target API level less than 19 or minimum API level less than 14. This resulted in a sample of 111K real-world APKs that targeted API levels 19 thru 25 (excluding 20) or higher.
+
+# 3 API-based App Profiling
+Android apps access various capabilities of the Android platform via features of XML-based manifest files and Android programming APIs. We refer to the published Android programming APIs and the XML elements and attributes (features) of manifest files collectively as APIs. We use the term API to mean either a function, a method, a field, or an XML feature.
+
+For each app (APK), we collected its API profile based on the APIs that were used by or defined in the app, and we deemed as relevant to this evaluation as follows.
+
+1. From the list of elements and attributes that can be present in a manifest file, based on our knowledge of Ghera benchmarks, we conservatively identified the values of 7 attributes (e.g., intent-filter/category@name), the presence of 26 attributes (e.g., path-permission@writePermission), and the presence of 6 elements (e.g., uses-permission) as APIs relevant to this evaluation. For each app, we recorded the APIs used in the app’s manifest.
+
+2. For an app, we considered all published (i.e., public and protected) methods along with all methods that were used but not defined in the app. Former methods accounted for callback APIs provided by an app and latter methods accounted for service offering (external) APIs used by an app. We also considered all fields used in the app. From these
+3 API level 20 was excluded because it is API level 19 with wearable extensions and Ghera benchmarks focus on vulnerabilities in Android apps running on mobile devices.
+
+4 In the rest of this manuscript, “API levels 19 thru 25” means API levels 19 thru 25 excluding 20.
+
+5 We chose API level 14 as the cut-off for minimum API level as the number of apps targeting API level 19 peaked at minimum API level 14.
+
+# Empirical Software Engineering (2020) 25:178–219
+considered APIs, we discarded obfuscated APIs, i.e., with a single character name. To make apps comparable in the presence of definitions and uses of overridden Java methods (APIs), if a method was overridden, then we considered the fully qualified name (FQN) of the overridden method in place of the FQN of the overriding method using Class Hierarchy Analysis. Since we wanted to measure representativeness in terms of Android APIs, we discarded APIs whose FQN did not have any of these prefixes: java, org, android, and com.android. For each app, we recorded the remaining APIs.
+
+# 3. Numerous APIs commonly used in almost all Android apps are related to aspects (e.g., UI rendering) that are not the focus of Ghera benchmarks.
+
+To avoid their influence on the result, we decided to ignore such APIs. So, we considered the benign app of the template benchmark in Ghera repository. This app is a basic Android app with one activity containing a couple of widgets and no functionality. Out of the 1502 APIs used in this app, we manually identified 1134 APIs as commonly used in Android apps (almost all of them were basic Java APIs or related to UI rendering and XML processing). For each app, we removed these APIs from its list of APIs recorded in above steps 1 and 2 and considered the remaining APIs as relevant APIs.
+
+To collect API profiles of apps in Ghera, we used the APKs available in Ghera repository because we had eliminated extraneous APIs from these APKs by using the proguard tool. While collecting API-based profile of apps in AndroZoo sample, we discarded 5% of the APKs due to errors in APKs (e.g., missing required attributes) and tooling issues (e.g., parsing errors). Finally, we ended up with a sample of 105K real-world APKs (apps) from AndroZoo.
+
+# 3 Measuring Representativeness
+Using the steps described in the previous section, we identified 601 unique relevant APIs associated with benign apps in Ghera. Of these relevant APIs, we identified 117 as security-related APIs; based on our experience from building Ghera, we believe these APIs could influence app security.
+
+For both these sets of APIs, we measured representativeness in two ways.
+
+1. Using API Use Percentage. For each API, we calculated the percentage of sample apps that used it.
+
+To observe how representativeness changes across API levels, we created API level specific app samples. The app sample specific to API level k contained every sample app whose minimum API level was less than or equal to k, and the target API level was greater than or equal to k. In each API level specific sample, for each API, we calculated the percentage of apps that used the API.
+
+The rationale for this measurement is, if Ghera benchmarks are representative of real-world apps in terms of using an API, then a large number of real-world apps should use the API.
+
+2. Comparing Sampling Proportions. For each API, we calculated the sampling proportion of sample apps that used the API.
+
+To calculate the sampling proportion, we randomly selected 80% of the sample apps, grouped them into sub-samples containing 40 apps each, and calculated the mean of the proportions in each sub-sample. We also calculated the sampling proportion of benign apps in Ghera that used the API by randomly drawing 40 samples (with replacement) containing 40 apps each. We then compared the sampling proportions with confidence level = 0, p-value ≤ 0, and the null hypothesis being the proportion of benign.
+
+# Empirical Software Engineering (2020) 25:178–219
+# Percentage of apps using an API
+Apps in Ghera using the API is less than or equal to the proportion of real-world apps using the API. We performed this test both at specific API levels and across API levels. The rationale for this measurement is, if Ghera benchmarks are representative of real-world apps in terms of using an API, then the proportion of Ghera benchmarks using the API should be less than or equal to the proportion of real-world apps using the API.
+
+With Top-200 Apps. We gathered the top-200 apps from Google Play store on April 18, 2018, and repeated the above measurements both across API levels and at specific API levels. Only 163 of the top-200 apps made it thru the app sampling and API-based app profiling process due to API level restrictions, errors in APKs, and tooling issues. Hence, we considered 40 sub-samples with replacement containing 40 apps each to measure representativeness by comparing sampling proportions.
+
+# 3 Observations
+# 3 Based on API Use Percentage
+The color graphs in Fig. 1 show the percentage of sample real-world Android apps using the APIs used in benign apps in Ghera. The Y-axis denotes the percentage of apps using an API. The X-axis denotes APIs in decreasing order of percentage of their usage in API level 25 specific sample. The graphs on the left are based on relevant APIs while the graphs on the right are based only on security-related APIs. The graphs on the top are based on the AndroZoo sample while the graphs on the bottom are based on the top-200 sample. To avoid clutter, we have not plotted data for API levels 21 and 24 as they were closely related to API levels 22 and 25, respectively.

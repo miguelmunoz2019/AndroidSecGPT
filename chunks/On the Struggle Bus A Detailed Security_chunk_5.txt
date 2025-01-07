@@ -1,0 +1,31 @@
+Alternative Ticketing System: Strengthening the ticketing system may require a complete redesign. In what follows, we propose a simple alternative, which although arguably not flawless, mitigates the vulnerabilities identified. The proposed system consists of (1) a QR code validation protocol that substitutes driver-based visual validation; (2) an additional private app that bus drivers would use to validate tickets; and (3) an RSA signature algorithm to safely maintain the tickets.
+
+We illustrate the envisioned alternative ticketing system in Fig. 11 and summarise its operation below.
+
+# 250
+# J. Sanz Maroto et al.
+
+{"Id":1, "Type": 3, "Expires":"12/12/2021"}
+Verify with public key
+Sign with private key
+MSgqwZnTiltiqcnlOKTiak4Aq9Dqr5s+ m83YEMV4+YTkfLsrQJu4RvypPIWhQg/tmlZk6Yy7PL53M96T 4wpr3
+1. User sends a payment for some amount of tickets of certain type, which they want to purchase.
+
+2. Server crafts each ticket in JSON format, which contains all the information needed to identify the ticket, including a Unique id to avoid ticket reuse; Ticket type to specify if the ticket is Adult Single, All day, etc.; an Expiry date to verify that the ticket is still valid. Once the JSON is crafted, the server would use a private key kprv to sign the JSON and send the result to the app.
+
+3. When the user wants to activate a ticket, the app builds a QR representation of the encrypted ticket and displays it on the phone’s screen.
+
+4. The bus driver uses their app to scan the QR code. The app contains a public key kpub, which is used to verify that the ticket has not been tampered with. It also checks that the unique ID was not used in the past. If the ticket appears valid, the app indicates approval and stores the ticket’s unique ID.
+
+5. Periodically, the bus driver’s app connects to the server and sends the unique IDs that were scanned. At the same time, it is updated with information of other valid/invalid unique IDs that have changed recently.
+
+The downside to this system is that every bus driver must have a smartphone, which increases CAPEX. The advantages might out-weight the cost, since (1) the user only holds signed tickets and cannot craft tickets while subverting payment; (2) the public key could be made available to anyone, since it only serves in verifying if a ticket was tampered with; (3) the ticket duplication weakness is removed, since an attacker would have almost no time to use a copy of a ticket due to the unique IDs; and (4) modification of tickets becomes infeasible, since digital signatures are proven to be secure.
+
+# 6 Hard-Coding and Availability
+Having a flawless program is almost impossible. However, historically communities have come together to create standards, so that users/developers have the means of checking the correctness of their programs. A widely-known security standard is the OWASP Secure Coding Practices , which lays out practices developers should follow to make a program secure. Hard-coding and Availability issues we found in the m-tickets app are covered in these standards. Hence we recommend following these checklists when developing future versions of the app, to avoid the same or other pitfalls.
+
+# 6 Password Reset
+Not limiting the number of password resets a person can request has implication on (1) user account security (as it simplifies brute-forcing); (2) can facilitate DoS attacks towards third parties; and (3) can damage the reputation of the app provider. To avoid these, developers could enforce, e.g. a 10-s restriction between each password reset. This would be unnoticeable to the user, since it is roughly the time it takes to check email, while adversarial actors would be unable to perform any of the attacks discussed in Sect. 5. Additionally, it is good practice to disable the last password reset link after issuing a new one for the same account.
+
+# 7 Conclusions
+In this paper analyse the security and robustness of the m-tickets system used by Lothian Buses, a leading UK transport operator. We identify a range of vulnerabilities pertaining to ticket generation and life-cycle, app functionality, and back-end logic. To mitigate these, we provide design recommendations which Corethree, the developer, should implement, especially given that parts of older highly-vulnerable versions of the ticketing app remain in use and suggest other iterations of the system might be at risk. This includes those sold to other transport companies in the UK. Lastly, we present the blueprint of an alternative ticketing system, which should help in the development of future secure apps supporting public transport worldwide..

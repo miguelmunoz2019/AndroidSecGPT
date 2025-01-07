@@ -1,0 +1,163 @@
+carPropertyManager.registerCallback(new CarPropertyManager.CarPropertyEventCallback() {
+@Override
+public void onChangeEvent(CarPropertyValue carPropertyValue) {
+// Accessing property name
+String propertyName = VehiclePropertyIds.toString(carPropertyValue.getPropertyId());
+// Accessing property Value
+String propertyValue = carPropertyValue.getValue().toString();
+// Logging information
+Log.d("CarSpeedActivity", String.format("%s: %s", propertyName, propertyValue));
+// Broadcasting information
+Intent intent = Intent("com.example.app.broadcast");
+intent.putExtra("propertyName", propertyName);
+intent.putExtra("propertyValue", propertyValue);
+sendBroadcast(intent);
+}
+});
+}
+}
+}
+# 4 Deriving Speed from Location Information
+Android Automotive has special permission in order to access car speed information. However, speed can be derived from location information using distance formula. To access location information an app requires location permission from the user. Majority of apps rely on the user’s location to operate. Such apps in automotive environment can easily inspect user speed, acceleration habits, and hard braking. Many of the car insurance apps use this technique to reward users with discounts based on their driving habits. As we experimented in our example code, this vulnerability is reproducible in both Android Auto and Android Automotive emulators.
+
+Listing 7, shows an example of how to inspect location information and convert that into vehicle speed. Permission array at line 36 contains permissions that this app need from user to access location information. Method onCreate at line 42 is initializing location manager and requesting user for permission. requestPermission method (line 58) is either starting location listening process or prompting user for permission. Once user grant the permission startLocationListening process get called which registers locationListener and starts the listening process. locationListener (line 8-33) receives new location every 500 milliseconds or every 1 meter distance changed. In this listener, it takes previous and current location converts them in to distance (line 17) using method distance (not shown) and converts that into speed (line 25). This way any malicious app can derive speed just using location information.
+
+# Listing 7: Deriving speed from location vulnerability
+public class DeriveSpeedActivity extends AppCompatActivity {
+// Properties
+private LocationManager locationManager;
+private String provider = null;
+private Location prevLocation = null;
+private Date time = null;
+// Location Listener --> This will listen all the location changes
+private final LocationListener locationListener = new LocationListener() {
+@Override
+public void onLocationChanged(Location location) {
+if (prevLocation == null && location != null) {
+// Setting previous location if this is initializing for the first time.
+
+prevLocation = location;
+time = new Date();
+} else if (prevLocation != null && time != null && location != null) {
+// Calculating Speed from location and time
+Double dist = distance(
+prevLocation.getLatitude(),
+prevLocation.getLongitude(),
+location.getLatitude(),
+location.getLongitude());
+// Converting distance to speed based on time spent covering that distance.
+
+Double speed = (dist / (new Date().getTime() / 1000 - time.getTime() / 1000)) * (1 / 3);
+// Converting speed to string and setting it on the view's label
+String speedStr = String.format("Car Speed: %f kph", speed);
+Log.d("DeriveSpeedActivity", speedStr);
+// Updating previous location with current location and time.
+
+prevLocation = location;
+time = new Date();
+}
+}
+};
+// Permissions required to access location
+private final ArrayList<String> permissions = new ArrayList<String>() {
+android.Manifest.permission.ACCESS_FINE_LOCATION,
+android.Manifest.permission.ACCESS_COARSE_LOCATION,
+android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+};
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+// Initializing location manager and provider
+locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+provider = locationManager.getBestProvider(new Criteria(), false);
+// Requesting for permission from user
+requestPermission();
+}
+private void requestPermission() {
+// If permissions are already granted, start listening
+if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+startLocationListening();
+} else {
+// Show permission prompt to user.
+
+}
+}
+private void startLocationListening() {
+requestPermissions((String[]) permissions.toArray(), 1);
+locationManager.requestLocationUpdates(provider, 500, 1f, locationListener);
+}
+private void stopLocationListening() {
+locationManager.removeUpdates(locationListener);
+}
+}
+Malware
+Malicious Server
+Permission
+Sending
+Malware
+Permissions
+Uploading
+Intent
+Car Speed
+Location
+# 4 Permissionless Exfiltration
+As the name implies, permissionless exfiltration vulnerability requires the use of two or more malicious apps to work together in order to leak sensitive information to malicious servers. As it can be seen in figure 2, A malicious app_1 with access to car speed and location information is passing that information to another malicious app_2 which has internet access, is uploading that information to a malicious server. Listing 8, shows a code example of how a malicious app can silently receive broadcast in background and can upload it to their server. In listing 6, method watchPropertySensor is broadcasting vehicle services property name and value (line 39-42) which can be received by the app in listing 8 as both their action and filter matches. In the listing 6 and 8 both the apps have different sets of permissions which makes it hard for the user to suspect these apps as malicious. This example was reproducible both in Android Auto and Android Automotive.
+
+# Listing 8: Permissionless exfiltration vulnerability
+// AndroidManifest.xml
+<uses-permission android:name="android.permission.INTERNET" />
+// JAVA
+class MainActivity extends AppCompatActivity {
+// Initializing BroadcastReceiver instance
+private final BroadcastReceiver receiver = new MyBroadcastReceiver();
+@Override
+public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+// Configuring intent filter that will receive broadcast matching this filter.
+
+IntentFilter filter = new IntentFilter("com.example.app.broadcast");
+// Registering receiver so this activity can listens to broadcasts.
+
+registerReceiver(receiver, filter);
+}
+}
+class MyBroadcastReceiver extends BroadcastReceiver {
+@Override
+public void onReceive(Context context, Intent intent) {
+// Broadcast Receiver on receiving intent matching it with the filter
+if (intent.getAction().contentEquals("com.example.app.broadcast")) {
+// Extracting vehicle properties and uploading it to the server.
+
+String pName = intent.getStringExtra("propertyName");
+String pValue = intent.getStringExtra("propertyValue");
+uploadToServer(pName, pValue);
+}
+}
+}
+# 4 Precise Location information
+Location information can be extracted if the user allows the app for the permission. Location information can be used to track about user whereabouts, personal habits, to show location aware ads. On the wrong hand, it can also be used for physical attacks and harassment. Listing 7 shows the code to obtain location information.
+
+For automotive apps, accessing location information should be restricted to certain categories like: maps and navigation apps, whereas music, podcast, weather and other type of apps should be allowed to access area location instead of precise location.
+
+# 4 Insecure File Storage:
+MODE_WORLD_WRITEABLE & MODE_WORLD_READABLE are flags which apps need to specify while storing and reading files and preferences to external storage. Storing files using these flags does not provide any security. Any other app can access these files stored on external storage. Since Android 7, these flags are deprecated and removed from Android SDK and hence, no longer valid for Android Auto and Automotive apps.
+
+# 4 Adding Custom Permission at Run Time
+In Android, each app needs to declare permissions in order to access certain features of the platform. For instance to access internet, an app needs to declare internet permission in its manifest file. Similarly, to share resources between a third party app and another app, and to restrict all other apps from accessing the same information, developers can define their own permissions which both apps will use to communicate in a secure manner. These permissions declared by developers are referred to as custom permissions. It can be declared in the manifest file or it can be declared at application run time. In order for this to work, apps declaring the custom permission need to be installed first then apps using this permission need to be installed later. As shown in listing 9, app_1 is declaring a custom permission in it’s manifest file. To access resources under this permission app_2 can either declare it in the manifest file or can add it dynamically at run time. This pattern can be employed by malicious apps who want to communicate with each other securely without getting noticed. Declaring in the manifests file of both the apps have higher chances for security tools to detect this link. However, if these permissions are added dynamically then detecting this link between apps becomes more challenging.
+
+Adding custom permissions at run time were tested both in Android Auto and Android Automotive emulators and it only worked for Android Auto. In Android Automotive, apps need MANAGE_USERS and CREATE_USERS permission in order to add custom permissions at run time. Both these MANAGE_USERS and CREATE_USERS permissions are system only. Hence, system apps can have this feature.
+
+# Listing 9: Custom permission vulnerability
+// App 1: AndroidManifest.xml
+// App 2: AndroidManifest.xml
+<uses-permission
+android:name="com.example.app.permission.READ"
+android:maxSdkVersion="18" />
+// JAVA Example of adding permission at runtime.
+
+PermissionInfo permissionInfo = new PermissionInfo();
+permissionInfo.name = "Custom Permission Name";
+permissionInfo.labelRes = R.string.permission_label_string;
+permissionInfo.protectionLevel = PermissionInfo.PROTECTION_DANGEROUS;
+PackageManager packageManager = getApplicationContext().getPackageManager();
+packageManager.addPermission(permissionInfo);
+# 4 Cross Site Scripting Vulnerabilities
+Android apps sometimes require the use of WebView to present websites within the apps. However, enabling JavaScript in the WebView can introduce Cross Site Scripting Vulnerabilities (XSSV) in the application. For security purposes, it’s recommended that apps should only allow JavaScript to web pages which reside in the app package. Since, Android apps can also add JavaScript interfaces to WebView which allows the website to invoke native Android functionalities. If the app does not check which website it needs to add the JavaScript interface it could lead to severe XSSV. Listing 10, shows an example code to enable JavaScript in a WebView and to add a JavaScript interface. XSSV exists in both Android Auto and Android Automotive.

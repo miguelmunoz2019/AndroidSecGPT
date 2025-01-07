@@ -1,0 +1,47 @@
+# Empirical Software Engineering (2020) 25:5084–5136
+Avdiienko V, Kuznetsov K, Gorla A, Zeller A, Arzt S, Rasthofer S, Bodden E (2015) Mining apps for abnormal usage of sensitive data. In: Proceedings of the 37th international conference on software engineering. IEEE Press, pp 426–436
+Backes M, Bugiel S, Derr E (2016) Reliable third-party library detection in android and its security applications. In: Proceedings of the 2016 ACM SIGSAC Conference on computer and communications security, CCS ’16. ACM, New York, pp 356–367. https://doi.org/10/2976749
+Bagheri H, Sadeghi A, Garcia J, Malek S (2015) Covert: Compositional analysis of android inter-app permission leakage. IEEE Trans Softw Eng 9:866–886
+Blei DM, Ng AY, Jordan MI (2003) Latent dirichlet allocation. J Mach Learn Res 3:993–1022
+Bosu A, Liu F, Yao DD, Wang G (2017) Collusive data leak and more: Large-scale threat analysis of inter-app communications. In: Proceedings of the 2017 ACM on Asia conference on computer and communications security. ACM, pp 71–85
+Bugiel S, Davi L, Dmitrienko A, Fischer T, Sadeghi A, Shastry B (2012) Towards taming privilege-escalation attacks on android. In: NDSS, vol 17. Citeseer, p 19
+Chin E, Felt AP, Greenwood K, Wagner D (2011) Analyzing inter-application communication in Android. In: Proceedings of the 9th international conference on Mobile systems, applications, and services, MobiSys ’11. ACM, New York, pp 239–252. https://doi.org/10/1999995
+Coles H, Laurent T, Henard C, Papadakis M, Ventresque A (2016) Pit: a practical mutation testing tool for java. In: Proceedings of the 25th international symposium on software testing and analysis, pp 449–452
+Dai T, Li X, Hassanshahi B, Yap RH, Liang Z (2017) Roppdroid: Robust permission re-delegation prevention in android inter-component communication. Comput Secur 68:98–111
+Demissie BF, Ghio D, Ceccato M, Avancini A (2016) Identifying android inter app communication vulnerabilities using static and dynamic analysis. In: Proceedings of the international conference on mobile software engineering and systems. ACM, pp 255–266
+Demissie BF, Ceccato M, Shar LK (2018) Anflo: Detecting anomalous sensitive information flows in android apps. In: Proceedings of the 5th IEEE/ACM international conference on mobile software engineering and systems. ACM
+Dempster AP, Laird NM, Rubin DB (1977) Maximum likelihood from incomplete data via the em algorithm. J R Stat Soc Series B Methodol 1–38
+Enck W, Gilbert P, gon Chun B, Cox LP, Jung J, McDaniel P, Sheth AN (2010) Taintdroid: an information-flow tracking system for realtime privacy monitoring on smartphones. In: 9Th usenix symposium on operating systems design and implementation
+Enck W, Octeau D, McDaniel P, Chaudhuri S (2011) A study of Android application security. In: Proceedings of the 20th USENIX conference on security, SEC’11. USENIX Association, Berkeley, pp 21–21. http://dl.acm.org/citation.cfm?id=2028067
+Felt AP, Wang H, Moshchuk A, Hanna S, Chin E (2011) Permission re-delegation: attacks and defenses. In: 20Th usenix security symposium
+Fraser G, Arcuri A (2011) Evosuite: Automatic test suite generation for object-oriented software. In: Proceedings of the 19th ACM SIGSOFT symposium and the 13th european conference on foundations of software engineering, ESEC/FSE ’1. ACM, pp 416–419
+Fraser G, Zeller A (2011) Mutation-driven generation of unit tests and oracles. IEEE Trans Softw Eng 38(2):278–292
+Gordon MI, Kim D, Perkins JH, Gilham L, Nguyen N, Rinard MC (2015) Information flow analysis of android applications in droidsafe. In: NDSS, vol 15, p 110
+Gorla A, Tavecchia I, Gross F, Zeller A (2014) Checking app behavior against app descriptions. In: Proceedings of the 36th international conference on software engineering. ACM, pp 1025–1035
+Gorski S. A. III, Enck W (2019) Arf: identifying re-delegation vulnerabilities in android system services. In: Proceedings of the 12th conference on security and privacy in wireless and mobile networks, pp 151–161
+Grace MC, Zhou Y, Wang Z, Jiang X (2012) Systematic detection of capability leaks in stock Android smartphones. In: NDSS. The Internet Society. http://dblp.uni-trier.de/db/conf/ndss/ndss2012.html
+Hall M, Frank E, Holmes G, Pfahringer B, Reutemann P, Witten IH (2009) The weka data mining software: an update. ACM SIGKDD Explor Newslett 11(1):10–18
+Hodge VJ, Austin J (2004) A survey of outlier detection methodologies. Artif Intell Rev 22(2):85–126
+Holland JH (1975) Adaptation in natural and artificial systems. an introductory analysis with application to biology, control, and artificial intelligence. University of Michigan Press, Ann Arbor
+Hu C, Neamtiu I (2011) Automating GUI testing for Android applications. In: Proceedings of the 6th international workshop on automation of software test, AST ’11. ACM, New York, pp 77–83. https://doi.org/10/1982595
+Junaid M, Liu D, Kung D (2016) Dexteroid: Detecting malicious behaviors in android apps using reverse-engineered life cycle models. Comput Secur 59:92–117
+# Empirical Software Engineering (2020) 25:5084–5136
+# Empirical Software Engineering (2020) 25:5084–5136
+Sbˆırlea D, Burke MG, Guarnieri S, Pistoia M, Sarkar V (2013) Automatic detection of inter-application permission leaks in android applications. IBM J Res Dev 57(6):10:1–10:12. https://doi.org/10/JRD
+Thome J, Shar LK, Bianculli D, Briand L (2020) An integrated approach for effective injection vulnerability analysis of web applications through security slicing and hybrid constraint solving. IEEE Trans Softw Eng 46(2):163–195
+Tsutano Y, Bachala S, Srisa-an W, Rothermel G, Dinh J (2017) An efficient, robust, and scalable approach for analyzing interacting android apps. In: Proceedings of the 39th international conference on software engineering, ICSE ’17. IEEE Press, Piscataway, pp 324–334. https://doi.org/10/ICSE
+Wegener J, Baresel A, Sthamer H (2001) Evolutionary test environment for automatic structural testing, vol 43, pp 841–854. https://doi.org/10/S0950-5849(01)00190-2. http://www.sciencedirect.com/science/article/pii/S0950584901001902
+Wei F, Roy S, Ou X, Robby (2014) AmAndroid: a precise and general inter-component data flow analysis framework for security vetting of Android apps. In: Proceedings of the 2014 ACM SIGSAC conference on computer and communications security, CCS ’14. ACM, New York, pp 1329–1341. https://doi.org/10/2660267
+Witten IH, Frank E, Hall MA (2011) Data mining: practical machine learning tools and techniques. Morgan Kaufmann, San Mateo
+Xu M, Ma Y, Liu X, Lin FX, Liu Y (2017) Appholmes: detecting and characterizing app collusion among third-party android markets. In: Proceedings of the 26th international conference on World Wide Web, pp 143–152
+Zhang M, Yin H (2014) Appsealer: Automatic generation of vulnerability-specific patches for preventing component hijacking attacks in Android applications
+Zhong J, Huang J, Liang B (2012) Android permission re-delegation detection and test case generation. In: 2012 International conference on computer science and service system, pp 871–874
+# Publisher’s note
+Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+# Affiliations
+Biniam Fisseha Demissie 1 · Mariano Ceccato 2 · Lwin Khin Shar 3
+Biniam Fisseha Demissie
+demissie@fbk.eu
+Lwin Khin Shar
+lkshar@smu.edu.sg.

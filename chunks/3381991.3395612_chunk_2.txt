@@ -1,0 +1,44 @@
+The results of our analysis show that significant security and privacy issues exist in most of those FL apps. We found that 33 apps (80%) did not provide proper protection to keep sensitive information secure over network communications or in local storage. Among the 33 vulnerable apps, 24 apps (72%) leak users’ location data in insecure forms either over HTTP or in local storage. We also found that nine (27%) of the 33 vulnerable apps leak join codes in insecure forms either over network traffic or in local storage, meaning that an attacker might use these join codes to join a family group to carry out malicious attacks. We also discovered three (9%) of the 33 vulnerable apps make use of SD card (external storage) to store voice chats and group members’ information in insecure forms; any app with an external storage permission can access the information stored on the SD card by other apps. In addition, we discovered some of the FL apps leak sensitive information from their corresponding servers due to an absence of authentication and authorization mechanisms; this vulnerability was identified in five (15%) of the 33 vulnerable apps.
+
+We reached out to the developers of the vulnerable 33 FL apps to disclose our findings responsibly. We received 14 responses so far. Nine of the developers confirmed our findings and showed interest in addressing them in their next updates.
+
+We provide some suggestions to both developers and users of FL apps to protect against data leakages. For developers, implementing secure storage and transit of the data can fix most of the vulnerabilities found in this study. For users, they need to be aware of the potential security and privacy limitations of FL apps.
+
+In summary, our paper makes the following contributions:
+- We perform the first security and privacy analysis of FL apps which touch many types of sensitive data of users.
+
+- We design a semi-automated framework that analyzes network traffic and local storage of FL apps to discover security and privacy vulnerabilities.
+
+- We use our framework to analyze 41 FL apps, and find that 80% of them do not provide proper protection of user data in local storage or over network traffic, 72% of them leak users location data, and 15% of them lack authentication and authorization checks.
+
+- We responsibly disclose our findings to the developers of FL apps, and provide suggestions to both developers and users.
+
+The rest of the paper is organized as follows: Section 2 provides background and discusses related research. Section 3 presents the thread model. Section 4 describes the methodology we deploy for the FL app analysis. Analysis results are in Section 5, and case study is in Section 6. Section 7 presents discussion about FL apps security issues and potential mitigation. Section 8 concludes the paper.
+
+# 2 BACKGROUND AND RELATED WORK
+# 2 Background
+# 2 Family Locator Apps
+FL apps are extremely useful for keeping families informed of the whereabouts of their children, other family members, or even friends. Figure 1 presents an overview of the process of installing and using a typical FL app, which includes establishing an account, creating a circle, and inviting individuals to join the circle/group using the FL app. Once the app is installed, the user must create an account to use the app. Registration steps are simple. FL apps only need a small amount of information, such as an email address, phone number, password, and name. Some apps ask for specific permissions before allowing the user to complete the registration form (e.g., READ_PHONE_STATE, READ_CONTACTS). However, some FL apps do not ask users to create an account. For these apps, the user only needs a join code to join the circle to start chatting with family members and accessing the group location data.
+
+After completing the registration, the user might need to grant a set of permissions for an app. For example, some FL apps ask for location permission to access the user’s location. Once these permissions have been granted, the user will then be able to create
+# Session 3: Privacy and Data Sharing
+SACMAT ’20, June 10–12, 2020, Barcelona, Spain
+to carry out fraudulent activities. FL apps obtain a lot of sensitive information about group members, families, and friends. Unlike FL apps, traditional apps typically obtain information from a single user. Consequently, the harm on traditional apps might affect only one person while that on FL apps might harm the whole family.
+
+The various potential vulnerabilities of FL apps can cause a leakage of sensitive information to an attacker. For example, if someone with malicious intent can intercept a join code, that person can join a circle and obtain a great deal of sensitive information (e.g., location, credit card numbers, PINs, or others). Therefore, to protect such confidential information, these apps should encrypt join codes during transfer and storage. Without such security measures, all users may be at risk. FL app developers should set security goals to maintain the confidentiality of user data in transit and at rest.
+
+# 2 Data Leakage Channels
+Communication channels are used to exchange data between client-server systems. FL apps need to transfer data to/from remote servers as part of their standard operations. Thus, data transmission must employ cryptographic mechanisms to prevent unauthorized disclosure of information. There are many security libraries like OpenSSL . Simply, apps can leverage open source security libraries to protect their users. In evaluating the security and privacy of an FL app, it is essential to analyze the network traffic to identify areas where data security and privacy might be violated.
+
+FL apps also need to store data on local storage for their operation. Such data may be leaked while being stored, processed, or at rest . Certain types of malicious attackers seek out these types of vulnerabilities for data interception/alteration attacks to obtain or alter sensitive information. For example, an attacker may perform a data alteration attack to make modifications to data that can render it invalid or even being destroyed. Additionally, other advanced attacks may be possible, like replay attacks. Therefore, it is vital that FL apps store data in an encrypted form in local storage to avoid such vulnerability to these types of attacks.
+
+It is clear by now that an attacker can take advantage of a lack of security in communication and storage channels to obtain PII data about users of FL apps. A data breach in either of these channels affects the confidentiality and integrity of the data. Thus, in this paper, we leverage communication and storage channels to detect any potential data breach in FL apps.
+
+# 2 Related Work
+Some researchers have analyzed security and privacy in dating, m-health, banking, and other categories of Android apps. Despite the importance in terms of the nature of data, no study has focused on FL apps.
+
+Hu et al. analyzed the mobile ecosystem of Android dating apps and found several security vulnerabilities . They performed a systematic analysis of fraudulent activities in dating apps. Mainly, they examined user behaviors, irrelevant messages, premium services, and user comments to detect malicious activities in dating applications. They found that many user accounts are fake or chat-bots. In addition, the authors found that some fraudulent dating apps have fake user reviews and ratings in the markets. They found some apps luring users to buy premium services to continue chatting. Another study done by Kim F. M. provides a forensic analysis.
+
+# Session 3: Privacy and Data Sharing
+SACMAT ’20, June 10–12, 2020, Barcelona, Spain
+of nine popular dating apps. Users’ actions were simulated in the apps. Authors then inspected internal and external storage, and network traffic . They evaluated five sensitive kinds of data: messages, images, locations, email addresses, and authentication data. Among the nine apps, only one app stored messages in an encrypted form. They also found that only one app did not leak location data over the network or in local database. In a similar fashion, Shetty et al. demonstrated that many dating apps were vulnerable to a man-in-the-middle attack . They demonstrated how an attacker could succeed in intercepting and obtaining personal and private information in most of the examined applications.

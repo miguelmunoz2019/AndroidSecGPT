@@ -1,0 +1,71 @@
+# A. Terminology
+An apk represents a released package of an app. All apks in our dataset are uniquely identified based on their hash. App version is used in our work to refer to a specific apk released in the course of development of an app and the nth apk of an app is denoted as apkn. In this article, we use both terms (apk and version) interchangeably.
+
+An app lineage is defined as the consecutive series of its versions that is: L = {apk1, apk2, . . . , apkn}. In this work, a lineage may include only a subset of the apks that the app developers have released since our dataset, although massive, is not exhaustive.
+
+A vulnerability location l is specified by the class and method in which the vulnerability is spotted in an apk by a vulnerability detection tool.
+
+Vulnerability Reintroduction is to check whether fixed vulnerabilities reappear in app lineages. For a certain type of vulnerability v, we denote that a vulnerability v is found at location l as vl. if ∃i, j, k|1 ≤ i < j < k ≤ n, where vl is found in apki and apkk, but not in apkj. vl is said to be reintroduced at location l. Moreover, if v is found in apki and apkk but not in apkj, then we say vulnerability type v is reintroduced.
+
+# B. Datasets and Tools
+Our investigation relies on the AndroZoo repository, which currently provides the largest publicly available dataset of Android apps. For harvesting vulnerability issues,
+Therefore, for a certain app lineage, there could be missing versions here and there.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+# 1) App Dataset:
+AndroZoo currently hosts a dataset of over 5 millions distinct app packages (apks) collected from 14 representative markets (including the official Google Play store) and repositories (including the F-Droid open-source repository). According to the description of its crawlers , apks are continuously collected, opportunistically when they become visible to crawlers, to keep up with the evolution of apps in the Android ecosystem. This stream of apks is then immediately accessible to the research community via a download application programming interface (API).
+
+As illustrated in Fig. 1, AndroZoo has collected apps that were packaged going back to 2010 As reported by AndroZoo providers (cf., [27, p. 3]), the dataset does not represent an exact view of the apps ecosystem throughout time given that crawling was often challenged by various limitations including recurrent changes in store web page structures that require crawlers to be regularly reengineered, as well as occasional fails due to lack of storage space. Nevertheless, AndroZoo includes a diversity of apps: the barplot in Fig. 2 illustrates this in terms of app size distribution
+# 2) Vulnerability Scanning:
+Vulnerabilities, also known as security-sensitive bugs , could be statically detected based on rules modeling vulnerable code patterns. They are typically diverse in the components that are involved, the attack vector that is required for exploitation, etc. In this article, we focus on selecting common vulnerabilities with a severity level that justifies that they are highlighted in security reports and in previous software security studies. Before enumerating the vulnerabilities considered in our work, we describe the vulnerability detection tools (detection tools for short hereafter) that we rely upon to statically scan Android apps.
+
+# Detection Tools:
+We stand on three state-of-the-art, open source and actively used detection tools: FlowDroid, AndroBugs, and IC3.
+
+# 1) FlowDroid 
+In the literature on Android, FlowDroid has imposed itself as a highly reputable framework for static taint analysis. It has been used in several works , ,  for tracking sensitive data flows, which can be associated with private data leaks The tool is still actively maintained . Moreover, since the original version of FlowDroid can only analyze intracomponent data flows. In order to further consider the intercomponent data flows, in this article, we used an IccTA  enhanced version of FlowDroid.
+
+# 2) AndroBugs 
+AndroBugs was first presented at the BlackHat security conference, after which the tool was open sourced . This static detection tool was successfully used to find vulnerabilities and other critical security issues in Android apps developed by several big players : it is notably credited in the security hall of fame of companies such as Facebook, eBay, Twitter, etc.
+
+# 3) IC3 
+IC3 is a state-of-the-art static analyzer focused on resolving the target values in intent message objects used for intercomponent communication. The tool, which is maintained at Penn State University, can be used to track unauthorized intent reception , intent spoofing attacks , etc.
+
+# Table I: Vulnerability Checks
+Overall, we consider ten vulnerability types. For AndroBugs, not like other detection tools, it reports on dozens of issues. To focus on those vulnerabilities having a high level of criticality, we only considered the issues that are marked as critical by AndroBugs. Furthermore, several critical issues are also discarded, such as cases where the exploitation scenario was not clearly defined (e.g., checking for SQLiteDatabase transaction deprecated) and a few other issues that were not explicitly about executable code (e.g., relevant to manifest information), to eliminate the share of noise that they can bring to the study.
+
+We now detail the different vulnerabilities and explicate their potential exploitation scenarios. Due to space constraints, we provide actual vulnerable code examples for only a few cases. For other cases, we provide references to the interested reader. Since all apps are collected from markets without source code, we use Soot , reverse engineering apps to obtain their code. So, the code snippets in the following part are Jimple code, the default intermediate representation of Soot for representing decompiled dex code of real apps.
+
+# a) SSL security:
+Vulnerabilities related to SSL are a common concern in all modern software accessing the Internet –. In its basic form, any access to the Internet using the HTTP.
+
+5 We remind the readers that FlowDroid is mainly designed for detecting sensitive data flows, which may not necessarily be privacy leaks (e.g., it can be intended behaviors). Nonetheless, since such sensitive data flows indeed send private data outside the device, and it is hard to know how these private data will be used, we consider such sensitive data flows as privacy leaks in this work.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# 4
+# IEEE TRANSACTIONS ON RELIABILITY
+# TABLE I
+# LIST OF CONSIDERED VULNERABILITIES
+protocol without encryption (i.e., without using https), as in the code example in Listing 1 line 4, could be subjected to MITM attacks.
+
+# Listing 1. SSL vulnerability related to insecure connection.
+
+In some cases, although the app code is using SSL, the certificate verification is sloppy, still presenting vulnerabilities. As the example shown in Listing 2, the app developer implements the required X509TrustManager interface in line 6. Nevertheless, from line 7 to 9, the three implemented methods are empty, which only ensures that the app compiles, but creates vulnerabilities for MITM attacks.
+
+Vulnerability detection tools further ensure that hostnames are properly verified before an SSL connection is created. Vulnerable apps generally accept all hostnames, e.g., by setting the hostname verifier with either an SSLConnectionSocketFactory. ALLOW_ALL_HOSTNAME_VERIFIER or implementation of HostnameVerifier interface, which overrides the verify method with a single “return TRUE;” statement, creating opportunities for attacks with redirection of the destination host.
+
+Another reported vulnerability, specific to mobile apps, is related to the widespread use of WebViewClient. WebViewClient is an event handler for developers to customize how should a WebView react to events. For SSL connections, the developer suppose to deal with SSL errors within method onReceiveSslError() of WebViewClient. However, if a developer chooses to ignore the errors when implementing this method, then it introduces a vulnerability to MITM attacks.
+
+Finally, still with regards to SSL security, Listing 3 illustrates a classic vulnerability where developers bring development test code into production. The well-named getInsecure method in line 7 for creating unsafe sockets, when used in a market app, offers immediate paths to MITM attacks.
+
+# Listing 3. SSL vulnerability related to insecure component.
+
+# b) Command:
+Android apps can be vulnerable to a class of attacks known as Command injection where arbitrary commands, e.g., passed via unsafe user-supplied data to the system.
+
+# Listing 2. SSL vulnerability related to certificate verification.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.

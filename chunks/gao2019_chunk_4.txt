@@ -1,0 +1,49 @@
+3. App Grouping by Market: We further constrained our lineage construction by assuming that developers distribute their app versions regularly in the same market. From each group obtained in the previous step, we again separate the apks according to the market from which they were crawled. As a result, at the end of this step, each group only includes apks that are related to the same app (based on the name), from the same development team (based on the signatures), and were distributed in the same market (based on AndroZoo metadata). Each group is then considered to contain a set of apks forming a unique lineage.
+
+4. App Version Sorting: In order to make our dataset readily usable in experiments, we proceed to sort all apks in each lineage to reflect the evolution process. We rely on the versionCode attribute that is set by developers in the Manifest file. We further preserve our dataset from potential noise by dropping all apks where no versionCode is declared. To avoid toy apps, we adopted the strategy used in  to set a threshold of at least ten apks before considering a lineage in our study. And during this step, almost 92% of apks were filtered out.
+
+Overall, we were able to identify 28 564 lineages and the five-number summary of lineage size are 10, 11, 13, 18, and 219, respectively. Fig. 4 shows that the largest proportion of apks are included in smaller size lineages. This also explained why large portion of apks were removed during toy app filtering.
+
+**Table II: Top five lineages w.r.t. the number of apks**
+In total, our lineage dataset includes 465 037 apks. Fig. 5 compares dex sizes of apks between the original dataset and the reconstructed lineage dataset. It can be noticed that apks of small size has been removed mostly during lineage reconstruction, as the median value increased from around 2 to 3 MB.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+# TABLE II
+# TOP FIVE APP LINEAGES
+for each lineage. We focused on our study on the official Google Play. Out of the 16 074 lineages that were crawled from Google Play, we were able to obtain category information for 14 208 lineages. 1098 lineages were no longer available in the market, while the market page for 768 lineages could not be accessed because of location restrictions. Fig. 7 illustrates the high diversity in terms of category through a word cloud representation.
+
+Second, we investigate the API levels (i.e., the Android OS version) that are targeted by the apps in our dataset. Since the Android ecosystem is fragmented with several versions of the OS being run on different proportions of devices, it is important to ensure that our study covers a comprehensive set of Android OS versions. Fig. 8 presents the distribution of the API level span of lineages of the dataset. The API level span of a lineage indicates the range between the minimum and maximum targeted API level found in the lineage. In the figure, the X-axis is the lower bound of the API level of a lineage, while the Y-axis stands for the upper bound. Therefore, for each square, it indicates an API level span from the lower bound to upper bound. Meanwhile, the color of a square reflects the number of lineages of this API level span. According to the figure, it is easy to find out that most of the deep colored squares are located either on the diagonal or on the right lower corner. This phenomenon suggests that most apps tend to stay within one API level. For such app lineages that have their apps initiated with latest API levels, they are more likely to be upgraded with higher API levels. But still, apps of other API level spans can also be spotted in our dataset. Thus, our lineage dataset is quite diverse in terms of API level span.
+
+For the toy apps, we removed from our dataset, there are still chances that they are highly used by smartphone users. To further study such a possibility, we investigate the installation situations of the apps removed and compare it with the situation of kept apps. Since there are almost 3 million removed apps, we randomly sampled 200 thousand Google Play apps for this investigation. We successfully crawled the “installs” metadata for 29 3009 apps and the installation situation for both removed and kept apps are shown in Fig. 6. We observe that compared to kept apps, the whole shape of removed apps is remarkably shifted to the left, which indicates that removed apps are much less installed by app users. Thus, we can confirm that our study focuses on apps that are more likely to be downloaded and installed by users.
+
+To assess the diversity of our lineage dataset, we first explore the categories of the concerned apps. Since this information is not available from the AndroZoo repository, we took on the task of crawling market web pages to collect metadata information.
+
+# D. Research Questions
+The goal of this work is to explore the evolution of vulnerabilities in the ecosystem of Android apps. Our purpose is to highlight trends in the vulnerability landscape, gain insights that the community can build on, and provide quantitative analysis for support the research and practice in addressing vulnerabilities. We perform this study in the context of Android app lineages, and investigate the following research questions:
+RQ1: Have there been vulnerability “bubbles” in the Android app market? The literature of Android security appears to explore vulnerabilities in waves of research papers. Considering that many of the vulnerabilities described previously have been, at some periods, trending topics in the research community –, we investigate whether they actually correspond to isolated issues in time. In other words, we expect to see the disappearing of some vulnerabilities just like the explosion of bubbles. This question also indirectly investigates whether measures taken to reduce vulnerabilities have had a visible impact in markets.
+
+RQ2: What is the impact of app updates w.r.t. vulnerabilities? Few studies have shown that Android developers regularly update their apps for various reasons (including to keep up with users’ expectations). A recent paper by Taylor et al. has concluded that apps do not get safer as they are updated.
+
+Because of app off-shelf and region-based access control of Google Play, the metadata for some apps cannot be collected.
+
+We use the Dalvik executable code compilation timestamp as the packaging date to implement this study.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# IEEE TRANSACTIONS ON RELIABILITY
+Word cloud representation of categories associated with our selected lineage apps.
+
+API level span distribution of lineages.
+
+We do not only investigate the same question with a significantly larger and more diversified dataset, but also find detailed patterns of the survivability of vulnerabilities.
+
+# RQ3: Do fixed vulnerabilities reappear later in app lineages?
+One of the main reason for software updates is to patch security flaws (i.e., vulnerabilities). Nevertheless, there could be chances for updates to introduce vulnerabilities as well, especially for those that had been fixed in previous updates. With RQ3, we study the phenomenon of vulnerability reintroductions in Android apps.
+
+# RQ4: Where are vulnerabilities mostly located in programs and how do they get introduced into apps?
+The recent “heartbleed”  and “stagefright” – vulnerabilities in the SSL library and the media framework have left the majority of apps vulnerable and served as a reminder on the unfortunate reality of insecure libraries . A recent study by Watanabe et al.  has even concluded that over 50% of vulnerabilities of free/paid Android apps stem from third-party libraries. We partially replicate their study at a larger scale. Furthermore, to help researchers narrow down searching range for vulnerabilities, we investigate whether vulnerabilities get introduced while developers perform localized changes (e.g., code modification to use new APIs), or whether they come in with entirely new files (e.g., an addition of new features).
+
+# RQ5: Do vulnerabilities foreshadow malware?
+Although vulnerabilities do not represent malicious behavior, they are related since attackers may exploit them to implement malware. We investigate whether some vulnerability types can be associated more with some malware types than others. Considering evolution aspects, we study whether some malware apps appear to have been “prepared” with the introduction of specific vulnerabilities.

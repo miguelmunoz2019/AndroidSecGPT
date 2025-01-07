@@ -1,0 +1,51 @@
+Ratazzi (2016) demonstrated the flaws in his work by studying only Android 5.x
+and below. It is well known that version 6 was released in 2015 and version 7 was
+released in 2016, with successive releases on a regular cycle. The more seminal work of
+Mulliner, Oberheide, Robertson, and Kirda (2013) focused on detecting vulnerabilities in
+versions 2.x and 4.x. Sato, Chiba, and Goto (2013) studied malware in manifest files
+dating back to 2012, to which the latest Android release was between 2.x and 4.x as well.
+
+The most comprehensive study, performed by Sufatrio, Tong-Wei, and Thing (2015),
+investigates vulnerabilities and malware detection techniques studied over the years, but
+also fails to consider current OSs, most likely due to the lack of availability of newer
+releases at the time of their publication. It is worth noting the lack of published CVEs on the initial public release version 1 from 2009. The importance of the study is evident by the lack of relevant research on previous and current version releases of the Android OS. Additionally, it is to be noted that all versions mentioned in the previous studies are no longer supported, with version 6.x being the earliest supported release as of 2018.
+
+Thomas et al. (2015) provide a measurement technique applied to older versions of the Android OS, which can be applied to newer research on the current OS known as a free, update, mean (FUM) score. Utilizing this metric would enable a better understanding of historical and current vulnerabilities on the threat landscape of the Android OS. Wu (2015) highlights various methods of detection using proven methodologies for application and kernel level vulnerabilities in older iterations of Android. Applying similar detection methodologies to more recent releases will provide better insight into the overall security posture of the OS over time. It is believed that the seminal work of the previous researchers can create a sound basis for providing a cohesive study of the current climate of vulnerabilities and malware running on modern releases of the Android OS. Developing newer measurement techniques or adapting previous methods of gathering metrics will further the industry’s ability to gauge vulnerability impact.
+
+# Problem Statement
+Not all vulnerabilities in the Android OS are addressed by vendors or service providers on the devices used by consumers after the initial deployment, as made apparent by the detection of zero-day vulnerabilities post release and the need for patching schedules by vendors during the OS’ supported lifecycle, as outlined by Wu.
+
+# Current Page
+(2015). The general problem statement is: upon release, the Android OS demonstrates more vulnerabilities with each version . The specific problem is: the trending of vulnerabilities with each historical version of Android OS over a 10 year span is not available to inform improvements in industry security posture.
+
+The population selected for the study will be limited to current releases at the time of research. For example, the previous versions of Android are 6.x-8.x; however, versions 9.x-11.x have been released by the time the study is to begin. A complete sampling of all known vulnerabilities will be utilized for the research study as it allows the most flexibility in collecting data not based on geological or user metrics but can be later restricted to available OS versions and correlated to the previously mentioned variables.
+
+The rationale is most appropriate, as it allows flexibility to examine which releases are available and collect statistics for all versions analyzed. The study will not be limited by demographics or geographic locations and can easily be expanded on as new versions are released. Upon completion, this study will provide quantitative evidence that can be used to determine if the problem of vulnerable OS software from Google’s Android OS is becoming more secure or increasingly less secure.
+
+# Purpose of Dissertation Study
+The purpose of this quantitative dissertation study is to discover trends of vulnerability patterns from device vendors utilizing a time series analysis of Android OS vulnerabilities over a 10 year period on the most popular hardware platforms. Hardware platforms are expected to affect the outcome but due to similarity between vendors, this becomes less of a factor to consider, as seen in later findings. Additionally, it is sought to
+# 6
+Determine if rate of vulnerabilities is changing to achieve an improvement in security posture for the architecture.
+
+The research method to be selected for the time span analysis study of OS vulnerabilities will be quantitative. Qualitative research is stated to “not directly test for cause and effect” ; therefore will not be selected as the research method.
+
+The study used a grounded theory method; as stated by Creswell “as the theory is grounded in data”  and “existing theories do not address your problem”.
+
+Grounded theory will help to answer the research questions of vulnerability rate change and improvements to platforms, posture, and vendor progress due to the fact grounded theory is a systematic process . Trending of CVE data will be laid out in an orderly manner, to be determined as the study progresses. Additionally, leveraging the data available from CVE databases will also require the “self-correction nature”  of grounded theory to ensure the analysis truly represents the potential trends over the 10 year time period.
+
+The primary study upon which the initial concept of a long duration trend analysis comes from the paper “Security Metrics for the Android Ecosystem” by Thomas et al. (2015). Metrics on the vulnerabilities in versions 2.x and 4.x of the Android OS were presented on a short-term scale and locked to the particular point in time. The key concept of an expanded study across multiple OSs and over a longer duration originates from Thomas et al.’s (2015) statement of “the importance of a longitudinal study: this type of analysis requires years of data.” It can be surmised the researchers believed a study would benefit from the increased duration and expanded scope.
+
+# 7
+The initial steps the research will take will be a grounded theory method to govern metrics that will help ascertain the available vulnerabilities list from which to base the study. The stated initial step will be required as all of the future analysis will focus on vulnerabilities of the available versions. Next, a structure will be developed to collect the current and historical CVE data in an analyzable format. The format will be foundational to the study to ensure the collected data can be rationalized and presented in a methodological approach. Finally, the data will be inputted into a system to formally analyze and determine any potential trending presented in a well-defined matrix.
+
+The known biases of the time analysis of OS vulnerabilities can be correlated with the versions of the OS as well as the date the vulnerabilities are disclosed. As stated by Cone and Foster (2006), the techniques used to operationalize the variables and ensure the validity of data to be collected will be imperative and will be leveraged with the research design to reduce bias. The research design composed of a quantitative grounded theory method, may address the bias by analyzing all vulnerabilities across all of the categories and including vulnerabilities from inception within the study’s time frame.
+
+The population of the study will be all vulnerabilities across the Android OS collected from the CVE database. As stated by Salkind (2003), a sampling is to be selected to accurately represent the population as a whole, which will be defined by the independent variables. The independent variables of the study will consist of the versions and the time period, ending with the most relevant data, which is currently believed to be a 10 year span. Creswell (2005) states the independent variables can influence the dependent variable , which will be explored in the study as the rate of change. The dependent variables will consist primarily of the Common Vulnerability.
+
+# Scoring System (CVSS)
+Scoring System (CVSS) score and the algorithm used to rank and score the rate of vulnerability change.
+
+The proposed data collection methodology will be a constant comparison. Creswell (2005) defines the data collection methodology of constant comparison as a recursive procedure from specific to broad allowing for a more concise categorization of the data to be collected and analyzed . The National Vulnerability Database (NVD) will be leveraged, and the collected data will also include values from the database source of CVSS metrics.
+
+# Significance of the Study
+The study is unique in nature due to the scope of the research. Previous studies in the domain are limited to an older subset of Android releases. The study will be performed against vulnerabilities published for all releases to date. Additionally, previous studies were performed for only current versions at the time of research. This study strives to examine the historical non-supported versions as well as the current vendor supported releases.

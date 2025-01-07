@@ -1,0 +1,53 @@
+Furthermore, it is interesting to see that projects of up to 10 kLOC are maintained by five or fewer developers. In addition, we see that larger projects tend to suffer from more smells, and those projects are also using more languages. After a manual inspection of apps exploiting different languages we discovered that those apps are rather collections of frameworks, e.g., for network penetration tests using a plethora of different tools written in different languages.
+
+# Empirical Software Engineering
+# Different smells apps are suffering
+# Different issues apps are suffering
+(a) Relation of dates to our ICC security smells
+(b) Relation of dates to Lint security
+Number of days since last update. The majority of projects in our dataset consist of less than 10 kLOC, and especially projects with 1–4 kLOC have been very prevalent, followed by apps that are less than 500 LOC. Only six projects contained more than 50 kLOC.
+
+# Empirical Software Engineering
+# projects# contributors per project
+(a) Relation of kLOC to contributors, ICC security smells, and used languages
+# # different security smells found in apps
+# # days since project creation
+# # different languages used
+# # days since last update
+(b) Relation of kLOC to number of projects, days since project creation, and days since last update
+Interestingly, we cannot derive clearly any major trend regarding the age of projects and LOC, although projects of 25–49 kLOC evidently are older than the others. On the contrary, we can see a minor trend regarding the time since last update. It appears that smaller apps are updated less frequently than larger apps. We expect that the larger an application
+# Empirical Software Engineering
+becomes, the more maintenance work is required due to library updates, obsolete external references, and content changes.
+
+# 4 Manual Analysis
+To assess the performance of our tool and show how reliable these findings are to detect security vulnerabilities, we manually analyzed 100 apps. We invited two participants to independently evaluate the precision and recall of our tool. Participant A is a senior developer with more than 5 years of professional experience in development and security of mobile apps. Participant B is a junior developer with less than two years of experience in Java and C# software development. We provided both participants an introduction to Android security, and individually explained every smell in detail. We subsequently selected the top 100 apps, that is more than 13% of the whole corpus, with most smells in accordance with our ICC security smell list, for which we can say with 95% confidence that the population’s mean smell occurrences of the top 100 apps are between 3 and 3, while they are between 1 and 1 for the whole data set of about 732 apps. Then we provided the participants with our tool, the sources of the top 100 apps, and a spreadsheet to record their observations. Each participant was asked to import the sources of each app in Android Studio, which had been prepared to run a customized version of our analysis plug-in, to verify each reported smell according to the symptoms of any smell described in Section 3. We were also interested in vulnerability detection capability of security smells, 15 thus the participants were asked to investigate if a security smell indicates the presence of a security vulnerability based on the vulnerability information available in the benchmarks.
+
+# 4 Tool Evaluation
+While the assessment of true positives (TPs, reported code that is a smell) and false positives (FPs, reported code that is not a smell) requires participants to manually check only the tool’s results, the extraction of true negatives (TNs, unreported code that is not a smell) and false negatives (FNs, unreported code that is a smell) is resource intensive and error prone. Therefore to avoid an exhaustive code inspection, we developed a relaxed analysis that shows ICC-related APIs in the code to support the participants.
+
+We obtained relatively high smell detection rates, especially for SM02, SM04, SM10, SM11 and SM12, as indicated by the TPs in Fig. 8. The reason is that these smells occur frequently and are straightforward to detect, mostly relying on some very specific method calls and permissions.
+
+We encountered above average FPs in SM12 due to the intended use of task affinity features in apps that try to separate activities with empty task affinities. This smell would require additional semantical, architectural, and UI information for proper assessment. While some of the exposed activities are non-interactive, and thus supposedly secure, some of them are interactive and could be misused in combination with other spoofing techniques, like clickjacking, in which an adversary unexpectedly shows the exposed activity to trick users into providing unintended inputs. In particular, call recorders and various client-server apps for chat, video streaming, home automation, and other network services have been affected by this issue.
+
+15 We define a vulnerability capability as the possibility a security issue can compromise a user’s security and privacy.
+
+# Empirical Software Engineering
+# issues found in 100 app corpus
+Our participant had to check 7 241 locations in the code to examine the TNs and FNs in 100 apps. In more than 98% of cases participants confirmed that there are no security smells beyond what the tool could identify; we consider this very low proportion of FNs, i.e., 1%, encouraging.
+
+We are surprised to see only a few FNs in SM04 as we expected much more to appear due to the countless ways that intents can be created in Android. A substantial number of FNs were missed because of complex chained executions and calls initiated from sophisticated UI related classes containing URIs. For SM06, we discovered that the FNs have been frequently caused by lack of context, e.g., unawareness of data sensitivity, or custom logic that does not mitigate the vulnerability. For example, our tool was unable to verify the correctness of custom web page white-listing implementations for WebView browser components, which would actually reduce security if implemented incorrectly.
+
+We did not encounter any instances of the two smells SM08 and SM09, that is, we retrieved zero reports on both of them for our 100 app dataset, hence, we excluded them for all subsequent plots and discussions in this subsection.
+
+We could find common security smells while reviewing the feedback from the two participants, for example, that some apps were using shouldOverrideUrlLoading without URL white-listing to send implicit intents to open the device’s default browser, rather than using their own web view for white-listed pages, thus fostering the risk of data leaks. Another discovery was the use of regular broadcasts for intra-app communication. For these scenarios, developers should solely rely on the LocalBroadcastManager to prevent accidental data leaks. The same applies for intents that are explicitly used for
+# Empirical Software Engineering
+communication within the app, but do not include an explicit target, which would similarly mitigate the risk of data leaks. Moreover, unused code represents a severe threat. Several apps requested specific permissions without using them, increasing the impact of potential privilege escalation attacks.
+
+# 4 Tool Performance
+# 4 Smells and Their Vulnerability Capability
+# Empirical Software Engineering
+category are not vulnerable to any attacks, either because they do not contain any user information, or because they are sufficiently secure with respect to the participant’s opinion. Apps that send static non-sensitive information commonly match this category. For all our considerations the participants were told to treat any user data as sensitive, since they could potentially contain sensitive information at run time.
+
+According to the reports by PA, 38% of smells represent potential threats, i.e., uncertain category, and only 5% of smells represent critical threats, i.e., yes category. In other words, only about 44% of security smells could lead to security vulnerabilities.
+
+A further comparison of the reports between the two participants shows that they expect somewhat similar risks for the smell categories SM05, SM07, and SM12, whereas the participants tended to interpret diversely the threat caused by Custom Scheme Channel, Unauthorized Intent, and Slack WebViewClient smells. We reviewed the feedback of the participants and discovered that for Custom Scheme Channel predefined system schemes are considered less harmful for PA (category no), while PB assigns them to the category uncertain. For Unauthorized Intent PB assessed the risks similar to PA, however, PB encountered difficulties to predict adequately the threat capability of many intent instances, thus PB assigned them to section uncertain. For the smell Slack WebViewClient PB performed a conservative risk assessment by not assigning any custom security feature implementations to no, instead PB assigned them to uncertain, unlike PA who concluded many of them as secure. An example thereof is an app with a network security penetration test suite that requires opening insecure web pages for security validation purposes.

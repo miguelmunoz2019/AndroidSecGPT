@@ -1,0 +1,48 @@
+# 7 Path Extraction
+For each anomalous privileged API, the call graph of the AUT is analyzed to identify the paths from public entry points to the calls of that privileged API. Let j be a call of the anomalous privileged API. The call graph is then traversed backward in depth-first search manner starting from node j until a public entry point node is reached. During the visits, each node is marked as visited so that loops in the graph are iterated at most once. As a result, regarding each API, we obtain a list of paths.
+
+We then filter those paths that involve a UI event. The inclusion of a UI event in a path indicates that there is a user intervention (acknowledgment) before the privileged action is taken; hence it violates our first precondition for permission re-delegation vulnerability (Section 3). To identify UI events, we predefine a list of UI-related callback functions such as onClick(), onTouch() and Android Material Design Library functions (UI-related functions). Our tool detects paths that include a call to a function from this list and discards them. The remaining paths (denoted as target paths) are subject to testing next.
+
+# 7 Genetic Algorithm
+This sub-step generates security test inputs that execute the targets. The security test inputs we aim to generate are in the form of intent (action request) message, which is serviced by the AUT. Our goal is to generate at least one intent message that exercises a given target path. For any anomalous privileged API that we identified above, if there is at least one target path that has been exercised, our tool reports the corresponding AUT as vulnerable.
+
+We encode the intent message generation problem as an optimization problem, to be solved by a genetic algorithm. The genetic algorithm searches for an optimal solution (serviced intent message) by gradually evolving an initial population of random individuals through generations. Individuals nearer to the final solution are rewarded with a higher probability of transmitting their genes to next generations. Fitnesses of solutions are computed using a fitness function and fittest solutions are combined together with the hope of generating fitter ones, until the optimum solution is found.
+
+Individuals (also called solutions) are analogous to chromosomes in genetics. In the following, we will use the term ‘chromosome’ to refer to both individual and solution.
+
+A chromosome is encoded as a JSON-like data structure, which contains a set of fields and their values. A chromosome contains all necessary information for generating a concrete intent message. Table 1 shows the possible fields and their example values of a chromosome. Chromosomes are evolved through crossover and mutation.
+
+12 None of the fields is compulsory in an intent message.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+If $scheme is http, $data represents a URL with these subfields:
+If $scheme is telephony-related, $data represents a number to call/text with these subfields:
+The test case generation work-flow for a given target path is summarized in Fig. 12. Firstly, the static analysis component analyzes the Apk files of the AUT to extract the possible fields and values of intent messages that may exercise the target path, which are to be used as seeds for generating chromosomes (explained in the following).
+
+Static analysis first identifies the app component that contains the target path. It then analyzes the intent-filter associated with that component in the manifest file and the component code to extract the possible fields of the intent messages that may be serviced by the component. For example, in our running example in Fig. 1, by analyzing the manifest file, we can identify that an intent message requires $action, $category, and $data fields so as to be serviced by the DialerActivity component. Note that additional fields may be identified by analyzing the component code since not all the fields are necessarily specified in the manifest file. From the component code, we also extract the string constants through simplified constant propagation and code scanning. Simplified constant propagation is applied to extract the values of string constants used as parameters in functions related to intents (e.g., getIntent().getAction().equals(ACTION)) in the corresponding component code. The technique is simplified because, for scalability reasons, we do not track the propagation of string constants through string operations such as substring().
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# APP
+Scanning is applied to extract the string constants (such as static strings) from the component code.
+
+The following explains how the seed values for these fields are extracted:
+- $action field: its seed values are extracted from the action values specified in the manifest file (e.g. DIAL in Fig. 1). If no action is specified in the manifest file, its seed values are assigned with the string constants extracted from the corresponding component code (as explained above for example from getIntent().getAction().equals(ACTION)). Eventually, if this strategy also fails, seed values are taken from the set of all the constant strings that are statically available in the component,13 in the hope of choosing a string value that is (possibly indirectly) compared to the Action when processing an Intent.
+
+- $category field: its seed values are extracted from the category values specified in the manifest file and also from the component code relevant to checking the category in intent messages (e.g., the value “Browsable” found in getIntent().hasCategory("Browsable")). If no such value is available, similarly to the $action field, string values from the constant pool of the current component are used as seed values. For instance, we used values from declarations like String value = "Browsable";.
+
+- $extra field: this field requires a list of key-value pairs. Since the manifest file does not specify extras, its seed values are extracted through static analysis of the component code. More specifically, static analysis is used to identify method calls that access $extra fields of intents and extract the keys (e.g., in getIntent().getIntExtra("id"), id is extracted as a key). Simplified constant propagation is used if the key parameter in the method call is a constant. The data type of the value is identified based on method signature (e.g., integer for getIntExtra). Default values for those keys are sometimes available as parameters, e.g., in getIntent().getIntExtra("id", -1), -1 is a default value for id. If a default value is available, it is extracted as a seed value for the corresponding key. If no default value is found after static analysis of the component code, the seed values.
+
+In Java, constant strings are available in the constant pool.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+for a given key are assigned with the constants of the same data type extracted through scanning of the component code. The key is also annotated with its data type.
+
+$scheme field: its seed value (typically only one value) is determined from the manifest file (e.g., tel in Fig. 1). The value of this field defines the format of $data field (explained next). We support 15 different $schemes that are grouped into two classes: for resources such as network and contacts (e.g., "http", "file", "content") and for telephony (e.g., "tel", "sms", "mms"). Custom $schemes (e.g., "fb" for Facebook) are also supported, when they are specified in the manifest file.
+
+$data field: this field specifies data to be used to perform the requested task. It has sub-fields depending on the $scheme in use, such as $host, $port, $path, $uri. Similar to the above cases, the seed values of these sub-fields are also extracted through analysis of the manifest file and the component code. The $data field is generated only when it is specified in the intent filter of the component.
+
+$pathPattern field: this sub-field is usually specified in the manifest file as a regular expression (regex) consisting of the wildcards, asterisk (*) and a period followed by an asterisk (.*). The Android framework uses PatternMatcher, a simple pattern matcher that is safe to use on untrusted data and does not provide full regex support. According to the documentation,14 an asterisk (*) matches a sequence of 0 to many occurrences of the immediately preceding character, while a period followed by an asterisk (.*) matches any sequence of 0 to many characters. The seed value for this field is, thus, generated as the shortest string accepted by the regex. For example, given a pathPattern “/movies.*/”, a string “/movies/” is generated which will be later concatenated to a URL (e.g., https://example.com/movies/).
+
+For each of the field, we also include NULL value in its seed values. All the extracted fields and their seed values are then stored in a Database to be later used by the GA component to generate the chromosomes.
+
+The instrumenter component in Fig. 12 instruments the AUT bytecode (based on Soot) to insert hooks at method/API invocations to trace which methods and APIs are invoked at runtime. The instrumented app is then run (in our case in the Android emulator) to process the intent messages generated by the GA component. The execution traces are logged.

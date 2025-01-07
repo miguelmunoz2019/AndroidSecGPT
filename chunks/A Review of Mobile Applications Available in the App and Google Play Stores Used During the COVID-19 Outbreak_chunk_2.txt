@@ -1,0 +1,65 @@
+# Inclusion and Exclusion Criteria
+The following inclusion criterion was used to choose the applications accessible in the mentioned stores: 1) the applications had to be free of cost and had to be launched and updated during the COVID-19 outbreak for the management of COVID-19; 2) the applications had to be launched and supported by the governments of the selected countries; 3) to simplify the search, seven countries were chosen where the number of patients of COVID-19 ranged from high (India and the USA) to medium (Saudi Arabia, Italy, and the UK) and low (Singapore and Australia). The applications that did not meet these requirements were excluded.
+
+# Research Question
+The research question was:
+What are the functionalities and effectiveness of the most common free mobile health applications available in the Google Play and App stores used in Saudi Arabia, Italy, Singapore, the United Kingdom, USA, and India during the COVID-19 outbreak?
+# Description of the Search
+First, general information related to the applications including price, ratings, platform (Android/iOS), country and status (in use/stopped) was collected.
+
+Second, the purposes of the applications and the services they offered were considered. These features included “User Status (risk assessment)”: this option indicates whether the user was safe or suspected of being infected; ‘Self-Assessment’: an option for the user to self-assess the risk of contamination by answering the predesigned questions in the application; ‘Test Results Reporting’: an option to submit the test results to the relevant authorities; ‘Online Consultation’: and option to provide e-consultation for COVID support and treatment, and also for other conditions/diseases; ‘Contact Tracing’: an option to track and trace the user’s movement to identify whether they have been in close contact with infected persons/contaminated zones.
+
+Third, the learnability function was analyzed. This function includes ‘personalized notes’: an option for making personal notes on health conditions; ‘Education resources’: this is an option to access to health educational resources; “COVID-19 information”: an option to access to COVID-19 information such as support, point of contact, preventive measures, number of cases in different locations, etc.
+
+Journal of Multidisciplinary Healthcare 2021:14 submit your manuscript | www.dovepress.com
+# Alanzi
+# Dovepress
+# Eligibility Screening Included Identification
+PRISMA flowchart of the search process.
+
+# Analysis of Communication Strategies
+Fourth, the communication strategies were analyzed. These strategies include the following functions:
+- Query resolution: clearing the doubts and issues of the citizens by answering their queries;
+- Appointments: enable citizens to book appointments in hospitals through apps;
+- Social Networking: enable users to share their details and status using social networking apps;
+- Notifications: allow users to receive notifications about app updates, medicine reminders, news and any updates related to COVID-19.
+
+# App Design Features
+Fifth, the app design features were examined. These features included the options:
+- Data Visualization: this option permits to do a graphical representation of the data;
+- Program Plan: an option for a pre-defined plan of treatment or preventive procedure which can be followed and tracked by users.
+
+# Networking Technologies
+Sixth, networking technologies included in the apps such as GPS location tracking, Bluetooth and WiFi technologies were analyzed.
+
+# Safety and Security Features
+Finally, the safety and security features of the apps were investigated. These features included:
+- Alerts: this function alerts users about any risk or contamination;
+- Data Protection: indicates the level of risk associated.
+
+submit your manuscript | www.dovepress.com
+Journal of Multidisciplinary Healthcare 2021:14
+DovePress
+# Data Protection
+with the user’s data, identified as high, medium and low levels depending on the data protection policies relevant to different applications. Data Protection: indicates the level of risk associated with the user’s data, identified as high, medium and low levels depending on the data protection policies relevant to different applications. High-risk category includes the threat to personal data such as passwords, bank information, email content, other accounts data, biometrics, location tracking, personal chats, and so on; medium risk category includes threat to data such as browser history, frequency of texts or calls, device ID, names of Wi-Fi connected devices, calendar information, etc.; and low-risk category includes threat to normal data such as education data, bookmarks, call duration, internet connectivity, duration of exercise, and so forth.
+
+# Results
+# Features and Functionalities of the Mobile Applications
+# Description of the Applications
+# Mawid App
+The Mawid application is a central appointment system provided by the Ministry of Health, Saudi Arabia. The application can be used by patients to book, change and reschedule their appointments, and also for managing their referral appointments, across 2400 primary care centres in Saudi Arabia. Using the GPS and the maps feature enabled in the application, patients can view the primary care centres nearest to their location. They can select any primary care centre and book appointments at their convenience. The application also alerts the user if an earlier slot for an appointment is available, which can help patients if they require an early appointment. The application is enabled with the self-assessment feature for COVID-19, and it offers a consultation window to the public. Patients need to enter information such as their travel history and symptoms, and answer other relevant questions in the application for the self-assessment test. At its launch in May 2019, the application was integrated in 98% of hospitals and primary care centres, and linked to more than 6 million registered users. The application has provided consultation services for more than half a million people and more than 250,000 self-assessment tests have been recorded since the COVID-19 outbreak in Saudi Arabia. Although initially developed as part of a promotion of digital health, the Mawid application has been very effective in delivering healthcare services during the COVID-19 outbreak.
+
+# Tabaud App
+In relation to the Tabaud application, it was developed to achieve health and safety goals by controlling the COVID-19 outbreak and limiting the spread of novel coronavirus, in order to ease the restrictions on social and business activities in Saudi Arabia. The application is mainly designed for contact tracing, as it notifies users when they come into close contact with other registered infected persons using the same application. This application uses Google Apple API for contact tracing, which strictly protects the privacy and security of the users. Accordingly, the application does not use location mapping, but it relies on Bluetooth technology for detecting any nearby smartphones using the same application. If a user updates their status in the application as infected, this information is then sent to the Ministry of Health for confirmation. If the information is confirmed by the ministry, then all smartphone users with the Tabaud application who have been close to the infected person during the 14-day period prior to the infection will receive a notification to take the necessary precautions. In addition, the application also analyses how close other smartphones were to the infected person, which helps to analyse vulnerability and the risk of contamination. In addition, it allows users to identify their risk of infection. However, the identity of the persons is hidden and anonymity is maintained by transferring the disguised identifier data of the person during communication with other smartphone applications, thus adopting stringent privacy policies. Over 15,000 positive cases have been reported by patients through the application.
+
+# Dovepress
+# Alanzi
+since its launch in June 2020. The application has been effective in contact tracing and limiting the spread of novel coronavirus.
+
+The application also notifies the users if they are close to infectious or contaminated zones. It is a simulated version of a Chinese application that uses a colour-coded QR to reflect the situation of the user. Green shows that the person is healthy and has permission to travel. Yellow indicates that the person is suspected of having COVID-19 and is not allowed to move. Red indicates that the person is infected, is not allowed to travel, and needs to be in quarantine.
+
+# Sehha App
+The Sehha mobile application is one of the most innovative mobile health applications being used in Saudi Arabia. The application was developed for providing e-consultations through audio and video modes for users in the comfort of their own homes. The application employs AI technologies, enabling users to receive safe medical information, and enhancing the user’s experience during the consultation process. It also features a health assessment tool, where the users need to answer certain questions. Based on the responses, a health score is developed based on a disease or condition and the relevant feedback and precautions are prescribed. The Sehha app is similar to the Mawid app in terms of booking appointments, but it differs from Mawid as it facilitates an e-consultation process. Mawid provides consultations at primary care centres. The Sehha application was identified as being very useful during the COVID-19 outbreak, as it facilitated restrictions on movement.
+
+# Aarogya Setu App
+Regarding Aarogya Setu, it is an official mobile application launched by the government of India for tracking the COVID-19 outbreak, and restricting the spread of COVID-19. The application uses both GPS and Bluetooth.

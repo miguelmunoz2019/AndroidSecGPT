@@ -1,0 +1,151 @@
+In this scenario, data between server and client is transferred as plain text and in an insecure manner. If anyone could listen to this communication by tapping the communication channel from the middle, they will also be able to understand this communication and retrieve data communicated. Also client has no way to identify whether he is sending data to
+# 68
+# c o m p u t e r s & s e c u r i t y 80 (2019) 54 – 73
+correct server or not. So this communication is not secure to send any sensible data. This channel can be made secure by integrating SSL to protect the communication. SSL keeps sensitive information sent across the Internet encrypted, so that only the intended recipient can understand it. Also, it provides authentication, trust, privacy, critical security, and data integrity for the communication.
+
+# Appendix C. Server code
+import java.net.*;
+import java.io.*;
+public class Server extends Thread {
+private ServerSocket serverSocket;
+public Server(int port) throws IOException {
+serverSocket = new ServerSocket(port);
+serverSocket.setSoTimeout(100000);
+}
+public void run() {
+while(true) {
+try {
+System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
+Socket server = serverSocket.accept();
+System.out.println("Just connected to " + server.getRemoteSocketAddress());
+DataInputStream in = new DataInputStream(server.getInputStream());
+System.out.println(in.readUTF());
+DataOutputStream out = new DataOutputStream(server.getOutputStream());
+out.writeUTF("Thank you for connecting to " + server.getLocalSocketAddress() + "\nGoodbye!");
+server.close();
+} catch(SocketTimeoutException s) {
+System.out.println("Socket timed out!");
+break;
+} catch(IOException e) {
+e.printStackTrace();
+break;
+}
+}
+}
+public static void main(String [] args) {
+try {
+Thread t = new Server(3000);
+t.start();
+} catch(IOException e) {
+e.printStackTrace();
+}
+}
+# Instructions
+1. Open client source code and server source code in two instances of your preferred IDE or text editor.
+
+2. Run the server programme first and then client programme. If you are using an IDE, you can easily do this by running the project in IDE. Otherwise, you can compile and run 2 programmes in command line interface using javac and java commands. Observe how client and server communicate.
+
+3. While performing the programming task, you have to talk what you are thinking related to the task, so that they will be recorded with screen recording. If you have never performed a think aloud study before, please refer this video (https://www.youtube.com/watch?v=g34tOmyKaMM) to see how thinking aloud protocol works, before you start on the task.
+
+4. Now you can start working on integrating SSL to the communication between client and server. Before starting, make sure you start screen recording and choose it to capture complete screen. Select audio source as microphone, so it will also record what you say.
+
+5. Once you completed the task, stop screen recording and save it.
+
+6. After completing the task, please go to questionnaire and complete it with your experience of completing the task. This is to help us understand any issues you came up with while completing the task.
+
+7. After completing everything please create a folder, copy Server.java and Client.java files, any other additional classes/files you created and screen recording to this folder.
+
+# Appendix D. Client code
+import java.net.*;
+import java.io.*;
+public class Client {
+public static void main(String [] args){
+String serverName = "localhost";
+int port = 3000;
+try {
+System.out.println("Connecting to " + serverName
++ " on port " + port);
+Socket client = new Socket(serverName, port);
+System.out.println("Just connected to "
++ client.getRemoteSocketAddress());
+OutputStream outToServer = client.getOutputStream();
+DataOutputStream out =new
+DataOutputStream(outToServer);
+out.writeUTF("Test Message");
+InputStream inFromServer = client.getInputStream();
+DataInputStream in =new
+DataInputStream(inFromServer);
+System.out.println("Server says " + in.readUTF());
+client.close();
+}catch(IOException e) {
+e.printStackTrace();
+}
+}
+}
+# Appendix E. Cognitive dimensions questionnaire
+# Abstraction level
+- Were you able to implement the core functionality of the task you completed using only one class from the API or more than one class?
+- Only one class was needed
+- More than one class were needed
+- Did you expect to use only one class or more than one class to implement the core functionality of the task you completed?
+- I expected to use only one class
+- I expected to use more than one class
+- How would you describe your experiences with respect to the types of classes that you worked with while completing the task?
+- They were just as I expected
+- They were too low level
+- They were too high level
+- Explain your selection for question 3.
+
+# Learning style
+- How did you go about learning how to use the API?
+- Wrote a couple of lines of code to try to get something working and then build up an understanding from that
+- Copy sample code provided with the API
+- Read a high-level overview of the API first and only start writing code once you had an idea about the architecture of the API and how each class in the API relates to other classes in the API
+- Other
+- Do you think you were successful in using this approach (you mentioned in question 1) to learn how to use the API?
+- Yes
+- No
+- How would you describe your experiences related to learning how to use the API successfully? Was it just right, was there too much to read or learn, or was there not enough to read?
+- It was just right
+- There was too much to read and learn
+- There was not enough information to read
+- Why (referring to question 3)?
+- Which of your previous computer security knowledge areas helped you in using the API for completing the task?
+- Do you think it is impossible to complete the task without above mentioned previous knowledge (referring to question 5)?
+- Yes
+- No
+- May be
+- Do you think, if you had previous knowledge of any specific area related to computer security, it would have been easier to use the API?
+- Yes
+- No
+- What security specific knowledge you think that would have been useful?
+# Working framework
+- How would you describe your experiences with respect to the number of classes and objects that you had to work with simultaneously to accomplish the task you completed?
+- Too simple
+- Too complicated
+- It was just as I expected
+- Why (referring to question 1)?
+# Work-step unit
+- How would you describe the amount of code that you had to write for the task? Did you have to write more code than you expected or did you have to write less code? Please explain.
+
+# Progressive evaluation
+- How easy was it to stop in the middle of the task you were working on, and check your work so far?
+- Were you able to do this (check the work you have completed so far) whenever you wanted to or needed to?
+- Yes
+- No
+- If not, why not?
+- Could you find out how much progress you have made, or check what stage in your work you are?
+- Yes
+- No
+# Computers & Security 80 (2019) 54–73
+# Consistency
+• If not, why not?
+• Were there different parts of the API that do similar things? If there were different parts of the API which do similar things, were they clear from the way they appear? Please give examples.
+
+• Were there places where some things ought to be similar, but the API makes them different? What were they?
+# Role expressiveness
+• When reading code that uses the API, was it easy to tell what each section of the code does? Why? Which were the parts that were more difficult to interpret?
+• When using the API, was it easy to know what classes and methods of the API to use for writing code?
+– It was easy
+– It was difficult
+• Explain your choice for question 2.

@@ -1,0 +1,46 @@
+❹ Use app links. Once users click app links, they are redirected to the Yelp app by the Android system. Invalid app link verification. However, incorrect configuration from either app-end or web-end can fail the link verification process. For the app-end, the incorrect configurations, such as missing the “autoVerify=true” field or invalid domain names can result in a failure. For the web-end, the incorrect JSON format, invalid fields in a DAL or invalid namespaces can also be the reasons.
+
+Intent and Intent Filter. Once a user clicks a URL in an app, an Intent is sent by the app. In Android, an Intent is a messaging object that can be used to request an action from another app component. For example, one Activity can start a Service (e.g., playing background music) with an Intent. There are two types of intents: explicit Intent and implicit Intent. The explicit Intent defines an app to respond to the Intent by specifying the app’s package name. Whereas, the implicit Intent only defines a general action to perform in an Intent. For example, an app can use an implicit Intent to request the Google Map app to show a location. Apps that can perform the action defined in an implicit Intent get the chance to respond to the Intent. To hijack a URL, the MIA must claim that it has the capability to process the link to Android. Only the MIA claims to process a link, Android can consider it as a candidate for the link.
+
+# 4 ATTACK MODELS
+# 4 Overview
+In this section, we provide a bird’s-eye view of all attack models. We demonstrate an MIA can be exploited as an attack vector for three types of attacks, including link hijacking with STS (§4), link hijacking without STS (§4), and instant app hijacking attack (§4). Even though we launch these attacks with instant apps, the settings of them can be different.
+
+- Attack vector: For all attacks, we exploit MIAs as the attack vector.
+
+- The MIA: The MIA can either be installed from Google Play or by clicking the MIA’s launching URL in another app (e.g., Android’s SMS app). The reason that attacks can be launched without users’ consent is presented in Sec. 2.
+
+# 4 Link Hijacking with Smart Text Selection
+The link hijacking with STS aims at preventing users from accessing URLs via STS. When (s)he selects a URL text (e.g. google.com) with STS, Android suggests the MIA for handling the URL. The URL text can come from the app itself or input by users.
+
+The attack steps. In the MIA, for simplicity, we build two Activities: MainActivity and LoginActivity. Recall the architecture of our MIA (see. Fig. 3), the MainActivity belongs to the benign module, while the LoginActivity belongs to the phishing module. The intent filters associated with them are shown in Fig. 5. The MainActivity is the launcher for the MIA and it is bound with.
+
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+# 4 Link Hijacking without Smart Text
+The link hijacking aims at preventing users or apps from accessing certain URLs/apps with the MIA. For example, once users click a URL (e.g., www.yelp.com/biz/brunch-y-cake-barcelon-2) in the SMS app, they are redirected to our MIA rather than the Yelp app.
+
+The attack steps. The setting for the MIA follows the same step in §4. We also build two Activities: MainActivity and LoginActivity. The intent filters associated with them are shown in Fig. 5. The only difference is the way of launching this attack. In link hijacking without STS, by clicking a URL, link hijacking occurs. Whereas in link hijacking with STS, users have to select a piece of URL, then STS recommends the MIA to users.
+
+The victim apps. This attack can be launched on apps that access a URL. For example, some apps contain rate-us buttons. Once the button is clicked, users are redirected to the MIA. It worth mentioning that this attack cannot work on browsers or in-app browser apps (apps that implement browsers for opening URLs, for example, Wechat). The reason is that browsers or in-app browser apps can handle the URL themselves rather than asking Android to handle the URL.
+
+The root cause. If a URL is clicked, Android looks up all apps that can handle the URL. As our instant app can handle the Intent (see §4), Android suggests our MIA to respond to the Intent. Typically, Android asks users to select one app from all candidates to respond to the given link. However, with the instant app, we can successfully escape such prompt. To illustrate this attack, we start from introducing how Android processes a URL click. Once a URL is tapped, the startActivity method is called. Android checks whether there is a locally installed app that can resolve this Intent. If multiple apps that can resolve the Intent, Android ranks them based on their package names. Then, Android finds a suitable activity to respond to the Intent with chooseBestActivity method (PackageManagerService.java).
+
+Inside method chooseBestActivity, the system performs the following checking: (1) check whether the first Activity has a higher priority (or default). If so, the first Activity is used to respond to the Intent; (2) if (1) returns false, Android checks whether there is a preferred app for handling the Intent. If so, the preferred app (a.k.a. saved preference) replies to the Intent; (3) if the checking (2) returns false, Android loops all Activities to find whether there is an instant app that can cope with the Intent. If so, the instant app responds to the Intent; (4) if no instant app and no saved preferred app to cope with the Intent, Android shows a list of candidate apps to allow users to select from. The candidate apps are selected based on whether they can handle the Intent. For example, a user can have 5 different apps that can play audios. All these 5 apps are.
+
+# 4 Instant App Hijacking
+The instant app hijacking aims at preventing users from accessing an instant app even if it is installed. Here, we assume that both the MIA and the victim instant app are installed from Google Play. If multiple apps that can resolve the Intent, Android ranks them based on their package names. Then, Android finds a suitable activity to respond to the Intent with chooseBestActivity method (PackageManagerService.java).
+
+The attack steps. We assume that users download both the victim instant app (e.g., Google Trip instant app com.google.android.apps.travel.onthego) and the MIA from Google Play. Once users intend to access the Google Trip instant app, they are redirected to our MIA. As shown in Fig. 8, we set the MainActivity same as link hijacking (see Fig. 5) and the malicious LogActivity is set to respond the URL google.com/tripsapp.
+
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+URL is associated with Google Trip instant app (com.google.android.apps.travel.onthego). That is, the LogActivity is designed for hijacking the Google Trips instant app. The key factor of launching this attack is setting the package name to be one “smaller” than Google Trips’ package name based on the dictionary order. Here, we set the package name of our MIA to a.example.instantappurlauto (a.example.instantappurlauto &lt; com.google.android.apps.travel.onthego).
+
+The victim apps. All instant apps are vulnerable to this attack. If the malicious app is installed prior to the victim instant app, the app user is blocked for downloading and using the victim instant app unless (s)he uninstalls the MIA. If the MIA is installed after the installation of the victim instant app, the app user is blocked for accessing the victim instant app even though the victim instant app is installed on the phone. For both cases, the services from the victim instant app are blocked.
+
+The root cause. By setting the intent filters of LogActivity as Fig. 8, both the MIA and Google Trip instant app can respond to the URL. If multiple instant apps and apps can resolve one URL, Android ranks them based on package names. Then, Android leverages chooseBestActivity method for locating the target app for the Intent. Recall the functionality of chooseBestActivity introduced in §4, if there is no saved preferred app and no app with a higher priority for the given Intent, Android checks whether there is an instant app can resolve the Intent.
+
+We assign a package name to the MIA with a lower dictionary rank comparing to the victim instant app. As all apps are ranked based on package names, the MIA is ranked higher than the victim app (a.example.instantappurlauto &lt; com.google.android.apps.travel.onthego). Based on the background presented in §4 and Fig. 7, the chooseBestActivity is incorrectly chosen the MIA to respond to the URL rather than the victim instant app.
+
+# 5 DETECTION
+In this section, we present our method to detect vulnerable apps that can be attacked.

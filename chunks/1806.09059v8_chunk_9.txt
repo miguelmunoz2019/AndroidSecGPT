@@ -1,0 +1,55 @@
+In a similar vein, the above observations are based on 42 known vulnerabilities that have been discovered by the community since 2011 and captured in Ghera since 2017. While this is a reasonably large set of vulnerabilities and it covers different capabilities of Android apps/platforms, it may not be representative of the entire population of Android app vulnerabilities, e.g., it does not include different manifestations of a vulnerability stemming from the use of similar yet distinct APIs, it does not include vulnerabilities stemming from the use of APIs (e.g., graphics, UI) that are not part of the considered API categories, it does not include native vulnerabilities. So, these observations can be considered as is only in the context of the considered 42 known vulnerabilities. The observations can be considered with caution in the context of different manifestations of these vulnerabilities. More exploration should be conducted before generalizing the observations to other vulnerabilities.
+
+# 4 Interaction with Tool Developers
+By the end of June 2017, we had completed a preliminary round of evaluation of QARK and AndroBugs. Since we were surprised by the low detection rate of both tools, we contacted both teams with our results and the corresponding responses were very different.
+
+The QARK team acknowledged our study and responded to us with a new version of their tool after two months. We evaluated this new version of QARK. While the previous version of the tool flagged three benchmarks as vulnerable, the new version flagged ten benchmarks as vulnerable. The evaluation reported in this manuscript uses this new version of QARK.
+
+AndroBugs team pointed out that the original version of their tool was not available on GitHub and, hence, we were not using the original version of AndroBugs in our evaluation. When we requested the original version of the tool, the team did not respond
+After these interactions, we decided not to communicate with tool developers until the evaluation was complete. The rationale for this decision was to conduct a fair evaluation: evaluate tools as they are publicly available without being influenced by intermediate findings from this evaluation.
+
+# 4 Why did the evaluation take one year?
+In June 2017, we started gathering information about solutions related to Android app security. By mid-June, we had performed both shallow and deep selection of tools. At that time, Ghera repository had only 25 benchmarks, and we evaluated the selected tools on these benchmarks.
+
+In July 2017, we started adding 17 new benchmarks to Ghera. Also, we upgraded Ghera benchmarks to work with Android Studio 3 (from Android Studio 2). So, in October 2017, we evaluated the tools against 25 revised benchmarks and 17 new benchmarks.
+
+In November 2017, based on feedback at the PROMISE conference, we started adding secure apps to Ghera benchmarks along with automation support for functional testing of benchmarks. This exercise forced us to change some of the existing benchmarks. We completed this exercise in January 2018.
+
+To ensure our findings would be fair and current, we re-evaluated the tools using the changed benchmarks, i.e., a whole new set of secure apps along with few revamped benign and malicious apps. We completed this evaluation in February 2018.
+
+While the time needed for tools evaluation — executing the tools and analyzing the verdicts — was no more than two months, changes to Ghera and consequent repeated tool executions prolonged tools evaluation.
+
+Between February and May 2018, we designed and performed the experiment to measure the representativeness of Ghera benchmarks. Throttled remote network access to Androzoo, sequential downloading of apps from Androzoo, processing of 339K apps, and repetition of the experiment (to eliminate errors) prolonged this exercise.
+
+# 5 Malicious Behavior Detection Tools Evaluation
+We decided to evaluate the effectiveness of malicious behavior detection tools against the malicious apps in Ghera benchmarks due to three reasons: 1) each Ghera benchmark contained a malicious app, 2) we had uncovered few malicious behavior detection tools during tool selection, and 3) we were in the midst of an elaborate tools evaluation. Since the evaluation was opportunistic, incidental, exploratory, and limited, we did not expect to uncover report worthy results. However, we did uncover strong results even in the limited scope; hence, we decided to report the evaluation.
+
+# 5 Tools Selection
+For this evaluation, we considered the six tools that we rejected as malicious behavior detection tools during the shallow selection of tools for evaluating vulnerability detection tools (Section 4): AndroTotal, HickWall, Maldrolyzer, NVISO ApkScan, StaDyna, and VirusTotal. Of these tools, we rejected StaDyna because it detected malicious behavior stemming from dynamic code loading and Ghera did not have benchmarks that used dynamic code loading [Zhauniarovich et al., 2015]. Since the other five tools did not publicly disclose the malicious behaviors they can detect, we selected all of them for evaluation and considered them as applicable to all Ghera benchmarks.
+
+Similar to Table 2, Table 9 reports information about the malicious behavior detection tools selected for evaluation.
+
+# 5 Experiment
+We applied every selected tool in its default configuration to the malicious app of every applicable Ghera benchmark. Unlike in case of vulnerability detection tools, malicious behavior detection tools were evaluated.
+
+17The corresponding GitHub ticket can be found at https://github.com/AndroBugs/AndroBugs_Framework/issues/16.
+
+# Tool
+on only 33 Ghera benchmarks because nine benchmarks — 1 in Networking category and 8 in Web category — did not have malicious apps as they relied on non-Android apps to mount man-in-the-middle exploits. For this evaluation, we used the same execution set up from the evaluation of vulnerability detection tools.
+
+# 5 Observations
+Observation 21 None of the evaluated malicious behavior detection tools publicly disclose the malicious behaviors they can detect. Almost none of the malicious behavior detection tools are available as local services, i.e., 4 out of 5; see L/R column in Table 9. So, malicious behavior detection tools are closed with regards to their detection capabilities. The likely reason is to thwart malicious behaviors by keeping malicious developers in the dark about current detection capabilities.
+
+Observation 22 Recall that 33 benchmarks in Ghera are composed of two apps: a malicious app that exploits a benign app. So, while malicious apps in Ghera are indeed malicious, 3 out of 5 tools did not detect malicious behavior in any of the malicious apps; see the FN column in Table 10. VirusTotal flagged all of the malicious apps as potentially unwanted programs (PUPs), which is not the same as being malicious; it is more akin to flagging a malicious app as non-malicious. NVISO ApkScan flagged one half of the apps as PUPs and the other half of the apps as non-malicious. In short, all malicious behavior detection tools failed to detect any of the malicious behaviors present in Ghera benchmarks.
+
+Observation 23 Since AndroTotal, NVISO ApkScan, and VirusTotal rely on antivirus scanners to detect malicious behavior, the results suggest the malicious behaviors present in Ghera benchmarks will likely go undetected by antivirus scanners; see Uses AV Scanners column in Table 9 and FN column in Table 10.
+
+25
+Observation 24 Since HickWall, Maldrolyzer, and NVISO ApkScan rely on static and/or dynamic analysis to detect malicious behavior, the results suggest static and dynamic analyses used in these tools are ineffective in detecting malicious behaviors present in Ghera benchmarks; see S/D column in Table 9 and FN column in Table 10.
+
+Since we evaluated only five tools against 33 exploits, the above observations should not be generalized. Nevertheless, the observations suggest 1) tools to detect malicious behavior in Android apps are likely to be ineffective and 2) evaluations that consider more malicious behaviors (exploits) and more tools are needed to accurately assess the effectiveness of existing malicious behavior detection tools and techniques.
+
+# 6 Related Work
+Android security has generated considerable interest in the past few years. This interest is evident by the sheer number of research efforts exploring Android security. Sufatrio et al.  summarized such efforts by creating a taxonomy of existing techniques to secure the Android ecosystem. They distilled the state of the art in Android security research and identified potential future research directions. While their effort assessed existing techniques theoretically on the merit of existing reports and results, we evaluated existing tools empirically by executing them against a common set of benchmarks; hence, these efforts are complementary.
+
+In 2016, Reaves et al.  systematized Android security research focused on application analysis by considering Android app analysis tools that were published in 17 top venues since 2010. They also empirically evaluated the usability and applicability of the results of 7 Android app analysis tools. In contrast, we evaluated 19 tools that detected vulnerabilities and malicious behaviors. They used benchmarks from DroidBench [DroidBench, 2013], six vulnerable real-world apps, and top 10 financial apps from Google Play store as inputs to tools. While DroidBench benchmarks and vulnerable real-world apps were likely authentic (i.e., they contained vulnerabilities), this was not the case with the financial apps.

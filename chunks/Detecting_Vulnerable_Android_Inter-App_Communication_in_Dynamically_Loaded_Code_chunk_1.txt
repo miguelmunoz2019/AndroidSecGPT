@@ -1,0 +1,99 @@
+# Detecting Vulnerable Android Inter-App Communication in Dynamically Loaded Code
+Mohannad Alhanahnah∗, Qiben Yan∗, Hamid Bagheri∗, Hao Zhou†, Yutaka Tsutano∗, Witawas Srisa-an∗, Xiapu Luo†
+∗The Department of Computer Science and Engineering, University of Nebraska-Lincoln, USA
+†The Department of Computing, The Hong Kong Polytechnic University, China
+# Abstract
+Java reflection and dynamic class loading (DCL) are effective features for enhancing the functionalities of Android apps. However, these features can be abused by sophisticated malware to bypass detection schemes. Advanced malware can utilize reflection and DCL in conjunction with Android Inter-App Communication (IAC) to launch collusion attacks using two or more apps. Such dynamically revealed malicious behaviors enable a new type of stealthy, collusive attacks, bypassing all existing detection mechanisms. In this paper, we present DINA, a novel hybrid analysis approach for identifying malicious IAC behaviors concealed within dynamically loaded code through reflective/DCL calls. DINA continuously appends reflection and DCL invocations to control-flow graphs; it then performs incremental dynamic analysis on such augmented graphs to detect the misuse of reflection and DCL that may lead to malicious, yet concealed, IAC activities. Our extensive evaluation on 3,000 real-world Android apps and 14,000 malicious apps corroborates the prevalent usage of reflection and DCL, and reveals previously unknown and potentially harmful, hidden IAC behaviors in real-world apps.
+
+Index Terms—Mobile security; inter-app communication; reflection; dynamically loaded code
+# I. INTRODUCTION
+Despite recent significant advances in malware detection, trojanized apps can still circumvent the defense and enter the official Google Play Store. Intricate Android malware, such as Obad , has been creating a more stealthy threat by employing Java reflection to commit malicious acts at runtime. Java reflection mechanism is extensively used in Android apps for maintaining backward compatibility, accessing hidden/internal application program interface (API), providing external library support, and reinforcing app security , . But the use of the reflection mechanism renders the security analysis approaches designed to analyze and detect malicious apps ineffective.
+
+The current state-of-the-art security mechanisms, both static and dynamic analysis approaches, are insufficient for detecting the increasingly sophisticated security attacks. Static analysis approaches – can be easily bypassed by apps that covertly invoke malicious IAC using reflection or DCL. On the other hand, dynamic analysis approaches, such as TAMI-FLEX , STADYNA , and DyDroid , suffer from false negatives largely due to the reachability challenges, where vulnerabilities are missed because of inputs that fail to reach the vulnerable code; they thus do not detect malicious IACs concealed behind reflective and DCL calls.
+
+In this paper, we present DINA, a novel hybrid inter-app analysis technique that can detect IAC behaviors concealed by reflection and DCL. Our goal is to develop a fully automated, lightweight tool that operates in real-time to effectively identify apps that deliver vulnerable IAC components at runtime. DINA combines scalable static and dynamic analyses to incrementally augment the control-flow and data-flow graphs using dynamically loaded classes. DINA ensures every method in every class of the dynamically loaded code is analyzed. Vulnerable IAC detection is conducted continuously in real-time over the dynamically updated graphs to precisely pinpoint collusive data leaks and data manipulations. The continuous and real-time analysis allows DINA to be highly efficient in both identifying dynamically loaded components and detecting potential malicious behaviors thereof, making DINA ideally suited for large-scale security vetting. In addition, DINA enables concurrent multi-app analysis using a thorough graph generation and analysis approach, which has the potential to be deployed locally for real-time app auditing.
+
+In summary, this paper presents the following contributions:
+- We develop DINA, the first inter-app vulnerability detection tool with the capability of analyzing dynamically loaded code, to pinpoint the stealthy inter-app communications that are concealed using reflection and DCL. DINA combines static IAC analysis with incremental dynamic analysis to identify potential IAC vulnerabilities within dynamically loaded code at runtime.
+
+# Malicious IAC
+# External resource DCL
+# Reflective Call
+# Messenger App
+- We analyze 3,000 popular benign apps and 14,000 malicious apps to identify their reflection usage and IAC communications via reflection/DCL. The analysis results confirm the prevalent usage of reflection and DCL in popular real-world apps, wherein surreptitious IAC behaviors concealed by reflective calls have been observed. We provide detailed case studies to assess how the vulnerable apps can be exploited to launch stealthy attacks through reflection and DCL.
+
+- We evaluate DINA in the context of both real-world and benchmark apps, corroborating DINA’s effectiveness in detecting sophisticated IAC threats that can evade the state-of-the-art security analysis tools. We perform a comprehensive comparison with the existing analysis tools. The experimental results confirm the superior performance of DINA in detecting malicious IACs in dynamically loaded code.
+
+# II. BACKGROUND AND MOTIVATION
+Components including activities, services, broadcast receivers, and content providers1 are the basic building blocks of Android apps. These components communicate through a specific type of event messages called Intent, which can be either explicit, when its recipient component is specified, or implicit, when no specific recipient component is declared. In this section, we present motivating examples showing how Intent can be used as an attack vector to launch information leakage through hidden (dynamically loaded) code, and to conceal method invocations through reflection.
+
+1 https://developer.android.com/guide/components/fundamentals.html
+public class DynLoadService extends Service {
+public int loadCode();onStartCommand(Intent intent ){    [...]
+}
+public void loadCode(){
+//  Read a jar file that contains classes .dex file
+String jarPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/dynamicCode.jar";
+//  Load the code
+DexClassLoader mDexClassLoader = new DexClassLoader(jarPath, getDir("dex", MODE_PRIVATE).getAbsolutePath());
+//  Use reflection to load a class and call its method
+Class<?> loadedClass = mDexClassLoader.loadClass("MalIAC");
+Method methodGetIntent = loadedClass.getMethod("getIntent", android.content.Context.class);
+Object object = loadedClass.newInstance();
+Intent intent = (Intent) methodGetIntent.invoke(object, DynamicService.this);
+startService(intent);
+}
+}
+Listing 1: DynLoadService component resides in the malicious app and performs DCL and reflection to hide its malicious behavior.
+
+public class MalIAC {
+public Intent getIntent(Context context) {
+String account = getBankAccount("Bank_Account");
+String balance = getBankBalance("Balance_USD");
+Intent i = new Intent("SEND_SMS");
+i.putExtra("PHONE_NUM", phoneNumber);
+i.putExtra("Bank_Account", account);
+i.putExtra("Balance_USD", balance);
+return i;
+}
+}
+Listing 2: Malicious IAC component is concealed as external code and loaded at runtime after app installation.
+
+public class MessageSender extends Service {
+public void onStartCommand(Intent intent) {
+String number = intent.getStringExtra("PHONE_NUM");
+String message = intent.getStringExtra("TEXT_MSG");
+sendTextMessage(number, message);
+}
+void sendTextMessage(String num, String msg) {
+SmsManager mngr = SmsManager.getDefault();
+mngr.sendTextMessage(num, null, msg, null, null);
+}
+}
+Listing 3: MessageSender resides in a benign app to receive Intents and send text messages.
+
+Listing 4 presents an abbreviated code snippet from a real-world app (i.e., com.example.qianbitou) that uses reflection to conceal IAC behavior. The method instantiate in the class Fragment (line 2) calls the reflection method newInstance() (line 4). This reflective call will initialize the constructor of the class _03_UserFragment (line 6), and execute the method onClick() that invokes toCall(), which defines an implicit Intent for making a phone call to a hard-coded number between 8am and 10pm. The suspicious method toCall() is a private method concealed behind reflective calls, which is difficult to capture in the analysis.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:20:10 UTC from IEEE Xplore. Restrictions apply.
+
+public class Fragment {
+public ReflectionFragment static siteinstantiate () {
+paramContext = (Fragment)localClass1.newInstance();
+}
+}
+public class _03_UserFragment extends Fragment {
+public onClick () {
+toCall();
+}
+private void toCall () {
+int i = Calendar.getInstance().get();
+if ((i <= 22) || (i >= 8)) {
+startActivity(new Intent("android.intent.action.DIAL", Uri.parse("tel:4000−888−620")));
+}
+}
+}
+# Listing 4: Reflection is used to conceal IAC behavior in a real world app
+DINA is designed to load and resolve the reflective calls in Listings 1 and 4 at runtime. DINA’s dynamic analyzer automatically and incrementally augments both the control-flow and data-flow graphs with the newly loaded code and resolved reflective calls. In tandem with the graph augmentation, DINA’s vulnerability analyzer identifies potential malicious IAC activities on the fly. As a result, DINA has the capability to precisely and efficiently detect the malicious IAC behavior in the motivating examples although it is concealed by reflection.
+
+# III. DETECTING HIDDEN IAC WITH DINA
+The goal of the attacker considered in this work is to launch stealthy inter-app attacks without being detected. Such stealthy behavior can be manifested by different types of collusive attacks , where an attacker uses the DCL and reflection mechanisms to obfuscate IAC behaviors of the sender app and launch malicious behaviors, e.g., leaking sensitive information, via another receiver app. Fig. 3 illustrates DINA’s architecture. DINA is a graph-centered hybrid analysis system that consists of three main modules: 1) the collective static analysis module that simultaneously analyzes multiple apps to automatically generate a static IAC graph and elicit DCL and reflection call sites within the apps—the identified DCL and reflection call sites become the execution targets for dynamic analysis; 2) the incremental dynamic analysis module that systematically augments the static IAC graphs by attaching new nodes and edges that are loaded at runtime by DCL and reflection; 3) the IAC vulnerability analysis module utilizes real-time IAC graphs to identify potentially vulnerable paths.

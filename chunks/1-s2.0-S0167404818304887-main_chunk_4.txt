@@ -1,0 +1,46 @@
+use if there was a single function to set up keystore/truststore by giving keystore/truststore file path and password. However, P4 and P10 found the API’s abstraction level to be higher than their expectations. In their response to the questionnaire, P10 mentioned that “The working of SSLSocket is hidden from the user. There is no way for me to know whether the API implements precisely what I am thinking”. Nevertheless, other 6 participants mentioned in their responses to the questionnaire that the abstraction level of the API is neither high nor low level.
+
+Another issue related to the abstraction level that was reported is the use of class casting. To implement the given task, participants had to use class casting in several places as shown below.
+
+SSLServerSocketFactory factory =
+sslContext.getServerSocketFactory();
+//createServerSocket() method returns a ServerSocket
+object, it required to be casted to a
+SSLServerSocket object to use it in TLS
+communication
+serverSocket = (SSLServerSocket)factory.
+
+createServerSocket(3000);
+P6 mentioned this in their questionnaire response saying “API does not use the powerful Java type system at all. I.e. the casts to SSLSocket and SSLServerSocket are crimes against good API. And not necessary either”. In the screen recordings, P4 showed frustration about having to cast from Socket to SSLSocket while completing the task. While going through the SSLSocketClient sample at JSSE reference guide (2017b), P4 mentioned that “It is getting cast to a SSLSocket. I don’t know what it is actually returning”. Especially, we observed that the use of class casting makes provided example codes difficult to read and follow.
+
+# 5. Learning style of JSSE API
+Learning style describes “the knowledge about the API and its security background that the programmer needs to have before starting to use the API and how the programmer would gain the knowledge about the API and its security background” . Cognitive Dimensions Framework describes 3 main approaches that a programmer can follow to learn an API  which are,
+- Write a couple of lines of code to try to get something working and then build up an understanding from that.
+
+- Copy sample code provided with the API.
+
+- Read a high level overview of the API first and only start writing code once they have an idea about the architecture of the API and how each class in the API relates to other classes in the API.
+
+In their responses to the questionnaire, each participant selected the learning style they followed while using the API. From the 11 participants, 8 went on to learn the API by copying a sample code provided with the API. 2 participants started by reading an overview of the API first and started writing code only after getting an idea about the architecture of the API. 1 participant wrote a few lines of code and built up an understanding from that. Table 4 shows the issues related to learning style we discuss in this section and participants who experienced each issue.
+
+P1, P4 and P11 who went on learning the API by copying a sample code mentioned in their questionnaire responses that they were not successful in that way of learning. We could identify this while observing these users’ screen recordings as well. There were several reasons they suggested as possible reasons for failing to learn the API sufficiently to complete the task. P1 and P4 said in their questionnaire responses that there were too much information to read and learn. P1 elaborated on this saying “API is too big to learn within a short period”. P2, P5, P6, P7 and P10 who thought that they were successful in learning the API also mentioned in their questionnaire responses that there were too much to read and learn. P2 further elaborated on this saying “It would be better if the API documentation is labeled as ‘essentials’ and ‘optional’”. It was observed in video recordings that P3 and P4 struggled and showed frustration about the amount of reading and learning that was required to use the API.
+
+Another cause that made the API difficult to learn is that the API requires programmers to have pre-requisite security knowledge. We identified that some programmers fail to gain a sufficient understanding about the API due to their lack of expertise in security. Especially, participants mentioned that lack of knowledge in SSL/TLS, network security and keystore/truststore concepts resulted in failing them to learn and use the API properly. 4 participants mentioned in their questionnaire responses that lack of knowledge in SSL and TLS made it difficult to complete the task using JSSE API. This was apparent in their screen recordings also where we identified that 5 participants struggled to complete the task due to their lack of knowledge and understanding of SSL and TLS. They spent a considerable amount of time reading about SSL handshake and SSL/TLS protocols, but still failed to gain a sufficient knowledge to carry on with the task.
+
+# Computers & Security 80 (2019) 54–73
+We also observed that participants struggled to complete the task due to their lack of knowledge on keystore/truststore concepts. P1, P4, P7 and P10 mentioned in their questionnaire responses that it would have been easier to complete the task if they had previous knowledge on keystore/truststore concepts. P4 mentioned that if they knew “how the keystores and certificates work and why I need them” it would have been helpful in completing the task. P10 also clarified that having a previous knowledge on keystore/truststore concepts was essential for completing the task. “I had no idea of the algorithm behind the technology I was using, and hence was unfamiliar with the jargons like “keystore”, “truststore”, “digital certificates”, etc. This made it difficult for me to understand the online tutorials”. This was evident while observing screen recordings also. Participants spent a significant time searching for details about keystores and truststores in Google. They search for stuff such as “keystore”, “java set ssl truststore”, “keystore vs truststore”, “java SSL socket keystore”, etc. On the other hand, P7 who was confident with keystore/truststore concepts was able to complete the task successfully and easily. He mentioned in his think aloud results that “Having knowledge about keystores helped to do it quickly”.
+
+Not having a previous knowledge on network security also made it difficult to use JSSE API. P2, P4 and P10 mentioned in their questionnaire responses that not having network security knowledge such as knowledge about digital certificates made it hard to use the API. We could identify this in P4’s screen recording also.
+
+# 5. Working framework of JSSE API
+Working framework describes “The size of the conceptual chunk (developer working set) needed to work effectively”. When programmers have to work with too many classes/objects/entities simultaneously, they need to keep track of the state of each of them which requires more cognitive work load.
+
+P1, P4, P6, P9 and P11 mentioned in their questionnaire responses that the number of classes they had to work with simultaneously is too complicated. In the responses to the questionnaire, P11 mentioned that “The API deals with a lot of different security entities, and each of them requires its own bunch of classes (e.g. trust and keystores require many classes just to be loaded and used by the engine)”. However, other participants mentioned that number of classes they had to work with is simpler or just as they expected. P3 elaborated on this in their questionnaire response saying “Only classes and Objects were there which are just enough to complete the task”.
+
+# 5. Work-step unit of JSSE API
+Work step unit describes “How much of a programming task must/can be completed in a single step”. In the programming context, ‘a single step’ can be viewed as writing one line of code. This dimension discusses the amount of work that a programmer needs to do (i.e. amount of code that a programmer needs to write) in order to complete a single task.
+
+P2, P4 and P11 mentioned in their questionnaire responses that they had to write more code than they expected to achieve the task. P11 suggested that the API being low level can be a reason for this. He mentioned that “The used API being low-level, the amount of code to write is not negligible. Common tasks performed during an SSL session must all be implemented, which results in a lot of code, compared to what the server achieves.”. However, 7 other participants mentioned in their questionnaire responses that the amount of code they had to write was less or just as they expected. P3 elaborated on his experience in their questionnaire responses saying “API provided needed functionality. Only thing had to be done was using those functions”.
+
+# 5. Progressive evaluation of JSSE API
+Progressive evaluation describes “To what extent a partially completed code can be executed to obtain feedback on code behavior”.

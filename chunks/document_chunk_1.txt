@@ -1,0 +1,85 @@
+# International Journal of Computer Trends and Technology- volume3Issue3- 2012
+# ANDROID BASED MOBILE APPLICATION DEVELOPMENT and its SECURITY
+Suhas Holla#1, Mahima M Katti#2
+# Department of Information Science & Engg, R V College of Engineering, Bangalore, India
+# Abstract
+In the advancing world of technology, Mobile applications are a rapidly growing segment of the global mobile market. Mobile applications are evolving at a meteor pace to give users a rich and fast user experience. In this paper, Android mobile platform for the mobile application development, layered approach and the details of security information for Android is discussed.
+
+Google released Android which is an open-source mobile phone operating system with Linux-based platform. It consists of the operating system, middleware, and user interface and application software. Certainly, Android is about to become the most widely used OS on mobile phones, but with Android comes a security vulnerability that few users take into account. On Android Market, where you can download thousands of applications for Android, anyone can upload their programs without having to submit them to careful security checks. This makes Android a prime target for computer criminals. In this paper, we discuss a layered approach for android application development where we can develop application which downloads data from the server. Also an Android Application Sandbox (AASandbox) which is able to perform both static and dynamic analysis on Android programs to automatically detect suspicious applications is also discussed.
+
+# Keywords
+Android, application framework, android runtime, layered approach, AASandbox
+can be used to create innovative and dynamic third party applications. Mobile Development India has worked extensively on projects ranging from gaming software, organizers, media players, picture editors to go-cart devices and more.
+
+# II. BACKGROUND STUDY
+The platform was officially announced and the SDK tools were available in October 2008. Currently there is only one mobile phone that runs the Android OS, the G1 from T-Mobile. According to the official Android website  the platform is based into the four core features as shown in the Fig 1:
+# I. INTRODUCTION
+Android is a new, next-gen mobile operating system that runs on the Linux Kernel. Android Mobile Application Development is based on Java language codes, as it allows developers to write codes in the Java language. These codes can control mobile devices via Google-enabled Java libraries. It is an important platform to develop mobile applications using the software stack provided in the Google Android SDK. Android mobile OS provides a flexible environment for Android Mobile Application Development as the developers can not only make use of Android Java Libraries but it is also possible to use normal Java IDEs. The software developers at Mobile Development India have expertise in developing applications based on Android Java Libraries and other important tools. Android Mobile Application Development
+# A. Application Fundamentals
+Android applications are written in Java programming language. However, it is important to remember that they are not executed using the standard Java Virtual Machine (JVM). Instead, Google has created a custom VM called Dalvik which is responsible for converting and executing Java byte code. All custom Java classes must be converted (this is done automatically but can also be done manually) into a Dalvik compatible instruction set before being executed into an Android operating system. Dalvik VM takes the generated Java class files and combines them into one or more Dalvik Executable (.dex) files. It reuses duplicate information from multiple class files, effectively reducing the space requirement (uncompressed) by half from a traditional .jar file. Dalvik was
+ISSN: 2231-2803 http://www.internationaljournalssrg.org Page 486
+# International Journal of Computer Trends and Technology - Volume 3 Issue 3 - 2012
+# B. Android Platform Overview
+Android is a software stack for mobile devices that includes an operating system, middleware and key applications. The Android SDK provides the tools and APIs necessary to begin developing applications on the Android platform using the Java programming language . Android is based on Linux version 2. The system services such as security, memory management, and process management are controlled by Linux.
+
+Fig 2 shows android architecture.
+
+Brovatr
+sttm
+Telnon Loadon Nonaabon
+Librarie9 Anoroid
+Sursee Minuter Senc OornGie5
+KERNEL
+Drner Cankn Drncr Ender (P
+Kcrpid Driecr WF Driver Drto
+# C. Developing Android Applications
+The Android SDK provides an extensive set of application programming interfaces (APIs) that is both modern and robust. Android handset core system services are exposed and accessible to all applications. When granted the appropriate permissions, Android applications can share data among one another and access shared resources on the system securely . Android applications are written in Java programming language.
+
+# D. Application Framework
+By providing an open development platform, Android offers developers the ability to build extremely rich and innovative applications. Developers are free to take advantage of the device hardware, access location information, run background services, set alarms, add notifications to the status bar, and much, much more.
+
+Designed to simplify the reuse of components; any application can publish its capabilities and any other application may then make use of those capabilities (subject to security constraints enforced by the framework). This same mechanism allows components to be replaced by the user.
+
+Underlying all applications is a set of services and systems, including:
+- A rich and extensible set of Views that can be used to build an application, including lists, grids, text boxes, buttons, and even an embeddable web browser.
+
+- Content Providers that enable applications to access data from other applications (such as Contacts), or to share their own data.
+
+- A Resource Manager, providing access to non-code resources such as localized strings, graphics, and layout files.
+
+- A Notification Manager that enables all applications to display custom alerts in the status bar.
+
+- An Activity Manager that manages the lifecycle of applications and provides a common navigation backstack.
+
+# E. Android Runtime
+Android includes a set of core libraries that provides most of the functionality available in the core libraries of the Java programming language . Every Android application runs in its own process, with its own instance of the Dalvik virtual machine. Dalvik has been written so that a device can run multiple VMs efficiently. The Dalvik VM executes files in the Dalvik Executable (.dex) format which is optimized for minimal memory footprint. The VM is register-based, and runs classes compiled by a Java language compiler that have been transformed into the .dex format by the included "dx" tool. The Dalvik VM relies on the Linux kernel for underlying functionality such as threading and low-level memory management.
+
+# III. LAYERED APPROACH FOR APPLICATION DEVELOPMENT
+In this paper we suggest a layered approach for android application development. This can be used for web-based application development.
+
+Developers have full access to the same framework APIs used by the core applications. The application architecture is
+ISSN: 2231-2803 http://www.internationaljournalssrg.org Page 487
+# International Journal of Computer Trends and Technology - Volume 3 Issue 3 - 2012
+# A. The application model
+In Android’s application model , an application is a package of components, each of which can be instantiated and run as necessary (possibly even by other applications). Components are of the following types :
+- Activity components form the basis of the user interface; usually, each window of the application is controlled by some activity.
+
+- Service components run in the background, and remain active even if windows are switched. Services can expose interfaces for communication with other applications.
+
+- Receiver components react asynchronously to messages from other applications.
+
+- Provider components store data relevant to the application.
+
+# B. Component classes and methods
+The Google Android mobile phone platform is one of the most anticipated smartphone operating systems. Smart phones can be used in place of Computers/Laptops. As mobile devices attain increasing capabilities, there are many more opportunities for novel applications development. Recent development of mobile application development has reached a high demand on today’s cellular market. Android defines a new component-based framework for developing mobile applications, where each application is comprised of different numbers and types of components.
+
+# C. Component classes and methods
+# Layered architecture
+The Android SDK has a base class for each type of component (Activity, Service, Receiver, and Provider), with callback methods that are invoked at various points in the life cycle of the associated component. Each component has a life cycle. Each component of an application is defined by extending one of the base classes, and overriding the methods in that class. In particular:
+- The Activity class has methods that are run when activity is created, or activity calls some other activity, or returns to the activity.
+
+- The Service class has methods that are run when the service is started, or some component binds to this service or even combination of both.
+
+- The Receiver class has a method that is run when a message is sent to this receiver.
+
+- The Provider class has methods to delete, query and update the data stored by this provider.

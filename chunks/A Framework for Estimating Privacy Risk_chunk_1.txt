@@ -1,0 +1,57 @@
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+Kai Chih Chang(B), Razieh Nokhbeh Zaeem, and K. Suzanne Barber
+The University of Texas at Austin, Austin, TX 78712, USA
+{kaichih,razieh,sbarber}@identity.utexas.edu
+# Abstract
+With the rapidly growing popularity of smart mobile devices, the number of mobile applications available has surged in the past few years. Such mobile applications collect a treasure trove of Personally Identifiable Information (PII) attributes (such as age, gender, location, and fingerprints). Mobile applications, however, are many and often not well understood, especially for their privacy-related activities and functions. To fill this critical gap, we recommend providing an automated yet effective assessment of the privacy risk score of each application. The design goal is that the higher the score, the higher the potential privacy risk of this mobile application. Specifically, we consider excessive data access permissions and risky privacy policies. We first calculate the privacy risk of over 600 PII attributes through a longitudinal study of over 20 years of identity theft and fraud news reporting. Then, we map the access rights and privacy policies of each smart application to our dataset of PII to analyze what PII the application collects, and then calculate the privacy risk score of each smart application. Finally, we report our extensive experiments of 100 open source applications collected from Google Play to evaluate our method. The experimental results clearly prove the effectiveness of our method.
+
+# Keywords
+Mobile applications · Privacy · Privacy policy · Permissions · Natural language processing
+# 1 Introduction
+In recent years, portable smart devices have rapidly spread, bringing a large number of mobile applications to various users. For example, as of May 2020, Google Play has more than 3 million Apps, which is three times the number in 2013, and these numbers are still growing rapidly. Due to the prosperous development of the smart application industry, the functions of smart devices have been extensively expanded and innovated to meet the needs of diverse users. However, the types of mobile applications are ever-changing, and their contents and architecture are often difficult to understand. Questions about their activities and functions related to privacy and security are endless. In fact, in order to improve the user experience, more and more advanced mobile applications
+©c Springer Nature Switzerland AG 2020
+W. Susilo et al. (Eds.): ISC 2020, LNCS 12472, pp. 217–233, 2020.
+
+https://doi.org/10/978-3-030-62974-8_13
+are inclined to gather user data to provide personalized service. These services usually involve access to sensitive personal information such as location. However, such intelligent mobile Apps may result in potential security and privacy risks for users. So much Personally Identifiable Information (PII) is hidden in a smartphone, such as What We Are (e.g., fingerprints), What We Have (e.g., credit card information), What We Know (e.g., email password), and What We Do (e.g., location history) . We call these PII attributes identity assets. In addition, emerging technologies of IoT (Internet of Things) bring new forms of user interfaces, such as wearable devices, which also pose greater challenges to user privacy. Therefore, it is important to study what identity assets are collected by these mobile applications.
+
+A privacy policy is one of the most common methods of providing user notifications and choices. The purpose of a privacy policy is to inform users how the application collects, stores and discloses users’ identity assets. Although some service providers have improved the intelligibility and readability of their privacy policies, not everyone reads them. As of 2019, only 24% of people read the privacy policy.
+
+Another potential privacy risk for mobile applications is basically caused by excessive data access permissions of mobile applications. As mentioned earlier, the current mobile applications provide a variety of innovative services, and these services involve various data access permissions. Sometimes these permissions are necessary, sometimes not. Therefore, in this paper we propose to leverage the requested permissions and privacy policies for detecting the potential privacy risk of each mobile App.
+
+To create a comprehensive list of PII, we utilize our longitudinal study of 6,000 identity theft and fraud news stories reported over the past 20 years. This database–named Identity Threat Assessment and Prediction or ITAP –is a structured model of PII, manually extracted by a team of modelers from identity theft and fraud reports in the online news media. We take advantage of ITAP to evaluate the risk score of each identity asset in order to estimate the privacy risk score of the set of identity assets that a mobile App collects.
+
+# This paper makes the following contributions:
+1. We map an independently built, comprehensive list of identity assets to privacy policies and data access permissions in order to evaluate the privacy risk score of mobile apps.
+
+2. We use Natural Language Processing (NLP) methods to automatically parse privacy policies to find the identity assets mentioned in them.
+
+3. Having access to UT CID probabilistic models and Bayesian inference tool Ecosystem , we take advantage of Bayesian inference to help calculate privacy risk score of mobile apps.
+
+4. We demonstrate how our approaches can work on 100 popular open-source Android mobile Apps in Google Play and compare our results to other researchers’ work.
+
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+# 2 Data and Methodology
+In this section, we briefly introduce the dataset that we are using and also the details of our privacy risk measurements.
+
+# 2 UT CID ITAP Dataset
+The Identity Threat Assessment and Prediction (ITAP)  is a research project at the Center for Identity at the University of Texas at Austin that enhances fundamental understanding of identity processes, valuation, and vulnerabilities. The purpose of ITAP is to identify mechanisms and resources that are actually used to implement identity breach. ITAP cares about the exploited vulnerabilities, types of identity attributes exposed, and the impact of these events on the victims.
+
+Between years 2000 and 2019, about 6,000 incidents have been captured . ITAP gathers details of media news stories (e.g., the identity assets exposed, the location and date of the event, the age and annual income of the victims, and the perpetrators’ methods) about identity theft with two methods. First, it monitored a number of Web sites that report on cases of identity theft. Second, it created a Google Alert to provide notifications when any new report of identity theft appears. By analyzing these cases, ITAP has generated a list of identity attributes with each of them being assigned identity-related vulnerabilities, values, risk of exposure, and other characteristics depending on their properties, such as, whether or not an attribute is unique to a person, whether or not an attribute is widely used, how accurately it can be verified, etc. To date, ITAP has generated a list including over 600 identity assets, which is the list of identity assets we are referring to in this research.
+
+Each identity asset in the UT CID ITAP dataset has a group of properties, including, but not limited to the following properties:
+- Risk: indicates the probability of this identity asset being misused in identity theft and fraud incidents.
+
+- Value: indicates the monetary value of this identity asset when misused in identity theft and fraud incidents.
+
+# 2 Identity Assets Collection from Apps
+Privacy risks are essentially caused by the data collections of Apps. Thus, an intuitive approach for measuring the privacy risks of Apps is to directly check each of the identity asset they collect/request. In this work, we divide data collection into two parts: (1) the privacy policy of each app and (2) the Android manifest XML file of each app.
+
+# Privacy Policy.
+
+Privacy policies help users understand what portion of their sensitive data would be collected and used or shared by a specific mobile application. By reading the privacy policy of an app, we should know what information
+# K. C. Chang et al.
+
+This application collects, how this app uses the information, and what information this app shares. A privacy policy discloses all the information an app actively and passively collects, for example, information actively entered when registering for an account or passive HTTP logs and Internet usage.
+
+The bag-of-words (BoW) model is a simplifying representation used in natural language processing and information retrieval. We construct a BoW model and take the privacy policy as input to generate a list of words and map it to the ITAP dataset to see what identity assets this privacy policy collects. In our model, we manually map each word to different identity assets so that after feeding our model with the privacy policy, we can generate a set of identity assets that this app collects.

@@ -1,0 +1,49 @@
+XRecoder embeds the FFmpeg library version 3, which is vulnerable to CVE-2018-14394 (reported in July 2018). FFmpeg-3 contains a vulnerable function (ff_mov_write_packet) that may result in a division-by-zero error if provided with an empty input packet. Hence, an attacker can craft a WaveForm audio to cause denial of service.
+
+To assess whether this vulnerable function is reachable in XRecoder, we used Radare2 to replace the first instruction in the vulnerable function with an interrupt instruction. We run the application after the latter modification which consequently resulted in an app crash, i.e., allowing us to trigger the vulnerability consistently.
+
+ff_mov_write_packet is called by multiple functions across two different binaries (FFmpeg-3.so and the app-specific libisvideo.so) and two different platforms (Dalvik and Native). av_buffersink_get_frame, one of the ancestors of ff_mov_write_packet, is called by nativeGenerateWaveFormData from the Dalvik-side.
+
+# IV. Discussion:
+Findings in RQ2 (Section III-B) demonstrate that out of 7,253 binaries for which we inferred their versions, 3,674 were vulnerable libraries (50%) affecting 53 distinct apps between Sept. 2013 and May 2020. This constitutes about 26% of the top 200 apps on Google Play. More alarmingly, new releases of 14 distinct apps remain vulnerable even at the time at which we collected apps for this study with an average outdatedness of 859 ± 137 days. While we have informed app developers about the outdated libraries in their apps, one interesting piece of follow-up work based on this result is surveying Android app developers to determine the reason for this extremely slow rate of fixing vulnerable native libraries in their apps. Such a study can further assess what forms of support app developers would need to truly reduce this slow rate of updating vulnerable library versions to ones with security patches.
+
+For RQ3 (Section III-C), we analyzed the speed at which developers updated their apps to patched libraries and found
+that, on average, library developers release a security patch frequency of vulnerable apps. Furthermore, we verified that after 54 ± 8 days from a reported CVE. While app developers apply these patches on average after 528 ± 41 days from the date an update was made available (10 times slower). Recall that we only consider apps in these cases that actually ended up fixing vulnerable native libraries. The results for RQ2 and RQ3 corroborate the need to make app developers aware of the severe risks they are exposing their users to by utilizing vulnerable native libraries.
+
+Overall, our results demonstrate the degree to which native libraries are neglected in terms of leaving them vulnerable. Unfortunately, our findings indicate that the degree of negligence of native libraries is severe, while popular apps on Google Play use native libraries extensively with 145 out of 200 top free apps (72%). Interesting future work for our study includes uncovering the root causes of such negligence and means of aiding developers to quickly update their native libraries.
+
+For example, platform providers (e.g., Google) could provide mechanisms to automatically update native libraries while also testing for regressions and possibly automatically repairing them. Such an idea is similar to how Debian’s repositories centrally manage libraries and dependencies between applications. Whenever a library is updated, only the patched library is updated, the applications remain the same. The Android system would highly profit from a similar approach of central dependency and vulnerability management.
+
+Another threat to validity is the possibility of developers manually patching security vulnerabilities. To mitigate this threat, we checked the versions identified by LibRARIAN and found that LibRARIAN correctly identifies an overwhelming majority of patch-level versions (61%). For the patch-level versions that LibRARIAN cannot distinguish as effectively, LibRARIAN makes manual identification much easier, by significantly reducing the search space for post-analysis to only 3-4 candidate versions.
+
+Furthermore, based on the results of our dataset, we believe that app developers are unlikely to manually patch a library they do not maintain given that it already takes years for these developers to simply update a library version.
+
+The results from RQ1 show that LibRARIAN detects versions of native libraries with high accuracy (91%). The need to compare against binaries with a known number of versions and libraries (i.e., Known Lib Versions in Figure 1) limits LibRARIAN. Specifically, misidentification of a library or its version might occur when an unknown binary for which we are trying to identify a library and version does not exist in Known Lib Versions.
+
+In these cases, LibRARIAN identifies the unknown binary as being the library and version closest to it according to bin sim that exists in Known Lib Versions. One possible way of enhancing LibRARIAN in such cases is to leverage supervised machine learning, which may, at least, be able to identify if the library is most likely an unknown major, minor, or patch version of a known library.
+
+Internal validity. One internal threat is the accuracy of timestamps in AndroZoo and its effect on the reported patch life cycle findings. To mitigate this threat, we collected AndroZoo timestamps over three months and correlated updates with Google Play. We verified that AndroZoo has a maximum lag of 9 days. This short delay is much smaller than the update.
+
+None of these studies examined native third-party libraries in Android apps nor did they look at the security impact of vulnerable libraries or whether these vulnerabilities are on the attack surface. LibRARIAN now explores the attack surface of vulnerable libraries.
+
+# CONCLUSION
+Third-party libraries have become ubiquitous among popular apps in the official Android market, Google Play, with 145 out of the 200 top free apps on Google Play (72%) containing native libraries. These libraries are particularly beneficial for handling CPU-intensive tasks and for reusing existing code in general. Unfortunately, the pervasiveness of native third-party libraries in Android apps exposes end users to a large set of unpatched security vulnerabilities.
+
+To determine the extent to which these native libraries remain vulnerable in Android apps, we study the prevalence of native libraries in the top 200 apps on Google Play across 7,253 versions of those apps. From these versions, we extracted 66,684 native libraries. To identify versions of libraries, we constructed an approach called LibRARIAN that leverages a novel similarity metric, bin2sim, that is capable of identifying versions of native libraries with a high accuracy—a 91% correct identification rate.
+
+For vulnerabilities, we found 53 apps with vulnerable versions with known CVEs between Sept. 2013 and May 2020, with 14 of those apps still remaining vulnerable until the end point of our study. We find that app developers took, on average, 528 ± 40 days to apply security patches, while library developers release a security patch after 54 ± 8 days—a 10 times slower rate of update.
+
+# DATA AVAILABILITY
+Our dataset, analysis platform, and results are available online  for reusability and reproducibility purposes.
+
+# Collaborative Filtering and Topic Modeling for More Accurate Android Mobile App Library Recommendation
+Huan Yu, Xin Xia, Xiaoqiong Zhao, and Weiwei Qiu.
+
+In Proceedings of the 9th Asia-Pacific Symposium on Internetware - Internetware '17, pages 1-6, Shanghai, China, 2017. ACM Press.
+
+# Hey, you, get off of my market: Detecting malicious apps in official and alternative android markets
+Yajin Zhou, Zhi Wang, Wu Zhou, and Xuxian Jiang.
+
+In Proceedings of the 19th Network and Distributed System Security Symposium, page 13, 2012.
+
+Authorized licensed use limited to: IEEE Xplore. Downloaded on May 24, 2021 at 07:45:45 UTC from IEEE Xplore. Restrictions apply..

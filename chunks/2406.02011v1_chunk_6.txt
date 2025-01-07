@@ -1,0 +1,108 @@
+We also computed some statistics about the apps’ year of release and belonging market. Figure 3 shows that the apps released from 2011 to 2021 have a medium risk. Note that the NONE label does not mean that applications are not vulnerable at all, but that they belong to other products (i.e. no product among the selected ones is found). Expanding the analyzed products dataset may increase the number of vulnerable apps.
+
+The market with the most vulnerable applications is Google Play, as depicted in Figure 4. That is a reasonable result because most apps in the dataset are retrieved from the Google Play Store (Figure 5). The reason is that Google
+# Risk Algorithm Native Code Vulnerabilities Android
+# 19
+2011     2012     2013     2014      2015     2016     2017     2018     2019  2020  2021
+Play only limits its checks in understanding if an uploaded application can be classified as malware without considering vulnerabilities.
+
+# 5 Comparison with Librarian results
+To demonstrate our methodology’s effectiveness, we compared our results with the ones obtained by Almanee et al.  by downloading their public dataset of 32 APKs  built in 2021. We could infer almost the same library identification results by using the same products for library identification.
+
+While the methodology proposed by Almanee et al. was limited in saying whether the analyzed app was vulnerable (so only a result yes/no), our approach gives one of the presented risk levels in Section 4, we have to find a way to compare the results of the two methodologies. Hence, when our methodology gives a level to an application to which the other approach says is vulnerable, we gave the Librarian results in the same risk level set by our algorithm. On the other hand, when our methodology gives a level to an application, but the approach of Almanee et al. says it is not vulnerable, we gave the value of 0 to the Librarian results. First of all, we infer the same results as the Librarian did for all applications, except for one which we detected as MEDIUM risk, but the Librarian says it has no vulnerabilities. From the results, we can affirm that 47% of the apps have a HIGH risk level, 41% MEDIUM risk level, and 12% of the apps do not have vulnerable Native Code libraries (i.e., their products do not belong to our or Librarian dataset of products; the products do not contain CVEs).
+
+8 In our dataset libav consists of three libraries (i.e. Libavcodec, Libavformat, Libswresample) to code/decode, multiplex/demultiplex, and resample audio, and video.
+
+# 5 Comparison with updated Librarian dataset
+The last experiment we performed was on the last version of the Librarian apps, downloaded on February 2023, used as a dataset to check whether the risk changed. As Figure 6 shows, we can state that for the 55% of the apps, the risk was reduced; for the 10% of them, the risk remained constant, and for the 2% of them, it increased. The null results are caused by Native Code that does not belong to any of the selected 15 products.
+
+As seen in Figure 2, the selected 15 products are still insufficient to scan all apps, even though they are the most popular. Moreover, Facebook, Instagram, Messenger, and WhatsApp use Native Code developed by Meta instead of importing third parties as in the Librarian’s version.
+
+From the graph in Figure 3, we have seen that the risk reduces over time, which is expected if we consider that various vulnerabilities have been addressed over the years. However, it is also interesting that the risk for various apps has not changed over time, questioning the quality of vulnerability addressing in popular applications.
+
+# Risk Algorithm Native Code Vulnerabilities Android
+# Androzoo apps
+Our dataset apps
+1mobile
+anzhi
+fdroid
+hiapk
+apk_bangappchina
+genome
+mi.compraguardproandroidslidemetorrentsunknown
+GooglePlayVirusShare
+freewarelovers
+# 6 Summary, Limitations and Future Works
+In this work, we proposed a simple and fast approach for vulnerability detection in Android Native Code by developing the first database of CVEs for vulnerability detection by easily accessing the vulnerable version of each app and its vulnerable functions. We combined this with developing a risk assessment algorithm for vulnerability management.
+
+We demonstrated that even a simple approach like ours is efficient for vulnerable library identification, as we have been able to reproduce the same results as previous works by highlighting vulnerable applications on a much larger scale. Our methodology can aid developers and security researchers mitigate immediate risks by recommending fine-grained application patching, thus allowing them to release more secure Android applications in the different Android markets.
+
+However, our methodology does not consider issues such as reachability to determine if vulnerable functions are accessible in apps and stripped binaries to assess the presence of the vulnerable function’s name in the binary. In fact, our solution gives security researchers and developers a risk score so they can manually check the vulnerability. To better score the functions’ reachability, security researchers can refer to other tools such as DroidReach . Additionally, we do not check whether or not the vulnerable library has been patched. Indeed, even though the analyzed ELF file matches a vulnerable version or the function name, developers may have patched the function’s body, for which binary similarities techniques must be used. Developers can also rename the functions or obfuscate their name (as well as the content). For these cases, our whitelist approach is insufficient to determine the risk and match if the found function is in the vulnerability database. All these issues can be addressed in future research works.
+
+# 6. Future Work
+In the future, we plan to address these issues by extending the product dataset and including as many libraries as possible to check how the risk changes. Concerning library identification, we plan to extract unique functions from each version of the products and use them as features for Machine Learning algorithms.
+
+# 7. Competing interests
+The authors declare no competing interest.
+
+# Risk Algorithm Native Code Vulnerabilities Android
+1. Luca Borzacchiello, Emilio Coppa, Davide Maiorca, Andrea Columbu, Camil Demetrescu, and Giorgio Giacinto. Reach me if you can: On native vulnerability reachability in android apps. In Vijayalakshmi Atluri, Roberto Di Pietro, Christian D. Jensen, and Weizhi Meng, editors, Computer Security – ESORICS 2022, pages 701–722, Cham, 2022. Springer Nature Switzerland.
+
+2. Software bill of materials. Online accessed: https://www.cisa.gov/sbom.
+
+3. Secure software development framework. Online accessed: https://csrc.nist.gov/projects/ssdf#ssdf-practices.
+
+4. Android operating system. Online accessed: https://source.android.com/.
+
+5. Android platform architecture. Online accessed: https://developer.android.com/guide/platform.
+
+6. Android platform architecture. Online accessed: https://developer.android.com/guide/topics/manifest/manifest-intro.
+
+7. Android ndk. Online accessed: https://developer.android.com/ndk/guides.
+
+8. Common vulnerability and exposure (cve). Online accessed: https://www.cve.org/About/Overview.
+
+9. Common vulnerability scoring system (cvss). Online accessed: https://www.first.org/cvss/v3/user-guide.
+
+10. Mitre cve. Online accessed: https://cve.mitre.org/.
+
+11. Cve details. Online accessed: https://www.cvedetails.com/.
+
+12. National vulnerability database from nist. Online accessed: https://nvd.nist.gov/.
+
+13. Iso/iec 27005:2008 information technology — security techniques — information security risk management. Online accessed: https://www.iso.org/standard/42107.html.
+
+14. Luca Allodi and Fabio Massacci. Comparing vulnerability severity and exploits using case-control studies. ACM Trans. Inf. Syst. Secur., 17(1), aug 2014.
+
+15. Henrique Alves, Baldoino Fonseca dos Santos Neto, and Nuno Antunes. Software metrics and security vulnerabilities: Dataset and exploratory study. 2016 12th European Dependable Computing Conference (EDCC), pages 37–44, 2016.
+
+16. Nádia Medeiros, Naghmeh Ramezani Ivaki, Pedro Costa, and Marco Paulo Amorim Vieira. Software metrics as indicators of security vulnerabilities. 2017 IEEE 28th International Symposium on Software Reliability Engineering (ISSRE), pages 216–227, 2017.
+
+17. Yang Xiao, Bihuan Chen, Chendong Yu, Zhengzi Xu, Zimu Yuan, Feng Li, Binghong Liu, Yang Liu, Wei Huo, Wei Zou, and Wenchang Shi. MVP: Detecting vulnerabilities using Patch-Enhanced vulnerability signatures. In 29th USENIX Security Symposium (USENIX Security 20), pages 1165–1182. USENIX Association, August 2020.
+
+18. Xiaoning Du, Bihuan Chen, Yuekang Li, Jianmin Guo, Yaqin Zhou, Yang Liu, and Yu Jiang. Leopard: Identifying vulnerable code for vulnerability assessment through program metrics. In 2019 IEEE/ACM 41st International Conference on Software Engineering (ICSE), pages 60–71, 2019.
+
+19. Antonio Ruggia, Andrea Possemato, Savino Dambra, Alessio Merlo, Simone Aonzo, and Davide Balzarotti. The dark side of native code on android. TechRxiv, 2022.
+
+20. Rafael Fedler, Marcel Kulicke, and Julian Schütte. Native code execution control for attack mitigation on android. In Proceedings of the Third ACM Workshop on Security and Privacy in Smartphones & Mobile Devices, SPSM ’13, page 15–20, New York, NY, USA, 2013. Association for Computing Machinery.
+
+21. Mobile security framework (mobsf). Available online: https://github.com/MobSF/Mobile-Security-Framework-MobSF.
+
+# 24
+F. Author et al.
+
+# 24. Quick android review kit (qark).
+
+Available online: https://github.com/linkedin/qark.
+
+# 25
+Francesco Pagano, Andrea Romdhana, Davide Caputo, Luca Verderame, and Alessio Merlo. Sebastian: A static and extensible black-box application security testing tool for ios and android applications. SoftwareX, 23:101448, 2023.
+
+# 26
+Android greybox fuzzing with afl++ frida mode. Available online: https://blog.quarkslab.com/android-greybox-fuzzing-with-afl-frida-mode.html.
+
+# 27
+android-afl. Available online: https://github.com/ele7enxxh/android-afl/blob/master/README.md.
+
+# 28
+Fuzzing with libfuzzer. Available online: https://source.android.com/docs/security/test/libfuzzer.

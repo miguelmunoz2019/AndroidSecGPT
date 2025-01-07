@@ -1,0 +1,57 @@
+# Security Issues in Android Application Development and Plug-in for Android Studio to Support Secure Programming
+# Anh-Duy Tran1,2(B), Minh-Quan Nguyen1,2, Gia-Hao Phan1,2, and Minh-Triet Tran1,2
+1 Faculty of Information Technology, University of Science, Ho Chi Minh City, Vietnam
+{taduy,tmtriet}@fit.hcmus.edu.vn, 2 {1712694,1712420}@student.hcmus.edu.vn
+Vietnam National University, Ho Chi Minh City, Vietnam
+# Abstract
+In the context of modern Android application development, security issues and secure programming are considered unignorable aspects to ensure the safety of Android applications while still guarantee the development speed. The lack of attention to security factors in the software development process or the delay of traditional security assurance methods are the main causes of unsafe Android software. Those unsafe Android applications contain many vulnerabilities and a high risk of leaking user information, especially since Android applications are rapidly developed and published. Developers must adhere to a secure development process to counter Android application risks to avoid data leakage or access control flaws. Security has to be integrated throughout the application development process to secure the software development life cycle. This paper presents two main research contributions: summarizing common security issues in Android applications and developing a plug-in for Android Studio to support secure programming, 9Fix. The low-time-cost 9Fix plug-in can inspect your vulnerable code and instantly suggest an alternative secure code for developers in programming time that helps to improve the security and instruct the developers on how to write a secure code. Moreover, the developers can add their own security rules to 9Fix so 9Fix can adapt smoothly in a specific situation. We also demonstrate the effectiveness and the convenience based on the student feedback by experimenting with the 9Fix plugin.
+
+# Keywords
+Android security · Secure coding · Android Studio plugin · DevSecOps
+# 1 Introduction
+Smart devices are increasingly widely used and play an important role in all aspects of life, from improving product quality, increasing human connection,
+©c Springer Nature Singapore Pte Ltd. 2021
+T. K. Dang et al. (Eds.): FDSE 2021, CCIS 1500, pp. 105–122, 2021.
+
+https://doi.org/10/978-981-16-8062-5_7
+A.-D. Tran et al.
+
+and supporting a more comfortable life. It is not difficult to see that smartphones still hold the leading position in the market and are indispensable devices for each person. According to the worldwide mobile OS market share report by Statista  (a professional statistics platform with over 1,000,000 statistics on over 80,000 topics from over 22,500 data sources), in January 2021, Android and iOS are the most popular operating systems for smartphones, accounting for 99% of smartphones worldwide, of which Android accounted for 71%. Besides, application development for mobile devices is an extremely fast-growing industry. However, the number of applications developed at high speed also leads to countless less secure applications. Vulnerable apps are making smartphones less secure. The main reasons for that situation are:
+- The software development market is relatively open and unrestricted, so any software developer, including those who lack knowledge of secure programming and ignore security vulnerabilities, can publish their software to the market.
+
+- There are no security standards for mobile software development yet.
+
+- Pressure to quickly push products to market causes companies not to pay much attention to security.
+
+- Developers do not have much training in secure programming or have not formed security awareness.
+
+According to Verizon’s 2021 Mobile Security Index , 45% of organizations sacrificed mobile security in the past year. The main justifications cited for sacrificing security were expediency and convenience, with COVID-19 making a special guest appearance. Many mobile app development teams are urged to put the time to market ahead of security. As a result, their apps are vulnerable to cyber-attacks. While the speed of development is crucial, many apps that were released too soon have been attacked. For example, the famous game Pokemon Go has a cheat that can exploit root access on Android devices. Even iOS apps are vulnerable to mobile attacks. Operating system-level requirements give some developers a false sense of security. However, these are intended to safeguard users rather than app developers and publishers.
+
+Security issues on mobile devices are always a concern, especially for the Android platform, which accounts for most of the market and is arguably more open than iOS. Apps running on Android are easier to reach the market. Putting an application on Google Play is much simpler than the iOS App Store because the cost is low, and especially the censorship process is also much faster: about one day for Google Play and weeks for the App Store. Google Play is a rapid software approval that makes this market more dynamic, leaving security vulnerabilities stemming from insecure programming. Therefore, to ensure the safety of users when using their apps, Android developers need a secure software development process.
+
+Along with Agile, DevOps is one of the most used software development processes because of its performance and speed. DevOps is a combination of Development and Operations. DevOps is a method for establishing close cooperation between the development and operation phases of software. Today, DevOps
+# Security Issues in Android and Plug-in for Android Studio
+is the key to optimizing time and resources for better productivity. Based on DevOps, we have a more advanced approach, DevSecOps, with the addition of Security. DevSecOps automates security integration at every stage of the software development cycle, enabling secure software development at the speed of Agile and DevOps. Previously, security is applied at the end of the software development phase and checked by separate quality assurance or a penetration testing team. This fact leads to a situation where security vulnerabilities can be ignored to ensure development progress. However, with the support of DevSecOps, security is integrated and performs parallel to development and operations, ensuring that vulnerabilities are detected earlier, remedied faster, and cost less.
+
+To integrate Sec into DevOps requires a lot of steps, which can be mentioned as pre-commit hooks, software component analysis (SCA), static application security testing (SAST), dynamic application security testing (DAST), etc. throughout the DevOps pipeline. In particular, static application security testing helps find potential vulnerabilities in the source code without executing the code, contributing to the safety of the software.
+
+From the above problems, it is essential to find out the vulnerabilities in Android applications. Most of these vulnerabilities stem from the process of programming and developing applications. Moreover, we can also prevent these vulnerabilities right in the programming process through secure coding. A tool to support programmers right in the coding process is necessary and convenient to help programmers see vulnerable code, unsafe protocols and can fix them instantly. In this paper, our main contributions are:
+- Research security vulnerabilities in Android applications. From there, synthesize common Android application attack scenarios and prevention methods.
+
+- Build a list and categorize common Android vulnerabilities.
+
+- Research Android lint and propose a new architecture for its Detection and Reporting System.
+
+- Build plugins for Android Studio, the 9Fix, to support secure programming, which integrates the proposed security protection category in Android.
+
+- Conduct experiments to test the effectiveness of the 9Fix plugin.
+
+The content of this paper is organized as follows. In Sect. 2, we briefly review the research on security issues in Android applications and the tools that help developers ensure the security of Android applications. In Sect. 3, we introduce the common security vulnerability in Android apps, which will be used to develop a security ruleset. From that ruleset, we then develop in Sect. 4 an Android Studio plug-in, 9Fix, which helps developers to inspect and fix the insecure code at programming time. The experiments of our 9Fix are discussed in Sect. 5. Finally, we give our conclusion for this work in Sect. 6.
+
+# 2 Related Work
+We divide related work into two small parts: discussing the research on security problems in Android application development and summarizing the methods or tools that help developers write secure code.
+
+# 2 Security Issues in Android Applications
+From the viewpoint of application development, we mostly focus on the security issues in the application layer. Those issues can be affected or triggered by the Android malware, wrongly implementing API or library, privilege escalation attacks, etc. Ma et al.  conducted a static analysis to extracts control and data dependencies and build a classification model to determine the authentication bugs in Android applications. That system successfully identifies 691 SSL/TLS authentication bugs. Using a static code analysis tool, Poeplau et al.  explored dynamic code loading in Android applications. Many programs load additional code in an insecure manner, according to their findings.
+
+In the context of mobile-based user-interface (UI) attacks, much research showed that clickjacking could easily deceive users into clicking on malicious controls. For example, the research of Aonzo et al.  demonstrated the end-to-end phishing attack requiring only a few user’s clicks. The ClickShield developed by Possemato et al.  employed image analysis techniques to determine whether the user could be confused in the phishing attack.

@@ -1,0 +1,58 @@
+Pavlou, P. A., Liang, H., & Xue, Y. (2007). Understanding and mitigating uncertainty in online exchange relationships: A principal-agent perspective. MIS Quarterly, 31(1), 105–136. https://doi.org/10/25148783.
+
+Perez, S. (2017). Majority of U.S. Consumers still download zero apps per month, says comScore. Retrieved from: https://techcrunch.com/2017/08/25/majority-of-u-s-consumers-still-download-zero-apps-per-month-says-comscore/.
+
+Petronio, S. (2002). Boundaries of privacy: Dialectics of disclosure. New York: Suny Press.
+
+Petronio, S. (2008). Communication privacy management. Wiley Online Library https://doi.org/10/9781118766804.wbiect138.
+
+Podsakoff, M. P., MacKenzie, B. S., Lee, J. Y., & Podsakoff, N. P. (2003). Common method biases in behavioral research: A critical review of the literature and recommended remedies. The Journal of Applied Psychology, 88(5), 879–903. https://doi.org/10/0021-9010.
+
+Ponte, E. B., Carvajal-Trujillo, E., & Escobar-Rodríguez, T. (2015). Influence of trust and perceived value on the intention to purchase travel online: Integrating the effects of assurance on trust antecedents. Tourism Management, 47, 286–302. https://doi.org/10/j.tourman.
+
+Posey, C., Lowry, P. B., Roberts, T. L., & Ellis, T. S. (2010). Proposing the online community self-disclosure model: The case of working professionals in France and the U.K. who use online communities. European Journal of Information Systems, 19(2), 181–195. https://doi.org/10/ejis.
+
+Posey, C., Roberts, T. L., Lowry, P. B., Bennett, R. J., ... Courtney, J. F. (2013). Insiders’ protection of organizational information assets: Development of a systematics-based taxonomy and theory of diversity for protection-motivated behaviors. MIS Quarterly, 37(4), 1189–1210.
+
+Posey, C., Roberts, T. L., Lowry, P. B., & Hightower, R. T. (2014). Bridging the divide: A qualitative comparison of information security thought patterns between information security professionals and ordinary organizational insiders. Information & Management, 51(5), 551–567.
+
+Privacypolicies (2018). Privacy policies are legally required. November 20 Retrieved from https://privacypolicies.com/blog/privacy-policies-legally-required/.
+
+Reychav, I., Beeri, R., Balapour, A., Raban, D. R., Sabherwal, R., & Azuri, J. (2019). How reliable are self-assessments using mobile technology in healthcare? The effects of technology identity and self-efficacy. Computers in Human Behavior, 91, 52–61.
+
+Roca, J. C., García, J. J., & de la Vega, J. J. (2009). The importance of perceived trust, security and privacy in online trading systems. Information Management & Computer Security, 17(2), 96–113. https://doi.org/10/09685220910963983.
+
+Shah, M. H., Peikari, H. R., & Yasin, N. M. (2014). The determinants of individuals’ perceived e-security: Evidence from Malaysia. International Journal of Information Management, 34(1), 48–57. https://doi.org/10/j.ijinfomgt.
+
+Shaw, N., & Sergueeva, K. (2019). The non-monetary benefits of mobile commerce: Extending UTAUT2 with perceived value. International Journal of Information Management, 45, 44–55. https://doi.org/10/j.ijinfomgt.
+
+Shin, D. (2010). The effects of trust, security and privacy in social networking: A security-based approach to understand the pattern of adoption. Interacting with Computers, 22(5), 428–438. https://doi.org/10/j.intcom.
+
+Smith, H. J., Dinev, T., & Xu, H. (2011). Information privacy research: An interdisciplinary review. MIS Quarterly, 35(4), 989–1016. https://doi.org/10/41409970.
+
+Smith, H. J., Milberg, S. J., & Burke, S. J. (1996). Information privacy: Measuring individuals’ concerns about organizational practices. MIS Quarterly, 20(2), 167–196. https://doi.org/10/249477.
+
+Statista (2018). Average number of new Android app releases per day from 3rd quarter 2016 to 1st quarter 2018. Retrieved from https://www.statista.com/statistics/276703/android-app-releases-worldwide/.
+
+Straub, D., Boudreau, M., & Gefen, D. (2004). Validation guidelines for IS positivist research. Communications of the Association for Information Systems, 13(1), 380–427.
+
+Susanto, A., Chang, Y., & Ha, Y. (2016). Determinants of continuance intention to use the smartphone banking services: An extension to the expectation-confirmation model. Industrial Management & Data Systems, 116(3), 508–525. https://doi.org/10/imds-05-2015-0195.
+
+Tsai, J. Y., Egelman, S., Cranor, L., & Acquisti, A. (2011). The effect of online privacy information on purchasing behavior: An experimental study. Information Systems Research, 22(2), 254–268. https://doi.org/10/isre.
+
+Walton, S. C., & Rice, R. E. (2013). Mediated disclosure on Twitter: The roles of gender and identity in boundary impermeability, valence, disclosure, and stage. Computers in Human Behavior, 29(4), 1465–1474. https://doi.org/10/j.chb.
+
+White, G., Ekin, T., & Visinescu, L. (2017). Analysis of protective behavior and security incidents for home computers. Journal of Computer Information Systems, 57(4), 353–363. https://doi.org/10/08874417.
+
+# A. Balapour, et al.
+
+# International Journal of Information Management 52 (2020) 102063
+Wottrich, V. M., van Reijmersdal, E. A., & Smit, E. G. (2018). The privacy trade-off for mobile app downloads: The roles of app value, intrusiveness, and privacy concerns. Decision Support Systems, 106, 44–52. https://doi.org/10/j.dss.
+
+Wu, K., Huang, S. Y., Yen, D. C., & Popova, I. (2012). The effect of online privacy policy on consumer privacy concern and trust. Computers in Human Behavior, 28(3), 889–897. https://doi.org/10/j.chb.
+
+Wurmser, Y. (2018). Mobile time spent 2018: Will smartphones remain ascendant? June 18 Retrieved from eMarketer https://www.emarketer.com/content/mobile-time-spent-2018.
+
+Xu, H., Dinev, T., Smith, J., & Hart, P. (2011). Information privacy concerns: Linking individual perceptions with institutional privacy assurances. Journal of the Association for Information Systems, 12(12), 798–824. https://doi.org/10/1jais.
+
+Xu, H., Teo, H., Tan, B. C., & Agarwal, R. (2009). The role of push-pull technology in privacy calculus: The case of location-based services. Journal of Management Information Systems, 26(3), 135–174. https://doi.org/10/mis0742-1222260305..

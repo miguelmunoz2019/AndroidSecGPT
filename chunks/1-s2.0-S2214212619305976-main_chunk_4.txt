@@ -1,0 +1,49 @@
+We have a false positive for the DebuggableStatusDetection protection because of the ApplicationInfo.flags attribute. We can suppose that Android standard libraries use this attribute and therefore we can remove it from our fingerprint. The same reasoning applies for the PackageInfo.signatures attribute found in the FontsContractCompat Java class, that results in a false positive for the Signature Checking protection. At Native level, we detect the only pthread_create symbol in the “string” library and not in the Debugger Detection protection, causing another false positive. Given these results, we refined the fingerprints in protection fingerprints by removing the protection atoms that are used not just by protections but also by other code.
+
+Finally, this analysis allows us to check the accuracy of ATADetector and the ASM module. Indeed, ATADetector is able to identify every Java class, method, attribute and string value we insert in the toy apps for implementing the protections. However, we still have to investigate more complex settings with more complex apps.
+
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# 4. Validation and refinement with open source apps
+To further validate protection fingerprints, we analyze a batch of 115 apps downloaded from F-Droid, an online repository that collects code of free and open-source apps. The availability of source code allows us to validate the results of ATADetector manually and distinguish true from false positives more easily. We choose these 115 apps by selecting the apps most downloaded from F-Droid. Table 4 (page 10) summarizes the results of the analysis in terms of true and false positives.
+
+Being the apps open-source, we expect to detect only a few protections. In fact, ATADetector identifies only 22 protections in 115 apps. Then, we check whether each of these 22 protections is a true positive or a false positive. During this process, we observe that many protections come from third-party libraries, like org.sufficientlysecure.donations. Based on this observation, we collect the package names of these libraries to be able to filter them later.
+
+Out of 22 cases, we identify 3 false positives only. One refers to the Emulator Detection protection. In this case, ATADetector identifies the presence of the string “nox”, the name of an Android emulator, and valuesBuild.DEVICE the attribute. An app can compare these two to check whether it is running on an emulator. Unfortunately, the app uses the “nox” string elsewhere, so it is not part of the protection. However, the app implements the Emulator Detection protection by comparing the value of the Build.DEVICE in the attribute with the “generic” string. This string is often present properties of Android emulators. Unfortunately, we cannot consider it a peculiar protection atom because too commonly used. Therefore, the app implements the Emulator Detection protection, but ATADetector does not match it properly.
+
+The other two false positives concern the Dynamic Analysis Framework Detection. Both of them are due to the detection of the “xposed” string. The first false positive is because the app was an Xposed module itself. The second is because the app inserted that string in an ad-blocker list.
+
+# 4. Validation and refinement with closed source apps
+We conduct a third validation against 50 apps randomly sampled from the Google Play Store. The source code of these apps is not accessible. Therefore, we validate the results of ATADetector by manually analyzing the code of the apps through reverse engineering. Table 5 (page 11) summarizes the results of this third validation.
+
+We identify 60 protections, way more than in the previous validation. For each of them, we check whether it is a true positive or a false positive. As a result, we find that 10 of the 60 protections are false positives. As in the previous step of validation, we manage to separate between libraries and app code, relying on the package names. Even though obfuscated, we empirically notice that it is highly likely that an app retains the structure and the names of the packages.
+
+First validation on 10 “Hello World” apps.
+
+Second validation on 115 F-Droid APKs.
+
+Third validation on 50 google play store APKs.
+
+S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+The Signature Checking protection has two false positives because of the provider.FontsContractCompat class in Android standard libraries. This class contains the PackageInfo.signatures attribute, which is essential for the detection of the protection that we cannot eliminate from the fingerprint. Therefore, we add peculiar strings found in the provider.FontsContractCompat class like “No package found for authority:”, “Found content provider” and “, but package was not” to the protection atoms. The idea is to use them to recognize this false positive. In practice, if ATADetector identifies all of these three strings, it will skip one occurrence of the PackageInfo.signatures because of the attribute. The Emulator Detection protection has one false positive detection of strings related to properties of Android emulators but too commonly used in Android apps. We are referring to strings like “unknown”, “Andy” and “vbox”. Therefore, we removed them from the fingerprint.
+
+# 5. Large-scale analysis
+This section reports the process we followed for performing a large-scale analysis on Android apps along with the final results and considerations. We first formulate five research questions to guide the definition of our experimental settings. Then, we describe the datasets we analyzed and a set of metrics over the data. After an overview of the procedure we followed during the analysis, we conclude the section by answering each of the research questions.
+
+# 5. Research questions
+We formulate five research questions to guide our large-scale study:
+1. RQ1: How frequently do apps use AD and AT protections?
+2. RQ2: How frequently do protections integrate each other?
+3. RQ3: How frequently are AD and AT protections deployed in developers’ code and in third-party libraries?
+4. RQ4: How frequently are AD and AT protections implemented at Java and at Native level?
+5. RQ5: What is the evolution in the adoption of AD and AT protections in apps?
+The first research question aims at measuring the extent to which Android apps employ AD and AT protections. The second research question relates to how many different protections an app implements and how they supplement each other. In particular, we want to investigate how they integrate when considering pairs of protections. This indicates how developers combine protections in their apps and what are the most popular pairings. The third research question aims at distinguishing between protections implemented by the developers and the ones derived from third-party libraries, measuring the extent to which developers actually protect their apps. AD and AT protections can be deployed both at Java and Native level. While it is easier to implement Java protections, Native ones are more difficult to bypass by attackers. The fourth question aims to discover how frequently developers opt for one or the other. The last research question assesses the evolution in the usage of AD and AT protections across years.
+
+# 5. Metrics
+To answer the research questions, we define the following metrics to apply on data resulting from the large-scale analysis:
+- Category - Each app belongs to one or more categories of the Google Play Store (e.g., Education, Sport, Communication). Each category hints to the purpose of the app and the assets that developers want to protect. It is reasonable to suppose that the need to protect apps changes from one category to the other. We use this metric in RQ1.
+
+- Scope - Android apps integrate many libraries developed by third-parties. We noticed that the developers of these libraries deploy AD and AT protections too. This metric, used in RQ3, specifies whether the protections derive from a third-party library or not.
+
+- Level - Protections can be implemented both at Java and Native level, each having its advantages and drawbacks. For example, the deployment of Native protections requires more effort but leads to more effective protections. This metric, employed in RQ4, allows identifying the programming language used for the implementation.
+
+- Year - To give perspective to our analysis, we also consider top-category Android apps available in 2015. In this way, it is possible to track the evolution in the adoption of AD and AT protections in the last four years. We use this metric in RQ5.

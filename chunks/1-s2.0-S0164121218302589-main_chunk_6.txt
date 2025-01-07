@@ -1,0 +1,45 @@
+# 4. Resource monitor
+As we explained in Section 2, components need permissions to access various system resources. Such system resources are accessed via the Context component, an Android component that holds information about the application environment and controls access to resources. DelDroid modifies Context to extract information from each resource access request, and passes it to the Resource Monitor to check whether the requester is allowed to access the requested service.
+
+As a concrete example, the following ECA rule is produced, from the LP architecture shown in Fig. 4, to grant ListMsgs permission to access the Bluetooth service:
+Event: resourceaccessrequest
+BLUETOOTH_SERVICErequester = ListMsgs ∧ service = Context.
+
+Condition: Action: allow
+When the ListMsgs component performs Bluetooth management tasks such as initiating device discovery or listing all paired devices, it tries to obtain a handle to the BluetoothManager service. The Android framework dispatches the request to the Context, which then sends the request to the Resource Monitor. Upon receiving the resource access request, Resource Monitor checks it against the ECA rules and performs the corresponding action (allows the request in this particular case).
+
+As another example, when the LevelUp component executes the dynamically loaded code shown in Listing 3, it tries to obtain a handle to the LocationManager service (recall line 4 of Listing 3). The Android framework dispatches the request to the Context, which then sends the request to the Resource Monitor. Since there is no ECA rule that grants LevelUp access to obtaining a handle to the device’s location, Resource Monitor prevents LevelUp from accessing the Location Manager service.
+
+# 5. Implementation
+DelDroid is a Java application that takes as input an Android system consisting of a set of APK files. As described earlier, the architecture extraction capability was built on top of several prior static program analysis tools . Each tool provides specific information that DelDroid uses to tailor the LP architecture. After that, DelDroid conducts a security analysis on the established LP architecture and records the security vulnerabilities that are found. The derived LP architecture and results of analysis are stored in a comma separated values (CSV) file. The implementation of DelDroid consists of more than 400 lines of code (LOC), not counting the existing tools on which it relies.
+
+The enforcement mechanism in DelDroid is implemented on top of the Android Open-Source Project (AOSP) AOSP version 6 (Marshmallow), API level 23. AOSP is the open-source repository for Android system maintained by Google. The Privilege Manager Layer introduced a new package in the Android runtime environment. We also modified other components such as ActivityManager.
+
+# 6. Experimental evaluation
+This section presents the experimental evaluation of DelDroid. Our evaluation addresses the following research questions:
+- RQ1. How effective is DelDroid in reducing the attack surface of Android systems and aiding the architect with understanding their security posture?
+- RQ2. How well does DelDroid perform in practice? Can it detect and prevent security attacks in real-world apps?
+- RQ3. How efficient is DelDroid in generating ECA rules that capture the determined LP architecture?
+- RQ4. What is the performance of DelDroid?
+We constructed datasets of benign, malicious, and vulnerable Android apps as shown in Fig. 6(a). The benign dataset is a collection of 370 apps, randomly selected from the Google Play store. To prevent any bias in the results, we did not use any particular criteria, such as high ranking or high downloads, in selection of the Google Play apps. Therefore, these apps vary in terms of their 5-star ranking, as depicted in Fig. 7(a), as well as their number of downloads, as depicted in Fig. 7(b). The second dataset is a collection of 389 vulnerable apps identified in prior literature . Finally, the malware dataset contains 225 apps obtained from various malware repositories (Zhou and Jiang, 2012; Contagio malware repository, 0000; Maggi et al., 2013). Fig. 6(b) illustrates the distribution of apps from various malware repositories that were used in our experiments.
+
+# 6. RQ1. Attack surface reduction
+By reducing the privileges granted to software components, DelDroid helps the security architects (or automated analysis tools) to focus their analysis effort on a narrowed set of interactions. To evaluate the degree to which DelDroid reduces the attack surface of Android systems, we ran DelDroid on 10 bundles.
+
+# 94
+M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+of apps, each containing 30 non-overlapping apps. We chose this number of apps, since it represents the average number of apps a smartphone user regularly uses per month, as shown in a recent study So many apps. Each bundle contains apps randomly selected from the app datasets as follows: 24 benign apps, 3 vulnerable apps, and 3 malicious apps. Fig. 8 depicts a histogram of the Google Play categories of the benign apps.
+
+# M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+Summary of app bundles, and Original and LP architecture obtained from running DelDroid over the bundles.
+
+Summary of ICC attack surfaces in both Original and LP architectures across app bundles.
+
+spoofing and 214 potential unauthorized Intent receipt ICC attacks, whereas the LP architecture contains only 1 potential Intent spoofing and 3 potential unauthorized Intent receipt attacks that need investigation. On average, an analyst needs to investigate 28 potential Intent spoofing and 8 potential unauthorized Intent receipt for a bundle of 30 apps using our approach. Note that an analyst needs to verify less than 2 security issues per app on average. Even in some cases, such as in bundle 1, all potential ICC attacks are already resolved with the LP architecture, entirely eliminating the need for further investigation.
+
+The results confirm the effectiveness of our approach in reducing the attack surface and hence reducing the effort required to assess the security properties of an Android system.
+
+# 6. RQ2. Attack detection and prevention
+To evaluate DelDroid’s ability to detect and prevent security attacks, we used 54 malicious and vulnerable open-source apps for which the steps and inputs required to create the attacks were known. To validate the attacks, we manually reviewed the code and affirmed the existence of security issues. In total, the resulting combination of apps had 18 privilege escalation and 24 dynamically loaded ICC attacks. We created a bundle of these 54 apps, ran DelDroid to obtain and analyze the LP architecture, and deployed the apps on our version of Android runtime environment. We then exercised the apps to create the attacks and determined whether DelDroid was able to prevent them. We report on the precision and recall of both detection and prevention. The precision shows the ability of DelDroid to detect/prevent system transactions that are actually malicious. On the other hand, the recall shows the ratio of the detected/prevented security attacks to all known attacks in the system.
+
+As shown in Table 4, DelDroid marked 19 inter-app communications as potential privilege escalation attacks, correctly detecting 18 attacks, i.e., true positive. Our manual inspection of the behavior that was wrongly classified as an attack showed that this was due to the shortcomings of the underlying static program analysis tools used in DelDroid. In particular, since the analysis tools relied upon in our work are not path-sensitive, DelDroid is bound to over-approximate the behavior of Android architectures, sometimes leading to such false positive outcomes. Overall, DelDroid achieves 94% precision and 100% recall in detection of privilege escalation attacks. Given DelDroid’s reliance on static program analyses, it is unable to detect security attacks launched via dynamically loaded code. In spite of that, as shown next, our experiments show that such attacks are effectively thwarted by an LP architecture. To evaluate DelDroid’s ability to thwart security attacks, we configured DelDroid to prevent all 19 detected privilege escalation attacks during the analysis step. We then manually exercised all known privilege escalation (19 cases) and dynamically loaded ICC (24 cases) attacks. As shown in Table 5, DelDroid was able to prevent all of the attacks from succeeding by intercepting either the ICC or resource access calls. However, one of the prevented ICCs was a legitimate communication that corresponded to the erroneously detected privilege escalation attack. Overall, DelDroid achieves 97% precision and 100% recall in prevention of security attacks.

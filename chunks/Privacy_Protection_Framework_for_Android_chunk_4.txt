@@ -1,0 +1,95 @@
+# FREQUENT PERMISSION SET MINING
+The second recommendation algorithm is based on predicting permission pair values that occur together. Relationships and patterns of the permissions requested simultaneously are studied. Based on the relationship that two permissions share, permissions are recommended for an application. Preliminary support calculation in predicting an event is based on frequency. Support is used to discover relationships among entities. Suppose an event (event B) taken from a dataset of N events occurs f times (frequency of event B). The support of event B is:
+Sup (B) = Frequency (B) / N (3)
+The permissions of the proposed test app At are extracted in V =< P1, P2, . . . , Pn > where Pi can take values from the set  depending upon whether the app takes the permission. Vectors of training data apps containing their permissions as Ai = {AP1, AP2, . . . , APn}, where APi takes the values from the set.
+
+# (iii) Recommendation of Permissions
+A recommendation score is generated for each permission request by the app A. It can be calculated using:
+RScoreCF (P) = ∑ S (A, A) (2)
+Here, majority voting is considered, with the voting’s weight proportional to the similarity score generated above. The generated RScore is normalized. Depending on the score, the permission is marked as safe if recommended for the app to be used; otherwise, it is marked unsafe. The step-by-step flow of the permission segregator is presented in Algo. 1.
+
+# Algorithm 1 Permission Segregator
+1. JaccardSim ()
+2. for i in range(len(app)): do
+3. check the vector scores 11, 10 and 01
+4. if ‘‘11’’ then
+5. → num++, denum++
+6. elif ‘‘01’’ or ‘‘10’’ then
+7. → denum++
+8. return num / denum
+FindSupportForPermissions () {
+→ every asked permission is analyzed based on category present a score is calculated and provided using Jaccard similarity for permission set
+return permissionScore[ ] }
+perms[ ] = FindSupportForPermissions ( )
+for i in range (len (perms)): do
+if (perms [i] > threshold) then
+self.safePermissions.append (self.permsAt[i])
+else
+self.unsafePermissions.append (self.permsAt[i])
+VOLUME 10, 2022
+7979
+# B. Mishra et al.: Privacy Protection Framework for Android
+# (i) Training of the Proposed Model
+Applications belonging to the same category follow some pattern of frequently co-occurring permissions as:
+Ai = &lt; P1, P3, P5, P6 &gt; (4)
+Ai+1 = &lt; P1, P2, P4, P3, P7 &gt; (5)
+Ai+2 = &lt; P1, P3, P8, P10 &gt; (6)
+Ai+3 = &lt; P5, P4, P7 &gt; (7)
+Taking in pairs &lt; P, Pj &gt;, the support of the co-occurring permission pair is calculated as:
+Sup (&lt; P, Pj &gt;) = Freq(&lt; P, Pj &gt;) / N (8)
+where N is the total number of applications in the category. Freq (&lt; P, Pj &gt;) is the frequency of the pair &lt; P, Pj &gt; when it is requested together.
+
+# (ii) Recommendation of permissions
+The support calculated for all pairs is analyzed.
+
+if Sup (&lt; P, Pj &gt;) > t then
+Recommendi(&lt; P, Pj &gt;) = 1 (9)
+Here, t defines the threshold value. Permission pairs having a support value higher than threshold are marked safe and recommended. Rest is marked unsafe Recommend (&lt; P, Pj &gt;) = 0. After calculating safe permissions from each recommender, the intersection of the resulting permission sets is the final permission set that will be used for further processing. Algo. 2 presents the various steps of the permission miner.
+
+# C. INSTRUMENTATION
+In this study, our primary focus is on dangerous permissions. The permissions suggested by the permission recommendation engine are fed into the instrumentation engine. The policies suggested by the permission recommendation engine are marked safe. The instrumentation engine modifies the policies marked as unsafe. Smali code is instrumented to facilitate communication with the background service at runtime. Hence, through instrumentation, the communication between the malicious detected app and the background service through broadcast receivers is enabled. Background processes are utilized as services on Android. These processes do not provide graphical components and are implemented for background activities for a given program. All services utilized by an app must be added in the manifest . Permissions that are marked unsafe are injected with the piece of code invoked by the required services using broadcast receivers. All the unsafe policies are instrumented within the app then repackaged using Apktool.
+
+# 1) DATA PROTECTION SERVICE
+The Data Protection Service is installed on the user’s phone and serves two purposes:
+# Algorithm 2 Permission Miner
+1. Permissions are numbered from 0 to n − 1.
+
+2. Data is then read to identify patterns.
+
+3. for i = 0 to n − 1 do
+4. Identify and store the dangerous permissions
+5. let there be k permissions
+6. for i = 1 to k do
+7. for j = i + 1 to k do
+8. Support between permissions i and j is calculated and stored {
+9. Support is calculated using:
+10. for i, row in Rows do
+11. if (values in two col same) then
+12. count ++
+13. }
+14. Max, Min, and Avg support are calculated for the k permission set.
+
+15. for i in 1 to k do
+16. Max = Max > support[i] ? Max: support[i]
+17. Min = Min < support[i] ? Min: support[i]
+18. sum = sum + support[i]
+19. Avg = sum / k
+20. for key, value in the stored list do
+21. if (key > Avg) then
+22. Permission required
+23. else
+24. Permission not required
+# a: INTERFACE FOR INSTALLATION FOR AN INSTRUMENTED APP
+It is the job of the service installed on the device to communicate with the server using a secure communication channel when the user asks the service app to secure the malicious app. The background service uploads the APK file of the app to be sent to the server for analysis and instrumentation. After the instrumentation is completed, the server sends the instrumented APK file back to the service using the same secure channel. The Data Protection Service receives the instrumented app to be installed back to the user’s phone. On receiving app, the background service prompts the user to “uninstall and install” i.e., uninstall the previous build and install the new modified build. The service runs a check on that app for its working. If the app is found to work without issue, the modified APK configuration is approved and sent to the server for future use. Whenever an app is sent to the server for analysis, the server checks the database for pre-existing records of the corresponding app. If found, it instruments the APK file using pre-processed values else, the algorithm determines the required permission set, and instrumentation is done accordingly.
+
+# b: BACKGROUND SERVICE
+Instrumented apps that get installed on the phone are now allowed to communicate to the pre-installed background service. Garbage values are returned to the app when the call.
+
+7980 VOLUME 10, 2022
+# B. Mishra et al.: Privacy Protection Framework for Android
+to unsafe policies is made. The call to the API triggers an intent to the background service running on the user’s phone. The service returns a garbage value, and hence the user’s privacy is protected. Thus, the data received by the proposed app is carefully monitored, and the broadcast receiver sends the garbage data corresponding to that permission to the malicious app. The data received by the app is treated as real data, while it is garbage. Hence, the proposed framework does not hamper the proper functioning of the app, solving the problem of malfunction of the apps if the user declines some unwanted permissions.
+
+# 2) ANONYMOUS AUTHENTICATION AND KEY AGREEMENT SCHEME
+To provide secure communication between mobile clients and the server, an anonymous authentication and key agreement scheme is also proposed. The notations used in this section are presented in Table 2.
+
+(i) The client Ci generates a random number ui and computes the IDi using the user’s email id EIDi and u,i IDi = h1(EIDi‖u). Ci Encrypts IDi with the server’s public key Ppub, C1 = EPpub (ID‖T1), where T1 is a timestamp. Ci sends &lt; C1 &gt; through a public channel. While IDi and T1 are encrypted with the server’s public key, only the server’s private key can decrypt C1.

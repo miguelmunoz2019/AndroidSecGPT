@@ -1,0 +1,76 @@
+- Provide more information on using certificates, keystores and truststores with the API.
+
+In this work we used two techniques to identify usability issues exist in JSSE API. Our results suggest that the cognitive dimensions questionnaire based methodology is a better technique to identify usability issues of a security API compared to user observation with think-aloud approach that we used. Cognitive dimensions based methodology identified 51 usability issues of the API while user observation identified 24 usability issues. Out of the 24 issues identified by user observation, 16 (67%) issues were identified in the cognitive dimension questionnaire method. We observed that some of the issues that participants reported in questionnaire answers are difficult to identify by observing participant behavior and their think aloud output. Participants tend to report issues in their questionnaire responses even when their behavior and immediate thoughts were not affected by those in an observable manner, but they later (by the time of completing the ques-
+# 66
+# c o m p u t e r s & s e c u r i t y 80 (2019) 54 – 73
+tionnaire) felt that there was an issue. For example, after completing the task, some participants reported that there are too many classes in the API, which made it difficult for them to figure out what classes to use. However, we could not identify this by observing their behavior and thoughts in the screen recordings. Stransky et al. (2017) mentioned that participants were willing to spend as much time as lab participants, Myers and Stylos (2016) suggest that in a remote study, participants may not provide full effort. However, this was not an issue in our case since we analyzed the participant behavior closely through screen recordings. If someone does not put enough effort for completing the task, we could easily identify that when observing the screen recordings. We came up with 1 such participant where we did not consider that participant’s results.
+
+# 8. Limitations
+As we mentioned in the section IV, there is still no proper way to design programming tasks to use in this kind of experiments. Therefore, we designed a programming task to closely match with the real world use cases of JSSE API. Having a proper approach to design programming tasks for similar experiments would help to increase the quality of data that are being collected. At the end of our study, we identified that the programming task should require programmers to take more security critical decisions, so it would enable experimenters to identify more details on what are the security critical mistakes that programmers would do while using the API.
+
+# 7. Effectiveness of conducting a remote behavioral study
+As we mentioned previously, there are many obstacles in conducting a study by bringing programmers into a lab and observing them. Some of the main obstacles for this are:
+- High cost
+- Low response rate
+- Lack of access to professional software developers that are capable of coming to the laboratory
+Therefore, we conducted our study as a remote behavioral study. Even though there have been several API usability studies that were conducted remotely (Acar et al., 2017a; 2017b), they have not studied the behavior of participants in depth as we did in our study. Lack of think aloud output was the main issue that we thought would occur as we might not able to nudge participants if they remain silent. However, this was not the case as we did not observe any lack of quality in the results we collected due to conducting the study remotely. In screen recordings, we observed that participants provide explanations for the majority of the decisions they took in their think aloud output and they kept talking throughout the whole period of the experiment.
+
+There are some advantages of conducting a remote behavioral study compared to conducting a lab study as well. Since lab environment is different from participants’ original workplace, their behavior will be different from their usual behavior. However, when conducting a study remotely, participants will complete the study at their home or at their workplace using their own equipment. Therefore, their behavior would be more natural.
+
+# Computers & Security 80 (2019) 54–73
+holds for API usability studies as well. Our results exhibit that participant pool we used was effective in exploring the research questions we wanted to answer in this study. However, because of the small sample pool we used, we could not infer any statistically significant results such as correlation between demographic variables and outcomes. We are planning to extend this study and explore these aspects in a future study.
+
+# 9. Conclusion
+In this study, we conducted a remote behavioral usability study with 11 software developers to identify usability issues that exist in JSSE API. Participants were asked to complete a simple programming task which requires to develop a secure socket connection using JSSE API. They had to think aloud and record their screens while completing the task and once they finished the task, they had to answer the cognitive dimensions questionnaire . Through the data we collected, we identified usability issues that exist in JSSE API.
+
+We identified that issues related to abstraction level, learning style and penetrability contributed more towards making the life of programmers hard while using JSSE API. We observed that JSSE API’s role expressiveness and domain correspondence dimensions are good which helped participants to have a better experience while using it. We analyzed and discussed how usability issues we identified in this study affected the experience of programmers who use JSSE API and the security of applications they develop.
+
+Finally, we discussed how the issues we identified should be addressed to improve the usability of JSSE API as well as of other APIs that provide SSL/TLS related functionalities. We expect our results would help to improve usability of similar security APIs that will be developed to provide security functionalities.
+
+# Appendix A. Filtering questionnaire
+- 1–2 years
+- 2–3 years
+- 3–5 years
+- More than 5 years
+• How many hours per week you spend coding using Java in present?
+- Currently I don’t use Java for programming
+- 1–10 hours per week
+- 11–20 hours per week
+- 21–30 hours per week
+- 31–40 hours per week
+- More than 40 hours per week
+• Have you used Java Secure Socket Extension (JSSE) API for developing applications at least once?
+- yes
+- no
+# Appendix B. Task description
+What is in this directory Client-src/*: This folder contains the source code of a simple java socket client. You will have to improve this source code to complete the task, which you are expected to do in this experiment.
+
+Server-src/*: This folder contains the source code of simple java socket server. You will have to improve this source code to complete the task, which you are expected to do in this experiment.
+
+resources/*: This folder contains a keystore file and a truststore file which you can make use in completing the task which you are expected to do in this experiment.
+
+Password for keystore: ******, Password for client-truststore: ******
+# Software prerequisites
+- You need to have installed a screen recording software. If you are a Windows or a Mac user, we recommend you to use “activepresenter”. If you are a Linux user, you can use “Kazam” or “Record My Desktop” or a similar software you are familiar with.
+
+- What is your name?
+- What is your email address?
+- What is your level of education?
+- - Less than high school diploma
+- High school diploma
+- Undergraduate degree
+- Postgraduate degree
+How many years you have worked in software engineering field (including contributing to open source products)?
+- - I have no experience
+- Less than 1 year
+- More than 1 up to 3 years
+- More than 3 up to 5 years
+- More than 5 up to 10 years
+- More than 10 years
+How many years you have been working on programming using Java?
+# Goal
+We have provided source codes for simple socket server and a socket client. When the socket server is started, it will start listening to port 3000 in the computer which the programme is running. A client can send messages to the server by connecting to the port 3000 of that computer.
+
+When the provided sample client is run, it will send a message to the socket server via a socket connection. When the server receive this message, it will print it and will send a reply to the client through the same connection.
+
+To try this out, first run the sample socket server we have provided (you can do this by opening the Server.java class in an IDE or by running it using command line) and then run the Client.java class.

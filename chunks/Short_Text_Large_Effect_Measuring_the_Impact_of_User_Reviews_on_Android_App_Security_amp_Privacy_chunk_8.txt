@@ -1,0 +1,7 @@
+23. J. Ren, M. Lindorfer, D. J. Dubois, A. Rao, D. Choffnes, and N. Vallina-Rodriguez, “Bug fixes, improvements, ... and privacy leaks – a longitudinal study of pii leaks across android app versions,” in Proceedings of the 25th Annual Network and Distributed System Security Symposium, ser. NDSS ’18. The Internet Society, 2018.
+
+24. “Amazon vine,” https://www.amazon.com/gp/vine/help.
+
+25. “App shortcuts,” https://developer.android.com/guide/topics/ui/shortcuts.html.
+
+26. “In android p, notifications for apps running in the background show if they’re using the camera or microphone,” https://www.androidpolice.com/2018/05/09/android-p-notifications-apps-running-background-show-theyre-using-camera-microphone..

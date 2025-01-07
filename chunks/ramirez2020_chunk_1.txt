@@ -1,0 +1,57 @@
+# 2020 13th CMI Conference on Cybersecurity and Privacy (CMI) - Digital Transformation - Potentials and Challenges
+978-1-7281-9056-3/20/$31 ©2020 IEEE | DOI: 10/CMI51275
+# A Survey and Comparison of Secure Software Development Standards
+Armando Ramirez
+Computer Science Department
+University of Wisconsin-Parkside
+Kenosha, WI, USA
+ramir022@rangers.uwp.edu
+Anthony Aiello
+Computer Science Department
+University of Wisconsin-Parkside
+Kenosha, WI, USA
+aiello@cs.uwp.edu
+Susan J Lincke
+Computer Science Department
+University of Wisconsin-Parkside
+Kenosha, WI, USA
+lincke@uwp.edu
+# Abstract
+There are standards, guidelines, and certifications for software security to help guide software development projects into becoming more securely written to comply with any regulations that may apply to the project. These best practices and standards include Common Criteria, The Open Group Architecture Framework (TOGAF), Security Assurance Maturity Model (SAMM), Building Security In Maturity Model (BSIMM), Application Security Verification Standard (ASVS), OWASP, and SAFECode, in addition to the national or international standards groups, PCI, NIST and ISO/IEC. In this paper, we focus on secure software development by surveying and comparing these methods and standards and discover which areas of the software development life cycle (SDLC) that one or more could be applied to improve the security of a software application during its development lifecycle.
+
+# Keywords
+security standards, OWASP, CC, TOGAF, SAMM, BSIMM, SAFECode, risk, risk management, risk assessment.
+
+# I. INTRODUCTION
+One of the most important issues and sometimes biggest challenges for companies is the development of secure software and implementing and managing security in the software development life cycle (SDLC) in order to make software more secure and adhere to standards and regulatory requirements. There exists a set of standards, guidelines, and certifications for software security to help guide secure software development projects. We survey these to describe the strength of each of these and to provide an overview of where a standard may best be used. This paper focuses on secure software development and ways to incorporate best practices throughout the lifecycle of the software product under development. We compare some of the most widely used standards, the best practices and guidelines, through research and literature review. We also discuss areas of the development process these standards and guidelines may apply to for a software development project to become more compliant with its relevant security requirements and/or regulations. Our goal is to provide a survey of a selection of software security standards, as well as to determine popular aspects of risk evaluation.
+
+Risk analysis literature exists for software design (e.g., ), security requirements (e.g., ), and safety standards (e.g., ); however, we are curious about which secure software development processes are adopted within industry security standards. Virtually no literature exists to date, listing and comparing many of the existing industry standards for secure software development.
+
+# II. LITERATURE REVIEW
+There are many reasons that security standards are ignored by developers during software development. Organizations often have conflicting goals of development speed versus security, which discourages the use of secure software standards or even software development lifecycle standards. Gandhi et al.  states that through assurance controls and security standards, we can manage vulnerable software. Geer suggests simplifying software security technologies to require less time and security expertise . This simplification allows for quicker adoption for processes and some technologies such as SDLs or maturity models; however, security expertise still needs to be a high priority despite the rapid changes required in software and hardware  . Aranda et al.  suggest that small companies rarely implement requirements techniques that address risk because it demands a radical change in their processes and increases cost. Our paper provides engineers with a road map of where to acquire both simple and complex secure software standards, according to their needs.
+
+It is recognized that there is a need for security standards. Farhan  points out the necessity of integrating security across the SDLC because traditionally addressing security was part of testing, which found bugs often too late. Second, a good standard is necessary to address a myriad of attacks such as SQL injection, command injection, buffer overruns, cross-site scripting, failure to handle errors, string formatting problems, neglecting change control, integer bugs, and poor usability. Fujdiak  recommends a two-pronged approach: proactive, which can help prevent, and reactive, which can help discover faults. Implementation of security standards can help to raise the quality of security in a software product and address these issues.
+
+Research in many cases recommends security standards, without offering a description of the standards. Fujdiak  recommends a secure software development lifecycle (SSDLC) where each development phase adds in security considerations. They suggest adhering to the standards set from OWASP, ISO/IEC, and NIST but do not contrast standards to use for different phases of a SSDLC and do not provide coverage to the standards they recommend. Geer introduces different security standards in achieving standardized security implementations including BSIMM or SAMM . While these papers recommend security standards, none of these papers provide a survey of available secure software standards.
+
+Shan et al.  reports the results of a questionnaire among industry sectors and found two standards that are most applied in industry, ISO 2700X, and for security analysis methodologies, Common Criteria (ISO 15408). They also provide a valuable table of standards that are used for specific sectors of industry. While they provide survey results of commonly used standards, they do not contrast or compare these standards.
+
+Some papers have used one or more standards during their development. Popić  recognizes that two of the biggest challenges in the software industry are software quality, and software security, and discusses the MISRA-C standard, which focuses on the safe use of the C programming language in critical systems. Jefcoat  created a file erasing tool that became certified by Common Criteria. Farhan  recommends NIST 800-64 for the SDLC and comments that OWASP – CLASP is simple and easy to implement. While these papers describe a singular or a pair of standards, they do not contrast them.
+
+We also considered research related to software risk analysis and standards. Risk analysis literature exists for software design (e.g., ), security requirements (e.g., ), and safety standards (e.g., ); however, we are curious which risk analysis processes are adopted within industry security standards. In this paper, we contrast risk recommendations by these standards.
+
+We evaluate standards related to maturity models, secure software development and international standards. We hope readers find our paper helpful in finding security standard(s) and source(s) that suit their needs.
+
+# III. SURVEY OF STANDARDS
+In this section, we perform a survey and comparison of security standards for software development and describe a few of the different security standards listed in Table 1. Here we provide an overview of some of the most popular software standards used in industry from a general perspective.
+
+# A. Maturity Models
+Maturity models help organizations introduce and evolve their software security process in a guided step-by-step manner. We examine the following maturity models, which are open community projects, and widely used in the IT industry: Building Security In Maturity Model (BSIMM) and Security Assurance Maturity Model (SAMM). These documents provide an overview by listing but not describing processes in detail.
+
+**SAMPLE OF STANDARDS AND THEIR APPLICATIONS**
+SAMM defines this standard as “open framework to help organizations formulate and implement a strategy for software security” , and BSIMM defines it as “a reflection of the current state of software security” where their primary aim is to “wider software security community plan, carry out, and measure initiatives of their own” . SAMM and BSIMM both define four categories called ‘business functions’ and ‘domains’ respectively, where each category is further defined into three practices. Both models also define three maturity levels, but SAMM has an additional implicit starting point at zero where activities have not been started.
+
+The practices and activities presented in these models differ slightly in the approach that each model takes to achieve a higher maturity level. For example, SAMM presents the activities along with the measurement of performance, associated assurance benefits, personnel involved, and costs. On the other hand, BSIMM presents the security activities along with the people involved and performance measurement.
+
+# B. Industry Groups for Software Development: Design, Code, Test Models
+Some standards emphasize these stages in detail: design, code and test, while still requiring aspects of security requirements. Coding and design standards define how security requirements should be included into the software development process. The requirements include security goals, purpose, target audience, regulations, and policies. Testing of software helps to verify and achieve effectiveness for newly integrated requirements. In this section, we introduce the following standards that are used in the private.

@@ -1,0 +1,79 @@
+# Issue:
+Any app can intercept an implicit pending intent (Mitra and Ranganath 2017) and use the pending intent’s send method to submit arbitrary intents on behalf of the initial sender. Consequently, a malicious app can tamper with the intent’s data and perform custom actions with the permissions of the originator. Relaying of pending intents could be used for intent spoofing attacks.
+
+# Symptom:
+The initiation of an implicit PendingIntent in the code.
+
+# Detection:
+We report a smell if methods such as getActivity, getBroadcast, getService, and getForegroundService on the PendingIntent object are called, without specifying the target component.
+
+# Limitation:
+Arrays of pending intents are not yet supported in our analysis.
+
+# Mitigation:
+Use explicit pending intents, as recommended by the official documentation.
+
+# SM12: Common Task Affinity
+A task is a collection of activities that users interact with when carrying out a certain job. A task affinity, defined in the manifest file, can be set to an individual activity or at the application level.
+
+# Issue:
+Apps with identical task affinities can overlap each others’ activities, e.g., to fade in a voice record button on top of the phone call activity. The default value does not protect the application against hijacking of UI components. Consequently, malicious apps may hijack an app’s activity paving the way for various kinds of spoofing attacks.
+
+# Symptom:
+The task affinity is not empty.
+
+# Detection:
+We report a smell if the value of a task affinity is not empty.
+
+# Limitation:
+We are not aware of any limitation.
+
+# Mitigation:
+If a task affinity remains unused, it should always be set to an empty string on the application level. Otherwise set the task affinity only for specific activities that are safe to share with others. We suggest that Android set the default value for a task affinity to empty. It may also add the possibility of setting a permission for a task affinity.
+
+In summary, each security smell introduces a different set of vulnerabilities. We established a close relationship between the smells and the security risks with the purpose of providing accessible and actionable information to developers, as shown in Table 2.
+
+6 https://developer.android.com/reference/android/app/PendingIntent.html
+7 https://developer.android.com/guide/components/activities/tasks-and-back-stack.html
+# Empirical Software Engineering
+The relationship between vulnerabilities and security code smells
+# 4 Empirical Study
+In this section we first present the Lint-based tool with which we detect security code smells, and introduce a dataset of more than 700 open-source Android projects that are mostly hosted on GitHub. We then present the results of our investigation into RQ2 and RQ3 by analyzing the prevalence of security smells in our dataset, and by discussing the performance of our tool, respectively.
+
+The results in Section 4 suggest that although fewer than 10% of apps suffer from more than two categories of ICC security smells, only small teams are capable of consistently building software resistant to most security code smells. With respect to app volatility, we discovered that updates rarely have any impact on ICC security, however, in case they do, they often correspond to new app features. On the other hand, we found that long-lived projects have more issues than recently created ones, except for apps that receive frequent updates, where the opposite is true. Moreover, the findings of Android Lint’s security checks correlate to our detected security smells.
+
+In Section 4, our manual evaluation confirms that our tool successfully finds many different ICC security code smells, and that about 43% of the smells in fact represent vulnerabilities. We consequently hypothesize that the tool can offer valuable support in security audits, but this remains to be explored in our future work.
+
+We performed analyses similar to our previous work, e.g., exploring the relation between star rating and smells, or the distribution of smells in app categories, and we did not observe major differences with our past findings . Our results are therefore in line with our prior research that did not consider ICC smells, and found that the majority of apps suffer from security smells, despite the diversity of apps in popularity, size, and release date.
+
+# 4 Linting Tool
+Our Linting tool is built using Android Lint, a static analysis framework from the official Android Studio IDE for analyzing Android apps. Android Lint provides various rich interfaces for analyzing XML, Java, and Class files in Android. Using these interfaces, one can implement a so-called “detector” that is responsible for scanning code, detecting issues, and reporting them. More specifically, each detector is represented by a Java class that implements Android Lint interfaces to access Android Lint’s abstract syntax trees (ASTs) of the app built from XML, source, or bytecode. In order to ease the AST traversal, Android Lint provides an implementation of the visitor design pattern with additional helper methods to support further interaction with the tree. The majority of methods use idiomatic names that
+https://sites.google.com/a/android.com/tools/tips/lint
+# Empirical Software Engineering
+closely resemble the developer’s intention, e.g., UastUtils.tryResolve() to resolve a variable, or the class ConstantEvaluator to evaluate constants. The latest Android Lint provides more than 300 different detectors to check several categories of issues such as, e.g., Accessibility, Usability, Security, etc.
+
+We extended Android Lint by developing twelve new detectors. These detectors implement UastScanner9 and XmlScanner interfaces to check the presence of security code smells in source code and manifest files, respectively. We implemented the detection strategies that we introduced for each security smell in Section 3. The complexity of our detectors varies; the average size of a detector is 115 lines of code.
+
+Android Lint brings analysis support directly into the Android Studio IDE. Developers can therefore receive just-in-time feedback during app development about the presence of security code smells in their code. For this purpose, the .jar file that contains our detectors should be copied into the Lint directory. These detectors will then be run automatically during programming in the latest Android Studio IDE (i.e., the Canary build), and notify developers about the security code smells once they appear in the code under development. Each notification includes an explanation of the smell, mitigation or elimination strategies, as well as a link to some references.
+
+Linting in batch mode is also possible through the command line interface, given the availability of the successfully built projects. In our experience, a successful build often entails changing build paths, and updating Gradle and its project configurations to a version that is compatible with the current release of Android Lint. We created a script to automate most of this non-trivial process. After a successful build of each project, another script runs the executable of Android Lint, and collects the analysis results in XML files. The tool is publicly available for download from a GitHub repository
+# 4 Dataset
+We collected all open-source apps from the F-Droid11 repository as well as several other apps directly from GitHub In total we collected 3,471 apps, of which we could successfully build 1,487 (42%). For replication of our results we explicitly provide the package names of all successfully analyzed apps,13 instead of a binary compilation, because of the dataset’s storage space requirements of more than 27 GBytes. In order to reduce the influence of individual projects, in case there existed more than one release of a project, we only considered the latest one. Finally, we were left with 732 apps (21%) in our dataset. The median project size in our dataset is about 1 MB, while the median number of data files per project is 108.
+
+# 4 Batch Analysis
+This section presents the results of applying our tool to all the apps in our dataset.
+
+9 The UastScanner is the successor of the JavaScanner, and, in addition to Java, also supports Kotlin, a new programming language used in the Android platform.
+
+10 https://github.com/pgadient/AndroidLintSecurityChecks
+11 https://f-droid.org/
+12 https://github.com/pcqpcq/open-source-android-apps
+13 https://github.com/pgadient/AndroidLintSecurityChecks/blob/master/dataset/analyzed apps.csv
+# Empirical Software Engineering
+# 4 Prevalence of Security Smells
+We were also interested in the relative prevalence of different security smells in the apps (see Fig. 2). Less than 1% did not suffer from any security smell at all, whereas the majority of apps, i.e., over 90%, suffered from one or two different smells. 9% of all apps were affected by three or more smells. No apps, fortunately, suffered from more than seven different types of smells. It is important to recall that the more issues that are present in a benign app, the more likely it is that a malign app can exploit it, e.g., with denial of service, intent spoofing, or intent hijacking attacks.
+
+# 4 Contributor Affiliation
+# Empirical Software Engineering
+# Different Smells Found in Apps
+The last bar represents the number of all projects maintained by 41 to 60 participants, while the line chart shows that projects with this many participants suffer on average from 2 security smell categories. We see that most apps are maintained by two contributors, followed by projects developed by individuals. A trend exists that projects with many participants.

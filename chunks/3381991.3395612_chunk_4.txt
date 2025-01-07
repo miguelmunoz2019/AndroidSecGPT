@@ -1,0 +1,47 @@
+# 4 Experimental Setup
+Normally, FL apps are used by more than one user, e.g., a parent and their child. In order for us to have a good analysis, we need to install each app on two devices. We use the Android Debug Bridge (ADB) command-line to perform the installation process. Both Android devices have Android version 8, which is known as Android Oreo.
+
+In order to launch an app, we extract the Launchable Activity from the Manifest file. Then, we pass the launchable activity to the ADB shell with the activity manager (AM) tool. We run each app for 20 minutes before uninstalling it. We think 20 minutes are enough to examine the main functionalities of each FL app. During the 20 minutes, we follow a predefined procedure for each app as follows:
+1. granting all the required permissions;
+2. creating an account for each app;
+3. creating a family circle;
+4. inviting group members;
+5. sending chat messages.
+
+After the predefined procedure above is completed, we use the Monkey tool to explore the app on the two devices (each device independently) . The Monkey tool performs stress testing on Android apps using some random UI events. We use the Monkey tool to send 500 random events to the app such as clicking, touching, pressing home buttons, starting calls, and entering random texts in order to trigger all the possible functionalities of the app.
+
+In Network Traffic Analysis, we use tcpdump for capturing traffic . Traffic traces are separated on an Android device for each app. Network traffic traces then can be used to detect any leakage of user information over HTTP connections. Ideally, all traffic should be by default encrypted. In this analysis, any unencrypted traffic by any FL app raises a flag for concerns. Then if we find sensitive data in the unencrypted traffic, we label this app as vulnerable to sensitive data leakage.
+
+# Session 3: Privacy and Data Sharing
+# SACMAT ’20, June 10–12, 2020, Barcelona, Spain
+During the testing of the apps, we record any sensitive information that can be entered by users, such as usernames, passwords, join codes, contact lists, and other group members’ information. We feed these items to our framework. Our framework utilizes a python script to parse and analyze network traffic and local storage to examine if PII and secrets have been leaked in plaintext. The network traffic and local storage files collected from the two devices are used to analyze the security and privacy of the FL apps. Every app is tested for 20 minutes, and we then remove the app from both phones.
+
+# 4 Security and Privacy Analysis
+# 4 Analysis of Information leakage
+First, traffic traces are used to identify data leakages of PII over HTTP. For our analysis, we focus on the sensitive information identified from the permissions analysis, and also the credential information that we collect during the manual testing, such as join codes. Some of this information is required for FL app functionality. However, sensitive data and secrets should never travel across the network in plaintext. We use direct pattern matching in network traffic to determine the leakage of sensitive information, such as location, join codes, contact information, passwords, device ID, email addresses.
+
+Furthermore, we extract all data stored by each app on Android internal storage, specifically, on the local databases. Then, we parse and display the data to determine whether user data are stored securely in internal storage. We use string pattern matching to detect sensitive information in plaintext in local databases.
+
+For external storage analysis, we extract the data from the SD card folder before uninstalling each FL app during the testing phase. We use the SD card folder for each FL app to find evidence of storing sensitive information on external storage in an unencrypted format. The SD card (external storage) is normally used to store multimedia files; however, some FL apps use the external storage to store sensitive information about FL app users.
+
+# 4 Analysis of Back-end Servers
+We used the network traffic analysis tool tcpdump, and the reverse engineering tool apktool to extract all URLs within each FL app. With the network traffic tool, we analyze all HTTP requests to understand what kind of information is required for servers to retrieve user data. We notice that a number of back-end servers of the FL apps rely on easily guessable information to return user information, such as the userID. The HTTP requests gathered from this procedure are used to test if it is possible to bypass the authentication scheme of the back-end server. To verify, we use a Chrome browser and resend the same HTTP requests that are extracted from the network traffic. If we can obtain user information from the server without an error message, we determined that a misconfiguration of user authentication exists. In this scenario, an attacker can retrieve many types of sensitive information about FL app users from the corresponding server by just guessing their userID. The absence of an authentication mechanism is a serious issue. Normally, security vulnerabilities may require some technical background like code analysis to carry harmful attacks. However, these kinds of vulnerabilities make it trivial for attackers to make a huge damage to FL app users as they can just guess user IDs to retrieve sensitive information.
+
+Additionally, we use Exerciser Monkey that generates random streams of user events such as clicks, touches, or gestures, as well as a number of system-level events. However, Exerciser Monkey does not cover all code branches. This is considered one of its limitations. As a result, we use apktool to extract all the URLs in the source code. The rationale behind this is to verify whether FL apps’ back-end servers implement an authentication mechanism. Also, we need to extract all HTTPS URLs in the FL app source code.
+
+# Session 3: Privacy and Data Sharing
+# SACMAT ’20, June 10–12, 2020, Barcelona, Spain
+to test if they encrypt their traffic or not by simply checking for the existence of SSL/TLS. We also leverage Qualys SSL Test . This tool helps us measure SSL/TLS configurations at the server-side. It also determines whether a server has an invalid certificate, an invalid configuration, an unknown CA, or other security issues. In addition, Qualys tests for SSL/TSL configurations if they have weak encryption suites, a vulnerability to the Heartbleed bug , or a vulnerability to POODLE (Padding Oracle Downgraded Legacy Encryption) attack . Such misconfigurations of SSL can lead to vulnerabilities that can be exploited by attackers. The Qualys SSL Test rates server configurations on a range from A+ (the best) to F (the worst). An “A+” means that the server is configured securely against the most common SSL/TLS vulnerabilities and attacks; an “F” means that the server is vulnerable to the most common SSL/TLS attacks.
+
+# 5 ANALYSIS RESULTS
+In this section, we show the results of our security and privacy analysis of 41 FL apps. At first, we start by examining all permission requested by FL apps. Second, we analyze all potential points for data leakages, such as network traffic and local storage analysis. Lastly, we test the back-end servers of corresponding FL apps for their authentication and authorization schemes.
+
+# 5 Permissions Analysis Results
+We found that many FL apps asked for permissions deemed dangerous. Android classifies permissions as dangerous if the permissions allow access to sensitive information that could potentially affect the privacy of the user or the security of the device . For instance, 85% of the 41 apps asked to write to the external storage of the device, 58% of them requested to read the user’s contacts.
+
+# Session 3: Privacy and Data Sharing
+# SACMAT ’20, June 10–12, 2020, Barcelona, Spain
+# Percentage among the vulnerable apps
+53% of them asked to read the phone’s status, and 51% of them requested access to the camera device. We highlight the dangerous permissions in bold in Table 2. Apps can use these permissions to access personal information or private resources, such as users’ location and external storage. Furthermore, we found some of the FL apps asked for permissions that were deprecated. For example, the “READ_HISTORY_BOOKMARKS” permission was deprecated as of Android 6.
+
+Due to these findings, we raise the question of how FL apps keep and transfer collected sensitive information of users. Maintaining the confidentiality of sensitive information is very important. FL apps with weak security mechanisms can leak private information.

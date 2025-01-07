@@ -1,0 +1,56 @@
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+Tam et al. , Nigam  and Suarez-Tangil  have extensively discussed the evolution of Android malware over the last decade. Apvrille and Nigam in  explore the practical usage of stealth techniques by Android malware. Christodorescu and Jha in their seminal paper  tests the effectiveness of different code obfuscation methods on desktop malware to evade popular scanning engines. Moreover, it reasons their low resilience against code transformations. Mairco et al. in  did a comparative evaluation of trivial obfuscation, string encryption, reflection and class encryption techniques. For trivial encryption, it considered class, field, filename, method and package renaming followed by repackaging. Furthermore, they assess the cumulative effects of obfuscation techniques. Preda and Maggi in  assess the effectiveness of mobile anti-virus against particular classes of code transformations. It evaluates techniques categorized into five classes namely, Trivial techniques (Repackaging, Reassembly and Realignment), Simple Control Flow modifications (Junk code insertion, Debug symbol stripping, Defunct code insertion and Unconditional jump insertion), Advanced Control Flow modifications (Call indirection, Code Reordering, Reflection and Opaque predicate insertion), Renaming (Resource renaming, Identifier renaming and Package renaming) and Encryption (Resource encryption, Native code encryption and string encryption). Like Mairco et al. in , it also concludes encryption to be effective in evading all anti-virus products. It used DES based encryption, whereas  employed XOR for encryption.
+
+Badhani and Muttoo in  calculates control graph based similarity measure between original and obfuscated apps. It divides code obfuscation into five levels based on changes it performs. It uses techniques from  for creating obfuscated apps. It concludes its resilience towards detecting single level obfuscations, but during multiple obfuscations, similarity was found low. Cho et al. in  propose an obfuscation assessment scheme to evaluate the obfuscation level. It tries to quantify by calculating obfuscation score based on sensitive API usage. Strength of API hiding, Repackaging and Class encryption obfuscation methods are computed. Table 4 briefs work on detection of obfuscation types. There exist multiple works on obfuscation detection but very limited methods focus on the detection of specifics. It also compares the obfuscation strength of each method based on detection results available in the literature. It is worth highlighting, that Resource Encryption, String Encryption and Class Encryption are hardest to detect and most evasive. While they induce code complexity, they also cause size overhead.
+
+# 5. Android obfuscators and hardening tools
+Above discussed techniques are widely used to mitigate automatic analysis, reverse engineering and securing the intellectual property from prying analysts . Multiple frameworks are available in the market providing range and combination of code obfuscation and application hardening methods [5,20,65–68,72,93,111,169,177–180]. These open source and commercial frameworks differ in scope and obfuscation depth . Code obfuscators target different code levels namely: Java code, bytecode and native code.
+
+We have performed a comprehensive analysis of popular Android application hardening tools with reference to the features and techniques. Table 5 illustrates the compiled list.
+
+# 6. Related works
+Android is a market mover and popular target amongst malware authors, various studies on Android application protection and code obfuscation are available in the literature. A comprehensive Android threat taxonomy is detailed by Shabtai et al. in . Current literature studies focus on evolving hardening techniques; its challenges and improvements ; detection  and evasion work. Tam et al. , Nigam  and Suarez-Tangil  discussed evolution of Android malware over the last decade. Apvrille and Nigam in  focussed on practical usage of hardening techniques by Android malwares. In  and  authors survey existing obfuscation techniques employed in various systems. Faruki et al. discussed obfuscation methods, application protection and deobfuscation methods specific to Android in.
+
+Dong et al. in  provided an understanding into Android code obfuscation and carried out a large scale investigation on 114,560 samples for its usage. Various static and dynamic code obfuscation approaches are presented in  such as renaming, string encryption, control flow obfuscation and reflections. Furthermore, they also analyze obfuscation at bytecode. Effectiveness of these hardening measures is also available in literature [9–13,20,52,94,126,185]. Park et al. in , empirically analyzed application similarity between original software and the one transformed by code obfuscation. Furthermore, it tried to detect obfuscation and check its authenticity. Code obfuscation detection methods are available in [6,14,42,161,186–188]. Cho et al. in  introduced DexMonitor a Dalvik byte code analysis framework. State of art deobfuscation methods is discussed in.
+
+Haupert et al. presented a comprehensive survey of Runtime Application Self-Protection (RASP) methods for application hardening and analysis environment detection . They presented an in-depth study of Promon Shield, a market leader in RASP tool. Bulazel in  experimented a fingerprint based method for multiple platforms for evasion detection and evasion mitigation. Furthermore, it presents case studies of defensive and offensive evasion approaches. Other anti-debugging, anti-rooting, anti-emulator and anti-tampering approaches are evaluated in.
+
+Different methods on packaging exist in  and the approaches targeting packed applications are evaluated in [39–41].
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+Comparative analysis of effectiveness of obfuscation techniques.
+
+OS: Obfuscation Strength; SO: Size Overhead; Notations from low to high:
+Comparative analysis of android application hardening tools.
+
+CO: Code Obfuscation, AD: Anti Debugging, AE: Anti Emulator, AH: Anti Hooking, AR: Anti Rooting, AT: Anti Tampering, RP: Resource Protection, DB: Device Binding, AK: Anti Keylogger, AS: Anti Screen reader, SN: Secure Network.
+
+Techniques on Assets and resources are presented and evaluated in . Suarez-Tangil in  introduced Stegomalware, an approach to hide executable application components within its resources such as audio files. Comparative analysis of state of the art application hardening approaches in recent years is illustrated in Table 6.
+
+# 7. Discussion and directions for future works
+In summary, we feel Android application hardening methods are effective against reverse engineering. Malware detection studies have shown that code obfuscation hinders the analysis process. Multiple studies about the effectiveness of commercial anti-malware engines have been tested against obfuscation and evasion based methods. As mentioned in Section 1, our investigation has yielded an enumeration of challenges to address. Below we provide some direction for future work in the field of Android application hardening and their detection.
+
+1. Trivial APK techniques being non-complex and incurring low overhead are popular among developers. Machine learning based approaches are likeable in future to ensure scalable detection of them. However, feature extraction and selection for learning must be carefully crafted to be truly representative.
+
+2. Combination of code obfuscation techniques results in added space and code complexity. Thus finding the optimal obfuscation level and combinations which are efficient against overhead requires further consideration.
+
+3. A challenge for researchers is the lack of benchmark or standard methodology for evaluating the effectiveness and efficiency of code obfuscation transformations. We conceive the existence of publicly available test datasets for researchers to benchmark their methods. And present datasets should expand to include new samples on regular basis.
+
+4. Third party libraries often used for location, networking, advertising and other services are pervasively integrated with applications. A scalable third party library search can be modeled to identify application semantics in future.
+
+5. More recent malware have introduced runtime based obfuscation (using reflection and native code) to subvert Android Runtime. With the history of native code obfuscation effectiveness on x86, we foresee runtime obfuscation to be more relevant for Android code obfuscation.
+
+6. Polymorphic and metamorphic code obfuscations are successful in x86 architecture but are not explored by researchers for Android. Dynamic analysis approaches being used against obfuscation methods can be mitigated by.
+
+# Computer Science Review 39 (2021) 100365
+Survey on the state-of-the-art android malware hardening approaches.
+
+R: Repackaging, CDO: Constant Data Obfuscation, VDO: Variable Data Obfuscation, CLO: Control Logic Obfuscation, AT: Anti Tampering, AH: Anti Hooking, AD: Anti Debugging, RD: Root Detection, AE: Anti Emulator, DB: Device Binding, AS: Anti Screen reader, AK: Anti Key, NW: Network, A: Assessment, D: Detection and E: Evasion.
+
+# 8. Conclusion
+Android being the most popular smartphone OS is available on various smart devices. Apps installed on these smart terminal are on the rise. Thus, attracting malware authors and researchers alike with increased research in reversing techniques. Through surveying the collected literature this paper follows a literature review process, first to conduct a survey of the existing obfuscation and preventive techniques used in the state of the art literature. Second, to illustrate current security services and framework in Android OS. Third, to assess the effectiveness of obfuscation techniques and hardening tools. Fourth, based on the survey, we highlight the issues of existing approaches related to them. Finally, we summarize the trends in application hardening and provide research gap for future works to present a complete picture. We conceive this work as a complement to existing works by filling research gaps and presenting future directions. We trust this survey will cater researchers to identify desirable hardening techniques and their respective analysis approaches.
+
+# Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.

@@ -1,0 +1,63 @@
+Android provides an important class called WebViewClient. The methods (listeners) of this class enables apps to listen and respond to events occurring within WebView. We will call these methods WVC-listeners all over the paper. Each one of the Android security directions that have been receiving intense research efforts is WebView vulnerabilities Luo et al. (2011). The main cause of existing vulnerabilities over the JavaScript Bridge is the fact that traditional security models of web context Georgiev et al. (2014) conflict with the
+# 4. Threat model
+The threat model studied in this paper focuses on the ways in which Android applications may be attacked by malicious web pages. The applications are assumed to be benign ones that are serving web applications. Our model considers first-party applications (owned by the served web applications) and third-party applications (that are not owned by the served web application injecting malicious JavaScript code). An overview of our attack scenario is presented in Fig. 1. The scenario assumes that the attacker tries to deceive the victim app to load a malicious web page into the app WebView. Then, malicious JavaScript code of the loaded web page launches attacks on app WebView as follows. Once loaded into the WebView, the malicious JavaScript code can run the WebView interface methods (annotated with @JavaScriptInterface) to obtain the sensitive data. Allowing the malicious JavaScript to run the interface methods is visualized in the figure as
+# Listing 4 – WebViewClient Example.
+
+lack of privilege isolation Jin et al. (2015). This conflict was partially treated by NoFrak Georgiev et al. (2014) that extended SOP to cover local resources. The extension idea was employed again in MobileIFC Singh (2013) to resolve access control between the web and mobile frameworks.
+
+Many types of possible attacks against Android WebView related to the vulnerabilities treated in our work were presented by Luo et al. Luo et al. (2011). Among the previous works, the two ones that are closer to WebV Sec are BabelView Rizzo et al. (2018) and BridgeScope Yang et al. (2017). Relying on static information analysis, BabelView aims at evaluating the potential impact of JavaScript injection attacks in WebView. The main idea is to instrument applications to introduce possible attacker behaviors. However, BabelView does not cover all the vulnerabilities we will illustrate in this paper. BridgeScope aims at assessing JavaScript interfaces using static analysis. Similar to our work and to BabelView, BridgeScope evaluates possible paths to and from methods of interface classes. BridgeScope relies on a custom flow analysis. The main limitation of BridgeScope is the lack of analysis of listener methods of WebViewClient classes. With respect to BridgeScope and BabelView, WebV Sec focuses on a wider scope concerning the detection of WebView vulnerabilities.
+
+Chin et al. Chin and Wagner (2013) studied the relationship between file-based cross-zone scripting attacks and excess authorization, on one side, and WebView vulnerabilities, on the other side. JavaScript interface implementations that misuse or do not consider Transport Layer Security (TLS) were considered vulnerable by Neugschwandtner et al. in Neugschwandtner et al. (2013). Their work linked requiring privacy critical permissions to WebView vulnerabilities. Without considering the expose of JavaScript interfaces, unsafe navigation and content retrieval in WebView are treated in Mutchler et al. (2015) by Mutchler et al. Middleware frameworks of third-party hybrid applications are investigated in Georgiev et al. (2014). Yang et al. in Yang et al. (2019) presented a WebView vulnerability related to web iframe/popup, namely the non Differential Context Vulnerabilities (DCVs). These vulnerabilities show that iframe/popup can open holes on Android WebView defense mechanisms to gain privileges. DCV facilitates performing phishing attacks, destroying the integrity of web messaging, and accessing sensitive functionalities. In Hu et al. (2018), Hu et al. introduced Android bugs related to WebView interaction mechanisms. Their work studied the causes and consequences of these bugs. Unlike our current paper, above-reviewed papers did not study security issues related to WebViewClient objects, accompanying WebView.
+
+Previous works Hassanshahi et al. (2015); Jin et al. (2014) have focused on the techniques for injecting malicious code into WebView. HTML5-based hybrid applications deal with many types of objects. This enables a wide range of cross-site-scripting attacks Jin et al. (2014). These attacks are enabled when the user loads the malicious page within the WebView. The other type, Web-to-Application injection attacks (W2AI) is based on Intent hyperlinks reacting to link clicking in the browser Hassanshahi et al. (2015). Draco Tuncay et al. (2016) is a framework for uniform and fine-grained access control of JavaScript execution in WebView.
+
+In Li et al. (2017), Li et al. introduced a new type of attacks, namely Cross-App WebView infection, that is caused by the possibility of WebView to send navigation requests to another one via Intents and URL schema. Cross-App WebView infection can result in unauthorized execution of app components and enables multi-app colluding attacks. Origin Stripping Vulnerabilities (OSV) are triggered upon calling the window.postMessage API when the identity of the sender is not distinguishable and source origin is not safely obtainable. This is true as well for Android hybrid applications. A new technique, OSV-Hunter was introduced in Yang et al. (2018) to detect OSV.
+
+# WebView
+# Mobile Application
+# Sensitive Interface
+Class
+Call from JS
+JavaScript
+Source API
+Sink API
+WebViewClient Class
+Callback from
+Source API
+Malicious JavaScript
+Sink API
+GPS
+Storage
+Legend: Legitimate Data Flow                        Malicious Data Flow
+WebView holes facilitating leakage of sensitive data. Malicious data flow is marked with circles.
+
+Our model also considers threats resulting from binding WebViewClient classes to WebView ones (through the setWebViewClient API). Via manipulating WVC-listeners, attackers can gain access to sensitive data. One way of this manipulation is by letting the malicious JavaScript code generate webpage events (e.g., page reload) that trigger WVC-listeners. Therefore, it may become possible to read sensitive data via one of WVC-listeners and send this data out via another WVC-listener. It is also possible to design an attack in which an annotated method of an interface cooperates with a WVC-listeners. Up to our knowledge, attacks that involve WVC-listeners are not treated by state-of-the-art techniques, such as BabelView Rizzo et al. (2018) and BridgeScope Yang et al. (2017).
+
+Our thread model identifies high-impact WebView vulnerabilities in Android applications. This is done via evaluating the privileges that an attacker would gain by:
+- injecting arbitrary JavaScript code into HTML or scripts loaded in a WebView.
+
+- manipulating the WVC-listeners to abuse the source and/or sink APIs included in them.
+
+The threat model of this paper assumes that the JavaScript code is arbitrary and fully controlled by the attacker. Hence, we do not need to analyze JavaScript code. We also do not need to worry about the manipulation techniques of WVC-listeners. Abusing methods of JavaScript interfaces and WVC-listeners requires the attacker to know their names. A simple reverse engineering process can provide such information.
+
+# 5. New webview vulnerabilities
+This paper considers four types of vulnerabilities that attackers can utilize to launch WebView attacks through injected JavaScript code and WVC-listeners manipulation. Here, we first formally present the four types of vulnerabilities and then provide an illustrative example, taken from a testbed Android application we developed.
+
+Definition 1 and Definition 2 introduce execution paths that play a vital role in vulnerability formalization.
+
+Definition 1. An interface path is an execution path that is embedded in an annotated interface method. The set of all interface paths in an app is denoted by P.I
+Definition 2. A WebViewClient path is an execution path that is embedded in a WVC-listeners. The set of all WebViewClient paths in an app is denoted by PW.
+
+# Type 1 Vulnerability (Interface-Interface Vulnerability)
+An Android application has a type 1 vulnerability if it has n execution paths, P1, . . . , Pn, such that:
+1. ∀1 ≤ k ≤ n, Pk ∈ P,I
+2. P1 has a source API that reads a sourced value, s.
+
+3. ∀1 ≤ k ≤ n, Pk may move the sourced value s to other variables.
+
+4. Pn has a sink API that leaks one of the variables that has the sourced value s.
+
+In other words, an Android app has a type 1 vulnerability if it has an ordered sequence of n(n ≥ 1) interface paths such that: the first path reads sensitive data; all paths may move the read data to other containers (registers); the last path leaks the sensitive data from any of its containers.
+
+# 6 Design of our tool: WebV Sec
+This section presents the design of WebV Sec, our proposed system for detecting WebView vulnerabilities presented in Section 5. WebV Sec relies on two heuristically designed sets of inference rules: the first set abstracts the Dalvik byte code of Android applications, while the second aims to detect the four vulnerabilities addressed in this paper. Table 2 presents semantics of notation used in this section.

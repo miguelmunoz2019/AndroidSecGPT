@@ -1,0 +1,54 @@
+Developers pointed to technical aspects when answering Q6, indicating the difficulty of exploiting a security weakness as more important than the motivation to exploit it (i.e., the actual gain an attacker gets). Indeed, the difficulty of exploiting has been mentioned by 79% of the surveyed developers, as compared to the ∼56% mentioning the potential gain. Answers to Q7 stress again the importance for developers of protecting sensitive information, with most (88%) of the respondents reporting confidentiality and privacy violations as the main factors impacting the dangerousness of a security weakness.
+
+Finally, we analyze the answers provided for Q10, related to the tools used by developers to detect security weaknesses. None of the surveyed developers mentioned tools developed in academia. Clearly, this does not mean that the adopted tools do not use any idea proposed in the literature.
+
+Among the mentioned ones (available in our replication package) there are AppScan from IBM (2020), Infer from Facebook.
+
+# A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+# The Journal of Systems & Software 187 (2022) 111233
+# Security weaknesses mentioned by developers: Available tools.
+
+(2020), SonarQube (2020), and pre-launch reports given by Google Play when uploading the app to the market. Then, we looked into the relevant literature for tools that can be used by developers to detect the types of security weaknesses they more often face or they perceive as more dangerous (i.e., previously analyzed answers to Q8 and Q9). Table 3 reports categories of security weaknesses with corresponding references presenting approaches for their detection. Some categories are merged in a single row since their security weaknesses are quite similar, and approaches related for one category should work for the other as well. For 12 of the 28 types of security weaknesses mentioned by developers we found at least one approach supporting their automatic detection. On the one side, this shows that the research community is working on security weaknesses that are relevant for developers. On the other side, the developed approaches are unknown (at least) to our small pool of surveyed developers. This may also be due to the unavailability of industry-strength products implementing these approaches.
+
+# 3. Stability of the taxonomy
+Among the 250 commits analyzed by the two Master students (see Section 2 for details), 73 were classified as false positives for Java and 24 for Kotlin. This left us with 153 valid instances that have been used for the construction of the validation taxonomy (See Fig. 7). Looking at it, it can be seen that 85% of the identified categories are already covered in our taxonomy and only 8 new categories were identified (i.e., CWE-22: Improper Limitation of a Pathname to a Restricted Directory, CWE-372: Incomplete Internal State Distinction, CWE-392: Missing Report of Error Condition, CWE-400: Uncontrolled Resource Consumption, CWE-446: UI Discrepancy for Security Feature, CWE-474: Use of Function with Inconsistent Implementations, CWE-544: Missing Standardized Error Handling Mechanism, and CWE-766: Critical Data Element Declared Public). Also, all these categories are child of one of our root categories. This indicates a good generalizability of our taxonomy. Additionally, although the proportion of Kotlin artifacts is considerably lower than the amount of Java ones, it is worth noting that in the two taxonomies the distribution of types of security weaknesses across Java and Kotlin is similar.
+
+# 4. Threats to validity
+# Construct validity.
+
+We identified through manual analysis the types of security weaknesses fixed by developers. To mitigate subjectivity bias, two authors have been assigned to each commit and, in case of conflict, the commit was assigned to a third evaluator.
+
+Also, when the type of security flaw being fixed was not clear, we assigned the “unclear” tag rather than best-guessing the classification. Despite this mitigation strategies, imprecisions are still possible. Concerning the survey, we tried to not bias the participants’ answers especially in the context of questions asking for the most common/dangerous security weaknesses they faced in their apps. For this reason, we did not provide a multiple choice answer but we used an open answer.
+
+# Internal validity.
+
+In the survey, we collected information about the background of the participants, and excluded developers having no experience with native Android apps. For the manual study, we acknowledge that we only analyzed one specific source of information (i.e., security weakness-fixing commits) and this may have an impact on the derived taxonomy. Similarly, we only included in the manual analysis commits that impacted a single file, to make sure that the “security weakness” mentioned in the commit message was located in that file. Again, this could have affected the resulting taxonomy.
+
+# External validity.
+
+We manually analyzed a total of 681 security weakness-fixing commits coming from 315 apps. However, due to the removal of false positives and “unclear” instances, our taxonomy is based on 386 actual instances. Also, we asked two Master students to analyze an additional set of 250 instances to test the generalizability of our taxonomy. Analyzing additional instances and other orthogonal sources of information (e.g., ) could complement our taxonomy. As for the survey, we collected a total of 43 complete answers. While this number is limited, it is in line with many previously published survey studies in software engineering (see e.g., Dagenais et al., 2010; Canfora et al., 2012; Romano et al., 2020).
+
+A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+The Journal of Systems & Software 187 (2022) 111233
+10
+# A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+# The Journal of Systems & Software 187 (2022) 111233
+# Empirical studies on security weaknesses in Android apps.
+
+# 5. Related work
+Several techniques have been proposed to detect, and in some cases fix, vulnerabilities in mobile apps (e.g., Arzt et al., 2014; Li et al., 2015; Sadeghi et al., 2017; Lee et al., 2017; Singleton et al., 2019; You et al., 2016; Bello-Jiménez et al., 2019). We focus on studies investigating security-related aspects in Android apps, since these are the most related to our work. Table 4 provides an overview of the discussed studies, reporting for each reference, the year of publication, a brief summary of its contribution, the size of the dataset including the number of analyzed apps (#a) or commits (#c) since our paper reports this information, along with the number of security weaknesses types and categories that have been outlined.
+
+Felt et al. (2011) identified over-privileges in the permissions (e.g., bluetooth, read contacts) of one-third of the 940 Android apps they analyzed. 10 most common unnecessary permissions are identified, and the percentage of overprivileged applications varies from 5% to 16%. The authors point out that this is mainly due to developers not interpreting correctly the API documentation. The results of our work, and especially of our survey, support the relevance of permissions for the vulnerabilities affecting Android apps.
+
+Enck et al. (2011) investigated the root causes of vulnerabilities in 1100 free Android apps. The authors find misuse of sensitive information (i.e., phone identifiers and geographic location) among the root causes. Android-specific vulnerabilities relate all to the sensitivity of data, and 8 different types are identified, e.g., leaking information to logs, unprotected broadcast receivers, etc. The security of Android APIs was also considered insufficient, but no vulnerability was found able to maliciously control the apps.
+
+The mishandling of sensitive information is also a prevalent aspect in our taxonomy.
+
+Egele et al. (2013) used a static analysis technique to capture cryptographic misuses in 11k+ apps. They showed that 88% of the analyzed apps do not correctly use cryptographic APIs. This is mainly due to the lack of inter-procedural analysis that correlates multiple functionalities (e.g., encryption and decryption) within a method instantiation. Focus here is on cryptography, and 6 different types of violations (e.g., constant encryption keys) have been highlighted. Instances of issues related to cryptography are found both in Java and Kotlin in our taxonomy.
+
+Sufatrio et al. (2015) presented a secondary study reviewing the literature about existing security solutions for Android apps. The taxonomy is relevant for five deployment stages, i.e., development, availability on markets, installation on a device, execution, and security settings modification. It surveys existing work, it does not rely on a specific dataset of analyzed apps/commits, but it elaborates on the literature to derive a taxonomy including 5 categories and 18 types of security vulnerabilities that should be prevented.
+
+Zuo et al. (2015) exploited static and dynamic analysis to detect apps opening https web pages with illegal certificates.

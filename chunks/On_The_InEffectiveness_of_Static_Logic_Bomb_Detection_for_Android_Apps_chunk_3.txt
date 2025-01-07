@@ -1,0 +1,46 @@
+Indeed, while the Pearson correlation coefficient does not indicate any linear correlation (we can intuitively see the exponential correlation in Fig. 3) due to the value of 0, the Spearman Correlation Coefficient computed based on Equation (2) assures us that the relationship between the variables observed can be represented using a monotonic function  due to a coefficient of 0.
+
+In Equation (2) rgx and rgy respectively represent the rank variables of x and y. Similarly, srgx and srgy respectively represent the standard deviations of rgx and rgy.
+
+Better, as exponential functions can be approximated into linear functions by taking the logarithm of both sides, we can compute a linear correlation coefficient on (x ; log(y))i for i ∈ {0, 1, ..., n} (n being the number of pairs of data) and extrapolate the results for the original data. We obtain a score of 0, which is a strong linear correlation, assuring us that the original data is positively correlated following an exponential function.
+
+The explanation for this exponential correlation is simple: to understand and detect logic bombs, this approach aims at retrieving the semantic of objects of interest. This means that the more objects to model, the more statements to take into account while modeling, therefore the more time the analysis will take. This can be problematic for an application with many objects or an application where the developer deliberately introduces useless objects to introduce noise in the analysis.
+
+Additionally, we can see in Table 1 that the number of reachable branches and the duration of the analysis is, similarly to the number of objects and the duration of the analysis, positively correlated following an exponential function. Indeed, it introduces new paths, meaning many values to remember depending on the path during the symbolic execution.
+
+We also extracted two other features to understand the form of the check when detected. We wanted to know if the intra-procedural logic formula extracted during the analysis was complex or not in the general case. We can see in Fig. 5 that in the majority of the cases, there is only one predicate in the formula, which means that the triggered behavior, in the case of this particular analysis, is generally isolated not part of a multiple branch decision.
+
+Furthermore, the density of instructions dominated by a trigger is interesting to study. Indeed, we can see that in the...
+
+# SAMHI AND BARTEL: ON THE (IN)EFFECTIVENESS OF STATIC LOGIC BOMB DETECTION FOR ANDROID APPS
+# VirusTotal (VT) Detection Rate of TSO PEN Flagged Applications 
+The majority of cases, the number of guarded instructions by a trigger is lesser than 10 (JIMPLE instructions). As the number of instructions is small, we can assume that those instructions represent different calls to other classes’ methods to perform a useful action. This assumption correlates with the fact that in most cases, the component in which is the trigger is a basic class (see Fig. 4), that is to say, a non-Android component class. In fact, in 55% of the cases, one of the instructions is a method call, which confirms our previous data records of Fig. 4.
+
+To retrieve the rate of false-positives among the 99651 detected applications, we based ourselves on VirusTotal . However, the VirusTotal score is challenging to trust for qualifying an application as malware. That is why we decided to classify these applications by detection rate. Table 2 shows that the rate of false-positives reaches a lower bound of 17% and an upper bound of 24%.
+
+We applied TSOPEN on 508122 Android applications with a success rate of 79%. Our experimentations show that the approach scales on large datasets. However, it also shows that the approach has a high false-positive rate of 17% which would require much manual work (which the automated analysis was trying to prevent).
+
+# 4 RQ2: What Parameters Can Impact the False Positive Rate?
+The conclusion of RQ1 is surprising since we do not reach the false positive rate of the literature (0%). Thus, in this research question, we identify the main parameters that could significantly impact the false positive rate. Since we run many analyses, we cannot use the massive dataset of RQ1. We thus build a new smaller dataset. In order to build it, we operated as described in the literature. That is to say, we only considered benign applications from Google Play using the minimum score given by VirusTotal . For this, we, again, used the Androzoo dataset . Then, we analyzed the applications to check whether they contained the permission android.permission.RECEIVE_SMS, use a location API or a time/date library. Similarly to the literature, we selected 5803 time-related applications, 4135 location-related applications, and 1400 SMS-related applications. We ended up with a total of 11338 unique benign applications with an average of 24 seconds per application. A success means that the analysis for an application did not reach the timeout nor crashed.
+
+The analysis found 9535 suspicious triggers, 4824 applications with a suspicious check, 3636 applications with suspicious triggered behavior and 3099 applications after post-filters (see Table 8 for more information) yielding a false-positive rate of 27%.
+
+On a dataset with two orders of magnitude smaller than in RQ1, we find that the false positive rate still reaches a high value of more than 27%.
+
+# 4 Sensitive Methods Filter
+In this experiment, we randomly remove methods in the list of sensitive methods, one after the other, to observe the impact on the false positive rate. We perform this experiment 32 times to see if the results converge. Fig. 6 shows the results of this experiment. Each curve represents an experiment. We see that in order to reach a low false-positive rate (e.g., 0%, represented by the dotted line), we have to remove, on average, more than 11500 methods ( > 90%) from the list of sensitive methods, which will be missed during the analysis.
+
+We can also see a curve diving fast on the leftmost side of the graph of Fig. 6. It represents the same filter for which the most used sensitive methods are removed first. The sensitive methods are ordered by their occurrence in logic bombs based on the results of the control experiment in Section 4.
+
+We observe that to reach a low false-positive rate represented by the dotted line, removing the 68 most-used methods is enough. This means a concentrated number of sensitive methods are used to qualify a trigger as a logic bomb. Those methods mostly allow one to read device information, write into logs/files, and communicate with the external world.
+
+# 4 Control Experiment
+The control experiment, in which we do not change any parameter, has been conducted in the same context with the timeout set to 1 hour per app. Our analysis was able to successfully analyze 7297 applications out of 11338 (i.e., 64%)
+# IEEE TRANSACTIONS ON DEPENDABLE AND SECURE COMPUTING, VOL. 19, NO. 6, NOVEMBER/DECEMBER 2022
+Experimental Results With Timeout Variation (cols. 2 and 3), Symbolic Filter (col. 4), Package Filter (col. 5)
+Top 15 Sensitive Methods Considered Order by Number of Occurrence in the Default Experiment of Section 4
+We provide in Table 4 the list of sensitive methods, each present in at least 1% of logic bombs detected in the control experiment of Section 4. Those 15 methods represent 80% of the total of potential logic bomb yielded by our tool. Although some of these methods can be omitted in a definitive list, others like TelephonyManager.getDeviceId, which is considered sensitive as it can be leaked and deliver information to the attacker, have to appear in the list of sensitive methods considered. This method alone corresponds to 0% of the rate of false-positive. We observe that each method in the list can have a considerable impact on the false-positive rate.
+
+From the definition of a false-positive in the literature, we can deduce that a false-negative, in this case, it is a malicious application not flagged by the tool. Therefore, to measure the rate of false-negative in our study, we use a dataset containing only malicious apps. As before, we randomly remove methods from the list of sensitive methods. Fig. 7 details our findings. We can first see that the false-negative rate starts from 45%, then we can see that removing sensitive method increases the rate of false-negative (while decreasing the rate of false-positive, see Fig. 6). We have seen previously that removing about 11500 sensitive methods could be helpful to reach a low false-positive rate close to 0%. In Fig. 7, we can see that doing so would set the false-negative rate between 70% and 95%, which would be unacceptable to detect malicious applications.
+
+Changing the list of sensitive methods can significantly impact the false-positive rate and the false-negative rate, at least up to two orders of magnitude.

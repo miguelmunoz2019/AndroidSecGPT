@@ -1,0 +1,50 @@
+Interestingly, we also observed that a considerable number of users (36%) in the default device group (Group A) did not recognize the privacy indicator. Most of these users admitted that they had not noticed its existence during their regular smartphone usage. However, a few users in Group B did notice the indicator under certain circumstances. For instance, one user noted that the battery icon turned green when the camera application was launched, prompting them to investigate further and thus recognize the privacy indicator. Similarly, another user noticed the green dot that appeared and disappeared as they switched between the front and back cameras, which was also when the deceptive status bar appeared and disappeared.
+
+# 3 DEVICE CONFIGURATION TAMPERING (DCT) ATTACK
+In this section, we present our second attack scenario involving device configuration manipulation to disable the privacy indicator.
+
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+# 3 Threat Model
+The threat model we consider involves Android devices with a reverse shell, a type of connection where the target device initiates a connection to the attacker’s machine. Once established, the attacker gains remote control over the target device, including the ability to disable the Android privacy indicator. We posit that the attacker installs a remote access trojan (RAT), a malware type that facilitates remote access by establishing a reverse shell. With this shell, the attacker gains control over the device, potentially spying on the user, stealing personal information, or commandeering the device.
+
+This attack requires rooted devices. In a standard user-privileged application, attempts to execute commands to disable the Android privacy indicator using Runtime.exec() can be blocked by the SEAndroid policy and the system-privileged permission WRITE_DEVICE_CONFIG. However, a root process can bypass these protections. As the system’s most privileged process, it can execute any command that alters device configuration. Root access is generally acquired via applications like Magisk or by exploiting Linux kernel vulnerabilities, such as “dirty pipe.” Our study’s reliance on this strong threat model (rooted devices) represents a notable limitation in assessing device configuration tampering attacks on standard Android devices in real-world scenarios.
+
+# 3 Android DeviceConfig Service
+The DeviceConfig service provides a way to modify the values of settings on Android devices from a remote server like the Android Debug Bridge (ADB). Developers usually utilize this service for testing purposes. They are able to view all currently running services, their corresponding flags, and specific values (e.g., timeouts and durations) by connecting to the device via the ADB shell and typing ‘cmd -l.’
+# 3 DCT Attack Method
+The device configuration tampering attack exploits rooted devices by leveraging a reverse shell with the Android DeviceConfig service.
+
+The attack employs publicly available exploit kits, such as Metasploit and AndroidRAT. Additionally, ‘ngrok’ is utilized to establish a secure tunneling service to the attacker’s local host. The Android privacy indicator can be toggled on or off via exploit tools that implement the device configuration tampering attack and through the Android-provided DeviceConfig service. The indicators can be manipulated using ADB shell commands as follows:
+- Disable: device_config put privacy camera_mic_icons_enabled false default
+- Enable: device_config put privacy camera_mic_icons_enabled true default
+The system-privileged service “com.android.shell” possesses the WRITE_DEVICE_CONFIG permission and all essential SEAndroid policies to bind to the DeviceConfig service. Exploit kits can enable reverse shell sessions and spawn processes with user privileges on compromised devices. If a user-privileged application intends to execute an attack command through Runtime.exec(), the SEAndroid policy and the system-privileged permission WRITE_DEVICE_CONFIG could deny it. Therefore, a rooted device is necessary to execute DeviceConfig commands with elevated privileges, ensuring the success of the device configuration tampering attack.
+
+The Android privacy indicator relies on the interplay between the System UI and the AppOpsManager service. The AppOpsManager service detects the use of the camera or microphone by an application, while the System UI is responsible for rendering the indicator icons and dots at a specified location on the device screen.
+
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+Yurak Choe, Hyungseok Yu, Taeho Kim, Shinjae Lee, Hojoon Lee, and Hyoungshick Kim
+# 3 DCT Attack Results
+We observed that manipulating the Android privacy indicator feature flag can potentially disable the privacy indicator feature introduced in Android 12 and subsequent Android devices.
+
+For our experiment, we set up a virtual victim by rooting a Samsung Galaxy S22 model using Magisk. We considered a situation where a malicious application was installed on the victim’s device, crafted via Metasploit or AndroidRAT and supporting reverse shell. The test results for the Samsung Galaxy S22 are shown in Figure 6. Figure 6(a) presents the screen status with an active camera on a factory image before the attack, showcasing a visible green dot, a component of the Android privacy indicator. In contrast, Figure 6(b) shows the screen state after the attack, demonstrating that the Android privacy indicator feature was deactivated through a device configuration tampering attack. We performed additional testing on 10 popular third-party camera apps that are downloaded from the Google Play Store. Our tests showed that the Android privacy indicator was completely deactivated in all 10 third-party camera apps. We demonstrate that our proof of concept application can effectively disable the privacy indicator by employing the DeviceConfig service to modify the KEY value.
+
+Post-exploitation entails actions after session initiation. A session is an active shell from a successful exploit or brute force attack, appearing as either a standard shell or Meterpreter. Actions in an open session can include collecting system information, running Meterpreter modules, and searching the file system. Post-exploitation assesses the capabilities and values of the target system.
+
+# 4 EFFECTIVENESS OF ATTACKS
+We have discovered that the Android privacy indicator feature is vulnerable to two distinct types of attacks: UI overlay attacks and device configuration tampering attacks.
+
+UI overlay attacks exploit Android’s overlay capabilities to create a UI layer that obscures the privacy indicator, making it invisible or difficult for users to recognize. One straightforward method involves a malicious application creating a layout with a higher Z-order, which overlays a black bar over the Android privacy indicator. This specific UI overlay attack is termed COA. Our testing on early Android 12 versions of the Samsung Galaxy S22 (OneUI 4) showed that COA was effective in concealing both the icon animations and dot components of the Android privacy indicator. However, only the icon animation was masked on Google Pixel 3 and Google Pixel 6 devices with Android 12 and 13, with the dot remaining visible. This difference is because these devices have a system-level flag that guarantees the highest Z-order for the status bar. After our report, the Samsung Galaxy S22 was updated to OneUI 4, which reinforces the highest Z-order for the status bar, thereby successfully preventing COA. This highlights the importance of maintaining the highest Z-order for the status bar to safeguard the integrity of the privacy indicator.
+
+Another UI overlay attack, termed DOA, creates a deceptive status bar with a green battery icon, effectively camouflaging the Android privacy indicator dot. Due to its visual trickery, it is important to design the privacy indicator UI that is resistant to such deception in addition to ensuring the highest Z-order of the status bar.
+
+In addition to overlaying another screen atop the privacy indicator, it is also possible to render it transparent. This can be achieved by changing the memory value where the transparency of the privacy indicator UI is stored, making it completely imperceptible.
+
+Device configuration tampering attacks, requiring a rooted device, are typically executed via root exploit malware that alters the Android OS kernel for superuser access. A recent security vulnerability named “dirty pipe” (CVE-2022-0847) discovered in Linux kernels from version 5 and onwards exemplifies such attacks. This vulnerability enables unauthorized processes to inject code into root processes, resulting in privilege escalation and the ability to overwrite data in arbitrary read-only files. Even with patch updates, achieving root privileges remains a recurring vulnerability. The device configuration tampering attack was possible because a mechanism existed to turn the Android privacy indicator feature on/off with a simple shell command.
+
+Moreover, the detection method in the Android privacy indicator could be exposed to a workaround to bypass the permission check. As illustrated in Figure 7, the Android privacy indicator feature executes detection and indicator display in EL0 (user mode). Since most threat models target Android’s EL0 and EL1 regions, the privacy indicator is susceptible to malware attacks.
+
+To address this, we propose a solution that uses isolated areas from Android’s execution environment to alert users to the use of privacy-sensitive devices like cameras and microphones.
+
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+In this paper, we introduce a proof-of-concept architecture implementation that demonstrates the effectiveness of our proposed solution.

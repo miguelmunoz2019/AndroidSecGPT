@@ -1,0 +1,70 @@
+# Types of possible Threats:
+In a study by , it has been indicated that there are several threats that are possible in applications. In another study  stated that input validation is the most dangerous and general type of attack. The author noted that developers tend to forget to put validation on what is fed to users. Because of this, malicious user provides unauthorized input that leads to crash or infect the application. Attacks that fall in this category are Buffer overflow, Cross-site scripting and SQL injection.
+
+Furthermore, it was indicated that authentication is one of the posed threats, in which user credentials are provided to prove the legitimacy to use application. This mechanism should be applied to some sensitive application so that illegitimate person cannot do interference. Attacks that are common in this category are: Brute force attack, Cookie reply, Dictionary attack and Credential theft.
+
+# Mobile Security
+Mobile security can also be referred to as digital security, this is because digital security falls under the area of safeguarding the data that is on phones, computers or internet . A study
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+by  further indicated that digital security includes safeguarding of digital characters. It encompasses taking all needed precautions to ensure that identities, resources and technology in networked and mobile world are secure. Digital products that are networked can be hacked or stolen. In simple terms, digital Security is securing networked systems. As for , it was stated that when it comes to digital security concerning smartphones, the platforms used are not greatly protected and very susceptible to attack. Smartphone operators are unaware about the security issues of their phone. The main operating system commonly used in smartphones are android, iOS, Windows, blackberry, Symbian, Bada.
+
+information security. The growth of encryption is moving toward a future of unending prospects. Daily new encryption techniques are discovered.
+
+# Challenges of Mobile security
+A study by  stated that smartphone users are exposed to different threats. These threats may disturb operation and transfer user data from smartphones. The main threat targets are:
+1. Data: This is the main target of any attacker. Sensitive information like passwords or Debit/Credit card number may get stolen.
+
+2. Identity: Smartphones have a different identity like IMEI, IMSI or UDID. Apps may transmit all these information to steal the identity of owner.
+
+3. Availability: one can deprive the services or limit the access by attacking a smartphone.
+
+# Application Security
+Application security is an arm of security that focuses mainly on the security of application built for various platforms like mobile application, web application and system application. This ensures that there is no weakness in design, development, deployment and maintenance of application. It also checks the complete code’s life cycle of an application to avoid the security gaps in policy ,.
+
+# III. Understanding Cryptography
+A technique used to make data incomprehensible to an unauthorized person is called Cryptography. By doing so, confidentiality is guaranteed to genuine users . On the other hand, The author in  stated that key area of concern in the acceptance of cloud is the security of the data in the cloud database server. There is need for a great degree of privacy and authentication. Cryptography is one of the essential techniques that can guarantee protection of data in a cloud database server. Cryptography offers various symmetric and asymmetric algorithms to ensure data security. According to , it was stated that encryption is the method of transforming normal text to unreadable format. Decryption is the method of transforming encrypted text to normal text in the readable format.
+
+# Classification of Cryptography
+There are a number of algorithms used to encrypt text into cipher text, but these algorithms are not adequate because encryption is a very common practice for upholding.
+
+This paper  stated that encryption algorithms can be categorized into two; Symmetric and Asymmetric key encryption. These algorithms are as shown in figure 2 and 3 respectively.
+
+# Purpose of Cryptography
+According to , There a number of security goals that is provided cryptography to ensure the privacy of data, non-alteration of data and so on. Cryptography is widely used today because of its great security advantages. Following are the various goals of cryptography ,.
+
+1. Confidentiality: Data in computer is transmitted and only authorized party can access it.
+
+2. Authentication: The data received by any system has to check the identity of where it is coming from whether the data is received from an authorized person or a false identity.
+
+Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# iii. Integrity
+Only the authorized party is permitted to alter the transmitted data.
+
+# iv. Non Repudiation
+Guarantees that neither the sender, nor the receiver of message should be able to reject the communication.
+
+# v. Access Control
+Only the authorized parties are able to access the given information.
+
+# vi. Service Reliability and Availability
+Unsecure systems usually get attacked by intruders, which may affect their availability and type of service to their users. Therefore a system should be secure and provide a way to grant their users the quality of service they expect.
+
+In another study by , a distributed security infrastructure for mobile agents were described. The first feature of the infrastructure is believable; this means that mechanisms are provided for authenticating information furnished by an agent. A second security property is survivable. What this means is that a mobile agent can be programmed to withstand different attacks by malicious hosts on each individual agents; this is achieved through encryption as well as agent replication and voting. The major feature of the infrastructure is that mobile agents are themselves used to enforce the security properties.
+
+Furthermore, The author in  proposed a security framework for mobile agent systems. This work was initiated by a strict conceptual forming of mobile agent systems, which shows the most important ideas for mobile agent system and thus unifies their image and defines the associations concerning them.
+
+A study by  evaluated the mobile operating systems of two giant technology providers Apple and Google and concluded that they are almost similar in terms of technology. But, android has a few hitches, which are signing process, permission system problem in case of social engineering and fast vetting process. For IOS, these worries are handled very well. Specially that App store is the only place where to download app.
+
+This paper  detailed a study of android users in trying to shed light on how users see the risks linked with app permissions and in-built adware. There were several questions given in a web study, with results representing exciting differences between males and females in installation conduct and approaches to security.
+
+According to , security weaknesses of the Android system poses risk to safe mobile use of users. In an event of serious flaws, there may even be property harms. A study by  suggested that though it is very problematic to offer comprehensive security in android devices, there are safe and secured way to use smart devices positively to circumvent misuse by hackers.
+
+# Comparisons of different Cryptographic Algorithms
+ provides a comparative examination of encryption algorithm based on 14 factors. The Encryption techniques that were examined are AES, DES, 3DES, RSA and results are presented in Table 1.
+
+# IV. Related Works
+In a study on security in mobile cloud applications this paper  stated that the services provider proposed answers for matters in the Cloud. These security complications regarding data transmission are answered by service providers by means of security protocols such as SSL/HTTPS. However, this kind of protocols are high energy consuming on one hand and offer security properties on a second hand as a block without taking into consideration the type of data transmitted or the user anticipations. The framework that was proposed by the researcher further explained that these days private and delicate data is kept on smart devices for quick access. There is more need to take mobile security extra seriously as there is growing usage of internet and mobile devices. Therefore, everyone's priority should be to understand security and protection of data.
+
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+mechanisms used by the malware authors were indicated. An insight into the strengths and shortcomings of the known research methodologies was also given.

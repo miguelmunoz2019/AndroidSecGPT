@@ -1,0 +1,55 @@
+Amazon Kindle, an app that provides access to an electronic library of books—with a total of more than 100M installs, uses two vulnerable libraries: XML2-2 and Libpng-1. XML2-2 contains a variant of the “billion laughs” vulnerability which allows attackers to craft an XML document with a large number of nested entries that results in a denial of service attack. XML2-2 is vulnerable since Nov. 2014 and continues to be used in recent versions of the app. Libpng-1 has a NULL pointer dereference vulnerability. This vulnerability was published 6 years ago under CVE-2013-6954 and it remains unchanged in recent releases of Amazon Kindle.
+
+DoorDash, a food delivery app with more than 10M installs includes GIFLib-5 which was reported vulnerable over 8 months ago. A malformed GIF file triggers a division-by-zero exception in the DGifSlurp function in GIFLib versions prior to 5. This vulnerable library remains unchanged up to now.
+
+Target uses OpenCV-2 as a dependency of card.io which enables card payment processing. This version of OpenCV was announced vulnerable in Aug. 2017 yet remains unchanged in these apps.
+
+# TABLE V: 10 out of 14 popular apps from Google Play which include a vulnerable library that remained unchanged.
+
+Finding 5: These four apps showcase that these vulnerabilities are wide-ranging involving denial of service, memory leaks, or null pointer dereferences. The high severity and long exposure time of these vulnerabilities results in ample opportunity for attackers to target these highly popular apps.
+
+# C. RQ3: Rate of Vulnerable Library Fixing
+To determine the vulnerability response rate, we identify the duration between (1) the release time of a security update and (2) the time at which app developers applied a fix either by (i) updating to a new library version or (ii) completely removing a vulnerable library. Recall that we collected the previous
+versions of the top 200 apps from Google Play. Moreover, we inferred the library versions from 7,253 libraries using LibRARIAN. Given the histories of apps and inferred library versions we can track the library life span per app—i.e., the time at which a library is added to an app and when it is either removed or updated to a new version in the app.
+
+To this end, we analyzed 40 popular apps with known vulnerable versions of FFmpeg, GIFLib, OpenSSL, WebP, SQLite3, OpenCV, Jpeg-turbo, Libpng, and XML2, between Sept. 2013 and May 2020. We exclude apps that removed a library before a CVE was associated with it and apps containing libraries that are vulnerable up to the writing of this paper. We obtained the date at which a library vulnerability was found; when a security patch was made available for the library; and the time at which either the library was updated to a new version or removed. Table VI shows all the combinations of apps and vulnerable libraries.
+
+# Finding 6:
+On average, library developers release a security patch after 54 ± 8 days from a reported CVE. App developers apply these patches, on average, after 528 ± 40 days from the date an update was made available—which is about 10 times slower than the rate at which library developers release security patches.
+
+Finding 6 reveals that many popular Android apps expose end-users to long vulnerability periods, especially considering that library developers released fixed versions much sooner. This extreme lag between release of a security patch for a library and the time at which an app developer updates to the patched libraries, or just eliminates the library, indicates that, at best, it is (1) highly challenging for developers to update these kinds of libraries or, less charitably, (2) app developers are highly negligent of such libraries.
+
+TABLE VI: Combinations of 15 apps and particular vulnerable library versions they have contained, the date the vulnerability was publicly disclosed (Vul announced), the period between vulnerability disclosure and patch availability in days (i.e. Time-to-Release-Patch (TTRP)), and the total number of days elapsed before a fix was made (i.e. Time-to-Apply-Fix (TTAF)).
+
+Developers applied security patches for vulnerable libraries at a rate as slow as 5 years, in the case of Xbox, and as fast as 267 days for Instagram, where a vulnerable version of FFmpeg was removed in that amount of time. In order to determine what type of fix was applied by a developer, we checked the next app version where a vulnerable library was last seen. We found that developers either kept the library but updated to a new version, removed a vulnerable version, or removed all native libraries in an app. In the next paragraphs, we discuss five popular native libraries used in Android apps that exhibit particularly slow fix rates: FFmpeg, OpenSSL, GIFLib, OpenCV, and SQLite3.
+
+Multiple vulnerabilities were found in versions 2 and 3 of FFmpeg in Dec. 2016 and Jan. 2017, respectively. The number of days a security patch was released for these vulnerable library versions is 4 and 2 days, respectively. However, developers took 267 days to address vulnerabilities in Instagram, and nearly 3 years to apply a fix in Starmaker.
+
+OpenSSL-1a and OpenSSL-1s were associated with CVE-2010-2939 and CVE-2016-2105 in Aug. 2010, and May 2016 of which OpenSSL developers provided a security patch 91 and 12 days after. However, developers of Zoom took 1,323 days to apply a fix, while developers of Amazon Alexa took 1,086 days.
+
+A heap-based buffer overflow was reported in GIFLib-5 at the end of 2015. The results show that 3 apps using this vulnerable version of GIFLib have an average time-to-fix, i.e., total number of days elapsed before a fix was applied, of 850 days (2 years), which is 10 times slower. This lag time is particularly concerning since GIFLib released a fix 87 days after the vulnerable version.
+
+A fix to an out-of-bounds read error that was affecting OpenCV through version 3 was released 41 days after the CVE was published. The vulnerable versions of this library affects 3 apps in total: Uber, Lyft, and eBay. OpenCV has an average time-to-fix of 799 days (i.e., 2 years), which is 19 times slower than the rate at which library developers of OpenCV release security patches.
+
+SQLite3 released version 3, which fixes an integer overflow found in all versions prior to 3. Snapchat and Fitbit removed a vulnerable version of SQLite-3 library 786 days later.
+
+# Finding 7:
+The results for these five popular native libraries in Android apps show that it often takes years for app developers to update to new library versions—even if the existing version contains severe security or privacy vulnerabilities—placing millions of users at major risk.
+
+To further understand the consequences of outdated vulnerable libraries, we calculated the average time-to-fix across all vulnerable libraries per app. Table VII lists the top 10 apps with the most number of days a vulnerable library remained in an app until a fix for the vulnerability was applied. Apple Music had the longest lag between the vulnerable library being introduced and fixed, i.e., 4 years. Uber was the fastest.
+
+# TABLE VII:
+# Top 10 most negligent apps in terms of the average time to fix a vulnerable library
+at almost 589 days. Individual apps had as few as over 10 million installs and as many as over a billion installs. Among the social-media apps, Snapchat, which has over 1 billion downloads and the largest number of installs among the top 10 apps in Table VII, fixed its vulnerable libraries after 844 days. These very long times to fix vulnerable libraries in highly popular social-media apps places billions of users at high security risk.
+
+# Finding 8:
+The most neglected apps in terms of time to fix vulnerable native libraries range from 588 days to nearly five years, affecting billions of users and leaving them at substantial risk of having those libraries exploited. This finding emphasizes the need for future research to provide developers with mechanisms for speeding up this very slow fix rate.
+
+# TABLE VIII:
+# Top 10 most neglected vulnerable libraries in terms of the average time-to-fix
+Finding 9: Future research should focus on these highly neglected libraries as experimental subjects for determining methods to ease the burden of updating these libraries; running regression tests to ensure these updates do not introduce new errors; and repairing those errors, possibly automatically, when they do arise.
+
+# D. Exploitability Case Study
+To demonstrate the exploitability of unpatched vulnerabilities in third party apps, we carry out a targeted case study where we analyze individual applications and create a proof-of-concept (PoC) exploit. Our PoC highlights how these unpatched vulnerabilities can be exploited by third parties when interacting with the apps.
+
+XRecoder allows users to capture screen videos, screen shots, and record video calls. Furthermore, XRecoder provides video editing functionalities, enabling users to trim videos and change their speed. This application uses FFmpeg, an open-source video encoding framework that provides video and audio editing, format transcoding, video scaling and post-production effects.

@@ -1,0 +1,22 @@
+31. Orikogbo D, Büchler M, Egele M. Crios: toward large-scale IOS application analysis. In: Proceedings of the 6th workshop on security and privacy in smartphones and mobile devices; 2016.
+
+32. Sounthiraraj D, Sahs J, Greenwood G, Lin Z, Khan L. SMV-hunter: large scale, automated detection of SSL/TLS man-in-the-middle vulnerabilities in android apps. In: Proceedings of the 21st annual network and distributed system security symposium (NDSS); 2014.
+
+33. Viennot N, Garcia E, Nieh J. A measurement study of Google play. In: Proceedings of the ACM SIGMETRICS performance evaluation review; 2014.
+
+34. Zhou Y, Wu L, Wang Z, Jiang X. Harvesting developer credentials in android apps. In: Proceedings of the 8th ACM conference on security & privacy in wireless and mobile networks; 2015.
+
+35. Mulliner C, Robertson W, Kirda E. Virtualswindle: an automated attack against in-app billing on android. In: Proceedings of the 9th ACM symposium on Information, computer and communications security; 2014.
+
+36. Bai X, Zhou Z, Wang X, Li Z, Mi X, Zhang N, et al. Picking up my tab: Understanding and mitigating synchronized token lifting and spending in mobile payment 26th USENIX Security Symposium; 2017.
+
+37. Yang W, Zhang Y, Li J, Liu H, Wang Q, Zhang Y, et al. Show me the money! finding flawed implementations of third-party in-app payment in android apps. In: Proceedings of the annual network & distributed system security symposium (NDSS); 2017.
+
+# Authors
+Wenbo Yang is currently a Ph.D. candidate in the Department of Computer Science and Engineering at Shanghai Jiao Tong University, China. He received his B.S. degree from Shanghai Jiao Tong University in 2012. His research interests include system and software security.
+
+Juanru Li is currently a Ph.D. candidate in the Department of Computer Science and Engineering at Shanghai Jiao Tong University, China. He received his B.S. degree from Shanghai Jiao Tong University in 2007. His research mainly involves developing secure crypto software and systems, and hardening existing crypto software against evolving security threats.
+
+Yuanyuan Zhang works as an Associate Professor in the Department of Computer Science and Engineering at Shanghai Jiao Tong University. After receiving her Ph.D. from Shanghai Jiao Tong University in 2009, she worked in East China Normal University as Assistant Professor and then in INSA de Lyon as Postdoc. Her research interests cover a wide range of issues in computer system security, program analysis, mobile security, and IoT system authentication and privacy.
+
+Dawu Gu is a professor at Shanghai Jiao Tong University in Computer Science and Engineering Department. He received his B.S. degree in applied mathematics in 1992, and his M.S. and Ph.D. degree in cryptography in 1998, both from Xidian university of China. His current research interests include cryptography, side channel attack, and software security. He leads the Laboratory of Cryptology and Computer Security (LoCCS) at SJTU. He has published over 150 scientific papers in academic journals and conferences, and owns 15 innovation patents. He was the winner of Yangtze River Scholar Distinguished Professors Program in 2014, New Century Excellent Talent Program in 2005, both made by the Ministry of Education of China. He serves as board members of China Association of Cryptologic Research and Shanghai Computer Society. He also serves as several technical editors for China Communications, J. Cryptologic Research, and Information Network Security, etc. He has been invited as Chairs and TPC members for many conferences and workshops..

@@ -1,0 +1,49 @@
+All Android applications and updates must include a digital signature. However vendors are allowed to use the same certificate in different applications. Also the application updates can be signed with the same certificate. Therefore a certificate does not uniquely identify any given application. Our solution requires a unique identifier for each application from a given vendor (even if they use the same certificate). Therefore our solution must create a unique application identifier. Our solution is the following. As depicted in figure 1 of the proposed protocol, we take the cryptographic hash (ex. MD5, SHA, …) of the application (APK file). Our unique application identifier is a combination of the certificate and the hash. So if a given vendor uses the same certificate for ten applications and each application has five versions, we will maintain the reputation of 50 unique applications. So our Android security application sends just the certificate and hash to the AM Cloud. We normally do not need to send the entire application (APK file) to the cloud. The AM Cloud then sends the reputation back to the Android. Then based on the reputation, the Android takes the appropriate action (as discussed above).
+
+The reputation building protocol also considers the vendors’ reputation. For example, applications from the vendor Google would have a much higher (good) reputation than applications from an unknown vendor. If a vendor releases even just one malware, that vendor’ past and future applications would immediately have a much lower (bad) reputation. If an application does not indicate who the vendor is, that application would begin with a very low reputation.
+
+A given anti-malware provider is able to keep track of number of their users, who are running any given Android application. If a given vendor’s application has under ten users, the reputation would be extremely low (unknown reputation). The reputation would increase (good reputation) as hundreds, thousands and even millions of users run a given application.
+
+The reputation value of the application increases as more positive feedback is collected from Android phones that have installed that application.
+
+# IV. E XPERIMENTS
+Concerning just the applications which have not yet developed a strong reputation, we need to analyze those applications. To analyze the behavior of an Android application, it is easier to start with analyzing the set of permissions that the application has set in the Android application package file which includes all of the application’s code, resources, assets, and manifest file. This can be done by some cloud based servers. The servers can then estimate the reputation based on the above analysis. This way, future client requests will receive the reputation based on the above analysis. If and when any new malware is detected, the cloud based reputation can be immediately updated (based on the application’s certificate and hash value). To do this, we have experimented with a reputation based security model for Android applications. A second experiment was also done to analyze how a malicious application could track a mobile owners’ location and report it to a third party.
+
+The results were achieved using two experiments.
+
+# A. Experiment 1
+One solution which has been used by anti-malware vendors is to perform analysis of the application, on the Android platform. However the Android is low on resources, such as performance, battery life and main memory. So it makes more sense to perform the analysis in the AM Cloud. To overcome these issues, another solution which has been used by anti-malware providers is to upload the entire application for analysis (for each user).
+
+For our solution, we will minimize the uploading of applications to the AM Cloud. I.e., we do not want two users, with the same exact application, to both upload the same application. Our approach to minimize the uploading follows. Prior to installing the application, the hash value of the application will be computed. The combination of certificate and hash value will be unique (not vulnerable to forced hash collisions). The combination of certificate and unique hash value will now be referred to as the Application Identifier. So instead of uploading the entire application, only the Application Identifier will be uploaded to the AM Cloud. The AM Cloud will then perform a database look up, based on the Application Identifier. The AM Cloud will retrieve the applications reputation from the database. The AM Cloud can then send the applications reputation information to the Android user. The Android phone can then advise the user of any security issues or take automatic actions.
+
+If the reputation based security model or another security safeguarding mechanism is breached, the malware can tweak the android platform permission model to access private values of the mobile holder, like SMS, GPS position, contacts, call history and so forth.
+
+# B. Experiment 2
+In this second experiment, we have developed two applications namely LocationTracker, see figure 1, and ProxyMailer, see figure 4. The LocationTracker application has ACCESS_FINE_LOCATION, ACCESS_MOCK_LOCATION, in and ACCESS_COARSE_LOCATION permissions in the user permission manifest file of the application. The manifest file declares which permissions the application must have in order to access protected parts of the API and interact with other applications . It also
+declares the permissions that others are required to have in order to interact with the application's components . On the other hand the ProxyMailer is granted only the INTERNET permission.
+
+The LocationTracker application implements a location listener class that returns the latitude and longitude of the present location by consulting the LocationManager, which provides access to the system location services. We can use the latitude and longitude to locate the associated geographic place such as the street address, hotel, and zip codes.
+
+# 6 PM
+# Display Location
+The LocationTracker application has been denied of the INTERNET permission but gives Service line permission to the ProxyMailer application.
+
+# Your Current Location Is
+Longitude: 122
+Latitude: 37X
+The ProxyMailer application accesses the Service of the LocationTracker application by defining Intent-an abstract description of an operation to be performed.
+
+# V. RESULTS
+The results of the first experiment set up, as depicted in figure 6 show that the device downloading a specific application can check for the reputation threshold pre-value used for applications with reputation index greater than 20 to indicate a good and reputable application. For applications with a reputation index between 10 and 20, our policy allows the application to be installed. However, the application is sandboxed and monitored. For applications with reputation index less than 10, users should be warned to not install the application unless they know it is trustworthy. The user can even be informed as to the specific type of any malware previously associated with the untrustworthy application.
+
+As stated in the second experimental set up, the two applications were developed and installed separately with the consent of the user to the permissions in each application’s manifest file. The ProxyMailer application, with its defined intent, has managed to access the present location coordinates from the LocationTracker application, which demonstrates that a malicious application can seamlessly access another application’s services without the knowledge of the user. The ProxyMailer can then send the innocent user’s current location to a third party email without the mobile holder’s consent.
+
+The service intent of the ProxyMailer defined in the application’s Activity is used to move the new location data between the processes, as it is the messenger that crosses the actual system security boundaries. Intents are actually at the core of much of Android’s IPC. The LocationTracker Activity will keep updating its new area coordinates whereas the ProxyMailer has to be manually run in order for the intent to have access to the client application. The Intent object is passed to the Context.startService() to initiate the service or deliver new instructions to an the service in the LocationTracker application. startService() called over a context object is an android built-in function that enables one application to start the service of another . In a similar implementation, the Intent could be passed to Context.bindService() to establish a connection between the calling Activity from the ProxyMailer and a targeted service in the LocationTracker application. The android bindService() function called over a context object can initiate the service if it isn’t already running.
+
+2 PM
+# ProxyMailer
+Send
+Retrieved Location
+Longitude: -122
+Latitude: 37
+Reverse geo-coding Geographic name can be used to get the actual geographical name of the new location of the mobile holder except that the experiment was done on the Android SDK emulator.

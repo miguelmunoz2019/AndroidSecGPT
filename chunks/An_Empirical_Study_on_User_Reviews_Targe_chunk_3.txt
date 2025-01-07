@@ -1,0 +1,67 @@
+# 3 Domains contacted
+Another metric we used to measure app privacy is the number of different domains to which PII was sent. That is, one app may include a single advertising SDK while another includes half a dozen so as to maximize revenue. This metric is not perfect, as a half dozen “good” SDKs may still be preferable to one invasive one. Nevertheless, the number of places on the Internet that are collecting PII from users devices does indicate how the app developer that includes these SDKs feels about user privacy.
+
+In order to evaluate this, we categorized each app to one of the following groups:
+- Level 0: 0–1 domains received PII
+- Level 1: 2 domains received PII
+- Level 2: 3–6 domains received PII
+- Level 3: more than 6 domains received PII
+# 3 PIIs leaked to each domain
+The total number of hosts communicated with by an app may not always reveal the actual nature of invasion. For example, while some apps may be leaking the same PII to a large number of domains, there can be some apps which leak a large number of PIIs to a small number of domains. The impact of these two behaviours would naturally be different. So in addition to the total number of PIIs leaked and the total number of domains contacted, we also elicited the number of PIIs sent by the app to individual domains. We calculated the maximum number of PIIs sent by any app to a single domain.
+
+# 3 Number of permissions asked by the app
+We initially extracted the different types of permissions that an app can ask for and labelled each of them as either “Normal” or “Dangerous” based on the protection level set in . Dangerous permissions protect sensitive user data and sensors, like camera, location, and contact lists. As of Android Marshmallow, apps show a runtime dialog asking about the permission at the time it is first used. Once we have this data, we evaluated the total number of dangerous and normal permissions that the app needs. In order to judge if the app is encroaching into the users’ privacy and security, we are only concerned about the dangerous permissions; also the users will be aware of the dangerous permissions only as the app would specifically request for those permissions. So, for analyzing if the users are concerned about their privacy and security, we consider only the dangerous permissions in our study.
+
+# 3 Statistical approaches
+In order to answer RQ2, we needed to calculate the correlation between different categories obtained from methods described above. As we have different types of data (Numerical and Categorical), we used the following statistical methods.
+
+1. Cramér’s V: A measure of association between two categorical variables. This measure assumes a symmetrical approach; i.e., the correlation between the two variables does not depend on the order of the variables.
+
+2. Theil’s U: Also known as “Uncertainty Coefficient”, a measure of categorical association. This measure is used to calculate the correlation between 2 categorical variables when they assume an asymmetric approach.
+
+3. Correlation Ratio: A measure to calculate the correlation between 2 variables that have mixed data types; i.e., one of the variables is categorical type and the other is of the numerical data type.
+
+4. Non-parametric Statistical Significance Test: In order to ascertain if the correlation measures obtained using the above methods are meaningful, we used two well renowned non-parametric statistical significance tests, “Mann-Whitney U” and “Kruskal-Wallis H”. Hereafter, we denote these two tests as “MWU” and “KWH” respectively. We performed the significance test using the data from dynamic analysis on the categories of the apps from reviews’ classifier.
+
+# 4 Dataset
+To make a dataset of user reviews about mobile apps, we targeted the “top free” list of Google Play, the well-known Android app market powered by Google. The apps in this list are pretty popular and can potentially provide us more reviews to be assessed. This list typically contains 540 apps, but our dataset has 539 apps, as one of the apps was removed during the process of scraping. For each app, we scraped details such as category of the app, score, developer, title, number of reviews, number of installations, chosen by app store editors or not, description, content rating, and number of 1 to 5 stars ratings.
+
+We also scraped the reviews of each app. Due to restrictions in Google API, we have access to the latest 4480 reviews of each app. This means that for less popular apps with less than 4480 reviews, we scraped all the reviews from the time it’s been published. At the same time for some more famous apps, the limit of 4480 provides us reviews from last few months. For each review, we scraped details such as review text, review date, and current rating. For 539 top free apps in Google Play, we were able to scrape 2,186,093 reviews. By looking into the dataset, here we have some statistics:
+1. App Reviews Rating: For each app, we have an average of 2,090,749 ratings. Facebook, WhatsApp, Instagram, Messenger and Clash of Clans have more than 85M, 84M, 78M, 65M and 48M ratings respectively.
+
+2. App Developers: These 539 apps are developed by 409 different developers, and 57 developers developed more than 1 app. Google with 29 developed apps, Voodoo with 13, Microsoft with 7, and Samsung and Amazon with 6 developed apps are top in the list.
+
+Percentage of Related Reviews2
+Social, Dating, Business, Finance, Lifestyle, Tools, Sport, Comics, Game, Beauty, Weather, Shopping, Education, Photography, Travel and Local, Video Players, Productivity, Personalization, Entertainment, Art and Design, Communication, House and Home, News and Magazines, Health and Fitness, Food and Drink, Music and Audio, Maps and Navigation, Auto and Vehicles, Books and Reference, Libraries and Demo.
+
+# 3. App Category
+Apps are from 32 different categories, and the Games, Entertainment, Tools, Social and Shopping are the categories with the highest number of apps having 217, 45, 28, 24 and 24 apps respectively.
+
+# 4. App Installation
+Around 60% of the apps have been installed more than 10 million times.
+
+# 5. App Content Rating
+Less than 40% of the apps have content rating restrictions. Out of these, the majority have limited the audience to “teens”.
+
+# 6. Chosen by editor
+106 apps are chosen by the editor of the Google Play.
+
+# 5 Results
+In this section we present the results from our experiments to evaluate our research questions.
+
+# 5 Research Question 1
+Regarding experiment configuration mentioned in Section 3, the classifier labelled 10,972 reviews as the related ones to security and privacy concerns. This means in only around 0% of all the reviews in our dataset, users write to mention a security/privacy concern. In order to provide more insights about the results, we have looked into the related reviews from different viewpoints:
+# 5 Apps’ categories
+# 5 Reviews’ Ratings
+In our experiment we have classified the related reviews to security and privacy concerns, but we have not determined if the user is complaining of an app’s functionality regarding his concerns or is praising it. To provide a good insight, an efficient way can be leveraging the rating of reviews. We consider reviews with 4 and 5 stars as “positive” reviews, reviews with 1 and 2 stars as “negative” ones, and reviews with 3 stars as the “neutral” reviews. Following this categorization, around 57% of reviews tagged as negative, 9% as neutral and 34% as positive. Shown in Figure 3, we have included the total number of reviews per rating in blue bars and the percentage of related reviews per rating stars with red bars.
+
+# 5 Apps’ Developers
+Another interesting perspective to notice is the role of developer in changing users’ thoughts. To assess this, Figure 4 shows the top 20 developers with highest number of apps along with the percentage of the negative related reviews for each.
+
+Percentage of Related Reviews
+# 5 Research Question 2
+To answer the second research question, we needed to assess the correlation between the users’ reviews and the functionality of the apps, determined from the analysis mentioned in Section 3.
+
+At the very first step, we need to categorize apps based on users’ thoughts about them. To achieve this, we tag related reviews in the same way mentioned for RQ1 in 5. Then following the definitions mentioned in Table 2, we tag the corresponding apps.
+
+Furthermore, from the dynamic analysis mentioned in Section 3, we found PII leaks over different hostnames for each app. We also found the number of dangerous permissions asked by the apps. We call a permission “dangerous” when it needs two step confirmation from the user; in other words, it will be shown to the user at runtime through a pop-up dialogue. In order to make a meaningful comparison, we start considering different perspectives for categorizing.

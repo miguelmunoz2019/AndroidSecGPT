@@ -1,0 +1,56 @@
+# Computers & Security 90 (2020) 101688
+# Contents lists available at ScienceDirect
+# Computers & Security
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/cose
+# EspyDroid+: Precise reflection analysis of android apps
+# Jyoti Gajrania,∗, Umang Agarwalb, Vijay Laxmia, Bruhadeshwar Bezawadac, Manoj Singh Gaur d, Meenakshi Tripathia, Akka Zemmarie
+a Malaviya National Institute of Technology Jaipur (MNIT Jaipur), India
+b Govt. Engineering College Ajmer, India
+c Mahindra École Centrale, Hyderabad, India
+d Indian Institute of Technology Jammu, India
+e LaBRI, Bordeaux INP, University of Bordeaux, CNRS, France
+# Article history:
+Received 8 August 2019
+Revised 18 November 2019
+Accepted 13 December 2019
+Available online 13 December 2019
+# Keywords:
+Instrumentation, Reflection, Run-time, Malware, Static, Dynamic, Privacy leaks, Android
+# Abstract
+Malicious smartphone apps use reflection APIs to exfiltrate user data and steal personal information. These malware use reflection along with parameter obfuscation and encryption to evade detection by static analysis. Dynamic analysis is a possible approach to detect such run-time malicious behavior. However, dynamic analysis of a software, usually, results in the exploration of a large, potentially exponential, number of program branches. Many of these program paths are not useful to analyze the reflection APIs, and significantly affect the efficiency of the dynamic analysis. In this paper, we propose a hybrid analysis approach named EspyDroid+1 that overcomes the drawbacks of static analysis in analyzing the obfuscated and run-time dependent parameters of reflection APIs. EspyDroid+ incorporates Reflection Guided Static Slicing (RGSS), an efficient approach to deal with exploration of large number of program paths by pruning irrelevant program paths and ensures that the resultant paths get executed during the subsequent dynamic analysis. We observed that EspyDroid+ successfully removed 59% of the total paths on a test dataset consisting of 660 apps without any loss of semantics. We conclude that EspyDroid+ is effective, fast, and scalable in uncovering reflection API induced privacy leaks.
+
+# 1. Introduction
+Since the release of Android, research community and anti-virus industry are continually discovering and reporting various security issues of Android apps. Manual analysis of malware is not feasible looking at the growth rate of Android apps. Each day, malware authors are incorporating various advanced techniques in malicious apps to hinder their analysis by automated tools. Reflection and run-time binding are few primary techniques that are popularly used by malware authors. Andrubis  is an online research approach that analyses uploaded apps and from the analysis of apps collected over a span of four years, they reported that reflection is employed by 57% of Android malware samples. Ripple , a static analysis based Reflection analysis approach for Android apps, analyzed 6141 Android malware apps collected from the VirusShare project (VirusShare, 0 0 0 0) and reported that 48% of these apps use reflection. DroidRA , a static analysis based approach for analysis of Reflection in Android apps, showed that 76% of analyzed 438 apps use reflection in primary app code. These statistics motivated us towards developing a more precise and scalable solution for analyzing reflection APIs.
+
+Static analysis based approaches have several inherent limitations. First, static analysis misses many reflection targets as malware authors typically combine reflection with run-time dependent code. This includes run-time dependency of parameters of reflection APIs using array indices, substrings, encryption, polymorphism, etc. . Second, static analysis based on type inference like Ripple  generates many false positives, leading to low precision.
+
+Dynamic analysis based solutions improve analysis in such situations by executing the app to observe its behavior. The downside, however, is that there exist a large number of paths to be explored during dynamic analysis . Therefore, dynamic analysis suffers from the path explosion challenge and thus, cannot achieve the desired coverage.
+
+To address the limitations of static and dynamic analysis, a few hybrid approaches  have been described in literature. Tamiflex  is...
+
+∗ Corresponding author.
+
+E-mail addresses: 2014rcp9542@mnit.ac.in (J. Gajrani), vlaxmi@mnit.ac.in (V. Laxmi), bru@mechyd.ac.in (B. Bezawada), manoj.gaur@iitjammu.ac.in (M.S. Gaur), mtripathi.cse@mnit.ac.in (M. Tripathi), zemmari@labri.fr (A. Zemmari).
+
+1 An early version of this paper was published in Gajrani et al. (2017a)
+https://doi.org/10/j.cose
+0167-4048/© 2019 Elsevier Ltd. All rights reserved.
+
+# J. Gajrani, U. Agarwal and V. Laxmi et al. / Computers & Security 90 (2020) 101688
+an approach for reflection analysis of Java programs. However, Tamiflex misses many true targets, which were behind complex GUI operations. MIRROR  is an optimized solution compared to Tamiflex for analyzing Java programs. MIRROR reduces the paths to be executed by identifying relevant paths. However, the traditional Java language specific solutions are not directly applicable for Android due to asynchronous and event-driven paradigm with multiple-entry points for app and callbacks. Specifically, in Android complex GUI operations like sending email, SMS, providing appropriate text-inputs are too complex to simulate during dynamic analysis. Not only the simulation of events but also the correct ordering of these operations is a crucial task. As a result of these factors, pure dynamic analysis does not scale well for large apps having many GUI elements.
+
+Android provides Monkey (UI/Application Exerciser Monkey, 0 0 0 0) as part of Android SDK, which generates the specified number of random events during testing. The limitations of Monkey are: 1) the events are random and hence, may not be relevant for the testing objective, 2) many repeated events are generated, 3) a low probability of generating the correct text-input, and 4) no guaranteed coverage. To provide a better solution, compared to Monkey (UI/Application Exerciser Monkey, 0 0 0 0), more advanced automated GUI exploration approaches for Android  have been proposed. Most of these approaches still have about 30% to 60% code coverage. This implies that, at most, only 60% of the requisite reflection APIs can be analyzed by dynamic analysis if these APIs are distributed uniformly. Therefore, dynamic analysis based on the exploration of a complete app does not guarantee that the desired APIs will be executed.
+
+Further, almost all dynamic analysis based tools fail in the cases where the application depends on user inputs. Approaches such as  work on providing relevant text inputs; however, it is challenging to simulate correct text-inputs like user-name, password, email-id, phone number, etc., even at the initialization for many apps. Trimdroid  is an approach for GUI testing of Android applications using an enhanced combinatorial method of providing input-data along with automated program analysis, and formal specifications. However, Trimdroid requires source code to analyze the dependencies between GUI elements and further analysis, which restricts its applicability to analysis of malware and store apps.
+
+This paper proposes, EspyDroid+, an approach that provides a right balance of recall and precision. Precision is the fraction of correctly analyzed targets within all identified targets of reflection APIs. Low precision implies many incorrect targets identified. Recall is the fraction of correctly analyzed targets within all targets including missed. Low recall implies that many targets are missed.
+
+EspyDroid+ unites dynamic analysis with a static analysis technique of our own design: Reflection Guided Static Slicing (RGSS), to reduce the number of program paths to be explored. RGSS generates an optimized app by removing all components that do not lead to the invocation of any reflection call. Further, we maximize the likelihood of execution of the reflection APIs by rewriting various conditional statements through bytecode instrumentation. The aim is to force the reflection APIs to execute at run-time. The main contributions of this paper are as follows:
+- We propose EspyDroid+, a hybrid analysis approach for reflection analysis in Android apps to resolve obfuscated reflection calls precisely in comparison to the static state-of-the-art approaches.
+
+- EspyDroid+ uses RGSS, an enhanced static analysis approach customized to prune the app. Specifically, prior to the dynamic analysis, RGSS generates a sliced app by eliminating irrelevant paths having no reflection APIs. This reduces the impact of the state-space explosion problem faced by the ensuing dynamic analysis phase of EspyDroid+.
+
+- We assess EspyDroid+ on 660 apps collected from diverse sources including benchmark dataset F-Droid (Free and Open Source App Repository, 0 0 0 0), VirusTotal dataset, malicious apps from malgenome project (Jiang and Zhou, 2012), dataset developed Canadian Institute for Cybersecurity (CIC) Canadian Institute for Cybersecurity, and state-of-the-art dataset . RGSS prunes 59% of total paths on the test dataset of 660 apps. EspyDroid+ outperforms other approaches in terms of both recall and precision.
+
+Organization. The paper is organized as follows: Section 2 provides a motivating example and the challenges in state-of-the-art research. We discuss our proposed solution, EspyDroid+ in Section 3. Section 4 presents implementation details and evaluation results. Section 5 describes few limitations of our proposal. We describe related work in Section 6 and conclude in Section 7 outlining possible future work.

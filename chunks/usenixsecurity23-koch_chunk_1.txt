@@ -1,0 +1,50 @@
+# The OK Is Not Enough: A Large Scale Study of Consent Dialogs in Smartphone Applications
+Simon Koch, TU Braunschweig; Benjamin Altpeter, Datenanfragen.de e.V.; Martin Johns, TU Braunschweig
+https://www.usenix.org/conference/usenixsecurity23/presentation/koch
+This paper is included in the Proceedings of the 32nd USENIX Security Symposium.
+
+August 9–11, 2023 • Anaheim, CA, USA
+978-1-939133-37-3
+Open access to the Proceedings of the 32nd USENIX Security Symposium is sponsored by USENIX.
+
+# The OK Is Not Enough: A Large Scale Study of Consent Dialogs in Smartphone Applications
+Simon Koch
+Benjamin Altpeter
+Martin Johns
+TU Braunschweig
+Datenanfragen.de e.V.
+
+TU Braunschweig
+simon.koch@tu-braunschweig.de
+benni@datenanfragen.de
+m.johns@tu-braunschweig.de
+# Abstract
+Mobile applications leaking personal information is a well established observation pre and post GDPR. The legal requirements for personal data collection in the context of tracking are specified by GDPR and the common understanding is, that tracking must be based on proper consent. Studies of the consent dialogs on websites revealed severe issues including dark patterns. However, the mobile space is currently under-explored with initial observations pointing towards a similar state of affairs. To address this research gap we analyze a subset of possible consent dialogs, namely privacy consent dialogs, in 3006 Android and 1773 iOS applications. We show that 22% of all apps have any form of dialog with only 11% giving the user some form of actionable choice, e.g., at least an accept button. However, this choice is limited as a large proportion of all such dialogs employ some form of dark pattern coercing the user to consent.
+
+# 1 Introduction
+Mobile applications do collect a large amount of personal data of the user and transmit those to third parties. This behavior has been well documented both on Android  as well as iOS . The introduction of the GDPR as the European privacy legislation was supposed to better protect personal data of consumers and outlaw underhanded data collection. However, recent work studying the collection behavior of current mobile applications casts doubt on the overall impact and shows data collection is still happening.
+
+However, even though collection of personal data can be questionable from an ethical standpoint the legislature does allow for collection. It is legal to collect data, e.g., if it is strictly required for the functionality of the applications or legally required. However, for the popular purpose of tracking, prior consent for data collection has to be given. The GDPR sets out clear rules on how a request for consent has to be structured and collected, explicitly stating that consent has to be voluntary and must not be coerced. Recent fines for Meta by the Irish Data Protection Commission do underline this principle.
+
+Studies analyzing cookie consent dialogs on the web revealed that a large portion do not conform to the stated rules. Even worse, the analyzed dialogs widely employed stylistic choices to coerce or nudge a user towards giving consent . Such design choices have been termed 'Dark Patterns'. The overwhelming presence of Dark Patterns in consent dialogs led to the European privacy advocacy NGO noyb1 launching two campaigns against deceptive cookie banners  resulting in websites changing their dialog designs. This shows that effort towards the study of consent dialogs and action based on this information can improve the self-determination of users concerning their privacy choices.
+
+Assuming tracking, mobile applications also have to collect the consent by the user prior to data collection, according to the common understanding of the GDPR. Mobile applications, thus, tend to push a privacy consent dialog on first start to get the user to consent to their data collection. Furthermore, Apple  and recently Google  require developers to provide privacy labels, informing the user of the intended data collection, giving an initial impression of mobile applications likely being honest concerning private data collection. However, recent work by Koch et al.  has shown that privacy labels on iOS are not being enforced and flouted by developers. Additionally, they performed a visual inspection of started mobile applications and report that there was a lack of privacy consent dialogs for applications that self-declare themselves to collect personal information in their privacy label as well as applications displaying privacy consent dialogs that employed Dark Patterns. Similar initial observations have been made for Android by Nguyen et al. . However, no conclusive research into the design and effect of privacy consent dialogs in mobile applications has been done yet.
+
+We approach this research gap and develop a tool chain that covers both iOS and Android applications to extract and
+1 https://noyb.eu/en
+USENIX Association 32nd USENIX Security Symposium 5467
+analyze a subset of consent dialogs, namely privacy consent dialogs. We then apply this tool chain to 3006 Android and 1773 iOS applications to study the amount of privacy consent dialogs in mobile applications, their design choices, and the ratio of possibly GDPR-non-conforming ones. Furthermore, we leverage our tool chain to test the effect consenting or declining a dialog has on the transmitted personal information to known trackers.
+
+Overall, we have two key contributions:
+- A novel and mobile OS-agnostic privacy consent dialog analysis tool chain to download, run, and analyze mobile applications
+- A large scale study of 3006 Android and 1773 iOS applications concerning:
+In the remainder of the paper, we first detail prior work in the area of mobile privacy and consent dialogs (Section 2). We follow up by detailing the legal background governing requirements for consent dialogs (Section 3). Based on those requirements, we first collect a large dataset of both Android and iOS Apps (Section 4), analyze the usage of Consent Management Platforms (Section 5), and develop an analysis tool chain to interact with mobile applications, detect consent dialogs, and extract the required features for our analysis (Section 6). We then apply our tool chain and detail the observed Dark Patterns as well as data transmission behavior (Section 7), followed by a discussion (Section 8). Finally, we summarize our key contributions and results (Section 9).
+
+# 2 Related Work
+Current work related to our research up until now can be split into work concerning mobile privacy on iOS  and Android , or comparing the two , as well as work concerned with analyzing privacy policies and dialogs or frameworks on the web [37,45–47,54–56, 60, 61, 70, 71] and in mobile applications.
+
+Dynamic traffic analysis has been leveraged both on iOS as well as on Android and shown that apps send and receive data within the first seconds of launch, and share data with third-party libraries , detecting similar data sharing behavior regardless of operating system . Ren et al. detected an increase in data collection across multiple app versions over time . This shows that personal data collection in mobile applications is prevalent before and after introduction of the GDPR. Kollnig et al. analyzed Apps before and after the introduction of iOS 14 and its corresponding rules on privacy compliance, they found that tracking and data collection is still prevalent regardless of this change introduced by Apple . Static analysis and symbolic execution have been used to detect leaks of sensitive information in mobile apps , demonstrating that inferences concerning privacy-respecting behavior can be gained this way.
+
+Work analyzing privacy policies in mobile apps showed mismatches between self-declared privacy policy and actual code behavior  and that privacy policies do not lead to improved privacy of the user . Orthogonal work analyzing web consent dialogs and privacy policies mirrors those insights and indicates widespread violation of proper consent requirements for dialogs even when belonging to a consent management platform  and that tracking widely happens before any user interaction or even despite rejection of data collection . Additional work focusing on the impact of the GDPR on privacy dialogs and policies showed changes due to the GDPR  but given the previously detailed plethora of work after 2018 on GDPR violations those changes clearly did not have a positive effect on actual privacy protection. Concurrent independent work by Nguyen et al. looked at mobile consent dialogs on Android but did not cover iOS . To analyze privacy policies, several tool chains have been developed leveraging ML to extract features and enable querying the extracted model . Finally, Maryam et al. analyzed 100 popular websites online and in their corresponding mobile apps concerning tracking and privacy notices and found major inconsistencies for essentially the same service.
+
+Overall, those works paint a picture of questionable design choices in consent dialogs, with clear indications that even if the user is presented with a choice, that choice is often ignored, a bleak picture for users concerned about their privacy on the web. However, up until now those works focus on the web and it is unexplored whether the situation on the web also corresponds to the situation in mobile applications. Furthermore, prior work demonstrates that data collection via apps on mobile devices is omnipresent and provides the technological basis for our work contrasting data collection on mobile devices with privacy consent dialog interaction.

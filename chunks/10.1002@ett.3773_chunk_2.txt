@@ -1,0 +1,63 @@
+# 2 Call graph construction
+Established algorithms neglect open-package assumption utilization situations, which is the reason that expansion code is not considered while separating remain private application. However, the expansion code can prompt direct call conditions between library strategies that are not obvious from the class chain. The abbreviated call graphs for permission analysis is depicted in Figure 2. The UI string transitively calls toString() on every instance of painting JList. AbstractMap.toString() is called by giving the custom HashMap usage as substance, which does not supersede toString(). This method repeats over the passage set and calls getValue() on every section. The essential thing of the section set is the aggressor's link case. Like this, it effectively calls Expression.GetValue() that brilliantly summons System.SetSecurityManager (null). To methodically discover exploitable callback executions, a static exam should watch that there is no assailant callable strategy present, which transitively calls sensitive support without appropriate cleaning or permission checks. In any case, the static examination desires to do furthermore not forget that calls to callbacks are made plans to all workable put stock in executions. Cutting aspect name-chart calculations exclude a call part from name locales of Entry.GetValue() to the method Expression.GetValue(). However, this part is needed to discover the attack, which should be exhibited in right ways. If this edge is incorporated, information stream examination searching for unguarded ways to delicate activities are empowered to distinguish the vulnerability.
+
+# 3 PERMISSION IMPLEMENTATION IN ANDROID APPLICATIONS
+In the Android software program stack in which the Android framework degree, within the Android framework stage, a large portion of the contents are authorized. Using supplementary series ID, some of the permissions are implemented at the kernel level. If the application is the part of a group to acquire all of the privileges of that particular institution, it will be allowed to use supplementary organization ID. Using the permissions declared in the programs that take place to file, the organizations are arranged. Figure 3 illustrates that the Bluetooth, digicam, and the Internet that are comparative examples of permissions, which can be enforced within the kernel level. The usage of group ID and other permissions such as SMS and MMS that are used in retrieving the communication list is enforced inside the Android framework stage.
+
+# 4 ATTACK OF PERMISSION ESCALATION
+The permission attacks are categorized and demonstrated in Figure 4. Confused deputy attack and collusion attack are the two types of permission escalation attack. Privileged benign applications in unprotected interfaces exploit the vulnerabilities by confused deputy attack. To create a combined set of permissions, the collusion attack can be conceded out by multiple applications. These permit them to present malicious actions on an unauthorized performance. The collusion attacks are ordered into two categories. They are direct collusion attack and indirect collusion attack. These two techniques are used for interconnecting with each other. The direct collusion way is used to communicate applications indirectly. The indirect collision attack is used where the application communicates with the third application.
+
+# SHRIVASTAVA ET AL.
+
+# 5 of 17
+# Process Boundary
+# System Application/Service Permission
+Application check:
+- SMS contacts
+- Bluetooth
+- Camera socket
+# Permission check
+Kemnel Binder Boundary
+# Permission escalation attack
+- Confused Deputy attack
+- Collusion attack
+Through Overt channel
+Through Covert channel
+Channels or covert channels are provided by indirect collusion attack. The overt channels apply a data object to hold certain information that is like files, buffers, and input–output devices. Shared preferences, UNIX socket communication, and system logs are few other examples of overt channels
+For communication, the covert channels are used objects, which are typically not intended. These objects are applied for covert channels with the Android's middleware layer bypass. At last, the measurement demonstrates that the low throughput of covert channels is appropriate to exchange private data
+# 5 MALICIOUS APPLICATION DETECTION USING ANDROID PERMISSIONS
+# 5 Static analysis–based approaches
+Some major static analysis–based approaches from 2007 to 2019 are depicted in Table 2. In 2014, Fang et al64 have investigated the various Android security issues caused by permission-based mechanisms. They have also reviewed the
+# 6 of 17
+# SHRIVASTAVA ET AL.
+
+Countermeasures of such issues based on their technical features. According to the authors, the android security can be enhanced by developing data driven methods strengthening the Android framework, flexible and fine-grained permission models irrespective of the current model that is based on coarse-grained and inflexible permission models, and maintaining the consistency between application intentions and system implementations.
+
+Talha et al65 have proposed a permission-based Android malware detection system called APK Auditor. The system uses static analysis technique for classifying the android applications into benign or malicious. The system consists of three parts, namely, a signature database, an android client, and a central server. The signature database stores the extracted data on applications as well as analytical results, whereas the android client is used by the end users to give application analysis request. The central server manages the whole analysis process by communicating with the database and the android client.
+
+Song et al66 have integrated the static detection method with the analysis framework where only the static detection method can result in high false rate and also the scope is limited. The proposed approach consists of four filtering layers, namely, the message digest values, combining malicious permissions, the dangerous permissions, and the dangerous intentions. The authors have proposed an intuitive threat-degree model for detecting the dangerous permissions.
+
+Rashidi et al67 have proposed RecDroid that creates a user-help-user environment for the android permission control. It is a crowdsourcing recommendation framework that aggregates the expert users' responses and then recommends it to the inexperienced users. Seshagiri et al68 have proposed a static approach, namely, Amrita Malware Analyzer. This framework detects the malicious code by performing plaintext attack using strings contained in the malicious web pages.
+
+Sokolova et al69 have proposed a five-step methodology for finding the patterns of each category. The category patterns and key permissions are found using graph analysis metrics by modeling the required permissions as a graph. The authors
+# 5 Dynamic analysis–based approaches
+Some major dynamic analysis–based approaches from 2007 to 2019 are depicted in Table 3. In 2013, Zhang et al63 have proposed a dynamic analysis platform, namely, VetDroid. The VetDroid is used to construct permission use behaviors by identifying the explicit and implicit permission use points through correct permission information. It can also help in detecting data leaks, analyzing fine-grained causes of data leaks, and detecting susceptibility in regular applications.
+
+Min and Cao76 have proposed a runtime-based behavior analysis system for detecting the android malware. According to the authors, the traditional method, ie, signature-based method is not good enough for malware detection. The authors have analyzed 350 applications from third party Android market with good result.
+
+Petsas et al78 have investigated the anti-analysis techniques that can be used by malware to escape from dynamic analysis approaches. These techniques are based on three different categories, viz, static properties, dynamic heuristics, and VM-related complexities of Android emulator. Further, they proposed some countermeasures like modifying emulator, accurate binary translation, and hardware-assisted virtualization for improving dynamic analysis resistance against VM detection evasion.
+
+Abah et al79 have proposed a device monitoring system for an unrooted device. The system is used for collecting application data that is then used to feature vectors. These feature vectors describe the behavior of application for detecting the malware. Ab Razak et al80 have developed behavior-based anomaly detection system to detect the deviation in application's network behavior. The system performs the traffic analysis for monitoring the suspicious network activities. The semisupervised machine learning techniques are used for learning the normal behavioral patterns of the application. The system is used to detect mobile malware that cannot be identified by signature approach or by static or dynamic analysis method.
+
+Thanigaivelan et al82 have proposed a context-based dynamically reconfigurable access control system (CoDRA). The CoDRA uses feature-based policies that controls resource access and policy granularity. The policy enforcement was
+# 8 of 17
+# SHRIVASTAVA ET AL.
+
+implemented by combining application behavior and resource features. The CoDRA uses static as well as dynamic constraints unlike the traditional that uses only static constraints on application activities.
+
+# METHODOLOGY FOR THE LITERATURE REVIEW
+- At the initial step, we characterize the exploration questions covered in the SLR and recognize the pertinent data from the publication in writing.
+
+- In the next step, we enlist the distinctive search keywords that enable us to find the most prominent journals inside the extent of this SLR.
+
+- The searching system itself is driven by two factors, the first being the striking generation storage facilities and the second highlights the approaches of scatterings from top scenes, which also included two diaries and meeting papers. Exclusion criteria are applied on the listed items to confine our analyses to exceptionally relevant papers, in this way sifting through papers of likely restricted intrigue.

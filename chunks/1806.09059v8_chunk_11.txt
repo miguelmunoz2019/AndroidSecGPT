@@ -1,0 +1,93 @@
+In Proceedings of the 21st USENIX Conference on Security Symposium, pages 27–27. USENIX, 2012. https://github.com/xurubin/aurasium, Accessed: 01-June-2018.
+
+# Yu Dongsong. CVE-2014-1566: Leak information to SD card.
+
+https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-1566, 2014. Accessed: 29-May-2018.
+
+# Zhenlong Yuan, Yongqiang Lu, Zhaoguo Wang, and Yibo Xue. Droid-sec: Deep learning in android malware detection.
+
+In Proceedings of the 2014 ACM Conference on SIGCOMM, pages 371–372. ACM, 2014. http://www.droid-sec.com/, http://analysis.droid-sec.com/, Accessed: 21-Apr-2018.
+
+# Yury Zhauniarovich, Maqsood Ahmad, Olga Gadyatskaya, Bruno Crispo, and Fabio Massacci. Stadyna: Addressing the problem of dynamic code updates in the security analysis of android applications.
+
+In Proceedings of the 5th ACM Conference on Data and Application Security and Privacy, pages 37–48. ACM, 2015. https://github.com/zyrikby/StaDynA, Accessed: 11-Jun-2018.
+
+# Yajin Zhou and Xuxian Jiang. Dissecting android malware: Characterization and evolution.
+
+In Proceedings of the 2012 IEEE Symposium on Security and Privacy, pages 95–109. IEEE Computer Society, 2012.
+
+# A Catalog of Considered Vulnerabilities
+In this catalog, we briefly describe the 42 vulnerabilities captured in Ghera (along with their canonical references) that were used in this evaluation. Few vulnerabilities have generic references as they were discovered by Ghera authors while reading the security guidelines available as part of Android documentation [Google Inc., 2018c]. Please refer the work by Mitra and Ranganath  for details about the repository and the initial set of vulnerabilities.
+
+# A Crypto
+Crypto APIs enable Android apps to encrypt and decrypt information and manage cryptographic keys.
+
+# C1
+The result of encrypting a message twice using Block Cipher algorithm in ECB mode is the message itself. So, apps using Block Cipher algorithm in ECB mode (explicitly or due to default on Android platform) can leak information [Egele et al., 2013].
+
+# C2
+Encryption using Block Cipher algorithm in CBC mode with a constant Initialization Vector (IV) can be broken by recovering the constant IV using plain text attack. So, apps using such encryption can leak information [Egele et al., 2013].
+
+# C3
+Password-based encryption (PBE) uses a salt to generate a password-based encryption key. If the salt is constant, the encryption key can be recovered with knowledge about the password. Hence, apps using PBE with constant salt can leak information [Egele et al., 2013].
+
+# C4
+Cipher APIs rely on unique keys to encrypt information. If such keys are embedded in the app’s code, then attackers can recover such keys from the app’s code. Hence, such apps are susceptible to both information leak and data injection [Egele et al., 2013].
+
+# A Inter Component Communication (ICC)
+Android apps are composed of four basic kinds of components: 1) Activity components display user interfaces, 2) Service components perform background operations, 3) Broadcast Receiver components receive event notifications and act on those notifications, and 4) Content Provider components manage app data. Communication between components in an app and in different apps (e.g., to perform specific actions, share information) is facilitated via exchange of Intents. Components specify their ability to process specific kinds of intents by using intent-filters.
+
+I1 Android apps can dynamically register broadcast receivers at runtime. Such receivers are automatically exported without any access restrictions and, hence, can be accessed via ICC and exploited to perform unintended actions [Chin et al., 2011].
+
+I2 A component can use a pending intent to allow another component to act on its behalf. When a pending intent is empty (i.e., does not specify an action), it can be seeded (via interception) with an unintended action to be executed on behalf of the originating component [Wang Tao, 2014b].
+
+I3 To perform an action (e.g., send email), users choose an activity/app from a list of activities ordered by priority. By using appropriate priorities, activities can gain unintended privilege over other activities [Chin et al., 2011].
+
+I4 Implicit intents are processed by any qualifying service determined by intent filters as opposed to a specific explicitly named service. In case of multiple qualifying services, the service with the highest priority processes the intent. By registering appropriate intent filters and by using appropriate priorities, services can gain unintended access to implicit intents [Chin et al., 2011].
+
+I5 Pending intents can contain implicit intents. Hence, services processing implicit intents contained in pending intents are vulnerable like in I4 [Wang Tao, 2014b].
+
+I6 Apps can use path-permissions to control access to data exposed by content provider. These permissions control access to a folder and not to its subfolders/descendants and their contents. Incorrectly assuming the extent of these permissions can lead to information leak (read) and data injection (write) [Google Inc., 2018c].
+
+I7 Components that process implicit intents are by default exported without any access restrictions. If such a component processes intents without verifying their authenticity (e.g., source) and handles sensitive information or performs sensitive operations in response to implicit intents, then it can leak information or perform unintended actions [Chin et al., 2011].
+
+I8 Broadcast receivers registered for system intents (e.g., low memory) from Android platform are by default exported without any access restrictions. If such a receiver services intents without verifying the authenticity of intents (e.g., requested action), then it may be vulnerable like the components in I7 [Chin et al., 2011].
+
+I9 Broadcast receivers respond to ordered broadcasts in the order of priority. By using appropriate priorities, receivers can modify such broadcasts to perform unintended actions [Chin et al., 2011].
+
+I10 Sticky broadcast intents are delivered to every registered receiver and saved in the system to be delivered to receivers that register in the future. When such an intent is re-broadcasted with modification, it replaces the saved intent in the system, which can lead to information leak and data injection [Chin et al., 2011].
+
+I11 Every activity is launched in a task, a collection (stack) of activities. An activity can declare its affinity to be started in a specific task under certain conditions. When the user navigates away from an activity X via the back button, the activity below X on X’s task is displayed. This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a phishing attack [Ren et al., 2015].
+
+# I12
+When an activity from a task in the background (i.e., none of its activities are being displayed) is resumed, the activity at the top of the task (and not the resumed activity) is displayed. This behavior along with task affinity and specific start order — malicious activity started after benign activity — can be used to mount a phishing attack [Ren et al., 2015].
+
+# I13
+When a launcher activity is started, its task is created and it is added as the first activity of the task. If the task of a launcher activity already exists with other activities in it, then its task is brought to the foreground, but the launcher activity is not started. This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a phishing attack [Ren et al., 2015].
+
+# I14
+In addition to declaring task affinity, an activity can request that it be moved to the affine task when the task is created or moved to the foreground (known as task reparenting). This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a denial-of-service or a phishing attack [Ren et al., 2015].
+
+# I15
+Apps can request permission to perform privileged operations (e.g., send SMS) and offer interfaces (e.g., broadcast receiver) thru which these privileged operations can be triggered. Unless appropriately protected, these interfaces can be exploited to perform an operation without sufficient permissions [Chin et al., 2011].
+
+# I16
+The call method of Content Provider API can be used to invoke any provider-defined method. With reference to a content provider, this method can be invoked without any restriction leading to both information leak and data injection [Google Inc., 2018b].
+
+# A Networking
+Networking APIs allow Android apps to communicate over the network via multiple protocols.
+
+# N1
+Apps can open server sockets to listen to connections from clients; typically, remote servers. If such sockets are not appropriately protected, then they can lead to information leak and data injection [Jia et al., 2017].
+
+# N2
+Apps can communicate with remote servers via insecure TCP/IP connections. Such scenarios are susceptible to MitM attacks [Jia et al., 2017].
+
+# A Permissions
+In addition to system-defined permissions, Android apps can create and use custom permissions. These permissions can be combined with the available four protection levels (i.e., normal, dangerous, signature, signatureOrSystem) to control access to various features and services.
+
+# P1
+Permissions with normal protection level are automatically granted to requesting apps during installation. Consequently, any component or its interface protected by such “normal” permissions will be accessible to every installed app [Satoru Takekoshi, 2014].
+
+# A Storage
+Android provides two basic options to store app data.

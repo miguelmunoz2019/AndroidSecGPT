@@ -1,0 +1,48 @@
+- Test Only Flag which is not vulnerable but is used for the dynamic analysis phase indicating that APK will not applicable to execute as it is just part of the application, not the whole application.
+
+# Source Code Scanning
+Before discussing source code scanning to detect information leaks, sources and sinks APIs need to be specified. SuSi framework  provides an SVM trained model and the used model results are based on Android 4 version APIs. It classifies a given Android API to be a source or a sink. Working on Android 4 may sound deprecated but the collected APIs are not only from Android SDK libraries—which don’t include runtime APIs—instead, they are included in real Android phones or Android emulators. As a result, SuSi framework provides a good base and with some hand annotation for the results fits the old and new Android APIs. SuSi provides sources and sinks of Android APIs in RIFL format—a common specification language for information-flow requirements. Next, a dummy entry point is constructed as it does not exist in Android code to be able to construct Call-Graph (CG).
+
+This dummy entry point is constructed by FlowDroid that emulates the application life-cycle . This is done such that all components (activities, services, etc.) inside an application can run in an arbitrary sequential order (including repetition). FlowDroid bases its analysis on IFDS , an analysis framework which is not path sensitive. Instead, it joins analysis results immediately at any control-flow merge point. It can thus generate and analyze a dummy main method in which every order of individual component life-cycles and callbacks is possible.
+
+By scanning each source code function forward and then backwards, APIs and user-defined methods can be represented as nodes in CG and the direction of arrows in the graph shows the direction of the calls. Next comes the extraction of paths from sink APIs’ nodes to source APIs’ nodes. This is done by traversing the constructed CG using Depth-First Search (DFS) algorithm. Those paths from source to sink APIs are considered a tainted and a vulnerable path. They are tainted because the source API contains sensitive information about the user’s Android mobile, like location, IMEI, and contacts. They are vulnerable because this sensitive information is sent outside the Android mobile by sink API like sending SMS, uploading to a remote server, and passing to another Bluetooth or NFC device. The information leak vulnerability risk is estimated Medium as some of the code does not indeed invoke at run time, so it may give a false positive result. Android Sources and Sinks of Android APIs are summarised in Table 2.
+
+Throughout this work, we contributed to FlowDroid —an open-source framework. It is responsible for matching the source and sinks APIs and identifying the tainted paths. However, it doesn’t accept RIFL file format  correctly. This should be contained by Android sources and sink APIs. Therefore, we added this feature and provided an XML output file which contains the tainted paths (information leaks vulnerabilities) and its categories as shown in Table 2.
+
+# 4. Dynamic Analysis
+There are vulnerabilities that static analysis is not able to detect. Vulnerabilities that depend on the run-time behaviour and the interaction with the application. Dealing only with reverse engineered code and code paths are not enough. To overcome this limitation, dynamic analysis is used. Dynamic analysis works on running the application and running different scenarios using randomly generated user input then monitors the running behaviour. Examples of detected behaviour are Intent Crashing and Insecure Network Connections (especially HTTP requests).
+
+Intent Crashing could be seen as a signal for a vulnerability. The reason behind this is that it indicates (a) an open door for code injection that would run in the privileged context of the attacked application, (b) Distributed Denial of Service (DDoS) attack . When malicious code is injected that is trying to access a restricted resource (i.e., camera, location, etc.), a security exception will be thrown that is not handled by the application  and (c) Detecting an unexpected use of an exported component.
+
+Another reason for using Dynamic Analysis is that it could detect run-time anomalies regardless of the coding language being Java (native) or the developer changes to Kotlin or C++.
+
+To be able to run an Android application, a robust Android emulator is needed, so we used and configured Android SDK emulator API 26 version (Oreo) and communicated with it through ADB ; a command-line utility included in the Android SDK. However, there are many architectures that the APK can support, this project supports only x86 architecture in the phase of dynamic analysis due to performance degradation for the other architectures. After running the Android emulator, the desired APK is installed and the application is opened on the main screen (activity). If the application is labelled as “test only”, the dynamic analysis process gets aborted. The “test only” flag is set by the compiler during the compilation process. This is done to speed the process while testing/running the application by compiling only a part of the application. This is considered as a limitation to the dynamic analysis process.
+
+Next comes extracting the current views on the screen and its states i.e., clickable and non-clickable buttons. We only extract the views that the user can deal with its states in real-time like the clickable, long press and scroll-able states. Next, we loop across all the extracted states and its views and send the corresponding signal to the emulator. We used Droidbot  as the Android emulator and the user behaviour was generated based on the extracted states of the views. The goal of simulation is to cover the different available screens and views’ states regardless of the data entered in editable text fields.
+
+# Intent Crash Analysis
+While the simulation of the Android application is running on the Android emulator, information about actions, running applications, and background processes are logged. The log file from the emulator is extracted after completing the simulation and analysis by finding “FATAL EXCEPTION” word accompanied by the package name of the simulated application. The intent crash vulnerability risk is estimated High as crashing the application may enable a hacker to gain the application’s permissions and cause some destruction.
+
+# API Calls Analysis
+It focuses on analysing network API calls which is mainly about detecting HTTP requests. Strace ; a Linux API monitoring tool, is hooked to the emulator to listen to HTTP requests. The results of listening are filtered giving the URL and its source and destination hosts. The HTTP request vulnerability risk is estimated High as the connection is not encrypted and the user’s information may be sensitive to being sniffed.
+
+To this end, the architecture is modularized to allow it to be both extendable and adaptable to other mobile development platforms. As aforementioned, adapting to other platforms would require adjusting the reverse engineering and choosing the suitable emulator. All the required modifications are limited to the Application Layer (Section 4).
+
+# 5. Experiments and Results
+As mentioned above, this work performs both static and dynamic analysis on an uploaded APK. Table 3 summarises the vulnerabilities and their risk levels. Each vulnerability is ranked based on two metrics; (a) the associated security risk and (b) the impact on the user. Then, an overall risk is calculated based on these two values. For example, the “Insecure Network Request” has a high security risk and a medium impact on the user with an overall high risk, compared to setting the “Back-up” flag which has a low impact on the user and a medium risk resulting in a low overall risk.
+
+To evaluate the proposed model, we used application APKs from DroidBench  benchmark. Moreover, we developed applications with predefined vulnerabilities to evaluate the correctness of the model. After the correctness phase, real applications are evaluated as well, such as Ampere, Brevent and GoIV Calculator.
+
+The model is evaluated against 70 applications from DroidBench. These applications contain 93 information leaks. The model was able to detect 79 of the information leaks, resulting in 84% accuracy compared to DroidBench. Below are samples of the evaluated applications. It is important that Intent Crashes and Insecure Network Requests are fully covered in the proposed model, however, accuracy comparison is not possible since they are not included in other models/platforms.
+
+1. httpRequest_crash application: This is a developed application aimed to evaluate HTTP requests and intent crashes detection.
+
+Overall App risk: Medium
+The detected vulnerabilities are:
+# Information 2019, 10, 326
+# 12 of 16
+# 1. Static and Dynamic Analysis
+- Static: Exported Components, Debug Mode Enabled, Backup Mode Enabled
+- Dynamic: Http Requests, Intent Crashes
+# 2. TestOnlyFlag
+This is a developed application aimed to evaluate static analysis only. Dynamic analysis won’t execute because the application is flagged as Test Only.

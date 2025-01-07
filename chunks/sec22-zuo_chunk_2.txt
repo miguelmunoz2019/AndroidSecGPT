@@ -1,0 +1,75 @@
+There are two ways to run a C# program. One is to compile the C# code to .NET Common Intermediate Language (CIL), and then use a virtual machine (VM) to interpret the CIL code at runtime. The other is to translate the CIL code to C++ code via tool IL2CPP and then compile the C++ code to native binaries. Unity has largely moved to the second approach since it is more efficient.
+
+However, translating CIL code to C++ code is not trivial, as C# has many features that C++ does not have such as reflection and garbage collection, and IL2CPP needs to support those features in C++ and make the native binary work as CIL code. In particular, IL2CPP will translate not only the game code, but also C# system libraries and Unity libraries to C++ code. Each function in C# will be translated into a corresponding function in C++. Also, IL2CPP will add additional code for error checks (e.g., detecting NULL pointers). While typically symbol names such function names can be stripped in native binaries, IL2CPP will keep them. This is because the binary still needs them to provide consistent features as C#. For instance, it needs the function name and its address when handling a reflection call, and provides a full call stack trace (including function names) when handling an exception. As such, IL2CPP also stores symbol information in a separate file named global-metadata.dat and packs it into the game, though game developers might encrypt or hide this file, to defend against the reverse engineering attempt. Ultimately, at runtime, the binary will load this file along with libil2cpp.so (which is generated via IL2CPP translation) and then use it during game execution.
+
+In Figure 3, we present the file structure of a game APK, which is an archive file in ZIP format. The sub-file libil2cpp.so is the eventually compiled game binary, which contains the game logic and the compiled C# libraries code. We can see that it occupies a large space of a game APK. Another sub-file worth mentioning is global-metadata.dat.
+
+USENIX Association
+31st USENIX Security Symposium
+3095
+which contains the metadata of the game including the mapping between the addresses in the binary and the functions, the classes definitions (e.g., fields), and the strings that used by the game binary. Unlike debugging symbols that have source code information, global-metadata.dat does not include this (that is why we must perform binary analysis). In addition, while there are multiple so files in the APK, we only need to focus on libil2cpp.so since this is what IL2CPP eventually translated.
+
+Ghidra. There are many frameworks that can be used to perform static binary analysis such as Angr , IDA Pro , and Ghidra . Increasingly, Ghidra becomes more and more popular due to its ease of use, and multi-architecture (e.g., ARM64, ARM32, x86) support with an intermediate representation called P-Code . More specifically, P-Code is a register transfer language, and to generate the P-Code of a binary, Ghidra will translate each assembly instruction to one or multiple P-Code instructions. For instance, in Figure 5, instruction in the second column will be translated to one or multiple P-Code in the third column. For each P-Code, it has an opcode (e.g., CALL in the example), one or more input, and an optional output. Each input or output is called Varnode. There are two types of Varnode: register, e.g., (register, 0x4000, 8), and memory location, e.g., (ram, 0x02212258, 8). Each Varnode is composed of the address space (e.g., register or ram), the offset within the space (e.g., 0x4000), and the size of the Varnode (e.g., 8).
+
+# 3 Overview
+# 3 The Problem, Threat Model, and Scope
+The problem. To complete a payment transaction, it is crucial for mobile games to verify the transactions signed by the app store to ensure its integrity. As discussed in §2, after receiving a payment request from a game app, the payment service provider (e.g., Google Pay) will complete the financial transaction transparently, and when it succeeds, the transaction’s metadata will be signed and returned to the game. Then, the game service provider will distribute the purchased products after verifying the transaction from the game server since a game client cannot be trusted. Any failure or missing such verification from the game server will lead to playing without paying vulnerability. This paper seeks to identify this vulnerability, which usually has the following two forms:
+- Lack-of-verification. When the game app receives the payment receipt from the payment provider, it may simply check the payment receipt (in Step ❸) to see whether the payment succeeded or not without validating the integrity of the receipt at all. In other word, the Step ❹, ❺, ❻ are skipped.
+
+- Local-verification. While the game app can validate the receipt locally by using the public key of the signer (by moving Step ⑤ to mobile game and skip Step ❹, ❺, ❻), this validation is fundamentally flawed. Specifically, there are multiple ways for attackers to subvert such local validation, e.g., by replaying an old transaction, or directly tampering with the return value of the local validation, or removing the validation via binary patching.
+
+Threat model. We assume a threat model in which the game client is untrusted, and the attacker is a game player who owns the client and has the incentive of playing without paying. There are multiple ways to launch the attack (detailed in §6), from the simplest, by using an app-level virtualization tool  such as Parallel Space or using repackaged victim game from 3rd parities, to the most sophisticated, by rooting the phone to tamper with anything of attacker’s interests. Our threat model is realistic for at least three reasons. First, it is consistent with many other payment security works (e.g., ). In particular, when studying payment security in traditional mobile apps, Reynaud et al.  assume the attackers can repackage the apps; when inspecting the validation consistency between the client and the server of banking apps, WARDROID  assumes the client app is not trusted. Similarly, when analyzing payment security in the web domain, Wang et al.  assume the web clients (i.e., the web browsers) can be malicious and they can cheat the web servers for shopping for free. Second, this threat model is also consistent with the reality. While a game player does not have the skills to root the phone, he or she can use the repackaged games. For instance, we have found several websites (e.g., ) host repackaged games. In addition, a game player can also use app-level virtualization  without any root privilege to full control the game. Third, the assumed threat is indeed threatening game developers, and many security companies actually offer commercial solutions (such as NHN AppGuard ) to defend against this.
+
+Scope and assumptions. While there are a variety of mobile games available in the mobile platform, we focus exclusively on the native Android games developed by Unity SDK for multiple reasons. First, Unity is the most popular game engine with a 71 % market share according to our measured result reported in Figure 1. Second, Unity is not a special case, and many other game engines (e.g., Unreal Engine, Cocos2d) have the same issue—namely it allows developers to verify payment transactions locally. Third, each game engine has its own specific APIs and runtime environment. Uncovering the flawed payment verification for all of the games would require game-engine specific analysis. While we could have also focused on analyzing Cocos2d or Unreal Engine games, this would require significant amount of additional engineering effort. Therefore, we eventually decided to focus on Unity games for proof-of-concept. Also, when analyzing game binaries developed with Unity, we assume the game developers will use
+3096 31st USENIX Security Symposium USENIX Association
+# Running Examples of In-game Purchase with De-compiled or Manually Constructed Code (in C#)
+# 1 class IAPManager : IStoreListener
+{
+public PurchaseProcessingResult ProcessPurchase(
+PurchaseEventArgs args)
+{
+CrossPlatformValidator validator = new CrossPlatformValidator(
+GooglePlayTangle.Data(), AppleTangle.Data(), Application.identifier);
+try
+{
+validator.Validate(args.purchasedProduct.get_receipt());
+...
+
+}
+catch (IAPSecurityException)
+{
+Debug.Log("Invalid receipt, not unlocking content");
+}
+return PurchaseProcessingResult.Complete;
+}
+}
+# 2 class PurchaseManager : IStoreListener
+{
+public PurchaseProcessingResult ProcessPurchase(
+PurchaseEventArgs args)
+{
+...
+
+StoreReceipt receipt = JsonUtility.FromJson<StoreReceipt>(
+args.purchasedProduct.get_receipt());
+GooglePayload gpayload = JsonUtility.FromJson<GooglePayload>(
+httpRequest.AddField("signature", gpayload.signature)receipt.Payload);
+...
+
+}
+}
+# 3 class unityInAppPurchase_LS : IStoreListener
+{
+...
+
+private string m_LastReceipt; // 0x30
+public PurchaseProcessingResult ProcessPurchase(
+PurchaseEventArgs args)
+{
+this.m_LastReceipt = args.purchasedProduct.get_receipt();
+...
+
+}
+}
+# 3 Running Examples
+To clearly illustrate the problem we aim to solve, we use three real-world games (the corresponding game names are removed since the vulnerable games have not been patched at this time of writing) shown in Figure 4 as running examples. Note that, the C# code in the figure is manually constructed from native binaries for clear illustration, and the excerpt of the corresponding binaries can be found in Figure 5.

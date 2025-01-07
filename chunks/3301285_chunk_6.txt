@@ -1,0 +1,54 @@
+# 21:14
+# P. Bhat and K. Dutta
+First, the attacker works on gaining comprehensive knowledge of the security measures and weaknesses in Android’s encryption system and then uses that information to break through the system and gain control over the kernel. It is done by repeatedly guessing the pair of keys until the exact match is found. Attackers these days are using jailbreaking or rooting tools like Aircrack-ng to guess the passwords. After gaining control over the kernel, the attacker has the full access to all the resources and data stored on the system. A robust encryption mechanism is needed to tackle such attacks. Lately, Android systems incorporate strong encryption algorithms and Key Derivation Process (KDP) employing SCRYPT function for generating key-based password . This process makes it challenging for attackers to execute a brute-force attack, as it will require intensive knowledge and a significant amount of memory and resources for computation.
+
+The Sturdy Android Keychain Management system also plays a crucial role in improving the defenses against brute-force attacks. A two-factor authentication keys system is incorporated into Android Oreo, which further strengthens Android’s security . Malware known as Invisible Man  gets into the system when the user installs fake Flash updates, disguised as authenticated ones, from the unauthorized website. This malware, once installed into the system, can get the bank details of the user by acting like a key-logger. Simultaneously, it installs itself as the default text message application and grants itself access to send and receive text messages in the system. Such records can be used by attackers, as well as analyzers, for spying on the user’s data. Malicious applications, installed into the system, can also use the Audio channels to steal the password. Such applications send deceitful commands, through the speaker of the victim’s system, to its microphone, which behaves as confused deputy. Talk Back Accessibility Service of Android is used to accomplish the purpose of this attack, as it reads out the password typed by the victim to the attacker [75–77]. AuDroid  is a policy enforcement technique that is employable with SELinux for preventing and detecting attacks that use audio channels for exploiting the system. SemaDroid  is a method to protect from attacks, like covert channel attacks , that target the sensor data, which includes data related to Camera, GPS, Microphone, Motion Sensors, and other sensors in the system. They enforce user policies that put restriction on the applications installed on the system from collecting the critical information from sensors. Such policies can control the type of information applications are collecting from the host device. It can defeat any stealthy attack on the sensors, thereby protecting the user’s private information.
+
+Security of HAL has been substantially improved in Android Oreo. Now, different device drivers have separate HALs. Each driver is controlled only by the HAL to which it is assigned. When a process requests for a device driver, it gets a particular HAL, and together they run in a sandbox. Thus, the process gets only necessary privileges that are required to complete its job. This way the processes will not be able to access device drivers directly, and they can also not access device drivers that they have not requested. It helps in limiting privilege escalation attacks and even phishing attacks, which use combined privileges on different components for spying or stealing users’ data . Analysis of these attacks is summarized in Table 3.
+
+# 2 Application-based Attacks
+Malware developers exploit the vulnerabilities of default applications, as well as the applications installed into the system, from Play Stores and websites. Applications request for the privileges, from the system, at the time of installation, for smoothly running, later on. Various researchers have suggested that the applications that users install from websites request for unnecessary permissions, which they do not require to performing their job. Attackers take advantage of this situation and use attacks like privilege escalation , for exploiting the target system, at different levels. Attackers are also misusing the flaws in native libraries and the third-party libraries found in the applications. They use these libraries to request for combined permissions. Escalated
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+# A Survey on Various Threats and Current State of Security in Android Platform
+# Strategy
+• The attacker repeatedly resends the third handshake of other device to the target to reset the encryption key.
+
+• The target accepts same value to encrypt the data to be sent.
+
+• The attacker can then identify the keychain used to encrypt that data by matching multiple packets.
+
+# Security measure
+• Patches for this vulnerability is given in Android Security Bulletin 2017-11-06
+• Strong passwords and encryption system
+• Sturdy Android Key chain Management system and Key Derivation Process
+• Two-factor authentication keys system
+• CFI
+• DFI
+• Program shepherding
+• Attacker lures victim to visit a mobile banking site.
+
+• Attacker launches phishing attack to steal victim’s login credentials.
+
+• Attackers use services like Talkback to steal passwords from victim’s device.
+
+• Attackers use malicious applications to retrieve data from the sensors.
+
+• Attackers steal sensitive data.
+
+# Privilege Escalation
+Privilege rights give attackers access to any component of the victim’s system, including the kernel. Attackers can even gain root privileges and can cause irreparable damage to the system. After sneaking into the system, attackers can spy on the user’s data for personal motive or can sell it to third parties for money. Privilege Escalation attacks and attacks based on libraries, both have placed Android security in peril. Malicious applications are used by the attackers to breach into the Android system and steal vital details.
+
+# Runtime Information Gathering Attack (RIG)
+RIG is an attack through which attackers can accumulate information from the victim’s system, during the runtime of the malicious application. The malicious applications exploit the permissions, given to the application, at the installation time to perform this attack. Researchers  have shown how this attack can pose a severe threat to the Internet of Things, administered by Android. They have also implemented the technique, called App Guardian, which helps in preventing from the RIG attacks. App Guardian keeps a check on the suspicious application running and stops all other processes running in the background. Once the process stops the executing, it restarts the stopped processes and cleans the memory used during runtime by the suspicious application so that no trace of information is left for the attackers to steal from the system. The application-based attacks are targeting the resources of the Android system like memory, CPU, files, disk, battery to damage the system.
+
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+P. Bhat and K. Dutta
+The malicious application can consume more memory, battery, and processing power than their regular counterparts. Malicious applications can exhaust the system and bring it to a standstill. Attackers can use multimedia for targeting the battery of the system. Well-designed multimedia files, which remain stealthy, are used by attackers for such attacks. These files consume more battery power, and the system will get exhausted quickly, and its processing power will slow down. It will not be able to perform any normal operation and will ultimately collapse. Such attacks are the example of energy-based attacks.
+
+# 2 Library-based Attacks
+Libraries, used for supporting security features for protecting the Android environment, cannot be trusted fully, as even they are not flawless. There are errors in the code, which can pose serious security issues when used. In March 2017, Android Security Bulletin  released the list of security updates and vulnerability, in which they ranked remote code execution vulnerability in OpenSSL and BoringSSL as critical, since it allows the attacker to corrupt memory at the time of processing data as well as the file. Attackers accomplished this task by using a carefully designed file. From time to time patches and updated versions, to provide a solution for the vulnerabilities, are released. OpenSSL has released OpenSSL 1f and OpenSSL 1lf  that include bug fixes. Undoubtedly, the security of an application is dependent on the libraries included in the programming. Any vulnerability in the library will be included in the utilizing application.
+
+# 2 Third-party Library Attacks
+Lately, third-party libraries have become extremely vulnerable to attacks. Poor developer practice is one of the significant causes, for this kind of vulnerability. In 2016, buffer overflow vulnerability was reported in the getaddrinfo() function; this function was used to search domain name included in the GNU C library. The solution to the problem came 7 months after its initial reporting, which gave enough time for attackers to peek inside the system and cause severe damage, which was sometimes irrecoverable. According to researchers, this security loophole proved fatal for the system, and it even allowed attackers to perform malicious activities (CVE-2015-7547) from a remote system . Software companies have faced the consequences of the vulnerabilities caused by third-party libraries.

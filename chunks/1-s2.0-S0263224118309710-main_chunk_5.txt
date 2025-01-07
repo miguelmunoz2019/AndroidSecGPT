@@ -1,0 +1,50 @@
+# 6. Discussion
+The EZADroid implemented a permission-based application assessment. It collected 5000 applications from a malware repository, Drebin, which was generally accepted as the Android malware dataset . It composes of different families, Android Malware Genome Project  and also detected in the wild by a well-established AntiVirus vendor  which is important for detection and training purposes. However, by only detecting the category of the application in two classes (malware or benign), in risk assessment point of view, it is inadequate. Accordingly, it is important to measure and evaluate each application to identify the risk factors and threat that contain the potential to cause malicious to the user. Once the measurements have been made, the subsequent process is to analyze how severe and likely the risk. This is crucial to decide what type of control and elimination that will take place. With this implementation, we able to calculate the risk of the malware in detail. Therefore, this paper proposes EZADroid to measure the risk of the application rather than classify them.
+
+The EZADroid used 5000 benign applications downloaded from AndroZoo  which belongs to Google Play. The sample contains more than five millions different Android applications and each of which has been analyses by 10 of different AntiVirus product . These dataset is important for training purpose which contribute to the significant result.
+
+In total, this paper analyzed 10,000 applications by using the risk assessment approach. Both the benign and malware applications were analyzed by VirusTotal  to check the validity of the malicious activities . The VirusTotal provides significant results which also include a definition of all kinds of malware through 42 antivirus products (e.g. Symantec and Kaspersky) . The experimental results demonstrate the effectiveness of the EZADroid in differentiating the malware from the benign applications. This is illustrated in Figs. 4–6.
+
+Using less criteria seems to show promising results, as illustrated in Table 11. The outcome is also supported by  where
+Model summary.
+
+a Predictors: (constant), risk zone.
+
+ANOVA.
+
+a Predictors: (constant), risk zone.
+
+Coefficients.
+
+# 8
+Very Low Low Medium High RiskZone
+It was noted that less criteria resulted in less time; it also reduced the cost of the experiment and it was prominent in showing more accurate results. From another perspective, the presence of the criteria (including benign and malware) provided some unique advantages in generating a risk zone and in preventing the malicious applications from affecting Android mobile users. It thus helped to increase users’ awareness. One of the more significant findings that emerged from this experiment is that the number and the type of criteria could have affected the effectiveness of the risk assessment. One possible solution recommended is to adapt a machine learning approach to create a different result in the risk assessment so as to ensure the effectiveness of the risk zone.
+
+To demonstrate the superiority of our work, we compared the results with existing solutions in Table 18. Ref.  conducted a study on risk assessment for Android applications that can identify malware applications using Naive Bayes classification. Ref.  proposed Android application package (APK) Vulnerability Identification System (AVIS) that classifies an application into malware or benign based on DEX file. The authors used 250 applications samples as the training set where the total number of malware and benign samples were 125 each. Their approach achieved approximately 94% accuracy. As a comparison, although our work recorded a slightly lower accuracy, the size of the dataset used in our study was much higher, i.e. 10,000 samples. As such, the approach proposed in this research managed to lower the risk of overfitting and has better generalization on unseen samples.
+
+On the other hand, Ref.  proposed XDroid, an Android application and resource risk assessment tool. XDroid implemented dynamic analysis technique to detect malware by observing the applications’ behaviors into an observation set. The results showed that XDroid only managed to achieve 82% accuracy with 1000 samples training set. However, XDroid consumed high consumption of computational time to train the model. In addition, AndroDialysis  utilized intent and permission as features in detecting malware rather than analyzing risks. Although they marked 91% accuracy, however, they focused on intent and permission only. In contrast, our EZADroid solution implements static analysis techniques which are effective to detect known malware and fast detection. Table 18 lists the comparison with previous study.
+
+The results of experiments reveal the effectiveness of our approach. Detection rate with 89% of accuracy, this shows that our proposed approach performed better. The proposed approach also involves risk analysis on applications as well as responses to users’ with risk zone. This raise security concerns from the users. Therefore, the sensitive data of the users are properly protected and response on time. Further that, our approach able to reduce attack from malware application and minimize the risk.
+
+# 6. Future works
+This section presents an illustration of future works. As the velocity of the change of malware increase, researchers need a new approach to be adapted into their future works. This include extending the research to refine the risk zone with risk response planning (e.g. due to the noticeable spark of malware) and to increase user awareness. Another potential research area is to address the known challenges in risk evaluation such as identifying the risk zone between the malware and benign applications by minimising the false positive. In this regard, the EZADroid needs to develop an effective risk zone by implementing the machine learning approach to achieve better efficiency and accuracy.
+
+# 7. Conclusion
+This paper has highlighted the significant findings of risk assessment and the risk zone for Android applications through the EZADroid which implements a permission-based application to determine the risk zone. Based on that knowledge and the effective risk evaluation, it was able to assess the mobile Android application into four (4) types of risk zone (e.g. very low, low, medium and high). The main contributions of this experiment include the following: it evaluated 5000 malware application from the Drebin dataset  and 5000 benign applications from the AndroZoo  dataset. It engaged the 10, 20 and 30 criteria approach for the risk evaluation and it performed four (4) risk evaluations (e.g. very low, low, medium and high). Based on the results, the risk on Android applications was detected effectively using less features yet yielding high detection rate.
+
+The data were collected from the permission-based applications using static analysis. The collected data were organized in a database. In order to select the effective criteria to increase the effectiveness of the risk evaluation on the EZADroid, this paper applied the criteria selection approach. The combination of the risk assessment approach and the AHP improved the risk evaluation and also determined the risk zone for Android applications. The applications taken from Drebin and AndrZoo were used for fixing the validation and reputation of the EZADroid. It was noted that the EZADroid offered a good risk zone evaluation performance.
+
+The EZADroid performed and achieved a 89% accuracy rate in the experimental evaluation of 5000 malware and 5000 benign applications based on the 10 criteria approach. It was also noted that the EZADroid was able to achieve an accuracy rate of over 80% on risk evaluation without using the machine learning classifier. This is the main advantage of the proposed approach. Moreover, the approach was also suitable to be installed on a mobile device as it provides good risk evaluation and increases user awareness about the risk of applications. This was accomplished through the illustration of the risk zone threshold.
+
+The EZADroid approach has a limitation in running the risk evaluation for malware applications that do not use the criteria that were selected in its permission. This is a limitation of all permission-based malware detection mechanisms. Furthermore, the EZADroid was also unable to calculate the risk if the malware application does not have any permission. Nonetheless, this addressed by combining the permission-based applications with other different criteria. Another limitation traced to the general static analysis applied. Here, the static analysis was less efficient in detecting the malware with an obfuscation technique. Considering the weaknesses of this study, an uninstalled or blocked application may be a good protection alternative for mobile devices. Therefore, more investigations and experimentations on Android risk assessments need to be conducted.
+
+# M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+#dlg-join (accessed September 8, 2016).
+
+11. F. Idrees, M. Rajarajan, M. Conti, T.M. Chen, Y. Rahulamathavan, PIndroid: a novel Android malware detection system using ensemble learning methods, Comput. Secur. 68 (2017) 36–46, https://doi.org/10/j.cose.
+
+12. Vanja Svajcer, Plankton malware drifts into Android Market, SophosLab, 2011. https://nakedsecurity.sophos.com/2011/06/14/plankton-malware-drifts-into-android-market/ (accessed September 21, 2016).
+
+13. N.B. Anuar, M. Papadaki, S. Furnell, N. Clarke, A response selection model for intrusion response systems: Response Strategy Model (RSM), Secur. Commun. Networks 7 (2013) 71–81, https://doi.org/10/sec.
+
+14. National Institute of Standards and Technology Gaithersburg, Guide for conducting risk assessments, NIST Special Publication, 2012, p. 95. http://doi.org/10/NIST.SP-30r1.

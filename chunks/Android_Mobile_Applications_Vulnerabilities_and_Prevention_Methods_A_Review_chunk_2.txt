@@ -1,0 +1,52 @@
+Solution: The solution to Insufficient Transport Layer Protection is to use TLS to transmit critical information and session tokens. In addition, by utilizing trusted certificates and pinning them into the mobile application service ,.
+
+# D. Unintended Data Leakage
+Unintended Data Leakage happens when the mobile application developer accidentally stores sensitive data in a location accessible to other mobile applications running on the same device.
+
+Solution: To prevent this vulnerability, it is necessary to block caching and clipboard access ,.
+
+# E. Poor Authorization and Authentication
+This vulnerability happens when attackers get access to sensitive mobile application data by bypassing the authentication protocol. When mobile applications work offline, they are more vulnerable to these attacks.
+
+Solution: This vulnerability is to ensure that authentication is done on the server-side instead of the client-side and in the offline mode, assigning fewer privileges to mobile application users to avoid unauthorized access to sensitive data.
+
+# F. Broken Cryptography
+Adopting a faulty or hazardous cryptographic algorithm is an unnecessary risk that could lead to exposed sensitive data. Adopting a non-standard algorithm is risky because a determined attacker may be able to decipher the algorithm and gain access to the protected data. Cryptography is a critical part of data security. Many mobile application developers hardcode the encryption and decryption keys in the application's source code, making them vulnerable to attackers via reverse engineering. Moreover, some cryptographic algorithms are weak and can't protect mobile apps like SHA1 and MD5.
+
+Solution: The solution to broken cryptography vulnerability is to stick to the cryptographic standards and never store sensitive data unless necessary.
+
+# G. Client-Side Injection
+The client-side injection causes malicious code to be executed via the mobile app via the mobile device. This malicious code is typically delivered in the form of data that the threat agent sends to the mobile app via various methods. Generally, malicious code is injected by attackers via input data. This code might compromise the system with privileged permissions when it is executed.
+
+Solution: To prevent code injection, the data must be validated, and parameterized queries must be used when accessing the database ,.
+
+# IV. DISCUSSION, COMPARISON, ASSESSMENT AND RECOMMENDATION
+# A. Discussion and Comparison
+This section provides a sufficient discussion for the previous works explained in the literature review section. Table I illustrates concentrated comparison among the features of all these previous works. Also, a specific assessment and recommendation will be presented after the comparison table to help the next researchers who want to work in this field.
+
+We studied various android mobile application security researches and summarized each research's findings, as shown in Table I. The researchers used various methodologies in their research, such as reverse engineering, case studies, and
+150
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 10, 2024 at 05:44:32 UTC from IEEE Xplore. Restrictions apply.
+
+# 2nd International Conference of Information Technology to enhance E-learning and other Application, (IT-ELA2021)
+Baghdad college of economic sciences University, Baghdad, Iraq
+Developing applications for the research purpose. According to , , lack of security awareness and bad coding practices among the developers when developing mobile applications lead to vulnerabilities in the applications. On the other hand, , , , ,  stated that the permission system contains flaws and the improper usage of the Android permission system lead to vulnerabilities and data leakage. Furthermore, according to , , certificate validation plays an important role in enhancing the security of mobile applications. Finally, , ,  stated that many mobile application vulnerabilities occur due to incorrect usage of APIs.
+
+# TABLE I. COMPARISON OF REVIEWED RESEARCHES
+# B. Assessment and recommendation
+Android application vulnerabilities have become a serious concern. Many studies have been performed to address these vulnerabilities and find solutions to mitigate their risks. In this study, we have reviewed many articles that analyse android mobile application vulnerabilities with various methodologies. According to , ,  and the vulnerabilities are mainly due to the Android permission system ranging from flaws to the lack of knowledge and misuse of application permissions. Moreover, ,  have shown that data encryption plays a
+151
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 10, 2024 at 05:44:32 UTC from IEEE Xplore. Restrictions apply.
+
+# 2nd International Conference of Information Technology to enhance E-learning and other Application, (IT-ELA2021)
+# Baghdad college of economic sciences University, Baghdad, Iraq
+critical role in preventing flaws that could lead to serious privacy issues. Furthermore, ,  have emphasized the importance of considering security issues by developers at the development phase of mobile applications.
+
+In general, to achieve a good level of security in Android, there should be user awareness on understanding permissions and the importance of updates. At the same time, mobile application developers should consider security issues carefully. In addition, encryption and storage of sensitive data should be taken care of securely.
+
+# V. CONCLUSION
+From the reviewed research, it can be concluded that this field's focus should be on the lack of security awareness among developers. In addition, a lack of understanding of Android permissions can lead to harmful and malicious applications gaining access to users' personal information and data. Android-based mobile applications' security has become a serious issue because of various types of vulnerabilities. These vulnerabilities might have a critical impact on the users and lead to serious problems if not handled correctly. In this paper, we study the vulnerabilities and the methods of mitigation of the threats. There were various types of threats that were mostly related to android permission system and mobile user awareness and lack of security knowledge in the mobile application development process. This paper aims to address the risks to help the mobile applications developers focus on security and privacy during the development process.
+
+# 2nd International Conference of Information Technology to enhance E-learning and other Application, (IT-ELA2021)
+Baghdad college of economic sciences University, Baghdad, Iraq
+(ICSE), 2021, pp. 1695–1707. 1063–1078, 2018..

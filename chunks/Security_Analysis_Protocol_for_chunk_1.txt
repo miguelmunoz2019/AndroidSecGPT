@@ -1,0 +1,50 @@
+# Security Analysis Protocol for Android-Based Mobile Applications
+José Palacios1, Gabriel López2, Franklin Sánchez3
+jose.palacios01@epn.edu.ec, gabriel.lopez@epn.edu.ec, franklin.sanchez@epn.edu.ec
+1,2,3 Escuela Politécnica Nacional, 170525, Quito, Ecuador.
+
+Pages: 366–378
+# Abstract
+This document presents a testing protocol to evaluate security of mobile applications based on Android. For this, it’s been used as a reference the methodology proposed by OWASP Mobile Security Project. It’s been developed a protocol of tests that consists of three phases: information gathering, static analysis and dynamic analysis. To assess the security of mobile applications the testing protocol has been designed, using certain steps of the OWASP Mobile Security Project. For the three phases that are part of the designed test protocol, a set of tasks is defined with the necessary procedure and tools. Subsequent to the design of the test protocol, it has been validated on a mobile application, and it has been presented comments of the test. The tools used in the protocol include dex2jar, PeaZip, axml2printer, jd-gui, logcat, OWASP ZAP and Drozer.
+
+Keywords: Android; data gathering; dynamic analysis; mobile application; security; static analysis; OWASP.
+
+# 1. Introduction
+With the increasing use of mobile applications, a lot of enterprises have chosen to offer the possibility of making commercial transactions from the convenience of a mobile device. However, given the sensitivity of the data that is handled by these types of applications, it has become necessary to analyze the level of security of these applications in order to protect the customer’s information.
+
+The OWASP Mobile Security Project methodology (Owasp.org, 2016), has been used to design a testing protocol, which consists of three phases: data collection, static analysis and dynamic analysis. While the OWASP Mobile Security Project defines the points to consider for testing the security of mobile applications, it does not define the procedure or tools required for testing. Because of this, in this work a test protocol is defined for Android applications, which defines the procedure and tools needed for each of the tasks that are part of the phases of data collection, static analysis and dynamic analysis.
+
+The analysis of Android applications for devices has already been studied in other investigations, such as: Mobile Application Security on Android: Context on Android security , documents like this one, in which only the theoretical approach is discussed, which serves as the basis for an analysis of Android applications, but does
+# RISTI - Revista Ibérica de Sistemas e Tecnologias de Informação
+not indicate steps or current tools to do it. Towards Black Box Testing of Android Apps (Zhauniarovich, Philippov, Gadyatskaya, Crispo & Massacci, n. d.). In which they focus on the design of a framework for Black Box analysis, for Android applications. However, they do not take into account the analysis of the application code components or the tools needed to perform the analysis.
+
+A test protocol has been designed in order to test the security of mobile applications, using certain steps of the OWASP Mobile Security Project. For the three phases that are part of the designed test protocol, a set of tasks is defined with the necessary procedure and tools. Subsequent to the design of the test protocol, it has been executed on a mobile application of Ecuador and it has been found that there are several weak points in this, including an alarming vulnerability. Finally, the results obtained from the execution of the test protocol for the mobile application was analyzed.
+
+Using the protocol proposed in this paper, it is possible to have a notion of the security status of mobile applications. Through the implementation of this protocol, vulnerable points can be detected, in order to be able to correct them later and to protect the data of the clients.
+
+The second section of this document presents the related work, the third section presents the proposed protocol, along with the tools and commands required for its use. The forth section shows the validation of the test protocol for a mobile application of Ecuador. Finally, the sixth section presents the conclusions.
+
+# 2. Related work
+With the aim of analyzing the security of mobile applications, work has been carried out such as: OWASP Mobile Security Project methodology (Owasp.org, 2016), Mobile Application Security on Android: Context on Android security , Towards Black Box Testing of Android Apps (Zhauniarovich et al., n. d.), Securing The Mobile Banking Channel.
+
+OWASP Mobile Security Project methodology, is a resource whose purpose is to provide developers and security teams with the resources they need to build and maintain secure mobile applications. This project seeks to classify mobile security risks and provide development controls to reduce their impact or probability of exploitation. For this, OWASP defines a set of steps grouped into three phases: data gathering, static analysis and dynamic analysis. However, for all the steps described in each of the three phases, there is no detailed procedure of how to carry them out, which is why the proposed protocol details the points to be considered within each of the three phases: data collection, static analysis and dynamic analysis, the procedure and the tools required for the implementation of the protocol on mobile applications.
+
+Mobile Application Security on Android: Context on Android security  details a complete theoretical approach, which can then be used to define a test protocol. For example, it takes into consideration Android’s security model, permissions, attempts, activities, broadcasts, services, content providers, etc. However, no protocol is defined to test the security of Android-based mobile applications, nor the necessary tools. This is why this paper includes a selection of specific procedures and tools for testing.
+
+RISTI, N.º E19, 04/2019 367
+# Security Analysis Protocol for Android-Based Mobile Applications
+Towards Black Box Testing of Android Apps (Zhauniarovich et al., n. d.) deals with the development of a framework for black box testing, i.e. without having access to the application’s source code. For this, this framework uses tools such as: Apktool, dex2jar and Emma. However, it defines more of a set of tools than a test protocol with defined steps for assessing the security of an application. That’s why this document offers a series of defined steps, which provides a guide to evaluate an Android mobile application.
+
+Securing The Mobile Banking Channel , deals with ways to secure the communication channel with mobile banking applications, in order to encourage the use of these by customers. For this purpose, recommendations are provided that the developer of mobile banking applications should take into account during the design process. However, it does not define any procedure for defining the security of an application nor a set of defined steps can be followed. This is why this document offers a protocol, which provides a guide to determine the security status of an application, taking into account not only the communications channel but also its code.
+
+In relation to the works mentioned above, it is found that they do not define a set of defined steps, which allow the security level of Android-based mobile applications to be determined. For this purpose, this document defines three phases: data gathering, static analysis and dynamic analysis, which have a set of defined steps, as well as the necessary tools to evaluate the security level of mobile applications based on Android.
+
+# 3. Methodology
+The figures and examples shown below were obtained from the implementation of the protocol on a mobile application. The OWASP Mobile Security Project methodology was used as a reference for the analysis of applications. OWASP methodology mentions the points needed for the analysis, but it does not indicate the tools or steps to be taken in detail. This chapter describes the test protocol and the required tools. As mentioned above, the protocol consists of three phases: data collection, static analysis and dynamic analysis.
+
+# 3. Information Gathering Protocol
+The following describes the protocol for data collection, which is then used for the analysis of applications. For this, applications must be obtained from the official store, this with the aim of avoiding the use of malicious or modified applications. The tasks which are part of this phase are: Functionality and workflow, Network interfaces and hardware components, Commercial transactions and interaction with other applications, and Application signing.
+
+1. Functionality and workflow: At this point the application is installed on a device and navigate through it to see the options it provides.
+
+2. Network interfaces and hardware components: When the application is installed and it is opened for the first time, it requests some permissions. It is necessary at this point to make a screenshot, in order to remember the permissions requested. Subsequently, the set of permissions should be listed, separating the permissions that provide access to the network interfaces with which interacts with the application.

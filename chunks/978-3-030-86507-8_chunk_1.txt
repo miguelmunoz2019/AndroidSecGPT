@@ -1,0 +1,59 @@
+# Assisting Developers in Preventing Permissions Related Security Issues in Android Applications
+# Mohammed El Amin Tebib1(B), Pascal André2 and Mariem Graa3, Oum-El-Kheir Aktouf1
+1 Univ. Grenoble Alpes, Grenoble INP, LCIS, Valence, France
+{mohammed-el-amin.tebib,oum-el-kheir.aktouf}@lcis.grenoble-inp.fr
+2 LS2N CNRS UMR 6004 - University of Nantes, Nantes, France
+pascal.andre@ls2n.fr
+3 IMT ATLANTIQUE, Nantes, France
+mariem.graa@telecom-bretagne.eu
+# Abstract
+Permissions related attacks are a widespread security issue in Android environment. Permissions misuse enables attackers to steal the application rights and perform malicious actions. While most of the existing solutions are advocated from end-users perspective, we take in this paper the developers perspective because security should be a software design concern. We propose a formal specification covering the permissions use by the current developers of Android applications, who are almost a third party developers. We underline a set of security properties. Then, we formally verify them by applying a Model Driven Reverse Engineering approach that enables abstraction and property verification. We implement the analysis approach as an IDE plug-in called PermDroid. Finally, we show the applicability of our approach through a case study.
+
+# Keywords
+Android · Development · Security · Privacy · Permissions · IDE · MDRE
+# 1 Introduction
+Smartphones with Android platform are the most used ones with a market share of 72% 1. According to CVE details2, the official MITRE datasource for Android vulnerabilities, 2020 and the beginning of 2021 have witnessed the most significant increase of Android security threats, which could lead to several security attacks such as: collusion, privilege escalation, and ransomware attacks. While most of existing solutions are advocated from the end-user perspective,
+1 https://gs.statcounter.com/os-market-share/mobile/worldwide/#monthly-201905-202005
+2 https://www.cvedetails.com/product/19997/Google-Android.html?vendor_id=12
+©c Springer Nature Switzerland AG 2021
+R. Adler et al. (Eds.): EDCC 2021 Workshops, CCIS 1462, pp. 132–143, 2021.
+
+https://doi.org/10/978-3-030-86507-8_13
+# Assisting Developers in Preventing Permissions Related Security Issues
+like anti-malwares , system configurations  and user-friendly tools , these security flaws are almost introduced at the development stage . Developers often do not prioritize security during mobile applications development for various intrinsic and extrinsic reasons such as: (1) lack of security skills; (2) scope of work: developers leave this issue to security specialists, (3) hardness: security is a wide and difficult domain that slows down delivering the product in time. Despite real investment, security policies are therefore manually encoded into the application, which is a dangerous practice that may cause security breaches.
+
+Among the security issues at development stage, we focus in this paper on permission related ones. Indeed, permissions are a main security concept to ensure the privacy protection, and restrict the access of third party libraries to the system resources. A recent experimentation study  realized on 574 GitHub repositories of open-source Android apps, showed that permissions-related issues are still a frequent phenomenon in Android apps. Android provides an official documentation to explain how to properly use permissions3. However, due to the continuous changes of permissions number and specification, this documentation becomes hardly readable for developers, leading to different security issues and drawbacks  such as: (i) Wrong permission usage: due to some permissions similarities, developers may intentionally use wrong permissions, e.g.: the use of ACCESS COARSE LOCATION instead of ACCESS FINE LOCATION; (ii) Permissions over-privilege: a widespread phenomenon that occurs when the application declares more permissions than those actually used. The unused permissions can be exploited by hackers to perform malicious actions, especially ransomwares; (iii) Permissions under-privilege: occur when the application requires more permissions than those declared, which does not conform with the transparency principle that each developer should respect; (iv) Unprotected API: occurs when developers forget to add an exception handler to some API methods, which may throw exceptions.
+
+In this paper we investigate the respect of permission security guidelines by the current developers of Android applications. We develop a formal framework for analyzing permission security issues like permissions naming conflicts, unauthorized access during component invocation, privilege escalation and permission over-privilege. The main contributions of this paper are: 1) A model based formal verification approach to assist third party developers in preventing the undesired permissions related behaviours that compromise the privacy of the application. 2) An implementation of the proposed approach in the form of an extensible IDE based tool (Eclipse, intellIJ, AndroidStudion) called PermDroid that identifies and prevents permission security risks and vulnerabilities related to the Android permission system. This tool analyzes up to the last Android API version 30.
+
+The rest of the paper is organized as follows. Section 2 presents the major permission security evolutions in Android versions. Section 3 describes the security mechanisms of Android with a special focus on permissions. We specify a set of security properties and guidelines in Sect. 4. The Analysis of these properties through an MDRE approach is presented in Sect. 5 and the experiments on a 3.
+
+# 134
+# M. E. A. Tebib et al.
+
+case study are provided in Sect. 6. Section 7 considers related works and finally, Sect. 8 concludes with a summary of our contributions and provides tracks for future work.
+
+# 2 Android Permission System Evolution
+The reader will find an interesting introduction to the Android Permission Model in . In this section we quickly overview the most significant evolutions related to the Android permission system. Table 1 summarizes the permissions-related security features categorized per Android version.
+
+Since the creation of the first version of Android on 2008, its permission system has been under many studies related to Android security and privacy. The concept of Permission is introduced in the 4th version of Android “Kit Kat”. Each application cannot access a sensitive information (e.g. contacts, SMS, location...) without having the required permissions. Those permissions could only be granted by the user at the installation time. Later in version 4, permissions groups were introduced to add a logical grouping of permissions sharing the same characteristics. If one of the permissions belonging to the same group is granted, the other permissions are automatically granted. The most significant update occurred on 2016. The user could avoid granting all permissions at install time. Indeed, the version (v6, API 23) brought large changes to the permission model enabling to partially check and grant permissions. Permission of normal category could be granted at install time and those of dangerous category could be checked and activated at run-time only; permission can be revoked later . Last but not least, in the version 10, Android provides a modular permission controller that enables to update privacy policies and UI elements (e.g. policies and UI related to granting and managing permissions). Android 11 recently added the support of auto revoke apps, where the new Permissions Controller module can automatically revoke runtime permissions for Apps that haven’t been used for an extended period of time. Apps targeting SDK 30 or higher have.
+
+4 https://www.techrepublic.com/article/ios-and-android-security-a-timeline-of-the-highlights-and-the-lowlights/
+# Assisting Developers in Preventing Permissions Related Security Issues
+auto revoke enabled by default, while apps targeting SDK 29 or lower have auto revoke disabled by default5.
+
+Many evolutions made Android a more secured environment. Without understanding these evolutions, it is getting harder for developers to design secured Android application with respect to the permission security guidelines. A deep and continuous analysis, documentation and understanding are required by different stakeholders, especially developers.
+
+# 3 Permission Security Model
+Using the expressive Z notation , we formalize the permissions concepts in Android application. Formalization enables to understand the essence of the permission system. Besides, it enables to state security properties we ought to verify in Sect. 4 and check on Android apps in Sect. 5. Due to space limitation, a detailed specification is provided in a web appendix6.
+
+We consider Android applications made of Components that communicate via Intents. Basically, components are categorized into two families: 1) foreground components such as activities and 2) background components such as Services, Broadcast Receivers, and Content Providers. Applications are made of components (cApp), which can be part of several applications, and intents (iApp). Components can be source or target of intents (csrcInt, ctargInt).
+
+In Android applications (defined by the Z schema AndroidApps (See Footnote 6), Permissions are declared in the manifest.xml configuration file, and required at different stages: (1) system APIs interactions, (2) database access, (3) message passing system via intents, (4) invocation of specific protected methods in public APIs and (5) content provider data access. They also have different protection levels. The Z basic types assume the existence of an abstract set of permissions and the free type provides the permission categories.
+
+Permissions are declared per application (permApp), components (permComp) and intents (permIntent). Component permissions are declared by components (cpermDec) and required by active components (cpermReq). Passive components provide read and write access permissions (rpermDec, wpermDec).
+
+5 https://source.android.com/devices/architecture/modular-system/permissioncontr
+6 https://pagesperso.ls2n.fr/~andre-p/download/androidPerm.pdf.
+
+136 M. E. A. Tebib et al.

@@ -1,0 +1,50 @@
+# Top 3: The Applications Layer
+This layer contains apps shipped by Google and third-parties, as part of the AOSP project. The applications layer has been affected by 105 vulnerabilities (8%) located in 31 applications Concerning the third-party applications, the Adobe Flash Player is the most vulnerable app with 29 vulnerabilities; the next more vulnerable app is Firefox (five vulnerabilities); Nvidia Profiler, Widevine QSEE trustzone and Samsung OMACP are the top three apps with three vulnerabilities each. Concerning the apps developed by Google, Browser, Telephony, and Bluetooth have been the most vulnerable with five vulnerabilities each.
+
+16 Note that we only report numbers for vulnerabilities in the AOSP apps and reported as vulnerabilities in the NVD database.
+
+Empirical Software Engineering (2019) 24:2056–2101 2085
+# Permissions, privileges, and access control
+issues are the main source of vulnerabilities in this layer with 27 instances. The top-2 category of vulnerabilities in the applications layer is security features (12 vulnerabilities), while the top-3 are improper check or handling of exceptional conditions and pointer issues with seven each. Vulnerabilities in the Applications layer are diverse in terms of types. For instance, CVE-2011-2344 is an example from the security features category that affected the Android Picasa app, in particular with an inadequate encryption strength (MITRE 2017h) on sensitive data:
+Android Picasa in Android 3 and 2.x through 2 uses a cleartext HTTP session when transmitting the authToken obtained from ClientLogin, which allows remote attackers to gain privileges and access private pictures and web albums by sniffing the token from connections with picasaweb.google.com.
+
+Other example of vulnerability in the applications layer, but from the behavioral problems category, is CVE-2011-0680, which affected the Android Browser and impacted 6 different versions of the OS (before 2):
+data/WorkingMessage.java in the Mms application in Android before 2 and 2.x before 2 does not properly manage the draft cache which allows remote attackers to read SMS messages intended for other recipients in opportunistic circumstances via a standard text messaging service.
+
+The CVE-2011-0680 vulnerability is an example of information exposure through sent data (MITRE 2017e) because of the lack of URIs validation in the Browser app.
+
+# Top 4: The Android Framework
+It is the layer that provides services and APIs to the application layer. The Android framework layer has been affected by 64 vulnerabilities (5%) belonging to 27 different subsystems; most of the vulnerabilities are instances of permissions, privileges, and access control (14), security features (10), and improper check or handling of exceptional conditions (7). Conversely to the Libraries layer that exhibits a non-diverse set of vulnerabilities (in terms of the type), the Android Framework has been affected by a diverse set of vulnerabilities including code injection (MITRE 2017o), overflows (MITRE 2017d), permission issues (MITRE 2017f), business logic errors (MITRE 2017l), missing authorizations (MITRE 2017m), and use of a risky cryptographic algorithm (MITRE 2017i), among others.
+
+The Framework APIs (i.e., Android API) is the most impacted subsystem with eight vulnerabilities, followed by the activity manager, the telephony manager, the content providers, and the Wi-Fi with five vulnerabilities each. The package manager is the next in the list with four vulnerabilities. An example of vulnerability in the Android Framework from the category behavioral problems is CVE-2016-2500:
+Activity Manager in Android [...] does not properly terminate process groups, which allows attackers to obtain sensitive information via a crafted application [...] This vulnerability was a consequence of an invocation to the killProcessGroup method in the ActivityManagerService.java file using wrong parameters.
+
+Another example of vulnerability introduced by business logic errors in the Android Framework layer is CVE-2016-3923, in particular in the Accessibility Services, that:
+mishandle motion events, which allows attackers to conduct touchjacking attacks and consequently gain privileges via a crafted application.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Top 5: The Hardware Abstraction Layer
+20 of the 1,174 vulnerabilities are in the HAL (1%). 13 of these vulnerabilities belong to media server-related interfaces; 3 to the serial interface; and the remaining vulnerabilities (4) are in the telephony, wifi, and video interfaces. The vulnerabilities are representative of the indicator of poor quality code (4), weaknesses that affect the memory (4), pointer issues (3), initialization and cleanup errors (2), and improper check or handling of exceptional conditions (1); for 6 of the vulnerabilities we were not able to identify the subsystem.
+
+# Top 6: The Runtime
+Only 17 vulnerabilities are related to the Runtime layer (1%). The top category of vulnerability here is security features with five instances. The next categories in the list are behavioral problems (3); Data handling (2); improper input validation (2); indicator of poor quality code (2); permissions, privileges, and access control (2); and weaknesses that affect the memory (1).
+
+Most of the vulnerabilities in the Runtime affect core libraries such as Conscrypt (5), Apache Harmony/Java SE (3), Dalvik VM (3), and Bouncy Castle (2). Conscrypt is a Java Security Provider used by Android as one of its core libraries hosted with the Runtime layer. An example of vulnerability in Conscrypt is CVE-2016-0818, which is an improper following of a certificate’s chain of trust (MITRE 2017g):
+The caching functionality in the TrustManagerImpl class in TrustManagerImpl.java in Conscrypt in Android 4.x before 4, 5.x before 5 LMY49H, and 6.x before 2016-03-01 mishandles the distinction between an intermediate CA and a trusted root CA, which allows man-in-the-middle attackers to spoof servers by leveraging access to an intermediate CA to issue a certificate [...].
+
+Another example, also in Conscrypt, is CVE-2016-2462. This vulnerability is a business logic error (MITRE 2017l), in particular because of missing an assignment statement in the OpenSSLCipher.java file:
+OpenSSLCipher.java in Conscrypt in Android 6.x before 2016-05-01 mishandles updates of the Additional Authenticated Data (AAD) array, which allows attackers to spoof message authentication via unspecified vectors, aka internal bug 27371173.
+
+# Multi-layer and Unclear-layer Vulnerabilities
+Finally, we assigned “unclear” to the corresponding layer in 41 cases, and 20 vulnerabilities (not included in the heatmap) were manually assigned to different layers because the files modified in the patches belong to different layers of the Android OS stack; those multi-layer vulnerabilities are reported in Table 3.
+
+# Vulnerabilities impacting Android OS layers over time
+Kernel and Native Libraries are the layers with the higher number of vulnerabilities across all the semesters under analysis (except for 2015-2 in the case of the kernel); they represent between 67% and 91% of the total number of vulnerabilities every semester. Also note that the kernel is the only layer showing a continuous increasing trend, while this does not hold for the native libraries layer. The other four layers tend to be affected by a stable low number of vulnerabilities. Additional analyses looking at the evolution of vulnerabilities at subsystem level are available in our online appendix (Mazuera-Rozo et al. 2017).
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Empirical Software Engineering (2019) 24:2056–2101
+# 4 RQ 4 : How Long does it Take to Fix Security Vulnerabilities in Android?
+Empirical Software Engineering (2019) 24:2056–2101 2089
+“studies” includes the survivability estimates when considering the minimum (study I) and the maximum (study II) survivability. Finally, the bottom grey part of Fig. 13 depicts the minimum and maximum survivability intervals for the 331 bugs unrelated to security issues that we selected in order to compare the survivability of software vulnerabilities with that of other types of bugs in Android.
+
+The first thing that leaps to the eyes from the analysis of Fig. 13 is the very long survivability of the analyzed Android-related vulnerabilities. Indeed, even when considering the most conservative results (i.e., the minimum estimated survivability—green line), the number of days needed to fix an introduced vulnerability is, on average, 770 (it grows to 951 for the random effects model, and to 1,131 for the maximum estimated survivability). A famous case to highlight here is the set of media server vulnerabilities know as “Stagefright”, which has been recognized by the community as the worst ever discovered issue in the Android OS; about 95% of Android devices were in risk of remote execution because of stagefright. Although the stagefright issue was originally reported with 8 vulnerabilities (CVE-2015-1538, CVE-2015-1539, CVE-2015-3824, CVE-2015-3826, CVE-2015-3827, CVE-2015-3828, CVE-2015-3829, CVE-2015-3864), almost 300 patches have been generated for issues in the media server and libstagefright components. From the original 8 patches, we were able to identify survivability times for seven of the vulnerabilities using the SSZ algorithm. On average, the survivability time for the seven vulnerabilities is 631 days (bot the minimum and the maximum, since a single introducing commit was identified for all of them), with a maximum of 1,359 days for CVE-2015-1539.

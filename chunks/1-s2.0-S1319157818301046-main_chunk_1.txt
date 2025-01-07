@@ -1,0 +1,17 @@
+# Android data storage security: A review
+Haya Altuwaijri, Sanaa Ghouzali ⇑
+Department of Information Technology, College of Computer and Information Sciences, King Saud University, Riyadh, Saudi Arabia
+# Article history:
+Received 3 February 2018
+Revised 29 June 2018
+Accepted 10 July 2018
+Available online 19 July 2018
+# Keywords:
+Android security
+Android data storage
+Physical threats
+Software threats
+Android encryption
+The broad adoption of smartphones has superseded the desktop computers and laptops as a primary computing platform, due to mobility, constant connectivity and application diversity. Mobile devices encompass storage of extensive information including sensitive ones such as authentication credentials, pictures, videos, personal data, work information, and many more. Thus, securing data stored on mobile devices becomes a critical issue. In this review, we investigate the security of Android storage model between 2013 and 2018. Several threats are found in the literature that can be categorized as physical or software threats. Additionally, the existing solutions for each category are highlighted. Although Android provides valuable encryption systems including full disk encryption and keychain to enhance the data storage security, the encryption key, which is stored in the device, is still vulnerable to physical threats.
+
+Ó 2018 The Authors. Production and hosting by Elsevier B.V. on behalf of King Saud University. This is an open access article under the CC BY-NC-ND license (http://creativecommons.org/licenses/by-nc-nd/4/).

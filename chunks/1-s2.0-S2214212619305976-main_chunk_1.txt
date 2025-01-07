@@ -1,0 +1,48 @@
+# Journal of Information Security and Applications 52 (2020) 102463
+# Contents lists available at ScienceDirect
+# Journal of Information Security and Applications
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/jisa
+# A large-scale study on the adoption of anti-debugging and anti-tampering protections in android apps
+Stefano Berlatoa, Mariano Ceccato b,∗
+a Fondazione Bruno Kessler, Trento, Italy
+b Computer Science department, University of Verona, Italy
+# Article history:
+Available online 28 February 2020
+# Keywords:
+Anti-debugging, Anti-tampering, Android apps, Static analysis
+Android apps are subject to malicious reverse engineering and code tampering for many reasons, like premium features unlocking and malware piggybacking. Scientific literature and practitioners proposed several Anti-Debugging and Anti-Tampering protections, readily implementable by app developers, to empower Android apps to react against malicious reverse engineering actively. However, the extent to which Android app developers deploy these protections is not known.
+
+In this paper, we describe a large-scale study on Android apps to quantify the practical adoption of Anti-Debugging and Anti-Tampering protections. We analyzed 14,173 apps from 2015 and 23,610 apps from 2019 from the Google Play Store. Our analysis shows that 59% of these apps implement neither Anti-Debugging nor Anti-Tampering protections. Moreover, half of the remaining apps deploy only one protection, not exploiting the variety of available protections. We also observe that app developers prefer Java to Native protections by a ratio of 99 to 1. Finally, we note that apps in 2019 employ more protections against reverse engineering than apps in 2015.
+
+© 2020 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Being the most diffused operating system for smartphones, Android presents a way for developers to share their apps with billion end-users. Moreover, many of these apps produce revenues through advertisements, in-app purchases, direct sales or subscriptions to premium features. In these cases, apps embed valuable assets that their developers want to protect. The possibility to steal such assets attracted several malicious attackers. Unfortunately, attackers can easily recover source code from compiled Android apps. Then, attackers can tamper with the logic of the apps to their advantage, repackage them and distribute them again. In the last six years, the scientific community published more than 57 research papers on repackaged apps, highlighting how the problem is relevant and actual. Spotify is a perfect example of how this can happen. Many attackers studied how to tamper with the code of Spotify to unlock premium features for free. Then, they published the tampered versions of Spotify on the internet, available for everyone to download. In the end, Spotify had so many tampered versions available on the internet that the developers had to take drastic countermeasures. The developers cracked down and banned several accounts who they thought were using tampered versions of Spotify. Another remarkable example is the paid mobile game “Monument Valley”. The owner company reported that just 5% of the end-users paid for downloading the game from the Google Play Store. All the other end-users obtained a tampered version from third-party app stores or other sources.
+
+Ceccato et al. studied in detail the behaviours and strategies adopted by attackers performing malicious reverse engineering. They found that dynamic analysis through debugging is a prominent step for both identifying the portion of the code to attack and for validating the results of the attack. Therefore, it seems that debugging and tampering are the two most effective strategies to attack an Android app.
+
+Android apps developers can leverage many protections to mitigate or delay a tampering attack. Anti-Debugging (AD) and Anti-Tampering (AT) are two categories of protections that mitigate these attack strategies. Differently from passive Obfuscation techniques where the code of the app is changed to make it harder to understand, AD and AT protections allow an app to react against malicious reverse engineering actively at run-time. In particular, AD protections give the app the ability to (i) prevent a debugger from attaching to the process of the app; (ii) spot the presence of a debugger or an emulated environment at run time; (iii) tamper with the data structures of the debugger to hinder its correct functioning. AT protections allow the app to (i) detect alterations from its original state.
+
+∗ Corresponding author.
+
+E-mail addresses: sberlato@fbk.eu (S. Berlato), mariano.ceccato@univr.it (M. Ceccato).
+
+https://doi.org/10/j.jisa
+2214-2126/© 2020 Elsevier Ltd. All rights reserved.
+
+S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+original state by checking the integrity of the code; (ii) verify the source of the app itself (i.e. the app store where the app comes from). App developers can find many suggestions on how to implement these protections both in the literature [5–7] and in other informal resources, like the official Android Studio documentation  and the OWASP Mobile Security Testing Guide.
+
+However, there is no systematic study that quantifies how often app developers employ these protections. We present a large-scale study conducted to shed light on the adoption of AD and AT protections in Android apps. To the best of our knowledge, this is the first work to assess the frequency of usage of such protections. We analyzed 14,173 apps from 2015 and 23,610 apps from 2019 from the top apps in the Google Play Store. The results are quite surprising: only 41% of these apps actively implement at least one AD or AT protection. Moreover, half of this 41% deploy only one protection, not exploiting the variety of available protections. App developers prefer to deploy simpler Java protections than Native ones with a ratio of 99 to 1. Unfortunately, Java protections are also easier to bypass, since attackers can easily recover the source code. Moreover, we observe that apps from 2019 employ more protections against reverse engineering than apps from 2015.
+
+The paper is structured as follows. In Section 2, we present a survey on AD and AT protections. It is a catalogue of protections along with a brief high-level description and an example implementation. In Section 3, we describe our approach to classify the main programming elements of each protection and how they compose into a unique protection fingerprint. We use these fingerprints to detect protections in the code of apps. We also describe our tool, called ATADetector, for automating protection detection. Afterwards, in Section 4, we incrementally refine the fingerprints to improve detection accuracy. In Section 5, we define the research questions and we present the large-scale study we conducted to answer them. In Section 6, we discuss technical limitations and threats to validity. Eventually, after a discussion on related work in Section 7 and future work in Section 8, we conclude the paper in Section 9.
+
+# 2. Survey of anti-debugging and anti-tampering protections
+This section presents our categorization of AD and AT protections. First, we briefly describe the attack model assumed by these protections. Then, we describe our approach for performing the survey. Finally, we present and discuss each identified protection.
+
+# 2. Attack model
+Following the results described by Ceccato et al. , we consider a malicious reverse engineering activity, in which one or more attackers aim at altering the functioning of an app to gain some advantage. The first step is code comprehension. The attackers have to unveil the logic behind the app by investigating its code. Consequently, the attackers can understand where and how to modify the app to achieve their specific goals. The most prominent technique attackers use is dynamic analysis through debugging . This process usually consists of attaching a debugger to the process of the app. Using the debugger, the attackers can monitor the status of the app and even control its execution flow. By controlling the instructions to execute next, the attackers can gain deep insights on the functioning of the app. Finally, the attackers can change the code of the app. This last operation is commonly known as Tampering. The attackers tamper with one or more portions of the code of the app to modify its functioning toward specific outcomes. For instance, suppose an app with premium features. The attackers could tamper with the portion of the code that checks whether the premium subscription is expired or not to always enjoy premium features. Therefore, we consider two categories of protections against malicious reverse engineering: Anti-Debugging and Anti-Tampering.
+
+# 2. AD and AT protections survey
+To gather AD and AT protections, we start from the resource Android app developers consult more often, thus the Internet. Balebako et al.  studied the behaviour of app developers about privacy and security. One of their findings is that app developers “simply searched online when they were looking for advice”. Also, Balebako et al. found that developers navigate websites like Hackernews, TreeHouse and StackExchange for security-related researches. Therefore, we analyze this informal literature to identify descriptions of AD and AT protections. Also, we analyze the Android official documentation , OWASP security guidelines , security blogs Alexander-Bown and code repositories . This survey allows us to define 5 AD protections and 4 AT protections.

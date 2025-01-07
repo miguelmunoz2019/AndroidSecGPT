@@ -1,0 +1,93 @@
+Commercial trackers. Commercial websites are heavily tracked by the top tech giants such as Google, Facebook. Both government websites and Android apps contain a significant number of such trackers; e.g., 17% of govt. sites and 37% of govt. apps contain Google trackers. Such commercial tracking is unexpected and may surprise many privacy-conscious users. Governments may want to engage citizens more actively by integrating social media resources on their websites, or attempt to understand their users’ needs through the use of commercial analytical services; however, exposing their users to commercial trackers should be taken more seriously. We found 10% of the analyzed privacy policies did not even mention the use of tracking services in the corresponding government sites. Government developers also need to be aware of privacy implications of using commercial JavaScript libraries and mobile SDKs, as user tracking is at the core of many of these libraries/SDKs. Clearing the browser history or the use of private browsing mode is not effective against fingerprinting attacks, which are actively being deployed to defeat cookie consent. Thus, third-party scripts should be analyzed to check for the presence of any fingerprinting APIs, especially if the APIs are session replay scripts (e.g., FullStory) should be avoided, or at least configured properly to reduce tracking and data exposure.
+
+Out-sourcing app development. We found 19% (231/1166) apps were built by developers with non-government email addresses (137 with Gmail), indicating that at least some of these apps were developed by third-parties. Such out-sourcing may introduce the risk of leaking sensitive information, supply-chain attacks.
+
+CDNs and foreign hosting providers. Many web services, including some government services, are adopting cloud platforms (e.g., Microsoft Azure) for scalability and cost reduction. We observed several government sites that supposedly deal with sensitive user information (e.g., election, police, courts, defence, immigration, airports) were hosted in a foreign country. Privacy policies of these government sites do not mention anything about such outsourcing. The use of foreign hosting providers and CDNs undermine the control of the hosted data; even if the backend databases remain at a government-owned facility, user data may still be (temporarily) available to the server admins of the CDNs/hosting providers, and violate data sovereignty. Although CDN hosting providers allow choosing a particular location to serve traffic, the closest location of the edge server/data center may not be within the country owning the site. There are many countries where CDNs have no data centers.
+
+Malicious domains. Government sites and apps that are flagged as malicious, or include content from third parties (e.g., scripts, cookies) labelled as malicious, can harm users and diminish their trust. Unfortunately we found such malicious sites/apps on government services (304 government sites and 40 apps were flagged as malicious by VirusTotal). Governments should scan their websites/apps regularly to detect such domains.
+
+App vulnerabilities. We found 7 government apps expose clear-text user login information, 11 apps include hard-coded (possibly admin) credentials and API keys, and 30 apps expose their unprotected Firebase datastores — all of which can enable attackers to harvest PII at a large scale. We strongly recommend developers to use HTTPS properly, not to rely on cloud-hosted mobile backends such as Google Firebase (exposing user data to commercial operators), and not to include admin API keys/credentials in the app code (possibly exposing user data to anyone). Security issues regarding the use of cloud-based mobile backends have been analyzed in recent work, and developers should check their apps and servers for similar issues.
+
+# 7 CONCLUSION
+Despite being publicly funded by tax payers money, government services enable commercial trackers to collect data about citizens virtually everywhere across the globe. From our analysis of 150,244 government websites and 1166 government Android apps, we found Google dominates in tracking, closely resembling the same trend as in the commercial domain, which is largely powered and monetized by tracking/profiling. A downside compared to commercial services is that users have no choice in terms of switching to another provider. Finally, since many governments continue to move to.
+
+# Et tu, Brute? Privacy Analysis of Government Websites and Mobile Apps
+digital platforms, the relevant government authorities responsible to ensure privacy in each country/region should periodically review government websites and mobile apps for tracking, privacy and security exposures, at least to comply with their own legislation.
+
+# WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Samarasinghe et al.
+
+1. OneSpan. 2021. Fraud Analytics. Online article (2021). https://www.onespan.com/topics/fraud-analytics.
+
+2. Emmanouil Papadogiannakis, Panagiotis Papadopoulos, Nicolas Kourtellis, and Evangelos P. Markatos. 2021. User Tracking in the Post-cookie Era: How Websites Bypass GDPR Consent to Track Users. In WWW’21. Ljubljana, Slovenia.
+
+3. Peng Peng, Limin Yang, Linhai Song, and Gang Wang. 2019. Opening the Blackbox of VirusTotal: Analyzing Online Phishing Scan Engines. In IMC’19. Amsterdam, Netherlands.
+
+4. Pew Research center. 2002. The rise of the e-citizen: How people use government agencies’ web sites. Online article (2002). https://www.pewresearch.org/internet/2002/04/03/the-rise-of-the-e-citizen-how-people-use-government-agencies-web-sites/.
+
+5. Pierluigi Paganini. 2017. US Government website was hosting a JavaScript downloader delivering Cerber ransomware. Online article (2017). https://securityaffairs.co/wordpress/62629/hacking/us-government-website-malware.html.
+
+6. Princeton University. 2020. OpenWPM. Online article (2020). https://github.com/citp/OpenWPM.
+
+7. Gaston Pugliese, Christian Riess, Freya Gassmann, and Zinaida Benenson. 2020. Long-Term Observation on Browser Fingerprinting: Users’ Trackability and Perspective. PoPETs 2020, 2 (2020), 558–577.
+
+8. R. Alam. 2020. gplaydl. Online article (2020). https://github.com/rehmatworks/gplaydl.
+
+9. Reuters. 2021. France embraces Google, Microsoft in quest to safeguard sensitive data. Online article (2021). https://www.reuters.com/technology/france-embraces-google-microsoft-quest-safeguard-sensitive-data-2021-05-17/.
+
+10. Frantz Rowe. 2020. Contact tracing apps and values dilemmas: A privacy paradox in a neo-liberal world. International Journal of Information Management 55 (2020), 102178.
+
+11. S. Sahni. 2019. Firebase scanner. Online article (2019). https://github.com/shivsahni/FireBaseScanner.
+
+12. Nayanamana Samarasinghe and Mohammad Mannan. 2019. Towards a global perspective on web tracking. Computers & Security 87 (2019). Article number 101569.
+
+13. Iskander Sanchez-Rola, Matteo Dell’Amico, Davide Balzarotti, Pierre-Antoine Vervier, and Leyla Bilge. 2021. Journey to the Center of the Cookie Ecosystem: Unraveling Actors’ Roles and Relationships. In IEEE Symposium on Security and Privacy (SP’21). Online.
+
+14. Iskander Sanchez-Rola and Igor Santos. 2018. Knockin’on trackers’ door: Large-scale automatic analysis of web tracking. In 18. Saclay, France.
+
+15. SecureIca. 2020. Exploring Google Hacking Techniques using Dork. Online article (2020). https://medium.com/nassec-cybersecurity-writeups/exploring-google-hacking-techniques-using-google-dork-6df5d79796cf.
+
+16. Sudheesh Singanamalla, Esther Han Beol Jang, Richard Anderson, Tadayoshi Kohno, and Kurtis Heimerl. 2020. Accept the Risk and Continue: Measuring the Long Tail of Government HTTPS Adoption. In ACM Internet measurement conference (IMC’20). Online.
+
+17. Softpedia news. 2013. Hacked Turkish Government website used to distribute malware. Online article (2013). https://news.softpedia.com/news/Hacked-Turkish-Government-Website-Used-to-Distribute-Malware-389937.shtml.
+
+18. Konstantinos Solomos, John Kristoff, Chris Kanich, and Jason Polakis. 2021. Tales of Favicons and Caches: Persistent Tracking in Modern Browsers. In NDSS’21. Online.
+
+19. State of California Department of Justice. 2021. California Consumer Privacy Act (CCPA). Online article (2021). https://oag.ca.gov/privacy/ccpa.
+
+20. The Guardian. 2018. Government websites hit by cryptocurrency mining malware. Online article (2018). https://www.theguardian.com/technology/2018/feb/11/government-websites-hit-by-cryptocurrency-mining-malware.
+
+21. Caroline J Tolbert and Karen Mossberger. 2006. The effects of e-government on trust and confidence in government. Public administration review 66, 3 (2006), 354–369.
+
+22. Andrew Tolley and Darren Mundy. 2009. Towards workable privacy for UK e-government on the web. International Journal of Electronic Governance 2, 1 (2009), 74–88.
+
+23. Vice.com. 2020. Hackers turned Virginia government websites into elaborate eBooks scam pages. Online article (2020). https://www.vice.com/en/article/88947x/hackers-virginia-government-websites-ebooks-scam.
+
+24. Virginia.gov. 2021. SB 1392 Consumer Data Protection Act; establishes a framework for controlling and processing personal data. Online article (2021). https://lis.virginia.gov/cgi-bin/legp604.exe?211+sum+SB1392.
+
+25. VirusTotal. 2021. VirusTotal. Online article (2021). https://www.virustotal.com.
+
+26. weareprivacy.com. 2021. Policy Highlights. Online article (2021). https://github.com/weareprivacy/policy-highlights.
+
+27. Wikipedia. 2021. .gov. Online article (2021). https://en.wikipedia.org/wiki/.gov.
+
+28. Wikipedia. 2021. List of sovereign states. Online article (2021). https://en.wikipedia.org/wiki/List_of_sovereign_states.
+
+29. Wired. 2019. How Cambridge Analytica Sparked the Great Privacy Awakening. Online article (2019). https://www.wired.com/story/cambridge-analytica-facebook-privacy-awakening/.
+
+30. World mail & express americas conference. 2021. Cookie policy. Online article (2021). https://www.wmxamericas.com/cookie-policy/.
+
+31. Z. Wang. 2020. googler. Online article (2020). https://github.com/jarun/googler.
+
+32. Chaoshun Zuo, Zhiqiang Lin, and Yinqian Zhang. 2019. Why Does Your Data Leak? Uncovering the Data Leakage in Cloud from Mobile Apps. In IEEE Symposium on Security and Privacy (SP’19). San Fransisco, CA, USA.
+
+# Et tu, Brute? Privacy Analysis of Government Websites and Mobile Apps
+# REGIONS AND GOVERNMENT SITE COUNTS
+We list the regions, and the count of government websites (in countries/territories of the corresponding regions) used in our study in Table 3.
+
+Note that we crawled these sites from a VPN located in California. We also found website design companies serving governments (e.g., CivicPlus, Revize) included tracking scripts in government websites. In addition, 11 (2%) California government sites set cookies that are valid for 7984 years; see Table 7.
+
+# TRACKERS ON EU AND CALIFORNIA GOVERNMENT SITES
+As more services are going digital, and many commercial entities’ments are apparently starting to take user privacy more seriously. They are also enacting regulations to impose significant penalties to commercial online service providers for the violation of data protection, tracking without consent, and failing to protect personal data.
+
+Prominent regulations include: the EU General Data Protection Regulation (GDPR) , California Consumer Privacy Act (CCPA) , Protection Guidelines for Africa , Canadian Personal Information Protection and Electronic Documents Act (PIPEDA).

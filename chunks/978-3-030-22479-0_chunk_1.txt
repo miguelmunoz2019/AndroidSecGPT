@@ -1,0 +1,49 @@
+# Droids in Disarray: Detecting Frame Confusion in Hybrid Android Apps
+Davide Caputo, Luca Verderame, Simone Aonzo, and Alessio Merlo(B)
+DIBRIS, University of Genoa, Viale F. Causa, 13, 16145 Genoa, Italy
+{davide.caputo,luca.verderame,simone.aonzo,alessio.merlo}@unige.it
+# Abstract
+Frame Confusion is a vulnerability affecting hybrid applications which allows circumventing the isolation granted by the Same-Origin Policy. The detection of such vulnerability is still carried out manually by application developers, but the process is error-prone and often underestimated. In this paper, we propose a sound and complete methodology to detect the Frame Confusion on Android as well as a publicly-released tool (i.e., FCDroid) which implements such methodology and allows to detect the Frame Confusion in hybrid applications, automatically. We also discuss an empirical assessment carried out on a set of 50K applications using FCDroid, which revealed that a lot of hybrid applications suffer from Frame Confusion. Finally, we show how to exploit Frame Confusion on a news application to steal the user’s credentials.
+
+# Keywords
+Frame Confusion · Android security · Static analysis · Dynamic analysis
+# 1 Introduction
+Nowadays, the landscape of mobile devices is mostly divided between Android and iOS, with a market share of 74% and 23%, respectively1. From a technical standpoint, Android and iOS have remarkable differences both in terms of OS architecture and Software Development Kit (SDK). Such heterogeneity negatively impacts the application (hereafter, app) development process, as companies must rely on different developer teams (be them internal or outsourced) for each platform, thereby increasing the costs of both app development and maintenance. A promising way to overcome the limitation posed by such multi-platform development process is a cross-platform framework, which allows to implement an app using a unique programming language and automatically generate a corresponding Android and iOS version. Cross-platform frameworks based on web technologies (i.e., HTML, CSS, and JavaScript), like Cordova or PhoneGap, allow for the development of the so-called hybrid applications, which combine elements of both native (i.e., OS-specific) and web apps.
+
+1 http://gs.statcounter.com/os-market-share/mobile/worldwide
+©c IFIP International Federation for Information Processing 2019
+Published by Springer Nature Switzerland AG 2019
+S. N. Foley (Ed.): DBSec 2019, LNCS 11559, pp. 121–139, 2019.
+
+https://doi.org/10/978-3-030-22479-0_7
+# Hybrid Apps and Frame Confusion Vulnerability
+D. Caputo et al.
+
+Hybrid apps allow developers to write code based on platform-neutral web technologies and wrap them into a single native app that can render HTML/CSS content and execute JavaScript – like a standard web browser – through a component called WebView on Android, and WKWebView in iOS. Such component acts as a bridge between the web (i.e., the JavaScript code) and the native world (i.e., the Java or Swift code) through the definition of ad-hoc interfaces. Such interfaces (called JavaScriptInterfaces in Android or WKScriptMessageHandlers in iOS) allow the developer to define a set of function calls that can be mutually invoked by the two worlds using asynchronous callbacks. As a result, they grant access to the complete set of OS functionality to hybrid apps, thereby making them equivalent to native apps.
+
+However, from a security standpoint, the interaction between the native and the web worlds – which rely on different security models and requirements – can expose hybrid apps to ad-hoc and complex vulnerabilities, like those described in . Among them, the Frame Confusion vulnerability  in hybrid apps has been discovered some years ago and it has been fixed on iOS but not on Android (neither in the latest version, i.e., Android Pie 9). To this regard, we argue that a lot of hybrid apps still suffer from such vulnerability and that there is still a lack of (i) an extensive analysis of Frame Confusion, (ii) a methodology to automatically detect Frame Confusion in hybrid apps, and (iii) a reliable solution to mitigate the problem.
+
+Frame Confusion is basically due to the ability of JavaScript code to invoke Android native code through web pages containing at least an Iframe element. Such element allows loading external contents (e.g., advertisements, video and payment systems) from domains which differ from the domain of the hybrid app. For this reason, any Iframe is in charge of containerizing the rendered sub-page, and should execute content only within the scope of its own domain, as prescribed by the Same-Origin Policy (SOP). However, in case of web pages with multiple Iframes, the WebView is unable to identify the Iframe that invokes a function in the native code, and thus the result of the invocation is always executed in the main app page, thereby inducing the confusion problem. Such misbehavior occurs as the JavaScriptInterface is bound by the OS to the entire WebView element, without any distinction among the domains (and thus the Iframes) that invoke the function calls. Therefore, the Frame Confusion vulnerability allows to bypass the isolation granted by the Iframe security model and to build a communication channel between web pages belonging to different domains, (i.e., the main app page and the inner Iframes). As a consequence, such vulnerability can affect the confidentiality and the integrity of hybrid apps: a malicious Iframe can, for instance, force the main app to expose private information (like session cookies or internal app files) or mount sophisticated phishing attacks.
+
+# Contribution of the Paper
+In this work, we focus on the Frame Confusion vulnerability on Android. Therefore, hereafter we refer specifically to the Android OS.
+
+2 https://cordova.apache.org/docs/en/latest/guide/appdev/security/index.html#iframes-and-the-callback-id-mechanism.
+
+# Droids in Disarray: Detecting Frame Confusion in Hybrid Android Apps
+Our contribution is three-fold. First, we propose a methodology for systematically detecting the Frame Confusion vulnerability in hybrid apps on Android. Then, we present FCDroid, a tool that implements such methodology to automatically identify hybrid apps on Android that suffer from the Frame Confusion vulnerability. FCDroid combines static and dynamic analysis techniques in order to reduce false positive and false negative rates. Finally, we discuss the results of an extensive analysis carried out through FCDroid on a set of 50,000 apps downloaded from the Google Play Store. The experimental results indicate that 49% of the analyzed apps are hybrid, as they use the WebView component and enable JavaScript execution, while about 6% of them (i.e., 1637 apps) were found to be vulnerable to Frame Confusion for a total of more than 250,000,000 app installations worldwide. To further validate the proposed methodology, we have manually analyzed some of these vulnerable apps to find out possible attacks exploiting the Frame Confusion vulnerability. To this regard, we were able to exploit Frame Confusion in an Asian news application that has more than 1M users worldwide; such attack allows to steal the user’s credential of the primary social media website.
+
+# Organization of the Paper
+The rest of the paper is organized as follows: Sect. 2 introduces some technical background on hybrid apps and the Frame Confusion, while Sect. 3 discusses the detection methodology. Section 4 presents FCDroid, while Sect. 5 shows the experimental results. Section 6 discusses the exploitation of the Frame Confusion on an actual news app, and Sect. 7 presents some related work. Finally, Sect. 8 concludes the paper.
+
+# 2 Technical Background
+# Landscape of Mobile Apps
+Mobile apps can be divided into three categories, namely, (i) native, (ii) web, and (iii) hybrid apps.
+
+Native apps are binary, platform-specific files which are installed on the device and execute by interacting with a set of API calls exposed by the mobile OS. As a consequence, they must be developed in the OS-specific language (i.e., Java/Kotlin for Android and Objective-C/Swift for iOS), and they have full and direct access to the OS API. On one hand, native apps exhibit the best performance for CPU-intensive workloads, while, on the other hand, they need to be re-implemented to execute on a different mobile OS. As this is a daunting task mostly for small-medium enterprises, there is a growing trend towards web or hybrid apps.
+
+Web apps render HTML5 and execute Javascript code within the device browser (which is a native app). For this reason, they are highly portable and platform-independent, but the interaction with the underlying OS is limited to the API accessible by the browser itself. Consequently, they have restricted functionalities and, in general, limited performance.
+
+Hybrid apps have been proposed to overcome the limitations of both native and web apps, namely granting (i) portability over platforms, (ii) access to the whole OS API and, (iii) reasonable performance. Hybrid apps are programmed
+# WebView
+The WebView is an Android app component which embeds a mini-browser for rendering HTML/web pages and execute JavaScript code in mobile apps.

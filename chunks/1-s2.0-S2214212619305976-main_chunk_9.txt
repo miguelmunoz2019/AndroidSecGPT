@@ -1,0 +1,78 @@
+# Table B13
+Protection Atomss for the Installer Verification protection at Java level.
+
+# Table B14
+Protection Atomss for the SafetyNet Attestation protection at Java level.
+
+# Appendix C. Fingerprints derived from the protections
+This appendix presents the fingerprints of the protections. We singularly present the protection atoms relevant to each protection and then the fingerprints. Note that in the fingerprints there are not protection atoms related to classes. We already include them in the detection of the methods and the attributes. In practice, detecting a method or an attribute of a class implies the presence of the class itself.
+
+# C1. AD protections
+- Emulator detection - Java fingerprint in Table C, page 38, Native fingerprint in Table C, page 38
+- Dynamic Analysis Framework Detection - Java fingerprint in Table C, page 38, Native fingerprint in Table C, page 39
+- Debugger Detection - Java fingerprint in Table C, page 39, Native fingerprint in Table C, page 39
+- Debuggable Status Detection fingerprint in Table C, page 39, Native fingerprint in Figure C, page 39
+- Altering Debugger Memory Structure - Native fingerprint in Table C, page 39
+# Table C1
+Fingerprint for the Emulator Detection protection at Java level.
+
+(((A∧B)∨C)∧D)∨E∨F
+# Table C2
+Fingerprint for the Emulator Detection protection at Native level.
+
+((A∧B)∨C)
+# Table C3
+Fingerprint for the Dynamic Analysis Framework Detection protection at Java level.
+
+A∨((E∨F)∧D∧G)
+# Table C4
+Fingerprint for the Dynamic Analysis Framework Detection Protection at Native level.
+
+A
+# Table C5
+Fingerprint for the Debugger Detection Protection at Java level.
+
+A∨(B∧(C∨D))
+# 26
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# Table C6
+Fingerprint for the Debugger Detection Protection at Native level.
+
+# Table C7
+Fingerprint for the Debuggable Status Detection Protection at Java level.
+
+# Table C8
+Fingerprint for the Debuggable Status Detection Protection at Native Level.
+
+# Table C9
+Fingerprint for the Altering Debugger Memory Structure Protection at Native Level.
+
+# Table C10
+Fingerprint for the Signature Checking Protection at Java Level.
+
+# Table C11
+Fingerprint for the Signature Checking Protection at Native Level.
+
+# C2. AD Protections
+- Signature Checking - Java fingerprint in Table C, page Native 40, fingerprint in Table C, page 40
+- Code Integrity Checking - Java fingerprint in Table C, page 40
+- Installer Verification - Java fingerprint in C, page 40
+- SafetyNet Attestation - Java fingerprint in Table C, page 41
+# S. Berlato and M. Ceccato / Journal of Information Security and Applications 52 (2020) 102463
+# Table C12
+# Fingerprint for the Code Integrity Checking Protection at Java level.
+
+A∧(B∨C)∧(D|∨E)
+# Table C13
+# Fingerprint for the Installer Verification Protection at Java Level.
+
+A∧B
+# Table C14
+# Fingerprint for the SafetyNet Attestation Protection at Java Level.
+
+A∧B
+# Appendix D. List of libraries filtered
+The list of package “∗” character third-party names of libraries in Table D1 is by no means complete. Indeed, future work consists also of enriching this collection. The is the wildcard character.
+
+# Table D1
+# Third-party libraries filtered..

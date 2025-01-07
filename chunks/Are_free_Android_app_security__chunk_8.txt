@@ -1,0 +1,53 @@
+# Observation 12
+To understand the above observations, we considered the relevant APIs and security-related APIs from Ghera representativeness experiment described in Section 3. We compared the sets of relevant APIs used in benign apps (601 APIs) and secure apps (602 APIs). We found that 587 APIs were common to both sets while 14 and 15 APIs were unique to benign apps and secure apps, respectively. When we compared security-related APIs used in benign apps (117 APIs) and secure apps (108 APIs), 108 were common to both sets, and nine were unique to benign apps. These numbers suggest that the benign apps (real positives) and the secure apps (real negatives) are similar in terms of the APIs they use and different in terms of how they use APIs, i.e., different arguments/flags, control flow context. Therefore, tools should consider aspects beyond the presence of APIs to successfully identify the presence of vulnerabilities captured in Ghera.
+
+# Observation 13
+We partitioned the set of 601 relevant APIs and the set of 117 security-related APIs used in benign apps into three sets: 1) common APIs that appear in both true positive benign apps (flagged as vulnerable) and false negative benign apps (flagged as secure), 2) TP-only APIs that appear only in true positive benign apps, and 3) FN-only APIs that appear only in false negative benign apps. The sizes of these sets in order in each partition were 440, 108, and 53, and 60, 39, and 18, respectively. For both relevant and security-related APIs, the ratio of the number of TP-only APIs and the number of FN-only APIs is similar to the ratio of the number of true positives and the number of false negatives, i.e., 108/53 ≈ 39/18 ≈ 30/12. This relation suggests, to be more effective in detecting vulnerabilities captured in Ghera, tools should be extended to consider FN-only APIs. Since vulnerabilities will likely depend on the combination of FN-only APIs and common APIs, such extensions should also consider common APIs.
+
+# Observation 14
+We compared the sets of relevant APIs used in the 12 false negative benign apps (flagged as secure) and all of the secure apps (real negatives). While 491 APIs were
+Empirical Software Engineering (2020) 25:178–219
+Common to both sets, only 2 APIs were unique to benign apps. In the case of security-related APIs, 77 APIs were common while only 1 API was unique to secure apps. Consequently, in terms of APIs, false negative benign apps are very similar to secure apps.
+
+Consequently, tools need to be more discerning to correctly identify benign apps in Ghera as vulnerable (i.e., reduce the number of false negatives) without incorrectly identifying secure apps as vulnerable (i.e., increase the number of false positives).
+
+Besides drawing observations from raw numbers, we also drew observations based on evaluation measures.
+
+While precision and recall are commonly used evaluation measures, they are biased — “they ignore performance in correctly handling negative cases, they propagate the underlying marginal prevalences (real labels) and biases (predicted labels), and they fail to take account the chance level performance” by Powers (2011). So, we used informedness and markedness, which are unbiased variants of recall and precision, respectively, as evaluation measures.
+
+As defined by Powers (2011), Informedness quantifies how informed a predictor is for the specified condition, and specifies the probability that a prediction is informed in relation to the condition (versus chance). Markedness quantifies how marked a condition is for the specified predictor and specifies the probability that a condition is marked by the predictor (versus chance). Quantitatively, informedness and markedness are defined as the difference between true positive rate and false positive rate (i.e., T P /(T P + F N) − F P /(F P + T N)) and the difference between true positive accuracy and false negative accuracy, (i.e., T P /(T P +F P )−F N/(F N +T N)), respectively. When they are positive, the predictions are better than chance (random) predictions. When these measures are zero, the predictions are no better than chance predictions. When they are negative, the predictions are perverse and, hence, worse than chance predictions.
+
+In this evaluation, while we use the above quantitative definitions, we interpret informedness as a measure of how informed (knowledgeable) is a tool about the presence and absence of vulnerabilities (i.e., will a vulnerable/secure app be detected as vulnerable/secure?) and markedness as a measure of the trustworthiness (truthfulness) of a tool’s verdict about the presence and absence of vulnerabilities, i.e., is an app that is flagged (marked) as vulnerable/secure indeed vulnerable/secure?
+Observation 15: Out of 13 tools, 6 tools were better informed than an uninformed tool about the presence and absence of vulnerabilities, i.e., 0 ≤ informedness ≤ 0; see Informedness column in Table 8. These tools reported a relatively higher number of true positives and true negatives; see TP and TN columns in Table 5. At the extremes, while Amandroid 7.
+
+TP, FP, FN, and TN denote the number of true positive, false positive, false negative, and true negative verdicts, respectively.
+
+# Empirical Software Engineering (2020) 25:178–219
+“–” denotes zero undetected vulnerabilities were discovered
+plugin was fully informed (i.e., informedness = 1), the remaining tools and Amandroid plugins were completely uninformed about the applicable vulnerabilities (benchmarks) they were applicable to, i.e., informedness ≈ 0 as they did not report any true positives. Thus, tools need to be much more informed about the presence and absence of vulnerabilities to be effective.
+
+# Observation 16
+Out of 14 tools, 8 tools provided verdicts that were more trustworthy than random verdicts, i.e., 0 ≤ markedness; see Markedness column in Table 8. The verdicts from Amandroid 7 plugin could be fully trusted with regards to the applicable vulnerabilities (benchmarks), i.e., markedness = 1. The verdicts of Amandroid 1 were untrustworthy,
+“–” denotes measure was undefined. “*” identifies non-academic tools
+# Empirical Software Engineering (2020) 25:178–219
+# Percentage of apps using an API
+APIs in decreasing order of API use percentage in API level 25 specific sample
+i.e., markedness = 0. The verdicts of FixDroid cannot be deemed untrustworthy based on markedness score because we did not evaluate FixDroid on secure apps. The remaining tools and Amandroid plugins did not flag any apps from any of the applicable vulnerabilities (benchmarks) as vulnerable, i.e., no true positive verdicts. Unlike in the case of informedness, while some tools can be trusted with caution, tools need to improve the trustworthiness of their verdicts to be effective.
+
+Both the uninformedness and unmarkedness (lack of truthfulness of verdicts) of tools could be inherent to techniques underlying the tools or stem from the use of minimal configuration when exercising the tools. So, while both possibilities should be explored, the ability of tools to detect known vulnerabilities should be evaluated with extensive configuration before starting to improve the underlying techniques.
+
+# Observation 17
+In line with observation 9, in terms of both informedness and markedness, shallow analysis tools fared better than deep analysis tools; see H/E column in Table 2 and Informedness and Markedness columns in Table 8. Also, non-academic tools fared better than academic tools; see tools marked with * in Table 8. Similar to observation 9, these measures also reinforce the need to explore questions 3, 4, and 5.
+
+# Observation 18
+We projected Ghera’s representativeness information from Section 3 to APIs that were used in true positive benign apps (i.e., common APIs plus TP-only APIs) and the APIs that were used in false negative benign apps. Barring the change in the upper limit of the x-axis, the API usage trends in Figs. 2 and 3 are very similar to the API usage trend in Fig. 1. In terms of numbers, at least 83% (457 out of 548) of relevant APIs and 70% (70 out of 99) of security-related APIs used in true positive benign apps were
+We considered TP-only (FN-only) APIs along with common APIs as vulnerabilities may depend on the combination of TP-only (FN-only) APIs and common APIs.
+
+Empirical Software Engineering (2020) 25:178–219 205
+used in at least 50% of apps in both the Androzoo sample and the top-200 sample. These numbers are 84% (416 out of 493) and 61% (48 out of 78) in case of false negative benign apps. These numbers are very close to the API usage numbers observed when evaluating the representativeness of Ghera Section 3. Therefore, the effectiveness of tools in detecting vulnerabilities captured by Ghera benchmarks will extend to real-world apps.
+
+# Observation 19
+In terms of the format of the app analyzed by tools, all tools supported APK analysis. A possible explanation for this is that analyzing APKs helps tools cater to a broader audience: APK developers and APK users (i.e., app stores and end users).
+
+# Observation 20
+For tools that completed the analysis of apps (either normally or exceptionally), the median run time was 5 seconds with the lowest and highest run times being 2 and 63 seconds, respectively. So, in terms of performance, tools that complete analysis exhibit good run times.

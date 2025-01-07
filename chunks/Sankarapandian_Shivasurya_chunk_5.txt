@@ -1,0 +1,112 @@
+# Chapter 4
+# Results
+# 4 Initial Experiment
+The initial experiment was learning to build and adopt generic vulnerability call-graph tracing using Java call-graph and Soot framework which eventually did not support for adding information such as methods and settings which may lead to true negative cases. We primarily switched to CodeQL from Semmle for extracting vulnerable patterns from source code including the third party libraries source attached. It is important to note that though we use CodeQL for scanning the vulnerability, the patterns that include source and sink with specific criteria are developed and managed by us in-order to reduce false positive results.
+
+Finding security vulnerabilities using patterns and fuzz testing are actively studied by software researcher community. Our main objective is to find reach-ability of vulnerable code from the attack surface and mapping between the vulnerable source & sink with the Android components which is hard to find and novel to experiment with automated techniques. Our initial experiments were with open-source Android projects built using Java and Kotlin which primarily supports gradle build system. CodeQL leverages gradle build system to inject scanning and finding vulnerable patterns when the source code compiles and binaries are generated.
+
+# 4 DEVAA with Baseline
+This section will showcase results obtained from applying DEVAA to detect exploitable security vulnerabilities on sample vulnerable open-source Android application projects. Results include complete analysis on security vulnerability and code changes.
+
+# 4 Open-source Project security vulnerability
+We have identified popular open-source Android projects with active development history and filtered out VLC Player, IRCCloud and Brave Browser Android Application. The primary language for development is Java and Kotlin. VLC Android is an exception as it contains native media libraries written in C++ language and compiled as Linux Shared Object file. Table 4 reports the results obtained from Static code analysis and DEVAA test-case results.
+
+# 4 Cross-Site Scripting on IRCCloud Android Application
+IRCCloud Android app  is popular open-source Internet Relay Chat Application Android client written primarily in Java and with few other native libraries. This section
+# Security Report Summary
+IRCCloud Android Application uses Android WebView to render images, pastebin URLs, websites in dedicated webview with configuration allowing to execute JavaScript and contains JavaScript Bridge to invoke Android APIs directly from the JavaScript code. However, one of the user input passed on to the webview is directly rendered in the webview without sanitizing for any malicious code or snippets which causes Cross-site scripting attack in the context of IRCCloud Android application webview and able to access the JavaScript bridge.
+
+1     ImageList.getInstance()
+2     .fetchImageInfo(getIntent().getDataString()
+3     .replace(getResources().getString(R.string.IMAGE_SCHEME), "http"),
+4     new OnImageInfoListener() {
+5          public void onImageInfo(ImageURLInfo info) {
+6                if (info == null) {
+7                     ImageViewerActivity.this.fail();
+8                } else if (info.mp4 != null) {
+9                     ImageViewerActivity.this.loadVideo(info.mp4);
+10                } else {
+11                     ImageViewerActivity.this.loadImage(info.thumbnail); // by
+,→   default
+12                }
+13          }
+14    });
+15    }
+# Vulnerable Code Snippet
+As seen in lines of 4 & 4 with the source and sink are getIntent() and loadDataWith-
+BaseURL() respectively, provided the ImageViewerActivity.class was accessible from the
+external application. This can cause reflected cross-site scripting attack in the context of
+IRCCloud.
+
+# DEVAA security test-case & contribution
+DEVAA Security test-case which extends the HTMLBasedXSS Attack class accepts
+generic payload and component information i.e., ImageViewerActivity class name with
+package name. As mentioned in the methodology section, the exploit driver and verifier
+drives the payload and verifies the cross-site scripting attack and reports back to the actual
+security test-case as callback result.
+
+# 1
+private void loadImage(String urlStr) {
+try {
+this.mImage.loadDataWithBaseURL(null, "&lt;!DOCTYPE html&gt;# # html, body, table { height: 100%; width: 100%; background-color: #000;}", "text/html", "UTF-8", null);
+# Mitigation & Severity
+The corresponding security vulnerability is fixed in the GitHub source repository . Additionally, the severity of this security vulnerability as determined by CVSS score  analysis is 6 and classified under generic Cross-site scripting attack.
+
+# 4 ContentProvider Attack on VLC Android Application
+VLC Player Android app  is popular open-source Internet based video player Application Android client written primarily in Java and with few other native libraries. This section contains detailed information about the security report about content provider vulnerability in VLC.
+
+# Security Report Summary
+VLC Android application has exposed one of the Content Provider interface to share thumbnail images with the third party application especially for Android TV. This provider
+# Vulnerable Code Snippet
+1      public ParcelFileDescriptor openFile(Uri uri, String mode)                                 {
+2           File file = File(uri.path)
+3           if (file.exists()) {
+4                 return ParcelFileDescriptor.open(file,
+,→   ParcelFileDescriptor.MODE_READ_ONLY)
+5           }
+6           throw FileNotFoundException(uri.path)
+7    }
+is vulnerable to both directory traversal attack and internal file access attack which leads to leak sandbox files and tokens without end-user knowledge.
+
+As seen in Lines in 1 and 4 of 4 with the source and sink are openFile() and ParcelFileDescriptor#open() provided the FileProvider.class was accessible from the external application caused internal file data leakage in the context of VLC Android application.
+
+# DEVAA Security Test-case & Contribution
+DEVAA Security test-case which extends the FileProviderRunner Attack class accepts generic payload and component information i.e., FileProvider class name with package name. As mentioned in the methodology section, the exploit driver and verifier drives the payload and verifies the content provider data leakage attack and reports back to the actual security test-case as callback result.
+
+# Mitigation & Severity
+The corresponding security vulnerability is fixed in the GitHub source repository . Additionally, the severity of this security vulnerability as determined by CVSS score  analysis is 8 and classified under generic path traversal and unintended data leakage attack.
+
+# Chapter 5
+# Discussion
+# 5 Research Questions
+RQ1: Can DEVAA be successfully applied to exploit any generic Android Application?
+Yes. With the access to compilable source code and all dependency resolved, we could apply vulnerability detection pattern to find vulnerabilities and try exploiting with the defined payloads with the corresponding vulnerable Android application developed using Java and Kotlin language. As Exploit driver code can be extendable and accepts payload with component information, we could add generic Android application for testing as long as a source and sinks are clearly defined.
+
+RQ2: Can DEVAA successfully work with other static code analyzer tools apart CodeQL?
+Yes. As of now DEVAA relies on results CodeQL but the vulnerability patterns including source, sink are added as input are maintained within the project. As far as any Static Code Analyzer that can produce output containing vulnerable pattern location & component information, we could successfully extract and use it in our exploit module directly.
+
+# 5 Reducing False Positives
+Although the ultimate aim of DEVAA is to reduce false positive, there might be cases where the Android specific components aren’t exposed to the third party application as mentioned in the Android manifest file. They are still potential security vulnerability.
+
+# 5 Contributions
+We have presented the contributions of our study as follows:
+- We have provided couple of vulnerability category namely cross-site scripting and content Provider data access with exploitation scripts, sample code snippets to test drive the security test-case.
+
+- By demonstrating DEVAA on two distinct vulnerability that it is possible to build and test generic security test-case suite to test different vulnerability category with Android applications.
+
+- We have open-sourced all the static code analysis processing interface, vulnerability pattern for cross-site scripting attack, content provider data access and exploit verification scripts.
+
+- We have found and verified couple of previous security vulnerabilities with IRCCloud and VLC Android application with the help of DEVAA.
+
+# 5 Threats to Validity
+- DEVAA relies on CodeQL static code analysis tool for processing and finding vulnerability patterns and they may not reflect the exact pattern matching or call-graph based on our search query and result in true negative results in the source code.
+
+• Diversifying the vulnerability pattern for all configuration based on developer usage or pattern is ideal to find security vulnerability in generic manner. As the codebase and DEVAA evolves the diversification is possible and this may result in true negative results.
+
+• Reproducing the exact vulnerability may require additional setups within the Android application such as signup or login which is usecase specific driven and current DEVAA tool may lack in few navigation API options.
+
+• Reproducing the exact security vulnerability may be challenging with different emulators and factors including CPU architecture, Android API levels, Development kit updates. These selections are often made by the security engineer manually while testing the application.
+
+• We only derived generic exploit verification technique for cross-site scripting and content provider issues covering few Android vulnerable APIs. As discussed before, diversifying the pattern and payload is highly recommended for security testing to reduce false positives and bringing up true negatives.
+
+• Currently our framework can scan and operate on Java & Kotlin based compilable gradle supported Android studio projects and limitation on legacy Android projects. Hybrid apps that are powered by Java are still available to scan for security vulnerability but the primary JavaScript language isn’t supported with DEVAA.

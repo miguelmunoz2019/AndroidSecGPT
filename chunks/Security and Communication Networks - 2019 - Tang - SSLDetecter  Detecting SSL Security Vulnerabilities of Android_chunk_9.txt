@@ -1,0 +1,1 @@
+T. Azim and I. Neamtiu, “Targeted and depth-first exploration for systematic testing of Android apps,” ACM SIGPLAN Notices, vol. 48, no. 10, pp. 641–660, 2013..

@@ -1,0 +1,67 @@
+# Users’ Locations
+Many of the studied apps hand over the locations of other users so as to display them and show whether users are nearby. A typical example is illustrated in Table 1 where “Singles Around Me” sends a JSON file containing the exact GPS location of a user. This approach is susceptible to many attacks. It seems that a better solution would be to use distances instead of real locations. However, as shown by Qin et al. in , even distances can be used, via trilateration, to disclose the location of users. A better approach towards protecting users’ locations, would be to use Private Proximity Testing protocols such as . These protocols disclose a single bit of information, i.e. whether two users are nearby or not. By using this approach the desired functionality is provided whilst, at the same time, users’ exposure is drastically reduced.
+
+# Unencrypted Transmission Channels
+In  it is shown that many mobile apps use SSL/TLS code, which is potentially vulnerable to man-in-the-middle attacks. Notwithstanding, these apps were, at least, trying to protect sensitive user data. On the contrary, our analysis shows that major apps transmit private data over HTTP instead of HTTPS. It could be said that using HTTPS might imply an overhead in terms of computation and bandwidth. However, in this kind of apps, where very sensitive information is managed, it is difficult to support the use of HTTP.
+
+# Multimedia
+In general, our study shows that the handling of multimedia content is very poor. In , Patsakis et al. highlight the privacy and security risks related to the sharing of multimedia content in Online Social Networks. Note that the case of mobile dating apps could be considered even more sensitive and might imply further dangers. First, it is apparent that using HTTP (instead of HTTPS) allows an attacker to intercept and change the content of the received messages. Second, the use of static links can be considered a very important security vulnerability because an eavesdropper could easily find the images of the
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+{
+"username": "s - - - - - - - - - eam",
+"email": "d - - - - - - - - - - 9 6 @yahoo.com",
+"gender": 2,
+"interestedIn": 1,
+"country": "United Kingdom",
+"region": "London, City of",
+"city": "",
+"gps": [3 8 . - - - - - - - - - - - - 2, 2 3 . 8 ------------- 5],
+"age": 39,
+"photo": "http://www.singlesaroundme.com/images/cache/1/photoface_1 1 -----_ - - 5_ - - 5.jpg",
+"photos": [],
+"birthYear": 1974,
+"birthMonth": --,
+"birthDay": -,
+"lastOnline": "2014-10-06 03:28:07 PM",
+"profileAnswers": {
+"1": "5’ 7\" - 170 cm",
+"3": "prefer not to say",
+"21": "Married",
+"30": "straight",
+"25": "brown",
+"31": "blonde",
+"26": "white",
+"28": "none",
+"29": "Sagittarius",
+"38": ["dating", "serious relationship", "friendship"],
+"37": "Greek",
+"36": ["English"],
+"32": "socially / occasionally",
+"34": "socially / occasionally",
+"35": "quite fit",
+"40": "Christian - Other",
+"41": "University graduate",
+"42": "yes living with me",
+"43": "yes"
+},
+"privacySettings": {
+"gps": 0,
+"profile": 0
+}
+}
+Profiles that a specific user has visited. These images would allow the adversary to identify the sexual orientation and preferences of users. Depending on the openness of the society, giving away the precise sexual orientation and preferences of a user can lead to social discrimination or even legal actions.
+
+# Hidden Information and URL Parameters:
+Thanks to our analysis, we have noticed that in several apps, the data packets sent to users contain hidden information about other users. For instance, they contain the email of others, even when they have not consented. Table 1 illustrates this for “Singles Around Me”. In the case of Tingle, the analysed data packets contained a device identification field that would allow an attacker to know when users change or switch their devices. Also, we have observed a doubtful development practice, this is, the addition of sensitive parameters in the URLs of the API. These parameters allow an attacker to obtain lots of information. For instance, users’ activities (e.g.
+
+browsing of profiles, chatting, etc.), the telephone number or even the location of the user could be monitored simply by eavesdropping the communications. Some examples of the information that can be leaked through the URL are illustrated in Table 2. While in all cases the traffic is encrypted, one can see that e.g. ChatOn broadcasts the IMEI, IMSI and user’s phone number in the URL along with some details about the phone, Grindr broadcasts the user’s location his ID and some data about the device. Similarly, MoMo leaks which profiles a user is visiting and SKOUT shows what the user is doing, in this case typing.
+
+# 6 Conclusions
+The steady growth in the number of users of dating services might get the attention of cybercriminals, who try to obtain personal information that could be used for user profiling, blackmailing, defamation, and even identity theft.
+
+Web-based dating services are pretty well-established and well-known programming practices are put in place (in most cases). However, we have realised that in dating services provided by mobile platforms the situation turns out to be quite different. Mobile applications have the ability to collect very sensitive information (e.g. users current location, sexual orientation and preferences) and one might expect that their security measures are even more robust than those implemented on their web-based counterparts. However, our analyses have shown that there are significant security holes that could be easily used even by inexperienced attackers to obtain very sensitive information.
+
+After analysing a significant number of diverse mobile dating applications, we have concluded that most of them are vulnerable to simple sniffing attacks, which could reveal very sensitive personal information such as sexual orientation, preferences, e-mails, degree of interaction between users, etc.
+
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+We interpret the results of our study in two main ways: First, we believe that disclosing these vulnerabilities might foster the interest of the society in protecting its privacy, and will raise an alarm for those companies that provide insecure services. Second, we believe that most of the detected vulnerabilities have very simple solutions that do not require much effort. Thus, by disclosing these problems we open the door to a reframing of the programming practices in mobile dating applications..

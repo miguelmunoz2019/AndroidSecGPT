@@ -1,0 +1,25 @@
+# C. Coding
+SANS, OWASP, and TOGAF provide specific coding examples and known code vulnerabilities and pitfalls to avoid in a few languages and are excellent tools for the developer in understanding how to write secure software applications. They are popular tools used for managing common code vulnerabilities and threats that every developer should have in their knowledge base. ASVS and SAFECode describe detailed software-oriented threat lists, as opposed to emphasizing the risk process . Both standards specify a list of coding practices and requirements that should be implemented in software (e.g., string and buffer functions, input/output validation, cross site scripting defenses, cryptography). The approach that these standards take in handling risks are somewhat different. ASVS lists a series of checkpoints aiding the user to fulfill the requirements that revolve around the application. On the other hand, SAFECode recommends coding practices and a general approach for implementation, but also includes verifications and references that allow the users to fully understand and mitigate threats.
+
+# D. Testing
+Secure development requires control implementation and verification. SAFECode and ASVS recommend the following testing techniques to ensure effectiveness of requirements and coding practices: attack surface, fuzz and robustness testing, penetration testing, static analysis tools, among others. BSIMM focuses on penetration testing, aiding developers to find problems using testing tools, perform deep-dive analysis, and customize testing tools.
+
+# E. Certification
+CC offers certification for products that need to meet strict regulations and compliance, while PA-DSS is a product certification specific to payment card processing. TOGAF and SANS certifies individuals and developers for their knowledge of secure software development processes according to standards.
+
+# F. Focus on Risk Processes
+Some standards provide guidance on the risk process; others provide specific threat models applicable to code; yet others point to external standards for threat models. TOGAF provides a general process without a specific model, whereas CC provides a threat model without specifying a risk process. Both refer to external methodologies and standards to focus on specific risks in the IT product while keeping a broad scope for the whole project.
+
+All security standards specify threat identification, which is one of the first steps for risk assessment requirements. Unlike CC or TOGAF, security standards such as SAFECode, SAMM, and BSIMM recommend the use of misuse and abuse cases to tailor the risk assessment for specific applications.
+
+The first aspect considered for these security standards is risk training; SAMM and TOGAF have the more complete spectrum of requirements for risk management training with SAMM providing a software-oriented perspective and TOGAF is more focused on enterprise architecture.
+
+The OCTAVE process for risk assessment includes risk identification (defining assets, threats, vulnerabilities); risk analysis and prioritization; and risk treatment . The risk process is useful because it can be applied to any IT project; however, when standards (e.g., CC and TOGAF) do not provide general risk guidance OCTAVE may be helpful for inexperienced users.
+
+Classification of data and software assets are complementary to risk prioritizations because it adds more relevance and weight to the risks. Moreover, asset classification in software development aids in the threat identification because organizations can identify more clearly the risks revolving assets and how the organization, users, and customers are affected.
+
+An important risk requirement not heavily enforced in these security standards is baseline mitigation for known risks. Establishing a baseline mitigation for known risks enables the users to have their work checked against some of the common risks involved during development but also facilitates the process in identifying risks in future projects. Only TOGAF, SAMM, and NIST introduce the concept of mitigations for known risks.
+
+# TABLE IV. RISK METHODOLOGY BY STANDARD
+# V. CONCLUSION
+We have examined and compared common business model examples and frameworks for building security in and improving software security in the business processes. We conclude that many standards might not cover all the security requirements for secure software development when used individually. Instead, a process for creating secure software relies on implementing more than one of the standards, especially to conform to regulation or for certification of a secure software application..

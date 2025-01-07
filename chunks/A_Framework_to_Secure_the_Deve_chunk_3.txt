@@ -1,0 +1,139 @@
+40              process.waitFor();
+Entropy 2019, 21, 1136 8 of 19
+41              Log.d("fridaserver", output.toString());
+42
+43              if(output.toString().contains("frida-server")) {
+44                    Log.d("fridaserver","Frida Server process found!" );
+45                    returnValue = true;
+46              }
+47         } catch (IOException e) {
+48         } catch (InterruptedException e) {
+49         }
+50         return returnValue;
+51    }
+# 3. Anti-tampering solution
+Anti-tampering solution is an important option since any attacker may decompile an application and recompile it. Modifying some parts of the application , as previously explained in the SSL pinning bypass process, an attacker could skip the SSL pinning, and thus make the application invalid.
+
+Code 3 gives an example of the code that can be included in an Android application, particularly in the onCreate function within MainActivity. In this case, the signature of the application is checked only when the app is started. In iOS, the mechanism is similar, as indicated in the Apple Security Transforms Programming Guide.
+
+# Code 3: Example of code to check signatures.
+
+1    private static final int VALID = 0;
+2
+3    private static final int INVALID = 1;
+4
+5    public static int checkAppSignature(Context context) {
+6         try {
+7            PackageInfo packageInfo = context.getPackageManager()
+8                 .getPackageInfo(context.getPackageName(),
+9                      PackageManager.GET_SIGNATURES);
+10            for (Signature signature : packageInfo.signatures) {
+11              byte[] signatureBytes = signature.toByteArray();
+12              MessageDigest md = MessageDigest.getInstance("SHA");
+13              md.update(signature.toByteArray());
+14              final String currentSignature = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+15
+16              Log.d("REMOVE_ME", "Include this string as a value for SIGNATURE:"
+17                              + currentSignature);
+18              //compare signatures
+19              if (SIGNATURE.equals(currentSignature)){
+20                 return VALID;
+21              }
+22            }
+23         } catch (Exception e) {
+24         // assumes an issue in checking signature.,
+25         // but we let the caller decide on what to do.
+
+26         }
+27         return INVALID;
+28       }
+29
+30      private void crcTest() throws IOException {
+31         boolean modified = false;
+32         // required dex crc value stored as a text string.
+
+33         // it could be any invisible layout element
+34         long dexCrc = Long.parseLong(Main.MyContext.getString(R.string.dex_crc));
+35
+36         ZipFile zf = new ZipFile(Main.MyContext.getPackageCodePath());
+37         ZipEntry ze = zf.getEntry("classes.dex");
+38
+39         if ( ze.getCrc() != dexCrc ) {
+40              // dex has been modified
+41              modified = true;
+42         }
+43         else {
+44              // dex not tampered with
+45              modified = false;
+# 4. Obfuscate code.
+
+All the measures above do not make sense without preventing any attacker from knowing the code of the app. This way, the analysis of SSL Pinning functions or any of the previous ones that we have presented is more difficult. For this reason, code obfuscation is necessary. There are code obfuscators that convert the existing code into a more illegible one, as seen in Figure 4. Therefore, it is more difficult to detect which are the critical functions of the code for an attacker.
+
+As may be seen, replacing variables and function names for letters and numbers makes it more difficult to guess what a function does. An example of obfuscation is shown in Code 3, where names of variables and functions are hidden.
+
+# Code 3: Example of obfuscation code.
+
+1   public void a(B c){
+2             switch (C.a()){
+3             case R.a.b:
+4             B d = (B) c.a();
+5             A f = (A) d.c(R.a.j);
+6             A g = (A) d.c(R.a.k);
+7             D h = (D) d.c(R.a.m);
+8             String i = d.b.c ();
+9             String j = L.a(f.b.c());
+10             if(!i.equals(String.a)){
+11                      E.c(0);
+12             } else if (secret.equals(String.f)) {
+13                      d.setTextColor(c.getResources().
+
+14                                getColor(R.color.color_nebula));
+15                      f.setTextColor(c.getResources().
+
+16                                getColor(R.color.color_nebula));
+17                      ((Vibrator) parent.getContext().
+
+18                                getSystemService("vibrator")).
+
+19                                vibrate(400);
+20             D.makeText(c.getContext(),String.m,1).a();
+21             D.makeText(c.getContext(),String.n,1).a();
+22             } else {
+23        }
+Numerous tools on Android and iOS allow the obfuscation of code, such as Proguard  for Android or iXGuard  for iOS.
+
+# Entropy 2019, 21, 1136
+# 4. Experiment Setup
+Once we have defined some countermeasures to fortify SSL pinning, we must study the methods that can bypass these countermeasures. First, we define a threat scenario. Secondly, we study the current bypassing SSL pinning techniques. Next, we propose new methods of SSL bypassing. Finally, we evaluate our proposal, and provide some guidelines for the correct development and auditing of the applications that use SSL pinning mechanisms.
+
+# 4. Threat Scenario
+It is important to remark that neither the app client nor the server is attacked. Communications are the objective. The attacker could install the app in his/her device, decompile the app, modify the app, compile it again and sign it with his/her own certificate. The server does not verify the new certificate, but the app. The attacker could intercept communications, see how communications are implemented and tamper the app. Thus, the integrity of the information is compromised. Figure 5 represents the threat scenario.
+
+For example, if the client uses the app to make a payment, he/she could bypass SSL pinning, see how communications are implemented (if payment is not ciphered) using a MitM attack and modify the values (paying 10 instead of 100, for instance). Obviously, other features of the app could also be modified.
+
+# 4. Current Bypassing Methods
+A MiTM attack can break SSL/TLS pinning, as explained in Section 2. Tools such as Burp Suite or Charles Proxy may be used for these attacks. D’Orazio and Choo  defined five methods to bypass built-in SSL/TLS validations for iOS devices. They attempted to bypass SSL/TLS validations in 40 popular iOS apps but, surprisingly, only 10 of them performed SSL/TLS validations. The five methods that are used are described below:
+1. Method 1: Change common name (CM) in certificate. It is similar to the MiTM attack described in Section 2, with the proxy changing the CA-signed certificate dynamically.
+
+2. Method 2: Insert CA in the application. This method modifies the CA signature that is stored inside the application.
+
+3. Method 3: Use SSL Unpinning. Root access is necessary in this case. Tools such as Xposed in Android or SSL Kill Switch are used for SSL bypassing. They take advantage of the fact that the code that implements SSL Pinning is known. App developers use a well-known template, so that an attacker may guess it and use these tools to bypass SSL Pinning in the app.
+
+# 4. Method
+4: Debugging app. If the app does not implement anti-tampering or exceptions for the modification of the app, SSL Pinning functions can be replaced to bypass the pinning process.
+
+5: Modify app executable to avoid the SSL pinning process. The modified version of the app is copied to the device to permanently bypass SSL/TLS pinning.
+
+D’Orazio and Choo’s results are shown in Table 3. A checkmark means that the SSL/TLS implementation was bypassed using that method. Otherwise, a dash symbol is used. However, we must highlight two aspects of the results: (1) the authors avoided checking the security controls presented in Section 3; and (2) the tests were only carried out in iOS apps.
+
+# 4. New SSL Pinning Bypassing Methods
+As a new contribution, we propose two new methods to bypass SSL/TLS validations in Android devices. The first method deals with rooted devices and the second one deals with non-rooted devices. Since the new methods were compared with the ones defined in Section 4, we decided to number the new methods as Methods 6 and 7, respectively. Methods 6 and 7 makes circumventing SSL pinning in debug mode possible.
+
+# 4. Method 6: Dynamic Debugging of the App in Rooted Devices
+To perform this method, it is necessary to use a rooted mobile phone and a remote host. The process is described below:
+1. The mobile phone must execute a server that acts as a dynamic code interpreter. The server acts as a daemon and it enables interacting dynamically with the physical memory of the device to manipulate and change the behaviour of the executing apps. Thus, the aim of the server is to manipulate or change the expected behaviour of the SSL pinning process. In our case, we used Frida server with the following command:
+2. adb shell ./serverscript.sh (1)
+It should be confirmed that the daemon server is running and has enough permissions to read and manipulate the memory of the device. With this aim, Frida framework can be used by means of the following command:
+# Entropy 2019, 21, 1136
+# 12 of 19
+# 3.

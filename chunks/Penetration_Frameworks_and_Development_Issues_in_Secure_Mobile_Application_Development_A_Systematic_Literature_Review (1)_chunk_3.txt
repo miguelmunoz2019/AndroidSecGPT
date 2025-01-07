@@ -1,0 +1,93 @@
+# D. INCLUSION AND EXCLUSION CRITERIA
+Search results retrieved a large number of results so Inclusion (IC) and Exclusion criteria (EC) is applied to reduce the number of papers and to select the quality research papers. The IC and EC are defined as below.
+
+- IC1- The paper or abstract or introduction matched with the study in question and explains a framework, methodology or tool for penetration testing.
+
+- IC2- The paper discusses penetration testing tools for android applications.
+
+- IC3- Papers written in English and published in Journals, books and conferences
+- EC1- Exclusion of all articles that do not answer research questions.
+
+- EC2- Articles that cover penetration testing other than the web and mobile applications
+The full text of paper was analyzed and duplicates were removed.
+
+# E. STUDY SELECTION
+In the data selection process, initially, the primary studies identified during search were refined by filtering on the basis of abstract and then on the basis of full text. The keyword match search pulled up 1040 results from the search repositories and after removing duplicates and irrelevant papers we were left with 380 papers. The abstract of the paper was categorized by the first author in three categories: Uncertain, include and exclude. The papers in these categories were discussed by both the authors and as auditing by the second reviewer we were left with 56 papers. The resulting research was tabulated to:
+- Show the penetration test frameworks, methodologies and tools (to address RQ1).
+
+- Identify issues and challenges faced by android app developers (to address RQ2).
+
+87810 VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+We used logical operators ‘‘AND’’ and ‘‘OR’’ in search string for selection, shown in Figure 4.
+
+# F. QUALITY ASSESSMENT CRITERIA
+To evaluate each study using unbiased strategy and to increase validity for extraction of relevant publications we used qualitative assessment criteria based on , , . The criteria were based on the following Quality assessment (QA) questions.
+
+- QA 1. Is the research relevant to penetration testing and is relevant to the domain?
+- QA 2. Does the paper use the framework, methodology, tool effectively?
+- QA 3. Is the framework, methodology, tool discussed in the paper answer the research question?
+- QA 4. Does the paper cover issues and challenges related to amateur android developers?
+The quality assessment (QA) questions were scored as follows:
+- QA 1. Y (yes), the study is relevant to penetration testing; N (no), the study is not relevant to penetration testing; P (Partly), the study is relevant to penetration testing but does not mention its implication on android apps.
+
+- QA 2. Y (yes), the study uses a framework, methodology or tool; N (no), the study does not mention a framework, methodology or tool; P (Partly), the study does not provide an evaluation of penetration framework, methodology or tools.
+
+- QA 3. Y (yes), the study answers the research questions; N (no), the study does not answer the research questions; P (Partly), the study partly answers the research questions with no validations.
+
+- QA 4. Y (yes), the study concludes the challenges; N (no), the study does not conclude the challenges; P (Partly), the study partly answers the challenges related to the tools, methodologies and frameworks.
+
+The scoring procedure for quality assessment questions is Y (yes) = 1, N(no) = 0 and P(partly) = 0. Since we have four QA questions so the total score is 4.
+
+# G. DATA COLLECTION
+In the data selection process, all the exclusion and inclusion criteria were implemented on the search results and duplicate papers were removed. Initially, the data was collected using the search criteria which was based on keywords. Further, the data extracted from each study were:
+- Main research topic.
+
+- Main research questions and answers.
+
+- Quality evaluation (if any).
+
+- Pentest methodologies and tools.
+
+- Issues and challenges.
+
+# H. DATA ANALYSIS
+The collected data was tabulated to:
+- Show the penetration test framework, methodologies and tools (to address RQ1).
+
+- Identify issues and challenges faced by android app developers (to address RQ2).
+
+# I. PAPER SELECTION
+Using the search criteria, initial search pulled up 1040 results from the mentioned repositories and after removing duplicates and irrelevant papers we were left with 380 papers. After applying Inclusion and Exclusion criteria and after reviewing the title and reading the abstract we were left with 56 papers as shown in Table 3.
+
+# J. QUALITY ASSESSMENT
+Quality of the SLR can not only be assessed using inclusion and exclusion criteria as it may give biased results. Hence, specific quality assurance (QA) criteria are used to fully evaluate the text, thus increasing the selection of literature . The desired score for evaluation is 3 and the score is categorized on the basis of availability of several parameters as mentioned in research questions.
+
+# K. QUALITY ASSESSMENT RESULTS
+The paper shortlisted using the criteria mentioned above were further assessed using the quality assessment criteria as mentioned in section F. The desired score for evaluation is 2 and the score is categorized on the basis of availability of several parameters as mentioned in research questions. Not many studies revealed a good score. The result discussed.
+
+VOLUME 9, 2021 87811
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+# L. THREATS TO VALIDITY
+Researcher bias: This can influence the overall research selection and extraction process by selection of inclusion and exclusion criteria falsely. This threat was mitigated by the teamwork of both the researchers. Inclusion and exclusion criteria were designed by both the researchers and all uncertain cases were discussed and resolved mutually. All the cases, where the paper was included or excluded was done on the mutual agreement.
+
+Subjective bias: Subjective bias was mainly related to the limitations in acquiring results through the use of keywords. During the search process, we may have missed papers which were unpublished. Furthermore, our search criteria were purely based on our knowledge and expertise and there could be a possibility that we would have missed some papers that have used synonyms of our search keywords. To mitigate this issue, initially, we tried a formal search with a keyword and its synonym. The results were analyzed and in such case i.e. where we used a keyword ‘‘Android Pen-Test’’ we added another keyword ’’penetration test’’ to make sure that we do not miss any research papers.
+
+# IV. RESULTS AND DISCUSSION
+We discuss our results in this section.
+
+# 1. Android Penetration test tools and frameworks (RQ1)
+On the basis of our systematic literature review (SLR) and quality assessment criteria, we have grouped the results in two categories: Penetration test frameworks and Penetration test tools. These frameworks and tools were further evaluated on the basis of two separate evaluation criteria.
+
+# 2. Penetration test frameworks (RQ1-part 1)
+We have selected below mentioned frameworks from our systematic literature and will further evaluate these frameworks on the basis of our evaluation criteria to answer one portion of our research question.
+
+# a. Open Source Security Testing Methodology Manual (OSSTMM)
+Open Source Security Testing Methodology includes a set of strategies for security and quality that can be implemented for penetration and vulnerability testing. OSSTMM audit covers each aspect and relationship among software, system, people and processes. Through Passive and Intrusive attacks, a review report is generated which helps both, the developers and the network professionals to improve security.
+
+OSSTMM consists of (1) COMSEC (communications security channel) for human and physical interactions (2) SPECSEC (spectrum security channel) for wireless signals and communication (3) PHYSSEC (physical security channel) class for Telecommunications and data networks. OSTMM focuses on testing of application from penetration point of view and what measures should be taken after the tests are performed. This methodology does not cover what tools should be used for evaluation and testing of various interactions and classes.
+
+# b. OWASP (Open Web Application Security Project)
+OWASP is a community dedicated to providing security guidelines, tools, secure coding standard (ASVS) and documentation to improve application security. OWASP framework consists of (1) Information Gathering (2) configuration of information (3) logging (4) Session testing (5) authorization testing. OWASP Mobile Application Security Verification Standard helps in embedding security in mobile apps.
+
+MASVS has two security levels L1 and L2 as well as protection of app from reverse engineering or tampering. Both MASVS-L1 and MASVS-L2 guidelines provide best practices that cover all the aspects of security threats. MASVS define two security levels (L1 & L2) and resiliency requirement (MASV-R) to protect against tempering and reverse engineering. MASVS-L1 covers standard security requirements for mobile applications such as data handling and interaction of app in mobile environment. MASVS-L2 covers in-depth security beyond standard security requirements. App can achieve L2 level if threat model exits and based on the threat model control have been implemented.

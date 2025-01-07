@@ -1,0 +1,117 @@
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+1. V. Rastogi, Y. Chen, X. Jiang, Catch me if you can: Evaluating android anti-malware against transformation attacks, IEEE Trans. Inf. Forensics Secur. 9 (1) (2013) 99–108.
+
+2. A. Kovacheva, Efficient code obfuscation for android, in: International Conference on Advances in Information Technology, Springer, 2013, pp. 104–119.
+
+3. P. Faruki, H. Fereidooni, V. Laxmi, M. Conti, M. Gaur, Android code protection via obfuscation techniques: past, present and future directions, 2016, CoRR abs/1611.
+
+4. S. Banescu, A. Pretschner, A tutorial on software obfuscation, in: Advances in Computers, Vol. 108, Elsevier, 2018, pp. 283–353.
+
+5. J. Hoffmann, T. Rytilahti, D. Maiorca, M. Winandy, G. Giacinto, T. Holz, Evaluating analysis tools for android apps: Status quo and robustness against obfuscation, in: Proceedings of the Sixth ACM Conference on Data and Application Security and Privacy, 2016, pp. 139–141.
+
+6. P. Faruki, A. Bharmal, V. Laxmi, M.S. Gaur, M. Conti, M. Rajarajan, Evaluation of android anti-malware techniques against dalvik bytecode obfuscation, in: 2014 IEEE 13th International Conference on Trust, Security and Privacy in Computing and Communications, IEEE, 2014, pp. 414–421.
+
+7. V. Haupert, D. Maier, N. Schneider, J. Kirsch, T. Müller, Honey, i shrunk your app security: The state of android app hardening, in: International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment, Springer, 2018, pp. 69–91.
+
+8. J. Park, H. Kim, Y. Jeong, S.-j. Cho, S. Han, M. Park, Effects of code obfuscation on android app similarity analysis, JoWUA 6 (4) (2015) 86–98.
+
+9. M. Dalla Preda, F. Maggi, Testing android malware detectors against code obfuscation: a systematization of knowledge and unified methodology, J. Comput. Virol. Hacking Tech. 13 (3) (2017) 209–232.
+
+10. A. Bacci, A. Bartoli, F. Martinelli, E. Medvet, F. Mercaldo, Detection of obfuscation techniques in Android applications, in: Proceedings of the 13th International Conference on Availability, Reliability and Security, 2018, pp. 1–9.
+
+11. F. Wei, Y. Li, S. Roy, X. Ou, W. Zhou, Deep ground truth analysis of current android malware, in: International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment, Springer, 2017, pp. 252–276.
+
+12. A. Afianian, S. Niksefat, B. Sadeghiyan, D. Baptiste, Malware dynamic analysis evasion techniques: A survey, ACM Comput. Surv. 52 (6) (2019) http://dx.doi.org/10/3365001.
+
+13. A. Bulazel, B. Yener, A survey on automated dynamic malware analysis evasion and counter-evasion: Pc, mobile, and web, in: Proceedings of the 1st Reversing and Offensive-Oriented Trends Symposium, 2017, pp. 1–21.
+
+14. K. Tam, A. Feizollah, N.B. Anuar, R. Salleh, L. Cavallaro, The evolution of android malware and android analysis techniques, ACM Comput. Surv. 49 (4) (2017) 1–41.
+
+15. M. Xu, C. Song, Y. Ji, M.-W. Shih, K. Lu, C. Zheng, R. Duan, Y. Jang, B. Lee, C. Qian, et al., Toward engineering a secure android ecosystem: A survey of existing techniques, ACM Comput. Surv. 49 (2) (2016) 1–47.
+
+16. D. Maiorca, D. Ariu, I. Corona, M. Aresu, G. Giacinto, Stealth attacks: An extended insight into the obfuscation effects on android malware, Comput. Secur. 51 (2015) 16–31.
+
+17. A. Apvrille, R. Nigam, Obfuscation in android malware, and how to fight back, Virus Bull. (2014) 1–10.
+
+18. F.C. Freiling, M. Protsenko, Y. Zhuang, An empirical evaluation of software obfuscation techniques applied to android apks, in: International Conference on Security and Privacy in Communication Networks, Springer, 2014, pp. 315–328.
+
+19. Android, Selinux concepts, 2018, [Accessed: 09-Apr-2020]. URL https://source.android.com/security/selinux/concepts.
+
+20. Android security features, 2020, [Accessed: 09-Apr-2020]. URL https://source.android.com/security/features.
+
+21. S. Feldman, D. Stadther, B. Wang, Manilyzer: automated android malware detection through manifest analysis, in: 2014 IEEE 11th International Conference on Mobile Ad Hoc and Sensor Systems, IEEE, 2014, pp. 767–772.
+
+22. D.-J. Wu, C.-H. Mao, T.-E. Wei, H.-M. Lee, K.-P. Wu, Droidmat: Android malware detection through manifest and api calls tracing, in: 2012 Seventh Asia Joint Conference on Information Security, IEEE, 2012, pp. 62–69.
+
+23. Android, Android developer, 2020, [Accessed: 09-Apr-2020]. URL https://developer.android.com.
+
+24. J. Song, C. Han, K. Wang, J. Zhao, R. Ranjan, L. Wang, An integrated static detection and analysis framework for android, Pervasive Mob. Comput. 32 (2016) 15–25.
+
+25. K. Xu, Y. Li, R.H. Deng, Iccdetector: Icc-based malware detection on android, IEEE Trans. Inf. Forensics Secur. 11 (6) (2016) 1252–1264.
+
+26. A. Feizollah, N.B. Anuar, R. Salleh, G. Suarez-Tangil, S. Furnell, Andro-dialysis: Analysis of android intent effectiveness in malware detection, Comput. Secur. 65 (2017) 121–134.
+
+27. S. Dong, M. Li, W. Diao, X. Liu, J. Liu, Z. Li, F. Xu, K. Chen, X. Wang, K. Zhang, Understanding android obfuscation techniques: A large-scale investigation in the wild, in: International Conference on Security and Privacy in Communication Systems, Springer, 2018, pp. 172–192.
+
+28. J. Crussell, C. Gibler, H. Chen, Attack of the clones: Detecting cloned applications on android markets, in: European Symposium on Research in Computer Security, Springer, 2012, pp. 37–54.
+
+29. H. Huang, S. Zhu, P. Liu, D. Wu, A framework for evaluating mobile app repackaging detection algorithms, in: International Conference on Trust and Trustworthy Computing, Springer, 2013, pp. 169–186.
+
+30. H. Chang, M.J. Atallah, Protecting software code by guards, in: ACM Workshop on Digital Rights Management, Springer, 2001, pp. 160–175.
+
+31. J. Crussell, C. Gibler, H. Chen, Scalable semantics-based detection of similar android applications, in: Proc. of ESORICS, Vol. 13, Citeseer, 2013.
+
+32. Y. Zhou, X. Jiang, Dissecting android malware: Characterization and evolution, in: 2012 IEEE Symposium on Security and Privacy, IEEE, 2012, pp. 95–109.
+
+33. R. Xu, H. Saïdi, R. Anderson, Aurasium: Practical policy enforcement for android applications, in: Presented As Part of the 21st {USENIX} Security Symposium ({USENIX} Security 12), 2012, pp. 539–552.
+
+34. B. Gruver, An assembler(smali) and disassembler(baksmali) for androids dex format, 2020, [Accessed: 09-Apr-2020]. URL https://github.com/JesusFreke/smali.
+
+35. J.-H. Jung, J.Y. Kim, H.-C. Lee, J.H. Yi, Repackaging attack on android banking applications and its countermeasures, Wirel. Pers. Commun. 73 (4) (2013) 1421–1437.
+
+36. L. Li, T.F. Bissyandé, J. Klein, Rebooting research on detecting repackaged android apps: Literature review and benchmark, IEEE Trans. Softw. Eng. (2019).
+
+37. L. Luo, Y. Fu, D. Wu, S. Zhu, P. Liu, Repackage-proofing android apps, in: 2016 46th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN), IEEE, 2016, pp. 550–561.
+
+38. H. Cho, J.H. Yi, G.-J. Ahn, Dexmonitor: Dynamically analyzing and monitoring obfuscated android applications, IEEE Access 6 (2018) 71229–71240.
+
+39. P. Schulz, F. Matenaar, Android Reverse Engineering and Defenses, Bluebox Labs, 2013.
+
+40. C. Collberg, C. Thomborson, D. Low, Manufacturing cheap, resilient, and stealthy opaque constructs, in: Proceedings of the 25th ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, 1998, pp. 184–196.
+
+41. M. Musale, T.H. Austin, M. Stamp, Hunting for metamorphic javascript malware, J. Comput. Virol. Hacking Tech. 11 (2) (2015) 89–102.
+
+42. S.M. Sridhara, M. Stamp, Metamorphic worm that carries its own morphing engine, J. Comput. Virol. Hacking Tech. 9 (2) (2013) 49–58.
+
+43. Y. Piao, J.-H. Jung, J.H. Yi, Server-based code obfuscation scheme for apk tamper detection, Secur. Commun. Netw. 9 (6) (2016) 457–467.
+
+44. B. Barak, O. Goldreich, R. Impagliazzo, S. Rudich, A. Sahai, S. Vadhan, K. Yang, On the (im) possibility of obfuscating programs, in: Annual International Cryptology Conference, Springer, 2001, pp. 1–18.
+
+45. M. Dalla Preda, R. Giacobazzi, Semantics-based code obfuscation by abstract interpretation, J. Comput. Secur. 17 (6) (2009) 855–908.
+
+46. S. Garg, C. Gentry, S. Halevi, M. Raykova, A. Sahai, B. Waters, Candidate-indistinguishability obfuscation and functional encryption for all circuits, SIAM J. Comput. 45 (3) (2016) 882–929.
+
+47. S. Banescu, C. Collberg, V. Ganesh, Z. Newsham, A. Pretschner, Code obfuscation against symbolic execution attacks, in: Proceedings of the 32nd Annual Conference on Computer Security Applications, 2016, pp. 189–200.
+
+48. C. Collberg, C. Thomborson, D. Low, A Taxonomy of Obfuscating Transformations, Technical Report 148, Department of Computer Science, University of Auckland, 1997.
+
+49. S. Schrittwieser, S. Katzenbeisser, J. Kinder, G. Merzdovnik, E. Weippl, Protecting software through obfuscation: Can it keep pace with progress in code analysis?, ACM Comput. Surv. 49 (1) (2016) 1–37.
+
+50. Y. Zhou, A. Main, Y.X. Gu, H. Johnson, Information hiding in software with mixed boolean-arithmetic transforms, in: International Workshop on Information Security Applications, Springer, 2007, pp. 61–75.
+
+51. S. Chow, P. Eisen, H. Johnson, P.C. Van Oorschot, White-box cryptography and an aes implementation, in: International Workshop on Selected Areas in Cryptography, Springer, 2002, pp. 250–270.
+
+52. A. Anand, Securing android code using white box cryptography and obfuscation technique, Int. J. Comput. Sci. Mob. Comput. 4 (4) (2015) 347–352.
+
+53. V. Sánchez Ballabriga, Automation of White-Box Cryptography Attacks in Android Applications, Universitat Oberta de Catalunya (UOC), 2018.
+
+54. B. Wyseur, W. Michiels, P. Gorissen, B. Preneel, Cryptanalysis of white-box des implementations with arbitrary external encodings, in: International Workshop on Selected Areas in Cryptography, Springer, 2007, pp. 264–277.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# 0x0d of 0x14.[online] http://www.phrack.org/archives/63/p63-0x0d_Next_Generation_Runtime_Binary_Encryption.txt.
+
+30. J. Cappaert, B. Preneel, B. Anckaert, M. Madou, K. De Bosschere, Towards tamper resistant code encryption: Practice and experience, in: International Conference on Information Security Practice and Experience, Springer, 2008, pp. 86–100.
+
+31. M.F. Oberhumer, Upx the ultimate packer for executables, 2004, http://upx.sourceforge.net/.

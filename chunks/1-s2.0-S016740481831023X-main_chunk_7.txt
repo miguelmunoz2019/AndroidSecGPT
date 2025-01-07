@@ -1,0 +1,67 @@
+The second example is based on the ransomware-like (ran, 2016) idea which is (unfortunately) currently gaining more traction among cyber-criminals. In the beginning the attacker may just want to analyze the traffic to identify resources which are important for the victim. Then, when the user tries to access these critical resources once again (for example the list photos), his request may be replaced with the one that encrypts this content. A simplified scenario of such an attack which removes all photos instead of listing them has been...
+
+# Computers & Security 82 (2019) 80–98
+OPEN(&lt;id1z , 0, "shell"
+OKAY(&lt;id2> , &lt;id1z)
+WRTE(&lt;id2> , &lt;id1>, "shell@dev:/
+A_OKAY(&lt;id1>, &lt;id2>)
+WRTE(&lt;id1>, &lt;id2> , rm -rf my_photos
+A_OKAY(&lt;id2> , &lt;id1>)
+presented in Fig. 13. To make the adb-mitm tool more flexible it does not provide any of these scenarios but instead it just provides a plug-in framework which allows everyone to implement their own data change algorithm.
+
+Lesson learned #4: Once again the root cause of this vulnerability is the lack of integrity mechanisms in the ADB protocol.
+
+It must be emphasized that currently no mechanism exists which could enforce opened streams integrity.
+
+# 6. Data injection
+This type of attack aims at unnoticeable injection of the custom messages into authenticated ADB sessions.
+
+The basic concept of this attack is to allow the authentication phase to complete successfully just like in the case of session hijacking attack. However, after this phase, the mobile device is not being disconnected from the victim PC but it is authenticated. This allows to inject the A_AUTH RSAPUBLICKEY command and cause a pop-up appearance on the device screen.
+
+Obviously, under normal circumstances accepting such a key would require user interaction but as the ADB session has been already authenticated it is possible to simply send suitable input events to approve this key without user interaction.
+
+The only limitation of this attack is that the user has to unlock the screen for the time of key approval. To force him to do so, an attacker may simply wait for the legitimate A_AUTH RSAPUBLICKEY message transmission from the host and inject his own key shortly after the genuine host key has been approved by the user.
+
+Everything may happen so quickly that the user may even not notice that something appeared on the screen.
+
+As injecting content to the already opened user streams has limited functionality and requires streams to be opened by the user, this attack can be extended by opening new streams, not requested by the host (Fig. 14).
+
+This enables attacker to get access to the similar functionality as the user has without host PC even noticing this.
+
+Lesson learned #5: this vulnerability seems to have two main root causes. The first is the lack of integrity mechanism in the ADB protocol. The second is the absence of protocol state checking at the A_AUTH messages recipient.
+
+If the session has been already authenticated then adbd should not take actions on any A_AUTH command or at least invalidate session authentication when such a message arrives.
+
+The lack of such sanity check leads to a situation where a single
+# Computers & Security 82 (2019) 80–98
+entity is able to do both: trigger the authentication pop-up and then approve it.
+
+# 7. Countermeasures
+In the previous sections we evaluated the ADB security model used in the recent Android versions and discovered vulnerabilities related not only to implementation but also to serious issues in the ADB protocol design. In-depth analysis of the vulnerabilities allowed us to identify two root causes.
+
+First of them is the absence of mechanism which would provide integrity in the ADB protocol. As stated earlier USB does not provide any integrity solutions which means that USB traffic can be easily modified without raising suspicions. The ADB protocol is also not equipped with integrity mechanisms which effectively allowed us to execute the attacks described in this paper.
+
+Second root cause is an automated session authorization and the lack of the private key protection. ADB server owns an RSA private key which is used to authorize host to the device. Unfortunately this key is automatically used to authorize host to any new ADB-capable device event when the machine is locked.
+
+Below we propose improvements to the ADB protocol which can be incorporated to protect against discovered security flaws.
+
+# 7. ADB protocol extension
+To protect against attacks presented in this paper applying modifications to the ADB protocol is required. Thankfully, the CONNECT message which initiates the communication contains protocol version which can be increased to notify communication peer about the changes. The main goal of the introduced modifications is to provide state-of-the-art integrity mechanism to prevent MitM attacks. One of the major requirements is to ensure possibly the best data transfer and low computation cost to avoid ADB performance degradation.
+
+After in-depth analysis of the above mentioned requirements we concluded that the secrecy of the transmission is not a primary goal but first of all integrity must be provided. Thus we decided to use HMAC (keyed-Hash Message Authentication Code)  due to its simplicity and low computation cost. To be able to use HMAC as an integrity mechanism, shared secret key is required. To ensure forward secrecy this key should be generated on per session manner. For this reason, we decided to use D–H (Diffie–Hellman) key exchange algorithm to generate the secret key.
+
+To incorporate D–H algorithm several changes in the ADB protocol must be incorporated (Fig. 15). First of all, when the device receives the CONNECT command it should generate first D–H public-private key pair and it should send the public key to the host instead of random 20 bytes in the AUTH TOKEN message. When the host receives this message it should
+# Computers & Security 82 (2019) 80–98
+# Listing 2 – Extended ADB header structure.
+
+generate the second key pair and reply with the AUTH SIGNATURE message which contains the second public D–H key and its RSA signature derived using host’s private RSA key. After obtaining this message the device tries to verify the signature using one of the trusted public keys. If it is not successful then it sends the AUTH TOKEN message once again to give host the chance to use another RSA key. If the host runs out of the public keys it should reply with the AUTH RSAPUBLICKEY message which contains both: the second D–H public key and the RSA public key, signed using the corresponding RSA private key. When the device receives such a message it generates a pop-up window which presents MD5 sum of the host public key to be verified by the user. If the user accepts the public key or if it has been previously authenticated then the D–H key negotiation is completed. Both sides now share the same secret and the device knows that the second part of the key has been generated by the trusted host. As the HMAC algorithm does not prevent from replay-attacks (sending the same message once again) messages have to be numbered. To achieve this, at this point we initialize the message sequence number on both sides to 0 and increases it each time the message is sent.
+
+Any further communication is performed using extended message header defined in Listing 2. The first field is the original ADB header. The second one is the SHA1 hash calculated from the: (i) message sequence number, (ii) secret DH key, (iii) amsg, (iv) payload.
+
+To avoid confusion OPEN, READY, WRITE, CLOSE commands have been replaced with their secure equivalents which use struct sammesage as a header. Also a new SCONNECT command has been added as a reply sent from the device to the host when it accepts host signature. This command contains exactly the same information as the standard CONNECT command but it uses the extended header as defined in Listing 2.
+
+Further communication is done in the same way as in the original ADB protocol apart from the HMAC calculation for each message and increasing the sequence number.
+
+# 7. Evaluation
+# 7. Security
+The modification of the ADB protocol described in the previous subsection ensures message integrity. By incorporating one side authentication phase known from the SSH protocol (RSA signature of one public DH key) it prevents also MitM attacks. Just like the original ADB protocol it ensures that the host is trusted by presenting MD5 of the host public key. In contrast to the unmodified protocol it also ensures that the host actually owns the private key corresponding to the public key sent in the RSAPUBLICKEY. Unfortunately the modified protocol does not ensure device side authentication (nor the original protocol does). Therefore, the user is responsible for verification that he or she connected to the desired device.

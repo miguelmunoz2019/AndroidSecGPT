@@ -1,0 +1,66 @@
+The security check mechanism that PA follows is a two-stage process. The first stage, which should be done on-device, is monitoring the apps’ activities and collecting and transferring logs to the server. In order to reduce the overhead of log transfer, it sends the log only if the device is awake and connected to the Internet. The second stage is analyzing the collected logs from devices. PA uses a ClamAV based antivirus  to scan files. In addition, PA performs a taint analysis to detect memory corruption attacks. They evaluate the system and it is reported that it is both practical and scalable: generating no more than 2KiBps and 64Bps of trace log for high-loads and idle operation respectively, and supporting.
+
+23
+# Android Security Threats and Defenses
+# Rashidi, Fung
+In addition to described works in this section, there are many other related works: BayesDroid , TISSA , AppFence , LP-Gaurdian , Andromaly , AirBag , AdSplit , AFrame , LayerCake , CRePE , Apex , ASM , Aurasium , Dr. Android and Mr. Hide , Saint, IPC Inspection , MalloDroid , L4Android , AppSealer , Pyandrazzi , Morbs , PatchDroid , CryptoLint , IccTA , DroidBox , Drozer , CooperDroid , DroidPAD , DroidTracker , ProtectMyPrivacy , Ismail et al. . These works all capture apps’ activities and system calls, and using a set of predefined policies to restrict apps’ activities.
+
+# 6 Comparison and Discussion
+In this section we have a comparison on the covered solutions in this survey. As we described before, depending on the objective of them, they can be categorized into Assessment, Analysis, or Detection categories. In addition, based on the used techniques and methodologies, we can classify them into crowdsourcing-based, policy-based, dynamic, static, and recommendation-based classes. Considering the way that they implement the proposed solution, they can modify the framework or not. Table I shows the comparison results for all the covered works in this survey.
+
+In this section we describe following four important aspects that can be concluded from the comparison table and covered works:
+First, most of the dynamic-based solutions use crowdsourcing and policy-based techniques. Since dynamic-based solutions try to assess, analyze, or detect malicious apps based on the behavior of the apps, it is not possible to make an exact decision on maliciousness of the apps. Although, some the proposed solutions make decisions on resource access requests with high level of accuracy, most of them involve users to make their decisions more accurate. Making users responsible for their devices and granted permissions is another advantage of the involving users in defining policies.
+
+Second, as we described before, the way of implementation for proposed works are different. They can be implemented on the application level or framework and Linux kernel level. As you can see in the Table I, most of the dynamic solutions modify the framework and Linux kernel. The need to modify the low level of Android OS comes from this fact that dynamic solutions are based on the apps’ activities. Therefore, the only way to monitor the applications’ activities such as system calls is modifying the kernel or the framework.
+
+Third, rooting the device and implementing the solution in application level is another way of implementation. In this case, they root the device and manage resource access requests through an application service. The main problem of this type of implementation is that in fact they make the device unsafe.
+
+Fourth, the only solution, which is based on crowdsourcing, and recommendation is RecDroid . As we mentioned before, the missing key in the policy-based solutions is that none of them helps users to make a decision on the resource requests. RecDroid is the only work that assists users through making safe recommendations on granting the permissions to the applications.
+
+# 7 Conclusion
+Along with the increasing prevalence of Android smartphones, the number of Android apps including malware is increasing daily. In spite of deployed Android security mechanisms, malware take advantage of the Android security holes to misuse the granted resources. Thereby, many efforts have been proposed to restrict the outreach of vulnerabilities in Android devices. In this survey we investigated the current proposed works in two static and dynamic groups. The proposed works are primarily behavior-based and their main contribution is tracing the apps’ system calls and analyzing the activities to restrict them from high risk activities. After reviewing these works we came up with two questions that proposed works are not capable of answering appropriately. First, are those behaviors necessarily inappropriate?. Second, can we label the apps as malware or benign based on the behavior?.
+
+# Android Security Threats and Defenses
+Rashidi, Fung
+# Android Security Threats and Defenses
+Rashidi, Fung
+# Android Security Threats and Defenses
+Rashidi, Fung
+# Android Security Threats and Defenses
+Rashidi, Fung
+2015, http://proguard.sourceforge.net.
+
+# Android Security Threats and Defenses
+Rashidi, Fung
+(CODASPY’13), San Antonio, Texas, USA. ACM, February 2013, pp. 209–220. [Online]. Available: http://doi.acm.org/10/2435349
+# Android Security Threats and Defenses
+# Android Security Threats and Defenses
+Rashidi, Fung
+# Android Security Threats and Defenses
+Rashidi, Fung
+Pittsburgh, PA, USA, LNCS, vol. 6740. Springer Berlin Heidelberg, June 2011, pp. 93–107.
+
+# Android Security Threats and Defenses
+Rashidi, Fung
+android: An analysis of android ssl (in)security,” in Proc. of the 2012 ACM Conference on Computer and Communications Security (CCS’12), Raleigh, North Carolina, USA. ACM, October 2012, pp. 50–61. [Online]. Available: http://doi.acm.org/10/2382196
+ M. Lange, S. Liebergeld, A. Lackorzynski, A. Warg, and M. Peter, “L4android: A generic operating system framework for secure smartphones,” in Proc. of the 1st ACM workshop on Security and privacy in smartphones and mobile devices (SPSM’11), Chicago, IL, USA. ACM, October 2011, pp. 39–50. [Online]. Available: http://doi.acm.org/10/2046614
+ M. Zhang and H. Yin, “AppSealer: Automatic generation of vulnerability-specific patches for preventing component hijacking attacks in Android applications,” in Proc. of the 2014 Network and Distributed System Security Symposium (NDSS’14), San Diego, CA, USA. The Internet Society, February 2014.
+
+K. Kennedy, E. Gustafson, and H. Chen, “Quantifying the effects of removing permissions from android applications.”
+ R. Wang, L. Xing, X. Wang, and S. Chen, “Unauthorized origin crossing on mobile platforms: Threats and mitigation,” in Proc. of the 2013 ACM SIGSAC Conference on Computer &amp; Communications Security (CCS’13), Berlin, Germany. ACM, November 2013, pp. 635–646. [Online]. Available: http://doi.acm.org/10/2508859
+ C. Mulliner, J. Oberheide, W. Robertson, and E. Kirda, “Patchdroid: Scalable third-party security patches for android devices,” in Proc. of the 29th Annual Computer Security Applications Conference (ACSAC’13), New Orleans, Louisiana, USA. ACM, December 2013, pp. 259–268. [Online]. Available: http://doi.acm.org/10/2523649
+ M. Egele, D. Brumley, Y. Fratantonio, and C. Kruegel, “An empirical study of cryptographic misuse in android applications,” in Proc. of the 2013 ACM SIGSAC Conference on Computer &amp; Communications Security (CCS’13), Berlin, Germany. ACM, November 2013, pp. 73–84. [Online]. Available: http://doi.acm.org/10/2508859
+ L. Li, A. Bartel, T. Bissyandé, J. Klein, Y. Le Traon, S. Arzt, S. Rasthofer, E. Bodden, D. Octeau, and P. McDaniel, “IccTA: Detecting Inter-Component Privacy Leaks in Android Apps,” in Proc. of the 37th ACM/IEEE International Conference on Software Engineering (ICSE’15), Firenze, Italy, vol. 1. IEEE, May 2015, pp. 280–291.
+
+A. Desnos and P. Lantz, “Droidbox: An android application sandbox for dynamic analysis,” Online; accessed at July 2, 2015, https://code.google.com/p/droidbox/.
+
+Drozer, “Drozer - a comprehensive security and attack framework for android,” Online; accessed at June 20, 2015, https://www.mwrinfosecurity.com/products/drozer/ (Online; Last Accessed 11th February 2013)
+ K. Tam, K. Salahuddin, A. Fattori, and L. Cavallaro, “Copperdroid: Automatic reconstruction of android malware behaviors,” in Proc. of the 2015 Network and Distributed System Security Symposium (NDSS’15), San Diego, CA, USA. The Internet Society, February 2015.
+
+W. Luo, S. Xu, and X. Jiang, “Real-time detection and prevention of android sms permission abuses,” in Proc. of the 1st International Workshop on Security in Embedded Systems and Smartphones (SESP’13), Hangzhou, China. ACM, September 2013, pp. 11–18. [Online]. Available: http://doi.acm.org/10/2484417
+ S. Sakamoto, K. Okuda, R. Nakatsuka, and T. Yamauchi, “Droidtrack: Tracking and visualizing information diffusion for preventing information leakage on android,” Journal of Internet Services and Information Security (JISIS), vol. 4, no. 2, pp. 55–69, May 2014.
+
+Q. Ismail, T. Ahmed, A. Kapadia, and M. K. Reiter, “Crowdsourced exploration of security configurations,” in Proc. of the 33rd Annual ACM Conference on Human Factors in Computing Systems (CHI’15), Seoul, Republic of Korea. ACM, April 2015, pp. 467–476. [Online]. Available: http://doi.acm.org/10/2702123
+# Android Security Threats and Defenses
+# Author Biography
+Bahman Rashidi is a PhD student in Computer Science at the Virginia Commonwealth University, USA. He received his BSc and MSc in computer engineering from University of Isfahan and Iran University of Science and Technology, Tehran, Iran, in 2011 and 2014 respectively. He is mainly interested in the Distributed Systems, Cloud Computing, Mobile Computing, Mobile Devices, and Privacy. Currently, he is doing research on a Malware detection framework for smartphones. He is the recipient of Distinguished Masters Student of the year in research award for two consecutive years in 2012 and 2013 from Iran University of Science and Technology and Outstanding Early-career Student Researcher, Virginia Commonwealth University, April 2015.

@@ -1,0 +1,60 @@
+# The Journal of Systems and Software 167 (2020) 110609
+# Contents lists available at ScienceDirect
+# SOFTWARE SYSTEMS
+# The Journal of Systems and Software
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/jss
+# Identifying vulnerabilities of SSL/TLS certificate verification in Android apps with static and dynamic analysis
+Yingjie Wanga, Pedryczb, Guangquan Xuc, Xing Liua, Weixuan Maod, Chengxiang Sie, Witoldf, Wei Wange,∗
+a Beijing Key Laboratory of Security and Privacy in Intelligent Transportation, Beijing Jiaotong University, China
+b Big Data School, Qingdao Huanghai University, China
+c Tianjin Key Laboratory of Advanced Networking, College of Intelligence and Computing, Tianjin University, 300350 Tianjin, China
+d National Computer Network Emergency Response Technical Team / Coordination Center of China, China
+e Division of Computer, Electrical and Mathematical Sciences & Engineering (CEMSE), King Abdullah University of Science and Technology (KAUST), Thuwal 23955-6900, Saudi Arabia
+f Department of Electrical and Computer Engineering, University of Alberta, Canada
+# Article history:
+Received 15 September 2019
+Revised 23 March 2020
+Accepted 17 April 2020
+Available online 22 April 2020
+# Keywords:
+Android security, Dynamic analysis, MITM, SSL/TLS, Vulnerability detection
+# Abstract
+Many Android developers fail to properly implement SSL/TLS during the development of an app, which may result in Man-In-The-Middle (MITM) attacks or phishing attacks. In this work, we design and implement a tool called DCDroid to detect these vulnerabilities with the combination of static and dynamic analysis. In static analysis, we focus on four types of vulnerable schema and locate the potential vulnerable code snippets in apps. In dynamic analysis, we prioritize the triggering of User Interface (UI) components based on the results obtained with static analysis to confirm the misuse of SSL/TLS. With DCDroid we analyze 2213 apps from Google Play and 360app. The experimental results show that 457 (20%) apps contain potential vulnerable code. We run apps with DCDroid on two Android smart phones and confirm that 245 (11%) of 2213 apps are truly vulnerable to MITM and phishing attacks. We propose several strategies to reduce the number of crashes and shorten the execution time in dynamic analysis. Comparing with our previous work, DCDroid decreases 57% of the number of apps’ crash and 32% of the execution time on average. It also outperforms other three tools, namely, AndroBugs, kingkong and appscan, in terms of detection accuracy.
+
+# 1. Introduction
+Smartphones are now widely used in people’s daily life. Android has become the most popular mobile operating systems (OS), accounting for around 74% of the smart phone’s market in the world . According to Google’s statistics, there are over 2 million Android apps that are downloaded for over hundreds of billions times from Google Play as of December 2019 . These apps cover a range from life, entertainment to finance or business. In order to secure the transmission of sensitive data for avoiding data leakage or attacks, many apps use HTTPS (HTTP over Security Socket Layer (SSL)/Transport Layer Security (TLS)) protocol to transmit sensitive data . Unfortunately, improper implementation of SSL/TLS certificates can lead to Man-In-The-Middle (MITM) attacks (Clark and van Oorschot, 2013) and phishing attacks . In the process of MITM attack or phishing attack, attackers impersonate the server to intercept and even modify app traffic to obtain sensitive data. In general, an attacker is not able to decrypt the network traffic. However, if the client blindly trusts any certificate without checking the signatures, or does not verify the host name, or ignores the verification error prompts, the attacker can impersonate the server to gain the trust of the client using a fake certificate, and then decrypt the traffic to obtain sensitive data during the attack.
+
+Existing efforts have been made on the detection of malicious apps. Our previous work detected malicious apps , analyzed privacy leakage (Liu et al., 2018b; 2019) and detected (Wang and Battiti, 2006; Wang et al., 2014a; 2010; 2018c; Xu et al., 2020; Wang et al., 2006; 2015; Feng et al., 2009; Wang et al., 2008; 2020a; Guan et al., 2009; Wang et al., 2009b; 2004a; 2009a) or prevented.
+
+https://doi.org/10/j.jss
+0164-1212/© 2020 Elsevier Inc. All rights reserved.
+
+Y. Wang, G. Xu and X. Liu et al. / The Journal of Systems and Software 167 (2020) 110609
+intrusions with different methods. There also exist related work  on Android MITM attacks caused by improper implementation of SSL/TLS in Android’s apps. However, these methods require manual analysis to confirm vulnerabilities. Most of the related work aimed at the detection of malicious apps, rather than the detection of vulnerabilities. They often focus on a specific kind of Android apps, and the vulnerabilities detected are not comprehensive enough. In addition, some existing work started directly in the process of detection, which may lead to apps’ crash.
+
+In order to solve these problems, in our previous work , we propose an automatic method to detect apps with SSL/TLS certificate verification vulnerabilities. It contains the following steps: definition of the vulnerable code, detecting the vulnerability of Smali code and running app dynamically under the MITM attack with fake certificates. Finally, by analyzing the traffic between an app and the server to confirm the vulnerability (that is, an app is confirmed to have this kind of vulnerability when it is successfully attacked). However, we find that some apps crashed during the detect process, and some apps were run too long time. In addition, a number of false positives exist with our previous method. Through comprehensive analysis, we summarize the following reasons for the problems:
+- Some Activities of an app cannot start directly. They must be run in a certain order from one Activity to another.
+
+- Some apps have many similar UI elements, and these elements are different while the code logic is the same (such as some tabs).
+
+- Some HTTPS connections of an app are mixed with others because some apps are run in the background (such as some system services).
+
+In order to deal with these problems and detect the vulnerabilities stably, fast and accurately, we re-design our tool called DC-Droid (Detecting vulnerable Certificates in Android apps) that contains static analysis, dynamic analysis and traffic analysis. In static detection, we define vulnerable code, disassemble an app to get Smali code and search the code to locate the vulnerable point. We then get the entry point by analyzing the invocation relationship of the method. In dynamic detection, the apps are run under the guide of static analysis. An activity with vulnerable code does not start directly so that the tool is more stable in the detection. Besides, duplication is reduced in execution phase with some strategies. Next we set up proxy servers to carry out MITM attacks. We develop an app to capture traffic on the smart phone so that we can get the pure traffic of apps and reduce the false positives. With these measures, we have achieved higher accuracy, stability and execution efficiency.
+
+We make the following contributions:
+- We develop an automated tool called DCDroid to detect SSL/TLS vulnerabilities with the combination of static and dynamic analysis. With DCDroid, we analyze 2213 apps and find that 457 apps are vulnerable through static analysis. After dynamic analysis we find that 245 apps are truly vulnerable. There are over 10% of apps that have vulnerabilities of SSL/TLS. We analyze the categories and version evolution of vulnerable apps and provide our suggestions to developers based on the detection results.
+
+- We start executing the Activity of the vulnerable code from the Main Activity of an app instead of starting it directly. By dynamic execution, DCDroid is more stable than previous work with few crashes. Compared with starting Activity directly, the number of crashes decreased by 3 (57%) times per app on average.
+
+- Accept any domain name using the setHostnameVerifier (Using ALLOW_ALL_HOSTNAME_VERIFIER) method;
+- Call proceed() method directly in onReceivedSslError() method to ignore certificate verification errors when a certificate verification error occurs in WebView component.
+
+# 2. Background
+In this section, we first introduce the applications of SSL/TLS on Android, then the Android UI, and finally the network and MITM of Android.
+
+# 2. SSL/TLS and Android
+SSL and its successor TLS protect the message from MITM attacking by encrypting network messages. To achieve this goal, it is important to obtain certificates containing public keys from the server. According to RFC 5280 (Internet X, 2020) documents, the client must verify the certificate to ensure that the certificate received is the server’s certificate being connected to. Correct verification includes the following aspects:
+- Each certificate in the certificate chain has not expired;
+- Certificates or the root certificate in the certificate chain is signed by Certification Authority (CA) of clients;
+- The domain name in the certificate matches with the domain name of the server being connected to.

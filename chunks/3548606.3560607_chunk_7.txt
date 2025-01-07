@@ -1,0 +1,86 @@
+PSCout  adopted code analysis to trace the path of API calls and permission checks, produced a specification of API permission requirements, while Backes et al.  performed analysis of Android permission model across different Android versions. Approaches to derive precise protection by converting CFG  to Access-control flow graph determining necessary protections have also been proposed . Additionally, there have been efforts that looked into insecure components and driver implementations [30, 31, 34, 40, 50–52]. Compared to these efforts, we systematically investigate novel security issues caused by manifest misconfigurations.
+
+Detecting misconfigurations. On detecting misconfigurations of Android manifest files, Jha et al  identified configuration errors in about 13,000 Android apps using manually constructed constraints. The study, however, relies on predefined rules gathered by manually reading the documentations, and therefore cannot be adopted to generate schema for various versions of documentations for pre-installed app validation. Additionally, the manual approach did not provide a comprehensive coverage of manifest configurations, quantitative constraints, nor potential security issues. To identify potential policy misconfigurations in access control systems, Bauer et al.  applied association rule mining on previously observed accesses to extract statistical patterns (i.e., rules), and then used the rules to detect misconfigurations. Das et al.  proposed to detect inconsistencies of access control updates by correlating access control between group memberships and using statistical techniques to find differences between users. Yuan et al.  discovered user-defined policy violations and inconsistencies among firewall rules. There are a number of other blackbox  and whitebox  approaches to detect misconfigurations. To the best of our knowledge, none of the existing efforts have been used to analyze misconfigurations in Android app manifests.
+
+# 8 RELATED WORK
+Extracting information of interest using NLP techniques. As a powerful technique, NLP has been widely used to extract information of interest from free-form texts. For example, to extract constraints from technical documents, Kof et al. and Sadoun et al.  combined lexical, syntactical, and semantic analysis. Korner et al.  integrated part-of-speech tagger, statistic parser, and named entity recognizer to extract the information after splitting the text into chunks, and then validated them with common sense. NLP has also been used to solve various security issues, such as detecting policy declaration and contradictions (e.g., ), bug finding (e.g., ), and cybercrime (e.g., ). All of these efforts also need to solve the ambiguity problem. Various approaches have been proposed, by adopting data mining , developing deep learning models , or using crowd-sourcing approaches to manually identify ontologies . We enrich the state-of-the-art with NLP techniques to extract XSD from documentations.
+
+Android security analysis. Numerous prior efforts on Android security have mainly focused on investigating and identifying security threats in Android apps including requesting excessive permissions, component hijacking, and insecure driver implementations. For instance, for analyzing permission issues in Android systems,
+# 9 CONCLUSION
+We have presented ManiScope, a tool to automatically construct Android app manifest schema from the official documentation and detect misconfigurations in app manifest files. ManiScope employs novel domain-aware NLP parsing and pruning techniques that allow it to accurately capture positional and quantitative constraints on manifest elements and attributes. We have tested ManiScope with 1,853,862 Google Play apps and 692,106 preinstalled apps, with which ManiScope identified 609,428 misconfigured Google Play apps and 246,658 misconfigured preinstalled apps, respectively. We provided an in-depth analysis and measurement of the security threats posed by these misconfigurations, together with case studies to show their potential impacts.
+
+#parseVerifier. (Accessed on 2021-01-12).
+
+6. 2021. Android Studio linter. https://developer.android.com/studio/write/lint. (Accessed on 2021-01-18).
+
+7. 2021. Apache Xerces. https://en.wikipedia.org/wiki/Apache_Xerces. (Accessed on 2021-01-18).
+
+8. 2021. The attributes used in AndroidManifest.xml. https://cs.android.com/android/platform/superproject/+/master:frameworks/base/core/res/res/values/attrs_manifest.xml. (Accessed on 2021-01-18).
+
+9. 2021. BeautifulSoup Parser. https://lxml.de/elementsoup.html. (Accessed on 2021-01-18).
+
+10. 2021. CVSS v3 Calculator. https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator. (Accessed on 2021-01-18).
+
+11. 2021. Filters on Google Play. https://developer.android.com/google/play/filters. (Accessed on 2021-01-18).
+
+12. 2021. Introduction to DTD. https://www.w3schools.com/xml/xml_dtd_intro.asp. (Accessed on 2021-01-18).
+
+13. 2021. An Introduction to Schematron. https://www.xml.com/pub/a/2003/11/12/schematron.html.
+
+14. 2021. lxml - XML and HTML with Python. https://lxml.de/. (Accessed on 2021-01-18).
+
+15. 2021. Purchasing Listener doesn’t get called. https://forums.developer.amazon.com/questions/16519/purchasinglistener-doesnt-get-called.html. (Accessed on 2021-01-18).
+
+16. 2021. Python AxmlParser. https://github.com/antitree/AxmlParserPY. (Accessed on 2021-01-18).
+
+17. 2021. Relax NG home page. https://relaxng.org/. (Accessed on 2021-01-18).
+
+18. 2021. SamMobile - Your authority on all things Samsung. https://www.sammobile.com/. (Accessed on 2021-05-30).
+
+19. 2021. Schema - W3C. https://www.w3.org/standards/xml/schema.
+
+20. 2021. View & restrict your app’s compatible devices | Play Console Help. https://support.google.com/googleplay/android-developer/answer/7353455?hl=en. (Accessed on 2021-01-18).
+
+21. 2021. XML Schema Languages. https://en.wikipedia.org/wiki/XML_schema#Languages. (Accessed on 2021-01-18).
+
+22. Benjamin Andow, Samin Yaseer Mahmud, Wenyu Wang, Justin Whitaker, William Enck, Bradley Reaves, Kapil Singh, and Tao Xie. 2019. PolicyLint: Investigating Internal Privacy Policy Contradictions on Google Play. In 28th USENIX Security Symposium, USENIX Security 2019, Santa Clara, CA, USA, August 14-16, 2019.
+
+23. Kathy Wain Yee Au, Yi Fan Zhou, Zhen Huang, and David Lie. 2012. PScout: analyzing the Android permission specification. In the ACM Conference on Computer and Communications Security, CCS’12, 2012. ACM.
+
+24. Michael Backes, Sven Bugiel, Erik Derr, Patrick D. McDaniel, Damien Octeau, and Sebastian Weisgerber. 2016. On Demystifying the Android Application Framework: Re-Visiting Android Permission Specification Analysis. In 25th USENIX Security Symposium, USENIX Security 16, Austin, TX, USA, August 10-12, 2016.
+
+25. Lujo Bauer, Scott Garriss, and Michael K. Reiter. 2011. Detecting and resolving policy misconfigurations in access-control systems. ACM Trans. Inf. Syst. Secur. 14, 1 (2011), 2:1–2:28.
+
+26. Steven Bird, Ewan Klein, and Edward Loper. 2009. Natural language processing with Python: analyzing text with the natural language toolkit. O’Reilly Media.
+
+27. Yi Chen, Luyi Xing, Yue Qin, Xiaojing Liao, XiaoFeng Wang, Kai Chen, and Wei Zou. 2019. Devils in the Guidance: Predicting Logic Vulnerabilities in Payment Syndication Services through Automated Documentation Analysis. In 28th USENIX Security Symposium, USENIX Security 2019, Santa Clara, CA, USA, August 14-16, 2019. USENIX Association.
+
+28. Tathagata Das, Ranjita Bhagwan, and Prasad Naldurg. 2010. Baaz: A System for Detecting Access Control Misconfigurations. In 19th USENIX Security Symposium, Proceedings. 161–176.
+
+29. Greg Durrett, Jonathan K Kummerfeld, Taylor Berg-Kirkpatrick, Rebecca S Portnoff, Sadia Afroz, Damon McCoy, Kirill Levchenko, and Vern Paxson. 2017. Identifying products in online cybercrime marketplaces: A dataset for fine-grained domain adaptation. arXiv preprint arXiv:1708 (2017).
+
+30. Mohamed Elsabagh, Ryan Johnson, Angelos Stavrou, Chaoshun Zuo, Qingchuan Zhao, and Zhiqiang Lin. 2020. FIRMSCOPE: Automatic Uncovering of Privilege-Escalation Vulnerabilities in Pre-Installed Apps in Android Firmware. In 29th USENIX Security Symposium (USENIX Security 20). 2379–2396.
+
+31. Julien Gamba, Mohammed Rashed, Abbas Razaghpanah, Juan Tapiador, and Narseo Vallina-Rodriguez. [n.d.]. An Analysis of Pre-installed Android Software. In 2020 IEEE Symposium on Security and Privacy.
+
+32. Hamza Harkous, Kassem Fawaz, Rémi Lebret, Florian Schaub, Kang G. Shin, and Karl Aberer. 2018. Polisis: Automated Analysis and Presentation of Privacy Policies Using Deep Learning. In 27th USENIX Security Symposium, USENIX Security 2018.
+
+33. Ajay Kumar Jha, Sunghee Lee, and Woo Jin Lee. 2017. Developer mistakes in writing Android manifests: an empirical study of configuration errors. In Proceedings of the 14th International Conference on Mining Software Repositories, MSR 2017. IEEE Computer Society, 25–36.
+
+34. Ryan Johnson, Mohamed Elsabagh, Angelos Stavrou, and Jeff Offutt. 2018. Dazed Droids: A Longitudinal Study of Android Inter-App Vulnerabilities. In Proceedings of the 2018 on Asia Conference on Computer and Communications Security. ACM.
+
+35. Lorenzo Keller, Prasang Upadhyaya, and George Candea. 2008. ConfErr: A tool for assessing resilience to human configuration errors. In The 38th Annual IEEE/IFIP International Conference on Dependable Systems and Networks, DSN 2008, June 24-27, 2008, Anchorage, Alaska, USA, Proceedings. IEEE Computer Society.
+
+36. Leonid Kof. 2005. Natural Language Processing: Mature Enough for Requirements Documents Analysis?. In 10th International Conference on Applications of Natural Language to Information Systems, NLDB 2005, Proceedings. Springer.
+
+37. Sven J. Körner and Mathias Landhäußer. 2010. Semantic Enriching of Natural Language Texts with Automatic Thematic Role Annotation. In 15th International Conference on Applications of Natural Language to Information Systems, NLDB 2010, Proceedings. Springer.
+
+38. Yeonjoon Lee, Xueqiang Wang, Kwangwuk Lee, Xiaojing Liao, XiaoFeng Wang, Tongxin Li, and Xianghang Mi. 2019. Understanding iOS-based Crowdturfing Through Hidden UI Analysis. In 28th USENIX Security Symposium (USENIX Security 19). 765–781.
+
+39. Xiaojing Liao, Kan Yuan, XiaoFeng Wang, Zhongyu Pei, Hao Yang, Jianjun Chen, Haixin Duan, Kun Du, Eihal Alowaisheq, Sumayah Alrwais, et al. 2016. Seeking nonsense, looking for trouble: Efficient promotional-infection detection through semantic inconsistency search. In 2016 IEEE Symposium on Security and Privacy (SP). IEEE, 707–723.
+
+40. Long Lu, Zhichun Li, Zhenyu Wu, Wenke Lee, and Guofei Jiang. 2012. CHEX: statically vetting Android apps for component hijacking vulnerabilities. In the ACM Conference on Computer and Communications Security, CCS’12, Raleigh, NC, USA, October 16-18, 2012. ACM.
+
+41. Rebecca S Portnoff, Sadia Afroz, Greg Durrett, Jonathan K Kummerfeld, Taylor Berg-Kirkpatrick, Damon McCoy, Kirill Levchenko, and Vern Paxson. 2017. Tools for automated analysis of cybercriminal markets. In Proceedings of the 26th International Conference on World Wide Web. 657–666.
+
+42. Driss Sadoun, Catherine Dubois, Yacine Ghamri-Doudane, and Brigitte Grau. 2013. From Natural Language Requirements to Formal Specification Using an Ontology. In 25th IEEE International Conference on Tools with Artificial Intelligence, ICTAI 2013, Herndon, VA, USA, November 4-6, 2013. IEEE Computer Society.

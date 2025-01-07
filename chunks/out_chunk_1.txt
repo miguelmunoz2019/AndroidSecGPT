@@ -1,0 +1,52 @@
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+# Effect of the Application of TEA Algorithm on the Development of Secure Phone Application Android Smartphones
+Ryan Ari Setyawan1, Selo, Bimo Sunarfri Hantono2,3
+1 Department of Informatics Engineering, Janabadra University, Yogyakarta, Indonesia 55231.
+
+2,3 Department of Electrical Engineering and Information Technology, Gadjah Mada University, Yogyakarta, Indonesia.
+
+ryan@janabadra.ac.id
+# Abstract
+Android smartphone technology is growing rapidly. It is indicated that by utilizing the features of internet telephone service via the Voice over Internet Protocol (VoIP), users are able to make conversation easily and inexpensively. However, with the development, the internet telephone service used is unnecessarily safe for use. One of the solutions proposed is to make end-to-end encryption. This research applied TEA algorithm for encryption into the VoIP client of Sipdroid in Android smartphones. The objective of the research is to find out the effect of the application of TEA algorithm for encryption into the VoIP client of Sipdoid by investigating the performance of TEA algorithm in view of mean opinion score (MOS), delay, and throughput in VoIP. The results of measurement and calculation show that the application of TEA algorithm produced quality speech with R factors of 72-75 smaller than no TEA algorithm application with those of 84-85. Meanwhile, the effect of VoIP performance on such application generated a much larger delay of 0 to 0 seconds compared to no TEA algorithm application with a delay of 0 to 0 seconds. The results indicate that the application of TEA algorithm could more effectively contribute to the security of VoIP client practice, particularly in Android smartphones.
+
+# 1. Introduction
+The recent features of communication using internet phone service are growing rapidly. Various applications utilizing the internet phone services such as Yahoo Messenger, Kakao Talk, We Chat, Line and Bee talk, has increasingly developed. These applications are very easily used as the users can communicate with each other if the internet network connection is available. Moreover, such communication through internet phone service has several advantages, including low cost and no limitation of distance. Actually, the concept of internet phone service is to build communication by utilizing the network technology of VoIP to access Internet Multimedia System (IMS). However, the development of technology did not necessarily provide the guaranteed security system. Therefore, security is necessary for the application. Various techniques can be applied in order to collect users’ information by eavesdropping technique using a software of spied-phone on. Another technique is to apply the Denial-of-Convenience (DoC) by installing the counterfeit Wireless Fidelity (WIFI) to tap information. Such tapping of information can be done when the smartphone connects to the WIFI. In addition, the attack can be done by breaking the encryption code through searching keywords by
+Content from this work may be used under the terms of the Creative Commons Attribution 3 licence. Any further distribution of this work must maintain attribution to the author(s) and the title of the work, journal citation and DOI.
+
+Published under licence by IOP Publishing Ltd
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+Brute Force Attack (BFA) . BFA is done by giving the first plaintexts of (100-(50/2n))% bit in a random and unique manner. It shows that the secure communication using the internet phone service is necessary. One solution is to make end-to-end encryption. By the encryption technique, the data of voice are randomized before being sent and described before getting to destination address. Various cryptographic algorithms have been applied to make encryption. The selection of an appropriate cryptographic algorithm to develop mobile devices is required. The Algorithm used in this study are Tiny Encryption Algorithm (TEA) algorithm. TEA algorithm was chosen because it has the characteristics suitable for mobile devices, i.e. minimizing the memory and maximizing the speed . The algorithm is inserted into the source code of Sipdroid. Sipdroid is a source code for the VoIP client in the Android operating system that is open for the developers . Such insertion of TEA code is a form of the development of secure phone application in Android smartphones.
+
+# 2. Literature Review
+Tiny Encryption Algorithm (TEA) is a cipher algorithm that was created by David Wheeler and Roger Needham from the Computer Laboratory, Cambridge University, England in November 1994 . It is a block cipher encryption algorithm that was designed to use a minimum memory with a maximum speed. Some studies on the application of TEA algorithm such as that by Hunn et al (2012)  proposed the development of TEA crypto-core for mobile system. Other study by Guillen et al (2009)  addressed security mechanism and the feasibility of TEA applied in sensor nodes for information authentication and encryption. Venugopal et al (2013)  conducted a study about the application of TEA algorithm in terms of latency, throughput, gate equivalence, the cost and ease of mapping in the Field Programmable Gate Arrays (FPGA) and Graphics Processing Units (GPU). Bagbaba et al (2015)  applied the TEA algorithm for image encryption and compression. Ge et al (2015)  conducted a study about the encryption of TEA algorithm for public communication network wireless remoter. The algorithm only has a maximum key length of up to 128-bit . The key length is the key number that is too long for modern cryptographic algorithm. David Wheeler and Roger’s purpose in applying the maximum key length of up to 128 bits was that TEA algorithm was created just for mobile devices with the computing capacity lower than personal computers.
+
+TEA encryption system used the Feistel network by adding mathematical functions such as addition and subtraction as the inverting operator other than XOR. It is intended to create the property of nonlinearity. The shifts in both directions (left and right) made all the bit keys and data repeatedly mixed. TEA processed 64-bit input at a time and produce 64-bit output . TEA stored 64-bit input into L0 and R0 of each 32-bit. Finally, 128-bit keys are stored into k(0), k(1), k(2), and k(3), each of which contains 32-bit. It is expected that the technique could prevent the use of exhaustive search technique effectively. The output will be stored in L16 and R16. Constant delta number to be used is 9E3779B9 derived from the golden number (5/41/2-1/2-0) 232 or delta=(√5-1) 231. Different double delta number is used in each rotation, so that no bit of multiplication did not change regularly. Different from Feistel’s structures that originally operated one side only, i.e. the right side with a function F, in TEA algorithm both sides were operated with a similar function. The TEA System Encryption can be shown in Figure 1.
+
+1. Shift
+Light text block on both sides of each of 32-bit is shifted to the left as many as four times and is shifted to the right as much as five times.
+
+2. Addition
+The next step after the blocks were shifted to the left and to the right is that Y and Z to be shifted were added the keys of k-k, while the initial Y and Z were added the sum (delta).
+
+3. XOR
+# 1st International Conference on Advance and Scientific Innovation (ICASI)
+# IOP Publishing
+# IOP Conf. Series: Journal of Physics: Conf. Series 1175 (2019) 012073
+# doi:10/1742-6596/1175/1/012073
+The next process after they were operated by the addition in each of register was XOR processed by the formula for one round as shown in Equation 1 and Equation 2.
+
+y =  y+(((z       4)+k2z+sum2((z              5)+k))                             (1)
+z = z+(((y        4)+k2y+sum2((y              5)+k))                             (2)
+The results of encoding in one cycle of a light text block of 64-bit to be 64-bit ciphertext were obtained by combining Y and Z. For the encoding at the next cycle, positions of Y and Z were interchanged so that Y1 was in Z1 and Z1 was in Y1, then continued by the process with the steps above until 16 cycles (32 rounds).
+
+# 4) Key Schedule
+TEA algorithm used very simple key schedule, i.e. keys of k  and k  were used in odd round, while the constant keys of k  and k  were used in even round.
+
+# 5) Description and Encryption
+Decryption process was the same with that in other Feistel cipher-based encoding process. The principle was the same at the time of encryption process. The thing different was the use of ciphertext as input and the keys used were in a reversed order. In the entire decryption process with even round, k was firstly used and then k.

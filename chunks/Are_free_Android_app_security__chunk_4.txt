@@ -1,0 +1,51 @@
+Empirical Software Engineering (2020) 25:178–219 187
+Since API level 25 is the latest API level considered in this evaluation, we focus on the data for API level 25 specific samples. In AndroZoo sample, we observe 80% (481 out of 601) of relevant APIs used in benign apps in Ghera were each used by more than 50% (52K) of real-world apps; see the dashed red lines in the top left graph in Fig. 1. For the top-200 sample, this number increases to 90% (542 out of 601); see the dashed red lines in the bottom left graph in Fig. 1. When considering only security-related APIs, 61% (72 out of 117) of APIs used in benign apps in Ghera were each used by more than 50% of real-world apps in AndroZoo sample; see the dashed red lines in the top right graph in Fig. 1. For the top-200 sample, this number increases to 80% (94 out of 117); see the dashed red lines in the bottom right graph in Fig. 1.
+
+Barring few APIs in case of AndroZoo sample (i.e., dips for APIs ranked between 300 and 400 and closer to 481 (vertical dotted line) in the top left graph in Fig. 1), the above observations hold true for all API levels considered from 19 thru 25 in both the AndroZoo sample and the top-200 sample.
+
+Further, while we do not present the data in this manuscript, we made similar observations in cases of malicious apps and secure apps in Ghera with both the AndroZoo sample and the top-200 sample
+Above observations suggest a large number of real-world apps use a large number of APIs used in Ghera benchmarks. Consequently, we can conclude that Ghera benchmarks are representative of real-world apps in terms of using potentially vulnerable and security-related APIs used in real-world apps.
+
+# An Opportunity with Security-Related APIs
+In the bottom right graph in Fig. 1, observe that a large percentage of top-200 apps use many security-related APIs. This large percentage is no surprise as these apps are likely to be widely used and are likely built with proper security measures to keep their users secure. Surprisingly, based on the AndroZoo sample (see top right graph in Fig. 1), this is also true of real-world apps — 72 of the 117 security-related APIs are each used by more than 52K apps from AndroZoo sample in all considered API levels. Thus, a large number of real-world apps use security-related APIs knowingly or unknowingly and correctly or incorrectly. Hence, there is a tremendous opportunity to help identify and fix incorrect use of security-related APIs.
+
+# 3 Based on Sampling Proportions
+Columns 4, 5, 8, and 9 in Table 1 report the number of relevant APIs for which the null hypothesis — the proportion of benign apps in Ghera using API X is less than or equal to the proportion of real-world apps using API X — could not be rejected. This data suggests, for at least 68% of relevant APIs, the proportion of Ghera apps that used an API could be less than or equal to the proportion of real-world apps in the AndroZoo sample that use the same API. This is true across all API levels and at specific API levels. This is also true for at least 94% of security-related APIs. In the case of the top-200 sample, this is true for at least 94% of relevant APIs and 99% of security-related APIs
+Further, we made similar observations in cases of malicious apps and secure apps in Ghera with both the AndroZoo sample and the top-200 sample.
+
+6 The raw data supporting these observations is available as part of publicly available evaluation artifacts; see Section 6.
+
+7 These numbers will only be higher when lower p-value thresholds are considered.
+
+# Empirical Software Engineering (2020) 25:178–219
+Representativeness based on sample proportions test. Of the 601 selected (all) APIs, 117 APIs were security-related
+Considering Ghera benchmarks as a custom sample in which the proportion of benchmarks that used a specific set of APIs (relevant or security-related) was expected to be high, the above observations suggest such proportions are higher for these APIs in real-world apps. Consequently, this supports the conclusion from API use percentage experiment: Ghera benchmarks are representative of real-world apps in terms of using potentially vulnerable and security-related APIs used in real-world apps.
+
+# 3 Besides Representativeness
+Exploring the distribution of relevant and security-related APIs across Ghera benchmarks, we observe that a Ghera benchmark uses 352 to 386 relevant APIs and 17 to 34 security-related APIs. We also observe 39 security-related APIs occur in at most one Ghera benchmark.
+
+The latter observation suggests most of the Ghera benchmarks (39 out of 42) capture vulnerabilities that stem from a specific API. Assuming this is true and the security-related APIs do indeed influence app security, the observations together suggest either security vulnerabilities captured by Ghera benchmarks stem from a combination of security-related APIs or every Android app that uses some basic features of Android platform will likely depend on at least few security-related APIs. The last possibility is worthwhile exploring further as it implies every Android developer should be aware of security implications of the Android platform features used in their apps.
+
+# 3 Threats to Validity
+This evaluation of representativeness is based on a weak measure of manifestation of vulnerabilities — the use of APIs involved in vulnerabilities. Hence, this evaluation could have ignored the influence of richer aspects such as API usage context, security desiderata of data, and data/control flow path connecting various API uses, which are involved and hard to measure. The influence of such aspects can be verified by measuring representativeness by considering these aspects.
+
+Empirical Software Engineering (2020) 25:178–219 189
+While we considered a large sample of real-world apps, the distribution of apps across targeted API levels was skewed — there were fewer apps targeting recent API levels. Hence, recent API level specific samples may not have exhibited the variations observed in larger API specific samples, e.g., API level 19 (see Fig. 1). This possibility can be verified by repeating this experiment using samples of comparable sizes.
+
+The version of Ghera benchmarks considered in this evaluation was developed when API level 25 was the latest Android API level. So, it is possible that tooling and library support available for API level 25 could have influenced the structure of Ghera benchmarks and, consequently, the observations in Section 3. This possibility can be verified by repeating this experiment in the future while using tooling and library support available with newer API levels.
+
+We have taken extreme care to avoid errors while collecting and analyzing data. Even so, there could be errors in our evaluation in the form of commission errors (e.g., misinterpretation of data, misidentification of APIs as relevant and security-related), omission errors (e.g., missed data points), and automation errors. This threat to validity can be addressed by examining both our raw and processed data sets (see Section 6), analyzing the automation scripts, and repeating the experiment.
+
+# 4 Vulnerability Detection Tools Evaluation
+# 4 Android App Security Analysis Solutions
+While creating Ghera repository in 2017, we became aware of various solutions for Android app security. From June 2017, we started collecting information about such solutions. Our primary sources of information were research papers , repositories , and blog posts  that collated information about Android security solutions.
+
+From these sources, we reviewed 64 solutions that were related to Android security. (The complete list of these solutions is available at https://bitbucket.org/secure-it-i/may2018.) We classified the solution along the following dimensions.
+
+1. Tools vs Frameworks: Tools detect a fixed set of security issues. While they can be applied immediately, they are limited to detecting a fixed set of issues. On the other hand, frameworks facilitate the creation of tools that can detect specific security issues. While they are not immediately applicable to detect vulnerabilities and require effort to create tools, they enable detection of a relatively open set of issues.
+
+2. Free vs. Commercial: Solutions are available either freely or for a fee.
+
+3. Maintained vs. Unmaintained: Solutions are either actively maintained or unmaintained (i.e., few years of development dormancy). Typically, unmaintained solutions do not support currently supported versions of Android. This observation is also true of a few maintained solutions.
+
+4. Vulnerability Detection vs. Malicious Behavior Detection: Solutions either detect vulnerabilities in an app or flag signs of malicious behavior in an app. App developers typically use the former while app stores and end users use the latter.

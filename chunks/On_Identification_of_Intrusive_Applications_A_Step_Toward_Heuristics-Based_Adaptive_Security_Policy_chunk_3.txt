@@ -1,0 +1,77 @@
+• Granted Final Score (GFS) is computed as the average of the Receiver Score (AORPr) and the Granted
+VOLUME 12, 2024 37589
+# F. Mohsen et al.: On Identification of Intrusive Applications
+# 3) EVALUATION SUMMARY AND DETAILED VIEW
+Our solution enables end-users to request reviews of their evaluations, which requires maintaining a comprehensive record of all app evaluations conducted throughout the device’s application lifecycle. Additionally, users should have access to detailed information about a specific evaluation, including the app’s details, all assigned scores, and its Anomaly Level.
+
+# 4) IN THE MARKET EVALUATION
+Users may wish to evaluate an app for malicious or intrusive behavior before installing it. The Evaluate In-the-Market feature facilitates this process by providing the app’s Google Play URL or package name. This allows users to compare the privacy scores of different apps and choose the least intrusive option. It’s important to note that evaluations are based solely on the permissions listed on the Google Play store pages, which may not correspond directly to specific permission groups or names. To address this limitation, we developed a routine called PlayStoreInterpreter, which maps Play Store permissions to their corresponding manifest permission groups. However, it’s important to acknowledge that this mapping relies on certain assumptions, which may result in different approximations. In this specific case, we rely on information provided by Google LLC.
+
+# 5) ANOMALY DETECTION
+Updates play a critical role in the life cycle of an app, often introducing new features, improving existing functionality, and incorporating new broadcast receivers and/or permission declarations. These updates can significantly impact the app’s privacy ranking and serve as a key indicator when evaluating its intrusiveness trend. We utilize a modified growth rate formula adapted from  to address this. The alteration accounts for the fact that the growth rate of intrusiveness corresponds to a lower final score - meaning, the more intrusive the application, the lower the final score. The growth rate (GR) is defined as:
+GR = − xi − xi−1, where xi ∈ R, 0 < xi ≤ 1, ∀i ∈ N
+Here, GR represents the growth rate of an application, and xi represents the ith evaluation. However, we need to calculate the growth rate value over a period, not just between the two most recent evaluations. Therefore, we adapt the mean growth rate (MGR) formula from :
+MGR = ∑n−1−( x−xi−1), ∀n ∈ N, xi ∈ R, 0 < xi ≤ 1i=1 ixi−1
+The new dataset must be processed and incorporated into future updates.
+
+# 6) BACKGROUND ASSESSMENT
+The assessment of installed, updated, or removed applications needs to occur both in the background and foreground, with a primary focus on accurate background activity. We conduct application assessments only upon installation or update to ensure reliability and efficiency. An essential requirement is that the background process should initiate automatically upon device boot completion without the need for the user to restart the app. Furthermore, the app should remain operational even when closed, meaning it should not be force-stopped.
+
+# 7) NEW DATA SET PREPARATION
+To ensure the ongoing effectiveness of our solution, we need to update or replace the current seed dataset and all extracted information periodically. However, this presents challenges as we do not alter the values in the IRP calculation or the suggestion set during new evaluations. Acquiring new seed data involves resource-intensive and time-consuming tasks such as scraping, downloading, and parsing applications from Google Play. To simplify this process, we’ve incorporated the collection of the new seed dataset into the evaluation process.
+
+# IV. PROPOSED FRAMEWORK
+In this section, we will explore the building blocks of our proposed framework, encompassing the features discussed in earlier sections. The framework is designed to facilitate continuous threat monitoring for Android applications. Certain related features may be grouped, and the implementation of specific features may span multiple subsections. Our framework revolves around the Privacy Watcher app, and thus, we will provide a more detailed examination of its implementation compared to other components.
+
+# F. Mohsen et al.: On Identification of Intrusive Applications
+# A. TECHNOLOGY STACK
+We developed the Privacy Watcher app primarily using Java and utilized Firebase Real-time Database  for database-related operations. Additionally, Firebase Authentication was used to handle user sign-up and sign-in procedures, both on the client and server side . Finally, we employed Python’s Django Framework to develop the server-side API as an alternative to extracting permissions/actions.
+
+# B. APPLICATION FRAMEWORK OVERVIEW
+# 1) XML EXTRACTOR
+The XML Extractor is a web application, entirely written in Python, using Django, and hosted on Heroku . The application decompiles the AndroidManifest.xml on POST request and returns a JSON object containing the application’s permissions and broadcast receivers’ actions. Please note that this service is intended as a backup if the alternative local option, Section V-D, stops working due to Android’s changes.
+
+# 2) FIREBASE
+Firebase is a platform developed and maintained by Google that provides solutions for easy integration and development . We utilize two services of Firebase: Authentication, which represents the email/password standard authentication scheme for our application, and Realtime Database - a tree-structured database , easily stored and accessible, provided that the user has a network connection.
+
+# 3) PLAY STORE
+We leverage the Google Play store to retrieve the genres of the installed applications because it is required to calculate the privacy scores. Additionally, we retrieve the permission list of uninstalled apps for the Evaluate In-the-Market feature.
+
+# 4) AAPKS.COM
+aapks.com is a website that shares free Android applications . We use it to locate the APK file of a given application, which is needed for the Download and Evaluate feature.
+
+# 5) PRIVACY WATCHER APP
+The Privacy Watcher App serves as the central component of our solution. It is an Android-based application that leverages various services including the Play Store, Firebase, aapks, and XML remote service. Its primary function is to empower users to monitor their installed apps and make informed decisions about which apps to install from the market.
+
+The entire Android application and its external library flow heavily rely on callbacks and listeners. This mandates using a design pattern to handle all the changes resulting from executing these callbacks and listeners. Therefore, we select to implement the Observer Design Pattern. We divide the whole application structure into three types of actors.
+
+- Only listeners: Classes that execute an update upon a triggered event.
+
+- Only updaters: Classes that only trigger an event.
+
+- Both listeners and updaters: Parts of the application that have both roles in executing a triggered update and notifying other listeners about a change.
+
+In the next section, we will discuss the implementation details of our proof of concept.
+
+# V. IMPLEMENTATION DETAILS
+This section provides a comprehensive overview of the implementation details for key components of our framework, such as the database structure and login procedures, different flavors of evaluations, anomaly detection, and ensuring continuous background monitoring of applications.
+
+# A. DATABASE STRUCTURE AND AUTHORIZATION RULES
+To ensure optimal performance and user experience, we organize our seed data set into two main parts:
+- Summary Set: This encompasses data collected from the entire provided set, categorized by genre. The summary set is further divided into two categories:
+- Counters: This contains information about the actions and permissions present within apps from a specific genre.
+
+- Sizes: This segment stores the number of applications sorted by genre.
+
+- Suggestions Set: This set is formed from a filtered subset of data, ordered and filtered by the scored AORP rank.
+
+We calculate the permission and receiver scores for all the applications in the suggestion set. We then sort the applications in this set based on the mean value as follows:
+AORPfinal = (AORPr + AORPp) / 2
+We select a minimal subset of each genre’s top 100 scored applications. To ensure persistence, we utilize the Firebase Real-time Database API for remotely storing all application-related data . The database adopts a tree structure rather than conventional tables and relations, and we design structured, minimalistic sub-trees for each application part.
+
+Authorization is implemented using Firebase Realtime Database’s integrated functionality, restricting user access based on Authentication UID issued by the Firebase Authenticate module . We define Database Rules to control read and write permissions, applying them per sub-tree.
+
+# B. REGISTRATION/LOGIN
+We employed Firebase Authentication functionality  to ensure robust implementation of the Authentication service. This service safeguards user credentials and is integral to the operations of two components in our system: the XML
+# F. Mohsen et al.: On Identification of Intrusive Applications
+A high-level overview of the Continuous Threat Monitoring Framework (CTMF). The Remote Service is kept as a backup option if the local extraction of the permissions and system actions is impossible.

@@ -1,0 +1,49 @@
+# 1) PRIVACY POLICY
+Since our initial evaluation in 2016, app vendors that did not have a published on-line privacy policy on Google Play had, at least, two major reasons to add one. First, as we already mentioned, since early 2017 Google has sent notifications to app developers asking to provide a valid privacy policy. Second, we reported the issue to each app’s vendors when we informed them of our initial evaluation results. Hence, one would have expected that by the 5th of July 2017 (i.e., the date we performed our re-evaluation process regarding the existence of a privacy policy link on Google Play)
+VOLUME 6, 2018 9397
+# A. Papageorgiou et al.: Security and Privacy Analysis of Mobile Health Applications
+Information is transmitted to third parties, even when the appropriate secure measures are in place, as well as when sensitive information is disseminated to vendors without safeguarding the appropriate secure mechanisms. Alternatively, we use the term “minor issues” to refer to cases where leakages of non-personal information (e.g., behavioral data) may occur. Also, we consider minor issues those cases in which best practices are not implemented and lead to sensitive information leakage.
+
+All the apps would have a proper link to their privacy policy. Surprisingly, one of the apps kept missing a privacy policy, another app provided a link to an error page and, another app kept having a link to a privacy policy page not translated into English.
+
+# 2) SECURE TRANSMISSION OF USER DATA
+In this section we report the results obtained after repeating the fourth step of our methodology. More specifically, we re-evaluated the apps by re-running the dynamic analysis on their updated versions in order to check whether the reported issues were solved or still remained. For the sake of clarity, we have categorized our findings into minor and major issues, and we analyze how many of them (in each category) remain in the re-evaluated version of the apps. It should be noted that in our results we count the number of minor or major issues and not the frequency at which these issues occur. Table 9 provides some examples of minor and major issues.
+
+We use the term “major issue” to refer to those that may lead to the identification of the user when sensitive.
+
+# F. GDPR-READINESS ASSESSMENT
+Apart from our previously described re-evaluation process, we have also proceeded to an additional evaluation process in order to check whether the apps meet the legal data protection requirements specified in the GDPR’s provisions. Inevitably, the analysis of some requirements defined in the regulation would require access to each vendor’s infrastructure in order to be checked for compliance (e.g., the requirement for Data Protection Impact Assessment (Art 35)) – a precondition rather unrealistic in our case. In addition, the technical implementation of some GDPR’s requirements is not yet crystal-clear in all of its technical details (e.g., the Right to be Forgotten (Art. 17)). Hence, only those requirements that can be efficiently and unambiguously checked against each app’s implementation have been chosen to be evaluated in this study.
+
+In this section, we do not include results for non-functional security requirements of GDPR, such as secure transmission or/and strong authentication, for which the reader might refer to Sections 4 and 4 of this article. Additionally, while we have repeatedly checked for the existence of a
+9398
+VOLUME 6, 2018
+# A. Papageorgiou et al.: Security and Privacy Analysis of Mobile Health Applications
+link to a privacy policy on Google Play, in this section and according to GDPR requirements we will thoroughly check if this section, with the required content, exists while the user navigates inside the app. Note that many of our checks are limited to the existence of the minimum elements to satisfy the GDPR requirements, such as the existence of a functional element that provides information regarding the collection of the user’s personal data up front his registration.
+
+Below, we present our results for the 19 apps under review that are currently available on-line. For the sake of clarity, we present our findings divided into two categories, namely “functional requirements” and “non-functional requirements” of the GDPR.
+
+# 1) FUNCTIONAL REQUIREMENTS
+- Consent (I): 11 out of the 19 apps provide, at least, an introductory information regarding their privacy policy or/and term of use before registration.
+
+- Consent (II): Only one of the apps is found to ask for user consent up front each time the user provides additional information.
+
+- Consent (III): None of the apps require users to answer specific questions, in electronic form, about their willingness to participate.
+
+- Right to withdraw consent: 7 out of the 19 apps provide users with an option to withdraw their consent, and thus allow for the erasure of any previously consented information. Nevertheless, in 1 out of the 7 apps providing this option, the deletion functionality doesn’t seem to work. Three of 12 apps state that user data can be deleted only by sending appropriate email requests to the app’s vendor. Yet, two out of 12 apps offer users the possibility to delete their records individually, one at a time, and not all at once. Furthermore, one app refused to delete users data with the excuse that: “Sometimes we were asked about deleting all records, to start a new series of measurement. But there is no reason to do this. The time range can be changed to view only the wanted part of all records. So old readings can stay.” We let the readers judge this response by themselves.
+
+- Right to data portability: 7 out of the 19 apps provide users with a mechanism to send, upon request, their personal data to another entity in a machine readable format (e.g., XML or CSV format), 2 of these 7 apps offer this function via a web-based platform. As for the rest of the 12 apps, one that does not provide such portability mechanism, advertises this functionality in its paid version, while another sends the data only as text in the body of an email. Another app offers the data only after a request by email, while another enables users to share their dashboards with their preferred users, but not the actual data. Finally, one app provides a sharing.
+
+VOLUME 6, 2018
+9399
+# A. Papageorgiou et al.: Security and Privacy Analysis of Mobile Health Applications
+# 2) NON-FUNCTIONAL REQUIREMENTS
+- Data Protection Officer: In terms of the Data Protection Officer requirement, all apps fail to provide any contact details for such a role. Nevertheless, 12 out of the 19 apps offer a point of contact for support purposes.
+
+- Profiling and marketing: Information on collection and processing of user data for profiling purposes was provided by 11 out of the 19 apps. This profiling information is available, in most cases, in the apps’ privacy policy section.
+
+- Transfer to third countries: 8 out of the 19 apps notify their users in advance, even before their registration, that they are sharing data with third parties. Half of these 8 apps implements this notification in a functional manner (e.g., a checkbox or a pop up window), while the other half notifies their users by including a relevant statement into the privacy policy or “terms of use” sections.
+
+# V. CONCLUSION
+Mobile health (m-Health) apps have gained momentum and currently they are widely spread among cellphone users. Despite the warm welcome from users, m-health apps have raised concern regarding their management of private information. Indeed, m-health apps have to deal with health-related data, which are considered very sensitive and are highly protected by national and international regulations such as the GDPR.
+
+With the aim to assess the current state of practice in m-health apps regarding the protection of health-related data, we have analyzed a representative set of apps, for more than a year, and we have studied the diverse facets of their security and privacy policies and practices. Our study highlights numerous major and minor shortcomings of m-health applications. A large portion of the assessed apps has been found to jeopardize user’s privacy and security by violating sensitive data protection regulations set to prevent the inappropriate and uncontrollable usage, processing and disclosure of health data to third parties. According to our analysis, a relevant number of popular m-health apps could violate users’ privacy by revealing sensitive information such as health conditions, medical symptoms, photos, location, e-mails and passwords.

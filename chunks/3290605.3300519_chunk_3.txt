@@ -1,0 +1,78 @@
+For participants who reported security issues (n = 43), we explored the long-term reaction to experiencing such issues by the different stakeholders. Although it may be expected that awareness and attitude towards security improves right after experiencing an issue, our data suggests that this effect is longstanding. Figure 4 shows that 79% of participants indicated that experiencing a security issue increased their awareness and concern for security over the long-term. Participants also reported the same effect on other developers in their teams (77%), team leaders (88%), upper management (74%), and users (49%). This implies that experiencing a real threat can help avoid the optimism bias1  and can lead to improved attitudes and behaviours towards security.
+
+Forty-four percent of participants indicated that company security issue(s) did not change their users’ awareness and concern for security. “Users” had the highest percentage of “no change” across the different stakeholders, as shown in Figure 4. This is reasonable given that users are not typically aware of such software security issues unless, e.g., a security breach is publicized or users directly experience the effects.
+
+# We will now discuss our results arranged by research question.
+
+# RQ1: how software security fits in the SDLC.
+
+The survey had several questions exploring development teams’ efforts and strategies towards software security.
+
+# Efforts Towards Security.
+
+Participants reported the percentage of effort directed towards security out of the overall development lifecycle effort. They also reported the percentage of effort out of all security efforts as a percentage for different development stages (design, implementation, developer testing, code analysis, code review, and post-development testing). The total for all stages equaled 100%.
+
+As shown in Figure 5, participants indicated that, on average, 19% (Md = 10%) of their teams’ overall effort in the development lifecycle relates specifically to security tasks. Six participants (5%) indicated that their teams do not spend any effort on security.
+
+We used Friedman’s ANOVA to determine whether the distribution of security efforts significantly differs across the different SDLC stages. As Figure 5 shows, security effort in the implementation stage was significantly higher than in the code analysis, developer testing, code review, and post-development testing stages. Security effort in the design stage was also significantly higher than in the code analysis and code review stages. It is unclear why participants focused their efforts at these two stages; it could be because they try to get it right from the beginning, thus reducing the effort needed during later stages, or it could be because later stages are mainly functionality-oriented.
+
+1Optimism bias is the belief that “misfortune will not strike me”.
+
+Paper 289
+Page 5
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+(Figure shows stages that significantly differ in efforts towards security. ∗∗ χ F 2(5) = 78, n = 123. ∗ : p < , ∗∗ : p < )
+# Strategies for handling software security (n = 82)
+# Strategies to Address Software Security.
+
+Participants rated their agreement with relying on 16 potential software security strategies on a 5-point Likert scale.
+
+As shown in Figure 6, most participants indicated that when fixing a security issue, they rely on support from colleagues who faced similar issues. For security advice, the majority of participants reported relying on those with more experience. More than half also indicated relying on their own personally-devised security checklists to handle security, or on company-wide strategies, e.g., automated checks.
+
+We performed factor analysis to integrate these 16 strategies to a smaller set and found that 12 strategies could be grouped into two factors; four strategies did not conform to any factor (results in Table 2). We named the first resultant factor: company-wide engagement, as it describes how developers rely on their companies’ strategies and support, e.g., relying on the more experienced team members (conforming with previous research ), or using custom tools that handle software security. This factor encompassed nine strategies. The second factor incorporated three strategies and is named: personal strategies, where developers devised their own software security strategies, e.g., having their own mental checklist of issues to consider.
+
+Paper 289
+Page 6
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+# personal strategies
+# financial rewards[M6]
+# experiencing breach[M20]
+# company-wide
+# engagement
+# relevant breach[M19]
+# career growth[M5]
+# RQ2: Security Motivators and Deterrents
+To explore what motivates developers to address software security, we presented participants with a list of 21 potential motivators, as well as 29 statements that could explain reasons for deferring security. Participants ranked their agreement with each statement on a 5-point Likert scale.
+
+# Software Security Motivators
+We asked participants “I care about security because...” and presented potential motivations for software security. In addition to the Likert scale, this question had a “not applicable" option in case a motivation did not apply to a participant’s workplace.
+
+As shown in Figure 8, the top six reasons to care about software security are self-driven motivations . Participants are motivated by the challenge or by their own values (e.g., to protect their users). Receiving financial rewards (an external motivation) was reportedly least motivating.
+
+We used factor analysis to combine the 21 motivators into a smaller set (Table 3). Our factor analysis grouped 15 of them into four factors; six motivators did not conform to any particular factor. We named the factors: workplace environment, identifying with security importance, rewards, and perceived negative consequences. Out of the four factors, rewards is the only one representing external motivations . For further analyses, we created a variable for each factor by averaging participants’ responses to all motivators belonging to the factor.
+
+We found statistically significant differences between the four software security motivators (χ F 2(3) = 85, p < ). Pairwise comparisons using Wilcoxon tests with Bonferroni correction were used to follow up this finding. We found that rewards was the least significant motivator compared to workplace environment (T = 1, p < , r = 0), identifying with security importance (T = 1, p < , r = 0), and perceived negative consequences (T = −0, p < , r = −0). In addition, it appears that identifying with security importance is the most motivating factor; it can motivate developers more than perceived negative consequences (T = 0, p < , r = 0) and workplace environment (T = −0, p < , r = −0).
+
+Participants’ software security motivation appears to match their general work motivation pattern. Their top security motivators are all intrinsic and internal motivations.
+
+# Deterrents to Software Security
+Participants generally opposed statements that imply deferring or ignoring security, as suggested by the overwhelmingly red and orange chart in Figure 10. The biggest deterrent to software security was the lack of a formal plan or process, followed by participants being unaware of security code-analysis tools.
+
+We could only include data from participants who answered all questions in each factor.
+
+Paper 289
+Page 7
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+Our factor analysis combined 18 of the 29 software deterrents into four factors; 11 deterrents did not correspond to any particular factor (Table 4). Our first two factors are security is irrelevant and competing priorities & no plan. These describe how a lack of security can stem from systemic causes within the company or team, such as whether there are consequences for the lack of security, whether security is a priority, and if specific security plans exist. The other two factors, unequipped for security and disillusioned, describe security deterrents on a more personal level, e.g., a lack of support, knowledge, and awareness can deter developers from addressing security, as well as being in a workplace environment that thwarts, rather than nurtures, security efforts.
+
+Considering the four factors, as Figure 11 shows, the two most frequent deterrents to software security were (1) being unequipped for security because of a perceived lack of security.
+
+Paper 289
+Page 8
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+# RQ3: EFFECT OF DIFFERENT CHARACTERISTICS ON SOFTWARE SECURITY
+In this section, we explore the impact of three main characteristics on software security overall: (1) the development methodology used by participants’ teams, (2) the size of the company where participants work, and (3) whether they perform TDD. Specifically, we explore whether these characteristics influence security efforts, software security strategies, security motivators, or deterrents to software security. We focus on these three characteristics because they were considered as potential influencers on software security in previous literature (e.g., ) or in our previous discussions with software developers and security experts.

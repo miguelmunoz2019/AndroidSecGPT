@@ -1,0 +1,61 @@
+# Are Free Android App Security Analysis Tools Effective in Detecting Known Vulnerabilities?
+Venkatesh-Prasad Ranganath
+Joydeep Mitra
+Kansas State University, USA
+{rvprasad,joydeep}@k-state.edu
+August 6, 2019
+# Abstract
+Increasing interest in securing the Android ecosystem has spawned numerous efforts to assist app developers in building secure apps. These efforts have resulted in tools and techniques capable of detecting vulnerabilities (and malicious behaviors) in apps. However, there has been no evaluation of the effectiveness of these tools and techniques in detecting known vulnerabilities. The absence of such evaluations puts app developers at a disadvantage when choosing security analysis tools to secure their apps.
+
+In this regard, we evaluated the effectiveness of vulnerability detection tools for Android apps. We reviewed 64 tools and empirically evaluated 14 vulnerability detection tools (incidentally along with five malicious behavior detection tools) against 42 known unique vulnerabilities captured by Ghera benchmarks, which are composed of both vulnerable and secure apps. Of the 24 observations from the evaluation, the main observation is existing vulnerability detection tools for Android apps are very limited in their ability to detect known vulnerabilities — all of the evaluated tools together could only detect 30 of the 42 known unique vulnerabilities.
+
+More effort is required if security analysis tools are to help developers build secure apps. We hope the observations from this evaluation will help app developers choose appropriate security analysis tools and persuade tool developers and researchers to identify and address limitations in their tools and techniques. We also hope this evaluation will catalyze or spark a conversation in the software engineering and security communities to require a more rigorous and explicit evaluation of security analysis tools and techniques.
+
+# 1 Introduction
+# 1 Motivation
+Mobile devices have become an integral part of living in present-day society. They have access to a vast amount of private and sensitive data about their users and, consequently, enable various services for their users such as banking, social networking, and even two-step authentication. Hence, securing mobile devices and apps that run on them is paramount.
+
+With more than 2 billion Android devices in the world, securing Android devices, platform, and apps is crucial [Sufatrio et al., 2015]. Companies such as Google and Samsung with access to a large pool of resources are well poised to tackle device and platform security. However, app stores and app developers share the task of securing Android apps. While app stores focus on keeping malicious apps out of the ecosystem, malicious apps can enter the ecosystem e.g., app installation from untrusted sources, inability to detect malicious behavior in apps, access to malicious websites. Hence, there is a need for app developers to secure their apps.
+
+When developing apps, developers juggle with multiple aspects including app security. Most app development teams often cannot tend equally well to every aspect as they are often strapped for resources.
+
+This is a pre-print of an article published in Empirical Software Engineering. The final authenticated version is available online at: https://doi.org/10/s10664-019-09749-y.
+
+there is an acute need for automatic tools and techniques that can detect vulnerabilities in apps and, when possible, suggest fixes for identified vulnerabilities.
+
+While the software development community has recently realized the importance of security, developer awareness about how security issues transpire and how to avoid them still lacks [Green and Smith, 2016]. Hence, vulnerability detection tools need to be applicable off the shelf with no or minimal configuration.
+
+In this context, numerous efforts have proposed techniques and developed tools to detect different vulnerabilities (and malicious behavior) in Android apps. Given the number of proposed techniques and available tools, there have been recent efforts to assess the capabilities of these tools and techniques [Reaves et al., 2016, Sadeghi et al., 2017, Pauck et al., 2018]. However, these assessments are subject to one or more of the following limiting factors:
+1. Consider techniques only as reported in the literature, i.e., without executing associated tools.
+
+2. Exercise a small number of tools.
+
+3. Consider only academic tools.
+
+4. Consider only tools that employ specific kind of underlying techniques, e.g., program analysis.
+
+5. Rely on technique-specific microbenchmarks, e.g., benchmarks targeting the use of taint-flow analysis to detect information leaks.
+
+6. Rely on benchmarks whose representativeness has not been established, i.e., do the benchmarks capture vulnerabilities as they occur in real-world apps?
+7. Use random real-world apps that are not guaranteed to be vulnerable.
+
+The evaluations performed in efforts that propose new tools and techniques also suffer from such limitations. Specifically, such evaluations focus on proving the effectiveness of proposed tools and techniques in detecting specific vulnerabilities. While such a focus is necessary, it is not sufficient as the effectiveness of new tools and techniques in detecting previously known vulnerabilities is unknown. Hence, the results are limited in their ability to help app developers choose appropriate tools and techniques.
+
+In short, to the best of our knowledge, there has been no evaluation of the effectiveness of Android app vulnerability detection tools to detect known vulnerabilities without being limited by any of the above factors.
+
+In addition to the growing dependence on mobile apps, the prevalence of the Android platform, the importance of securing mobile apps, and the need for automatic easy-to-use off-the-shelf tools to build secure mobile apps, here are few more compelling reasons to evaluate the effectiveness of tools in detecting known vulnerabilities in Android apps.
+
+1. To develop secure apps, app developers need to choose and use tools that are best equipped to detect the class of vulnerabilities that they believe (based on their intimate knowledge of their apps) will likely plague their apps, e.g., based on the APIs used in their apps. To make good choices, app developers need information about the effectiveness of tools in detecting various classes of vulnerabilities. Information about other aspects of tools such as performance, usability, and complexity can also be helpful in such decisions.
+
+2. With the information that a tool cannot detect a specific class of vulnerabilities, app developers can either choose to use a combination of tools to cover all or most of the vulnerabilities of interest or incorporate extra measures in their development process to help weed out vulnerabilities that cannot be detected by the chosen set of tools.
+
+3. App developers want to detect and prevent known vulnerabilities in their apps as the vulnerabilities, their impact, and their fixes are known a priori.
+
+4. An evaluation of effectiveness will expose limitations/gaps in the current set of tools and techniques. This information can aid tool developers to improve their tools. This information can help researchers direct their efforts to identify the cause of these limitations and either explore ways to address the limitations or explore alternative approaches to prevent similar vulnerabilities, e.g., by extending platform capabilities.
+
+In terms of observations from tool evaluations, due to the sixth limiting factor mentioned above, observations from tool evaluations cannot be generalized to real-world apps unless the representativeness of subjects/benchmarks used in tool evaluations has been measured, i.e., do the subjects/benchmarks capture vulnerabilities as they occur in real-world apps? Despite the existence of numerous Android security analysis tools and techniques, there has been no evaluation of the representativeness of the benchmarks used in evaluating these tools, i.e., do the benchmarks capture vulnerabilities as they occur in real-world apps?
+# 1 Contributions
+Motivated by the above observations, we experimented to evaluate the effectiveness of vulnerability detection tools for Android apps. Incidentally, due to the inherent nature of the benchmarks, we also evaluated a few malicious behavior detection tools. We considered 64 security analysis tools and empirically evaluated 19 of them. We used benchmarks from Ghera repository [Mitra and Ranganath, 2017] as they captured 42 known vulnerabilities and were known to be tool/technique agnostic, authentic, feature specific, minimal, version specific, comprehensive, and dual i.e., contain both vulnerable and malicious apps.
+
+To ensure the observations from the above tools evaluation can be generalized to real-world apps, we assessed if Ghera benchmarks were representative of real-world apps, i.e., do Ghera benchmarks capture vulnerabilities as they occur in real-world apps?
+In this paper, we describe these evaluations, report about the representativeness of Ghera benchmarks, and make 24 observations concerning the effectiveness of Android app security analysis tools.

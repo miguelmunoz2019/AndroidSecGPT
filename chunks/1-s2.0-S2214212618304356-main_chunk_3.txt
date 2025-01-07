@@ -1,0 +1,60 @@
+- Rule 3: The name is the combination of letters and special numbers such as /a123 and /bb123.
+
+For example, c/a/a/a/c is actually renamed from uk/co/senab/, photoview/c in Senab photoview library, and com/ss refers to com/aviary in Aviary library (Senab photoview is a third-party).
+
+# Y. He, X. Yang and B. Hu et al. / Journal of Information Security and Applications 46 (2019) 259–270
+# Decompile APK
+# Does this app have rename confusion?
+# Whitelist-based Detection
+First, we decompile the App code into smali code and rank all the operands in the user function as attributes of the nodes in order to generate the function call graph of the application. We note that in order to execute the App correctly, obfuscation tools should not change the basic operation code names. Then, we represent the function call graph with motifs subgraph structure stored as a text file. Finally, our detection tool can compare the attributes of nodes and the calling relationships of nodes. If the similarity between the App’s file and a third-party library’s file in the database is high, we can decide that the third-party library is included in the App.
+
+# List of Third-party Lib
+We build the library whitelist in three ways. Some libraries are selected from the existing papers , and some from popular source code hosting website such as GitHub. Most libraries are identified by LibRadar  and LibD  from tens of thousands of Apps. Table 6 shows a part of the whitelist. We match the names of the decompiled App’s directories with the whitelist. For example, if an App has a directory named org/mixare, we mark this App as using library org/mixare (mix Augmented Reality Engine library), which is a free open source augmented reality browser and available for Android and for iPhone3GS and above.
+
+# 3. Whitelist-based detection
+We analyze 221 operation codes commonly used in smali codes. Table 7 shows the attribute values of some of the operation codes. Finally, according to the invoke keyword in the smali file, the calling relationship between function nodes is determined. For example, Fig. 9 is an onCreate method of the smali file, which is a node. This method has eight opcodes: invoke-super, const, invoke-virtual, move-result-object, return-void, and so on. Based on the correspondence between the opcodes and attribute values in Table VII, this node attribute is ICICIVNR. There are three opcodes for the invoke family in the onCreate method, so there are three edges from the node. The function call graph for this method is shown in Fig. 10.
+
+# 3. Motifs-based detection
+We use motifs-based detection to identify third-party libraries with obfuscation. The overall framework of this method is illustrated in Fig. 8.
+
+# APK Call Graph
+It is shown that all graphs can be represented by the subgraph structure of motifs graphs. Milo et al.  has shown that the network graph can also use motifs subgraph structural patterns to represent the structural and functional characteristics of graphs. There are thirteen kinds of subgraph structures of motifs graph. However, ten of the motifs are rarely or never occurred in the software, so that we choose three structures with the highest frequency to represent the function call graph, which is shown in Fig. 11. Finally, we stored each function call as a text file, where each row in the file represents a subgraph structure of the motifs, and the contents of each row are the nodes in the subgraph, the node attributes, and the invocation relationships between the nodes.
+
+# 3. Calculating similarity
+The similarity between a potential third-party library in an App and a library in our whitelist library database can be determined by comparing the similarity between the two function call graphs. When judging the similarity between the two graphs, we compare the two structure subgraphs of motifs by calculating the number of similar subgraphs. Specifically, we compare how many rows are similar between the two text files, and then calculate the similarity of the function call graph using a similarity formula defined in the following:
+Similarity = Len(S) / Len(Lib)
+Lib represents all subgraph structures in a third-party library, and S represents the same subgraph structure between a potential third-party library and a real third-party library. Len(Lib) is the number of all subgraph structures in a third-party library, and Len(S) is the number of the similar subgraph structure between a potential third-party library and a real third-party library.
+
+# 3. Source and sink of privacy leakage
+In the Android system, different types of private information are obtained through different APIs. We decompile Apps from the Android App markets and search system APIs that can read private information. We treat these APIs as a source of privacy flows. Privacy data may leave the Android device through the network, SMS, Bluetooth, etc. Among them, the network is the most common leakage port, so we only consider network interface APIs as the sink. Our tool hooks functions of the source and sink, monitoring the invocation of privacy reading and leaking from mobile devices.
+
+# 3. Analyze the caller
+# 3. Extracting call chains
+The StackTraceElement class is supported in the Java.lang package and can be used to get call stack information for a method. By traversing through the StackTraceElement array, we can get the inter-method invocation procedure, and then get the current method and its caller’s method name, and so on. When reaching the privacy source and sink functions during the execution of an App, the App will trigger hook function in our tool to obtain the call stack through getStackTrace method. We treat the host App and third-party libraries as different components (or packages) to analyze the call chain.
+
+The call chain can accurately reflect the invocation relationship between different components in an App. Only knowing the direct caller of a sensitive API is not enough. For example, component A can invoke another component B, and B then invokes C, which directly obtains privacy data. To make a correct analysis, we need to know the entire call chain A->B->C, instead of C alone. In order to make the call chain more clear and concise, we make some restrictions on the call chain log. Method invocation within the same module will not be recorded in the call chain, for example, if a method in Package A invokes another method in the same package, which in turns invokes a method in Package B, the call chain will be A->B.
+
+For each function call, we use the getClassName method in StackTraceElement to get the package name from the class information. Then, we compare the package name of the current function call to that of the previous call. If they are the same, this function call is not recorded in the call chain; otherwise, we store it in the call chain log.
+
+# 3. Inferring the caller
+According to the construction rules of the call chain, we analyze the position of the caller of each privacy-sensitive API in the call chain and obtain the caller’s information. Android system libraries and standard develop kits are considered secure and trustworthy. Therefore, in our tool, we match the call chain only with the whitelist of third-party libraries, and Android system libraries and SDKs are excluded in the privacy log.
+
+# 3. Risk assessment of privacy leakage
+Based on privacy log, which reflects the third-party libraries’ privacy read and leakage path, we develop the risk evaluation criteria for third-party library privacy leakage. We classify the privacy risks of the third-party library and use three levels 0, 1, 2 to represent the degrees of risk, which is shown in Table 8.
+
+# 4. Evaluation
+# 4. Experiment design
+We get root permission for Nexus 4, install Xposed and our tool, and then run our tool as an App. The configuration of the mobile phone for the experiment is shown in Table 9.
+
+We choose the AnZhi App market as a representative to analyze the privacy leakage behaviors of third-party libraries in Apps. According to the functional categories, we download top-ranking Apps and manually test 150 Apps. The App categories are listed in Table 10.
+
+# Monitor
+Click manually on the UI of the App under test
+# Xposed privacy leakage risk analysis tool
+Does this app have already run 5 minutes?
+# Stop the App
+Privacy leakage risk assessment criteria.
+
+The test phone configuration.
+
+Test App set.

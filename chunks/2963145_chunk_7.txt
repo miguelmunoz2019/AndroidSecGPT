@@ -1,0 +1,48 @@
+However, the convenience of WebView is achieved at the cost of compromising the general security principles in web browsers, such as isolation of JavaScript (JS) runtime, same origin policy (SOP), etc. Consequently, numerous security problems have been discovered. WebView provides the addJavascriptInterface method as a attempt to isolate Java and JS contexts, allowing JS to access selected Java classes and their public methods of the parent app. However, this feature also creates holes in both the sandbox for Android app and the browser sandbox for webapp, as demonstrated in Luo et al. . For example, lacking SOP, malicious JS from an untrusted web site can easily abuse this feature to attack the parent app and access sensitive resources. Since Android 4, instead of exposing every public method of selected Java classes, only public methods annotated with JavascriptInterface can be accessed from JS context. However, this only works if developers voluntarily enforce this feature and manually annotate their source code.
+
+In addition to attacks through the Java-JS interface, researchers have identified different vulnerabilities in Android WebView feature. Fahl et al.  details an SSL
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 6. ART
+Starting with Android 5, Android replaced Dalvik VM with a new runtime environment called ART [Google Inc. 2016c], which uses ahead-of-time (AOT) compilation to compile Dalvik bytecode to native code during app installation. Therefore, in ART, only part of the app code is executed in JIT mode (e.g., dynamic loading) while the majority runs in native mode. Developing a new compiler to translate Dalvik bytecode to machine code is a bug-prone process; Kyle et al.  and Anestis [Bechtsoudis 2015] were able to fuzz ART to find a number of bugs. Some of the bugs that happen at the compiling phase cause the compiler to crash, while other bugs are triggered at runtime when the generated native code is executed, among which bugs like arbitrary memory read/write, null pointer dereference, etc., are more serious. In addition, ART also exposes a new attack surface by allowing attackers to manipulate the compiled native code. For example, the native code related to boot image provides attackers with a large number of gadgets to perform Return Oriented Programming (ROP) attacks [Corelan Team 2014]. Also, Paul [Sabanal 2015] successfully developed user mode rootkits by taking advantage of ART’s mechanisms to replace framework and application code.
+
+# 7. DEVICE FRAGMENTATION
+Device fragmentation is a unique issue in the Android ecosystem. Software-wise, Google has released 147 builds of Android images spanning from v1 to v6 through February 2016 [Google Inc. 2016d]. Hardware-wise, the number of Android devices released by OEMs, for example, Samsung and HTC, has exceeded 24,093 [OpenSignal Inc. 2015]. Due to the complexity in deploying Android updates to various devices, compared with the stock AOSP image, security guarantees for end-users tend to be less consistent or even weakened.
+
+# 7. Security Implications of OEM Customization
+To differentiate from other OEM vendors, each OEM customizes its own Android image based on the AOSP. Typical customizations include (1) hardware support (e.g., radio daemon for other modem chips); (2) system UI redesign (e.g., TouchWiz UI from Samsung); and (3) custom apps installation (e.g., S-Health in Samsung Galaxy S4).
+
+Unfortunately, these customizations often weaken existing security mechanisms at both the app layer and the OS layer. At the app layer, OEM-customized or preloaded apps may introduce vulnerabilities that leak users’ private information or enable permission escalation attacks [Wu et al. 2013; Grace et al. 2012]. It is also possible that an AOSP app is removed to fit a new device model by the OEM while references to the app still remain inside the OS. Aafer et al.  shows how to exploit this customization to bypass the Android permission model. OEMs might also publish their SDKs to build device/brand-specific apps; for example, Samsung publishes a customized KNOX SDK that opens access to critical APIs such as TrustZone. It is unclear whether such
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 38:19
+# Table V. Exploits with symlink Attack Targeting OEM Devices
+For Example, TacoRoot Exploits a World-Writable Recovery Log File /data/data/recovery/log. Attacker Can symlink it to /data/local.prop, Reboot to Recovery-Mode and Write a New Log to Set ro.kernel.qemu=1, which Yields the Root Privilege
+For system update, (1) Google first releases the base update for AOSP; (2) OEM vendors customize Google’s update for their devices; (3) with the update from OEM vendors, carriers again test it for all their carrier-specific devices. Cunningham  summarizes system update delay, which is presented in (b). For app update, (1) developers push the update to Google Play and OEM app stores (©), or other app stores (©), and then app stores will distribute the new version to end-users and install it automatically. (2) Alternatively, developers can perform in-app updating, but it requires user’s confirmation to download and install updates (©).
+
+Customized SDKs have security flaws. At the OS layer, OEM vendors often make mistakes in assigning proper privileges to system or device-related files, allowing attackers to bypass the Android permission model through low-level system calls [Zhou et al. 2014a] or to launch system privilege escalation attacks via crafted symbolic link (sym-link), as summarized in Table V.
+
+# 7. Security Update
+System and app updates play a key role in maintaining the security of Android devices. However, the complicated and lengthy updating process exposes end-users to critical security threats that should have been prevented by prompt update procedures.
+
+# 7. System Update
+Currently, the process for updating the Android system involves three independent entities—Google, OEMs, and carriers—in delivering new patches to end-users. For this reason, the current update procedure often takes more than three months, as shown in Figure 3. This lengthy procedure makes users’ devices vulnerable to known and preventable attacks. Another unexpected Pileup attack presented in Xing et al.  shows a way to exploit the vulnerabilities in the Android system update process: a malicious app can strategically declare a set of privileges and attributes on a low-version OS and wait until it is upgraded to escalate its privileges on the new OS.
+
+# 7. App Update
+To distribute new app updates, developers either push new versions to the app stores, or build an in-app updating function (see Figure 3). When updating an app, a common security issue for © and © lies in where the new download APK file is stored. If users or developers choose to store it in external storage, such as SD Cards, a malicious app with write permission of SD Cards can easily tamper with the.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+M. Xu et al.
+
+downloaded APK file and inject malicious code into the update [Tao 2014]. Similar to system update, app update may also suffer from delays, particularly when distributed via third party app stores. To reduce the risks in app update, a timely update from Google Play or OEM app stores is recommended and the updated APK file is preferably kept in the internal storage.
+
+# 7. New Model for Security Updates
+The update procedure could be redesigned to eliminate the unnecessary attack window due to a lengthy security update. For example, one immediate action to take is to use separate channels to deliver security updates and functional updates (i.e., redesign the update metaprocess). Unlike functional upgrades, security patches are often self-contained and can be pushed directly from Google instead of passing through OEM vendors and carriers. In practice, Google is already separating out core functionalities from AOSP such as WebViews to allow them to be updated without vendor involvement [Toombs 2014]. In terms of update mechanisms, adopting hot-patching and dynamic/live update schemes used in server environments like ksplice [Arnold and Kaashoek 2009] or kGraft [SUSE 2016] will help minimize the latency period of known attacks for end-users. We acknowledge that Google could not possibly manage or be responsible for security updates for all the thousands of device models that exist, hence, the search for a new model that caters to the fragmentation of the Android ecosystem remains an open problem.
+
+# 8. PRIVACY LEAK AND MALWARE DETECTIONS
+Privacy disclosure and malware detections are essential components to enhance security of the Android ecosystem. In this section, we survey recent researches in these areas, analyze their limitations, and identify remaining open problems.
+
+# 8. Detecting Privacy Disclosure
+Many researches shown in Table VI have reported the pervasiveness of privacy disclosures2 in Android apps. We categorize current analysis approaches into three types: static, dynamic, and hybrid dataflow analysis.

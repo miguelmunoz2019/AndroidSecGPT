@@ -1,0 +1,60 @@
+As of August 2020, starting with Android 7.x we see that 77% of devices with fingerprint sensors have a secure lockscreen enabled, while only 54% of devices without fingerprints have a secure lockscreen
+As of Android 10, the tiered authentication model splits modalities into three tiers.
+
+# 1. Primary Authentication
+Modalities are restricted to knowledge-factors and by default include password, PIN, and pattern Primary authentication provides access to all functions on the phone. It is well known that the security/usability-balance of these variants is different: Complex passwords have the highest entropy but worst usability, while PINs and patterns are a middle balance but may suffer, e.g., from smudge ([T.P2]–[T.P3]) or shoulder surfing attacks ([T.P1]). However, a knowledge-factor is still considered a trust anchor for device security and therefore the only one able to unlock a device from a previously fully locked state (e.g., from being powered off).
+
+# 2. Secondary Authentication
+Modalities are biometrics—which offer easier, but potentially less secure (than Primary Authentication), access into a user’s device Secondary modalities are themselves split into sub-tiers based on how secure they are, as measured along two axes:
+- Spoofability as measured by the Spoof Acceptance Rate (SAR) of the modality . Accounting for an explicit attacker in the threat model on the level of [T.P2]–[T.P3] helps reduce the potential for insecure unlock methods.
+
+- Security of the biometric pipeline, where a biometric pipeline is considered secure if neither platform or kernel compromise confers the ability to read raw biometric data or inject data into the biometric pipeline to influence an authentication decision.
+
+These axes are used to categorize secondary authentication modalities into three sub-tiers, where each sub-tier has constraints applied in proportion to their level of security :
+- Class 3 (formerly “strong”): SAR&lt;7% and secure pipeline
+- Class 2 (formerly “weak”): 7%&lt;SAR&lt;20% and secure pipeline
+- Class 1 (formerly “convenience”): SAR&gt;20% or insecure pipeline
+All classes are required to have a (naïve/random) false acceptance rate of at most 1/50,000 and a false rejection rate of less than 10%. Biometric modalities not meeting these minimum requirements cannot be used as Android unlock methods. Secondary modalities are also prevented from performing some actions—for example, they cannot decrypt file-based or full-disk encrypted user data partitions (such as on first boot) and are required to fallback to primary authentication once every 72 (Class 3) or 24 (Class 1 and 2) hours. Only Class 3 biometrics can unlock Keymaster auth-bound keys, and only Class 3 and 2 can be used for in-app authentication.
+
+10 These numbers are from internal analysis that has not yet been formally published.
+
+11 We explicitly refer to patterns connecting multiple dots in a matrix, not the whole-screen swipe-only lockscreen interaction that does not offer any security.
+
+12 While the entropy of short passwords or PINs may be comparable to or even lower than for good biometric modalities and spoofability based on previous recordings is a potential issue for both, knowledge factors used as primary authentication offer two specific advantages: (a) Knowledge factors can be changed either (semi-) regularly or after a compromise has become known, but biometrics can typically not—hence biometric identification is not generally considered a secret; (b) knowledge factors support trivial, bit-for-bit comparison in simple code and hardware (cf. use of TRH as described in Section 4) instead of complex machine learning methods for state-of-the-art biometric sensors with liveness detection—this simplicity leaves less room for implementation errors and other attack surface. Additionally, this perfect recall of knowledge factors allows cryptographic key material, e.g., for file encryption, to be directly entangled respectively derived from them.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+Android 10 introduced support for implicit biometric modalities in BiometricPrompt for modalities that do not require explicit interaction, for example face recognition. Android 11 further introduces new features such as allowing developers to specify the authentication types accepted by their apps and thus the preferred level of security.
+
+- Tertiary Authentication modalities are alternate modalities such as unlocking when paired with a trusted Bluetooth device, or unlocking at trusted locations; they are also referred to as environmental authentication. Tertiary modalities are subject to all the constraints of secondary modalities. Additionally, like the weaker secondary modalities, tertiary modalities are also restricted from granting access to Keymaster auth-bound keys (such as those required for payments) and also require a fallback to primary authentication after any 4-hour idle period. Android 10 switched tertiary authentication from an active unlock mechanism into an extending unlock mechanism that can only keep a device unlocked for a longer duration (up to 4 hours) but no longer unlock it once it has been locked.
+
+The Android lockscreen is currently implemented by Android system components above the kernel, specifically Keyguard and the respective unlock methods (some of which may be OEM specific). User knowledge factors of secure lockscreens are passed on to Gatekeeper/Weaver (explained below) both for matching them with stored templates and deriving keys for storage encryption. One implication is that a kernel compromise could lead to bypassing the lockscreen — but only after the user has logged in for the first time after reboot.
+
+# 4 Authenticating to Third Parties: Android Devices as a Second Factor
+As of April 2019, lockscreen authentication on Android 7+ can now be used for FIDO2/WebAuthn  authentication to web pages, additionally making Android phones second authentication factors for desktop browsers through implementing the Client to Authenticator Protocol . While this support is currently implemented in Google Play Services , the intention is to include support directly in AOSP in the future when standards have sufficiently settled down to become stable for the release cycle of multiple Android releases.
+
+# 4 Authenticating to Third Parties: Identity Credential
+While the lockscreen is the primary means for user-to-device authentication and various methods support device-to-device authentication (both between clients and client/server authentication such as through WebAuthn), identifying the device owner to other parties has not been in focus so far. Through the release of a JetPack library, apps can make use of a new “Identity Credential” subsystem to support privacy-first identification  (and, to a certain degree, authentication). One example are upcoming third-party apps to support mobile driving licenses according to the ISO 18013-5 standard . The first version of this subsystem targets in-person presentation of credentials, and identification to automated verification systems is subject to future work.
+
+Android 11 includes the Identity Credential subsystem in the form of a new Hardware Abstraction Layer (HAL), a new system daemon, and API support in AOSP . If the hardware supports direct connections between the NFC controller and tamper-resistant dedicated hardware, then credentials will be able to be marked for “Direct Access” to be available even when the main application processor is no longer powered (e.g., in a low-battery case).
+
+13 Available at https://developer.android.com/jetpack/androidx/releases/security.
+
+14 See the HAL definition at https://android-review.googlesource.com/c/platform/hardware/interfaces/+/1151485/30/identity/1/IIdentityCredentialStore.hal.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# 4 Isolation and Containment
+One of the most important parts of enforcing the security model is to enforce it at runtime against potentially malicious code already running on the device. The Linux kernel provides much of the foundation and structure upon which Android’s security model is based. Process isolation provides the fundamental security primitive for sandboxing. With very few exceptions, the process boundary is where security decisions are made and enforced—Android intentionally does not rely on in-process compartmentalization such as the Java security model. The security boundary of a process is comprised of the process boundary and its entry points and implements rule © (apps as security principals) and rule © 2 (open ecosystem): An app does not have to be vetted or pre-processed to run within the sandbox. Strengthening this boundary can be achieved by a number of means such as:
+- Access control: adding permission checks, increasing the granularity of permission checks, or switching to safer defaults (e.g., default deny) to address the full range of threats [T.A1]-[T.A7] and [T.D1]–[T.D2].
+
+- Attack surface reduction: reducing the number of entry points, particularly [T.A1], [T.A2], and [T.A7], i.e., the principle of least privilege.
+
+- Containment: isolating and de-privileging components, particularly ones that handle untrusted content as in [T.A3] and [T.D2].
+
+- Architectural decomposition: breaking privileged processes into less privileged components and applying attack surface reduction for [T.A2]–[T.A7] and [T.D2].
+
+- Separation of concerns: avoiding duplication of functionality.
+
+In this section, we describe the various sandboxing and access control mechanisms used on Android on different layers and how they improve the overall security posture.

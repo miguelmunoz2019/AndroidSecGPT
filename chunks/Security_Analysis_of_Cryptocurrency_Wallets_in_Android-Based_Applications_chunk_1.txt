@@ -1,0 +1,45 @@
+# Security Analysis of Cryptocurrency Wallets in Android-based Applications
+# Daojing He, Shihao Li, Cong Li, Sencun Zhu, Sammy Chan, Weidong Min, and Nadra Guizani
+# Abstract
+As digital currency wallets are gaining popularity, security incidents related to them are also increasing. They lead to the disclosure of users’ private information and security threats of users’ assets. This article analyzes the security risks of digital wallets in Android, which is the most popular mobile operating system. It first establishes the threat model and the security goals, and then analyzes the attack surface and attack vectors from the aspects of wallet apps and the Android system. Experiments are conducted on two real-world digital currency wallet apps, and the results reveal several serious security risks in these apps, which highlight the necessity and importance of developing secure cryptocurrency wallets.
+
+# Introduction
+Blockchain-based digital currencies are built upon the concept of blockchain , which is an open and distributed ledger with records that can be verified but cannot be modified. Since the birth of bitcoin, the number of cryptocurrencies has grown into several thousands with a market capitalization of more than $233 billion as of November 2019.
+
+In bitcoin and many other digital currency systems, users use the account private key as the sole basis to control the digital currency account, so any operation signed with the private key is regarded as the legal operation of the account. However, there is a lack of support for loss reporting, key updating, and mechanisms which are commonly used in other payment systems, such as abnormal transactions identification and two-factor authentication , to prevent risky transactions. As a result, obtaining the private key of an account is equivalent to having total control of the account.
+
+Private keys can be hosted on exchanges or user-controlled cryptocurrency wallets. The former gives exchanges full control over their digital currency accounts. Unfortunately, a number of exchanges have been broken-in by hackers, or suffered from inside attacks or system failures. The loss of assets caused by such events makes many users reluctant to put a large amount of assets in the exchanges . Differently, digital currency wallets do not store digital currencies, but are only responsible for generating, storing and managing the private keys of digital currency accounts. The encrypted private key of a user is stored in its wallet. When the user needs to make a transaction, it is decrypted to sign the transaction record. Unless the user exports it manually, the private key is always kept in the wallet. This provides greater security for the private key and the account assets.
+
+However, the security of digital currency wallets cannot be neglected. Due to the vulnerabilities in both wallets and operating environment, as well as the lack of security awareness of users, the theft of account keys and the tampering of trading parameters have occurred . Indeed, researchers have made relevant explorations on this issue. In the field of digital wallet security, Bui et al.  studied the desktop cryptocurrency wallet remote procedure call (RPC) interface and found that attackers could effectively steal privacy information regardless of permissions. Androulaki et al.  analyzed and demonstrated security threats to wallets. On security vulnerability analysis of the Android operating system, Sarma et al.  described its security risks due to permission requesting. Fratantonio et al.  used two permissions provided by Android to fully control the user interface feedback loop to create devastating attacks and launched 12 attack experiments successfully. Ren et al.  provided mitigation suggestions toward a more secure Android multitasking sub-system. Xu et al.  described the security risks of Android USB debugging, and further presented methods to improve the security. Mayrhofer et al.  discussed the difficulty of protecting mobile device platforms against different threats and suggested potential solutions. Xu et al.  inferred user’s touchscreen tapping input through the permissionless motion sensors on a smartphone.
+
+To provide a deeper understanding of the threats faced by cryptocurrency wallets on the market today, this article studies the security weaknesses of both the Android system and specific digital currency wallets. Targeting at several popular cryptocurrency wallet apps, we implement attacks to acquire the private keys from wallets, or change the transactional information of a digital currency transfer. Our work shows the current security status of digital wallet apps, and also calls for effective protection solutions. Our contributions are as follows:
+- We identify the vulnerabilities of cryptocurrency wallets from multiple perspectives.
+
+- We analyze the security issues of popular cryptocurrency wallets, and establish an adversary model for cryptocurrency wallet.
+
+- Based on the vulnerability analysis, we design attack experiments to demonstrate the validity of our analysis.
+
+Daojing He is with Nanchang University and East China Normal University; Shihao Li and Cong Li are with East China Normal University; Sencun Zhu is with Pennsylvania State University; Sammy Chan is with City University of Hong Kong; Weidong Min is with Nanchang University; Nadra Guizani is with Purdue University.
+
+Digital Object Identifier: 10/MNET
+0890-8044/20/$25©2020IEEE IEEE Network • November/December 2020
+# The article is organized as follows.
+
+The following section describes the concept of cryptocurrency wallets, defines an adversary model and security target. We then analyze the vulnerabilities of cryptocurrency wallets. Following that we present our attack experiments on two real-world Android based cryptocurrency wallets. The final section concludes the article and suggests some future work.
+
+# Overview of Cryptocurrency Wallet Security
+Cryptocurrency wallet is a piece of software or hardware that can generate, store and manage private keys of the cryptocurrency accounts. For the software wallets, such as the wallets on mobile systems, they also allow users to query the transaction history and the account balance, generate, sign, and send new transactions to the distributed network.
+
+Because owning the private key is equivalent to having full control of the corresponding cryptocurrency account, private key management becomes very essential for security. Private key needs to be encrypted before being stored in the wallet and decrypted into plaintext when used. Taking Ethereum as an example, the plaintext of the private key is a 256-bit binary number, which is usually encoded as a hexadecimal number for presentation. It is encrypted and stored in a keystore, and imported or exported through the keystore. The relationship among private key, keystore and mnemonic is shown in Fig. 1.
+
+# Security Goals of Cryptocurrency Wallets
+The security goals of the cryptocurrency wallets are consistent with most security systems, mainly including confidentiality, integrity, and availability.
+
+Confidentiality: Confidentiality is to prevent unauthorized access to confidential information. For a cryptocurrency account, its private key means the full control of the account and all the digital assets under the account. Therefore, the fundamental security property of the wallet is to ensure that the private key is not accessed in an unauthorized way. Transaction information is not considered confidential due to the fact that all data on the blockchain is publicly accessible.
+
+Integrity: Integrity is to prevent information from being modified by unauthorized entities so as to ensure the accuracy and completeness of the information. As to the cryptocurrency wallets, it is of great importance to guarantee the integrity of the private key. If the private key stored in the wallet is illegally modified or deleted, the user will lose control of the account, thereby losing the assets in the account. For transaction data that have been sent to the blockchain, blockchain has used cryptographic methods such as signatures and hashes to ensure transaction data has not been tampered with. However, the integrity property is crucial for a newly initiated transaction. If the information of the transaction has been tampered with before the user signs the transaction with the private key, the transaction will be recognized by the blockchain system because it has the legitimate owner’s signature.
+
+# Adversary Model for Cryptocurrency Wallets
+For different types of digital currency wallets, their adversary models are slightly different. We discuss the adversary model for software-based cryptocurrency wallets in this section.
+
+The adversary’s goal is to break the confidentiality, integrity, or availability properties of the data in the wallets. This includes obtaining the private key, tampering with newly initiated transactions, tampering with historical transactions, blocking the creation of new transactions, denying transaction information inquiries, and so on.

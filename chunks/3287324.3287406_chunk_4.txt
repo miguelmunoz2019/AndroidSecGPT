@@ -1,0 +1,28 @@
+# 4 KERN Lab - Kernel ROP Attacks
+The KERN lab (level 2 or 3) goes deeper into the security aspects related to Android’s kernel. In this lab, we provide an emulator with a kernel containing a vulnerable driver. This driver can be exploited with a buffer overflow vulnerability that enables the execution of an arbitrary short payload. Because the kernel implements a W xor X policy, students are required to perform a ROP attack with gadgets available in the kernel. For achieving this step, students use ROPgadget12 to search for gadgets in the vmlinuz file. The “Hello World” example consists in printing a message in the kernel logs. Students should learn to call the printk kernel function using several gadgets. If time permits, more complex attacks can be achieved to spy the memory of a targeted process.
+
+Learning outcomes. This lab illustrates the importance of the security of all Android components. It trains students to perform attacks using multiple vectors including attacking the system itself. The material associated to these labs can be found online at https://gitlab.inria.fr/jlalande/teaching-android-mobile-security
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA
+1 = Unknown – 2 = Discovering – 3 = Intermediate – 4 = Good knowledge – 5 = Advanced
+# 5 EVALUATION
+# 5 Audience
+The presented labs have been used in several undergraduate programs in eight universities and engineering schools of three countries. We did not have the opportunity to play all the labs for the same pool of students. Nevertheless, multiple combinations of two or three labs have been tested. We have also used these labs for research summer schools and tutorials at international conferences for illustrating technical aspects of mobile security. Nevertheless, at the time of writing, the goal of this work is also to introduce the whole sequence of labs in the master degree curriculum, where security aspects have an important position.
+
+# 5 Evaluation Design
+We designed a survey for asking students to evaluate their capabilities with regard to the labs they attended. The concept was to ask the students to evaluate themselves regarding only one lab in order to measure the correlation between the lab they followed and the skill evaluated. If they followed two labs, we asked them to evaluate themselves with respect to the lab with the highest number of hours. The survey was sent in spring 2018 to the students we had taught between 2014 and 2018. From among the approximately 200 students, we obtained responses from 87% followed the lab a few months ago, 19% a year ago, 14% two years ago, and the remaining 6% over two years ago.
+
+For each question, a student is asked to rate himself/herself “before” and “after” the lab, which enables the computation of a differential score corresponding to the difference in the mark before and after the lab. This provides more information than the raw mark does with regard to whether the students have previously followed courses on related topics. It enables the evaluation of the progress of the students irrespective of their starting point. In Table 4, m corresponds to the average of the marks “after the lab” (from one to five) and δ corresponds to the average of the differential marks.
+
+# 5 Evaluation Results
+The correlation between the labs and the evaluated skills is evident: for each lab, the highest scores correspond to the pedagogical goal of the lab. The improvement in student’s skills on the diagonal is an average of +1, which is encouraging as it is approximately equivalent to shifting from “Discovering” to “Good knowledge.” Only the CLASS lab achieves an improvement of +0. This can be explained by the level of difficulty of the lab, which corresponds to the Analyze phase of the taxonomy and requires substantial effort of investigation by the students. The CLASS lab also achieves a progression of +1 for the DEV lab. This can be explained by the fact that the CLASS lab involves HTTP requests.
+
+The self-evaluation of skills by the students yielded an average mark of 3 on the diagonal. The marks of the MAL and MEM labs are approximately equal to 3, which is a reasonable result considering the technical challenge associated with them. The COV labs achieved the highest mark (3). We conjecture this to be a result of the high number of allocated hours for this lab. More simple activities achieve higher results (DEV, INST) as students feel comfortable when performing the labs.
+
+The results confirm that the labs are aligned with their pedagogical goal. The marks reveal that students tend to evaluate their skills between intermediate and reasonable knowledge levels. Indeed, only years of practice can provide further knowledge.
+
+# 6 CONCLUSION
+This paper explores several technical aspects with regard to the learning of Android security. Based on Bloom’s taxonomy, we designed various labs that aid students to learn more deeply about the internal aspects of Android. By programming attacks and studying malware or vulnerable applications, students are trained to analyze complex security problems. This pedagogical design aids them to improve their skills in mobile security by providing a deeper understanding of the complexity of the software components used by Google to design its operating system.
+
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA.

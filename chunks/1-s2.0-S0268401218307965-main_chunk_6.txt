@@ -1,0 +1,77 @@
+# 7. Conclusion
+This study presented an empirical analysis of the influence of prior privacy experience, computer anxiety, perceived control, and app permission concerns on mobile users’ overall information privacy concerns. While prior privacy experience, computer anxiety, and perceived control had a significant impact on mobile users’ information privacy concerns, the predictive value of app permission concerns was approximately twice as much than the other factors put together. Our findings suggested that existing designs of app permission requests are problematic such that mobile users refuse to disclose their personal information mainly due to concerns for app permission requests. App stores and providers can leverage the findings of this study and rethink the design features of app permission requests to alleviate mobile users’ concerns for app permission requests, which in turn decreases users’ overall information privacy concerns, and eventually leads to an increase of the intention to accept app permissions.
+
+# 7. Limitations
+Our study is subject to the following limitations. First, the survey was conducted with participants from the United States. While various states within the United States were broadly covered in our study, a survey in other countries may lead to different results. According to Hofstede’s cultural dimension index, the United States is a highly individualist culture (Hofstede, Hofstede, & Minkov, 2010). Thus, mobile users from the United States might have higher privacy concerns due to individual interests compared with users from collectivist cultures. Second, most of our participants were female students and up to the age of 30 years. Correlations of the demographic variables with other variables were very low in our sample, which indicated that there were no confounding effects. Nevertheless, other demographic user groups might present different concerns for information privacy. Third, we collected data through an online survey, which is liable to a self-selection bias (Kim, Lee, Han, & Lee, 2002). During participant recruiting, we asked participants to complete a survey about a social networking app. We did not mention that the focus of the survey is on information privacy concerns. Hence, the decision of the subjects to participate in the survey should not be related to their information privacy concern (Hui, Teo, & Lee, 2007). Fourth, for our scenario, we chose three most common app permissions: location, contacts, and photos. We acknowledge that these app permissions may be perceived as highly sensitive by mobile users compared to other permissions such as access to the vibrator or reminders. While perceived permission sensitivity has been analyzed in prior studies , in our study, we lay the focus on the overall impact of app permission concerns on mobile users’ privacy concerns; however, we do suggest that other app permissions than location, contacts, and photos may lead to different results.
+
+268
+# K. Degirmenci
+# International Journal of Information Management 50 (2020) 261–272
+# 7. Future research directions
+Against the backdrop of increasing privacy-related challenges for app stores and providers, our findings provide a basis for future research studies on mobile users’ concerns for information privacy with a focus on app permission requests. Following the investigation by Gu et al. (2017) on permission sensitivity and justification, future research could involve experimental surveys to evaluate the impact of such ratings on app permission concerns. For example, different scenarios could be presented in which app permissions are requested with various rating options. Questions could revolve around how safe it is for mobile users to share their personal information with the app and how necessary it is to request certain app permissions. We expect that further research on these proposed investigations will further contribute to a better understanding of mobile users’ information privacy concerns.
+
+It would be insightful to learn if the influence of permission requests on privacy concerns is alleviated the more popular or the more positive the reputation of an app is. Another focus of interest in this regard are privacy assurance approaches such as privacy statements, which ensure user privacy and data protection (Sutanto et al., 2013; Xu, Gupta et al., 2012). We suggest further research to analyze whether such privacy statements lose their effect the more app permissions are perceived to be of concern. Within these settings, we further suggest to consider perceived control in a future analysis, because control might provide a reinforcement or substitution effect, when (a) the popularity or (b) the app permissions are highly sensitive, (c) app permission requests are poorly or not at all justified, or (d) privacy statements on how safe the access to personal information is, are missing.
+
+# Appendix A. Participant profiles
+# K. Degirmenci
+# International Journal of Information Management 50 (2020) 261–272
+# Appendix B. Scenario
+We provided a scenario to all participants in the survey. They were told that an online social networking service is providing a mobile application called “M-Networking”, and that their opinion about the app was being solicited. The survey included the following scenario: “An online social networking service provides M-Networking, which is a mobile application to connect with other users such as family, friends, and colleagues. Suppose you are considering whether you will install such M-Networking service on your mobile device, the app is requesting the following permissions: location (approximate location (network-based), precise location (GPS and network-based), and GPS access), contacts (read your contacts, modify or delete your contacts, and create contacts), and photos (access your photos, modify or delete your photos, and add photos)”.
+
+# Appendix C. Survey instrument
+# K. Degirmenci
+# International Journal of Information Management 50 (2020) 261–272
+# Perceived intrusion
+If I would accept these app permissions…
+PS2: I would be concerned that the app is collecting too much information about me.
+
+PS3: I would be concerned that the app may monitor my activities on my mobile device.
+
+PI1: I feel that as a result, others would know about me more than I am comfortable with.
+
+PI2: I believe that as a result, information about me that I consider private would be more readily available to others than I would want.
+
+PI3: I feel that as a result, information about me would be out there that, if used, would invade my privacy.
+
+# Secondary use of personal information
+If I would accept these app permissions…
+SU1: I would be concerned that the app may use my personal information for other purposes without notifying me or getting my authorization.
+
+SU2: I would be concerned that the app may use my information for other purposes.
+
+SU3: I would be concerned that the app may share my personal information with other entities without getting my authorization.
+
+# Intention to accept app permissions
+Given these app permission requests, specify the extent to which you would accept these app permissions.
+
+INT1: unwilling–willing
+INT2: unlikely–likely
+INT3: not probable–probable
+INT4: impossible–possible
+# K. Degirmenci
+# International Journal of Information Management 50 (2020) 261–272
+# Manifestations, cultural influences, and its effect on the adoption of sensor-based technology in German and Australian hospitals.
+
+Information & Management, 54(1), 73–89. https://doi.org/10/j.im.
+
+Lang, M., Wiesche, M., & Krcmar, H. (2018). Perceived control and privacy in a professional cloud environment. Paper Presented at the Hawaii International Conference on System Sciences.
+
+Laufer, R. S., & Wolfe, M. (1977). Privacy as a concept and a social issue: A multi-dimensional developmental theory. Journal of Social Issues, 33(3), 22–42. https://doi.org/10/j-4560.tb01880.x.
+
+Lienhard, K., & Legner, C. (2015). The anatomy of context-aware mobile patient monitoring. Paper Presented at the International Conference on Information Systems.
+
+Lindell, M. K., & Whitney, D. J. (2001). Accounting for common method variance in cross-sectional research designs. The Journal of Applied Psychology, 86(1), 114–121.
+
+Liu, C. Z., Au, Y. A., & Choi, H. S. (2014). Effects of freemium strategy in the mobile app market: An empirical study of Google Play. Journal of Management Information Systems, 31(3), 326–354. https://doi.org/10/07421222.
+
+Lom, H. S., Thoo, A. C., Sulaiman, Z., & Adam, S. (2018). Moderating role of mobile users’ information privacy concerns towards behavioural intention and use behaviour in mobile advertising. Advanced Science Letters, 24(6), 4259–4264. https://doi.org/10/asl.
+
+Lowry, P. B., Cao, J., & Everard, A. (2011). Privacy concerns versus desire for interpersonal awareness in driving the use of self-disclosure technologies: The case of instant messaging in two cultures. Journal of Management Information Systems, 27(4), 163–200. https://doi.org/10/MIS0742-1222270406.
+
+Lowry, P. B., & Gaskin, J. E. (2014). Partial least squares (PLS) structural equation modeling (SEM) for building and testing behavioral causal theory: When to choose it and how to use it. IEEE Transactions on Professional Communication, 57(2), 123–146. https://doi.org/10/TPC.
+
+Malhotra, N. K., Kim, S. S., & Agarwal, J. (2004). Internet users’ information privacy concerns (IUIPC): The construct, the scale, and a causal model. Information Systems Research, 15(4), 336–355. https://doi.org/10/isre.
+
+Neate, R. (2018). Over $119bn wiped off Facebook’s market cap after growth shock. Retrieved from The Guardian https://www.theguardian.com/technology/2018/jul/26/facebook-market-cap-falls-109bn-dollars-after-growth-shock.
+
+Osatuyi, B. (2015). Is lurking an anxiety-masking strategy on social media sites? The effects of lurking and computer anxiety on explaining information privacy concern on social media platforms. Computers in Human Behavior, 49, 324–332. https://doi.org/10/j.chb.

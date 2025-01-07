@@ -1,0 +1,78 @@
+# RQ5: How long does it take to patch a vulnerability?
+We use a term called vulnerability lifetime that indicates the time difference between a vulnerability introduction and its publishing time on the bulletin. The aim of this research question is to find the distribution of vulnerability lifetime for vulnerabilities with different severity levels. This gives us a better implicit understanding of how good the state of the art security tools are in terms of detecting and fixing Android vulnerabilities. Likewise, this analysis provides an indication whether we invest enough resources to reduce the vulnerability lifetime considering the huge market share and impact of Android devices in our daily lives.
+
+# 4 Data Collection Methodology
+In this section, we describe the collection process for the dataset to provide answers to the research questions posed in Section 3. The research questions shape our data collection methodology and indicate what information we need to provide answers.
+
+Our main source of data are the Android security bulletins for the date range from August 2015 to January 2019 . Note that August 2015 is also the start date for publication of the security bulletins. However, the security bulletins do not provide all our required information regarding Android vulnerabilities, like CWE types and public disclosure dates. Therefore, we also crawl the website CVEDetails . In the following, we describe the details of our web scraper.
+
+# 4 Web Scraper
+Considering that the mentioned websites do not provide JSON, XML or any exportable formats for the vulnerabilities and their details, it is essential to implement a web scraper. Our scraper is implemented in Python 3 , with
+# 4 Security Bulletins Dataset
+We also scrape the following information from Android security bulletins: CVE, which is the ID of a vulnerability; Type; Updated AOSP Versions; Date reported; and References. Note that these fields might have different names on different security bulletins. For instance, the field Updated AOSP Versions has different names, such as Affected Versions used in August 2015 and Updated Versions used in December 2015. To avoid confusion, we use the same name updated AOSP versions throughout this paper.
+
+Similarly, the field References also has more than one name. In early security bulletins, some of the following names have been used: “Bug(s)”, “Bug(s) with AOSP Links”, and “Bugs with AOSP links”. In the latest security bulletins, the term References is used. As a result, we use references throughout the paper for all above terms. Each reference is a link that navigates to a corresponding code repository. Note that there can be multiple references for a patched vulnerability that navigate to different branches of AOSP Git repositories. For instance, CVE-2017-18159, published in June 2018, has 9 different references. In the security bulletins, each of them is listed with brackets in a separate row in the tables that consist of patched vulnerabilities. However, in early security bulletins, there are vulnerabilities whose references have multiple rows. Some of these different rows have even different severity levels and updated AOSP versions. For example, CVE-2015-3873, published in October 2015, has 14 different separate rows. Except for the last row, all rows have the same severity level and the same updated AOSP versions and still belong to the same patched vulnerability. In such cases, where a vulnerability has more than one row, we check the severity level and the updated AOSP versions for each row. If a row has the same severity level and updated AOSP versions as previous rows, then we only add the new row’s references into the existing references. Otherwise, we create a new entry for this particular row and consider this entry as a different patched vulnerability.
+
+Another issue is that some vulnerabilities are patched on multiple security bulletins. For instance, CVE-2016-2059 is first patched in September 2016, which is followed by another mentioning in October 2016. Similarly, CVE-2017-0391 is patched in both January 2017 and June 2017. In such cases, we count them as different patched vulnerabilities in our dataset.
+
+There are 80 vulnerabilities with these two consistency issues. 36 of them have multiple rows, however, with the same severity levels and the same updated AOSP versions with multiple references. We count each of these 36 vulnerabilities only once. In contrast, we count the remaining 44 vulnerabilities multiple times, since they are on multiple different security bulletins or have multiple references with different severity levels and/or updated AOSP versions.
+
+Furthermore, the attributes Date Reported and Type are not even used in some of the security bulletins, like September 2018 and July 2017. In particular, for the attribute Date Reported, Google stopped publishing it since June 2017. For this reason, in such cases, we leave the respective data fields empty. Hence, for certain analyses, we can only analyze the patched vulnerabilities that contain the necessary attributes.
+
+We add the attributes that we scrape from CVEDetails to the key named details. Under this key, there are vulnerability details such as public disclosure date, CVSS score, and products affected, which are added to their corresponding key names.
+
+# 4 Mining Code Repositories
+Since RQ3, RQ4, and RQ5 are related to patching times of the vulnerabilities, we need to find the last fix-commit date of a vulnerability and the log of all changed lines on branches of each patched vulnerability. In such cases where Google does not provide references publicly, some vulnerabilities do not have any references. For the patched vulnerabilities that have references, there are three different reference types, which link to different code repositories. The first one is the AOSP Git repository, which is referenced by the majority of patched vulnerabilities. The second one is the Qualcomm Code Aurora page for Qualcomm-related vulnerabilities.
+
+# 1
+published in January 2019 , has a reference that points to a bug tracking tool called Bugzilla. In such cases, we use the ticket closing time.
+
+"timestamp": 1538344800,
+"formatted_date": ISODate("2018-10-01T00:00:00+0000"),
+# 4 "cves": {
+# "critical": [
+{
+"id": "CVE-2018-9490",
+"type": "EoP",
+"updated_aosp_versions": "7, 7, 7, 8, 8, 9",
+"category": "Framework",
+# "references": [
+{
+"name": "A-111274046",
+"link": "https://android.googlesource.com/platform/external/chromium-libpac/+/948d..."
+},
+{
+"name": "2",
+"link": "https://android.googlesource.com/platform/external/v8/+/a24543157..."
+}
+# "details": {
+"cvss_score": 0,
+"confidentiality_impact": null,
+...
+
+}
+}
+{
+...
+
+}
+# ]
+# "high": [
+...
+
+# ]
+# }
+# 5 Results
+In this section, we analyze the collected data with a focus on the posed research questions.
+
+# 5 RQ1: Evolution of Severity Distributions and Root Causes
+# 5 Severity Levels
+We first investigate how severity levels of patched vulnerabilities evolve over time, and we examine the similarities of the severity level trend between the years. Note that we use severity levels that are defined by the Android security team , which are different from other used severity level calculations, such as V2 and V3 CVSS score. For instance, the Android security team classifies the severity level of a vulnerability as critical if one of the following conditions is met: (i) Arbitrary code execution in the Trusted Execution Environment2, (ii) Remote arbitrary code execution in a privileged process, Bootloader, or the Trusted Computing Base3, (iii) Remote permanent denial of service (device inoperability: completely permanent or requiring re-flashing the entire operating system). For the severity level of high, the criteria are as follows: (i) Local secure Boot bypass, (ii) Remote arbitrary code execution in an unprivileged process, (iii) Local bypass of user interaction requirements on package installation or equivalent behavior.
+
+Only one of the patched vulnerabilities does not have a severity level, CVE-2016-2842, which is published in August 2016 with the severity level of None* . We exclude this.
+
+Trusted Execution Environment is a component that is designed to be protected even from a hostile kernel.
+
+Trusted Computing Base is a part of the kernel, and it is responsible for loading scripts into a kernel component.
+
+patched vulnerability from our security bulletins dataset only for this analysis. Therefore, for our severity level analysis, we have 2,469 patched vulnerabilities. Table 1 shows the annual number of patched vulnerabilities. In 2015, the number of patched vulnerabilities is for only 5 months. In subsequent years, the number of patched vulnerabilities is at least 7 times higher than 2015.

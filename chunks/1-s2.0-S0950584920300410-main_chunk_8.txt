@@ -1,0 +1,25 @@
+8. J. Romano, J.D. Kromrey, J. Coraggio, J. Skowronek, L. Devine, Exploring methods for evaluating group differences on the NSSE and other surveys: are the t-test and Cohen’s d indices the most appropriate choices, in: Annual meeting of the Florida Association of Institutional Research, Citeseer.
+
+9. K. Xu, Y. Li, R.H. Deng, ICCDetector: ICC-based malware detection on Android, IEEE Trans. Inf. Forensics Secur. 11 (6) (2016) 1252–1264.
+
+10. S. Yang, D. Yan, H. Wu, Y. Wang, A. Rountev, Static control-flow analysis of user–driven callbacks in Android applications, in: Proceedings of the 37th International Conference on Software Engineering, 2015, pp. 89–99.
+
+11. H. Cai, N. Meng, B. Ryder, D.D. Yao, Droidcat: effective Android malware detection and categorization via app-level profiling, IEEE Trans. Inf. Forens. Secur. (2019).
+
+12. W. Enck, D. Octeau, P. McDaniel, S. Chaudhuri, A study of Android application security, in: Proceedings of USENIX Security Symposium, Vol. 2, 2011, p. 2. 21–21.
+
+13. I.J. Mojica, B. Adams, M. Nagappan, S. Dienst, T. Berger, A.E. Hassan, A large-scale empirical study on software reuse in mobile apps, IEEE Softw. 31 (2) (2013) 78–86.
+
+14. M. Linares-Vásquez, A. Holtzhauer, C. Bernal-Cárdenas, D. Poshyvanyk, Revisiting Android reuse studies in the context of code obfuscation and library usages, in: Proceedings of the 11th Working Conference on Mining Software Repositories, ACM, 2014, pp. 242–251.
+
+15. R. Minelli, M. Lanza, Software analytics for mobile applications–insights & lessons learned, in: Proceedings of the 17th European Conference on Software Maintenance and Reengineering, IEEE, 2013, pp. 144–153.
+
+16. Y. Zhou, X. Jiang, Dissecting Android malware: characterization and evolution, in: Proceedings of IEEE Symposium on Security and Privacy, 2012, pp. 95–109.
+
+17. H. Cai, B. Ryder, Understanding application behaviours for android security: a systematic characterization, Comput. Sci. Techn. Rep. (2016).
+
+18. X. Wei, L. Gomez, I. Neamtiu, M. Faloutsos, ProfileDroid: multi-layer profiling of Android applications, in: Proceedings of ACM International Conference on Mobile Computing and Networking, 2012, pp. 137–148.
+
+19. K. Tam, S.J. Khan, A. Fattori, L. Cavallaro, Copperdroid: automatic reconstruction of android malware behaviors., in: Proceedings of Network and Distributed System Security Symposium, 2015.
+
+20. S. Rasthofer, S. Arzt, E. Bodden, A machine-learning approach for classifying and categorizing Android sources and sinks., in: Proceedings of Network and Distributed System Security Symposium, 2014..

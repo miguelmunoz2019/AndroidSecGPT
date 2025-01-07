@@ -1,0 +1,20 @@
+# Author Information
+FADI MOHSEN received the B.Sc. degree in computer information systems from the University of Jordan, Jordan, the M.Sc. degree in computer science from the University of Colorado at Colorado Springs, USA, as a recipient of the Fulbright Scholarship, in 2008, and the Ph.D. degree in computing and informatics from the University of North Carolina at Charlotte, USA, in 2016. Currently, he is a tenured Assistant Professor in computing science with the University of Groningen. His primary research interests include usable security, information privacy, mobile and web security, moving target defense, and security analytics.
+
+# F. Mohsen et al.: On Identification of Intrusive Applications
+# USMAN RAUF
+received the B.S. degree in computational physics from the University of the Punjab, Pakistan, in 2008, the M.S. degree in computational sciences and engineering from the Research Center for Modeling and Simulation, National University of Sciences and Technology, Pakistan, in 2011, and the Ph.D. degree in computing and informatics (with a concentration in information security) from the University of North Carolina at Charlotte, USA, on a fully funded Ph.D. Scholarship. Since 2020, he has been an Assistant Professor in cybersecurity with Mercy University, NY, USA. He also holds several research and development awards by several U.S. federal agencies. He was awarded the Scholarship for Service Award for the M.S. degree.
+
+# ALEXANDER KOKUSHKIN
+received the bachelor’s degree in computer science with a minor in entrepreneurship from the University of Groningen, in 2022. He has been a seasoned Development Engineer with Yokogawa, contributing his expertise in full-time capacity, since October 2022. Prior to this role, he gained valuable experience as a Software Developer Intern with Medusa Radiometrics Ltd., during a five-month internship.
+
+# ZHIYUAN WEI
+received the B.S. degree in computer science and technology from Shanghai Jian Qiao University, Shanghai, China, in 2021, and the M.S. degree in cyber security from Mercy University, NY, USA, in 2023. He is currently a Software Engineer with Broomfield, CO, USA. Since 2022, he has been with the Cyber Resilience Integration with Security & Privacy (CRiSP) Laboratory for Insider threat analytics. His research interests include threat analytics, data science, and machine learning.
+
+# VICTOR LAVRIC
+received the bachelor’s degree from the University of Groningen, in 2021. Throughout his tenure at the university, he honed his expertise in computer science, also serving as a Teaching Assistant for multiple courses. Starting from 2022, he has been actively contributing as a Software Engineer.
+
+# ADALYNN MARTINEZ
+is currently pursuing the M.S. degree in cybersecurity with Mercy University, NY, USA. She is also a Research Assistant with the Cyber Resilience Integration with Security & Privacy (CRiSP) Laboratory. Prior to her graduate studies, she completed the Cybersecurity Program with Westchester Community College, NY, USA, earning a certificate and the Cybersecurity Curriculum Award, in 2023. She is also a Senior Tutor for the WCC Cybersecurity Program, where she supports and mentors fellow students.
+
+VOLUME 12, 2024 37599.

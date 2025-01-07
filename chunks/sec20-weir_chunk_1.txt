@@ -1,0 +1,69 @@
+# From Needs to Actions to Secure Apps?
+# The Effect of Requirements and Developer Practices on App Security
+Charles Weir, Lancaster University; Ben Hermann, Paderborn University; Sascha Fahl, Leibniz University Hannover
+https://www.usenix.org/conference/usenixsecurity20/presentation/weir
+This paper is included in the Proceedings of the 29th USENIX Security Symposium.
+
+August 12–14, 2020
+978-1-939133-17-5
+Open access to the Proceedings of the 29th USENIX Security Symposium is sponsored by USENIX.
+
+# From Needs to Actions to Secure Apps?
+# The Effect of Requirements and Developer Practices on App Security
+# Charles Weir, Lancaster University
+# Ben Hermann, Paderborn University
+# Sascha Fahl, Leibniz University Hannover
+# Abstract
+Increasingly mobile device users are being hurt by security or privacy issues with the apps they use. App developers can help prevent this; inexpensive security assurance techniques to do so are now well established, but do developers use them? And if they do so, is that reflected in more secure apps? From a survey of 335 successful app developers, we conclude that less than a quarter of such professionals have access to security experts; that less than a third use assurance techniques regularly; and that few have made more than cosmetic changes as a result of the European GDPR legislation. Reassuringly, we found that app developers tend to use more assurance techniques and make more frequent security updates when (1) they see more need for security, and (2) there is security expert or champion involvement.
+
+In a second phase we downloaded the apps corresponding to each completed survey and analyzed them for SSL issues, cryptographic API misuse and privacy leaks, finding only one fifth defect-free as far as our tools could detect. We found that having security experts or champions involved led to more cryptographic API issues, probably because of greater cryptography usage; but that measured defect counts did not relate to the need for security, nor to the use of assurance techniques.
+
+This offers two major opportunities for research: to further improve the detection of security issues in app binaries; and to support increasing the use of assurance techniques in the app developer community.
+
+# 1. Introduction
+Increasingly software security and privacy are becoming major problems for society. Almost every day we hear of new attacks and privacy problems, and increasingly they are affecting not just large companies, but everyone . While there are many ways to address these issues, clearly software developers have a vital role to play in creating services and applications that enforce security effectively1.
+
+The software industry has developed a range of inexpensive security assurance techniques for software developers  and some teams even use formal secure development lifecycles to pull them together . However, though many developers are using those assurance techniques, others are not. Factors such as lack of motivation, pressures to do other work, lack of access to learning and support, or sheer ignorance of the need, all act as barriers to adoption . Some development teams may have access to security experts to help them; others may have little or no practical knowledge of software security. In some cases, this may not matter—if the code has no security or privacy implications—but in others it may harm a range of stakeholders, from software users to organization senior management.
+
+In this work we investigate how big a problem this may be in practice. Our first research question was:
+# RQ1: To what extent, and how, does a perceived need for security and privacy lead to security-enhancing activities and interactions in the development team?
+To begin to address this question2, we chose a specific set of software developers to investigate: Android application developers. Our reasons for choosing these were twofold:
+1. The research team has considerable experience in Android development security research 
+2. The Android ecosystem provides access to both developers and the software developed, along with an indication of application usage.
+
+Accordingly, we carried out an online survey of professional Android developers, asking for details of their security practices and interactions. Our key findings from statistical analysis of the 330 completed and accepted surveys3 are as follows:
+- No more than 22% of Android app developers have regular access to security professionals;
+Throughout this paper we refer to 'developers' meaning all those involved with software development: programmers, testers, project managers, and product owners.
+
+RQ1 was modified to include ‘how’ and ‘perceived’ following feedback on the paper.
+
+Assuming the sample is representative of Android app developers. See Section 5.
+
+• Less than 53% of them have used any of the basic assurance techniques; less than 30% use any regularly; and security updates for apps generally happen less than once a year.
+
+• Less than 15% of them have made more than cosmetic changes as a result of the new GDPR legislation.
+
+• Android app developers’ use of assurance techniques is positively correlated with the perceived need for security, the involvement of security experts or champions, and the security expertise of the developers;
+• The reported frequency of app security updates is positively correlated with the perceived need for security, the security expertise of the developers, and the developers’ use of assurance techniques.
+
+In a second phase, we investigated how these aspects of the development process were reflected in objective app security outcomes. Our research question for this phase was:
+# RQ2: To what extent do the need for security, the involvement of specialist roles, and the use of assurance techniques in a development team lead to fewer security defects?
+We analyzed the corresponding Android applications created by each developer and matched the findings to the questionnaire results, concluding that:
+• There was no correlation found between the perceived need for app security, nor the use of assurance techniques, and the defect count of the resulting app; and
+• Surprisingly, the involvement of security professionals and ‘security champions’ is correlated with higher cryptographic API defect counts.
+
+This paper is structured as follows. Section 2 explores related work, including a discussion of assurance techniques; Section 3 describes the survey design, participant recruitment approach, analysis plan, survey trials and limitations; Section 4 describes the same for the app binary analysis; Section 5 explores both the survey and app analysis results; Section 6 explores the implications of these results; and Section 7 summarizes the main learning points and conclusions.
+
+# 2. Related Work
+In this section, we discuss related work in three key areas: ways of finding security and privacy flaws in otherwise benign mobile apps; research work into developers’ secure development behavior; and findings on the important developer assurance techniques.
+
+# 2. Security and Privacy in Mobile Apps
+The introduction of App Stores, that act as an intermediary between developers and consumers, has required each app store provider to find ways to detect rogue applications and rogue application developers. This has led to research into ways of analyzing application binaries to detect hostile behavior. Enck et al. , for example, used a decompiler to analyze a range of popular applications, finding many privacy issues though no security misbehavior. Glanz et al.  inspected obfuscated apps to detect repackaged apps—benign apps that have been modified and re-uploaded to app stores. Reyes et al.  explored children’s app binaries, finding many violations of US privacy law.
+
+However, only more recently has there been much investigation into the problems of benign apps that may have security or privacy flaws. This may be due partly the difficulty of taking action: Google Play does not have the remit of enforcing better security  and the app developers may not wish to do so. But with the increase of interest in security issues , researchers are now taking a variety of approaches to investigate.
+
+Li et al.  provide a literature survey over the vast amount of research in the field of static program analysis for Android including an overview of used tooling and methodology. The most prominent works in the area are FlowDroid by Arzt et al. , which is able to find privacy leaks by inspecting illicit information flow; IccTA by Li et al. , which extends FlowDroid to account for inter-component privacy leaks; and MalloDroid by Fahl et al. , which detects improper use of transport layer security in apps.
+
+As Android apps become increasingly polyglot with the use of hybrid app frameworks and native libraries, in recent work, analyses over these language boundaries have been increasingly in focus. Bai et al.  inspected apps which use the JavaScript bridge communication scheme to construct leaks undetectable by previous approaches. Wei et al.  provide support for information leak tracking through the Java and the native part of an app helping to find information leakage which could not be detected with Java-only-based approaches.
+
+Another important area of investigation is the security of the interaction of apps with cloud environments. Zuo et al. , for example, found by inspecting apps from Google Play that many of the used cloud services are vulnerable and may leak user data—an observation previously made by Rasthofer et al..

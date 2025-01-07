@@ -1,0 +1,46 @@
+Students comprehend the different types of threat that security analysts confront. They discover the process of reverse engineering with three approaches. This emphasizes the fact that security analysts have to adapt their methodology to the nature of the threat. At this stage, the investigation process is specified; however, students understand that a custom process should be designed for each malware.
+
+# 4 BANK Lab - Banking Application Reverse
+This lab consists in reversing the authentication activity of a real banking application. This lab is completely guided, which places it in the “Understand” process of the taxonomy and aids to fit its duration to level 2.
+
+The students are required to comprehend the protocol that is used by the application to authenticate the user to a remote server. The banking application receives a challenge from the server, which is used to generate a virtual keyboard. This permits the application to obfuscate the entered password.
+
+First, students unpack the application and uncompile the bytecode into Java source code using Jadx. This phase aids them to identify the activities and classes involved in password encoding. Second, students observe the evolution of the application state. Using AndBug 7, students can put breakpoints on specific bytecode instructions. In particular, it aids them to identify the code that transmits the encoded password to the server. They also install a counterfeit certificate in the smartphone to bypass the verification of the remote server’s authenticity. This permits them to monitor the network traffic using the Burp Suite proxy 8. Finally, the students precisely identify the Java objects that encode the password and that are transmitted to the server when the user attempts to authenticate. By capturing both the challenge received from the server and the encoded password transmitted by the application, the students can recover the password.
+
+# Learning outcomes.
+
+Students comprehend the countermeasures used by applications for critical parts such as the authentication phase. They train themselves to bypass these countermeasures as a real attacker would. Working on attack design aids the understanding of the limits of current security implementations.
+
+# 4 COV Lab - Developing Covert Channels
+The COV lab (level 2 or 3) consists in developing a covert channel between two Android applications  in order to bypass the enforced security policy.
+
+We provide two applications App1 and App2 to the students. App1 collects certain sensitive data of a user but does not have the permissions to use the network. App2 cannot access confidential data but has the necessary permissions to use the network. Those applications cooperate to leak the data. To achieve this, App1 establishes a local covert channel with App2 which is based on the remaining free space in the flash memory. This can encode the secret data bits if the sender (App1) creates and deletes large files. Snippets of code are provided to the students to aid them to develop the covert channel inside an asynchronous task. Moreover, countermeasures against such threats are discussed and analyzed. If time permits, certain countermeasures can be implemented using papers of the literature ,.
+
+# Learning outcomes.
+
+By completing this lab, the students become aware of the threat posed by covert channels and the means by which an enforced security policy can be bypassed. Students can also discover advanced detection techniques.
+
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA
+# 4 MEM Lab - Memory Dump Forensic
+This lab (level 2) has been inspired by studies on recovering credentials from volatile memory . It is highly challenging for Java applications to clean their memory after allocating certain objects even after rebooting the device . Thus, we have designed a lab wherein students inspect a dump of the memory obtained with Lime9. This dump is achieved after displaying a simple application with two EditText objects, which simulates an authentication activity. The goal of the lab is to capture the content of the two EditText objects from the dump.
+
+Then, students should inspect the memory dump using the Volatility framework10. After identifying the Linux process corresponding to the Dalvik VM, we provide extensions for inspecting the heap of the virtual machine based on the work of Hilgers et al. . Using Python scripts, students can manipulate classes and objects and their implementation at the C programming language level. Students are invited to write the script that enumerates all the classes and to identify the ones that extend EditText. This aids them to retrieve the credential from the memory dump.
+
+Learning outcomes. Students comprehend the likely leaks induced by the memory management of Java-like virtual machines, Dalvik and Art. They are capable of conducting a simple forensic of a memory dump, which is of interest to digital investigators.
+
+# 4 CLASS Lab - Vulnerable Class Loader
+The CLASS lab (level 2) places the students in a situation wherein an attacker has compromised the remote server used by the application. We ask students to analyze and solve the situation following Bloom’s taxonomy. This learning approach has already been investigated for learning web development in a secure manner . In our lab, the vulnerable application loads a few classes from the remote server that is supposed to have been compromised by the attacker. The students have access to the source code of the first activity although not to the sources of the remote classes. They are required to investigate different attacks and if feasible, implement countermeasures.
+
+The vulnerable application is composed of a regular activity that dynamically loads other activities from the remote server. The vulnerabilities are twofold. First, the application uses a custom class loader that is ineffectively implemented because it systematically loads classes from the remote resources rather than first asking the hierarchy of class loaders. Thus, the classes from the Android runtime such as Checkbox or LinearLayout can be overwritten by the downloaded activities. This can be used by the attacker to take control of the main activity. Secondly, the first activity stores certain confidential data in a static field. The attacker can access it later from the loaded activity, which is an unintentional leak of information. To disable those attacks, the students are required to patch the class loader and use an instance field rather than the static field.
+
+Learning outcomes. Students should be capable of conducting a complete investigation of an application connected to a compromised server. They should understand that an implementation can contain vulnerabilities if the developer does not comprehend the mechanisms induced by the used language or the operating system.
+
+# 4 PACK Lab - Packers
+The PACK lab (level 2) consists in reversing the MAL lab ransomware that are now obfuscated with different packing techniques. The packer uses native code to unpack the payload at runtime. The obfuscated methods are decoded immediately before being called and are re-encoded when they return. This lab requires a deep analysis to determine how the obfuscated code can be retrieved.
+
+First, the students execute the applications in order to observe that they behave as those of the MAL lab. Then, they use Bytecode-Viewer or Jadx to inspect a specified malware sample and determine that the code of certain methods is empty. Using IDA Pro11, the students are required to discover how the native code obfuscates the Java methods. At this stage of the lab, it is feasible to retrieve the original code of the malware sample.
+
+However, additional ransomware samples using different packing algorithms are provided to the students. Consequently, new static analysis of each packing algorithm would be required, and therefore, we propose to switch to a dynamic approach. The students are guided to modify the code of AOSP: The Android VM is modified to dump the code of each method before executing them. We provide the most challenging parts of the modifications to the students to aid them to complete the lab. Based on the INST lab, the students flash the Sony Xperia X smartphone with the modified Android system. This permits them to automatically reverse all the samples.
+
+Learning outcomes. Students comprehend and analyze the work achieved by a packer using ciphering algorithms. They also comprehend the benefit of a solution based on a combination of a static analysis and a dump that is performed during execution.

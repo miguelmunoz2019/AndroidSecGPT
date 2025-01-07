@@ -1,0 +1,57 @@
+# The rise of obfuscated Android malware and impacts on detection methods
+# Wael F. Elsersy, Ali Feizollah and Nor Badrul Anuar
+# Department of Computer System and Technology/Faculty of Computer Science and Information Technology, Universiti Malaya, Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur, Malaysia
+# ABSTRACT
+The various application markets are facing an exponential growth of Android malware. Every day, thousands of new Android malware applications emerge. Android malware hackers adopt reverse engineering and repackage benign applications with their malicious code. Therefore, Android applications developers tend to use state-of-the-art obfuscation techniques to mitigate the risk of application plagiarism. The malware authors adopt the obfuscation and transformation techniques to defeat the anti-malware detections, which this paper refers to as evasions. Malware authors use obfuscation techniques to generate new malware variants from the same malicious code. The concern of encountering difficulties in malware reverse engineering motivates researchers to secure the source code of benign Android applications using evasion techniques. This study reviews the state-of-the-art evasion tools and techniques. The study criticizes the existing research gap of detection in the latest Android malware detection frameworks and challenges the classification performance against various evasion techniques. The study concludes the research gaps in evaluating the current Android malware detection framework robustness against state-of-the-art evasion techniques. The study concludes the recent Android malware detection-related issues and lessons learned which require researchers’ attention in the future.
+
+# Submitted
+14 September 2021
+# Accepted
+8 February 2022
+# Published
+9 March 2022
+# Corresponding authors
+Wael F. Elsersy, wfarouk@siswa.um.edu.my
+Nor Badrul Anuar, badrul@um.edu.my
+# Academic editor
+Muhammad Aleem
+# Additional Information and Declarations
+can be found on page 46
+# DOI
+10/peerj-cs
+# Copyright
+2022 Elsersy et al. Distributed under Creative Commons CC-BY 4
+# Subjects
+Data Mining and Machine Learning, Mobile and Ubiquitous Computing, Security and Privacy, Operating Systems
+# Keywords
+Android malware, Android security, Evasion techniques, Machine learning, Obfuscation techniques
+# INTRODUCTION
+Since the advent of Android systems, smartphone devices are seen everywhere with a market share of 87% (Chau & Reith, 2019). Hence, Android devices have become the most popular devices for hackers and malware authors to target. With many open-source libraries in Android, Android application development tools enable young developers to develop Android malware applications. Therefore, the number of Android malware increases exponentially. In the Google Android market, Android applications exponentially grow from 2 million as of September 2018 (Statista, 2016, 2021), to almost double, to reach 3 million apps as of the first quarter of 2021 . Nevertheless, Android malware authors attract end-users using cracked games, free applications, and video downloader applications. They mainly aim to spy on private data (e.g., contact lists, photos, videos, documents, and account details) or control devices by
+# How to cite this article
+Elsersy WF, Feizollah A, Anuar NB. 2022. The rise of obfuscated Android malware and impacts on detection methods. PeerJ Comput. Sci. 8:e907 DOI 10/peerj-cs
+remote servers as botnets . Android applications use Java as a developing language because Java provides a very flexible code, dynamic code loading (Liang & Bracha, 1998), and many other features to make Android application development more accessible and efficient. Likewise, Java uses obfuscation tools (Aonzo et al., 2020; GuardSquare, 2014) to protect commercial software companies from software plagiarism issues; professional developers protect their source codes from being stolen using advanced evasion techniques  as protection mechanisms. However, malware authors use the above-mentioned advanced Java features and evasion tools to reproduce more sophisticated Android malware, evading professional anti-malware (Preda & Maggi, 2016). Google introduced Google Bouncer ; however, Android malware successfully defeats Google Bouncer using different evasion techniques . Furthermore, Google Play Protect  service is the default device protection tool available on Google Android from Version 6 onwards; however, the previous versions are deprecated.
+
+The rationale behind this study is the ability of evasion techniques to hinder the analysis process and thus the detection of Android malware. In 2021, PetaDoid (Karbab & Debbabi, 2021) proposed Android malware detection using deep learning techniques. PetaDroid builds static analysis Android malware detection framework using a 10 million Android apps dataset. PetaDriod addressed obfuscations in his study and concluded in his experimental results that his trained machine learning model that reaches 99% using static analysis would not detect complex obfuscated malware applications. The complex obfuscation techniques defeat Android malware detection PetaDroid model, which results into false detection. Though PetaDroid focused on trivial and some non-trivial obfuscation techniques. PetaDroid admitted that further deep analysis is required to address the sophisticated obfuscation techniques. The study focused on several evasion techniques, such as package transformation, string encryption, bytecode encryption, code obfuscation, injecting new codes via dynamic code loading, junk/dead code injection, emulation detection running sandboxing, and user interaction emulation detection. Android malware modifies the package, developer signature, and other information using the repacking evasion technique.
+
+Moreover, the availability of various evasion techniques to the malware attackers increases the fear of developing very advanced obfuscation techniques, as such newly developed malware applications adopt advanced obfuscation techniques. It creates a challenge between preventing source code piracy and malicious attacks  and struggling to decompile the malware application packages for further analysis . Android malware detection frameworks  suffer from False Negative (FN) detection, which means the Android malware detection frameworks fail to detect some malware applications. The main reason behind FN is the malware evasion techniques that malware applications adopt to hinder detection. For instance, Arp et al. (2015) achieved 94% detection accuracy because it fails to detect malware with dynamic code loading transformation, one of the advanced evasion techniques. Likewise, Elish et al. (2015) used trigger-based dependence for privileged API calls, but it is unable to detect
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+malware families with code obfuscation and reflection transformation. Poeplau et al. (2014) used the call graph methodology to detect malicious code loading, and the native code dynamically loads the code.
+
+Similarly, Chen et al. (2015) identifies a repackaged application in 10 s using code graph similarity but is incapable of tracking junk code insertion transformation. You & Yim (2010) reviewed the obfuscation technique, metamorphic and polymorphic malware types. They discussed the metamorphic and polymorphic evasion techniques; however, they neglected transformation and anti-emulation evasions. Furthermore, they merely reviewed evasion methods and failed to evaluate current evasion detection systems to evaluate whether they can detect evasive malware. Sharma & Sahay (2014) reviewed polymorphic and metamorphic malware and discussed their characteristics. They failed to mention evasion detection methods and evaluate the currently proposed methods. Sufatrio et al. (2015a) surveyed Android malware detection methods and briefly assessed a handful of related works in terms of evasion detection.
+
+This study is intended for Android malware detection research highlighting the research gaps in malware detection caused by different evasion techniques. This study highlights the obfuscation and transformation techniques that need more attention from the research authors in future. It also provides guidelines and lesson learned to face this challenge. Due to the above facts, the authors take the challenge to introduce the following foremost contributions.
+
+- We present evasion taxonomy, particularly in the Android platform. Our goal is to systematize the Android malware evasion techniques using a taxonomy methodology, which clearly shows various evasion techniques and how they affect malware analysis and detection accuracy.
+
+- We scrutinise Android malware detection academic and commercial frameworks while a large portion of the past work concentrated on commercial Anti-malware solutions. This study examines different evasion techniques that hinder detecting malicious parts of applications and affect detection accuracy by reviewing state-of-the-art Android malware studies and issues limiting the detection of evasion techniques. It is worth noting that this work differs from related works that examine detection methods, as we go through evasion techniques that let malware eludes detection methods. Given the vast number in this study field, our investigation focuses on studies written between 2011 and early 2021 and innovative contributions that appeared in high-ranked journals or conferences such as IEEE, ACM, and Springer, hence the identified related papers are 511 research papers.
+
+- We highlight the existing problems and gaps in Android malware evasion detection by examining the previous frameworks and identifying the Android malware evasion detection research gap.
+
+- We introduce a decent number of recommendations and lessons learned to consider in future work around research. We also aim to highlight the contribution of each study, challenges, countermeasures, and open issues for future research.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+The rest of the paper is organized as follows: the survey methodology and background section provide essential background information for this study; we explore the Android operating environment and its weaknesses. Evasion techniques section presents the evasion techniques taxonomy with regards to different categories of evasions.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# evasion detection frameworks
+section investigates the current state-of-the-art evasion detection frameworks and evasion test benches tools. We discuss the lessons learned and future directions in discussion and lessons learned sections. Finally the last section represents the conclusion of this study.

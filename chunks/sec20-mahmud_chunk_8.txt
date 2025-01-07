@@ -1,0 +1,25 @@
+6. Never modify the SSLSocketFactory or TrustManager within the application code. If there is a need to pin the SSL connection to a specific CA, use the networkSecurityConfig option in the application’s manifest file. If a test server is needed during development, create a custom certificate for the development server and add the custom certificate to test devices. Developers should also vet that included third-party libraries do not include vulnerable implementations that override the default SSL socket factory and hostname verifiers.
+
+7. Always mask the credit card number before displaying it. Only the first six and the last four digits may be displayed on subsequent screens.
+
+8. Only use explicitly-addressed Intent messages when sharing payment information across Android components. Using implicit Intents addressed with action strings may result in unintentional access by other apps.
+
+# 7 Related Work
+Securing payment cards has been an important question leading to seminal papers in computer security, yet continues to remain relevant. For example, magnetic stripe cards are easily cloned, and only recently have mechanisms to detect this attack been developed. Instead, much of the research has examined EMV chip-based cards, finding and mitigating vulnerabilities related to unauthenticated terminals and pre-play attacks.
+
+Payments, however, have moved to mobile devices, making mobile app security an important question for payments. Recent analyses of branchless banking applications.
+
+5 https://developer.android.com/training/articles/security-config
+1530 29th USENIX Security Symposium USENIX Association
+found flaws related to misuse of cryptography, flawed authentication, and SSL/TLS misconfiguration. SSL/TLS security is especially important for mobile payments, who primarily rely on HTTP-based APIs. Mobile platforms do this correctly by default, yet developers frequently break certificate validation, creating the possibility for man in the middle attacks . Studies of mobile payment platforms  and documentation  in China have also demonstrated vulnerabilities in the payment protocols. Further studies on cryptography in Android apps have shown that incorrect use is rampant.
+
+Our work also builds on prior work studying information flows in Android apps. Much of this work has built tools to demonstrate undesired leakage of sensitive data . We rely on the extensive body of literature developing static analysis techniques for Android apps.
+
+The academic work closest to ours includes UIRef , which previously identified credit card collection in Android apps, but provided no further analysis. A second study investigated the PCI DSS compliance of e-commerce websites as well as the effectiveness of PCI scanners for the web . However, our work is the first to investigate the question of payment card handling in the context of mobile apps.
+
+# 8 Conclusion
+Availability
+The source code for Cardpliance is publicly available at https://github.com/wspr-ncsu/cardpliance.
+
+# Challenges of Mobile Money in the Developing World
+In Proceedings of the ACM Symposium on Computing for Development (DEV), 2016..

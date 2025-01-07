@@ -1,0 +1,47 @@
+The HummingBad family was discovered by Check Point in February 2016. It secretly installs a rootkit on Android devices. It also earns advertising revenue with fake applications that look real. According to analysts’ determination, it is estimated to generate $300,000 monthly income . HummingBad was discovered by Check Point in 2016 . It has reached more than 85 million downloads. Surveillance or Pegasus is spyware that affects all Wechat users that can infect Android and iOS operating systems from social media platforms. This malware takes control of the device to obtain sensitive information. The malicious app, called Surveillance or Pegasus, was discovered by Citizen Lab in 2016. It affected Android and iOS operating systems.
+
+Swearing is a trojan discovered by Tencent Researchers in 2017 that steals personal and important data from victims, infects the Android operating system, and has over 100,000 downloads . Gooligan was discovered by Check Point in 2016 . It is a rootkit that infects Android operating systems and causes security weakness in more than 1 million Google accounts. FalseGuide was discovered by Check Point in 2016 . Infecting Android and iOS operating systems, this malware places botnets on people’s devices for malicious advertising purposes. Triada was discovered by Kaspersky and Check Point. Infecting Android.
+
+# Multimedia Tools and Applications (2023) 82:20269–20281
+operating systems, this malware uses a backdoor to steal money from victims. A SMS trojan bypasses CAPTCHA and steals money.
+
+Hiddad is one of the malwares discovered by Check Point and Kaspersky in 2017. It is a trojan used to gain access to confidential personal data. It is effective on Android operating systems. Ztorg is a trojan that attacks Android operating systems, discovered by Kaspersky in 2016. Like others, it steals user login information by installing fake apps via Google Play and other application markets. DressCode malware was discovered by Kaspersky in 2016. Infecting Android operating systems, this malware creates botnets for malicious attackers who create fake network traffic using IP addresses, allowing them to generate revenue.
+
+Discovered in 2016, the Godless malware family silently installs itself on Android devices. Causes annoying ads and apps to get remote instructions and gain root privilege . Discovered in 2017, the Bad Rabbit malware family is a ransomware-type threat that targets Android devices. Installed and deployed, this threat collects bitcoins from the victim in exchange for releasing resources . Discovered by Wandera’s security researcher in 2018, RedDrop malware is a family of spyware threats that target Android devices. It is a threat that can steal the victim’s device information, files, images, and audio recordings . Of the thousands of malware families discovered by G Data experts in 2019, the most popular is GandCrab, a ransomware-type malware with over 408,000 versions . Malwares named njRAT and BlackShades, versions 208,000 and 193,000 respectively, both used by malware developers to gain administrative control of the victim’s device, were discovered by G Data experts in 2019.
+
+In 2020, experts at TrendMicro found that Apple WebKit vulnerabilities were used for remote code execution. This malicious threat was a trojan named LightSpy, which was distributed using news portals such as COVID-19 update sites. It targeted iOS devices to steal personal information, take screenshots and identify nearby Wi-Fi networks . One of the popular mobile malwares of 2020 is xHelper, which targets the Android platform. Discovered by Check Point, this malware can download other malicious apps, display ads, and reinstall itself when deleted . One of the most popular malware families of 2020, identified by Check Point, is the Xafecopy trojan. Xafecopy disguises itself as useful apps, installing malware on the device. He clicks on web pages with Wireless Application Protocol (WAP) billing, a form of mobile payment, and reflects it on the victim’s cell phone bill . According to the 2021 report by Check Point experts, the most popular malware was Trickbot, infecting 4% of the world’s organizations. TrickBot emerged in 2016 as a Trojan threat designed to trick financial services and online banking users.
+
+# 3 Types of malicious attacks and mobile vulnerabilities
+# 3 Types of malicious attacks
+A malicious attack (threat) is an attempt to abuse and exploit another computer by various means. These are threats to access personal data without the victim’s knowledge and to take control of the device.
+
+There are three types of threats including phishing, social engineering, and MITM.
+
+1. Social engineering is a type of threat made by malicious social engineers to obtain your personal information from you by imitating the script (prosecutor, police, banker). Social
+# Multimedia Tools and Applications (2023) 82:20269–20281
+# 2. Engineering Threats on Smartphones
+Engineering threats on smartphones often occur through advertising. Malware is often secretly embedded in the content of adware and can be run independently of the user.
+
+2. Phishing apps are fake apps that pretend to be a real secure app on the user’s smartphone, trying to get hold of a person’s login password and other information.
+
+3. A man-in-the-middle attack (MITM) is the eavesdropping of communication between two links to capture and manipulate packets on the network. With this attack, the connection can be interrupted, or misleading communication can be created.
+
+# 3 Mobile Vulnerabilities
+Vulnerabilities in mobile devices are a flaw in the operating system that makes the device vulnerable to attack. There are various reasons why Android and iOS mobile devices become vulnerable to threats. In particular, the fact that the Android operating system is more exposed to attacks is due to the fact that it is an open-source operating system. Neglecting to make regular updates, installing applications from official application stores or third-party stores without checking their authenticity cause security vulnerabilities. Victims can still be attacked, even if downloaded from protected stores such as the Apple Store and Google Play, as malicious hackers can place threatening code on the cover of a real app.
+
+In 2020, 18,353 vulnerabilities were identified in the Common Vulnerabilities and Exposures (CVE) list. These record numbers are nearly four years in a row, more than triple the five years ago . According to the Synopsys Cybersecurity Research Center (CyRC) report, 97% of software and systems tested during 2020 were found to contain security vulnerabilities. Mobile devices are threatened by vulnerabilities in insecure data storage and communication. Of the vulnerabilities, 80% were related to insecure data storage and 53% were related to unsecured communication.
+
+# 4. Security Solutions Against Mobile Malware and Threats
+Today, with the increasing use of mobile devices, cybercriminals have begun to target mobile devices more than personal computers and laptops. A two-step method can be followed to protect mobile devices from malware and threats. First, preventive measures can be taken. Security measures should be taken to prevent attacks and malware infection on mobile devices. In the second stage, various tools can be used to detect the presence of malicious software.
+
+The remainder of this section reviews techniques for detecting and blocking malware. It also offers some measures to minimize malware attacks.
+
+# 4 Malware Detection Techniques
+Techniques such as file access permission and sandboxing were applied to take security measures on Android and iOS mobile devices. However, they have been insufficient in preventing attacks that have recently increased and continue to increase.
+
+Malicious attacks tripled from 2015, reaching over 8 million in 2016, causing more than $100 million in lost money worldwide . In 2020, SonicWall Capture Labs threat researchers recorded 5 billion malware attacks. This figure is a huge decrease compared to the previous year. However, this situation cannot be seen as a success. Because, with many people
+# Multimedia Tools and Applications (2023) 82:20269–20281
+starting to work from home, cyber security providers are gradually losing the ability to monitor traffic and potential attacks. So this number could be much higher.
+
+# 4 Signature based techniques
+The signature-based technique is a technique for detecting and identifying certain patterns of malware, called signatures. The way of work this type of method is explained as follows: Generates a new signature by comparing a newly defined signature with existing signatures in the database. The downside of this technique is that if malware developers make minor changes to the new version of their app, the signature won’t work. The comparison of the signature is made by overlapping.

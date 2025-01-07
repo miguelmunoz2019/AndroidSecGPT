@@ -1,0 +1,69 @@
+Furthermore, Wang et al.  proposed DroidRisk, a quantitative method to compute the risk of Android applications and permissions. The risk score is calculated based on the potential impact as well as the type of the permission whether it is a normal permission or dangerous permission. The authors used a static weight to represent the impact of a permission based on the permission category, 1 for normal permission category and 1 for dangerous permission category. However, measuring the impact of a permission based on applied static weight is inadequate and could affect the validity of the risk score . Similarly, Dini et al.  introduced MAETROID, a framework that evaluate the applications requested permissions along with its metadata. The permission risk score is computed by assigning a static weight to each requested permission based on the permission threat category. However, the authors did not provide any empirical evaluation and analysis of their proposed framework.
+
+In addition, Shen et al.  introduced a risk assessment model to evaluate the risk of permissions requested by an application according to the application category. The risk score is measured by calculating the number of applications requesting a specific permission within the same category over the number of applications requesting the same permission for all categories. However, the calculation of a permission risk score depends on how frequent this permission requested by other categories, which have different functionality compared to the inspected category. Consequently, a permission could have a low risk score because it was frequently requested by other categories, however, it could be risky to be granted for an application in the inspected category since the functionality of this category does not require such permission to work properly.
+
+To overcome these limitations, PUREDroid is proposed to evaluate the risk of permissions within an application based on the application category and provide the users with a risk region for each permission to help them making the right decision whether to grant or deny the requested permission.
+
+# 4. PROPOSED RISK ASSESSMENT MODEL
+The goal of this research is to introduce a reliable method to measure the security risk of Android permissions requested by applications and the magnitude of harm resulting from granting extraneous permissions. This method can be utilized to evaluate the risk of each permission based on a constructed optimal set of permissions for each application’s category. This section describes the proposed PUREDroid, a risk assessment model which is essential to reveal the privacy risk of an application based on its re-
+quested permissions.
+
+In order to measure the risk score of a permission in PUREDroid, the non-requested and requested permissions of applications within the same category are represented by two orthonormal states vectors |0⟩ and |1⟩, respectively, as follows:
+|0⟩ = (01), |1⟩ = (10) (1)
+Every permission is characterized by how many times is requested by both benign and malware applications and represented by two vectors, |m⟩ for malware and |n⟩ for benign as shown in Equation 2. The components of vectors |m⟩ and |n⟩ are depicted on Figure 1.
+
+|𝑚⟩ = 𝛼|0⟩ + 𝛽|1⟩ = (𝛽𝛼), |𝑛⟩ = 𝛾|0⟩ + 𝛿|1⟩ = (𝛿𝛾) (2)
+The coefficients 𝛼, 𝛽 and 𝛾, 𝛿 are the 𝑥 and 𝑦 components of vectors |m⟩ and |n⟩, respectively. They satisfy the normalization conditions as shown in Equation 3.
+
+𝛼2 + 𝛽2 = 1, 𝛾2 + 𝛿2 = 1 (3)
+These coefficients are related to the occurrence probabilities described by the formulas in Equations 4. 𝑃𝑚 is given by the ratio of the number of malware applications for a selected permission to the number of the entire malware dataset. Similarly, 𝑃𝑛 is given the ratio of the number of benign applications for selected permission to the number of the entire benign dataset.
+
+𝛼 = √(1 − 𝑃𝑚) 𝛽 = √𝑃𝑚 (4)
+𝛾 = √(1 − 𝑃𝑛) 𝛿 = √𝑃𝑛
+The vectors |m⟩ and |n⟩ are used to construct a risk vector based on the following steps:
+First, a two dimensional vector states are extended to three dimensional vectors with the 𝑧 component equals to zero such that
+|𝑚⟩ = (𝛽), |𝑛⟩ = (𝛿) (5)
+0 0
+Second, the cross product |n⟩ × |m⟩ is computed where its 𝑖𝑡ℎ component is given by
+(|𝑛⟩ × |𝑚⟩)𝑖 = 𝜖𝑖𝑗𝑘|𝑛⟩𝑗|𝑚⟩𝑘 (6)
+Where 𝜖𝑖𝑗𝑘 is commonly known as the Levi-Civita symbol and the Einstein summation convention is used. The indices 𝑖, 𝑗, 𝑘 ∈ {1,2,3} correspond to vector components. The only non-zero component of the cross product |n⟩ × |m⟩ is in 𝑧 direction, which has the following form:
+(|𝑛⟩ × |𝑚⟩)3 = 𝜖3𝑗𝑘|𝑛⟩𝑗|𝑚⟩𝑘 = |𝑛⟩1|𝑚⟩2 − |𝑛⟩2|𝑚⟩1 = 𝛾𝛽 − 𝛼𝛿 (7)
+= √(1 − 𝑃𝑛)𝑃𝑚 − √(1 − 𝑃𝑚)𝑃𝑛
+The cross product |n⟩ × |m⟩ in positive direction is depicted on Figure 2.
+
+Third, the z component of cross product can have both negative and positive values lies in the interval [−1, 1]. Therefore, the z component of |n⟩ × |m⟩ is re-scaled to the set of values  and is used as a scaled risk measurement function 𝑟(𝑃𝑚, 𝑃𝑛) described by
+𝑟(𝑃𝑚, 𝑃𝑛) = (1+√(1−𝑃𝑛)𝑃𝑚−√(1−𝑃𝑚)𝑃𝑛)2 (8)
+One can see that when 𝑃𝑚 = 0, (i.e, a permission is not requested by any malware) the risk function is reduced to the following form:
+𝑟(𝑃𝑚 = 0, 𝑃𝑛) = (1−√𝑃𝑛)2 (9)
+It is obvious that the risk function should be zero in the case when 𝑃𝑚 = 0 independently of 𝑃𝑛 (permission requested by benign applications). Therefore, there is a need to introduce a proper weight function 𝑤(𝑃𝑛, 𝑃𝑚) defined as
+𝑤(𝑃, 𝑃𝑚) =(𝑃𝑚(𝑃𝑚)2 𝑛)2+(𝑃𝑛2) (10)
+This leads to the expression for the weighted risk function R, which can be written in the following form:
+𝑅 = 𝑤 (1+√(1−𝑃𝑛)𝑃𝑚−√(1−𝑃𝑚)𝑃𝑛)2 (11)
+and if 𝑃𝑚 = 0, the weighted risk function R is always zero for any 𝑃𝑛 > 0, as indicated previously.
+
+The algorithm pseudo code of PUREDroid is illustrated in Algorithm 1 and the symbols used are presented in Table 1. This algorithm calculates the risk score of all permissions requested by an application A by obtaining four parameters, which are the benign applications set 𝑆B, the malware applications set 𝑆M, the set of permissions 𝑆P, and the inspected application A. Next, the usage of permission 𝑃i is counted and accumulated in 𝑃n for benign applications and 𝑃m for malware applications, which are essentially needed to compute the risk score of the permissions. After that, the risk of each permission is gauged by computing the cross product |n⟩ × |m⟩ and re-scaled to avoid negative values. Then, the weight
+is computed. Finally, the risk score R of the permission is computed by multiplying the computed weight w by the risk function r.
+
+# Algorithm 1 Computing permission risk score R
+Data: N=lScl: M-lSu|: R=0
+begin
+foreach permission(Pa) € Sp do
+foreach Application(A;) € SB do Pn Pn T 1
+end
+foreach Application(A;) € Su do Pm Pm + 1
+end
+In) x lm) (1+ln) xlm))VFPP" VFPr)P" (benign) (malware)
+U' = 0 (Polz
+end R = W
+return R:
+categories are the most targeted categories by malware according to a report from Symantec lab.
+
+To extract all permissions within an application, each Android Application Package (.apk) of the inspected applications are analyzed through a static analysis technique. The static analysis is performed to disassemble and convert the APK contents to a readable format using apktool . Once the APK is disassembled, the information about the .apk and its AndroidMainfest.xml file is retrieved. By examining all the requested permissions by all applications within the same category, it was obvious that every category has different set of permissions. Figure 3 illustrates the number of requested permissions for every category.
+
+After analyzing the permissions, the risk function assigned the permissions with different scores based on the number of times a permission was requested by benign and malware applications as depicted in Figure 4. The risk score can belong to one of three regions, which are Low risk region, Moderate risk region, or High risk region. These regions are introduced by the following cases:
+# 5. EVALUATION AND RESULTS
+PUREDroid is evaluated on a dataset obtained from AndroZoo , which is the largest publicly available benign and malware dataset for Android. After persistent effort, more than 25000 applications, including 5773 malware applications and 19242 benign applications, from AndroZoo dataset were analyzed and labeled to evaluate our distinct model. Those applications belong to seven categories, namely, Lifestyle, Music & Audio, Books & Reference, Entertainment, Tools, Education, and Photography.
+
+These categories and the risk function 𝑅 is increasing as 𝑃𝑚 is growing and for 𝑃𝑚 = 1, 𝑅𝑚𝑎𝑥 = 𝑅(1,0) = 1. Thus, all values of 𝑅(𝑃𝑚, 𝑃) ∈ (0] is considered as high risk region.
+
+• Case1: When 𝑃𝑛 = 𝑃𝑚 , 𝑅 = 0 . For any 𝑃𝑚 ≤ 𝑃𝑛 , 𝑅(𝑃𝑚, 𝑃) ∈ [0,0] is considered as a low risk region.

@@ -1,0 +1,80 @@
+- 𝑒𝑝: number of passed tests that execute the program element.
+
+- 𝑛𝑓: number of failed tests that do not execute the program element.
+
+- 𝑛𝑝: number of passed tests that do not execute the program element.
+
+For example, Ochiai uses the following formula for calculating the suspiciousness of a program element:
+𝑂𝑐ℎ𝑖𝑎𝑖(𝑒𝑙𝑒𝑚𝑒𝑛𝑡) = 𝑒𝑓 / √((𝑒𝑓 + 𝑛𝑓) * (𝑒𝑓 + 𝑒𝑝)) (1)
+1 support.google.com/android/answer/9083864?hl=en
+2 LocationManager is an example of API for location resources
+3 https://github.com/labexp/osmtracker-android
+4 https://developer.android.com/reference/android/location/LocationListener
+# Applying Spectrum-Based Fault Localization to Android Applications
+# 2 Mutation testing
+Mutation analysis is the process of introducing syntactic variations in a program aiming to produce program variants (mutants), i.e., generating artificial faults . Mutation testing refers to the use of mutation analysis in order to assess the quality of a test suite. When a test case shows the behavior of a mutant to be different from that of the original program, the mutant is said to have been “killed” or “detected” . Otherwise, the mutant is said to be “live”. During this analysis, we measure the number of mutants that are killed and calculates the ratio of those over the total number of mutants. This ratio is called mutation score.
+
+The syntactic variations of mutation analysis is performed by means of “mutation operators” . A basic set of mutant operators, usually considered as a minimum standard for mutation testing , is the five-operator set proposed for the Mothra mutation system . This set includes the Relational Operator Replacement (ROR), Logical Connector Replacement (LCR), Arithmetic Operator Replacement (AOR), Absolute Value Insertion (ABS), and Unary Operator Insertion (UOI) operators. For example, let’s consider the snippet of the onLocationChanged method in Figure 2. This method receives a Location object as an argument and updates the location in line 12. A time stamp defined by lastGPSTimestamp is maintained to control the location update (line 11). We use the ROR operator for mutating the relational operator of line 3 and generate 5 mutants (lines 5-9): 𝑒𝑥𝑝𝑟 1 <= 𝑒𝑥𝑝𝑟 2, 𝑒𝑥𝑝𝑟 1 > 𝑒𝑥𝑝𝑟 2, 𝑒𝑥𝑝𝑟 1 >= 𝑒𝑥𝑝𝑟 2, 𝑒𝑥𝑝𝑟 1 == 𝑒𝑥𝑝𝑟 2, and 𝑒𝑥𝑝𝑟 1 != 𝑒𝑥𝑝𝑟 2.
+
+Recent studies  have presented specific approaches for the mutation testing of mobile applications. For example, specialized mutation operators have been proposed from the taxonomy of real faults of Android applications . Moreover, cost reduction techniques for the mutation testing of Android applications were catalogued as a set of good practices.
+
+# 2 Resource interactions in mobile applications
+Resource interaction failures have only been recently explored in mobile applications testing . These failures occur when resources affect the behavior of other resources, similarly to the feature interaction problem in configurable software systems  and telecommunication systems . An example of resource interaction failure occurs for Wikimedia Commons app . Figure 3 presents a code snippet involved in a failure described in an issue.
+
+The Android platform uses the GPS or the network (Wi-Fi/Mobile data) to determine the device location. This application fails if both GPS and the network are disabled. The failure is caused by calling getLastKnownLocation to get the current location over the network (line 3). However, this call returns a null value, which is later used to store the location-based values when constructing an object (line 5). As a result, the application crashes due to a NullPointerException. The issue was closed with a proper correction.
+
+The high number of input combinations is a challenging aspect for testing software systems in general, since the effort of the exhaustive testing is generally prohibitive. Particularly, it is also the case of configurable systems  in which all tests must be executed with several configurations. Our previous work  named a input combination as a setting, i.e. a set of resources whose states (enabled or disabled) are previously defined. For instance, our previous study  considered a set of 14 common resources: Auto Rotate, Battery Saver, Bluetooth, Camera, Do Not Disturb, Location, Mobile Data, Wi-Fi, Accelerometer, Gyroscope, Light, Magnetometer, Orientation, and Proximity.
+
+In this study, we evaluate the sensitivity of SBFL to variations in resource settings considering the same set of resources. That is, we investigate if SBFL is able to detect variations of combinations of resources, allowing us to locate the faulty code behind the resource failures.
+
+# 3 STUDY DESIGN
+This section presents the experimental design of our study. Section 3 shows the research questions and Section 3 delineates each phase of the study.
+
+# 3 Research Questions
+The goal of this study is to evaluate the use of SBFL to locate faults in Android applications and verify the sensitivity to resource interactions. To achieve this goal, we address the following research questions:
+- RQ1: To what extent SBFL can be used for mobile applications?
+- RQ2: Is there a difference in the ranking coefficient for faults in resource-related classes and faults in general classes?
+- RQ3: How sensitive is SBFL to variations in resource settings?
+The first research question can be answered by applying the SBFL and measuring the suspiciousness score using the Ochiai coefficient. We use faults seeded by mutation operators to control the fault localization. To answer the second research question, the faults are seeded in two groups of classes, resource-related classes and general classes. The resource-related classes are identified based on the analysis of the imported packages . For the third research question, we compare the suspiciousness scores in the context of the variation of resource settings.
+
+# 3 Study Steps
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+# Marinho, et al.
+
+# Application: OSMTracker
+# Test case outcomes (pass=v , fail=X)
+X v X X v v X
+1    void onLocationChanged(Location location) {
+2     . ..
+
+3      if ( (lastGPSTimestamp + gpsLoggingInterval) < System.currentTimeMillis() ) {
+4
+5       // mut1 :        if ( (lastGPSTimestamp + gpsLoggingInterval) <= System.currentTimeMillis() )
+6       // mut2 :        if ( (lastGPSTimestamp + gpsLoggingInterval) > System.currentTimeMillis() )
+7       // mut3 :        if ( (lastGPSTimestamp + gpsLoggingInterval) >= System.currentTimeMillis() )
+8       // mut4 :        if ( (lastGPSTimestamp + gpsLoggingInterval) == System.currentTimeMillis() )
+9       // mut5 :        if ( (lastGPSTimestamp + gpsLoggingInterval) != System.currentTimeMillis() )
+10
+11           lastGPSTimestamp = System.currentTimeMillis();
+12            lastLocation = location;
+13            if (isTracking) { . . . }
+14       }
+15      }
+1    Location lastKL = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+2     if (lastKL == null) {
+3             lastKL = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+4     }
+5    return LatLng.from(lastKL);             // An object is constructed from the latitude and longitude coordinates
+the settings, since other studies 29 showed that this number of test executions was sufficient to detect flaky tests. The first application set was used to generate mutants (Step 3). For each mutant of the first application set, we execute the test suites (Step 4). This phase also includes the execution of the test suites of the second application set. Finally, we analyse the recorded test reports to calculate the Ochiai coefficient (Step 5). In the following sections, we detail each step.
+
+# 3 Application Selection
+Based on our previous work 29, we randomly selected 8 applications that meet the following criterion: implemented in Java and with test code size greater than 500 LOC. Table 1 depicts an overview of the selected applications. These applications are from different categories with a large variation of size (from 14,499 LOC to 347,897 LOC), test code size (from 525 LOC to 3,674 LOC), and test cases (from 4 to 164). We can observe a relative low instruction coverage of the test suites (from 2% to 51%). The column “Resources” presents resources declared in the Manifest file 8 that are used for the application selection. Some resources are not declared since they are not directly used by the application (for instance, Auto Rotate and Battery Saver). Other resources do not demand a uses-permission tag and may not be explicitly required by the developer with a uses-feature tag (for instance, Accelerometer
+8https://developer.android.com/guide/topics/manifest/manifest-intro
+260
+# Applying Spectrum-Based Fault Localization to Android Applications
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+# Selected Applications
+and Gyroscope). In this case, other approaches for code analysis could be used for identifying additional resources. is the low coverage of the test suite (2% in Table 1), although this application has a large number of resource-related classes.
+
+# 3 Mutants Generation
+We were not able to find specific mutation tools or operators for resource interaction failures. Therefore, we decided to use a generator prototype tool  that implements four of the five operators of the Mothra mutation system . This tool is able to generate mutants for Java code using the set of three mutants operators shown in Table 2. We opt for this tool since it requires less effort for setup execution and log generation and makes it simple to control the generation and execution of mutants.

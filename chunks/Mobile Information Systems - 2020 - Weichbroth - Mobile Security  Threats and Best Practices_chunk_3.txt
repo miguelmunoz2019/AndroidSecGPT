@@ -1,0 +1,48 @@
+# 3. Phishing and Social Engineering
+The main platform for phishing attacks is spam emails, which are sent out in mass quantities by cybercriminals. Recently, we have witnessed a new form of phishing, which is using SMS text messaging (so-called “smishing”) to send a fraudulent link to a mobile device. Social media are also used by hackers to take advantage of mobile phone users. This type of attack is aimed at users directly, most frequently exploiting human psychology rather than using technical hacking techniques. This aims to:
+- make money from a small percentage of recipients who actually respond to the message
+- run phishing scams—in order to obtain passwords, credit card numbers, bank account details, and more
+- spread malicious code onto recipients’ devices
+Protection against this type of attack is common sense based and concerns mainly not responding to dubious messages, keeping applications up to date, etc.
+
+# 3. Direct Hacker Attack and Intercepting Communication
+Contemporary users have access to sophisticated mobile devices which are part of their everyday lives, and this directly leads to an increase in the number of users. This rapid growth in users entices hackers to either intercept communication or directly attack mobile devices. According to Bishop, there are three prime targets for hackers:
+- Data—mobile devices store data and may contain sensitive data of all types
+- Identity—mobile devices are customizable, so it is easy to associate a device with a specific person, so stolen identity may be used to commit other offenses
+- Availability—limiting access to a device or even depriving the owner of its use
+9071, 2020, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2020/8828078 by Cochrane Colombia, Wiley Online Library on [08/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+# 6 Mobile Information Systems
+Intercepting communication concerns a situation in which 2 mobile devices are communicating, usually via a public LAN—the users believe they are in direct communication. This interception of communication is called a man-in-the-middle attack (MITM); the perpetrator redirects the data route, either eavesdropping or impersonating one of the parties, to steal personal data. To prevent this type of attack, users should:
+- avoid public Wi-Fi or nonpassword-protected connections
+- pay attention to notifications in their browser
+- conduct sensitive transactions via secure connections
+Taking into consideration the above rules, the user of a mobile device significantly reduces the likelihood of the interception of communication and the loss of sensitive data.
+
+# 3. Stolen and Lost Phones
+Mobile phones are considered to be personal devices on which users store lots of different types of data, either personal or business. Table 1 presents device loss case types. According to the research , mobile device users, most frequently, simply lose their devices.
+
+Mobile device owners are themselves the greatest threat when it comes to losing sensitive data, yet, at the same time, their proper behavior can help protect such data. Implementing 2FA (two-factor authentication), avoiding automatic logins, and using password-lock applications can minimize the probability of losing sensitive data.
+
+When the general public and the media picture the greatest threats to the loss of mobile devices, they usually depict muggers and pickpockets as the main suspects, while according to the research , users are twice as likely to lose their device (69%) than have it stolen (31%).
+
+# 3. User Behavior
+Mobile device users often create vulnerabilities due to the blurred line dividing personal and business use. Some of the blameworthy behaviors include turning off all types of security apps, downloading apps from third-party application stores, and sharing confidential information with unauthorized recipients. With smartphones, it becomes even easier to obtain sought-after information. Controlling user behavior is considered to be one of the greatest challenges in mobile device security.
+
+Among the practices which are helpful to organize procedures regarding user behavior security issues, we can point to security awareness training , providing detailed information about the latest online fraud techniques , and reviewing existing security procedures . One may also consider the adoption of collaborative games which, by design, stimulate creative thinking  and therefore serve as effective learning tools.
+
+# 4. Mobile Security Best Practices
+Mobile security best practices are recommended guidelines and safeguards for protecting mobile devices and users’ data . In general, hardware and software vendors outline and promote procedures and instructions which, properly applied, should maintain or increase the security level. Although there is no way to 100 percent guarantee security, as unforeseen vulnerabilities can be discovered and exploited by attackers, let us take a look at some recently developed best practices for mobile devices and applications [51–55].
+
+Make user authentication the highest priority: most mobile devices can be locked with a screen lock and unlocked with a password, biometric (e.g., fingerprint and face recognition) or personal identification number (PIN) . Nowadays, multifactor authentication is considered as the best practice to protect user’s data . On the contrary, security is entirely based on password complexity and the user’s attention to its confidentiality.
+
+Update mobile operating systems and on-board applications with security patches: keeping the operating system (Android and iOS) and the installed applications up to date is a must. Both Google and Apple provide regular updates to users, which resolve recent vulnerabilities or other threats, as well as sharing additional performance and security features . However, updating an app is a two-edged sword since a new release can decrease its overall performance and the user’s productivity. From a security perspective, updates can trigger the vetting process to confirm security clearance. In order to ensure that a mobile application conforms to an organization’s security requirements and is free from vulnerabilities, a series of rigorous and comprehensive analyses take place. One has to keep in mind that app vetting might also include updated external components (e.g., third-party libraries) and new mandatory versions of the operating systems.
+
+Back up user data on a regular basis: backing up is a basic method of preventing data loss or deletion. A backup schedule should be adapted to an increase in data over time. Examples of user data include individual user files (documents and spreadsheets), media files (e.g., pictures and videos), contacts, and other sensitive data . In case of mobile devices, the obvious choice is a remote backup, which means copying and storing files in a private or public cloud. However, the main concern in this case is the transfer speed. Even if a high-speed connection is used to send the data, the upload limitations, antivirus scanners, and firewalls can slow down the speed considerably. Another limitation concerns
+# Mobile Information Systems
+the cost of data uploading set by mobile internet providers. On the contrary, there is no guarantee that data stored in the cloud will be kept private. However, this can be easily overcome and most recommends that data files be encrypted which in turn might extend the overall backup task duration, if performed on the fly.
+
+# (4) Utilize encryption:
+data encryption translates data into another form, or code, so that only authorized parties can decrypt and read these data. The encryption feature is used for data stored on the mobile device as well as for data transmission over the network. Nevertheless, by default, encryption requires a password to encrypt and decrypt data files. If one forgets the password, the data recovery is usually problematic and not always successful. On the contrary, relying on the publicly available solutions could simply lull a user into a false sense of irrefutable security. Moreover, it is also strongly advised not to connect to and use a public and insecure Wi-Fi spot without using a secure transmission option such as a virtual private network (VPN) . In this case, compared to regular internet connections, VPNs are still almost invariably slower, depending on the distance between the server and the client, the current server load, and the encryption level applied.
+
+# (5) Enable remote data wipe:
+in case a user has their device with sensitive data stolen and there is little chance of retrieving them in a relatively short period of time, one should consider turning on the device capability which allows a factory reset message to be remotely executed . Furthermore, remote data wipe is imperative in case of termination of employment or contracting a malware infection which cannot be uninstalled or deleted. While the existing solutions have clear advantages, they are not cure-all for mobile security. For instance, while some tools erase only part of the data, others erase the entire content, including applications and personal data. Therefore, one should consider deploying a secure container which, by design, separates the applications from personal data, enabling selective erasure in case of a security incident. Moreover, a proactive approach that tracks the use of sensitive data will improve security by early detection and prevention of its misuse or theft.

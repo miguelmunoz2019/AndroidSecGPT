@@ -1,0 +1,58 @@
+# Penetration Frameworks and Development Issues in Secure Mobile Application Development: A Systematic Literature Review
+IKRAM UL HAQ AND TAMIM AHMED KHAN
+Department of Software Engineering, Bahria University, Islamabad 44000, Pakistan
+Corresponding author: Tamim Ahmed Khan (tamim@bahria.edu.pk)
+Received May 16, 2021, accepted June 1, 2021, date of publication June 10, 2021, date of current version June 24, 2021.
+
+Digital Object Identifier 10/ACCESS
+# ABSTRACT
+The invention of smartphones has opened a new market for mobile application development. Amateur android app developers often do not possess knowledge of the latest android vulnerabilities and thus create applications with attack surface that hackers exploit. In this literature review, many available frameworks and techniques have been analyzed using ISO/IEC 25010 software quality model and identified challenges that android developers face in designing a secure application for android. This paper also presents a comprehensive survey of different penetration tools, evaluated by using criteria such as code analysis, code review, vulnerability analysis, vulnerability exploit, payload and whether these can be used in vulnerability modeling during the design phase. Our study effectively identifies the issues and gaps which can further help develop a framework/tool for designing a penetration secure mobile application by embedding all the vulnerabilities during the design phase using an android vulnerability repository.
+
+# INDEX TERMS
+Android, penetration testing, android security and privacy.
+
+# I. INTRODUCTION
+Android is an open-source, Linux kernel-based mobile operating system. It allows developers to develop native applications using the Android SDK. According to Gartner Inc. , the sales stats of 2017 showed that 86% of mobile phones users are using Android OS. There are ten different android operating systems and each version of android OS API vary in functionality and security. The latest API 29 was used in version 10. Android applications are in the form of an APK package. When we decompress an APK package we get the following files and folders:
+- AndroidManifest.xml: This file contains permissions, configuration and security details of each of the component.
+
+- resources.arsc: This file contains compiled resources.
+
+- classes.dex: This file executes when the application runs. It contains the Dalvik Bytecode.
+
+- Res: This folder consists of images etc.
+
+- Assets: This folder contains a database, videos etc.
+
+Android has its own security mechanism and multiple applications utilize a shared memory space. Despite sandboxing and implementation of security models, android is prone to vulnerabilities with increased number of malware attacks . A report showed that 60 games on google play store were malware-infected . The system resources can be accessed by an application if the users assign permissions at the time of installation of the application.
+
+The Android architecture consists of the following components:
+- Activities: It provides an interface where a user can perform an activity such as making a call, sending SMS and so on.
+
+- Services: It runs in the background and performs long terms desired functionality such as alarm app running in the background.
+
+- Broadcast receivers: It performs a system vide operation announcements.
+
+- Content providers: It presents data to external applications. The application can share data and functionality using content providers.
+
+Android has a WebKit engine-based browser and for data storage, it has an SQL database engine (SQLite) . User can download and install various “third party” applications from Google Play . There are three types of Android applications: (1) Native Applications are Platform specific.
+
+This work is licensed under a Creative Commons Attribution 4 License. For more information, see https://creativecommons.org/licenses/by/4/
+VOLUME 9, 2021
+# EEE Access
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+applications. These applications can have access to camera, accelerometer, SMS, Contacts, etc. (2) Web applications look like native application but they are in fact HTML coded pages loaded in a browser window. These apps do not have access to the system features like camera, contact etc. (3) Hybrid Applications have both properties of native as well as web apps. A part of these app utilizes browser while the rest can use the system features.
+
+A number of applications being developed for Android OS are prone to threats and can act maliciously. These applications can affect the users in a number of ways, from draining the battery to the theft and loss of user’s personal data. A safe application can become malicious by acquiring unnecessary permissions from the user at the time of installation. An application can (1) send paid SMS (2) steal personal data (3) dial calls (4) initiate harmful activities using your mobile phone as bait. Permission Gap occurs when an additional set of permissions is acquired by the application which are not mandatory. This Permission Gap helps the malware to achieve goals like code-injection.
+
+Android applications can interact with each other and can pass messages to provide services to each other through android message passing system. Malwares such as viruses, Trojans and spy tools pose a serious threat to mobile devices such as by leaking personal information, causing financial loss, depleting battery power, and degrading network performance. It is important to understand that the entry points in the application can pose a threat to the user data if not handled properly . Therefore, the changing Android ecosystem impacts the app performance adversely.
+
+Penetration testing, also known as Pen-test, helps in identifying vulnerabilities in an application using test scenarios to uncover issues that can allow an intruder to gain access to a data/system. Pen-testing performed at the time of deployment of the application and is not executed at each stage of the software development life cycle. Post-deployment security fixes, lacking of regression testing, produce ancillary errors and application can become vulnerable. Lack of pen-testing by mobile application developers also result in insecure mobile applications.
+
+Unencrypted data in the banking applications leads to Man-in-the-Middle (MitM) attacks. Enterprises, financial institutions, banks and third-party laboratories should perform vulnerability assessment in detail once a year or twice a year for security inspection of mobile banking applications for identification of vulnerabilities and exploits . Ethical hackers can perform penetration testing to gain access to a system/network and exploit the vulnerabilities in the system . This type of hacking is considered legal because vulnerabilities are reported to the owner of the system so that improvements can be made to the system from a security point of view . Deficiencies in the system network and applications can help the hackers in entering the system where they can damage the system . The security and reliability (sr) of the application is dependent and directly proportional to the expertise (e) of the tester (sr ∝ e). Many pen-test methodologies exist where different tools and techniques are employed but each methodology starts after a module or application is deployed. The pen-test phases involve gathering application information, vulnerability analysis, and exploitation.
+
+From a secure application development point of view, it is important that the application designer must have a complete knowledge of the threat model for the possible attack surface and threats to the entire application architecture. Lack of developer’s experience and security knowledge of different vulnerabilities often result in vulnerable applications  . Threats and malware often appear due to excessive /mishandled permissions . Lack of best programming practices while programming an android application can lead to a malicious application . Security implementations during software development receive less consideration and attention, in an effort to save time and cost.
+
+The solution to complex problems can be acquired through Model-Driven Development (MDD) . Various modelling languages may be used to design abstract models that have significant impacts by translation of model to code using various tools. Unified Modeling Language (UML), for instance, is used in the software application development domain which consists of a set of notations that can be utilised to model structural and behavioural aspects of the systems . Nowadays, although UML is commonly used to model android based applications, but no notations and stereotypes are deployed in UML that can effectively help in modelling security aspects in applications for Android OS ,.
+
+In this paper, we investigated tools and frameworks which can help to model threats during mobile app development. Additionally, we explored the issues developers face during android application development and made the following contributions:
+1. We discussed android vulnerabilities and how they affect users’ privacy that can further lead to information theft as well as resources leakage. The problem originates when amateur android developers do not take proper security measure due to lack of android security knowledge which hackers exploit through SQL Injections, gaining privileges, malware penetration for gaining access to device. To the best of our knowledge, this is the first work that discusses the android development challenges and solutions in relation with existing penetration frameworks and tools.

@@ -1,0 +1,78 @@
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+Yurak Choe
+wonsip6@g.skku.com
+Sungkyunkwan University, Suwon, Gyeonggi-do, Korea
+Hyungseok Yu
+Samsung Electronics, Suwon, Gyeonggi-do
+yelvis@samsung.com
+Taeho Kim
+Samsung Electronics, Suwon, Gyeonggi-do
+taeho81.kim@samsung.com
+Shinjae Lee
+Samsung Electronics, Suwon, Gyeonggi-do
+shinjae1.lee@samsung.com
+Hojoon Lee*
+Sungkyunkwan University, Suwon, Gyeonggi-do
+hojoon.lee@skku.edu
+Hyoungshick Kim*
+Sungkyunkwan University, Suwon, Gyeonggi-do
+hyoung@skku.edu
+# ABSTRACT
+In Android 12, Google introduced a new security feature called the privacy indicator to protect users from spyware. The privacy indicator visually alerts users by displaying a green circle in the notification bar when an application accesses the camera. While this feature initially appears effective, our work has identified two possible attack scenarios that can undermine it. The first attack uses screen overlay techniques with a higher Z-order and deceptive status bar layouts to make it difficult to see the privacy indicator. In a user study involving 44 participants, only 13% of participants recognized the indicator under UI overlay attacks, compared to 63% in default Android 12 settings. The second attack exploits device configurations to disable the privacy indicator. Our findings were reported to the developers of the Android system UI at Samsung Electronics and the Google Issue Tracker, and we received acknowledgments from both parties. As countermeasures, we recommend ensuring the integrity of the privacy indicator using trusted execution facilities. We introduce a proof-of-concept solution called SEPI (Security-Enhanced Privacy Indicator), which utilizes a secure hypervisor and ARM TrustZone. SEPI is designed to detect camera and microphone activities, subsequently displaying the relevant indicator with the highest Z-order in a securely isolated display buffer. Our experimental findings revealed only a minimal 3% reduction in benchmark scores compared to the device’s default operational state. The SEPI privacy indicator is displayed with a negligible mean delay of 20 ms.
+
+# CCS CONCEPTS
+• Security and privacy → Privacy protections; Mobile platform security; Trusted computing; Privacy protections.
+
+# KEYWORDS
+Android privacy indicator, Mobile platform security, TrustZone
+*Corresponding authors
+This work is licensed under a Creative Commons Attribution International 4 License.
+
+In this paper, we present two attack scenarios that can render the Android privacy indicator ineffective during camera operation. The first attack uses overlay techniques from accessibility service with a higher Z-order and a deceptive status bar layout, making
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+Yurak Choe, Hyungseok Yu, Taeho Kim, Shinjae Lee, Hojoon Lee, and Hyoungshick Kim
+# 1
+(a) iPhone’s privacy indicator feature: The orange indicator indicates that an app is using the microphone, while the green indicator indicates that an app is using the camera or both the camera and microphone at the same time.
+
+(b) Android’s privacy indicator feature: When an app is using the camera on an iPhone, the camera icon initially appears, followed by a transition to a green dot. The green dot remains visible until the app is either dismissed or closed.
+
+it difficult to recognize the indicator. The second attack involves reverse shell intrusions that exploit Android device configurations to disable the privacy indicator functionality. We confirmed the successful execution of both attacks on a Galaxy S22, Galaxy A52s 5G, Google Pixel 3, and Google Pixel 6. We conducted a user study with 44 participants to analyze their awareness of the Android privacy indicator under UI overlay attacks. Only 13% of participants identified the indicator when exposed to UI overlay attacks, while 63% recognized the indicator under default Android 12 settings.
+
+To mitigate the threats of these attacks, we need to ensure the integrity of such security warnings. To achieve this goal, we implement a proof-of-concept privacy indicator protection called SEPI (Security-Enhanced Privacy Indicator). SEPI leverages the secure hypervisor to collect the true device status in a trustworthy way and also protect a privacy indicator frame with a secure buffer used through TrustZone-based DRM. By ensuring that the privacy indicator is rendered with the highest Z-order through the operating system framebuffer, SEPI provides a trustworthy privacy indicator even under the compromise of the Android operating system.
+
+To demonstrate the feasibility of SEPI, we implemented it on a Samsung Galaxy A52s 5G (equipped with an octa-core processor and 6GB RAM) and evaluated the performance overhead of SEPI on the device. We ran a Passmark benchmark app while recording videos in the background on both the vanilla device (i.e., the device after a factory reset) and the SEPI-implemented device. Our performance evaluation revealed that our SEPI implementation decreased the overall benchmark score by a mere 3% compared to the vanilla device. Additionally, we measured the execution latency overhead of TrustZone composition in SEPI by conducting 403 repeated tests from the surface, request, enqueue, to stop. We found that SEPI’s privacy indicator via TrustZone was promptly displayed with a mean execution latency of 21 ms and a standard deviation of 2, indicating no substantial latency overhead when employing SEPI.
+
+# The key contributions of this paper are as follows:
+- We provide a detailed analysis of novel attacks that can mask the privacy indicator on the device’s status display interface during sensitive device usage (e.g., camera and microphone). We substantiate the effectiveness of the attacks through a user study in which only 3 out of 22 participants could identify the privacy indicator when it was cunningly obscured during camera usage.
+
+- We report our findings to Samsung Electronics and Google. Samsung Electronics acknowledged the issues and confirmed that they have been resolved in OneUI 4, which is implemented in the latest Samsung smartphones. Google also acknowledged them as a potential misuse of the accessibility service but did not categorize it as a software bug vulnerability.
+
+- We propose a proof-of-concept mitigation design called SEPI. SEPI leverages the existing hypervisor and TrustZone components that are widely available in modern Android mobile devices to preserve the visual integrity of privacy indicators even under full system compromise.
+
+# 2 UI OVERLAY ATTACK
+We have identified two potential attack scenarios that can undermine the effectiveness of the privacy indicator. The first involves screen overlay techniques with a higher Z-order and deceptive status bar layouts, designed to obscure the visibility of the privacy indicator. The second scenario involves manipulating device configurations to disable the privacy indicator. In this section, we will delve into the UI overlay attack scenario. The following section will discuss the device configuration tampering attack in further detail.
+
+# 2 Threat Model
+The threat model considered here involves a malicious application capable of performing UI overlay attacks. We envision a scenario where a victim’s Android device is compromised through social engineering, leading to the installation of an application with accessibility service permission. Originally intended to assist users with disabilities by modifying the UI and overlaying graphics, this permission is examined for potential exploitation. Our paper investigates the misuse of Android’s accessibility service permission by a malicious application to launch UI overlay attacks, which undermine the effectiveness of privacy indicator UI.
+
+# 2 Android Overlay
+An overlay is a UI feature that has been supported since Android version 1. The overlay creates an additional view layer on top of the host view, allowing a mobile application to draw on top of other applications. The rationale for Android overlay capabilities is to improve the user experience when users interact with multiple applications simultaneously. Unfortunately, this overlay feature is sometimes exploited for UI overlay attacks. An attacker uses a transparent or opaque UI layer over a legitimate UI layer to interact with a malicious overlay before the user interacts with the legitimate UI layer or with a legitimate UI layer. Malicious overlays can be buttons, data entry fields, or other screens within the mobile application that mimic the actual user interface. As a result, hacker-controlled malware can obscure a victim’s UI. The combination of malware and social engineering tactics with UI overlay attacks makes them more realistic and effective.
+
+Previous research utilized the SYSTEM_ALERT_WINDOW permission for UI overlay attacks. However, our findings show that combining WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY with SYSTEM_ALERT_WINDOW permission results in overlays with low Z-order values that are insufficient in concealing.
+
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+the privacy indicator UI. Consequently, the privacy indicator re-
+mains visible during UI overlay attacks using these permissions.
+
+This underscores the unique necessity of the accessibility service
+permission to disable the privacy indicator UI–a novel vulnerability
+that we have identified in our paper.
+
+# 2 Android Accessibility Service
+Accessibility services on Android, designed to assist visually im-
+paired users, have potential vulnerabilities, as our study reveals.
+
+The Android WindowManager service provides the TYPE_ACCESSI-
+BILITY_OVERLAY window type, allowing layouts created by acces-
+sibility services to overlay other views and possibly obscure them.

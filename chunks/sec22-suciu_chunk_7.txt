@@ -1,0 +1,66 @@
+Label Noise. The problem of label noise has been studied extensively in machine learning , primarily focusing on random and class-dependent noise. Limited work focuses on feature-dependent noise, which requires either strong theoretical guarantees about the sample space  or depends on a large dataset of clean labels to learn noise probabilities . In security, the closest to our work is the study by Deloach et al  which models noise in malware classification as class-dependent.
+
+# 9 Conclusions
+By investigating exploitability as a time-varying process, we discover that it can be learned using supervised classification techniques and updated continuously. We discover three challenges associated with exploitability prediction. First, it is prone to feature-dependent label noise, a type considered by the machine learning community as the most challenging. Second, it needs new categories of features, as it differs qualitatively from the related task of predicting exploits in the wild. Third, it requires new metrics for performance evaluation, designed to capture practical vulnerability prioritization considerations.
+
+We design the EE metric, which, on a dataset of 103,137 vulnerabilities, improves precision from 49% to 86% over state-of-the art predictors. EE can learn to mitigate feature-dependent label noise, capitalizes on highly predictive features that we extract from PoCs and write-ups, improves over time, and has practical utility in predicting imminent exploits and prioritizing critical vulnerabilities.
+
+Acknowledgments. We thank Vulners and Frank Li for their data. We also thank the anonymous reviewers, Yigitcan Kaya and Ben Edwards for feedback. This material was supported by a grant from the Department of Defense, the Army Research Office (W911NF-17-1-0370), the National Science Foundation (CNS-2000792), and based upon work supported by the Defense Advanced Research Projects Agency (DARPA) under Agreement No. HR00112190093. Approved for public release; distribution is unlimited.
+
+BleepingComputer. Ie zero-day adopted by rig exploit kit after publication of poc code. https://www.bleepingcomputer.com/news/security/ie-zero-day-adopted-by-rig-exploit-kit-after-publication-of-poc-code/, 2018.
+
+M. Bozorgi, L. K. Saul, S. Savage, and G. M. Voelker. Beyond heuristics: learning to classify vulnerabilities and predict exploits. In KDD, Washington, DC, Jul 2010.
+
+Bugtraq. Securityfocus. https://www.securityfocus.com/, 2019.
+
+A. Caliskan-Islam, R. Harang, A. Liu, A. Narayanan, C. Voss, F. Yamaguchi, and R. Greenstadt. De-anonymizing programmers via code stylometry. In 24th USENIX Security Symposium (USENIX Security 15), pages 255–270, 2015.
+
+A. Chakraborty, M. Alam, V. Dey, A. Chattopadhyay, and D. Mukhopadhyay. Adversarial attacks and defenses: A survey. arXiv preprint arXiv:1810, 2018.
+
+H. Chen, R. Liu, N. Park, and V. Subrahmanian. Using twitter to predict when vulnerabilities will be exploited. In Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining, pages 3143–3152, 2019.
+
+T. M. Corporation. Common weaknesses enumeration. https://cwe.mitre.org.
+
+#home, 2019.
+
+18. K. Soska and N. Christin. Automatically detecting vulnerable websites before they turn malicious. In Proceedings of the 23rd USENIX Security Symposium, San Diego, CA, USA, August 20-22, 2014., pages 625–640, 2014.
+
+19. O. Suciu, C. Nelson, Z. Lyu, T. Bao, and T. Dumitras. Expected exploitability: Predicting the development of functional vulnerability exploits. arXiv preprint arXiv:2102, 2021.
+
+20. Symantec Corporation. Symantec threat explorer. https://www.symantec.com/security-center/a-z, 2019.
+
+21. L. Szekeres, M. Payer, T. Wei, and D. Song. Sok: Eternal war in memory. In 2013 IEEE Symposium on Security and Privacy, pages 48–62. IEEE, 2013.
+
+22. Player 3 has entered the game: say hello to ’wannacry’. https://blog.talosintelligence.com/2017/05/wannacry.html.
+
+23. N. Tavabi, P. Goyal, M. Almukaynizi, P. Shakarian, and K. Lerman. Darkembed: Exploit prediction with neural language models. In AAAI, 2018.
+
+24. Tenable. Tenable research advisories. https://www.tenable.com/security/research, 2019.
+
+25. Tenable Network Security. Nessus vulnerability scanner. http://www.tenable.com/products/nessus.
+
+26. First probabilistic cyber risk model launched by RMS.
+
+27. Severity vs. vpr. Tenable, 30 March 2019. https://docs.tenable.com/tenablesc/Content/RiskMetrics.htm.
+
+# Appendix
+# A Evaluation
+Additional ROC Curves. Figures 8 and 9 highlight the trade-offs between true positives and false positives in classification. EE performance improves over time. To observe how our classifier performs over time, in Figure 10 we plot the performance when EE is computed at disclosure, then 10, 30 and 365 days later. We observe that the highest performance boost happens within the first 10 days after disclosure, where the AUC increases from 0 to 0. Overall, we observe that the performance gains are not as large later on: the AUC at 30 days being within 0 points of that at 365 days. This suggests that the artifacts published within the first days after disclosure have the highest predictive utility, and that the predictions made by EE close to disclosure can be trusted to deliver a high performance.
+
+Twitter. Filtered stream. https://developer.twitter.com/en/docs/twitter-api/tweets/filtered-stream/introduction.
+
+Virustotal. Virus total. www.virustotal.com.
+
+Vulners. Vulners vulnerability database. https://vulners.com/.
+
+Y. Watanabe. Assessing security risk of your containers with vulnerability advisor. IBM, 30 March 2019. https://medium.com/ibm-cloud/assessing-security-risk-of-your-containers-with-vulnerability-advisor-f6e45fff82ef.
+
+W. Wu, Y. Chen, J. Xu, X. Xing, X. Gong, and W. Zou. {FUZE}: Towards facilitating exploit generation for kernel use-after-free vulnerabilities. In 27th USENIX Security Symposium (USENIX Security 18), pages 781–797, 2018.
+
+C. Xiao, A. Sarabi, Y. Liu, B. Li, M. Liu, and T. Dumi- risk profiles for an early discovery of vulnerabilities exploited in the wild. In 27th USENIX Security Symposium (USENIX Security 18), pages 903–918, 2018.
+
+T. Xiao, T. Xia, Y. Yang, C. Huang, and X. Wang. Learning from massive noisy labeled data for image classification. In Proceedings of the IEEE conference on computer vision and pattern recognition, pages 2691–2699, 2015.
+
+F. Yamaguchi, N. Golde, D. Arp, and K. Rieck. Modeling and discovering vulnerabilities with code property graphs. In 2014 IEEE Symposium on Security and Privacy, pages 590–604. IEEE, 2014.
+
+ZDNet. Recent windows alpc zero-day has been exploited in the wild for almost a week. https://www.zdnet.com/article/recent-windows-alpc-zero-day-has-been-exploited-in-the-wild-for-almost-a-week/, 2018..

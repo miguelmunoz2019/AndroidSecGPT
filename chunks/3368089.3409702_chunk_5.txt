@@ -1,0 +1,84 @@
+To determine whether app links are valid, besides checking the correctness of app links claimed, we also need to check the correctness of the DAL. If and only if both the app itself and the DAL are successfully configured, the app links are valid. To obtain the app links claimed by an app, we plan the following steps:
+• Step 1: Exploring reachable Activities. We extract all intent filters from all Activities, whose “categories” contain BROWSABLE and DEFAULT fields. With these fields, these Activities are reachable from a browser;
+• Step 2: Verifying the app link. For the all intent filters extracted from Step 1, we extract intent filters whose “action” fields contain VIEW. It returns intent filters either with app links or with customized URLs. Then, we extract intent filters with HTTP(s) schemes as they represent the app links;
+After Step 2, we obtain all app links claimed by the app. For each app link, we extract the domain from the app link. Then, we leverage OpenWPM  to visit the domain. We set the loading interval to 15 seconds to allow page loading and URL redirection. Then, we download the corresponding DAL files from remote servers. For a given domain X, its DAL file is located at X/.well-known/asset-links.json.
+
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+# Evaluation Roadmap
+In Research Question (RQ) 1, we discuss the incorrect configurations of app links. Note that, incorrect configurations can make app link verification fails. Apps that fail to pass app link verification are fragile to various attacks , such as link hijacking, man-in-the-middle (MITM) attack. They are also vulnerable to attacks proposed in this paper.
+
+In RQ 2 and RQ 3, we evaluate whether real-world apps are robust to link hijacking attacks (with and without STS). In RQ 4, we discuss whether instant apps are robust to instant app hijacking. Last, in RQ 5, we evaluate the accuracy of our MIAFinder tool.
+
+# 6 RQ1: Are real-world apps correctly configure app links?
+# Motivation
+In this RQ, we aim at finding the incorrect configurations of app links. The incorrectness implies that app links are not valid, and it leaves room for attackers.
+
+# Methodology
+The correctness of app links requires the following checking:
+1. the “autoVerify” attribute must be set to be TRUE in the app’s manifest file. This attribute triggers the verification process of app links declared. Without this attribute, Android does not verify the link;
+2. if the domain declared is not valid (i.e., the domain not exists or cannot be visited), the verification of app links cannot be passed;
+3. if the domain declared does not contain any DAL, the verification of app links fails as well. For example, if an app claims to associate a domain www.example.com and the domain does not publish any DAL, the verification fails. As the assetlinks.json must be published under a fixed path (&lt;domain&gt;/.well-known/assetlinks.json), if the assetlinks.json cannot be found at the path, we consider there is no DAL published;
+4. if the DAL file exists, we check whether the DAL file subjects to its syntax. If and only if the DAL is corrected built, the app links are valid.
+
+Given a DAL, we perform the following steps for evaluating it.
+
+- Step 1: Checking DAL existences. We check whether a domain hosts a DAL file. It can be achieved by checking whether the path of the DAL file is reachable. It is possible that a domain does not contain a DAL, and it does not support any app link.
+
+- Step 2: Verifying the syntax. As Android forces the syntax of a DAL file, the valid DAL must pass the syntax checking. For example, if a DAL file adds a field that is not supported by the syntax, the verification of the DAL cannot pass.
+
+- Step 3: Checking fields. Next, we check the fields and values in the DAL to explore all possible violations in the DAL. For the relation field, there are two standard relations (§4). For the target field, there are two possible targets, android_app and web. If a DAL has an invalid field or sets an invalid value, the verification of the DAL fails.
+
+- Step 4: Include statement checking. It is also possible to claim statement indirectly by referring an existing DAL with the include statement . Therefore, for this type of DAL, we check the included file with Step 1 to Step 3.
+
+# Results
+As a result, the incorrect configurations of app links belong to the following categories:
+- Missing “autoVerify=true” field: To allow Android verifies the app link, the field “autoVerify=true” must be set. Therefore, if an app link lacks such a field, the verification fails.
+
+- Invalid host format: The host must be a correct URL in format; otherwise the app link cannot be verified.
+
+- Inaccessible host: Even a given host a URL in format, if the URL cannot be accessed, the app link verification can not pass as the DAL cannot be retrieved.
+
+- Missing fields in Intent-filters: The valid app link requires the intent-filter to specify: a ACTION_VIEW action, one or more data tags, and two categories (BROWSABLE and DEFAULT). Missing any field makes the app link invalid.
+
+In addition, we find that the incorrect configurations of DALs belong to the following categories:
+- Incorrect JSON formatting errors: This type of error is that the DAL is not with a valid JSON format. The errors can be unmatched brackets, unexpected symbols, unknown symbols, and duplicate entities.
+
+- Incorrect fields: Some incorrect DALs have field errors, including using undefined fields, missing required fields (e.g., namespace), typo in fields. All these make them invalid.
+
+- Incorrect Namespace: The syntax of the DAL requires its namespace to be “android_app” or “web”. If a DAL uses invalid namespaces, the app link verification fails.
+
+# Answer to RQ1
+Among all 200,000 Google Play apps, 8,682 apps use app links. There are only 18% of them configure the app links correctly. Among all 200,000 Tencent-Myapp apps, 4,035 apps use app links. There are only 3% of them configure the app links correctly.
+
+# Implications
+This experiment suggests that developers must check the configurations of app links carefully. As for app markets, we suggest app markets for forcing apps to verify domains claimed by apps.
+
+# 6 RQ2: Are real-world apps robust to the general link hijacking attack with STS?
+# Motivation
+In this research question, we intend to evaluate whether real-world apps robust to link hijacking with STS.
+
+# Methodology
+See Sec. 5 for details.
+
+# Answer to RQ2
+As a result, there are 53,619 Google Play apps (26%) that are vulnerable to link hijacking with STS attack. There are 54,650 Tencent-Myapp apps (27%) that are vulnerable to this attack.
+
+# Implications
+For this type of attack, it is the defect introduced by Android. Even if the victim is a browser or contains an in-app browser, the attack can be launched successfully. It is because that STS first obtains the URL selected and then broadcasts an Intent to find the target candidate for the URL. In Sec, we proposed four solutions for protecting this attack by either stopping users from selecting any text or customizing the suggestions returned by STS.
+
+# 6 RQ3: Are real-world apps robust to the link hijacking attack without STS?
+# Motivation
+In this research question, we intend to evaluate whether real-world apps are robust to link hijacking without STS. This evaluation aims at finding the risks of this attack.
+
+# Methodology
+See Section 5 for details.
+
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+Yutian Tang, Yulei Sui, Haoyu Wang, Xiapu Luo, Hao Zhou, and Zhou Xu
+# Answer to RQ3:
+As a result, there are 57,442 Google Play apps (28%) that are vulnerable to link hijacking without STS attack. There are 62,496 Tencent-Myapp apps (31%) that are vulnerable to this attack.
+
+# Implications.
+
+As the results show, there is a large number of apps that are vulnerable to the link hijacking attack. To prevent from being attacked, an app can implement an in-app browser rather than broadcast the Intent. Except for this approach, an app cannot prevent this attack. The reason is that it is Android rather than the victim app to select the target app to respond to the URL. Therefore, the defect must be fixed from the system layer. Nothing can be done by the victim app to prevent this attack.

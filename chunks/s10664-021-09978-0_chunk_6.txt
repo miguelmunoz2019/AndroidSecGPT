@@ -1,0 +1,53 @@
+In summary, apps in the News & Magazines category tend to be more exposed than the other apps to vulnerabilities that could be likely exploited for performing Man-In-the-Middle attacks (i.e., SSL Connection Checking, SSL Certificate Verification Checking, and SSL Implementation Checking). In addition, News & Magazines apps tend to be quite prone also to vulnerabilities (i) that may cause injection attacks (i.e., vulnerabilities related to WebView and Runtime command), and (ii) that may allow unauthorized access to sensitive data (i.e., KeyStore protection vulnerability). It is worth noticing that also apps in the Communication category are (i) more prone than others to vulnerability warnings related to injection attacks (i.e., Runtime command, and Fragment vulnerabilities), and (ii) make more frequent use of implicit Intents, as apps in the Social category. Finally, the most recurrent vulnerability warnings found in the applications of the Medical category are related to the connection to URLs that are not under SSL, and the usage of vulnerable WebView, while any other critical warning has been found in less than 16% of apps belonging to this category.
+
+Surprisingly, looking at Fig. 2 we can easily observe that, while Medical apps exhibit the lowest levels of vulnerability-proneness (probably due to the reduced sizes of this kind of apps that decrease the probability of releasing vulnerable code) apps in this category are also the ones exhibiting the highest vulnerability-proneness density. Indeed, the differences
+# Empir Software Eng (2021) 26: 78
+# 4 RQ 2 : Does the vulnerability-proneness of Google market apps affect app success?
+As illustrated in Fig. 3, in terms of vulnerability-proneness levels, no significant differences could be observed between apps having different rating scores. Indeed, the Kruskal-Wallis test returned p = 0.
+
+To investigate more in-depth whether users of apps in specific categories could be more concerned about security and privacy aspects, as stated in Section 3, we repeated the analysis for each specific app category. The results of such an analysis partially confirm our conjecture that the vulnerability-proneness of an app does not generally affect user ratings. Indeed, for none of the considered categories, we observed statistically significant differences between the vulnerability-proneness levels of apps with different ratings.
+
+0
+in terms of vulnerability-proneness density between the different app categories are statis-
+tically significant (the Kruskal-Wallis test returned p = 1 ∗ 10−6). Specifically, the Medical apps significantly differ from apps in the Entertainment, Social, and Dating categories with large effect size, while Weather apps significantly differ from apps in the Social and Entertainment category with medium effect size. We can conclude that although Medical apps exhibit the highest vulnerability-proneness density levels, they tend to be less prone to potentially critical vulnerabilities than other kinds of apps, as evidenced in our qualitative analysis.
+
+# Empir Software Eng (2021) 26: 78
+Page 19 of 31
+# 8
+last result was quite unexpected, as some of the studied categories encompass apps handling very sensitive data (e.g. Medical, Finance, Shopping, etc.).
+
+As done in RQ 1, we also conducted a normalized analysis to better understand if any relations can be observed between vulnerability-proneness density and the app rating. As shown in Fig. 4, apps having a lower average rating tend to have a higher vulnerability-proneness density. More specifically, the Kruskal-Wallis test highlighted that the differences in terms of vulnerability-proneness density among apps having different rating are statistically significant (i.e., the Kruskal-Wallis test returned p = 1 ∗ 10−5), while the post-hoc Mann-Whitney pairwise comparisons revealed that the differences are statistically significant for the following pairs: (i) apps with r < 3 and apps with r > 4, (ii) apps with
+r <= 3
+3 < r <= 4
+4 < r <= 4
+r > 4
+Distributions of detected vulnerabilities in apps belonging to different rating groups
+Distributions of vulnerability-proneness density in apps belonging to different rating groups
+r &lt; 3 and apps with 4 &lt; r &le; 4, (ii) apps with 3 &lt; r &le; 4 and apps with r &gt; 4, and (iv) apps with 3 &lt; r &le; 4 and apps with 4 &lt; r &le; 4. However, such differences exhibit negligible to small effect sizes (i.e., Cliff’s d ranges from 0 to 0).
+
+Though no significant relationships could be found between the vulnerability-proneness levels of apps and app ratings, differences with negligible or small effect sizes can be observed between the vulnerability-proneness density of apps with different ratings. Thus, we can argue that a higher vulnerability-proneness density may lead users to give lower ratings.
+
+For better understanding if security and privacy concerns are taken into consideration by users when selecting apps to install, as reported in Section 3, we also measured the vulnerability-proneness levels of apps having different number of installs. As shown in Fig. 5, more popular apps tend to exhibit higher levels of vulnerability-proneness. More specifically, the Kruskal-Wallis test returned p = 1 ∗ 10−8 and the posthoc Mann-Whitney pairwise comparisons revealed that the vulnerability-proneness levels of apps belonging to the up to 1M group are different with statistical evidence from those of apps belonging to both up to 50M and more than 50M groups with small and medium effect-sizes, respectively.
+
+However, this result could be due to the fact that more popular apps likely have larger sizes (Corral and Fronza 2015). Indeed, more meaningful differences are observed when looking at the vulnerability-proneness density of the apps with different levels of installs, as shown in Fig. 6. In this case, the Kruskal-Wallis test returned p &lt; 2 ∗ 10−16, while the post-hoc Mann-Whitney pairwise comparisons revealed that the differences are statistically significant for all the pairs with medium to large effect sizes (i.e., Cliff’s d varies from 0 to 0).
+
+The conjunction of these results leads us to conclude that, while the vulnerability-proneness of apps does not seem to significantly impact their success, more popular apps tend to exhibit a lower vulnerability-proneness density. Despite app markets do not provide enough information to help users carefully selecting higher quality apps (Canfora et al.
+
+# 3
+# 8
+# 3
+# 8
+|
+2016; Di Sorbo et al. 2021), Google Play Protect8 can lead users more towards installing apps with lower vulnerability-proneness density. Besides, the lower vulnerability-proneness density of apps with higher ratings and installs could also depend on the fact that this kind of apps is usually developed (and maintained) by more experienced developers , also considering that larger apps tend to be tested more.
+
+We argue that, for achieving the adoption of higher security standards in app development, the app markets could also provide details about the security risks to which users would be exposed, along with the information about an app’s functionalities. In this context, to promote their apps, developers would be forced to avoid known vulnerabilities and common security flaws, as user choices could also depend on the security aspects.
+
+# 4 RQ 3 : Is it possible to predict the level of vulnerability-proneness of an app by using the app’s contextual information?
+For brevity’s sake, in the following, we focus on
+8 https://www.android.com/safety/
+Precision (P), Recall (R) and F-measure (F1) obtained by the ML algorithms trained with the different combinations of features
+Discussing the results achieved by the best performing model, i.e., Random Forest, in the various experiments.
+
+On the one hand, by only using app market information (i.e., Market metrics in Table 4), the Random Forest algorithm achieved precision, recall and F-measure values of about 73%. This means that in about 3 out of 4 cases the classification algorithm based on these features can properly identify apps with either low or high vulnerability-proneness levels. This is a promising result if we consider that when the same algorithm is trained by using code-related features (i.e., Static analysis metrics in Table 4) slightly lower performance is achieved. On the other hand, the information provided by Google Play is not sufficient to make very accurate predictions. For this reason, the app markets should provide additional information useful to warn users of possible security and privacy risks, with the explicit aim of improving their awareness about security concerns.
+
+Interestingly, when both app market information and code-related features are jointly used (i.e., Market metrics + Static analysis metrics in Table 4), higher precision, recall, and F-measure values are obtained. This means that app market metrics provide complementary information to the one related to code. Therefore, they could be adopted for improving strategies exclusively based on code-related characteristics. Surprisingly, textual features seem to introduce noise that degrades the classification results. Indeed, in both experiments in which textual contents have been employed (i.e., Market metrics + Textual features and Market metrics + Textual features + Static analysis metrics in Table 4) lower performance is achieved. We argue that this result is mainly due to the fact that topics discussed in app name and description is not strictly related to the vulnerability proneness of an app.

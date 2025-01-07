@@ -1,0 +1,56 @@
+# APPCOMMUNE: Automated Third-Party Libraries
+# De-duplicating and Updating for Android Apps
+Bodong Li, Yuanyuan Zhang, Juanru Li, Runhan Feng, Dawu Gu
+Lab of Cryptology and Computer Security
+Shanghai Jiao Tong University
+Shanghai, China
+{uchihal, yyjess, jarod, fengrunhan, dwgu}@sjtu.edu.cn
+# Abstract
+The increasing usage of third-party libraries in Android apps is double-edged, boosting the development but introducing extra code base and potential vulnerabilities. Unlike desktop operating systems, Android does not support the sharing of third-party libraries between different apps. Thus both the de-duplicating and the updating of those libraries are difficult to be managed in a unified way.
+
+In this paper, we propose a third-party library sharing method to address the issues of code bloating and obsolete code updating. Our approach separates all integrated third-party libraries from app code and makes them still accessible through a dynamic loading mechanism. The separated libraries are managed centrally and can be shared by different apps. This not only saves the storage but also guarantees a prompt update of outdated libraries for every app. We implement APPCOMMUNE, a novel app installation and execution infrastructure to support the proposed third-party library sharing without modifying the commodity Android system. Our experiments with 212 popular third-party libraries and 502 real-world Android apps demonstrate the feasibility and efficiency: all apps work stably with our library sharing model, and 11% storage and bandwidth are saved for app downloading and installation. In addition, APPCOMMUNE updates 86% of the managed third-party libraries (with 44% to the latest versions).
+
+Index Terms—Android, Third-party Libraries, Code Updating
+# I. INTRODUCTION
+Mobile app development involves a wide variety of third-party libraries. Different apps often rely on a small set of popular third-party libraries to fulfill similar functions. Although leading mobile operating systems (Android and iOS) do inherit library sharing mechanisms from desktop operating systems (Linux and Mac OS), only a limited number of system provided libraries are shared and user apps could neither add nor update them. As a result, mobile apps have to statically integrate all used third-party libraries.
+
+The individual integration of third-party library brings many issues to the mobile ecosystem. First, it is very difficult to update the used third-party libraries in all apps. Actually, according to the survey conducted by Erik et al. , developers fail to update a third-party library due to a variety of reasons such as incompatibility issue, update unawareness, or actively ignoring the new version. Thus a large portion of third-party libraries are outdated even if the host apps are updated to the latest version   . Second, the individually downloaded and stored third-party libraries consume a huge amount of both network traffic and local storage space. In fact, third-party library repetition is very common for popular mobile apps. If the duplicated third-party libraries are not repeatedly downloaded and stored, app markets and mobile devices can both benefit from this de-duplicating.
+
+Existing studies of third-party library management on mobile platform often focus on the permission control. Several approaches     are proposed to restrict the potential harmful behaviors and unnecessary permissions of third-party libraries. Other approaches  radically remove the malicious libraries from the repacked apps. Despite all those efforts, mobile platforms still lack an effective mechanism to both reduce library repetition and help the updating of obsolete libraries.
+
+To help developers and mobile devices manage third-party libraries, in this paper we propose a library sharing strategy for Android apps. Our strategy helps Android apps share third-party libraries without the modification of the commodity Android system. To fulfill this, all third-party libraries are first separated from an app. Then the separated app and libraries are respectively downloaded and installed. To reduce library repetition and promote library updating, third-party libraries are stored and managed in a centralized way and hence apps do not need to update the used libraries individually.
+
+We implement APPCOMMUNE, a novel app installation and execution infrastructure to support our third-party library sharing strategy. Multiple apps on the same device with the support of APPCOMMUNE would share the same third-party library, which saves both the bandwidth and the storage. APPCOMMUNE consists of a Market Proxy on the server side and a Lib Manager on the client side. The Market Proxy automatically separates all third-party libraries from an app to generate a tailored app, and then rewrites both the tailored app and third-party libraries for a later dynamic loading based execution. If a user wants to install this app, she will download the tailored version and install it. After that, the Lib Manager will automatically check and download necessary third-party libraries for this app.
+
+APPCOMMUNE introduces novel app trimming and rewriting techniques to support library sharing without modifying the commodity Android system. This allows the tailored apps to function effectively.
+
+to dynamically load the shared third-party libraries. Moreover, on the premise of stability, APPCOMMUNE automatically adapts the proper library version (often the new version) for the tailored app to promote the library updating and thus reduce security threat of the vulnerability in third-party libraries.
+
+To validate the effectiveness, we tested APPCOMMUNE with 212 popular third-party libraries and 502 real-world Android apps on 10 different Android devices. The result showed that all tailored apps worked normally under our library sharing model with almost no performance overhead. In addition, APPCOMMUNE saved 11% storage and bandwidth usage for the downloading and installing of those apps, and updated 86% of the used third-party libraries for the tested apps (44% to the latest version). With a vulnerability detection against five publicly released security vulnerabilities related to third-party libraries, APPCOMMUNE successfully protected all 31 influenced apps through the library updating.
+
+In summary, this paper makes the following contributions:
+- We propose a third-party library sharing strategy in Android system to tackle the bloated and obsolete third-party libraries. To the best of our knowledge, our solution is the first one to address the updating of outdated Android third-party libraries without modifying the system.
+
+- We implement APPCOMMUNE, app installation and execution infrastructure to support our library sharing strategy. APPCOMMUNE introduces app trimming and rewriting techniques to help apps use shared third-party libraries, and conducts comprehensive updating test to adapt apps with proper versions of libraries.
+
+- The experiments with popular Android apps and third-party libraries demonstrate that the deployment of APPCOMMUNE on commodity Android devices is expected to reduce the expense of data transmitting and storing, and enhance the security of the ecosystem.
+
+# II. MOTIVATION
+# A. Problems
+Although third-party library simplifies the app development, it brings two issues: duplicate libraries lead to the bloating of app size, and outdated libraries contain potential vulnerabilities. Here we give a concrete example with two apps to describe these issues in detail. As Figure 1 shows, two apps (Noogra Nuts1 and MAPS.ME2) contain 17 and 11 third-party libraries respectively. Among those integrated third-party libraries, six libraries are shared by both apps. If a user installs both those two apps on the same mobile device, these six libraries are downloaded repeatedly within different apps. Obviously, this consumes more network traffic and flash storage. Furthermore, we notice that most libraries of Noogra Nuts are in older versions compared with MAPS.ME. The use of outdated third-party library is insecure. For instance, the specific version of Facebook library (version 3) used in
+Noogra Nuts contains at least three security vulnerabilities according to Facebook’s official specifications11.
+
+# B. Approach and Challenges
+To address the issues of third-party library, we propose a third-party library sharing strategy to reduce library repetition and promote library updating. In general, our strategy separates all third-party libraries from an app before it is downloaded and installed. Then, the traditional app installation process is divided into two individual processes: an installation of a tailored app (app without any third-party libraries), and an installation of necessary third-party libraries. On the premise of stability, only a few (one or two) secure and stable versions of certain third-party library (often the latest version) is required to be installed on the device and shared by multiple apps. In this manner, third-party libraries are managed in a centralized way and two advantages–library de-duplicating and library updating, can be easily achieved.
+
+Nevertheless, there exist many challenges for a stable and efficient library sharing mechanism:
+How to separate third-party libraries from an app: Android system supports two kinds of libraries: java library (.jar) and native library (.so). Within an apk file, native libraries are stored independently in /libs directory, while the java libraries and the original app code are compiled together into a compact Dalvik Executable (dex) file. The challenge here is how to identify and split the integrated third-party java
+# Facebook Callback Interface
+public interface FacebookCallback {
+FacebookSdk.sdkInitialize(context);
+void onSuccess(Object arg1);
+}
+# (a) Declaration in Library Code
+public class FacebookCallbackAdapter implements FacebookCallback {
+public void onSuccess(Object arg1) {
+...

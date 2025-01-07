@@ -1,0 +1,66 @@
+Listing 3 shows another real-world security commit that fixes Android Fake ID vulnerability from Dropbox library. Code statements at Ln-11 in the old version are updated to codes at Ln-14 in the new version. Statement return true (Ln) has now become return false (Ln). Apparently, the value set of variable in the return statement has changed. According to the first optimization, our slicing algorithm will continue flowing into the call site of hasDropboxApp() at Ln, further propagate to Ln-5 and eventually include almost every line of code in the example.
+
+In fact, a closer look will tell us that the code changes within hasDropboxApp() does not really expose any impact on its caller onResume(). Although the return value is modified, both the old and new versions of the function bear the same function-wise return value set: {true, false}. In order to capture this information, our algorithm needs to perform intra-procedural VSA beyond the scope of a slice but still within
+282 22nd International Symposium on Research in Attacks, Intrusions and Defenses USENIX Association
+hasDropboxApp(), which is the function that contains the code changes. As a result, our algorithm will stop slicing and generate a much smaller slice. From the description above, we can see that this optimization sits between the basic scheme (whole library-wise context- and flow-sensitive analysis) and the first optimization (pure slice-wise analysis). Therefore, by applying this optimization to all the variables, our slicing will be more accurate while maintaining the similar performance gain from the first optimization with negligible overhead.
+
+# 5 Value-sensitive Differential Slicing
+We now present the details of our slicing algorithm in Algorithm 1, which is a dependence graph based slicing algorithm as . It takes three inputs and generates slice for that code change as output.
+
+# Algorithm 1 Value-sensitive Differential Slicing
+1: input1: di f f ← {stmto, stmtn}
+2: input2: SDGn ← {SDG of the new library.}
+3: input3: SDGo ← {SDG of the old library.}
+4: procedure V _Slicing(di f f , SDGn, SDGo)
+5:       slice ← /0
+6:       fn ← Locate(stmtn, SDGn); fo ← Locate(stmto, SDGo)
+7:       workingSet ← workingSet ∪ stmtn
+8:       slice ← slice ∪ stmtn
+9:       while workingSet 6= / do
+10:             stmt ← workingSet.remove()
+11:             Setsuccs ← ImmediateSuccessors(stmt, SDGn)
+12:             for succ ∈ Setsuccs do
+13:                  if succ contains new invocation then
+14:                       slice∪ ← Forward_Slicing(succ, SDGn)
+15:                  else if succ is another di f f ′ then
+16:                       slice∪ ← V _Slicing(di f f′ , SDGn, SDGo)
+17:                  else if succ is control-dependent on stmt then
+18:                       slice ← slice ∪ succ
+19:                       workingSet ← workingSet ∪ succ
+20:                  else if succ is return statement then
+21:                       if ! (RetV S( fo) ⊆ RetV S( fn)) then
+22:                            slice ← slice ∪ succ
+23:                            workingSet ← workingSet ∪ succ
+24:                       end if
+25:                  else if succ is only data-dependent on stmt then
+26:                       v fn ← V SA(succ, slice, SDGn)
+27:                       v fo ← V SA(succ′, slice, SDGo)
+28:                       if ! (v fn ⊆ v fo) then
+29:                            slice ← slice ∪ succ
+30:                            workingSet ← workingSet ∪ succ
+31:                       end if
+32:                  end if
+33:             end for
+34:        end while
+35:        Return slice
+36: end procedure
+The algorithm first locates the di f f in two SDGs (Ln) and adds stmtn into a workingSet (Ln) to start the iterative process. The algorithm will continue running as long as the workingSet is not empty (Ln). For every statement in the working set, we extract its immediate successors in SDG (Ln). For every immediate successor succ, the algorithm checks if it is another code change. There exist two cases under this scenario. First, if succ is a code change that contains a new function invocation, our algorithm needs to leverage traditional slicing by calling Forward_Slicing() to keep track of the new function call (Ln-14) as all its codes are new codes compared to the old version. Second, if succ is a normal code change, we consider it as another input to a recursive function call for V _Slicing() (Ln-16).
+
+When succ is not a code change, we add it into the workingSet as well as the slice if it is only control-dependent on stmt (Ln-19). When succ is a return statement, we apply the second optimization discussed in Section 5 by performing function-wise VSA for all return statements to improve the accuracy (Ln-23). When succ is data-dependent on stmt, we calculate and compare the value-sets by calling V SA() to extract value formulas at the scope discussed in the second optimization for both old and new versions and only add succ when stmt has impact on it (Ln-30). Eventually, it produces a slice by returning slice (Ln).
+
+# 6 Selective Updating
+This component takes the generated updates from the previous step, performs filtering and applies the updates to eventually produce an updated TPL, as depicted in Figure 1.
+
+# 6 Filtering
+In this step, LIBBANDAID relies on a set of pre-defined rules to filter out the generated updates that may affect the interactions between the library and other components in order to achieve the non-intrusiveness goal as explained in Section 2. These rules are defined to be conservative and can guarantee that all satisfying updates will not change how the library interacts with other components. To this end, we investigate into how TPLs work and propose four categories of interactions.
+
+Interaction with the given app. The first category is listed in the first row in Table 1. It defines the rules for interactions with the given app. When TPLs get updated by LIBBANDAID, we guarantee the interactions with the app will not be affected. Since the interactions are always through library APIs, we need to make sure the used APIs will stay the same in terms of function names, return types, parameters and thrown exceptions. To this end, LIBBANDAID performs static program analysis to collect the library APIs used within the app and filters the updates that could change these APIs. Additionally, LIBBANDAID collects exception information and discards the updates that introduce new exceptions. It is noteworthy that the interaction with the given app is the only category that relies on program analysis due to two reasons. First, we need to perform program analysis on the two versions of the library to understand which APIs are changed. Second, even if some APIs are indeed changed in the newer version, we may still safely update as long as the Android app does not directly call them.
+
+Interaction with server. Another important interaction for a TPL is to communicate with its server. For example, Dropbox library communicates with Dropbox server to access files. Therefore, our system needs to make sure that the protocol between server and client stays the same. To do so, LIBBANDAID scans over each update and checks if it contains code that performs network communication (incoming or outgoing). As long as such code exists, our system will conservatively choose to ignore this update. For example, if one update contains API calls such as HttpURLConnection: getResponseMessage(), LIBBANDAID will filter it out.
+
+Interaction with system. We then consider the interactions between a TPL and the underlying Android system. First, our update may interact with the Android framework by calling a new Android API that was not called in the old version. We rely on PScout  to check if the new Android API requires new Android permission. If it does, LIBBANDAID will discard the update. Second, we examine if an update performs any file manipulation in the Android system. Particularly, LIBBANDAID checks if the update affects the current system state, such as creating a new file or writing into a file. The tricky part is the file read. Our system only prevents the library from modifying the file pointer while reading a file (e.g., a call to RandomAccessFile: seek()). Third, library may create new kernel objects such as thread and process. LIBBANDAID allows this kind of interactions since they do not affect the execution of Android apps.
+
+Interaction with other apps. The last category of interaction is the interaction with other apps in the Android system. Apps within an Android system could communicate with each other via Binder. LIBBANDAID disallows any update to change the communication either by creating a new intent or by changing any of the existing intent. Also, an update that starts, binds or unbinds services in the system is discarded.
+
+# 6 Updating
+After filtering out the unsatisfying updates based on our rules, LIBBANDAID applies the satisfying ones to the outdated library. This step is done at Jimple IR level by using byte-code rewriting capability in Soot . After the rewriting, we convert the updated Jimple IR into Dalvik byte-code, repackage the DEX file with other resource files and eventually create a new Android app (APK file) with updated library.

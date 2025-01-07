@@ -1,0 +1,45 @@
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 5. Open Problems
+# 5. Emerging Cache Peeping Threat
+Many cache-based timing attacks originally found in the desktop or server environment [Bangerter et al. 2011; Hund et al. 2013; Zhang et al. 2012] have become feasible in Android as a result of the wide adoption of the Linux scheduler and multi-core CPU in smartphones. Cache Games [Bangerter et al. 2011] observes the cache access of CPU to infer cryptographic keys during encryptions and decryptions. Timing side-channel attack [Hund et al. 2013] inferred the privileged kernel address by probing the CPU cache usage shared by kernel and user code. Cache partitioning [Page 2005] and side-channel resistant cryptographic algorithms (e.g., Tromer et al. ) flatten the cache usage variance thus blocking these eavesdropping. However, due to the system performance overhead, these methods have not been widely adopted in desktop Linux, let alone Android.
+
+# 5. Blocking Side-Channels
+Most side-channels could be avoided if shared resources were no longer used or at least used exclusively when needed. For software shared resources, interleaving the accesses to software stack by different apps can effectively block the side-channel. However, for hardware shared resources, such exclusion is more expensive in mobile OS at the stake of critical downgrade of performance and power efficiency.
+
+# 5. Protecting Sensitive Data/Operation
+Future workarounds may consider additional protection methods for sensitive inputs if the side-channel cannot be blocked. For example, Intel proposed a two-factor authentication solution that requires a transient One-Time-Password generated from its IPT (Identity Protection Technology) [Intel Corporation 2016] to be attached along with the user password at every login. This scheme may prevent an attacker from completing the login even if the victim’s password is inferred. Alternatively, a context-aware noise (e.g., a deliberate vibrating when user taps PIN) may disturb the performance of sensors during a user’s interaction with sensitive information.
+
+# 6. FEATURE ABUSES
+This section describes several Android features that have been (or could be) abused to carry out attacks. They include 1) dynamic code generation and loading, 2) Java-Native interface, 3) assistive technologies, 4) multi-user support, 5) embedded web browser and 6) the new ART runtime. These features can be used as attack vectors mostly because they were introduced after the security model was designed. They often require workarounds of existing security models (e.g., for the sake of usability), or intentionally compromise security assumptions to achieve their design goals.
+
+# 6. Dynamic Code
+In Android, developers are allowed to load the code for an app dynamically. Developers can load JAR files or shared libraries (i.e., .so files) from remote sources at runtime by using DexClassLoader and System.loadLibrary(). This feature gives developers great flexibility in maintaining their apps. For example, apps can self-update by downloading a new JAR file without going through the official channel: Google Play Store. A similar problem is dynamic code generation such as the just-in-time (JIT) compilation adopted by Dalvik VM to improve performance.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+M. Xu et al.
+
+However, both features open a hole on the security model of the Android ecosystem: verification of the code signature. Android’s default security policy is to only allow the code to run if it is signed by a verified developer. Nonetheless, no signature check is performed on downloaded or generated code; therefore, attackers can abuse both features to inject malicious code into benign apps [Poeplau et al. 2014]. Abusing dynamic code loading can also help bypass Google’s app review process [Kim 2015] because dynamically loaded code cannot be correctly tested at the review time (it can be changed later), or attackers could hide their malicious code at review time and make the logic available when the end-user actually downloads and runs the application. One way to protect generated code cache is to ask developers to follow the best practices published in official document that help ensure the integrity of the generated code cache. However, relying on developers’ discretion might not be enough, and a more sound approach should be studied. Luckily, such a problem has been well studied in web browsers and potential solutions such as Homescu et al.  can be ported.
+
+To mitigate the threat of dynamic code loading, it is possible to enforce that the signature of code being loaded must match the original app’s. However, this approach will preclude the convenience of loading code developed by others. A workaround is to use a system-wide whitelist for acceptable dynamic libraries and to employ multiple independent verification services to provide and update the whitelist [Poeplau et al. 2014].
+
+# 6. Native Code
+In addition to Java code that runs on Dalvik VM or Android Runtime (ART), Android supports execution of native code through the Java Native Interface (JNI). Developers can implement their code as JNI for overcoming the limitations of Android Runtime, such as memory cap and performance loss. Code implemented in JNI runs in the application sandbox of Android system. Protections provided by the baseline Linux system layer; such as UID/GID based access control, SELinux, etc., will still work.
+
+However, JNI introduces several security implications into the system. First, unlike Java, a type-safe language, JNI code is prone to vulnerabilities. Traditional attacks on stack/heap buffer-overflow or problems with dangling pointers can be applied to JNI code. Second, despite of plethora of application analysis tools and researches on security mechanisms such as finer-grained access control and dynamic analysis in Android, few support JNI due to the general assumption that JNI is not widely used in Android apps. However, this assumption would not hold in practice; although the portion of code is small in application, use of JNI is prevalent [Afonso et al. 2016]. For this reason, exclusion of JNI code creates holes in applying such mechanisms, that is, proposed security is not guaranteed on the system.
+
+As mitigation attempts, isolating the app-specific native code from the rest of the system is not impossible to implement. A successful example is Native Client (NaCl) used in the Chrome Browser. Robusta has successfully isolated the native code from Java Virtual Machine (JVM) in the traditional OSes. Continues on this direction, NativeGuard [Sun and Tan 2014] achieves third-party native library isolation by running native code in a separate app and [Afonso et al. 2016] further provides a way to automatically set privileges on the isolated native libraries.
+
+# 6. Accessibility
+To support easy access of devices, Android implements various accessibility features such as text-to-speech screen reader, voice commander (Google Now), etc. Android also allows third-party apps to access these features through the AccessibilityService class [Android Developers 2016a]. However, Jang et al.  discovered that these features are powerful enough to construct an input/output subsystem on the operating systems (including Android) which could be used to completely bypass the permission.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 6. Multi-User Support
+Starting from Android 4, support for multiple users has been added as a new feature. Unfortunately, researchers have found a significant number of vulnerabilities from their systematic evaluation of multi-user support [Ratazzi et al. 2014]. The root cause of these vulnerabilities is that this new feature is inconsistent with existing protections, especially in accessing shared resources and system-wide configurations.
+
+For instance, all users have full access to WiFi settings and these settings are shared among users. Moreover, the current implementation requires three additional logins to guarantee a complete removal of processes that belong to the current user. Until then, these processes remain running in the background after user switch. This also introduces new privacy and security problems.
+
+# 6. Embedded Web Browser
+WebView [Android Developers 2016c] is a feature that allows for an app to create its own browser or to display rich web content. It also enables effortless porting of existing web-based apps to the mobile world. Frameworks such as PhoneGap [Adobe Systems, Inc. 2016], Apache Cordova [The Apache Software Foundation 2016] and Titanium [Appcelerator Inc. 2016] allow developers to write mobile apps just as web apps. In 2013, 8% (59,354 among 691,517 apps) of apps were developed using WebView-based framework [Viennot et al. 2014].

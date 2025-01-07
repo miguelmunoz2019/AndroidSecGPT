@@ -1,0 +1,67 @@
+- Normally a minor change or patch change will not affect the compatibility. Considering special cases, we maintain a database for each API change on the server side. If any minor change or patch change causes any exception in subsequent tests, it will be recorded as a major change and will not be updated afterwards. For the library that cannot be updated to the latest version, we use a relatively new and suitable version instead and notify the app developer to update its code as soon as possible.
+
+# D. App and Library Rewriting
+To help tailored app access these separated matched libraries, we need rewrite both the app and these libraries. To make external native library accessible, we rewrite the app code related to native library loading. Android system provides two system APIs for developers to load a native library: System.loadLibrary can only load a library from app’s sandbox or system library path, while System.load can load any library according to the path parameter. Thus we replace the System.loadLibrary with System.load in app code, and change the parameter of System.load into the corresponding native library in Lib Manager.
+
+For java library, our strategy is to replace the direct invoking to dynamic indirect invoking. As Figure 6 shows, we first use android platform tool dx to transform java library into dex code. Then, we add three pieces of extra code: Interface
+CustomizedLibrary
+Dex
+dx
+Java Lib
+Lib Code
+Lib Profile
+Tailored App
+Tailored Dex
+Patched Code
+IDL
+Entry
+ResourceFiles
+# Implementation Layer (IIL) in customized library
+Interface Declaration Layer (IDL), and Entry in tailored app. According to the API statistics in library profile, we re-encapsulate all library’s APIs into wrapper APIs which are declared in IDL and implemented in IIL. Entry, which will be invoked just when app starts, is responsible for loading the customized library and initializing an IIL instance. This instance is used to invoke the wrapper APIs directly. In the next, we patch all invocation points to invoke wrapper APIs. At last, we combine IIL and library code into a customized library dex file. And we combine IDL, Entry and the patched dex file into an entire dex file, which is repacked into tailored app with the original resource files.
+
+We give a typical example to help illustrate our patching work: As Figure 7 shows, we re-encapsulate sdkInitialize (library API) into com_facebook_Facebook_sdkInitialize (wrapper API), which is declared in IDL and implemented in IIL. In Entry, the library dex is loaded (line 02) and an instance idl is initialized (line 04). Notice that idl is an instance of IIL (a part of library), but is casted into IDL (a part of app code) type. Therefore the wrapper APIs, which are implemented in library code and declared in app code, can be invoked directly through this instance. In this way, we centralize the java reflection options in Entry and reduce the changes made in each invocation point. As Figure 7 shows, the patched invocation point remains one line code as the original code.
+
+# We summarize the patching details for seven types of APIs as below:
+- static method: Static method can be invoked directly without any context limitation, therefore it is a common kind of API. We directly invoke a static method typed API in the wrapper API. And the wrapper API has the same parameters and return value as the ones of original API.
+
+- public method: Compared to static method, a normal public method’s invocation relies on a context. For normal public methods, we add an extra parameter into the wrapper API. The invocation context should be passed through this extra parameter. Besides methods, we also need to deal with library’s objects used in app code.
+
+- public class: Library code may provide a public class for app developer to use directly. Library’s public classes would be dynamically loaded, so they can’t be used directly in app code. If app code declares variables in type of these public classes, we would switch them into Object type. Specially, if the parameters of wrapper APIs are in type of these public classes, they would be changed into Object as well. These Object typed parameters would be changed back and passed into original APIs in IIL.
+
+- public field: Some library classes would provide public fields for app developer to access. For each public field, we add two extra public APIs responsible for reading and writing (get() and set()).
+
+- public interface: Interface typed class is also a common type of API (An example is given in Figure 2). It’s a kind of callback that app code implements the interface declared by library code. Since some classes in app code are implemented from it, this interface typed class must be initialized before these classes in app code. Therefore, it doesn’t support dynamic loading. We solve this challenge by adding library’s interface typed class into IDL. Our IDL is also an interface typed class. We separate all library’s interface typed classes out and add them into IDL in patched app. By this way, these APIs would be loaded together with classes of app code. And the remained part of library can be dynamically loaded normally.
+
+- abstract class: An abstract class in library code provides abstract methods for app code to overload. Like interface typed class, we add abstract classes into IDL in the same way. Afterwards as a part of app code, the code in abstract class would be treated as normal app code. It means that the library’s methods invoked in an abstract class would also be treated as library APIs.
+
+- extra component: Some libraries also provide extra Android components (Activity, Broadcast Receiver, Service, and Provider) and require app developer to declare these components in manifest.xml. These components, which have been registered in system, can’t be dynamically loaded either. We also separate these component classes out from library code and add them into app code.
+
+# E. Library Management
+# 1) Downloading:
+On local device side, a terminal app, Lib Manager, is pre-installed and is responsible for downloading and managing customized libraries. APPCOMMUNE follows the basic mechanism of Android system and Lib Manager doesn’t request root privilege. At first, the tailored app is downloaded and installed normally as ordinary ones. Simultaneously, Lib Manager judges whether all needed versions of libraries have been downloaded before. If lack of any library, Lib Manager would request it from Market Proxy and store it into the library store on the device (By default the customized libraries are stored in path /data/local/tmp/). Normally there would be only the latest version downloaded on the device for each library. In special cases, some older versions would be downloaded if some apps are not suitable for latest versions. The same library of same version would not be downloaded repeatedly. Specially, for a native library, there would be several versions for different platforms (e.g., arm, x86, etc.). Lib Manager can select the suitable version according to the device platform.
+
+# 2) Execution:
+All customized libraries are set to be readable in the whole system. When the tailored app starts to run, the code of Entry will be executed first. Entry dynamically
+# Customized Tailored App
+# Facebook Library
+# Library Code
+01 public class IIL implements IDL{
+02  @Override
+03  public void com_facebook_FacebookSdk_sdkInitialize(Context arg1){
+04     FacebookSdk.sdkInitialize(arg1);
+05  }
+06 }
+01 public interface IDL{
+02  public void com_facebook_FacebookSdk_sdkInitialize(Context arg1);
+03 }
+01 public static IDL idl;
+02 DexClassLoader dcl = new DexClassLoader(path, ...);
+03 Class iil = dcl.loadclass("com.IIL");
+04 idl = (IDL)iil.newInstance();
+loads the corresponding customized java library (dex format) and initializes the code for further invocations. The native library is directly accessed by System.load with their absolute file path. The tailored app only requests the library names, the detailed versions are decided by Lib Manager according to our library version adapting results on Market Proxy.
+
+3) Further Updating: The further updates of tailored apps and customized libraries are also independent. When a new version of app is available, Lib Manager will notice the user to download. If a new version of library is available, Market Proxy will first determine whether it’s compatible with each app. According to this matching result, all suitable apps are forced to use the new library. The developers of unsuitable apps would be notified to update their apps as soon as possible. Our Market Proxy supports Android smart update  to make the update more lightweight.
+
+# IV. EVALUATION
+# A. Experimental Environment and Dataset
+We deploy APPCOMMUNE on a workstation (server side) and 10 different Android devices (client side) to evaluate its usability. The workstation is a ThinkCentre with Core i7 @ 3GHz and 16GB of RAM running Ubuntu 16. The Android devices include Nexus 4, 5, 6, 6P, Samsung S7, S8, Huawei Honor8, P9, Moto Z, Sony Xperia L and cover different Android OS from 4 to 7.

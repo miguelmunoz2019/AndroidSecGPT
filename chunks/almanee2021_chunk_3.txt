@@ -1,0 +1,46 @@
+LibRARIAN identifies native library versions from Android apps. We assess LibRARIAN in three scenarios. For the first scenario, we compare its accuracy with OSSPolice, the state-of-the-art technique for identifying versions of native binaries for Android apps. For the second scenario, we assess LibRARIAN's accuracy on a larger and more recent set of library versions than those found in OSSPolice's dataset. To that end, we manually collect a set of binaries with known libraries and versions (Known Versions in Figure 1). In the third scenario, we assess the effectiveness of LibRARIAN’s feature types at identifying versions of native libraries.
+
+# 1) Comparative Analysis:
+OSSPolice uses source code to build an index that allows it to identify versions of binaries. OSSPolice measures the similarity between strings extracted from binaries and features found directly in source repositories. Unlike LibRARIAN, OSSPolice relies on comparing binaries with source code, resulting in an overly large feature space which, in turn, makes OSSPolice susceptible to falsely identifying any binary containing a library as exactly matching that library. For example, OSSPolice falsely identifies MuPDF and OpenCV as matching Libpng because those two libraries include Libpng in their source code.
+
+# Experiment Setup:
+We first manually locate the pre-built binaries of libraries to serve as ground truth. To that end, we use readily available auxiliary data such as keywords found in feature vectors, binary filenames, and dependencies. Once we identify potential targets, we retrieve the pre-built binaries of all versions and architectures, if possible. There are a variety of distribution channels where app developers can obtain third-party binaries. We obtained such binaries from official websites, GitHub, and Debian repositories. The binaries with known libraries and versions contain 46 distinct libraries with a total of 904 versions and an average of 19 versions per library.
+
+# Results:
+LibRARIAN correctly identified the versions of 824/904 (91%) libraries in our ground truth: 553/904 (61%) of these library versions have unique feature vectors; 15% of these libraries contain the exact version number in the strings literals; and the remaining 14% of library versions are distinguished using hash codes to break ties between binaries. Misidentification occurs in 8% of library versions, where the largest equivalence class contains 4 library versions. This usually occurs for consecutive versions—minor or micro revisions (e.g., 3 and 3). These minor or micro revisions generally fix small bugs and do not change, add, or remove exported functions, global variables, and dependencies that uniquely identify different versions of binaries. Although LibRARIAN cannot pinpoint the exact library version in this case, it significantly reduces the search space for post-analysis to a few candidate versions.
+
+# Finding 2:
+LibRARIAN correctly identifies 824 of 904 (91%) library versions from 46 distinct libraries, making it highly accurate for identifying the native libraries and versions. For misidentified library versions, LibRARIAN reports a slightly different version. Nevertheless, LibRARIAN significantly reduces the number of binaries that need to be manually inspected.
+
+# 3) Feature Effectiveness:
+To assess the effectiveness of Metadata Features, Version Identification Strings, and their combination at inferring binaries, we computed the extent to which each feature is capable of inferring binaries in our repository. To that end, any binary whose library and version can be inferred with a bin score above 0, as described, is considered effective.
+
+# Metadata
+in Section II counts as an inferred binary. We found that 37% of binaries in our repository are inferable by Version Identification Strings only. 45% of the remaining binaries are inferable using only the five Metadata Features mentioned in Section II-A, while the remaining 17% are inferred using both Metadata Features and Version Identification Strings. This indicates that not all libraries have the version information encoded directly in the strings. Having a combination of both Metadata Features and Version Identification Strings is crucial to increase the number of inferred binaries.
+
+# Experiment Setup
+We infer the correct version of 7,253 binaries (10% of the total binaries in our Android repository) using LibRARIAN. Due to the highly time-consuming nature of the manual collection of ground-truth binaries, we limit ourselves to libraries that (i) are found in a greater number of apps (more than 10 apps) and (ii) have known CVEs. As a result, an overwhelming majority of the remaining binaries in our dataset have either no known CVEs or affect very few apps, making them an unsuitable choice for applying an expensive manual analysis for studying this research question.
+
+# Results
+We found that, out of 7,253 binaries for which we inferred their versions, 3,674 were vulnerable libraries (50%) affecting 53/200 distinct apps. 14 new releases of these distinct apps remain vulnerable at the time of submission. The complete list of libraries with reported CVEs between Sept. 2013 and the writing of this paper can be found in Table IV. As for the number of apps affected by vulnerable libraries, our results show that 53 distinct apps have been affected by a minimum of 1 vulnerable library and a maximum of 16 vulnerable libraries covering dates between Sept 2013 and May 2020.
+
+# Finding 4
+53 of the 200 top apps on Google Play (26%) were plagued by a vulnerable library over approximately six years and 8 months (i.e., between Sept. 2013 and May 2020). 14 of those apps still include a vulnerable binary, i.e., 7% of the top 200 apps on Google Play, even at the time at which we collected apps for this study and are, on average, outdated by 859 ± 137 days. As a result, vulnerable native libraries play a substantial role in exposing popular Android apps to known vulnerabilities.
+
+# Finding 3
+37% of binaries are inferable using Version Identification Strings, 45% are inferable using Metadata Features, and 17% are inferable using both feature types. Exported Functions and Imported Functions account for the overwhelming majority of effectiveness of Metadata Features, contributing 58% and 32%, respectively.
+
+TABLE III: List of features bin2sim extracted from native binaries of Android apps along with their type and overall contribution factor, which measures the average percentage each feature contributes to the total similarity score.
+
+# B. RQ2: Prevalence of Vulnerable Libraries
+To study the prevalence of vulnerabilities in native libraries, we need to identify their exact versions. To that end, we need to identify their exact versions. Four libraries were particularly prevalent in terms of the number of vulnerable versions they contain (i.e., OpenSSL), the number of apps they affect (i.e., OpenCV and GIFLib), or the length of time during which the library remained vulnerable (i.e., XML2 in Microsoft XBox SmartGlass). OpenSSL has the largest number of vulnerable versions (22 in total) included in 13 distinct apps. 3 apps: Amazon Alexa, Facebook Messenger and Norton Secure VPN still include vulnerable.
+
+# TABLE IV: A list of libraries with reported CVEs found in our repository along with the number of distinct apps that were affected by a vulnerable library and the number of distinct apps containing a vulnerable version till now.
+
+OpenCV and GIFLib affect the most apps. OpenCV has the largest number of affected apps with a total of 21 apps where 7 recent apps still have a vulnerable instance of OpenCV. Most applications do not include OpenCV directly but indirectly through the dependencies of card.io which enables card payment processing but comes with the two outdated versions (2 and 2) of both opencv_core and opencv_imgproc. Following OpenCV in the number of affected apps is GIFLib, which has two vulnerable versions found in a total of 15 distinct apps, 1 app is still affected.
+
+One vulnerable version of XML2 (2) was found in 35 versions of Microsoft XBox SmartGlass and the library was not updated for 6 years—still remaining vulnerable up to the writing of this paper. This particular case is notable due to the extremely long amount of time the library had been vulnerable and remained vulnerable.
+
+To examine the affects of vulnerable libraries on apps further, we list popular apps and the reported CVEs they expose their users to. Table V shows 10 out of 14 popular apps that are using at least one library with a reported CVE at the time of our app collection. We discuss four of these apps in more detail in the remainder of this section.
+
+Facebook Messenger, which has a download base of over 500M (the largest in this list), contains OpenSSL-1, which is vulnerable since Sept. 2016. This vulnerable library contains multiple memory leaks which allows an attacker to cause a denial of service (memory consumption) by sending large OCSP (Online Certificate Status Protocol) request extensions.

@@ -1,0 +1,62 @@
+# 2 App Security Evolution
+Calciati et al.  studied how the permissions requested by apps evolve across different app versions. Their results show that many newly requested permissions are in apps evolution. Felt et al.  identified the violation of least-privilege by app developers, which is unfortunately a long-standing problem. Past research has also investigated how users should be confronted with permission requests, most noticeably early studies by Felt et al. . More disruptive proposals try to eliminate the explicit role of the user for permission granting as proposed by Roesner et al.  or the use of machine learning as proposed by Wijesekera et al.  and Olejnik et al. . Most recently, different works pointed out the risks of third party libraries, in particular of advertisement libraries  and other vulnerable libraries . However, to the best of our knowledge, we are the first to study how much app details can be connected to the security and privacy related reviews.
+
+# 3 Methodology
+In this section, we discuss the methodologies that we used for our study in order to answer our research questions. To achieve this, we perform two types of activities: identify what the users say about the apps in the reviews, and identify the behaviour of the app. The following sub-sections describe this process in details. The Figure 1 depicts the process flow.
+
+# 3 Analysing Reviews
+In this section, we discuss the technical details for scraping and classifying the reviews.
+
+# 3 Google Play Scraper
+We built a custom web scraper to collect Android applications’ details and reviews from Google Play. As previous studies  have shown that only a small fraction of free applications on Google Play accounts constitute the bulk of the application downloads, we collected the details of the top free apps that are the most popular in Google Play. This resulted in 539 distinct applications. We also used another scraper to mine reviews of these apps.
+
+We scraped reviews that were written in English language only. After we had scrapped all the reviews for the apps, we pre-processed the reviews. Since user reviews are often written on smart phones, they tend to be short and usually contain grammatical mistakes or typos . For this sake, we did the following steps:
+- Removed links, unwanted characters, non-ASCII characters, special characters, etc.
+
+- Removed english stop words like “a”, “the”, “from”, “is”, etc.
+
+- Lemmatized the text.
+
+The output of the above text pre-processing resulted in the final data that we used for analysis.
+
+# 3 Classifying reviews
+In order to classify the reviews, we initially needed to build the training set. This is achieved by manually labeling the reviews. Our first step was to find reviews that can be potentially related to security and privacy. We decided to search into reviews using a list of keywords. We initially performed a literature review to identify some related keywords that users may use in their reviews when they describe any security or privacy related aspect. We searched based on these keywords and also manually examined some other reviews to identify other keywords. After some iterations, we could built a list of words that can be used to retrieve related reviews. Table 1 presents this list.
+
+We counted the number of occurrences of the keywords in each review. We found that the maximum occurrences is 5 keywords in a single review. Eventually, for the training set, we picked all the reviews with 2 or more keywords (totally 2122 reviews). We also added 2000 reviews, randomly selected from the ones with 1 keyword. Finally, we added 1878 reviews without any keyword to create a fair representative of all the reviews. So our final training set contained a total of 6000 reviews.
+
+The next task was to manually annotate these reviews as either Related or Non-Related. For labeling, we considered a review as Related if the review matched any of the below criterion:
+- Concerns about their personal information stolen, illegally accessed, or shared with third parties without permission.
+
+- Concerns about their Password or User-name(identity) safety.
+
+- Concerns about hidden background activities of the application.
+
+- Concerns about unrelated taken permissions.
+
+- Concerns about application security/privacy in general.
+
+Three of our team members were assigned the task of manually coding these reviews. Each of them individually coded all the 6000 reviews as related or non-related. Once the coding was completed by all the members, the results were matched. For most of the reviews, there was unanimity amongst all the members. For the remaining mismatched labels, we individually discussed to agree on a single label. After completing this process, our training set contained 936 reviews, labelled as Related while the remaining 5064 were labelled as Non-Related. In order to balance the training set, we performed SMOTE, a well-known over-balancing technique in practice.
+
+With our training set, we are now ready to classify the reviews. We needed to evaluate the efficiency of four classifiers, “Naive Bayes”, “K-Nearest Neighbour”, “Single-Layer averaged Perceptron”, and “Support Vector Machine (SVM)”, known for dealing with text data. To evaluate the efficiency, we used 10-fold cross validation, one of the highly recommended methods for validation . We identified that SVM achieved the best results as compared to the other classifiers. It achieved high accuracy, precision and recall; so we selected SVM as the ideal classifier for our analysis.
+
+# 3 Dynamic analysis
+In this section, we use established dynamic analysis methods  to measure the actual behaviour of the apps as it relates to privacy. In particular, we use an instrumented version of the Android Nougat operating system, which we deployed on actual Nexus 5X phones. This instrumentation monitored all network traffic, including TLS-secured traffic. Our instrumentation can attribute specific network transmissions to the responsible application and records where on the Internet the data was sent. We search through this network traffic to find the presence of types of PII including location data and persistent identifiers.
+
+We tested each of the apps by installing it, granting all runtime permissions, and then using a UI fuzzer to automatically interact with the app for a period of ten minutes. After this time the app is uninstalled and its network transmissions are saved for processing. This processing involves applying a suite of decoders, such as base64 and gzip, to reveal the raw data being transmitted. This also includes a number of deobfuscation methods based on ad-hoc obfuscation methods that we have seen third party libraries use in practice.
+
+# 3 PII Types
+In the network traffic generated by our experiment, we search for the presence of two types of PII: data used to geolocate the user and persistent identifiers for tracking. Location data is either the GPS coordinates, or the SSID and MAC address of the connected WiFi router, which is a well-known surrogate for location. For persistent identifiers, we divide them into two categories: resetable, which consists of the resetable advertising ID (AAID), and non-resetable, which consists of all other identifiers, including the android ID, IMEI, network MAC address, and serial number.
+
+We separate these types of tracking identifiers because Google recommends developers only use the advertising ID and no other identifier for advertising purposes, and further recommends to avoid bridging resets of the advertising ID by linking it with other identifiers. As such, sending the AAID alone is reasonable when compared to combining it with other non-resetable trackers like the IMEI and the MAC address.
+
+Based on this information, we categorized each app into one of the following categories:
+- Good: If the app does not leak any PII type or only the AAID
+- SingleTracker: If the app only leaks a single tracker PII type and no other PII types
+- MultiTracker: If the app leaks multiple tracker types of PIIs and no other PII types
+- SingleLocInfo: If the app leaks only a single Location Info type of PII and no other PII types
+- MultiLocInfo: If the app leaks multiple Location Info types of PIIS and no other PII type
+- AAID & Tracker: If the app leaks AAID and at least one type of Tracker PII
+- AAID & LocInfo: If the app leaks AAID and at least one type of Location Info PII
+- Tracker & LocInfo: If the app leaks both Tracker and Location Info types of PIIS but not AAID, and
+- All: If the app leaks all three types of PIIS; i.e AAID, Location Info and Tracker
+This list does not mean to order them in terms of invasiveness. That is, some may consider location worse than trackers and others feel the opposite. Nevertheless, there is an implicit order based on the subset relation, where sending the AAID is better for privacy than sending the AAID and location.

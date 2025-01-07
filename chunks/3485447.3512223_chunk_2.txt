@@ -1,0 +1,49 @@
+5. Sensitive user or government data may cross jurisdictional boundaries due to the use CDNs and hosting providers. Notable examples: US/Delaware’s election website elections.delaware.gov is hosted in the UK, Australia’s army.defencejobs.gov.au and Somalia’s centralbank.gov.so, as.parliament.gov.so are hosted in the US.
+
+6. We found 23 government sites from 7 countries include FullStory  third-party script, which is used to collect the full user session (e.g., for debugging, replaying). Moreover, 5 sites expose user information (e.g., email address, search terms) to FullStory, although FullStory can be configured to limit such exposure.
+
+We disclosed our findings on the leakage of user/admin credentials and API keys to the developers of those 11 government Android apps, but received only one response after several months (we also made several follow ups). We also reported 8 government websites flagged as malicious (by at least 5 VirusTotal engines) to site administrators/contacts of those sites, but received no response. Furthermore, we reported 38 government Android apps flagged as malicious (by at least by 1 VirusTotal engine, as the number of apps is smaller compared to government sites) to its developers, but only one developer reached out to us.
+
+# 2 RELATED WORK
+Tracking on popular websites. There exist a significant number of papers (e.g., ) on web tracking on popular websites. Englehardt et al.  developed the OpenWPM framework  to measure the prevalence of tracking on websites at a large scale. OpenWPM can measure both stateful (third-party scripts and cookies), and stateless (fingerprinting) tracking. Englehardt et al. found that only a few third-party tracking and advertising scripts (i.e., Google, Facebook, Twitter, Amazon, AdNexus, Oracle) were present in more than 10% of the top-1M Alexa sites. Their findings also include the use of sophisticated fingerprinting techniques (e.g., WebRTC-based, AudioContext, Battery API) in top-1M Alexa sites. The additional functionalities offered by HTML5 APIs increased the effectiveness of browser fingerprinting techniques . Previous work  has also studied web tracking using popular Alexa sites from a global perspective, and found differences based on geo-location and other factors (e.g., availability of data privacy policies, laws, censorship, surveillance). Hu et al.  found 80% of Alexa top-2K global sites contained Google trackers. Karaj et al.  found third-party Google scripts in 82% of web traffic (measured using crowd-sourcing efforts). Sanchez-Rola et al.  observed Google tracking cookies on 93% of popular sites (on the Tranco list). We use existing methodologies and tools (e.g.,
+# Et tu, Brute? Privacy Analysis of Government Websites and Mobile Apps
+WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+OpenWPM) to specifically study commercial trackers on government sites from across the world; 91% (123,115/135,408) of these sites are not ranked in popular lists (e.g., Alexa, Cisco, Tranco).
+
+# Tracking consent solutions.
+
+Online tracking consent solutions, such as Cookiebot , assist website owners to manage tracking activities (i.e., detect and block trackers until a user grants consent), and ensure that web tracking complies with existing data protection regulations such as the EU GDPR. Websites integrated with Cookiebot present cookie consent banners to record user preference (accept/reject cookies). Cookiebot can also measure tracking on a given website (without an integration), and was used to analyze government websites from the 28 EU member countries; over 100 unique trackers were found. Many of these trackers were from Google (82%); only Spanish, German and Dutch government sites did not contain any tracker . We found that all countries in the European Union had known tracking cookies on the analyzed government websites (291 unique trackers in total). Websites also actively take measure against users who choose not to allow cookies, e.g., by deploying aggressive browser fingerprinting techniques (see e.g., ). We focus on governments across the globe, and study the presence of commercial trackers on government sites, and also evaluate privacy and security issues in government Android apps.
+
+# Tracking in mobile apps.
+
+Due to the popularity of mobile apps, they also have been analyzed for privacy and security issues in the recent past, with a focus on the increasing use of tracking SDKs. Reuben et al.  studied 959,000 apps from US and UK Google Play stores, and found that third party tracking follows a long tail distribution dominated by Google (87%). Nguyen et al.  performed a large-scale measurement on Android apps (no mention of government apps) to understand violation of GDPR’s explicit consent. The authors found 28% (24,838/86,163) of apps sent data to ad-related domains without explicit user consent. Several recent studies (e.g., ) also analyzed COVID-19 tracing apps, and highlighted privacy and surveillance risks in these apps. In contrast, we target 1166 government apps of various types (including COVID-19 tracing apps) from 71 countries and territories around the globe.
+
+# HTTPS inconsistencies on government websites.
+
+There have been numerous large-scale studies on HTTPS/TLS in general. Singanamalla et al.  conducted the first measurement study on the HTTPS adoption in 135,408 government websites, and found a lower adoption rate (39%) compared to commercial websites; we also found similar results (61,679/150,244, 41%). They also observed the prevalence of HTTPS adoption errors (e.g., the use of insecure cryptographic protocols and keys) on these sites.
+
+# Privacy and security issues on government websites.
+
+Lapses in government websites that lead into privacy and security issues have been studied for specific countries. Csontos et al.  found 52% of the analyzed Hungarian public sector websites used outdated server software versions and programming language releases; less than half of those websites used HTTP. The office of the auditor general in Western Australia  found 328 weaknesses in information technology processes (e.g., information security, IT operations, business continuity) used by 50 local government entities, out of which 10% were rated as significant. We focus on finding privacy and security issues (e.g., third party tracking, inclusion of content from malicious domains) of government services across the world.
+
+# METHODOLOGY
+In this section, we first provide details of our government website and app collection methodology. Then, we detail our privacy analysis and measurement techniques for the collected websites and Android apps; see Figure 1 for an overview of our methodology.
+
+For websites, we define known trackers as the third parties (e.g., script/cookies on first-party websites) blacklisted by EasyList and EasyPrivacy  filtering rules; we define the rest as unknown trackers. We count trackers sharing the same domain name with different sub-domains separately. Furthermore, we define Android SDKs identified as trackers by MobSF  as known trackers.
+
+# Collecting government sites and apps
+We compile a list of government websites from 206 countries and territories by initially using a seed list, and then refining and extending it via automated searching and crawling (between July and October, 2020). We then augment our list with the website dataset from Singanamalla et al. ; note that our site collection methodology was developed independently.
+
+# Preparing the seed list.
+
+We begin by extracting an initial seed list of 14,861 government websites using several known sources , after removing obvious non-government entities (e.g., political parties). To eliminate any remaining non-government sites, we use nslookup  to query the nameserver (ns) and mail exchanger.
+
+Some government domains appear only in mx records.
+
+# WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Samarasinghe et al.
+
+(mx) records for each site. We then check for unique top-level domains and second/third level domains as used by various governments ; we then eliminate the sites that do not contain these domain suffixes in ns and mx records.
+
+# Extending the seed list
+We extract the suffixes from the seed list and prepare a Google dork  (e.g., site:“gov.uk”) for each country. Then we use googler  (a command line Google search tool) to perform Google search on each Google dork and extract the search results, which may contain new domains and sub-domains. Then, we remove non-government domains from search results as explained in the previous step. We collected a total of 56,766 unique government domains/sub-domains at the end of this step.

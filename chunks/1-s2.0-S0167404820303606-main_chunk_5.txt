@@ -1,0 +1,61 @@
+# 2. Kernel-level:
+API call execution can be monitored by collecting the system calls such as ltrace and strace using kernel modules. It allows partial tracing of the native code.
+
+# 3. App-level:
+This level of monitoring is also called method tracing, where Java method invocation can be traced by injecting the bytecode and log statements inside the original Android app code or framework.
+
+# 5. Inspection level
+Dynamic analyses are categorised based on the inspection levels. These are Emulator-based/ Virtual Machine (VM) level, Kernel-level and App-level. Table 12 lists the dynamic analysis techniques using different inspection levels.
+
+1. Emulator-based/ Virtual Machine (VM)-level: This level inspects the events that occur within the emulators by monitoring system calls using kernel level inspection e.g., Andrubis.
+
+# c o m p u t e r s & s e c u r i t y 100 (2021) 102087
+# 5. Approaches
+There are two main approaches for dynamic analysis: Taint analysis and Anomaly-based. Table 13 shows the list of publications using these approaches.
+
+# 5. Methods
+Various ML methods are: Supervised learning, Unsupervised learning, Semi-supervised learning, Reinforcement learning and Deep learning.
+
+1. Taint analysis: This approach is similar to that of static taint analysis however, the tainted data is tracked during the program execution. TaintDroid  was the first technique to implement dynamic taint analysis however, it is out of the scope of this SLR.
+
+2. Anomaly-based: This approach monitors regular behavioral activities in the device and looks for anomalies that deviate from the normal behavior. This approach tends to be more costly since it invokes large number of system calls.
+
+Taint analysis approaches are more adoptable (27%) as compared to anomaly-based approaches (8%) in the surveyed literature because anomaly-based detection approaches prove to be costly in terms of system calls. Besides conventional program analysis techniques, there are other supplementary techniques such as ML to leverage the analysis. ML is a technique based on artificial intelligence, where the systems have the capability to learn from the available data, recognise patterns and can make decisions with least human intervention.
+
+1. Supervised learning (SL): This class of algorithms takes known set of input data along with known responses to the output data and trains the model to generate predictions for the new dataset. Classification and regression are some of the well-known SL techniques. Classification is used to predict the discrete outcomes. Examples of classification algorithms are Naïve Bayes (NB), Support Vector Machine (SVM), Logistic Regression (LR), Decision Trees (DT), k-Nearest Neighbor (kNN) and Neural Networks (NN). For example, StormDroid  used SL for malware detection over 8000 apps with wide range of static and dynamic features. It achieved an accuracy of 93%. Garg and Baliyan (2019a) used parallel ensemble classifiers using Multi-Layer Perceptron (MLP), SVM, Pruning Rule-Based Classification Tree (PART), Ripple Down Rule Learner (RIDOR) to detect Android malware. They achieved an accuracy of 98%. Data processing and feature extraction details are given in Garg and Baliyan (2019b).
+
+2. Unsupervised learning (UL): This class of algorithms draws inferences from the unlabeled input dataset. Clustering is commonly used UL technique. Common clustering algorithms are k-means, k-medoids, Hidden.
+
+# 20
+# Computers & Security 100 (2021) 102087
+# % Distribution
+Markov Models (HMM), etc. In Zarni Aung (2013) authors used k-means clustering algorithm cascaded with DT and Random Forest (RF) to detect Android malware. They achieved an accuracy of 91% for dataset 1 and 91% for dataset 2 using RF.
+
+1. Semi-supervised learning (SSL): This class of algorithms combines both supervised and unsupervised learning techniques with some labeled and unlabeled data. In Mahindru and Sangal (2020), authors used Learning with Local and Global Consistency (LLGC), SSL method for malware detection with permissions and API calls as features and achieved an accuracy of 93%.
+
+2. Reinforcement learning (RL): RL algorithms enable the agent to learn to achieve a goal in a potentially complex and uncertain environment by maximizing the cumulative reward. Some examples of RL are Deep Q Network (DQN), Deep Deterministic Policy Gradient (DDPG), Soft Actor-Critic (SAC), etc. Vuong and Takada (2019) proposed an automated GUI testing tool for Android applications using DQN. Authors have identified the semantic meanings of GUI elements and used them as an input to a NN, which through training approximates the behavioral model of the application under test.
+
+3. Deep learning (DL): It is a class of ML algorithms that relates to the functioning of brain in the form of Artificial Neural Network (ANN). It has the capability to process large volumes of data. Well known DL algorithms are Deep Neural Networks (DNN), Convolutional Neural Network (CNN), Recurrent Neural Networks (RNN), Deep Belief Networks (DBN), etc. Pang et al. (2017) predicted vulnerable components and Java Android applications suing DNN and achieved an accuracy of 92%.
+
+It is observed that most of the publications focus on DL (37%) since a large amount of data is easily processed by DL techniques. This is followed by supervised (29%) and unsupervised (18%) learning methods.
+
+According to the “No Free Lunch” (NFL) theorem , there is no single ML model that is best suited for every problem. The assumptions of one model for a particular problem may not hold for another problem therefore, multiple ML models can be tried and tested to find the one that works best for a particular problem.
+
+# 6. Discussions and future research directions
+While investigating the SLR, many discussion points hover around. To address the fourth research question (RQ4), various challenges and gaps are identified and potential future research directions are then presented.
+
+# 6. Cross-analysis
+This study is further extended to the different directions of the proposed taxonomy. The aim is to perform cross-analysis to get a clearer vision of the Android security analysis.
+
+It is important to introspect the recurrent purposes of Android security addressed by program analysis techniques. It is observed that static and dynamic analysis approaches are used for detecting data leaks and vulnerabilities. The static techniques are generally used for detecting privacy data leaks than vulnerabilities (50% vs. 34%), while dynamic techniques are frequently leveraged for vulnerability detection than data leaks and malware detection (58% vs. 41%). Hybrid approaches, though at lower scales are mostly used for the vulnerability detection (19%) whereas ML approaches are widely used in malware detection (56%).
+
+Another element of cross-analysis is the depth of the analysis techniques, i.e., at the application level or the framework level. The application-level analyzes the application software. Apps from unknown third party market stores pose a serious security challenge. Framework-level analyzes the potential system-level design flaws and issues encountered in the Android platform. It is observed that the dynamic approaches are more often leveraged for framework-level analysis (∼55%). This is because dynamic approaches can track implicit relations between the Android permissions and system calls by deploying runtime modules, such as monitors in the Android framework. Moreover, the large code size of the Android framework (over ten million lines of code) makes it impossible for the static analysis approaches to monitor the runtime framework-level activity. Thus, dynamic techniques tend to be more scalable and less-expensive for framework-level monitoring.
+
+# 6. Challenges posed by Android specificities
+The inherent characteristics of Android pose several challenges for analysis techniques. These are listed as app component lifecycle, Inter-component Communications (ICC), XML file, and permissions. Component lifecycle callback methods such as onStart(), onStop(), onPause(), etc. are not connected with the apps or amongst themselves. Therefore, it is difficult for static analysis techniques to construct CFGs. ICC is a
+# Computers & Security 100 (2021) 102087
+message-passing mechanism used by the applications insu- not be altered at runtime. Permissions are building blocks of the Android security model. The permissions present in the manifest file of an app grant access to the various resources and cross-application interactions. Recent versions of Android employ dynamic permission management where users are allowed to revoke permissions at run time. Several research publications have widely discussed the shortcomings posed by permission model like least privilege principle violated by
+# Computers & Security 100 (2021) 102087
+Coarse-grained permissions , delegation attacks caused by enforcing access control policies at the level of individual , ignorance by end-users due to lack of permission awareness , and misusing permissions . Other challenges are related to Java since Android applications are written in Java and hence face issues like reflection, managing of dynamic code loading, multithreading, polymorphism, and integration of native code.
+
+Procedure of code signing where developers can verify an authorship of an application. A User ID (UID) is assigned to digitally sign the application based on the digital certificate. If the same certificate is used to sign multiple applications then android:sharedUserId key is specified in the manifest file to share the same UID. This key can cause non-deterministic behavior when assigning the UID (Cr ˘aciunescu, 2020).

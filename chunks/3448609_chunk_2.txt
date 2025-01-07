@@ -1,0 +1,73 @@
+This section is not comprehensive, but briefly summarizes those aspects of the Android ecosystem that have direct implications to the security model:
+- Android is an end user focused operating system. Although Android strives for flexibility, the main focus is on typical users. The obvious implication is that, as a consumer OS, it must be useful to users and attractive to developers.
+
+- The end user focus implies that user interfaces and workflows need to be safe by default and require explicit intent for any actions that could compromise security or privacy. This also means that the OS must not offload technically detailed security or privacy decisions to non-expert users who are not sufficiently skilled or experienced to make them.
+
+- The Android ecosystem is immense. Different statistics show that in the last few years, the majority of a global, intensely diverse user base already used mobile devices to access Internet resources (i.e., 63% in the U.S. , 56% globally , with over 68% in Asia and over 80% in India). Additionally, there are hundreds of different Original Equipment Manufacturers (OEMs), i.e., device manufacturers) making tens of thousands of Android devices in different form factors  (including, but not limited to, standard smartphones and tablets, watches, glasses, cameras and many other).
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+R. Mayrhofer et al.
+
+Internet of things device types, handheld scanners/displays and other special-purpose worker devices, TVs, cars, etc.). Some of these OEMs do not have detailed technical expertise, but rely on Original Device Manufacturers for developing hardware and firmware and then re-package or simply re-label devices with their own brand. Only devices shipping with Google services integration need to get their firmware certified, but devices simply based off AOSP can be made without permission or registration. Therefore, there is no single register listing all OEMs, and the list is constantly changing with new hardware concepts being continuously developed. One implication is that changing APIs and other interfaces can lead to large changes in the device ecosystem and take time to reach most of these use cases.
+
+However, devices using Android as a trademarked name to advertise their compatibility with Android apps need to pass the CTS. Developers rely on this compatibility when writing apps for this wide variety of different devices. In contrast to some other platforms, Android explicitly supports installation of apps from arbitrary sources, which led to the development of different app stores and the existence of apps outside of Google Play. Consequently, there is a long tail of apps with a very specific purpose, being installed on only few devices, and/or targeting old Android API releases. Definition of and changes to APIs need to be considerate of the huge number of applications that are part of the Android ecosystem.
+
+Apps can be written in any language. As long as apps interface with the Android framework using the well-defined Java language APIs for process workflow, they can be written in any programming language, with or without runtime support, compiled or interpreted. Android does not currently support non-Java language APIs for the basic process lifecycle control, because they would have to be supported in parallel, making the framework more complex and therefore more error-prone. Note that this restriction is not directly limiting, but apps need to have at least a small Java language wrapper to start their initial process and interface with fundamental OS services. The important implication of this flexibility for security mechanisms is that they cannot rely on compile-time checks or any other assumptions on the build environment. Therefore, Android security needs to be based on runtime protections around the app boundary.
+
+# 2 Threat Model
+Threat models for mobile devices are different from those commonly used for desktop or server operating systems for two major reasons: By definition, mobile devices are easily lost or stolen, and they connect to untrusted networks as part of their expected usage. At the same time, by being close to users at most times, they are also exposed to even more privacy sensitive data than many other categories of devices. Recent work  previously introduced a layered threat model for mobile devices that we adopt for discussing the Android security model within the scope of this article, but (where meaningful) order threats in each category with lower numbers representing more constrained and higher numbers more capable adversarial settings:
+Adversaries can get physical access to Android devices. For all mobile and wearable devices, we have to assume that they will potentially fall under physical control of adversaries at some point. The same is true for other Android form factors such as things, cars, TVs, and so on. Therefore, we assume Android devices to be either directly accessible to adversaries or to be in physical proximity to adversaries as an explicit part of the threat model. This includes loss or theft, but also multiple (benign but potentially curious) users sharing a device (such as a TV or tablet). We derive specific threats due to physical or proximal (P) access:
+- T.P1 (Screen locked or unlocked) devices in physical proximity to (but not under direct control of) an adversary (with the assumed capability to control all available radio communication)
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+channels, including cellular, WiFi, Bluetooth, GPS, NFC, and FM), e.g., direct attacks through Bluetooth . Although NFC could be considered to be a separate category to other proximal radio attacks because of the scale of distance, we still include it in the threat class of proximity instead of physical control.
+
+# T.P2
+Powered-off devices under complete physical control of an adversary (with potentially high sophistication up to nation state level attackers), e.g., border control or customs checks.
+
+# T.P3
+Screen locked devices under complete physical control of an adversary, e.g., thieves trying to exfiltrate data for additional identity theft.
+
+# T.P4
+Screen unlocked (shared) devices under control of an authorized but different user, e.g., intimate partner abuse, voluntary submission to a border control, or customs check.
+
+Network communication is untrusted. The standard assumption of network communication under complete control of an adversary certainly also holds for Android devices. This includes the first hop of network communication (e.g., captive WiFi portals breaking TLS connections and malicious fake access points) as well as other points of control (e.g., mobile network operators or national firewalls), summarized in the usual Dolev-Yao model  with additional relay threats for short-range radios (e.g., NFC or BLE wormhole attacks ). For practical purposes, we mainly consider two network-level (N) threats:
+# T.N1
+Passive eavesdropping and traffic analysis, including tracking devices within or across networks, e.g., based on Media Access Control (MAC) address or other device network identifiers.
+
+# T.N2
+Active manipulation of network traffic, e.g., on-path attacks (OPA, also called MITM) on TLS connections or relaying.
+
+These two threats are different from [T.P1] (proximal radio attacks) in terms of scalability of attacks. Controlling a single choke point in a major network can be used to attack a large number of devices, while proximal (last hop) radio attacks require physical proximity to target devices.
+
+Untrusted code is executed on the device. One fundamental difference to other mobile operating systems is that Android intentionally allows (with explicit consent by end users) installation of application (A) code from arbitrary sources, and does not enforce vetting of apps by a central instance. This implies attack vectors on multiple levels (cf. Reference ):
+# T.A1
+Abusing APIs supported by the OS with malicious intent, e.g., spyware.
+
+# T.A2
+Abusing APIs supported by other apps installed on the device.
+
+# T.A3
+Untrusted code from the web (i.e., JavaScript) is executed without explicit consent.
+
+# T.A4
+Mimicking system or other app user interfaces to confuse users (based on the knowledge that standard in-band security indicators are not effective ), e.g., to input PIN/password into a malicious app.
+
+# T.A5
+Reading content from system or other app user interfaces, e.g., to screen-scrape confidential data from another app.
+
+# T.A6
+Injecting input events into system or other app user interfaces.
+
+# T.A7
+Exploiting bugs in the OS, e.g., kernel, drivers, or system services.
+
+Untrusted content is processed by the device. In addition to directly executing untrusted code, devices process a wide variety of untrusted data, including rich (in the sense of complex structure) media. This directly leads to threats concerning processing of data (D) and metadata:
+# T.D1
+Abusing unique identifiers for targeted attacks (which can happen even on trusted networks), e.g., using a phone number or email address for spamming or correlation with other data sets, including locations.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+R. Mayrhofer et al.

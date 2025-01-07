@@ -1,0 +1,77 @@
+During dynamic construction and traversal of the directed graph, each node corresponds to a different interface state. After each widget action is executed, we need to take different approaches depending on whether the state of the interface has changed. Currently, there are three solutions to determine whether the current interface has changed. (1) Compare the Activity name where the interface is located . (2) Calculate the similarity between the screenshot of the current interface and the screenshot of the interface that has been traversed through the image recognition technology. (3) Extract all widget types, widget quantity, and widget property information on the interface for comparison . Solution 1 is not accurate enough because the same Activity may contain multiple different interfaces. Both solution 2 and solution 3 require a large amount of comparison time and are inefficient. It can be seen that too fine or too thick comparison will result in poor traversal effect. Considering that we focus on the analysis of different network requests in the application and the common widgets among different interfaces (if the widgets correspond to sending network request event) often correspond to the same request links, we propose to calculate the similarity of two interface states based on the widget path set. Formula (1) is used to calculate the similarity sim(s1, s2) of the interface state s1 and interface state s2:
+sim(s1, s2) =
+{ 0, activity(s1) ≠ activity(s2),
+|R(s1) ∩ R(s2)|, activity(s1) = activity(s2).
+
+Formula (1) indicates that if s1 and s2 belong to different Activities, they correspond to different interface states and the similarity of them is zero. When s1 and s2 belong to the same Activity, the similarity of the corresponding interface state can be calculated based on the widget path set. The R(s1) and R(s2) in the |R(s1)∩R(s2)|/|R(s1)∪R(s2)| represent all the paths from all root nodes to leaf nodes of the interface widget tree s1 and s2, respectively. |R(s1)|∩|R(s2)| represents the number of identical paths in these paths. |R(s1)|∪|R(s2)| represents the number of all the paths from the root node to the leaf node. The two paths are the same if and only if the total number of widgets, the widget type, and the widget text on the same hierarchy of both paths are consistent.
+
+This method is only used for the pairwise calculation of the similarity of interfaces belonging to the same Activity, effectively reducing the comparison time. When the similarity is greater than a certain threshold value, it indicates that the interface state is an old state. When the similarity is less than a certain threshold value, it indicates that the interface state is a new state. By setting similarity threshold, the scale of traversal model can be controlled effectively. When the similarity threshold value is higher, the interface state is divided more finely and the traversal coverage rate is higher. This means that the traversal directed graph constructed is large and cumbersome, and it takes lots of time to traverse.
+
+# 5. System Design and Implementation
+# 5. System Architecture.
+
+The architecture of Android application SSL security vulnerability automatic detection system based on dynamic UI traversal is shown in Figure 1, which mainly includes three modules: preprocessing, UI traversal, and attack test. According to the three characteristics including application networking permission, packing, and SSL-related interface call, the preprocessing module will screen out the suspicious application set from the test Android application dataset to reduce the size. The UI traversal module distributes the (Android Package) apk files of the suspect application to the idle devices (or emulators) through our scheduling logic. At the same time, our UI traversal technology drives the application to install, run, and uninstall on the device. The whole UI traversal process includes widgets extraction, traversal algorithm design, and
+# Security and Communication Networks
+# QQflAsecurity
+# Z“AtraversalAmodule
+# Z“AtraversalAstrategy
+# vulnerability
+# featureAlibrary
+# ¨idgetAextraction
+# ?raversalAmodel
+#  ]uideAand
+# optimize
+# ?raverseAalgorithm
+# “nterfaceAwidgetAtree
+# optimization
+# Xreproccess
+# Quspicious
+# Vndroid
+# app
+# ZserAaction
+# “nterfaceAstate
+# simulation
+# similarityAcalculation
+# app
+# jatchingAfilter
+# dataset
+# rulesAbasedAon
+# featureAlibrary
+# 7etwork
+# Vttack
+# traffic
+# test
+# VttackAtestAmodule
+# VttackAtestAenvironment
+# 7etwork
+# ´ulnerability
+# app
+# ´ulnerability
+# appAdataset
+# –eturnAattackAresults
+# inArealAtime
+user action simulation. Among them, UI traversal strategy is used to guide and optimize the process of UI traversal. The attack test module attacks the application running on the device through the man-in-the-middle attack agent tool and returns the attack results in real time. The implementation details of each module are described below.
+
+that the function inherits, and x4 represents the summary information of the function body. The above formal representation is used to describe four known SSL security vulnerabilities to form the vulnerability feature library. For example, the formal description of the characteristics of trusting all hosts vulnerability is shown in Figure 2.
+
+# 5. Preprocess.
+
+The preprocessing module uses static code analysis and feature matching technology to filter the Android application dataset preliminarily and screens out the “suspicious application” set. The whole filtering process consists of building SSL security vulnerability feature library and matching filtering rules. This process is designed to initially filter some applications and determine whether the application belongs to one of the four SSL vulnerability types. In fact, this preprocessing is not always necessary and will not affect the subsequent detection efficiency and progress, because SSLDetecter can also directly conduct dynamic analysis of applications.
+
+# 5. SSL Security Vulnerability Feature Library.
+
+Based on existing research and combining with specific vulnerability code blocks in Android applications, we divide SSL security vulnerabilities of Android applications into four types: trusting all certificates, trusting all host names, recalling insecure SSL APIs, and ignoring SSL errors. SSL security vulnerability characteristics are formally described as X � 1, x2, x3, x4􏼁, x (2) where X represents the SSL-related function summary information of the Android application, x1 represents the function name summary information, x2 represents the summary information of the interface implemented by the function, x3 represents the summary information of a class that the function inherits, and x4 represents the summary information of the function body. For the application that can extract the features, we match the feature information with the vulnerability features in the vulnerability feature library one by one. When the matching is successful, it indicates that the application is suspicious and will be stored in the dynamic test application database; otherwise, it will be stored in the white list database. For the applications which cannot be decompiled (such as packed apps), we directly put them into dynamic test application database.
+
+# 5. Matching Filter Rules.
+
+Based on Androguard , feature extraction is carried out to match SSL security vulnerability feature library. Firstly, decompress the test apk file and parse the decompressed Androidmanifest.xml file through the AXMLPrinter2.jar package. Then extract all permissions applied by the application and judge whether there are network permissions. For applications with network permissions, we further analyze the smali class files which are obtained by decompiling the dex files of the app. We extract the specific information of SSL-related functions in each smali file according to the functional syntax structure of the smali file. The information includes information of the class inherited by the function and the implemented interface. Meanwhile, the function body information is extracted based on the widget flow graph provided by Androguard at the instruction level. Finally, the extracted information above is uniformly expressed in the form required by the SSL security vulnerability feature library as the characteristics of the application.
+
+# Security and Communication Networks
+Trust_Manager_Signature = (Method,Interface,Class,Method_Body)
+Method = {‘access_flags’:‘public’,‘return’:‘void’,‘name’:‘checkServerTrusted’,
+‘params’:[‘java.security.cert.X509Certificate[]’,‘java.lang.String’]}
+Interface = [‘Ljava/net/ssl/TrustManager;’,‘Ljavax/net/ssl/X509TrustManager;’]
+Class = []
+Method_body = [return-true,return-void]
+# 5. UI Traversal Module
+Appium is a good testing framework for mobile applications. Our UI traversal module drives the application to run automatically by extending the traversal logic of Appium. The module mainly consists of three parts: widget extraction, traversal algorithm design, and user action simulation. Appium bottom layer implements the similar functions of the native test tool Uiautomator that comes with the official Android SDK. Based on the Appium framework, it is very convenient to obtain widget information on the interface and simulate user action, but the framework does not put forward the traversal model and optimization strategy of the widget tree on the interface. It cannot realize the requirements for the test applications to continuously traversal to trigger each functional logic. SSLDetecter extends the Appium client traversal logic on its framework to automatically detect SSL security vulnerabilities of Android applications.

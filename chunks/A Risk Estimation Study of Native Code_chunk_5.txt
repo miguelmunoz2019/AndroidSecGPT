@@ -1,0 +1,79 @@
+6 strings tool in Linux is capable of retrieving all printable sequences of characters
+7 A stripped binary is a binary without some debugging symbols and so with a lack from the .rodata section of an ELF.
+
+F. Author et al.
+
+tion names. For example, in OpenCV, we can find strings like General Configu-
+ration for OpenCV v.n to declare the version and xxxx_cv_xxxx in the function
+names. For this reason, if we find these syntaxes in strings and functions, we can
+link the analyzed ELF file to a product.
+
+Some binaries can be linked to multiple products due to imported libraries.
+
+Indeed, in a compiled library, there can be traces of the primary library and
+the secondary libraries (i.e., the ones employed by the primary). We considered
+the ELF files belonging to all the retrieved products in this case, as a proper
+distinction between primary and secondary libraries can be hard to carry out in
+practice (an issue that has also been highlighted by Borzachiello et al. ).
+
+When developers use our methodology, thanks to the library association step,
+they can find vulnerabilities in the secondary library (i.e. a library contained in
+the main library they are importing in the project as described here above) and
+take actions to mitigate them. Developers also use the library extraction and
+analysis part as we designed because when importing a third-party native library
+in an Android project for apk creation, Android Studio compiles the library, and
+to analyse it, developers have to extract and analyse the compiled ELF file as
+security analysts do. Instead, when developers want to check if the native library
+contains vulnerabilities before importing them into the Android Studio project
+to create the application, they can immediately check the database, find a version
+with fewer vulnerabilities, and patch them.
+
+# 4 Risk Assessment Algorithm
+We developed a risk assessment algorithm to give a risk value to each library
+(and consequently to each app) to provide an alarm to security researchers. Even
+though a CVE is present in the analyzed libraries within an ELF, we are not
+100% sure that it is exploitable due to stripped binaries, imported products, and
+without considering the reachability problem. Moreover, developers can rename
+the functions, patch their content or use obfuscation techniques. For this reason,
+we can approach the problem in probabilistic terms, and we developed a semi-
+quantitative risk assessment algorithm.
+
+According to ISO 27005:2008 , the risk can be evaluated as the product
+between 3 factors:
+risk = threat ∗ impact ∗ vulnerability (1)
+A threat corresponds to an action that negatively impacts the device. Hence,
+the threat factor can be associated with the ease with which an attack can be
+carried out. To quantify it, we can use the CVSS exploitability value since it
+has a similar definition, regardless of the attacker’s capabilities. The impact
+is the damage caused to the system if the vulnerability is exploited. It can be
+quantified with the CVSS impact value without considering the architecture of
+the victim device.
+
+– CRITICAL when the CVE is present and surely exploitable;
+# Risk Algorithm Native Code Vulnerabilities Android
+– HIGH when a vulnerable library is found within the application, but we are uncertain about the CVE exploitability because the vulnerable API is not reachable, or we did not find the vulnerable function because the binary is stripped;
+– MEDIUM when we can make the same assumptions of HIGH level for functions, but we cannot find the vulnerable version due to stripped binaries. Indeed, the library could be vulnerable because developers would be unaware of the dangers of function if the CVE were released after the app’s publication. Moreover, apps falling in this category feature a difference between their release and the CVE publication dates, which are inferior to two years. According to Librarian , two years is the time developers use to apply a patch and mitigate vulnerability effectiveness after its release. Hence, within this period, it is very likely that the library would be affected.
+
+– LOW when we cannot state whether the CVE is present. So, we establish a small level of risk when the found version and functions are not associated with any CVE;
+– NONE when no native library is found, or the analyzed ELF files do not belong to our N products.
+
+Our study aims to establish a qualitative value of the risk. To do so, we have to rescale the semi-quantitative product between threat and impact (in a range between 0 and 100 as both of them have values between 0 and 10) into qualitative metrics, as detailed in Table 3. The values have been determined according to the CVSS 3 Qualitative Severity Rating Scale. Then, by applying the equation 1, we evaluate the risk according to the matrix in Table 2. In this way, we have a qualitative risk assessment score to assign to each CVE present in each library of each Android application.
+
+The purpose is to give a risk value to each library (and, consequently, to each app) and to provide swift alarms to security researchers. Once they are informed about the risks associated with the library or application, they can find a way to patch the vulnerability (e.g., upgrade the library to a non-vulnerable version, fix the library, etc.). To this aim, we assigned the highest score of the CVEs.
+
+risk level to each library but also saved the affected CVEs in a log file. For example, if we find five CVEs with a LOW level and one with a MEDIUM level, we assign a MEDIUM risk to the library for a more effective alarm. Another approach could be evaluating the average risk, giving the most representative risk: in the previous example, the result should be LOW, but in this way, we would underestimate the risk, which is far from our purpose. The same weighted approach has been adopted for the application risk level attribution.
+
+# 5 Results
+In this Section, we illustrate the results of a large-scale analysis conducted on 100, 000 APKs from Androzoo. Additionally, to prove the efficiency of our methodology and risk algorithm and to make a comparison between our approach and Libriarian , we applied the approach to 32 apps from the published dataset  by Almanee et al. Since the Librarian dataset employs apps released between September 2013 and May 2020, we downloaded the updated versions of such apps  and whether the vulnerability risk changed in this amount of time.
+
+# 5 Dataset and products
+To apply the study to a large-scale dataset, we downloaded the first 100, 000 applications found in the Androzoo collection, which is a popular dataset developed by the University of Luxembourg with about 23 million APKs dumped from different markets and years, also analyzed by various anti-malware engines. Among the 100, 000 applications, we selected only 38, 348, which contained native code (see Supplementary Data for the hash list). In particular, since this study started in September 2021, we downloaded the samples considering the list of apps from Androzoo csv.
+
+Additionally, we built a dataset of products, i.e., a set of N popular native libraries within the downloaded samples. This is a necessary step to associate each ELF file with at least one product, as expressed in Section 4. Due to time
+# Risk Algorithm Native Code Vulnerabilities Android
+and space constraints, we selected the most representative libraries within the 38,384 APKs, considering the number of published vulnerabilities (CVE) for those libraries and the representativeness within the app chosen inside the large-scale dataset. So, in a similar fashion to what was made by Almanee et al., , given the 38,384 APKs we made a list of the native libraries’ names, associated them to their own products, and computed statistics of the products considering the number of the published known vulnerabilities and their percentage of diffusion in the dataset (considering the top products to be selected). At the end, we had a dataset of 15 products: OpenCV, OpenSSL, FFmpeg, Libavcodec, Libavformat, Libswresample, Sqlite 3, LibWebp, Libpng, Libjpeg-turbo, Lua, Mono, Folly, Hermes, React-Native.
+
+The Table shows the 15 selected products to perform the analysis, a brief description of their purpose, the number of released CVEs in the last five years, and the percentage of apps in our dataset that contain these products.
+
+# 5 Large-scale analysis Results
+Out of the 100,000 downloaded APKs, about 40% of them contained Native Code. In particular, there are 38,384 APKs with at least one native library and a total of 225,638 ELF files. Among these, 44,225 belongs to at least one of our 15 products. Regarding applications with Native Code, by considering only the products in the library-identification dataset as defined in Table 4, we could determine the risk for 55% of them. Hence, about 24,000 APKs belong to at least one of our 15 products with a risk level HIGH-MEDIUM as reported in Figure 2.

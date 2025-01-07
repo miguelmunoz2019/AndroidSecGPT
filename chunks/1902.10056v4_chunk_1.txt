@@ -1,0 +1,77 @@
+# SeMA: A Design Methodology for Building Secure Android Apps
+Joydeep Mitra, Venkatesh-Prasad Ranganath
+Kansas State University, U.S.A
+{joydeep,rvprasad}@k-state.edu
+Created: February 15, 2019. Revised: September 19, 2019.
+
+# Abstract
+UX (user experience) designers visually capture the UX of an app via storyboards. This method is also used in Android app development to conceptualize and design apps. Recently, security has become an integral part of Android app UX because mobile apps are used to perform critical activities such as banking, communication, and health. Therefore, securing user information is imperative in mobile apps. In this context, storyboarding tools offer limited capabilities to capture and reason about the security requirements of an app. Consequently, security cannot be baked into the app at design time. Hence, vulnerabilities stemming from design flaws can often occur in apps. To address this concern, in this paper, we propose a storyboard based design methodology to enable the specification and verification of security properties of an Android app at design time.
+
+# 1 Why a new methodology?
+Android app development teams use storyboarding as part of their design process . A storyboard is a sequence of images that serves as a specification of the user observed behavior in terms of screens and transitions between screens. Storyboarding helps designers identify different kinds of app users (user profiles), explore possible real world scenarios in which a user will interact with the app, and develop wireframes to capture the scenarios for identified user profiles . Numerous tools such as Xcode , Sketch , and Android JetPack’s Navigation Component  help designers digitally express the storyboard of an app.
+
+Storyboarding is meant to be participatory because it can be used by designers to get feedback from potential users about likely user scenarios, and from developers about the technical challenges of implementing the design. However, in their current form, storyboards do not capture non-functional requirements such as security. Consequently, Android app designers and developers cannot use storyboarding to collaborate and express security requirements at design time. As a result, verification of security requirements is delayed until later stages. This delay increases the cost of app development as vulnerabilities due to flaws detected in later stages increase the cost of development.
+
+In this context, to enable reasoning about security at design time, we are exploring two ideas: 1) extend storyboards to capture non-functional properties and 2) develop a methodology that uses storyboards to specify and verify security requirements of apps at design time.
+
+To understand the reasons for and benefits of these ideas, we need to understand the current landscape of Android app development practices.
+
+Today, developers consider the security requirements of an app while or after implementing the app. Existing research efforts related to Android app security have focused on developing tools and techniques to help detect vulnerabilities in an app’s implementation . Despite such efforts, apps with known vulnerabilities find their way to app stores . This is possibly because existing tools are neither accurate  nor scalable  in terms of detecting known vulnerabilities. Given this landscape, we believe it is worthwhile to explore the unexplored: preemptively eliminate vulnerabilities in apps by enabling developers and designers to consider security at design time and thwart the exploits of malicious apps.
+
+Besides complementing existing techniques, such exploration will help consider the following research questions:
+# 1. Introduction
+a) How much effort is required in terms of time and cost to formally reason about Android apps at design time?
+b) In the context of Android app development, is secure-by-design cost-effective?
+c) Is verifying an app based on its storyboard easier than verifying an app based on its code?
+d) In terms of improving security, how will the proposed approach compare to existing curative approaches, i.e., detect vulnerabilities after they occur?
+# 2. What is the methodology?
+Motivated by the above reasons, we propose the following methodology, Securing Mobile Apps (SeMA), that borrows heavily from model driven development.
+
+1. App development begins with the storyboard (model) of an app that captures the screens of the app, the transitions between screens, and the resources used by the app.
+
+2. The storyboard is iteratively refined by adding behavioral and security properties.
+
+3. As the storyboard is refined, verification techniques are used to check the behavior of the storyboard satisfies the security properties. Once the refined storyboard satisfies the desired requirements, property preserving structural code1 of the app is automatically generated.
+
+4. Business logic is added to the generated code.
+
+# 2 An Illustrative Example
+To understand SeMA, consider the development of an app that sends a message to a set of pre-identified contacts at the push of a button.
+
+# 2 App Specification
+Initially, the app designer specifies the required screens and the transitions between the screens as shown in the sub-diagram in the top left corner of the figure (labeled A). The initial snapshot is similar to how storyboards are used in designing apps today. Besides the graphical description of screens of the app, this snapshot captures the navigational possibilities in the app: 1) user will see the Messenger screen up on launching the app, 2) the user can transition to either Contacts or MsgStatus screens from the Messenger screen, and 3) the user can transition to SaveStatus screen from the Contacts screen.
+
+Next, the app designer refines the initial snapshot with constraints based on user actions (marked in red in the main diagram). For example, when the user clicks the Add button in the Messenger screen, the app transitions to the Contacts screen.
+
+As the next refinement, the app developer (in collaboration with the app designer) adds more behavioral constraints to the storyboard. For example, a constraint based on the state of the app (marked in blue) is added to the transition from the Contacts screen. Other transitions in the app are enriched with constraints in subsequent refinements.
+
+Many constraints rely on operations involving the resources in the device. While such resources are pre-defined, apps can specify views of resources that they will use.
+
+The resource view of the app (shown in Figure 1) describes the view of the resources used in the example app as follows.
+
+- EXT STORE denotes the external storage on Android devices that can be accessed by all apps installed on the device. The app uses the following two capabilities of this resource: write(f,p) writes the value p into file f and read(f) reads a value from file f and returns it.
+
+1Structural code is traditional skeletal code along with some non-trivial logic to enforce properties.
+
+# Storyboard of the Emergency App
+This is an Operation provided by the resource
+# Resource View
+Initial snapshot of the storyboard
+• SMS denotes a pre-defined service available on Android devices that the app uses to send a SMS message m to a list of phone number p via send(m,p) operation.
+
+The final storyboard with all the behavior and resource operations specified will look like Figure 1. To give an example of how the constraints in a transition are interpreted, the transition from the Messenger screen to the MsgStatus screen is taken when 1) the SendMsg button is pressed and 2) an SMS message is successfully sent to the phone numbers in the file named MyContacts.txt.
+
+# 2 Analysis
+In this example, suppose we are interested in the violation of this property: malicious input should not influence data flow in the app.
+
+Based on the semantics of EXT STORE, all apps can access data in EXT STORE. Hence, EXT STORE can possibly contain malicious inputs as malicious apps can modify the contacts stored by the example app. Since the phone numbers from EXT STORE is used in SMS.send(. . . ), a violation of the property is detected by analyzing the data flow through the storyboard in accordance with the semantics of resources used by the app.
+
+This vulnerability can be fixed by storing the phone numbers in a more secure way. For example, MyContacts.txt file can be stored in the app’s internal storage that is accessible only by the app. This fix
+# 3 Realizing the methodology
+To validate the feasibility of this methodology, we are currently developing the design language, its formal syntax and semantics, and the analysis engine required to reason about the design. In addition, we are exploring the following few design choices.
+
+# 3 Leverage existing mobile app design frameworks
+Android JetPack Navigation (AJN)  is a suite of libraries that helps Android developers design their apps’ navigation. Navigation refers to the interactions that allow users to move between screens with simple button clicks and other more complex patterns. Since AJN is open source, is already supported in Android Studio, and can easily be extended, we chose to extend AJN with functionality to enable the specification and analysis of an app’s design as described in Section 2. The modified library currently allows users to do the following:
+1. Initialize the widgets of a screen with data.
+
+2. Annotate transitions between screens with constraints.

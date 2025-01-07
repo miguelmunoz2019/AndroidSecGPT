@@ -1,0 +1,79 @@
+1) Preprocessing: ATVHUNTER primarily conducts two tasks in this phase. The first task is to decompile the input app and transform the bytecode into appropriate intermediate representations (IRs). The second task is to find the primary module in the app and delete it to eliminate the interference from the host app. If an app includes TPLs, we call the code of the host app as the "primary" module and the in-app TPLs constitute the "non-primary" module. ATVHUNTER first parses the AndroidManifest.xml file and gets the host app packages. Sometimes, the code of the host app may belong to several different namespaces, therefore, we need to extract the app packages, application namespace and the package namespace including the Main Activity (i.e., the launcher Activity) and delete these files under the host namespace.
+
+However, this approach also has following side effects: 1) part of host code suffers from the package flattening or renaming; 2) part of host code cannot be deleted due to special package name; 3) the host app and TPLs have the same package namespace, leading to false negatives.
+
+2) Module Decoupling: The purpose of module decoupling is to split up the non-primary module of an app into different independent library candidates. Previous research adopts different features for module decoupling such as package structure, homogeny graph , and package dependency graph (PDG), however, they more or less depend on the package structure of apps. Using the package name or the independent package structure to split the in-app TPLs is error-prone, which has two obvious disadvantages: 1) low resiliency to package flattening ; 2) inaccurate TPL instance construction. There are many different TPLs sharing the same root package.
+
+For instance, “com.android.support.appcompat-v7”  and “com.android.support.design”  are two different TPLs but they share the same root package com/android/support.
+
+# Preprocessing
+# Module Decoupling
+# Feature Generation
+# Library Identification
+# Decompiling
+# Candidate TPL
+# Coarse-grained feature decoupling
+# Potential TPL
+APK 1
+Primary module elimination
+# Feature Generation
+# TPL Feature
+Vulnerable TPL versions
+Vulnerable TPL
+TPL info: name, version, etc.
+
+Vul info: type, CVSS, etc.
+
+# Vulnerability Collection
+Mapping - Vulnerable
+# Offline DB Construction
+# com.orange.redis-protocol
+redis
+netty4
+reply
+server
+org.slf4j
+com.google
+sampullare
+# Class Dependency Relationship
+includes:
+1. class inheritance, we do not consider the interface relationship because it can be deleted in obfuscation,
+2. method call relationship, and
+3. field reference relationship.
+
+We use CDGs to find all the related class files, and each CDG will be considered as a TPL candidate in general situation. Using CDGs can avoid the aforementioned situations and package mutation and also be resilient to package flattening.
+
+# ATVH unte r
+we use similarity-based method to identify TPL-Vs, we generate the TPL feature database by using the complete TPL files that we downloaded from the maven repository. Therefore, we need to pay attention the packaging techniques of Java projects. To facilitate maintenance, most developers usually adopt the “skinny” mode to package a TPL, which means the released version only contains the code by TPL developers without any dependency TPLs. The dependency TPLs will be loaded during compilation. To solve this situation, we crawl the meta-data of each TPL and record their dependency TPLs and packaging technique by reading the “pom.xml” file. If the “pom.xml” claims “jar-with-dependencies”, it means it includes all dependency TPLs, otherwise, it just includes the host TPL code. If we find a jar which is a skinny one, we also need to split their dependency TPLs by using their package namespace so that we can match the correct version in TPL database.
+
+# Feature Generation
+After splitting the candidate libraries, we then aim to extract features and generate the fingerprint (a.k.a., signature) to represent each TPL file. To ensure scalability and accuracy, we choose two granularity features. The coarse-grained feature is used to help us quickly locate the potential TPLs in the database. The fine-grained feature is used to help us identify the TPL-V precisely.
+
+1. For coarse-grained features, we choose to extract the Control Flow Graph (CFG) to represent the TPL since CFG is relatively stable. CFG also keeps the semantic information that ensures the accuracy to some extent.
+
+2. For fine-grained features, we extract the opcode in each basic block of CFG as the feature for exact version identification.
+
+# Coarse-grained Feature Extraction
+We first extract the CFG for each method in the candidate TPLs, and traverse the CFG to assign each node a unique serial number (starting from 0) according to the execution order. For a branch node with sequence number n, its child with more outgoing edges will be given sequence number n + 1 and the other child is given n + 2. If two child nodes have the same outgoing edges, we will give n + 1 to the child node with more statements in the basic block. We then convert the CFGs into signatures based on the assigned serial numbers of each node to represent each unique TPL, in the form of [node count, edge adjacency list], where the adjacency list is represented as: [parent1 -> {child1, child2}, ... , parent2 -> ...]. We then hash the adjacency list of CFG as a method signature. To improve the search efficiency, we sort these hash values in ascending order and then hash the concatenate values as one of the coarse-grained TPL features (Tl). Meanwhile, we also keep the series of CFG signatures in our database to represent each TPL in feature database.
+
+# Fine-grained Feature Extraction
+Based on our analysis, we find the code similarity of different versions for the same TPL could be diverse, which can range from about 0% to nearly 100%. The coarse-grained features (i.e., CFG) are likely to generate the same signature of different versions that have minor changes such as insert/delete/modify a statement in a basic block. Therefore, we propose finer-grained features, i.e., opcode in each basic block of CFG, to represent each version file. However, extracting more fine-grained features will increase more computational complexity and cost of the computing resources. To ensure the scalability of ATVHUNTER, a common way to achieve that is through hashing. However, hash-based method has an obvious drawback to determine whether two objects (e.g., TPLs, methods) are similar because a minor modification can lead to a dramatic change of the hash value. Thus, we adopt the fuzzy hashing technique instead of the traditional hash algorithm to generate the code signature for.
+
+# CFG adjacency list sequence
+[parent] > (childL childz Lparent] (childLchildz
+get opcode sequence of each node in CFG
+sput const-class Invoke-string move If-it
+Rolling_hash(sliding_window) reset_point
+# sliding window
+piece1
+piece2
+piece3
+pieceN
+Final fingerprint
+Each method. Fig. 3 shows the feature generation process for TPL-Vs. Specifically, we first extract all the opcode sequences inside each basic block and concatenate them together. We do not consider the operands (e.g., identifier names or hard-coded URLs) that are not robust for some simple obfuscation techniques such as renaming obfuscation and string encryption techniques . We then concatenate all opcode sequences of each basic block according to the adjacency list of CFG. In this step, our method is somewhat similar to LibD  with respect to the code feature. We also adopt the opcode in each basic block of CFG as the code feature. However, we also have many differences. LibD uses a package-level hash value as the final signature and uses the clustering algorithm to detect TPLs. While in ATVHunter, to defend against code obfuscation or TPL customization , we use the fuzzy hash on each method-level feature and similarity comparison to find similar methods. We first use a slide window (a.k.a., rolling hash ) to cut the opcode sequence into small pieces. Each piece has an independent contribution to the final fingerprint. If one part of the feature changes due to code obfuscation, it would not cause a big difference to the final fingerprint. We then hash each piece and combine them as the final fine-grained fingerprint of each method. The fingerprints of all methods in a version to represent a TPL-V.
+
+# TPL Database Construction
+We crawled all Java TPLs from Maven Repository  (189,545 unique TPLs with their 3,006,676 versions) to build our TPL database. We use the above mentioned method to obtain the signature for each TPL. For each version of TPLs, we store both coarse-grained and fine-grained features in a MongoDB  database. The size of the entire database is 300 GB. We spent more than one month to collect all the TPLs and another two months to generate the TPL feature database.
+
+# 4) Library Identification
+This step aims to identify the used TPL-Vs in a given app. To achieve it efficiently, we propose a two-stage identification method: 1) potential TPL identification; 2) version identification.

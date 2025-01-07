@@ -1,0 +1,103 @@
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+# Encrypted Disk
+Full Disk Encryption (FDE)
+Encrypted DEK
+Salt
+Encrypted RSA Private Key
+# Key Derivation
+Key Encryption
+Credentials
+Function (KDF)
+Key (KEK)
+AES128-CBC
+Encryption Key (DEK)
+AES128-ECB
+Per File Key
+AES256-XTS
+Ext4 Inode Entry
+# File-based Encryption (FBE)
+Pin/ Password/ Auth Token
+Fingerprint
+Keystore
+Auth Token
+Keymaster
+HMAC Key
+# Trusted Execution Environment (TEE)
+# File System
+Hardware Key
+Key
+# File Metadata
+Class Key
+File Key
+# Passcode Key
+of the users are not capable enough to take correct security decisions.
+
+In iOS, permissions that an app needs to access are not shown to the users. All the apps are isolated from each other in Apple, thereby blocking access to most of the device’s sensitive subsystems. Users are not responsible for making any kind of security decisions. This isolation policy used by iOS grants the permissions, which an app requires without users’ consent . However, in some cases users can grant permissions to access the device’s resources like initiating an outgoing phone call, sending an email message or an outgoing SMS, accessing location using GPS, receiving push notifications from the Internet, etc.
+
+# 3. Auto erase mechanism
+Smartphone can carry huge sensitive and private information. Attackers are capable of causing fraud and identity thefts. Auto-erase  feature is helpful when the smartphone is lost or stolen. Personal and sensitive information can be wiped off from the smartphone using auto erase feature.
+
+Android native apps do not provide auto erase mechanism, however third-party applications can be used for auto erase. In iOS, if an attacker tries to attempt failed passcode attempts ten times, all the data on the device is automatically erased using this feature.
+
+# 3. Application provenance
+Application provenance  is defined as a process in which third-party applications are analyzed for their intended functionality and security. Every mobile platform vendor has to validate the authenticity and provenance before uploading the app into the app store. Once the app is verified, author stamps it with the identity, which is then signed digitally with a vendor-issued digital certificate to make it tamper resistant.
+
+# File Contents
+In Android, app developers are not required to register with the Google play store. They do not require Google-issued signing certificates. Android App developers can easily upload their apps on the play store without being monitored by Google. Google asks the app developers to pay a fee of $25 using credit card to get their apps certified. This process is used by Google to link an app with developer’s digital certificate. There is no assurance of this linking since the attackers can use stolen credit card to pay the fee. Another security issue is that Google play store is not the single place to distribute the apps designed by the developers. Android app developers can distribute their app to third party, where these apps are not verified by the Google, thereby making the system more vulnerable.
+
+Unlike Android, iOS developers can distribute their apps only on official app market place call App Store. iOS developers are first required to register with Apple to distribute their apps via app store. Apple follows a vetting process. It is a licensing agreement where each app submitted by the developer, is verified for its security and privacy. The app is digitally signed and then published on the app store, if it does not violate the licensing agreement. The digital signing process guarantees that both the app and its developers are not tampered by a third-party distributor or download site. The vetting process prevents the hackers from uploading malicious apps in the App Store or attacking published app. App developers are required to provide their identities while registering with Apple and obtaining a signing certificate. This acts as another defensive measure against any malicious activity.
+
+summarizes the differences between Android and iOS.
+
+Apart from aforementioned parameters there are other security concerns. Android lacks the control over device manufacturers. Android has high device manufacturers count; therefore, it is difficult for Google to lay common set of protocols for its partnered OEMs. Apple has much more concentrated control over device manufacturers. Android has high device fragmentation, meaning both the number of device variants and OS versions are very high, which provides an ecosystem for security breaches.
+
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+# Summary of differences between Android and iOS.
+
+# Common vulnerabilities in Android and iOS.
+
+# 4. Software vulnerabilities common in Android and iOS
+Vulnerability can be defined as a weakness, which an attacker can exploit potentially to carry out unauthorized actions in a network or a system . Vulnerabilities in mobile devices can arise due to lack of security practices by users and from poor technical controls. Software vulnerabilities are analyzed based on different technical parameters like causes, techniques, severity levels and software systems . Common vulnerabilities seen in Android and iOS are shown in Table 2.
+
+and extracts corresponding details. Web-based scraper was able to extract all vulnerabilities in the iOS and Android category from CVE details. We collected 1655 CVE IDs of iOS and 2563 CVE IDs of Android, with a total of 4218 CVE IDs. Fig. 10 explains the process of web-based scraping. After scraping the data, data is preprocessed, where the unnecessary data elements (number of exploits, update date, etc.) are removed.
+
+# 5. Data collection
+The main source of data for this study is CVE details . Web-based scraper tool Web Scraper 0 is used to collect this data. The web scraper looks for the CVE IDs for vulnerabilities.
+
+# 6. Vulnerability trends in Android vs. iOS
+Smartphones are prone to cyber-attacks and can compromise the confidentiality, integrity and availability of the data saved on the mobile devices. Risk levels are indicated by the number of vulnerabilities and number of reported malware. The number of vulnerabilities determines the flaws found in the platform that.
+
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+https://www.cvedetails.com/vulnerability-list/vendor_id-1224/product_id-19997/Google-Android.html
+# Sitemap
+# Start URL
+CVE ID
+CWE ID
+# of Exploits
+Vulnerability Type(s)
+Publish Date
+Update Date
+Score
+Snapshot of the page
+# Trend of Android & iOS vulnerabilities for 2007–2019
+According to CVE details, the number of vulnerabilities reported for Android and iOS from 2000 to 2019 are 2563 and 1655 respectively. It is seen in Fig. 11 that there is a continuous increase in the number of vulnerabilities till 2017 and later on there is a steep decrease in the vulnerabilities in the year 2018 and 2019 for both Android and iOS.
+
+It is also seen that percentage distribution of vulnerabilities for both Android and iOS is varying significantly as shown in Fig. 12. The percentage distribution of iOS vulnerabilities has decreased (from 100 to 27%) over the duration 2017–2019, whereas the trend is opposite for Android. Percentage distribution of Android vulnerabilities has considerably increased from 2014 to 2016 and then dipped in 2017 and again risen in 2018–2019. Before 2014, iOS was popular among the smartphone users but Android gained its popularity 2014 onwards, thereby increasing the number of vulnerabilities. So, we would be comparing Android and iOS 2015 onwards when Android came into the picture.
+
+This decrease in the number of vulnerabilities is due to the better detection rates using ML and DL algorithms. Table 3 shows detection rates of ML/DL algorithms 2016 onwards.
+
+It is seen that Android is dominated by 61% of vulnerabilities while in iOS it is 39%. Most of the major vulnerabilities like gain information, code execution, DoS, overflow and gain privilege are common in Android, while in iOS bypass and overflow memory corruption constitute large share. Table 3 shows the vulnerability types distribution between Android and iOS.
+
+The y-axis scale is always 100%. Each colored area represents a single vulnerability of all the vulnerabilities has changed over the years.
+
+# Computer Science Review 40 (2021) 100372
+(For interpretation of the references to color in this figure legend, the reader is referred to the web version of this article.)
+(For interpretation of the references to color in this figure legend, the reader is referred to the web version of this article.)
+Distribution of Android & iOS vulnerability types.
+
+On analyzing the mean severity scores of Android and iOS, it is evident that Android vulnerabilities are more severe (mean score 6) as compared to iOS vulnerabilities (mean score 6). Fig. 15 shows the mean severity score of both Android and iOS from 2015–2019.
+
+Another level of comparison is the access level. Access level is defined as how the vulnerability is exploited. Access levels can be local, remote or local network. Table 5 shows the percentage distribution of different access levels of the vulnerabilities in both Android and iOS. It is evident that 25% vulnerabilities in Android are exploited locally, while iOS vulnerabilities are 85% exploited remotely.

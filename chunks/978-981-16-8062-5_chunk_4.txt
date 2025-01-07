@@ -1,0 +1,74 @@
+# 4 Example of Use
+# Security Issues in Android and Plug-in for Android Studio
+The safer parameter “SHA-256”. However, programmers do not always notice, or they clone a big project with many files. They can use the Inspect Code feature to scan the entire source code. The pieces of code that our team considers to be problematic will also be detected along with the available rules of Android Studio. We tested with Tencent’s open source project VasSonic  and scanned the unsafe code listed in Fig. 7.
+
+try
+HessageDigest nessageDigest     HessageDigest.getInstance   SHAI");
+HessageDigest nessageDigest    HessageDigest. getInstance   SHA1") ;
+catch (NoSuchalgorithnException e)
+printstacktrace() ;
+printstacktrace();
+Supptess: Add @SuepressLintl HessagcDiges
+# 4 Rules Customization for a Specific Project
+9Fix’s architecture allows Inspection to handle all work locally and follow all information in the Rules.xml file stored within each project. Users have full editing rights through the dialog box; for example, users who want to detect more MD5 parameters and edit suggestions to SHA-256 can add their own rules. Immediately when the content of Rules.xml changes, Inspection will update the ruleset and detect the code that uses the MD5 parameter, demonstrated in Fig. 8.
+
+# 4 Security Checklist
+Fix currently contains more than 50 detection patterns and supports quick fixes to cover 25 popular security Issues. Some Issues help users fix errors, and others remind programmers to use filters or be careful when using them directly. The list of security Issues and Warnings is shown in the Table 1.
+
+# Security Issues in Android and Plug-in for Android Studio
+# Explanation
+You may need to validate or sanitize anything pulled from it before passing it to sensitive APIs.
+
+The Android application exports a component for use by other applications, but does not properly restrict which applications can launch the component or access the data it contains.
+
+Proper input sanitization can prevent the insertion of malicious data into a subsystem such as a database.
+
+Eval method with user input may trigger command injection.
+
+The parameter in compile method should be whitelisted.
+
+Remember to use double slashes for escape characters.
+
+Metadata should be checked to prevent unsafe file upload.
+
+Do not store unencrypted sensitive information on the client side.
+
+readUnshared() may produce unexpected results when used for the round-trip serialization.
+
+Use readObject() to ensure that the object referred to only one target.
+
+writeUnshared() may produce unexpected results when used for the round-trip serialization.
+
+Use writeObject() to ensure that the object referred to only one target.
+
+The application is deployed with debugging code still enabled, which can create unintended entry points or expose sensitive information.
+
+Information written to log files can be of a sensitive nature.
+
+# 5 Experiment Results
+# 5 Performance
+9Fix checks source code in real-time, so our team measures how quickly problem code is marked up after developers create them. The experiment was conducted on an 8 GB RAM device with a 2 GHz processor. The results of 100 measurements show that 9Fix can detect in the period from 100 to 500 ms. The results are similar when the user proceeds to select a quick fix or customize the rules.
+
+# 5 User Experience
+We surveyed 30 Android developers with about 1 to 2 years of experience and 9Fix features. More than 76% of users claim to receive 9Fix warnings or problematic source code hints in a short period. A unique feature of 9Fix is to allow users to customize their own rules that are well-reviewed by users. Most of them show interest in the ability to customize rules for their projects (Figs. 9 and 10).
+
+# 6 Conclusion
+This scientific article summarized the common security problems in Android programming and developed a tool called 9Fix, based on Android lint, which helps detect insecure code immediately during the programming phase. Users can 9Fix to scan the vulnerabilities in the entire source code as well. We also proposed and implemented the new architecture for Android lint, so developers can add their security rules to 9Fix for extending the ruleset suitable for their project. Moreover, 9Fix also ensures the privacy of developers thanks to its serverless properties. We collected feedback from junior Android developers to show the effectiveness of our Android Studio’s plugin. To be concluded, Android secure coding and the IDE plugin for secure programming are vital to guarantee security in Android development.
+
+# Security Issues in Android and Plug-in for Android Studio
+1. Aonzo, S., Merlo, A., Tavella, G., Fratantonio, Y.: Phishing attacks on modern android. In: Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security, pp. 1788–1801 (2018)
+2. Arzt, S., Bodden, E.: Stubdroid: automatic inference of precise data-flow summaries for the android framework. In: 2016 IEEE/ACM 38th International Conference on Software Engineering (ICSE), pp. 725–735. IEEE (2016)
+3. Arzt, S., et al.: Flowdroid: precise context, flow, field, object-sensitive and lifecycle-aware taint analysis for android apps. ACM Sigplan Not. 49(6), 259–269 (2014)
+4. Bagheri, H., Kang, E., Malek, S., Jackson, D.: A formal approach for detection of security flaws in the android permission system. Formal Aspects Comput. 30(5), 525–544 (2017). https://doi.org/10/s00165-017-0445-z
+5. Bao, W., Yao, W., Zong, M., Wang, D.: Cross-site scripting attacks on android hybrid applications. In: Proceedings of the 2017 International Conference on Cryptography, Security and Privacy, pp. 56–61 (2017)
+6. Chin, E., Felt, A.P., Greenwood, K., Wagner, D.: Analyzing inter-application communication in android. In: Proceedings of the 9th International Conference on Mobile Systems, Applications, and Services, pp. 239–252 (2011)
+7. De Cremer, P., Desmet, N., Madou, M., De Sutter, B.: Sensei: enforcing secure coding guidelines in the integrated development environment. Softw. Pract. Exp 50(9), 1682–1718 (2020)
+8. Fan, W., Zhang, D., Chen, Y., Wu, F., Liu, Y.: Estidroid: estimate API calls of android applications using static analysis technology. IEEE Access 8, 105384–105398 (2020)
+9. Ma, S., Liu, Y., Nepal, S.: Are android apps being protected well against attacks? IEEE Wirel. Commun 27(3), 66–71 (2020)
+10. Morris, R.: Stephen curtis johnson: Geek of the week (2016). https://www.red-gate.com/simple-talk/opinion/geek-of-the-week/stephen-curtis-johnson-geek-of-the-week
+11. Nguyen, D.C., Wermke, D., Acar, Y., Backes, M., Weir, C., Fahl, S.: A stitch in time: Supporting android developers in writing secure code. In: Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security, pp. 1065–1077 (2017)
+12. Poeplau, S., Fratantonio, Y., Bianchi, A., Kruegel, C., Vigna, G.: Execute this! analyzing unsafe and malicious dynamic code loading in android applications. In: NDSS, vol. 14, pp. 23–26 (2014)
+13. Possemato, A., Lanzi, A., Chung, S.P.H., Lee, W., Fratantonio, Y.: Clickshield: are you hiding something? towards eradicating clickjacking on android. In: Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security, pp. 1120–1136 (2018)
+14. Riad, A.K., et al.: Plugin-based tool for teaching secure mobile application development. Inf. Syst. Educ. J. 19(2), 2 (2021)
+15. O’Dea, P.S.J.: Mobile OS market share 2021 (2021). https://www.statista.com/statistics/272698/global-market-share-held-by-mobile-operating-systems-since-2009/
+16. Tencent: Tencent/vassonic: Vassonic is a lightweight and high-performance hybrid framework developed by tencent vas team, which is intended to speed up the first screen of websites working on android and IOS platform. https://github.com/Tencent/VasSonic.

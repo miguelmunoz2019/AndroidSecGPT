@@ -1,0 +1,81 @@
+The tool traverses the AST to identify APIs, i.e., MethodCallExpression nodes, that are used to access web APIs in a network library. For each method call, it recursively resolves the nodes on which the API depends, e.g., the object on which the method is called, and its parameters. In detail, we rely on the JavaSymbolSolver framework to associate a variable in the code to its declaration We track all Assignment, and MethodInvocation constructs on each variable in each relevant VariableDeclaration node. Moreover, depending on the target library, the tool also tracks implicit dependencies, e.g., the annotation-driven dependency injection.
+
+URL and header5 construction largely depend on string concatenation. We therefore support the extraction of strings that are built using the StringBuilder.append() method, the String.concat() method, and the “+” operator.
+
+3. Reconstruction: All web API URLs and JSON data structures that contain at least one unresolved value are further processed in the reconstruction stage. We set the value of variables whose types are number or boolean to 0 and true, respectively. For those variables (i.e., JSON or query keys) whose types are String, and for which we did not find a concrete value during the extraction, we compute the Jaro-Winkler similarity distance  between the variable names and every variable declaration in the code. In the end, for each successful analysis, the tool reports the web API, as shown in Listing 1, and the corresponding request headers, as shown in Listing 2.
+
+# Path:
+/Users/marc/...
+
+# Library:
+com.squareup.retrofit
+# Scheme:
+http://
+# Authority:
+retrofiturl.com
+# Base URL:
+http://retrofiturl.com
+# Endpoints:
+Listing 1. The tool’s output for a successful web API extraction
+# Path:
+.../User.java
+# Library:
+com.squareup.moshi
+# JSON Object:
+{"address":{"street":"&lt;STRING&gt;","number": &lt;NUMBER_INT&gt;},"name":"Bob"}
+Listing 2. The tool’s output for a successful JSON object extraction
+# Evaluation:
+We performed a lightweight evaluation of the tool on 10 open-source and 10 closed-source apps randomly selected from our dataset. In each app, we manually searched for the terms “http://” and “https://” in the (decompiled) source code. For each finding, we evaluated which entries were related to web APIs, and then tried to understand what are the URLs and the other request parameters.
+
+We manually identified 24 distinct URLs for web APIs in the apps, of which 21 were found in the Java source code. The tool reported 39, of which 18 URLs referred to web services: 17 were amongst the URLs identified manually, and the tool uncovered one new case that was overlooked due to complex string concatenation. The tool achieved a precision of 46% and a recall of 80%.
+
+There are several reasons for the tool missing the remaining seven URLs, such as URLs in open-source apps being hidden in build scripts and XML resource files rather than Java code, and incomplete library injections for closed-source apps.
+
+The tool reported 21 URLs that did not refer to a web service. In particular, 18 URLs referred to static HTML pages, and three suffered from invalid reconstruction.
+
+# Security Checks
+We inspected the result of the tool on a random set of 100 apps in order to identify security smells in the code relevant to web API communications.
+
+We implemented lightweight detection strategies for these smells, mainly using regular expressions. For instance, using search terms such as username, password, etc. we could find hard-coded passwords, tokens, and insufficiently protected authorization schemes in the results.
+
+# HTML:
+String uiElement = "&lt;html&gt;&lt;body&gt;" +
+jsonObj.getText() + "&lt;/body&gt;&lt;/html&gt;";
+# JavaScript:
+String customScript = jsonObj.getResponse();
+# SQL:
+String queryParameter = "SELECT * FROM weather";
+Listing 3. Examples of embedded computer code in app source strings
+In many apps we found code from various computer languages embedded in Java strings, such as that shown in Listing 3, thus potentially exposing the app or the server to code injection attacks. We compiled a list of commonly used computer languages based on our own findings, and the scripting languages found in the top ten used programming languages on GitHub. For each language, we pragmatically developed regular expressions inspired by the relevant language specifications, with the aim to match as many occurrences as possible. With these regexes, shown in Table I, we counted the key identifiers for each language in each app report, to detect usages of embedded languages in the web communications.
+
+In a subsequent step, we issued requests to each of the URLs extracted from the entire dataset, and observed unexpected responses, e.g., stack traces, error messages, or status information, disclosing sensitive information regarding the API implementation, running software, or server configuration.
+
+# STUDY RESULT
+We investigated the use of network communication in Android mobile apps. In particular, the focus is on the use of libraries, and the request characteristics.
+
+We randomly collected apps that use internet. For closed-source apps we mined the free apps on the Google Play store, and for the open-source apps we relied on the F-Droid software repository. For each app, we removed the duplicates, i.e., apps with the same package identifier, but different version.
+
+6 https://github.com/oprogramador/github-languages
+7 https://f-droid.org
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 11, 2024 at 02:56:03 UTC from IEEE Xplore. Restrictions apply.
+
+numbers, and kept only the most recent version of the app. In the end, we collected 17 079 closed-source, and 432 open-source apps.
+
+We applied our tool to these apps, and restricted each app analysis to 30 minutes processing time, with a node resolution limit of 15 iterations on a machine with two AMD Opteron 6 272 16-core processors and 128 GB of ECC memory. The tool could completely analyze 293 open-source apps, and 2 410 closed-source apps. We also included the partial results of the apps whose analyses were incomplete, resulting in a total analysis result of 303 open-source, and 3 073 closed-source apps in our dataset. Only 2 587 apps (15%) were successfully decompiled, due to crashes of the tool caused by various bugs, and incomplete feature support, e.g., reflection, native code, and customized app configurations.
+
+The apps in our dataset come from 48 different Google Play store categories. Most of them belong to EDUCATION (317 apps) and TOOLS (292 apps), however, a majority (574) have a GAMES-related tag. Interestingly, work-related apps are common in our dataset (335 apps). The top five categories whose apps contain the largest number of distinct web API URLs are EDUCATION (1 555 URLs), LIFESTYLE (1 027 URLs), BUSINESS (995 URLs), ENTERTAINMENT (704 URLs), and PRODUCTIVITY (619 URLs).
+
+We present our findings in the following, and conclude each focal point with a short discussion, which entails similarities or differences in open-source and closed-source apps.
+
+# A. Communication Libraries
+We investigated the distribution of the seven different communication libraries in 3 376 apps in our dataset.
+
+# 1) Result:
+In open-source apps, we found that each app uses up to four network libraries. The URLConnection (37%), HttpURLConnection (24%), Socket (9%), and HttpsURLConnection (6%) classes included in java.net are the preferred choice of open-source developers, especially URLConnection and HttpURLConnection are omnipresent in projects. When considering third party network libraries, we found that OkHttp and Retrofit (each 5%) are used the most. It is interesting to see that libraries with specific support for image downloads are similarly used, i.e., Glide and Volley. The Ion library is used only in three apps (1%).
+
+In closed-source apps each app uses up to seven network libraries. We found that the classes included in java.net such as URLConnection (42%), HttpURLConnection (34%), Socket (10%), and HttpsURLConnection (4%) are the preferred choice. Interestingly, the OkHttp library is the most commonly used third-party library even surpassing the well-known Glide and Retrofit libraries. We found org.apache.httpcomponents and com.loopj.android are the two least used network libraries contributing only 0% and 0%, respectively.
+
+# 2) Discussion:
+We realized that one to three classes are usually responsible for network communication in an app. In open-source apps we found the use of up to four network libraries in each app, and in closed-source apps it was up to seven. Although each library may provide specific features, e.g., JSON parsing, HTTP connection management, image caching, etc., we expect the reason for the use of multiple libraries in an app is that many developers use the code snippets from other projects or online information sources.
+
+We found fewer java.net libraries in open-source apps compared to closed-source apps. During decompilation, the bundled libraries are decompiled together with the app code. Therefore, what the tool reports is not only the network calls in the app code, but also the network APIs on top of which the third-party libraries are developed. However, this is not the case for the open-source apps whose dependencies are defined in Gradle, and are dynamically injected without adding the actual code to the project itself.

@@ -1,0 +1,117 @@
+Our vulnerability reports on Facebook SDK and Instagram were confirmed by Facebook in March 2017 with two bug bounty awards, which demonstrate the effectiveness of the stealthy data inflation attack. Generally, it is applicable to any open port with the caching or proxy functionality, e.g., most of the 997 apps with a local random TCP port (see Sec. III-C1) and Corona Game Engine SDK (in Table III). The only exception we have seen is the open port on YouTube, which uses a checksum to restrict opening illegal URLs.
+
+# P5: Insecure analytics interface.
+
+Lastly, we present a special vulnerability pattern that appears in open port used as an analytics interface, which is used by host apps/SDKs’ campaign websites to retrieve analytics information. Fig. 6 depicts its basic architecture, in which a victim user has installed an app a that hosts an analytic open port p (with a fixed port number num). Whenever a user visits a web page w (that has a campaign relationship with a) from her mobile browser or from user-shared links in social apps, w sends an HTTP request to http://127:num/cmd with the by-default added HTTP referrer pointing to the URL of w. The analytics app receives the request over its open port.
+
+# Wireshark IO Graphs
+# WeChat_UDP32857_phone
+# YouTube_UDP64352
+# AirDroid
+Time (s)
+(a) WeChat’s voice call (DoS at ∼26s).
+
+(b) YouTube’s video streaming (DoS at ∼32s).
+
+(c) AirDroid’s file transmission (DoS at ∼13s).
+
+# Denial-of-Service Attack Evaluation
+We now evaluate denial-of-service (DoS) attacks against mobile open ports and their effectiveness. Note that this analysis differs from those in Sec. V-A in that DoS attacks are typically possible even without exploiting any code-level vulnerabilities. Different from the traditional DoS attacks that often require a large number of bots (i.e., compromised computers), we show that DoS targeting mobile open ports can be performed by a single adversary using much less powerful devices (e.g., just one laptop), because the victim has much more limited computation, memory, and networking capabilities.
+
+# Inter-device Connectivity Measurement
+Most of the vulnerabilities and attacks demonstrated so far rely on connectivity to the victim device. To measure the extent to which such inter-device connectivity is allowed in public and private networks around the world, we embed a second service, the network testing component, in NetMon. Fig. 8 presents its two user interfaces, in which Fig. 8(a) shows a partial list of networks scanned and the detailed results are shown in Fig. 8(b).
+
+# DISCOVER LAN HOSTS
+# Host Details
+5A list of our original reports (in Chinese) can be found at https://tinyurl.com/opWooyun, and cached at https://tinyurl.com/opDropbox.
+
+# VI. MITIGATION SUGGESTIONS
+To mitigate the threats of open ports, we propose countermeasures for different stakeholders in the Android ecosystem, including app developers, SDK producers, system vendors, and network operators.
+
+# App developers.
+
+The first thing developers need to assess is whether an open port is necessary. For example, for local inter-app communication, using LocalServerSocket  is more secure than establishing ServerSocket. If open ports are really needed, developers should minimize the attack surface by avoiding insecure coding behaviors as discussed in Sec. IV-E and employ effective authentication against unintended access. Moreover, we suggest developers to use our NetMon app to evaluate a third-party SDK before including it.
+
+# SDK producers.
+
+Similarly, SDK producers should use open ports only when there are no better alternatives. For example, Facebook could reconsider its caching mechanism via an open port in its SDK. In particular, SDKs should abandon using open ports for the analytics purpose, because it is fundamentally insecure (see Sec. V-A).
+
+# System vendors.
+
+Besides having vendors assess open ports in their built-in apps carefully, Google can consider taking more proactive measures. For example, a new permission dedicated for the open port functionality, beyond the general INTERNET permission, could be introduced, so that both developers and users are better aware of it. As explained in Sec. IV-A, Google could also modify existing ServerSocket APIs to better cope with open ports in mobile environment.
+
+# Network operators.
+
+To stop remote open-port attacks, a quick mitigation is to restrict inter-device connectivity. For cellular or certain public WiFi networks (e.g., in airports), it is reasonable for them to prioritize the security for the safety of their users. Private WiFi networks (e.g., enterprise networks) may even leverage software-defined networking to better regulate such connectivity.
+
+# VII. RELATED WORK
+Open port research. Traditionally, research on open ports focus on DoS attacks  and Internet scanning studies , . This has been changed in the mobile era — more specific attacks , ,  have been demonstrated on open ports of mobile apps. Another relevant study is on Android Unix domain sockets , as discussed in our background section (Sec. II). However, studies specifically focused on mobile open ports are not available until recently.
+
+Although OPAnalyzer  is closely related to our paper, there are a number of significant differences. The foremost difference is in the objectives. We aim at a systematic understanding of open ports in the wild, while OPAnalyzer focused on detecting vulnerable apps that satisfy the taint-style code patterns. The approaches adopted are therefore very different. For example, there are no crowdsourcing or networking analysis in OPAnalyzer, and its static analysis does not resolve open-port parameters for an in-depth analysis (e.g., identifying SDKs and diagnosing insecure API usages) as our paper does. Furthermore, OPAnalyzer does not show any results for UDP ports and built-in apps.
+
+Crowdsourcing for security. With the high popularity of mobile apps, it becomes realistic to leverage the crowd to discover security problems in the wild. By deploying NetMon to Google Play for a crowdsourcing study, we are among the first in this line of research. Other related works include Netalyzr  for studying middleboxes in cellular networks, FBS-Radar  for uncovering fake base stations in the wild, UpDroid  for monitoring sensitive API behaviors on non-rooted devices, and Haystack  for detecting mobile apps’ privacy leakage via on-device app traffic analysis.
+
+Android static analysis. Static analysis has been used extensively to understand the (in)security of Android apps.
+
+They have been applied to malware analysis (e.g., , , , ), privacy leakage detection (e.g., , , ), vulnerability discovery (e.g., , , , , , ), and so on. Two analysis frameworks, FlowDroid  and Amandroid , are proposed to simplify tool development. For example, OPAnalyzer  is built upon Amandroid to forwardly track the flows between server sockets’ accept() calls and sinks. However, it cannot analyze open-port parameters due to the lack of a backward-style parameter tracking engine. There are a few static tools for parameter analysis, but they cannot be applied to our problem due to limitations, such as no complete parameter representation in SAAF , no array handling , and no open port relevant API modeling . We address these issues by introducing the backward slicing graph and semantic-aware constant propagation. Besides uncovering open-port parameters, our OPTool is also the first static analysis tool able to detect open-port SDKs in Android apps.
+
+# VIII. CONCLUSION
+In this paper, we proposed the first open-port analysis pipeline to conduct a systematic study on open ports in Android apps and their threats. By first deploying a novel crowd-sourcing app on Google Play for ten months, we observed the actual execution of open ports in 925 popular apps and 725 built-in apps. Crowdsourcing also provided us a more accurate view of the pervasiveness of open ports in Android apps: 15% discovered by our crowdsourcing as compared to the previous estimation of 6%. We then showed the significant presence of SDK-introduced open ports and identified insecure open-port API usages through the static analysis enhanced with open-port context and semantics. Furthermore, we uncovered five vulnerability patterns in open ports and reported vulnerabilities in popular apps and widely-embedded SDKs. The feasibility of remote open-port attacks in today’s networks and the effectiveness of denial-of-service attacks were also experimentally evaluated. We finally discussed mechanisms for different stakeholders to mitigate open-port threats.
+
+#BehaviorAlarms.
+
+4. “Alibaba AMap SDK,” http://lbs.amap.com/api/android-sdk/summary.
+
+5. “Android Fragmentation Report August 2015,” https://opensignal.com/reports/2015/08/android-fragmentation/.
+
+6. “Android Logcat,” https://developer.android.com/reference/android/util/Log.html.
+
+7. “AndroidVideoCache,” https://github.com/danikula/AndroidVideoCache.
+
+8. “Aol AdTech SDK,” http://www.aolpublishers.com/support/documentation/mobile/ads.md.
+
+9. “Apache Cordova SDK,” https://cordova.apache.org/docs/en/latest/guide/platforms/android/.
+
+10. “BluetoothSocket,” https://developer.android.com/reference/android/bluetooth/BluetoothSocket.html.
+
+11. “Changes to Device Identifiers in Android O,” https://android-developers.googleblog.com/2017/04/changes-to-device-identifiers-in.html.
+
+12. “Configure Apps with Over 64K Methods,” https://developer.android.com/studio/build/multidex.html.
+
+13. “Corona Game Engine SDK,” https://docs.coronalabs.com/native/android/index.html.
+
+14. “CyberGarage UPnP SDK,” https://github.com/cybergarage/cybergarage-upnp.
+
+15. “Disassemble Android dex files,” http://blog.vogella.com/2011/02/14/disassemble-android-dex/.
+
+16. “The ephemeral port range,” http://www.ncftp.com/ncftpd/doc/misc/ephemeral ports.html.
+
+17. “Facebook Audience Network SDK,” https://developers.facebook.com/docs/audience-network/android-native.
+
+18. “Getui Push SDK,” http://docs.getui.com/mobile/android/overview/.
+
+19. “hping3,” http://linux.die.net/man/8/hping3.
+
+20. “Huawei’s 5G Vision: 100 Billion connections, 1 ms Latency, and 10 Gbps Throughput,” http://www.huawei.com/minisite/5g/en/defining-5g.html.
+
+21. “JEB Decompiler for Android,” https://www.pnfsoftware.com/jeb/android.
+
+22. “LG Smartshare,” http://www.lg.com/support/smart-share.
+
+23. “LocalServerSocket — Android Developers,” https://developer.android.com/reference/android/net/LocalServerSocket.html.
+
+24. “Millennial Ad SDK,” http://docs.onemobilesdk.aol.com/android-ad-sdk/.
+
+25. “MIT App Inventor,” https://github.com/mit-cml/appinventor-sources.
+
+26. “NFCSocket: Android Play Near Field Communication in the Socket way,” https://github.com/Chrisplus/NFCSocket.
+
+27. “Nmap: the network mapper,” https://nmap.org/.
+
+28. “PhoneGap SDK,” https://phonegap.com/.
+
+29. “proc(5): process info pseudo-file system - Linux man page,” http://linux.die.net/man/5/proc.
+
+30. “Samsung Accessory SDK,” http://developer.samsung.com/galaxy/accessory.
+
+31. “Selenium - web browser automation,” http://docs.seleniumhq.org/.

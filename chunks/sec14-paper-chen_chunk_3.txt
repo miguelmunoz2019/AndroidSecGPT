@@ -1,0 +1,54 @@
+Shared-memory IPC used in the Android window manager. As mentioned earlier in §2, Android adopts the client-drawn buffer design, where each client (app) needs to use a selected IPC mechanism to communicate their off-screen buffers with the window compositor. In practice, we find that shared memory is often used, since it is the most efficient channel (without large memory copy overhead). On Android, when an Activity transition occurs, shared vm size changes can be found in both the app process and the window compositor process named SurfaceFlinger. More investigations into Android source code reveal that the size changes correspond to the allocations and deallocations of a data structure named GraphicBuffer, which is the off-screen buffer in Android. In the Android window drawing process shown in Fig. 3, GraphicBuffer is shared between the app process and the SurfaceFlinger process using mmap() at the beginning of draw() in performTraversal().
+
+Interestingly, this implies that if we know the GraphicBuffer size for a target window, we can detect its allocation and deallocation events by monitoring the size changes of shared vm. Since the GraphicBuffer size is proportional to the window size, and an Activity is a full-screen window, its GraphicBuffer size is fixed for a given device, which can be known beforehand.
+
+It is noteworthy that different from private memory space, shared memory space changes only when shared files or libraries are mapped into the virtual memory. This keeps our side channel clean; as a result, the changes in shared vm are distinct with minimum noise.
+
+Shared-memory side-channel vulnerability on other OSes. To understand the scope, we investigate other OSes besides Android. On Linux, Wayland makes it clear that it uses shared buffers as IPC between the win-
+# Item in /proc/-
+# Description
+# Name
+# Name in Linux
+Similar to Android, attackers can use /proc/pid/statm to get the shared memory size and detect window events. Mac OS X, iOS and Windows neither explain this IPC in their documentations nor have corresponding source code for us to explore, so we did some reverse engineering using memory analysis tools such as VMMap. On Windows 7, we found that whenever we open and close a window, a memory block appears and disappears in the shared virtual memory space of both the window compositor process, Desktop Window Manager, and the application process. Moreover, the size of this memory block is proportional to the window size on the screen. This strongly implies that this memory block is the off-screen buffer and shared memory is the IPC used for passing it to the window compositor. Thus, using the GetProcessMemoryInfo() API that does not require privilege, similar inference may be possible.
+
+Mac OS X is similar to Windows except that the memory block in shared memory space is named CG backing store. On iOS this should be the same as Mac OS X since they share the same window compositor, Quartz Compositor. But on Mac OS X and iOS, only system-wide aggregated memory statistics seem available through host statistics() API, which may still be usable for this attack but with a less accuracy.
+
+# 3 Activity Transition Detection
+With the above knowledge, detecting Activity transition is simply a matter of detecting the corresponding window event pattern by monitoring shared vm size changes.
+
+The left half of Fig. 6 shows the typical shared vm changing pattern for an Activity transition, and we name it Activity transition signal. In this signal, the positive and negative spikes are increases and decreases in shared vm respectively, corresponding to GraphicBuffer allocations and deallocations. The GraphicBuffer allocation for the new Activity usually happens before the deallocation for the current Activity, which avoids user-visible UI delays. Since Activity windows all have full-screen sizes, the increase and decrease amount are the same. With the multiple buffer mechanism for UI drawing acceleration on Android, 1–3 GraphicBuffer allocations or deallocations can be observed during a single transition, resulting in multiple spikes in Fig. 6. The delay between allocations is usually 100–500 ms due to measurement and layout computations, while the delay between deallocations is usually under 10 ms. An example result of a successful sampling is shown on the right half of Fig. 6 with the sampling period being 30–100 ms.
+
+To detect this signal, we monitor the changes of shared vm, and conclude an Activity transition period by observing (1) both full-screen size shared vm increase and decrease events, (2) the idle time between two successive events is longer than a threshold idle thres. A successful detection is shown on the top of Fig. 10.
+
+We evaluate this method and find a very low false positive rate, which is mainly because the shared vm channel is clean. In addition, it is rare that the following unique patterns happen randomly in practice: (1) the shared vm increase and decrease amounts are exactly the same as the full-screen GraphicBuffer size (920 pages for Samsung Galaxy S3); (2) both the increase and decrease events occur very closely in time.
+
+On the other hand, this method may have false negatives due to a cancellation effect — when an increase and a decrease are in the same sampling period, they cancel each other and the shared vm size stays unchanged. Raising the sampling rate can overcome this problem, but at the cost of increased sampling overhead. Instead, we solve the problem using the number of minor page faults (minflt), in /proc/pid/stat. When allocating memory for a GraphicBuffer, the physical memory is not actually allocated until it is used. At time of use, the same number of pages faults as the allocated GraphicBuffer page size is generated. Since minflt monotonically increases as a cumulative counter, we can use it to deduce the occurrence of a cancellation event.
+
+# 4 Activity Inference
+After detecting an Activity transition, we infer the identity of the new Activity using two kinds of information:
+1. Activity signature. Among functions involved in the transition (as shown in Fig. 3), onCreate() and onResume() are defined in the landing Activity, and the execution of performTraversal() depends on the UI elements and layout in its LandingState. Thus, every transition has behavior specific to the landing Activity.
+
+# Training phase:
+ity, giving us opportunities to infer the landing Activity based on feature data collected during the transition.
+
+# Activity transition graph.
+
+The Activity transition graph of an app is sparse, once the foreground Activity is known, the set of the next candidate Activities is limited, consider Activity transition graph in the inference.
+
+# 4 Activity Signature Design
+During the transition, we identify four types of features described below and use them jointly as the signature.
+
+- Input method events. Soft keyboard on smartphones is commonly used to support typing in Activities. It usually pops up automatically at the landing time. There is also a window event for the keyboard process, which again can be inferred through shared vm. This is a binary feature indicating whether the LandingState requires typing.
+
+- Network events. For LandingStates with content from the network, network connection(s) are initiated in performLaunch() during the transition. For a given LandingState, the request command string such as HTTP GET is usually hard-coded, with only minor changes from app states or user input. This leads to similar size of the first packet immediately after the connection establishment. We do not use the response packet size, since the result may be dynamically generated.
+
+- Content Provider events. Android component Content Provider manages access to a structured set of data using SQLite as backend. To deliver content without memory copy overhead, Android uses anonymous shared memory (ashmem) shared by the Content Provider and the app process. Similar to the compositing window manager design, by monitoring shared vm, we can detect the query and release events of the Content Provider.
+
+To capture the first packet size, we monitor the send packet size value in /proc/uid/stat/uid/tcp snd. We con-
+1042 23rd USENIX Security Symposium USENIX Association
+# 4 Transition Model and Inference Result
+# Transition model.
+
+In our inference, the states (i.e., Activities) are not visible, so we use Hidden Markov Model (HMM) to model Activity transitions. We denote the foreground Activity trace with n Activity transitions as {a0, a1, ..., a n}. The HMM can be solved using the Viterbi algorithm  with initialization Prob({a0}) = |A|, and inductive steps Prob({a0, ..., a n}) = a nargmax .ls ∈a .LSin Prob(�·, a n.ls�)Prob(a n|a n−1)Prob({a0, ..., a n−1}).
+
+In inductive steps, Prob(�·, a n.ls�) i denotes the probability calculated from Activity signature, and Prob(a n|a n−1) denotes the probability that a n−1 transitions to a n. If a n−1 has x egress edges in the transition graph, Prob(a n|a n−1) = 1, assuming that user choices are uniformly distributed.

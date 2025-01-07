@@ -1,0 +1,63 @@
+Extractor, which permits access to the extraction of the actions/permissions stack only to authorized users, and the Privacy Watcher, which relies on the Authentication UID for authorized interactions with the Firebase Realtime Database . For the sign-in/up process, we seamlessly integrated the standard email/password authentication scheme using the Firebase API . We establish persistent authentication by employing Encrypted Shared Preferences to securely store the user’s email and password, mitigating the need for frequent login requests. Upon deregistration, the user’s details and evaluation stack are downgraded, retaining only the necessary data for generating the new seed data set. The Authentication process is streamlined using the Singleton Design Pattern, facilitating convenient access from various application components. Users are prompted to specify their permission group preferences during registration, following the methodology outlined in . Upon completion of this process, the permissions score and final score for the suggestion data set are computed, and the relevant data is then retrieved to the Firebase Realtime Database.
+
+# C. SUGGESTIONS AND THEIR EVALUATIONS
+We follow these steps to implement recommendations: first, we traverse the permission stack and identify the app’s permission group. Then, we calculate the score using modified formulas from  (as detailed in Section III-B). Next, we compute the mean value of the pre-computed receiver score and the permission rank. The evaluated suggestion is then displayed in a dedicated window unless the evaluated application belongs to an unknown genre or significantly outperforms our suggested programs. This display includes the application package name, its score, and a Google Play link.
+
+# D. APP EVALUATION AND REMOVAL DETECTION
+We’ve implemented two methods to retrieve intent-filter actions and permissions since using Android Package Manager and the GET_INTENT_FILTERS flag was impossible due to their deprecation in Android 11 and 12. The first method, as detailed in Section IV-B1, involves parsing AndroidManifest.xml on a remote web service using androguard. The parsed actions and permissions are then sent to the Privacy Watcher App. The second method entails extracting and parsing AndroidManifest.xml on the device for both installed and downloaded Android packages as follows:
+1. The Privacy Watcher app starts by searching for the package file in the public source directory (/data/app/Androidpackage.apk). If not found in the first directory, it assumes it is in the second directory. (/storage/emulated/0/Download/Androidpackage.apk). The app then stores the located APK using the following statement: ZipFile apk = new ZipFile(filePath), where filePath is one of the directories mentioned in this step.
+
+2. The XMLExtractor Java class extracts the AndroidManifest.xml file from the APK by
+37592
+VOLUME 12, 2024
+# F. Mohsen et al.: On Identification of Intrusive Applications
+executing the following statement:
+ZipEntry m= apk.getEntry(`AdroidMnfest.xml')
+All AndroidManifest.xml files in .apk directories have the same name.
+
+With the manifest file extracted, the next step is to retrieve the permission/action stack using a parser to decompile the compressed manifest file on the device. The decompilation process involves the following steps:
+1. To retrieve the permission/action stack from the compressed manifest file, the Privacy Watcher app must first extract the file’s contents. This is done by calling apk.getInputStream(manifest).
+
+2. Once the stream’s contents have been retrieved, they are converted into an array of byte code using: byte[] code=IOUtils.toByteArray(stream)
+3. If the array of byte code is base64 encoded,1 it can be converted into a string using: str=new String(Base64.encode(code,Base64.DEFAULT)) The resulting encoded string should look similar to the sample output shown in Step 1 of Table 1.
+
+4. Next, we base64 decode the encoded string and remove all non-alphanumeric characters using the replaceAll() method with a regular expression  "[^A-Za-z-0-9_.-]" This results in a string without spaces. To identify the permission and intent actions, we add a space before every occurrence of android.permission. and android.intent.action. in the string. After applying these filters, the string contains all the necessary information from AndroidManifest.xml for evaluation, as shown in Step 2 of Table 1.
+
+5. Finally, with spaces introduced to separate each permission and intent action, the XMLExtractor creates stacks for both permissions and intent actions and returns it to the AppEvaluation class, where the permission and broadcast receivers can be evaluated.
+
+1A method of encoding binary data into ASCII characters to ensure safe transmission over text-based communication protocols.
+
+2A sequence of characters that forms a search pattern, used for pattern matching within strings.
+
+To ensure the accuracy of our application, it’s essential to retrieve information about all installed applications. We use the getInstalledApplications method and the QUERY_ALL_PACKAGES permission. To compute the practical scores, i.e., Granted Permission Score, we use the checkPermission function and check if the return result is equal to:
+PackageManager.PERMISSION_GRANTED
+The Granted Final Score is calculated by taking the mean value of the Granted Permission Score and Receiver Score.
+
+# E. DOWNLOAD AND EVALUATE
+Initially, we planned to download the APK file from the Google Play Store directly. However, we encountered a challenge due to the lack of an official API provided by Google for this purpose. Alternatively, we turned to third-party websites like aapks.com. The Download and Evaluate approach involves three main steps:
+1. Locating the download link involves sending a request to the website’s search engine and parsing the returned results (https://aapks.com/?s=&lt;packageName&gt;)
+2. Downloading the APK: Once the download link is obtained, we proceed to download the APK file. During this process, we register a broadcast receiver for the ACTION_DOWNLOAD_COMPLETE event and prompt the user to grant the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE permissions.
+
+3. Alerting the user: After the download is complete, we notify the user and inform them again when the evaluation is ready.
+
+However, this approach has limitations:
+- Inconsistency in application versions: There is no guarantee that the downloaded application will match the exact version intended by the user.
+
+- Uncertainty in retrieving desired applications: Factors such as the app not being listed or requiring payment can hinder retrieving the desired application’s download link.
+
+- Safety concerns with aapks.com: While we use the relatively safe parsing tool JSoup to protect users from most malicious software, aapks.com has been flagged as a phishing and malicious website by several sources.
+
+VOLUME 12, 2024 37593
+# F. Mohsen et al.: On Identification of Intrusive Applications
+The permission matching table used to map the permissions found in Google Play to their corresponding manifest permissions.
+
+The extracted APKs may contain errors or modifications, although they are not inherently dangerous until installed. Nonetheless, users should approach the URL evaluation results with caution.
+
+# F. EVALUATE IN-THE-MARKET
+The Evaluate In-the-Market feature provides an alternative to the Download & Evaluate feature, eliminating the need to download the APK file. This feature aims to quickly approximate the privacy permission score by utilizing the permission data on the Google Play store. The Privacy Watcher app retrieves the app’s genre(s) and permissions through pattern matching. It’s important to note that these retrieved permissions may not correspond to those in the manifest file. We define a procedure based on certain assumptions to establish a matching between the two permission sets, which may result in different approximations. These assumptions are derived from the information provided by Google LLC . We show our permission matching table in Table 2. Once the matching is established, the evaluation process is similar to that of installed applications. With the Privacy Watcher app, users can compare the approximate scores of two or more apps. This feature allows users to compare between apps based on their privacy scores before installing any of them; see Appendix VII-A.
+
+# G. CONTINUOUS EVALUATION AND NOTIFICATION
+The primary function of the Privacy Watcher app is to evaluate installed apps for any malicious behavior continuously. This evaluation is based on the formula outlined in Section III-C5. The results are conveyed to the user through three colors and shapes: Greenheart, Orange exclamation mark, and Red hand (refer to Figure 5). Additionally, a notification system alerts users if an app exceeds the red status threshold of 1 to alleviate the need for manual checks. To address this limitation and accommodate unexpected changes, we adopted Job Scheduling, as recommended in , to schedule new jobs every 3-5 minutes. Although we experimented with different scheduling intervals, we found that shorter intervals were too frequent and disrupted jobs. Our objective is to ensure that our application automatically starts after each successful device reboot without requiring manual intervention from the user. To accomplish this, we utilize the BOOT_COMPLETED intent, which is one of the exempted implicit broadcast receiver actions, and register it with the associated RECEIVE_BOOT_COMPLETED action.
+
+# VI. EVALUATION OF CTMF
+In Sections I and II, we explained the uniqueness of our work compared to the literature. Consequently, our evaluation must consider that. As such, we evaluated our framework on multiple levels, including compatibility, performance, and accuracy.

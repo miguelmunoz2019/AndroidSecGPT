@@ -1,0 +1,96 @@
+# Dead or junk code insertion
+As the name suggests, the term dead or junk code refers to the code which does not execute or cannot be reached during execution . Its insertion induces additional complexity for analysis and alters static file features such as application digest or n-gram based signatures. As depicted in Fig. 11, dead code is often supplemented by opaque predicates (either true predicate or false predicate) to evade its execution . Addition of no-operation, well known as NOP instruction (opcode 0x00 in Dalvik) is a simple dead code insertion without any effect to application functionality . Application scanning engines are usually able to identify code using dead code insertion alone , thus encouraging malware authors to combine it with other code obfuscation methods. Android however, uses code-shrinking to remove unused methods, fields, and classes from the application and its libraries. Android also employs code optimization to remove unused conditional branches.
+
+# Function call addition and removal
+Proposed by Cohen  addition of function call implies creating a function of the sequence of instructions and substituting the original sequence with call to the function. Removal of function call implies substituting all calls to a function with the body of the function and removing the function. Function call addition and removal is also popularly known as code inlining and outlining.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Loop transformations
+Loop transformations were originally designed for performance optimization, but some of them are useful code obfuscation techniques as they increase the structural complexity of the code . Popular loop transformations are:
+- (a) Loop unrolling, which replicates the code inside the loop and decreasing the loop counter;
+- (b) Loop tiling originally designed for code optimization creates an inner loop to optimize loop cache behavior;
+- (c) Loop fission bifurcates a loop into multiple loops.
+
+# Call indirections
+Scanning engines often rely on advanced signatures based on application call graph to identify or classify a malware. Call indirection aims to evade it by redirecting a method invocation in the smali code to proxy methods that then calls the original method . Syntax (argument type, return type, registers and invocation type) of these proxies are generally kept same as that of the original method. Listing 13 and 14 are the original smali code and smali code with call indirection respectively. A proxy method is inserted at line 5 in listing 14 with a random identifier.
+
+1 .class public final L<ClassName >;
+2    .super Ljava/lang/ Object ;
+3    . source " <ClassName >. java "
+4
+5    . method public static FogLow (Ljava/lang/ String; Ljava/lang/ String ;)V
+6       . registers 2
+7       . prologue
+8     invoke - static {p0 , p1}, Landroid /util/Log;->d( Ljava/lang/ String ;Ljava/lang/ String ;)I
+9       return -void
+10    .end method
+Listing 15: Original byte code showing a method.
+
+1 .class public final L<ClassName >;
+2    .super Ljava/lang/ Object ;
+3    . source " <ClassName >. java "
+4    # direct methods
+5    . method public static <Identifier >( Ljava/lang/ String ;Ljava/lang/ String ;)I
+6       . registers 3
+7       . prologue
+8       invoke - static {p0 , p1}, Landroid /util/Log;->d( Ljava/lang/ String ;Ljava/lang/ String ;)I
+9       move - result v0
+10       return v0
+11    .end method
+12    . method public static FogLow (Ljava/lang/ String; Ljava/lang/ String ;)V
+13       . registers 2
+14       . prologue
+15       invoke - static {p0 , p1}, L<ClassName >;->< Identifier >( Ljava/lang/ String ;Ljava/lang/ String ;)I
+16       return -void
+17    .end method
+Listing 16: Call indirection: Byte code with proxy method inserted.
+
+# Program encoding
+Strings and data structures used in an application are stored in the .dex files. Strings and byte code patterns are used to create detection signatures for malware identifications . Encoding converts a data or string representation into a different one with encoding function. The encoded sequence is deobfuscated during execution . Developers use program encoding techniques such as encryption  and compression . Zhou et al. in  introduced a variant of encoding via mixed-mode computation over boolean-arithmetic algebras. Program encoding induces additional computational cost, which is relatively high depending upon the type of encoding. A resilient encoding method is computationally expensive.
+
+1 String option = " @^@#\x ‘1 m*7 %**9 _!v " ;
+2 this. execute ( decrypt ( options ));
+Listing 17: String encryption in java
+1 const - string v1 , " \t\u001b\u0002\u0019\u0019\u0001\u0014EX "
+2 const /16 v2 , 0x79
+3 invoke - static {v1 , v2}, Lcom/ software /app/ Activator$2;-> getChars (Ljava/lang/ String ;I)Ljava/lang/String;
+4 move -result -object v1
+Listing 18: String encryption by DashO.
+
+# Encryption
+It protects the application against static analysis. Encrypted code is decrypted on-the-fly during runtime. Scanning engines based on bytecode sequences and string based fingerprinting are futile against it . Popular encryption techniques employed to strengthen Android applications include string encryption and class encryption.
+
+1. String Encryption: Strings are significant data structures often encrypted to prevent application identification based on string-based features such as package names and permissions [90–92]. As a result, string encryption could effectively hinder hard-coded static scanning by rendering strings unreadable . The original string is stored in an encrypted form and requires an additional decryption function [65–68,90]. Listing 17 illustrates application of string encryption and decrypt() subroutine at source code level in java. Listing illustrates an instance of string encryption by DashO, a commercial obfuscator developed by PreEmptive Solutions. DashO replaces strings with function calls to a decryption function. The same decryption function, Activator$2;->getChars, is called multiple times in the application code.
+
+2. Class Encryption: Class encryption is an advanced code obfuscation technique which encrypts a class. The encrypted class is decrypted and loaded at runtime by a separate function. Maiorca et al. in  have created a class obfuscation scheme which encrypts and compresses (by GZIP algorithm) each class. During runtime encrypted class is decrypted, unzipped and loaded in memory. The computational overhead of class encryption is high along with its resilience against static analysis based reverse engineering.
+
+# Self modifying code
+Malware authors use all tricks to evade scanning engines, and one of those is called polymorphism or self modifying code. It allows application code to change itself without changing its functionality. Polymorphism, which has successively been exploited over Windows OS, is being used against Android too. Malware Android.Opfake  employs server-side polymorphism to modify itself every time it is updated to evade detection. The polymorphic code is able to modify itself by variable data changes, file reordering and dummy file insertion. Polymorphic malwares often use bytecode encryption, which encrypts pieces of an application to be decrypted only at runtime.
+
+# Control Flow Flattening (CFF)
+Control flow flattening, which hides the control flow graph of the application was introduced by Wang et al.  and Chow et al. . It is an effective and deobfuscation resilient method . CFF uses switch constructs instead of using easily identifiable loops and conditional jumps to divert.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+1 Lock myLock = new Lock ();
+2 key = myLock. getKey ();
+Listing 21: Before reflection.
+
+1 Class c = Class. forName ( " me. locklink . RefletiveClass " );
+2 Object o = c. newInstance ();
+3 Method m = c. getMethod ( " getKey " );
+4 Object r = m. invoke(c);
+Listing 22: Reflection based code obfuscation.
+
+control flow. According to Wang et al. in  structure of CFF obfuscated code contains (a) Prologue: entrance block of the CFF (b) Dispatcher: a conditional jumping block such as switch; (c) Return: basic code block which returns; and (d) Relevant: maintains operation of the original function. Fig. 12 illustrates structure of control flow after flattening.
+
+API hiding. Applications are often characterized as sequences of Application Programming Interface (API) methods. API calls help in identifying application interactions with the operating system applications. Smartphone is a host of privacy sensitive information such as phone numbers, call details, SMSs, calendar and location information which are accessed by API calls. Scanning engines often rely on API calls for malware detection [37, 100–103]. For example, malware sample using getDeviceId() followed by sendTextMessage() is highly probable to leak device’s identifier data. API hiding based code obfuscation is used by applications to prevent discovery of API usage pattern. API hiding uses Java reflection mechanism to hide invocations of sensitive APIs, such as cryptographic functions . Listing 20 show an instance of API hiding by DexProtector on code listing 19 . API calls getText() and toString() are obfuscated using API hiding.
+
+1 const - string v1 , " Hello World "
+2 invoke - virtual {v0}, Landroid / widget/ TextView ;->
+getText () Ljava/lang/ CharSequence ;
+3 move -result -object v2
+4 invoke - interface         {v2}, Ljava/lang/ CharSequence ;->
+toString () Ljava/lang/ String ;
+Listing 19: Smali code with a string variable and API calls.

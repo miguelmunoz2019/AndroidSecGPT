@@ -1,0 +1,52 @@
+# 5) Application Layer
+This is the top level layer in Android architecture in which the standard applications reside and where users have the most interaction by making calls, receiving calls, surfing online, etc. The layers where the developers and programmers have the most interaction are the layers that are between the Linux Kernel layer and this layer.
+
+# C. Android Security
+The Android operating system has a security architecture that protects the security of users, data, applications, devices, and networks. The architecture provides a multi-layered security model and maintains flexibility in its design due to its open-source nature. The Android security architecture is developed with the aim of being the most functional, powerful, and secure mobile operating system by protecting the users' personal data and the system resources of mobile devices. To achieve this goal, it supplies the following security features:
+- Powerful security mechanism on the Linux Kernel Level.
+
+- Mandatory application isolation (sandboxing) for all of the applications.
+
+- Secure inter-process communication
+- Application signing
+- User approved and application specific permissions.
+
+The major factor that leads to the extensive use of Android devices is their mobile applications. Thus, in this study, we dwell on the security mechanism that is related to Application Security, with a special emphasis on the permission model.
+
+# D. Android Application Security and Permission Model
+Android applications are generally coded in the Java programming language, and they run on DVM. In addition, C/C++ language can be used. Applications are installed from a single file that has the “.apk” extension. The basic structure of an Android application includes the following:
+- Android Manifest File: This file is labeled “AndroidManifest.xml”, and it controls how high-level components (such as activities, services, content providers, and broadcast receivers) communicate with the system. Additionally, it defines what permissions are necessary to run the applications.
+
+Copyright © 2014 MECS I.J. Computer Network and Information Security, 2014, 12, 9-20
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+• Activities: An activity is a piece of code that focuses on one task. It generally contains a user interface and one of the activities is always the starting point of the application.
+
+• Services: These are the code fragments that run on the background. They can run inside their own process or another application's process. Other components connect to these services and call methods by using the Remote Method Invocation technique.
+
+• Broadcast Receivers: These objects take action when the processes that are called “Intent” are created by the operating system or by other applications. Applications register to these broadcast receivers and change their behavior according to the incoming data.
+
+In Android, all of the applications run inside of a security isolation box that is referred to as the ‘Sandbox’. As a default, applications have access to limited system resources. The permission mechanism handles the management of Android applications' access to resources and checks whether they access resources properly and do not behave maliciously. Restrictions are developed by using different techniques. In certain cases, storage isolation is chosen for protection; in other cases, restrictions are created based on the “Permission List” mechanism that restricts access to sensitive APIs. A few of these protected APIs include the following:
+- Camera
+- Location (GPS)
+- Bluetooth
+- Phone
+- SMS/MMS
+- Network/Data (GSM and Wi-Fi)
+These APIs can only be accessed through the operating system. SMS/MMS, Phone, Network/Data and NFC APIs are the most important APIs because the misuse of these APIs by malicious applications will cause financial harm to users. To be able to use the protected APIs, each application should specify the functionality of the API in its own manifest file. During the application installation process, the system presents the user with a dialog screen that contains a list of permissions and asks the user whether to continue with installation or not. This approach is based on an “accept all or reject all” principle and does not allow users to select specific permissions. The user either accepts the permissions that are listed on the screen, and the application is installed, or he/she rejects the permissions, and the application is not installed. As long as the application stays installed on the system, the permissions are valid, and the permission list window is never shown. When the application is uninstalled, the permissions are also removed. If a permission that is not specified in the manifest file is used, the system throws a security exception and stops the application from being launched. There are 134 permissions in the Android platform that should be specified in the manifest file before an application can be used . Additionally, applications have the ability to define their own permissions. However, defining a new permission is not recommended since built-in permissions in the system cover many situations.
+
+# III. TAXONOMY OF THE ANDROID SECURITY
+The taxonomy that we have created in this study is the process of collecting, organizing and representing the relevant solutions in the mobile security domain. It is based on the studies of existing security solutions proposed for Android. We threat Android security as the main domain and we analyze it to get a better understanding and overview. Before creating taxonomy, mobile security knowledge is prerequisite. When creating the taxonomy, the main problem is accessing and obtaining Android based mobile security solutions. The most efficient way is to survey researchers of security field. However, it is a huge area and it is impossible to survey all of them. Therefore, our strategy is to collect the security knowledge by examining the aims and scopes of security related journals, conferences that include mobile security, privacy, information security, and Android security as keywords. As a result of our efforts, we examine the proposed solutions for Android security under two main titles: “Software-Based Solutions” and “Hardware-Based Solutions”. Fig shows our taxonomy of Android security. In this study, we focus on software-based solutions.
+
+# Security Solutions
+Fig. Taxonomy of Android Security
+# A. Software Based Solutions
+We classify the software-based solutions into four groups. These include operating system (OS) based, permission-based, source code based and application/service based solutions.
+
+# A. Operating System Based Solutions
+These types of security solutions make changes on the operating system architecture. In , researchers developed a system (APEX) that allows selective permissions, the definition of constraints, the restriction of resource usage and user flexibility. With the help of an additional user interface, users have the power to allow or reject any of the services that are listed on the interface during the application installation phase. This system achieves its goal by making changes on the operating system.
+
+Copyright © 2014 MECS I.J. Computer Network and Information Security, 2014, 12, 9-20
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+system code. Although the conducted study adds powerful features to the Android permission mechanism and provides an option to select permissions, it does not contribute to the security or privacy of users who have no technical knowledge and do not know what types of risks they will face when allowing different permissions without knowing what these permissions entail. Additionally, for users to take advantage of this system, the developed system must be deployed to the users' devices. This is nearly impossible for normal users who do not have technical knowledge, and this process will void the devices' warranty. Finally, the developed software, Apex, was not submitted to the service of users, developers or researchers in mind.
+
+Ref.  developed TrustDroid, a software framework that targets the business world and secures mobile devices in each layer of the Android architecture. At the kernel level, it has a Kernel MAC (Mandatory Access Control) manager that controls the inter-process communication and administrates the file system; at the middle layer, a Policy Manager and a Firewall Manager are used; and at the top layer, a customized Package Manager is used. The “Application Coloring” technique is used to provide security. In this technique, a color is assigned to each application to signify that the application will belong to a certain domain. Only the applications that belong to the same domain are allowed to communicate with each other and send and receive data. Therefore, applications that are marked with a color that indicates they are unsafe are never allowed to communicate with the applications that are marked as safe. The system in this study is developed by making changes to the Android operating system and by adding extensions to it. The users need to install this customized operating system to take advantage of it.

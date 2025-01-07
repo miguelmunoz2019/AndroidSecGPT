@@ -1,0 +1,45 @@
+- Static analysis metrics: comprising all the code related metrics (i.e., libraries, min sdk, target sdk, classes, interfaces, annotations, public classes)
+# Training of the ML models
+We trained the ML algorithms using different combinations of these groups of features, namely (i) Market metrics + Textual features, (ii) Market metrics, (iii) Static analysis metrics, (iv) Market metrics + Textual features + Static analysis metrics, and (v) Market metrics + Static analysis metrics. As the goal of RQ3 is to understand the extent to which contextual information provided in the app store is useful (or not) for estimating app vulnerability-proneness, note that we only considered the combinations of features involving the Market metrics and a baseline (i.e., Static analysis metrics) for comparison purposes.
+
+To alleviate concerns related to overfitting and selection bias, all the ML experiments were carried-out by using the 10-fold cross-validation strategy, while the classification/prediction performance achieved by the different ML models were evaluated through widely-known metrics in the information retrieval field: precision, recall and F-measure (Baeza-Yates et al. 1999).
+
+# 4 Results
+This section discusses the results of RQ1-3 (see Section 3).
+
+# 4 RQ 1 : Which are the different vulnerabilities exhibited by Google market apps belonging to different app categories?
+All the considered apps exhibit at least one vulnerability warning. The high numbers of potential vulnerabilities identified were quite expected, as vulnerability warnings considered in our study are of different severity levels, and some of them (the ones with lower severity levels) could be deliberately neglected by developers . Mobile apps significantly differ from more traditional software systems (Minelli and Lanza 2013b), as Android apps are poorly tested and also test cases have low code coverage . This could depend on the fact that the majority of app developers do not use test automation frameworks  and practices , while security testing is often neglected . Besides, app developers pose more attention to functional bugs and security bugs get fixed slower , also because fixing vulnerabilities requires specialized knowledge that is not widespread among developers.
+
+As illustrated in Fig. 1, apps in the Medical category are the ones exhibiting the lowest level of vulnerability-proneness. Since attackers often make use of automated tools to identify likely exploitable attack vectors , we can observe that Medical apps
+30
+25
+20
+15
+10
+8
+5
+are less risky than other types of apps, thanks to a less wide variety of warnings to known vulnerabilities. More specifically, the differences in terms of vulnerability-proneness levels between the different app categories are statistically significant (the Kruskal-Wallis test returned p = 8 ∗ 10−5). The subsequent Mann-Whitney pairwise comparisons highlighted that the vulnerability-proneness of apps in the Medical category significantly differs from apps in the Communication, Entertainment, Food & Drink, News & Magazines, and Social categories with large effect-size. From these first results, we could observe that, on a positive side, there seems to be special attention towards security and privacy concerns in the development of apps in the Medical category, that often deal with very sensitive information (e.g. disease status, medications, etc.). However, from the security and privacy perspective, the same attention can not be noticed in the development of apps of the Finance or Shopping categories, which can also handle very sensitive information like bank accounts (e.g. the Finance category comprises several mobile banking apps).
+
+To have a clearer picture of the potential security defects occurring in the investigated app categories, for brevity’s sake, in the following, we focus our analysis on the categories whose vulnerability-proneness levels exhibited statistically significant differences with large effect size. In particular, in Table 3, for the most recurrent vulnerability warnings marked as Critical (on the rows) and the app categories exhibiting statistically significant differences in the vulnerability-proneness levels (on the columns), the percentages of likely vulnerable apps are reported. Comparing such percentages, we found that:
+- 938 out of 1002 (i.e., 93%) total apps in our dataset connect to URLs that are not under SSL, thus such communications are insecure by construction. In particular, 100% of considered apps belonging to the Communication, Food & Drink, and News & Magazines categories suffer from this vulnerability warning that is quite common also in apps handling very sensitive data, as those belonging to the Medical category (i.e., 84% of apps in this category exhibit this vulnerability).
+
+- 692 (i.e., 69%) apps in our dataset make use of the addJavascriptInterface method, that can be used to allow JavaScript to control the application, in devices running older Android versions. More specifically, more than 80% of apps belonging to the Entertainment, Food & Drink, and News & Magazines categories suffer from this vulnerability, while only 36% of apps in the Medical category exhibited this security flaw. We conjecture that such diversified results are strongly connected with the actual testing practices that mobile developers perform on the considered apps. Indeed, as reported in previous work (Minelli and Lanza 2013a), mobile apps tend to have less (and in some cases no) test cases compared to other types of applications, despite their potential higher level of popularity among users. It is worth noticing that, as AndroBugs detects the minSdk (i.e., the minimum API Level on which the application is able to run), it only reports this vulnerability as critical when the addJavascriptInterface method can likely execute.
+
+- 420 (i.e., 41%) of considered apps use implicit intents to start services, which is very risky because the responding service can not be identified. While this vulnerability is rare in apps of the Medical category (i.e., 15% of apps in this category are vulnerable), it has been found to be quite frequent in apps falling in the Social category (i.e., 54% of Social apps in our dataset suffer from this vulnerability).
+
+- 279 (i.e., 27%) of considered apps perform insecure data storage by creating world-readable or world-writeable files. More than 30% of apps belonging to Food & Drink and News & Magazines categories exhibit this vulnerability.
+
+# Empir Software Eng (2021) 26: 78
+– 201 (i.e., 20%) of considered apps do not check the validity of SSL Certificate, allowing self-signed, expired or mismatch CN certificates for SSL connection. 40% of News & Magazines apps considered in our dataset result vulnerable to this flaw, while in only 6% of Medical apps we encountered this security defect.
+
+– 200 (i.e., 19%) of considered apps do not protect KeyStore properly as they seem to use byte array or hard-coded certificate info to do SSL pinning. 35% of News & Magazines apps encompassed in our dataset exhibit this security hole, while only about 9% of Medical apps result vulnerable to this flaw.
+
+– 191 (i.e., 19%) of considered apps use the critical function Runtime.getRuntime().exec(...), allowing attackers to inject arbitrary system commands. 34% of Communication apps and 31% of News & Magazines apps in our dataset exhibit this vulnerability, while it has been found in less than 13% of apps belonging to the Social and Medical categories.
+
+– 158 (i.e., 15%) of considered apps have been found to be vulnerable to fragment injection, making it possible to access sensitive information that should not be accessible by the application itself on devices running older versions of Android. This vulnerability has been discovered in 22% of apps belonging to the Communication category while only about 3% of Medical apps present this security flaw.
+
+– 156 (i.e., 15%) of considered apps use exported Content providers, making it possible to any other app on the device to access it. More than 24% of apps belonging to the News & Magazines category suffer from this type of vulnerability, while less than 10% of apps belonging to the Medical category exhibited this security flaw.
+
+– 148 (i.e., 14%) of considered apps allow Self-defined HOSTNAME VERIFIER to accept all Common Names(CN), making it possible that malicious users perform Man-In-The-Middle (MITM) attacks. In particular, about 30% of apps belonging to the News & Magazines category exhibit this vulnerability.
+
+– 114 (i.e., 11%) of considered apps do not check the validation of the CN(Common Name) of the SSL certificate and this could allow attackers to perform MITM attacks. More than 26% of the apps belonging to the News & Magazines category suffer from this vulnerability.

@@ -1,0 +1,69 @@
+Next, we discuss the cost of analyzing a given AUT:
+Outlier detection was performed on all the 1,258 apps; test case generation occurred only on the 77 apps that were reported as potentially vulnerable by the outlier detection phase of PREV. The time taken to perform outlier detection analysis is displayed in the boxplot in Fig. 15. As shown in the boxplot, on average, it took less than one minute and a half to complete the analysis. Only a few apps took a longer time (represented as outlier dots in the boxplot) and this was due to the use of complex libraries in the AUT.
+
+Time taken to perform test case generation is shown in Fig. 16. Test case generation took longer than outlier detection; on average it takes less than 25 minutes per app. This is due to the genetic algorithm exploring the search space when trying to find an executable scenario that represents proof of concept attack. This duration depends on the timeout setting in the experimental configuration.
+
+Considering these results we formulate the subsequent answer to RQ2:
+Outlier detection phase took 1 minutes on average. Test case generation phase took 25 minutes on average, but it is performed only for apps reported by outlier detection. It will take longer to use PREV when the models need to be updated. But this is typically an offline activity with no real-time requirement. Therefore, in general it would only take a magnitude of minutes to determine if an app is vulnerable. Overall we consider that the cost of using PREV is affordable in practice.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 8 RQ 3 : Recall
+To answer RQ3, we evaluate if PREV misses any vulnerabilities. We use two sets of known vulnerable apps. The first set of apps consists of 20 mutated apps which were subject to mutation. The second set of apps are 35 apps that were used earlier in Section 8.
+
+Mutation tools are available to inject artificial faults in Java code, such as Major , Pit , muJava , JavaLanche (Fraser and Zeller 2011) and Mdroid+ . They would represent valuable resources to construct an independent benchmark to investigate RQ 3. However, we found that these mutation tools are not compatible with our experimental settings. Most of them are not specific to Android and they produce programming errors when mutating arithmetic expressions, boolean conditions in decision points, types and references. Mdroid+  is the only Android specific mutation tool. It supports a set of mutation operators for producing realistic faults in Android apps. However, we found that those faults do not relate to permission re-delegation vulnerabilities.
+
+Thus, we had to develop our own mutation tool. We defined two mutation operators for generating permission re-delegation vulnerabilities that reflect real-world vulnerabilities reported by Felt et al. (2011). We built a tool that applies these two mutation operators to inject permission re-delegation vulnerabilities in Android apps. Mutated apps are then subject to analysis using PREV. Since defining these operators and generating mutants is out of the scope here, we leave the details of this process in Appendix A.
+
+Regarding the first set of apps, we started by a random sample of apps, consisting of 50 apps from the official store and 80 apps from open-source repository. We apply mutations to these apps to inject permission re-delegation vulnerabilities. Since an app might contain multiple components and multiple privileged APIs, the same operator might create several distinct mutated versions for the same app.
+
+minutes
+0
+10
+20
+30
+40
+50
+60
+70
+# Empirical Software Engineering (2020) 25:5084–5136
+# 5117
+minutes
+0
+20
+40
+60
+80
+100
+However, due to implementation limitations, our mutation operators sometimes fail in generating a working vulnerability in the following cases:
+- The mutated app crashes;
+- The privileged API call is in a path that is not realizable from public entry points, due to certain path conditions in place;
+- A path involves a UI event, such as a click event;
+- A mutated component only accepts intents sent by the system.
+
+We manually checked the mutants and discarded such cases.
+
+Finally, our first set of apps consists of 20 mutants vulnerable by construction — 11 from closed source apps and 9 from open source apps — generated from 14 different original apps. Each mutant contains one injected vulnerability; some mutants are generated from the same original app but injected with different vulnerabilities.
+
+The results of PREV on this benchmark is shown in Table 5. The top part shows the results corresponding to the mutants of closed source apps and the bottom part shows the results corresponding to the mutants from open source apps. The mutant name (first column) is a concatenation of the original app name, the mutation operator, and the unique-id of the component subject to mutation. As shown in Table 5, three distinct mutants were generated from the same app com.nextcloud.client. A tick-mark “✓” is present in the second column (TP) when PREV generated a test case for the corresponding mutant. Conversely an x-mark “✗” is reported in the third column (FN) when no test case was generated.
+
+As shown in Table 5, among the mutated closed source apps, PREV detected 7 out of 11 vulnerable apps but missed four. Among the mutated open source apps, PREV detected 8 out of 9 vulnerable apps but missed one. In the following we discuss those missed cases.
+
+PREV failed in generating a successful test case for lwcr46lion.lwp exposed 360 because the app expects a media URL (e.g., a URL pointing to .mp4 file) with an advertisement to display. When apps are expecting an intent $data field with a URI that
+# Empirical Software Engineering (2020) 25:5084–5136
+meets some conditions, these conditions are usually specified in the intent-filter. As discussed in Section 7, the test case generation phase relies on intent-filters in order to seed the $data field. However, this component does not specify an intent-filter at all (only the attribute exported is set to true). While the test case generation can seed other intent fields, such as $action and $extra, from the component’s code even if they are not specified in the manifest file, the $data field is seeded either from the intent-filter or the component code only when the specification exists in the manifest file. As this component does not specify an intent-filter, our approach failed in generating the $data field that was essential to test this app. Similarly, the remaining 4 apps require inputs of specific data structures that could not be generated automatically and therefore, are missed.
+
+Regarding the second set of vulnerable apps, we first looked at the 77 apps, used in Section 8, that were reported by our outlier detection phase. PREV correctly reported 30 apps as vulnerable (as discussed in Section 8). The remaining 47 apps were not reported as vulnerable because our final test generation phase was unable to generate proof-of-concept test cases. Out of these 47 apps, 16 are open source apps and thus, we were able to manually inspect the source code of these 16 apps. Manual investigation revealed the following:
+- Five apps are actually vulnerable but missed by our tool. The reason is because our test generator was unable to generate the intent messages as required by those apps due to the similar problems explained above (missing intent-filter specifications);
+- Four apps are not exploitable as the components are protected by custom permissions;
+Empirical Software Engineering (2020) 25:5084–5136 5119
+– Seven apps involve UI event-based paths that include user interactions (such as touches). Hence, they are not considered vulnerable (see Precondition PR1 in Section 3).
+
+In summary, the first set of apps contains 20 vulnerable apps. PREV detected 15 of them and missed five vulnerable apps. The second set of apps contains 35 vulnerable apps. PREV detected 30 of them and missed five vulnerable apps. Considering these results we formulate the subsequent answer to RQ 3:
+PREV detected 45 out of 55 vulnerable apps (Recall=81%). The implication is that security analysts can use PREV to detect 81% of the apps containing permission re-delegation vulnerabilities.
+
+# 8 RQ 4 : Comparison
+To investigate RQ4, we compare PREV with Covert  and IccTA.
+
+We chose to compare our approach with Covert because it is designed to detect privilege escalation and permission re-delegation is a type of privilege escalation. It is a compositional analysis tool where a set of apps is analyzed together to see if there is a potential composite ICC vulnerability.
+
+IccTA is not specifically designed to detect permission re-delegation vulnerabilities. It is, however, a widely-used generic tool built for various program analysis purposes for Android apps. It uses static taint analysis, a mainstream technique for various security analyses such as data leaks and privilege escalation. In principle, when configured with appropriate sources and sinks, it can be used to detect permission re-delegation vulnerabilities.

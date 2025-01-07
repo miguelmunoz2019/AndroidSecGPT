@@ -1,0 +1,86 @@
+Access complexity is another parameter for comparing Android and iOS vulnerabilities. Access complexity measures the complexity of the attack, which is required to exploit the vulnerability once an attacker has gained access to the target system. Access complexity can be low, medium and high. Low value means that specialized access conditions or extenuating circumstances do not exist, medium specifies the access conditions are somewhat specialized and high means specialized access conditions exist. Table 6 shows the access complexity levels for both.
+
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+Distribution of Android & iOS vulnerability types.
+
+↑ Increase, ↓ Decrease, ↔ Constant.
+
+# Remarks
+- Open source nature of Android
+- Jailbreaking in iOS
+- Buffer overflow in OpenJPEG 2 in Android
+- Use-after-free issue addressed with improved memory management in iOS
+- Regular software upgrades in Android and iOS
+- Unhandled Java-level Null Pointer Exceptions (NPEs) in Android
+- Frequent software upgrades in iOS
+- Weak security policies in Android
+- Improved checks in iOS
+- Isolation mechanism improved in Android
+- Improved input validation in iOS
+- Crafted libstagefright file in Media server applications in Android
+- Stack overflow addressed with improved input validation in iOS
+- Small allocated stacks in iOS
+- Better encryption mechanisms in Android
+- Improved checks in iOS
+- Better encryption mechanisms in Android
+- Jailbreaking, small allocated stacks iOS
+- Improved validation, improved memory management, improved checks in Android and iOS
+- Improved input validation, improved memory management in Android and iOS
+Access levels of Android and iOS vulnerabilities.
+
+Access complexity of Android and iOS vulnerabilities.
+
+Mean severity scores of Android & iOS vulnerabilities.
+
+Android and iOS. It is evident that 71% of iOS vulnerabilities are medium-level complex while in Android, access complexity lies in the extremes-high (5%) and low (47%).
+
+The confidentiality, integrity and availability (CIA) triad  is the core foundation of information security. Security vulnerabilities can have serious impact on CIA triad. For a comprehensive and complete security program, CIA triad must be addressed adequately.
+
+Confidentiality — It ensures that information should not be accessible to unauthorized users, applications or processes. Cryptography, passwords, PIN numbers, etc. can be used to keep the information confidential. Password attacks, ping sweeps, phishing, key-logging, packet sniffing, etc. are some of the common attacks on confidentiality.
+
+Integrity — It ensures protection of information from any unauthorized alteration. Only the authorized parties have the ability to modify the information once. Cyclic Redundancy Check (CRC) provides integrity protection against accidental or non-malicious errors. Man-in-the-middle attack, session hijacking, salami attack, trust relationship attack, etc. are included in the integrity attacks.
+
+Availability — It guarantees that information should be accessible to authorized users only. DoS and DDoS attacks, SYN flood attack, etc. are most common availability attacks. CIA triad is the backbone of information security system; therefore, it is important to understand the impact of vulnerabilities on CIA.
+
+Impact score on confidentiality.
+
+Impact score on integrity.
+
+Impact score on availability.
+
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+# 7. Malware attacks in Android and iOS
+Malware is malicious software that is designed to cause unintentional harm to the system . Malware can evade security mechanisms, collect sensitive user information, display unnecessary advertisements, or can interrupt with the normal functioning of the mobile device. Different types of mobile malware are the Trojans, backdoors, ransomware, spyware, adware, etc. These malware are briefly described as follows:
+Trojan — It is a type of malware, which does not self-replicate. To avoid detection, Trojans are generally masked as legitimate software. Trojan can enter into the system via numerous vectors, such as navigating untrusted websites (drive-by-download), by clicking attachments in phishing emails, other forms of social engineering, etc . Trojan can steal sensitive user information, or can alter the data.
+
+Ransomware — It is type of malicious software, which restricts the access to the system resources and extorts money from the victims . Most popular ransomware in mobile platform is crypto-ransomware, which encrypts files of a system thereby restricting the users to access the files. Attackers then demand ransom for the key used to decrypt the files so as to resume the access.
+
+Backdoor — It is a malware that evades the authentication mechanism of the system. As a result, it can remotely access the database and file systems. Backdoor installation requires administrator privileges by rooting Android devices and jailbreaking Apple devices.
+
+Spyware — Spyware is unwanted software that infiltrates your computing device, stealing your internet usage data and sensitive information. Spyware is classified as a type of malware — malicious software designed to gain access to or damage your computer, often without your knowledge. Spyware gathers your personal information and relays it to advertisers, data firms, or external users. Spyware infection in the mobile device can be viewed differently in Android and iOS. In Android, social engineering attack can used to trick the users to download an app from the Google play store or from a third-party app store. Man-in-the-Middle (MitM) attack is used to perform remote infection, where the attacker intercepts the user’s mobile communications to inject the malware. In iOS, spyware needs a physical access to the device or through exploitation of JailbreakME exploit.
+
+Adware — Adware displays unwanted advertisements, which can alter the browser settings, steal personal information or can execute an arbitrary code.
+
+# 8. Research directions and future scope
+Android’s market share will continue to grow and it is evident that there would be no cross over between Android and iOS in the near future. Increasing market share and open-source nature of Android owes to its increasing vulnerabilities as compared to the closed nature of iOS. Therefore, we have chosen Android as our research area, where we will address the major problems encountered in Android. With the growing vulnerabilities, Android malware is continuously emerging at an alarming rate. This calls for more efficient malware detection techniques with less human intervention. We have proposed a novel parallel classifier scheme for malware detection in Android , which achieved an accuracy of 98%. Data related to this study can be found in . Detected malware are then classified into 71 malware families using ensemble classifiers . Last part of the research includes
+S. Garg and N. Baliyan
+Computer Science Review 40 (2021) 100372
+# Timeline of Android and iOS malware from 2015–2019
+# Growth of Android malware from 2016 to 2019
+The mapping of the malware with the known vulnerabilities automatically. The aim is that in near future if a new Android malware variant appears, developers can know at prior which vulnerability it will exploit and appropriate measures can be taken timely and in a cost effective manner.
+
+Major challenges in this domain and forthcoming research directions are divided into main buckets — device integrity, authentication mechanism, application privacy, and source code and hardware security along with the severity level of each problem, as discussed in Table 11.
+
+Apart from the aforementioned challenges, other problems which prevail in Android security domain is the unavailability of comprehensive malware dataset. There is a need of standard, structured and updated datasets since the Android malware are increasing at a striking rate. Existing malware datasets are not comprehensive, thereby lacking up to date information. Such datasets can be helpful to perform malware detection analysis in an efficient manner. Also, large data volume poses difficulty to develop robust and efficient detection techniques. ML approaches have proved to be fruitful as compare to conventional malware detection techniques, however, Machine learning (ML) algorithms fail while dealing with large data volume. A shift from ML to Deep Learning (DL) is required to handle issues like large data volume and high false positive rate.
+
+# Future research directions
+# Conclusion
+Android and iOS being the most popular among all the smartphone platforms, also attracts large number of attackers with
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+malicious intentions. The pragmatic approach used for comparing Android and iOS helps to understand that Android is more susceptible to security breaches and malware attacks. Therefore, in the research domain Android becomes the first choice. The paper also presents forthcoming challenges and research directions, which are bucketed in the different categories along with the severity of each problem. These problems do not seem to be solvable in next coming years and continue to stay for long. The major buckets are device integrity, application privacy, hardware security, source code and authentication mechanisms, which should be focused by the researchers and academicians. These research directions can prove to be fruitful in smoothening the Android security domain, where application developers will be able to develop a more accurate, efficient, robust and scalable mechanisms.
+
+# Declaration of competing interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper..

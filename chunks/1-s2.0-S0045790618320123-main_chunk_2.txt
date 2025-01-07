@@ -1,0 +1,79 @@
+# (v) DroidDolphin 
+obtains static and dynamic features through APIMonitor and APE_BOX, and uses SVM for classification. Its drawback is that it is easily evaded by anti-emulator techniques.
+
+These techniques have failed to deliver efficient malware detection as both static and dynamic analysis have managed to achieve a maximum accuracy of 93%, while hybrid analysis has achieved 94% accuracy . Techniques using hybrid analysis have their own limitations that inhibit them from conveying an impeccable result. Previously used techniques deploying hybrid analysis produced results that were worse than the fully static case for all the families.
+
+# The fourth technique, Machine Learning (ML)
+is non-conventional. ML is based on Artificial Intelligence, which allows the system to learn and adapt from experience without the need to be programmed explicitly. ML has proved to be efficient not only in computer science but also in diverse applications like – electromagnetics, circuit theory, atomic physics , etc. In this technique, several features from Android Package Kit (APKs) are extracted with which the dataset is trained and APKs are classified. The classifiers are programmed to detect malicious APKs from the testing dataset. ML algorithms are perceived to be more efficient than other available techniques. The paper aims to surpass the best accuracy achieved by ML to date, with the set of algorithms defined in Section 3. Previous ML approaches for malware detection in Android were not efficient and scalable . The paper proposes a novel approach to provide better results and to overcome the limitations of previous ML approaches. Proposed methodology detects malware at an early stage by deploying parallel ML classifiers and their features. Table 1 provides a comparative study of existing Android malware detection techniques.
+
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# 1. Innovative contributions
+The approach proposed in the paper significantly differs from the methodology proposed by Suleiman, Sezer, and Muttik . Their approach is limited to only static features like API calls, commands, and permissions. However, the current work extracts dynamic features along with additional static features, as described in Section 4. The combination of the most efficient ML algorithms. Consequently, upgrading the precision and detecting Android malware is improved considerably.
+
+Following are the innovative contributions of the paper:
+- A thorough investigation of Android malware detection techniques with strengths and limitations
+- A novel and effective approach for vulnerability detection in Android that combines multiple classifiers
+- Relevant APK dataset collection, which is comprehensive and aligned to the scope of the research. The data is taken from Google play store,4 Wandoujia5 (third party), Android Malware Detection (AMD) community6 and Androzoo7
+4 Google play store apps. Available: https://play.google.com/store/apps [Accessed: April. 15, 2018].
+
+5 Wandoujia apps. Available: http://www.wandoujia.com/apps [Accessed: April. 15, 2018].
+
+6 Wei, Fengguo, Yuping Li, Sankardas Roy, Xinming Ou, and Wu Zhou. "Deep ground truth analysis of current android malware." In International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment, pp. 252-276. Springer, Cham, 2017.
+
+7 Allix, Kevin, Tegawendé F. Bissyandé, Jacques Klein, and Yves Le Traon. "Androzoo: Collecting millions of android apps for the research community." In Mining Software Repositories (MSR), 2016 IEEE/ACM 13th Working Conference on, pp. 468-471. IEEE, 2016.
+
+# 16
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# AndroidManifest xml
+# Libraries
+# Meta-INF Directory
+# APK
+# Resources arsc
+# Classes dex
+# Res
+# Assets
+# 1. Organization
+The rest of the paper is structured as follows: Section 2 describes the structure of Android application and explains how different application features are extracted. Section 3 presents and explains parallel classifiers in ML paradigm that are used to build malware detection model. Section 4 describes the proposed methodology and presents the performance metrics that are used to evaluate ML algorithms. Section 5 explains the experimental setup and system configuration. Section 6 lists all the results obtained from individual and parallel classifiers. Finally, Section 7 draws out the conclusion.
+
+# 2. Android architecture and feature extraction
+An android application has four fundamentals components that are responsible for defining its overall behavior. They are known as Activities, Broadcast Receivers, Services, and Content Providers. These components are loosely connected by the AndroidManifest.xml file, which explains the interaction amongst all components. Each component has a unique function and life process and is detailed below.
+
+Activities (invoked via intents) control User Interface (UI) and maneuver user interaction, while Services operate background processing. Broadcast Receivers supervise communication between Android OS and applications. Content providers manage data and deal with issues of database management.
+
+Android applications are written in Java. They are then compiled by the Android Software Development Kit (SDK) tools with data and resource files, and are archived as a file (with an extension .APK) named ‘Android package’. This file is then used by an Android device to install the application. Fig. 3 shows several components of an APK.
+
+In the paper, the methodology used to detect malware, extracts certain features from APKs, which are then used to classify an application as malicious or benign. Thus, the classification model must be effectively trained to provide correct results. These features, which are further used to train the model, are extracted using Python script from the dataset of 25,450 malware applications obtained from Google play store, Wandoujia APKs, AMD Community, and 60,000 benign applications from Androzoo.
+
+Static features, which are extracted and used in the ML algorithms to determine the presence or absence of the malware in the Android applications, are: Permissions, API Calls, Version, Broadcast Receivers and Services, and Libraries Used. These features are illustrated as follows:
+- Permissions – Applications in Android request permissions before they can use necessary resources and system data. Based on the application features, the permission is granted by the system or by the user.
+
+- API Calls – Android applications use API Calls to interact with the functionality within various devices.
+
+- Version – Version decides whether the app is capable of running on installed OS or on its lower versions.
+
+- Services – They perform long-running operations running in the background with no need for user interaction.
+
+- Libraries Used – Android Libraries encompass specific Java-based libraries, including application framework and those that promote graphic drawing, UI, and database access.
+
+- Broadcast Receivers – Defined earlier.
+
+A sample of the features named and explained above is shown in Table 2.
+
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# Extracted features in a CSV.
+
+# 3. Machine learning models used with parallel classifiers
+A classifier algorithm in ML maps the input data to a category. It generally produces class labels as output using a set of certain extracted features. Over many years these classification algorithms have contributed to the growth of Artificial Intelligence in multiple areas because of which they are now widely preferred to detect malware on almost all electronic mechanisms. ML can be implemented in many ways, e.g., Supervised, Unsupervised, Reinforced, and Semi-supervised learning.
+
+The paper focuses on Supervised Learning. The training dataset has data that is labeled with either of the two classes - malicious or benign. The class for each APK is already known. This becomes the basis for constructing the classification model.
+
+Our methodology incorporates ML algorithms like Pruning Rule-Based Classification Tree (PART), Ripple Down Rule Learner (RIDOR), Support Vector Machine (SVM) and Multilayer Perceptron (MLP). We have used these four algorithms in particular as only a few of the previous studies had used them. Since SVM has a decent accuracy as compared to other ML classifiers, it has been used a few times in the past research projects. In addition, the combination of SVM, RIDOR, PART, and MLP has never been used before in malware detection and the paper aims to improve accuracy using these parallel classifiers.
+
+# 3. Multi-Layer Perceptron
+MLP is often known as a feed-forward neural network that has one or more hidden layers between the input and output layer. In feed-forward, data flows only in the forward direction, i.e., from input to the output layer. A back-propagation algorithm is used to train the network. Problems that are not linearly separable are generally solved using MLP, e.g., pattern recognition, classification, prediction, and approximation.
+
+# 3. Support vector machine
+It is a supervised ML algorithm that can solve both classification and regression problems. However, it is commonly used for classification problems. In SVM, each data item is plotted as a point in n-dimensional space, where n denotes the number of features present; and a particular coordinate is the feature value.
+
+# 3. Pruning rule-based classification tree
+It combines two basic strategies of rule learning, i.e., separate-and-conquer and divide-and-conquer. It produces decision lists, which are ordered set of rules. PART builds a partial decision tree iteratively and the largest coverage leaf is turned into a rule.

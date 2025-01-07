@@ -1,0 +1,92 @@
+# 1. Access to Platform Resources
+The intent is for the evaluator to ensure that the selection captures all hardware resources which the application accesses, and that these are restricted to those which are justified. On some platforms, the application must explicitly solicit permission in order to access hardware resources. Seeking such permissions, even if the application does not later make use of the hardware resource, should still be considered access. Selections should be expressed in a manner consistent with how the application expresses its access needs to the underlying platform. For example, the platform may provide location services which implies the potential use of a variety of hardware resources (e.g. satellite receivers, WiFi, cellular radio) yet location services are the proper selection. This is because use of these resources can be inferred, but also because the actual usage may vary based on the particular platform. Resources that do not need to be explicitly identified are those which are ordinarily used by any application such as central processing units, main memory, displays, input devices (e.g. keyboards, mice), and persistent storage devices provided by the platform. Sensitive information repositories are defined as those collections of sensitive data that could be expected to be shared among some applications, users, or user roles, but to which not all of these would ordinarily require access.
+
+# 1. Network Communications
+This requirement is intended to restrict both inbound and outbound network communications to only those required, or to network communications that are user initiated. It does not apply to network communications in which the application may generically access the filesystem which may result in the platform accessing remotely mounted drives/shares.
+
+# 1. Encryption of Sensitive Application Data
+Any file that may potentially contain sensitive data (to include temporary files) shall be protected. The only exception is if the user intentionally exports the sensitive data to non-protected files.
+
+# 1. Supported Configuration Mechanism
+Configuration options that are stored remotely are not subject to this requirement.
+
+# 1. Secure by Default Configuration
+Default credentials are credentials (e.g., passwords, keys) that are automatically (without user interaction) loaded onto the platform during application installation. Credentials that are generated during installation using requirements laid out in ST are not by definition default credentials. The precise
+expectations for file permissions vary per platform but the general intention is that a trust boundary protects the application and its data.
+
+# 1. Specification of Management Functions
+This requirement stipulates that an application needs to provide the ability to enable/disable only those functions that it actually implements. The application is not responsible for controlling the behavior of the platform or other applications.
+
+# 1. User Consent for Transmission of Personally Identifiable Information (PII)
+This requirement applies only to PII that is specifically requested by the application; it does not apply if the user volunteers PII without prompting from the application into a general (or inappropriate) data field. A dialog box that declares intent to send PII presented to the user at the time the application is started is sufficient to meet this requirement.
+
+# 1. Use of Supported Services and APIs
+The definition of documented may vary depending upon whether the application is provided by a third party (who relies upon documented platform APIs) or by a platform vendor who may be able to guarantee support for platform APIs.
+
+# 1. Anti-Exploitation Capabilities
+Requesting a memory mapping at an explicit address subverts address space layout randomization (ASLR). Requesting a memory mapping with both write and execute permissions subverts the platform protection provided by Data Execution Prevention (DEP). If the application performs no just-in-time compiling, then the first selection must be chosen.
+
+# 1. Integrity for Installation and Update
+This requirement is about the ability to “check” for updates. The actual installation of any updates should be done by the platform. This requirement is intended to ensure that the application can check for updates provided by the vendor, as updates provided by another source may contain malicious code.
+
+# 1. Use of Third-Party Libraries
+The intention of this requirement is for the evaluator to discover and document whether the application is including unnecessary or unexpected third-party libraries. This includes adware libraries which could present a privacy threat, as well as ensuring documentation of such libraries in case vulnerabilities are later discovered.
+
+# 1. Protection of Data in Transit
+Application should transmit sensitive data only via encryption channel.
+
+# 2 Mobile application security verification standard (MASVS)
+The MASVS is a community effort to establish a framework of security requirements needed to design, develop and test secure mobile apps on iOS and Android.
+
+MASVS contains three parts (see Fig. 1):
+# Checklist
+# Dala Sl0rent
+# Test Cases
+# Requirements
+# OWASP Mobile Security Testing Guide (MSTG)
+# OWASP Mobile Application Security Verification Standard (MASVS)
+The Mobile Application Security Verification Standard (MASVS): This standard document defines a mobile app security model and lists generic security requirements for mobile apps. It can be used by architects, developers, testers, security professionals, and consumers to define what a secure mobile application is . Check controls:
+- V1: Architecture, Design and Threat Modeling Requirements.
+
+- V2: Data Storage and Privacy Requirements.
+
+- V3: Cryptography Requirements.
+
+- V4: Authentication and Session Management Requirements.
+
+- V5: Network Communication Requirements.
+
+- V6: Platform Interaction Requirements.
+
+- V7: Code Quality and Build Setting Requirements.
+
+- V8: Resilience Requirements.
+
+The Mobile Security Testing Guide (MSTG): The MSTG is a manual for testing the security of mobile apps. It provides verification instructions for the requirements in the MASVS along with operating-system-specific best practices (currently for Android and iOS). The MSTG helps ensure completeness and consistency of mobile app security test. It is also useful as a standalone learning resource and reference guide for mobile application security testers ,.
+
+Mobile App Security Checklist: A checklist for tracking compliance against the MASVS during practical assessments. The list conveniently links to the MSTG test case for each requirement, making mobile penetration app testing a breeze.
+
+The MASVS defines two security verification levels (MASVS-L1 and MASVS-L2), as well as a set of reverse engineering resiliency requirements (MASVS-R). MASVS-L1 contains generic security requirements that are recommended for all mobile apps, while MASVS-L2 should be applied to apps handling highly sensitive data. MASVS-R covers additional protective controls that can be applied if preventing client-side threats is a design goal (see Fig. 2).
+
+Fulfilling the requirements in MASVS-L1 results in a secure app that follows security best practices and doesn't suffer from common vulnerabilities. MASVS-L2 adds additional defense-in-depth controls such as SSL pinning, resulting in an app that is resilient against more sophisticated attacks - assuming the security controls of the mobile operating system are intact, and the end user is not viewed as a potential adversary. Fulfilling all, or subsets of, the software protection requirements in MASVS-R helps impede specific client-side threats where the end user is malicious and/or the mobile OS is compromised.
+
+R_ Resiliency Against Reverse Engineering and Tampering
+L2 = Defense-in-Depth
+L1 _ Standard Security
+# 1. MASVS-L1: Standard Security
+A mobile app that achieves MASVS-L1 adheres to mobile application security best practices. It fulfills basic requirements in terms of code quality, handling of sensitive data, and interaction with the mobile environment. A testing process must be in place to verify the security controls. This level is appropriate for all mobile applications.
+
+# 1. MASVS-L2: Defense-in-Depth
+MASVS-L2 introduces advanced security controls that go beyond the standard requirements. To fulfill MASVS-L2, a threat model must exist, and security must be an integral part of the app's architecture and design. Based on the threat model, the right MASVS-L2 controls should have been selected and implemented successfully. This level is appropriate for apps that handle highly sensitive data, such as mobile banking apps.
+
+# 1. MASVS-R: Resiliency Against Reverse Engineering and Tampering
+The app has state-of-the-art security, and is also resilient against specific, clearly defined client-side attacks, such as tampering, modding, or reverse engineering to extract sensitive code or data. Such an app either leverages hardware security features or sufficiently strong and verifiable software protection techniques. MASVS-R is applicable to apps that handle highly sensitive data and may serve as a means of protecting intellectual property or tamper-proofing an app.
+
+# Notes:
+I: Although OWASP recommend implementing MASVS-L1 controls in every app, implementing a control or not should ultimately be a risk-based decision, which is taken/communicated with the business owners.
+
+Note that the software protection controls listed in MASVS-R and described in the OWASP Mobile Security Testing Guide can ultimately be bypassed and must never be used as a replacement for security controls. Instead, they are intended to add additional threat-specific, protective controls to apps that also fulfill the MASVS requirements in MASVS-L1 or MASVS-L2  -.
+
+# 3 Statistics
+# 3 Us perform testing statistics
+Us personal statistics of vulnerability assessment Android mobile application (see Tabl. 1 – 5). We perform 5 tests on real mobile application and use MASVS for describe vulnerabilities  -.

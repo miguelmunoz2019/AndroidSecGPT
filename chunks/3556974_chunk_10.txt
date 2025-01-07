@@ -1,0 +1,68 @@
+# 7 Conclusion Validity
+The bias and the other factors affecting the review study were tried to minimise when searching for the papers. Research papers written only in English were considered. Because of this limitation, this work may have overlooked some crucial works written in other languages such as Chinese, German, and Spanish. Moreover, the threat may also occur due to consideration of studies with individual reviewers’ bias. It may lead to flaws and biases in this study. Furthermore, positive results are more likely to be reported than negative results . However, many papers that reported negative effects were also captured in this study, since a peer-verified systematic review process was followed. Cross-checking mechanism was also applied to maintain the focus of the SLR, where a thorough examination was done when reviewing the papers. All the authors were constantly involved in the study selection and reviewing process to ensure this.
+
+# 8 CONCLUSION AND FUTURE WORKS
+Mobile app developers continuously develop Android applications to fulfil the need of the rapid demand. When developing these applications, the security concepts also should be adequately addressed. Several vulnerability detection methods could be applied to do that. Based on the available literature, this systematic review of the state-of-the-art Android source code vulnerability detection techniques covered the latest research from 2016 to June 2022. It discussed three steps to increase the security of an Android application by considering analysing, detecting, and preventing vulnerabilities. Applications and code analysis techniques, static analysis, dynamic analysis, and hybrid analysis and the tools used were reviewed in this, along with ML/DL and conventional methods applied to detect vulnerabilities. Possible prevention mechanisms were also discussed.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+The work identified the potential gaps in previous research and possible future research directions to enhance the security of Android OS.
+
+After conducting the review, static analysis was identified as the widely used technique to detect Android vulnerabilities, and the code analysis technique is more useful when performing it. Another critical finding is that API calls, permissions, and system calls were the widely extracted features in feature extraction. It was also identified ML/DL-based techniques are widely used to detect vulnerabilities. Though a couple of malware-related datasets were identified, a properly labelled dataset on Android source code vulnerability is also required. Once such a dataset is introduced, it can be used for further experiments to train ML models to detect and predict code vulnerabilities with high accuracy. A comprehensive code analysis mechanism that can identify security issues at the development time can be introduced. Furthermore, just having detection mechanisms will not be sufficient for the app development community. Further research should also be conducted to identify the possible ways of integrating the detection methods into Android app development environments as tools or plugins. By utilizing them, developers can validate the security throughout the application without waiting for the complete application. Moreover, the lack of an automated mechanism for identifying the reasons for the vulnerabilities was also identified. Further research can be conducted to integrate the explainable AI techniques with Android source code vulnerability detection mechanisms to overcome this.
+
+Both Android vulnerabilities and their detection techniques are evolving. Therefore, similar future reviews are also necessary to cover the studies on these emerging threats and their detection methods. As per the understanding through the review, novel ML methods, DL methods, and reinforcement learning methods are also emerging to detect and prevent vulnerabilities. Therefore, further reviews also can be carried out.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+Security Symposium (USENIX Security’15). USENIX Association, Washington, D.C., 659–674. Retrieved from https://www.usenix.org/conference/usenixsecurity15/technical-sessions/presentation/chen-kai.
+
+1. Boris Chernis and Rakesh Verma. 2018. Machine learning methods for software vulnerability detection. In 4th ACM International Workshop on Security and Privacy Analytics. Association for Computing Machinery, New York, NY, 31–39. DOI: https://doi.org/10/3180445
+2. Mahima Choudhary and Brij Kishore. 2018. HAAMD: Hybrid analysis for Android malware detection. In International Conference on Computer Communication and Informatics (ICCCI). IEEE, 1–4. DOI: https://doi.org/10/ICCCI
+3. The MITRE Corporation. 2021. Common Vulnerability and Exposures. Retrieved from https://www.cve.org/.
+
+4. The MITRE Corporation. 2021. Common Weakness Enumeration. Retrieved from https://cwe.mitre.org/.
+
+5. Mendeley Data. 2020. Anrdoid Permission Dataset. Retrieved from https://data.mendeley.com/datasets/b4mxg7ydb7/3.
+
+6. Biniam Fisseha Demissie, Mariano Ceccato, and Lwin Khin Shar. 2018. AnFlo: Detecting anomalous sensitive information flows in Android apps. In IEEE/ACM 5th International Conference on Mobile Software Engineering and Systems (MOBILESoft). IEEE, 24–34. Retrieved from https://ieeexplore.ieee.org/abstract/document/8543427.
+
+7. Ethics Advanced Technology Ltd. (EATL). 2021. EATL App Store. Retrieved from http://eatlapps.com/apps/store.
+
+8. Adanma Cecilia Eberendu, Valentine Ikechukwu Udegbe, Edmond Onwubiko Ezennorom, Anita Chinonso Ibegbulam, Titus Ifeanyi Chinebu, et al. 2022. A systematic literature review of software vulnerability detection. Eur. J. Comp. Sci. Inf. Technol. 10, 1 (2022), 23–37. Retrieved from https://tudr.org/id/eprint/284.
+
+9. Mohamed A. El-Zawawy, Eleonora Losiouk, and Mauro Conti. 2021. Vulnerabilities in Android webview objects: Still not the end! Comput. Secur. 109 (2021), 102395. DOI: https://doi.org/10/j.cose
+10. William Enck, Machigar Ongtang, and Patrick McDaniel. 2009. On lightweight mobile phone application certification. In 16th ACM Conference on Computer and Communications Security (CCS’09). Association for Computing Machinery, New York, NY, 235–245. DOI: https://doi.org/10/1653662
+11. Sascha Fahl, Marian Harbach, Thomas Muders, Lars Baumgärtner, Bernd Freisleben, and Matthew Smith. 2012. Why Eve and Mallory love Android: An analysis of Android SSL (in)security. In ACM Conference on Computer and Communications Security (CCS’12). Association for Computing Machinery, New York, NY, 50–61. DOI:https://doi.org/10/2382196
+12. Parvez Faruki, Vijay Ganmoor, Vijay Laxmi, M. S. Gaur, and Ammar Bharmal. 2013. AndroSimilar: Robust statistical feature signature for Android malware detection. In 6th International Conference on Security of Information and Networks (SIN’13). Association for Computing Machinery, New York, NY, 152–159. DOI: https://doi.org/10/2523514
+13. Flankerhqd. 2016. JAADAS: Joint Advanced Application Defect Assessment for Android Application. Retrieved from https://github.com/flankerhqd/JAADAS.
+
+14. Python Software Foundation. 2019. Androguard. Retrieved from https://pypi.org/project/androguard/.
+
+15. Jyoti Gajrani, Meenakshi Tripathi, Vijay Laxmi, Gaurav Somani, Akka Zemmari, and Manoj Singh Gaur. 2020. Vulvet: Vetting of vulnerabilities in Android apps to thwart exploitation. Digit. Threats: Res. Pract. 1, 2 . DOI: https://doi.org/10/3376121
+16. Erich Gamma. 2022. JHotDraw. Retrieved from https://sourceforge.net/projects/jhotdraw/.
+
+17. Jun Gao, Li Li, Pingfan Kong, Tegawendé F. Bissyandé, and Jacques Klein. 2021. Understanding the evolution of Android app vulnerabilities. IEEE Trans. Reliab. 70, 1 (2021), 212–230. DOI: https://doi.org/10/TR
+18. Shivi Garg and Niyati Baliyan. 2019. A novel parallel classifier scheme for vulnerability detection in Android. Comput. Electric. Eng. 77 (2019), 12–26. DOI: https://doi.org/10/j.compeleceng
+19. Shivi Garg and Niyati Baliyan. 2020. Machine learning based Android vulnerability detection: A roadmap. In Information Systems Security, Salil Kanhere, Vishwas T. Patil, Shamik Sural, and Manoj S. Gaur (Eds.). Springer International Publishing, Cham, 87–93. DOI: https://doi.org/10/978-3-030-65610-2_6
+20. Shivi Garg and Niyati Baliyan. 2021. Android security assessment: A review, taxonomy and research gap study. Comput. Secur. 100 (2021), 102087. DOI: https://doi.org/10/j.cose
+21. Shivi Garg and Niyati Baliyan. 2021. Comparative analysis of Android and iOS from security viewpoint. Comput. Sci. Rev. 40 (2021), 100372. DOI: https://doi.org/10/j.cosrev
+22. Shree Garg, Sateesh K. Peddoju, and Anil K. Sarje. 2017. Network-based detection of Android malicious apps. Int. J. Inf. Secur. 16, 4 (2017), 385–400. DOI: https://doi.org/10/s10207-016-0343-z
+23. Seyed Mohammad Ghaffarian and Hamid Reza Shahriari. 2017. Software vulnerability analysis and discovery using machine-learning and data-mining techniques: A survey. ACM Comput. Surv. 50, 4 (2017), 1–36. DOI: https://doi.org/10/3092566
+24. Olivier Le Goaër. 2020. Enforcing green code with Android lint. In 35th IEEE/ACM International Conference on Automated Software Engineering Workshops. Association for Computing Machinery, New York, NY, 85–90. DOI: https://doi.org/10/3417113
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+#sps.
+
+3. University of New Brunswick. 2020. CICMaldroid Dataset. Retrieved from https://www.unb.ca/cic/datasets/maldroid-2020.html.
+
+4. National Institute of Standards and Technology. 2021. National Vulnerability Database. Retrieved from https://nvd.nist.gov/vuln.
+
+5. National Institute of Standards and Technology. 2021. Software Assurance Metrics And Tool Evaluation (SAMATE). Retrieved from https://www.nist.gov/itl/ssd/software-quality-group/samate.
+
+6. National Institute of Standards and Technology. 2021. Static Analysis Tool Exposition (SATE) IV. Retrieved from https://www.nist.gov/itl/ssd/software-quality-group/static-analysis-tool-exposition-sate-iv.
+
+7. Botnet Research Team of Xi’an Jiaotong University. 2022. SandDroid—An automatic Android application analysis system. Retrieved from http://sanddroid.xjtu.edu.cn/.
+
+8. Lucky Onwuzurike, Enrico Mariconti, Panagiotis Andriotis, Emiliano De Cristofaro, Gordon Ross, and Gianluca Stringhini. 2019. MaMaDroid: Detecting Android malware by building Markov chains of behavioral models (extended version). ACM Trans. Privac. Secur. 22, 2 (2019), 1–34. DOI: https://doi.org/10/3313391
+9. OpenSecurity. 2015. Mobile Security Framework (MobSF). Retrieved from https://github.com/MobSF/Mobile-Security-Framework-MobSF.

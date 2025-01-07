@@ -1,0 +1,49 @@
+The experimental results are shown in Table 9. We can observe that our approach can still detect the same vulnerable apps (as using the original training set) even if the training set includes a few contaminated apps, ranging from 2-7 apps depending on the cluster. The table also shows the sizes of the clusters to which the vulnerable apps belongs.
+
+These data are also shown as histogram in Fig. 18. It displays the distribution of robustness for the different vulnerabilities that PREV detected in official apps. For the majority of the vulnerabilities — 13 apps corresponding to the highest bar in Fig. 18 — PREV has robustness of five. The lowest robustness is two, which is observed for 4 apps. The highest robustness is seven, which is observed for 4 apps.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# Numbers of contaminated apps in training set that cause PREV fail to detect vulnerabilities
+From Table 9, we can compute that the median value for the number of contaminated apps is 5 and the median cluster size is 424. It means that most of the vulnerable apps can still be detected if there are less than 1% of apps in each training cluster, which have the same vulnerabilities (based on the median values).
+
+Considering these results we formulate the subsequent answer to RQ5:
+PREV is robust against the inclusion of non-safe apps in the training set to a certain extent. To bypass PREV, there must be a few apps (1% of apps in the cluster) that have the same vulnerability as the AUT (i.e., the same re-delegated API is used) and that fall into the same cluster as the AUT.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 8 RQ 6 : Threshold
+The vulnerability detection algorithm is based on the boxplot approach, and a case is classified as an outlier when its distance d is larger than the threshold toutlier. We are interested in studying the impact of different thresholds on the vulnerability detection capability of our approach.
+
+To investigate this research question, we consider the list of apps correctly detected as vulnerable in Section 8. It consists of 30 apps (either open source and closed source), which have been classified as vulnerable by PREV and have been manually verified.
+
+The experiment consists of changing the threshold value and verifying how many of these apps can still be detected as vulnerable. We expect that the larger the threshold we use, the fewer vulnerable apps would be detected.
+
+To compute new threshold values, we add a multiplication factor α in the definition of threshold from Section 5. The threshold definition is updated as follows:
+toutlier = Q3 + α1(Q3 − Q1)
+If α = 1, we have our original definition of threshold. New threshold values are obtained by using different values of α, and are used to repeat the classification procedure.
+
+Considering these results, we can answer to RQ6 in this way: PREV is sensitive to the threshold used to detect outliers. In particular, the number of detected vulnerabilities drops to almost half when increasing the threshold by a 30% factor, and no app is classified as vulnerable with a threshold increased by a 100% factor.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 8 Limitation and Discussion
+Despite the positive results obtained, our current approach may be affected by some limitations that we discuss here:
+# Learning from Training Apps
+If the training apps we use are not sufficient or representative of real world, safe apps, the inferred models would be incomplete. Consequently, our approach may be imprecise. Incomplete training set could miss some cases of legitimate permission re-delegation. Training apps in the same clusters having the same vulnerable permission re-delegation behaviors would limit the capability of our tool to detect vulnerabilities. This could be the case when developers copy-paste the same piece of vulnerable code from unreliable sources or when they include vulnerable libraries in their apps.
+
+Our counter argument is that, as we motivated in Section 1, apps re-delegating and executing privileged tasks is generally a feature itself. It could be a false alarm if an app is flagged as vulnerable just because the app performs such an action. As such, learning legitimate permission re-delegation behaviors from reference apps is one major design of our approach to avoid many false alarms, despite the trade-off of false negatives. Our current best effort to mitigate this trade-off is using only apps from top, most-downloaded apps from well-reputed companies as the reference apps; since the learning requires tens of thousands of apps, it is impractical to manually inspect all of them and make sure they are all actually “safe”. In our future work, we plan to mitigate the problem of apps with vulnerable libraries by incorporating recent vulnerable library detection approaches  and by excluding them from training.
+
+# App Descriptions
+Our approach is based on the apps descriptions available in the App Store for learning the permission re-delegation models. An app description typically describes about the features offered by the app. Our approach relies on this information to group apps with similar features. However we do not assume that app description describes much about permission re-delegation behaviors, because they may be implicit. Our assumption here is that, for training apps, their apps descriptions are consistent with their permission re-delegation behaviors, i.e., reference apps with similar features implement similar permission.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+re-delegation behaviors. It could result in false positives and false negatives when a group of training apps with a similar description implements different permission re-delegation behaviors.
+
+# Evasion
+Our approach requires that the app under test contains a description that is (i) in English and (ii) with a minimum length of 10 words. When its description is not informative or not detailed enough to assign it to the correct cluster, a sub-optimal cluster might be identified for the app, leading to incorrect classification of its behavior. Hence, a malicious app may evade our analysis by negating either of these requirements. To satisfy the first requirement, automatic translation tools could be used to obtain corresponding English text for a given app description in a different language. When an app evades the second requirement, e.g., by publishing the app with no description, it would be suspicious and is unlikely to gain trust from end-users. Furthermore, when an app store is interested in using our approach, the app store could enforce these two requirements and reject apps that do not meet them. Honest app developers may also be willing to scan her/his app for vulnerabilities before publishing the app and thus, they would have an incentive to provide appropriate app descriptions.
+
+# Static Analysis
+Like many other static analysis-based approaches, our static analysis suffers from its inherent weaknesses. Call graphs generated by our underlying static analysis tool (FlowDroid) may not be sound and complete. The tool may miss call edges in the presence of complex code such as obfuscated code, native code and reflection and dynamic code loading. This could result in false negatives when the missing edges are those from public entry points to a privileged API. It may also generate spurious additional edges for code such as Thread runnables. In this case, it may result in false positives.
+
+Our approach does not perform taint analysis or consider data sanitization functions that sanitize input data from other apps or discard them when the data violates security policies. It only analyzes control dependencies and reachability in the call graph, according to the threat model we consider (Section 3). Our approach reports a privileged API call as a vulnerability even if it may not use the data controlled by the attacker. This is intentional and designed to avoid false negatives, because permission re-delegation vulnerabilities do not necessarily result from data flows and data usage. A false positive could happen when the privileged action is performed using the input data only after they have been sanitized. However, our empirical result of zero false positive suggests that our anomaly detection phase helps mitigate such false positives, by learning those safe cases from the training apps.
+
+# Test Generation
+Like any other test generation-based approach, the code coverage of our test generator is also limited. Although we apply genetic algorithm, a state-of-the-art technique for test generation, it may still not be able to generate proof-of-concepts for some of the target paths, possibly resulting in false negatives. Our test generator can be improved if seed values can be more accurately identified. This can be done by modeling string operations and solving constraints on string values. In future work, we plan to combine our genetic algorithm-based test generator with a string constraint solving technique such as Thome et al. (2020) for more effective test generation.

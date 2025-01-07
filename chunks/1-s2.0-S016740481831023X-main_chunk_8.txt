@@ -1,0 +1,68 @@
+The evaluation of the modified protocol proved that it is resistant to all attacks described in this paper apart from the host key replacement attack. The main vulnerability exploited by this attack is the lack of public key fingerprint verification by most users. Thus this depends mostly on a human factor which cannot be completely eliminated. Additionally, it must be also noted that, in general, we can distinguish three groups of users. The first group is fully aware of security risk and has enough competence and determination to verify the fingerprint even in the current design. The second group consists of users who are aware of security risk but do not have enough knowledge or skills to verify the correctness of the fingerprint when this procedure is user unfriendly. Finally, the last group consists of users who are unaware of security risk and just always accepts the fingerprint. In order to mitigate the risk and help users from the second group become more secure a suitable command should be added to the adb command line tool. Future improvement may incorporate some user friendly verification methods like QR code presentation and automatic verification using camera from the mobile device. This could increase the overall level of security even for the users who are unaware but are forced to perform fingerprint validation through the user interface.
+
+The proposed ADB protocol modification not only ensures data integrity but also solves the problem of the automatic private RSA key usage. Thanks to the D–H key exchange and its utilization in HMAC the attacker cannot effectively reuse once generated response. It is also worth mentioning that in our evaluation we assume that both the device and the host side are trustworthy and that there is no kernel-level malicious code involved as this kind of malware would be able to read or modify ADB process memory and still perform MitM attacks in the kernel driver. One of possible mitigation for that could be implementing all the security-related parts of ADB in the Trusted Execution Environment like ARM TrustZone.
+
+# 7. Overhead
+Typically providing improved security features comes at a cost. The proposed modifications not only increase the length of the ADB message header but also add additional operation (HMAC computation) for both sides of the communication.
+
+To estimate the imposed overhead we decided to focus on the file copy operations (push and pull). To this aim we performed experiments and measured the time required to copy files of a different size. We started with a very small file of only two bytes and increased the size by multiplying it by two up to 1 GB. All the measurements have been done using Google Nexus 9 device and Lenovo T470 running Ubuntu 16 with 4 kernel. The obtained experimental results are presented in Figs. 16 and 17 (in the logarithmic scale). As it can be observed with an increase in the file size the overhead related to the introduced modifications to the ADB protocol increases linearly (red line) and the trend is similar as for the original ADB realization (blue line). Additionally, the increase in delay is stable and it does not depend on the file size.
+
+Moreover, in order to clearly illustrate the “cost” of the improved security features we decided to present the resulting overhead by calculating it as a percentage of the time.
+
+# Computers & Security 82 (2019) 80–98
+# 8. Conclusion and future work
+The difference between the modified and the original ADB implementations. The obtained results are presented in Fig. 18. It is worth noting that we decided to limit the result only to the file sizes larger than 1MB because the time differences for the smaller files are highly variable.
+
+The obtained results are in line with our intuition. We expected that our modification should have a linear performance penalty due to the hash calculation and this is confirmed by our measurements. The measured average overhead is around 65% for the push and around 75% for the pull operation. As percentage results may be misleading it is also important to consider the absolute values as presented in Fig. 19. This plot clearly confirms that the introduced overhead (measured in ms) is practically equal for both: push and pull operations. This almost 10% difference is related to the difference of disk write performance on the host and on the device sides. The host in our case is equipped with the SSD drive which is faster than Nexus 9 flash memory. This means that the pull operation is generally faster than push for both original and modified ADB versions. So if we added the same overhead (in ms) to both operations it has more significant impact (when expressed in percents) for the faster one.
+
+In this paper we evaluated ADB protocol security which is utilized in the recent Android versions. In order to achieve this we first classified USB-related attacks to show gaps of knowledge in the USB device related security research. We also presented a novel approach to compromise Android devices by exploiting the ADB protocol in a Man in the Middle attacks.
+
+The conducted research allowed to discover five novel security flaws in the Android OS. Those vulnerabilities can be used not only to bypass the lock screen security and to get unauthorized access to the user’s private data, but also to enable future ADB attacks by putting a backdoor (trusted RSA key) to bypass phone security at any time. Our research proved that ADB depends on a protocol state shared between the host and the device but does not utilize any integrity mechanisms which makes it vulnerable to attacks which modifies that state. All discovered security flaws have been reported to both Samsung and Google.
+
+Moreover, we also managed to create a tool which exploits all the found bugs and can be used for security assessment of the current ADB implementations. Our in-depth research resulted in developing ADB protocol extension which protects against all discovered security threats which are not related to the human factor. Even though no malicious software exploit-
+# Computers & Security 82 (2019) 80–98
+# Overhead [%]
+858075706560555045
+# Overhead [ms]
+# Discussion
+Ing identified vulnerabilities has been found in the wild yet, authors are convinced that presented techniques may be used in the targeted attacks performed e.g. by the state-sponsored malware.
+
+The main goal of this paper is to raise security awareness of the users, researches, and security professionals associated with the USB-related attacks and the threat they pose not only for the PCs but also for the USB devices. Simplicity of the utilized attack techniques shows that the myth that there is no need to implement security mechanisms for the USB communication is invalid. This paper also aims at raising awareness of the USB developers to emphasize that the USB protocols, especially those used to provide such a critical functionality like ADB, should be verified in terms of security just like network protocols are.
+
+Our current research had been mostly focused on Android as it is the most popular mobile platform. It is worth noting that there are also other platforms especially iOS and Windows Phone which also use USB connectivity in the USB device mode for the development purposes. Thus the future work should definitely include security assessment of the USB communication protocol on these platforms.
+
+Our software stack – USBProxy particularly – seems to be also very inefficient for the high bandwidth use-cases. Current implementation utilizes synchronous API of both libusb and GadgetFS. According to Alan’s research  there may be a significant bandwidth difference between synchronous and asynchronous API if the small transfer sizes are used. As USBProxy typically utilizes 512 bytes as a bulk endpoint packet size switching it to the asynchronous API usage can even double the bandwidth and in addition eliminate most of the I/O threads.
+
+The proposed experimental test-bed has also a notable limitation i.e. only one USB device can be connected to its USB subtree. This makes it impossible to put it before a hub or inside hub case. Daisho project seems to solve this issue as it operates on a lower layer. Therefore, future work should include more investigations and the potential development of such a board to overcome above mentioned restrictions.
+
+# Computers & Security
+# 82 (2019) 80–98
+dai. Daisho project. 2013.
+
+uma. umap: the USB host security assessment tool. 2013.
+
+USB. USBProxy project. 2014.
+
+tur. NSA PLAYSET: TURNIPSCHOOL. 2015.
+
+adb. Adb protocol documentation. 2016.
+
+met. Metasploit: Android ADB debug server remote payload execution. 2016.
+
+ran. Ransomware definition from trend micro. 2016.
+
+dir. “Root” via dirtyc0w privilege escalation exploit (automation script)/android (32 bit). 2016.
+
+app. There are 12 million mobile developers worldwide, and nearly half develop for android first. 2016.
+
+Android. Android security updates and resources. 2017.
+
+Beaglebone. Beaglebone black. 2017.
+
+Cve-2017-5554. 2017.
+
+Facedancer21. (USB emulator/USB fuzzer). 2017.
+
+kal. Kali linux nethunter for nexus and oneplus. 2017.
+
+libusb. A cross-platform user library to access USB devices. 2017.

@@ -1,0 +1,59 @@
+The remainder is organized as follows. Section 2 presents the background and related knowledge. Section 3 explains DefDIQ method. Section 4 describes the experimental setup, including the dataset and evaluation metrics. Section 5 discusses the evaluation and the results of the conducted experiment. Section 6 presents threats to validity, while Section 7 introduces the related works. The final section concludes the paper and provides directions for future work.
+
+# 2 BACKGROUND
+# 2 Code smell in Android
+Code smell was originally proposed by Kent Bech on Wiki and popularized by Fowler. Sobrinho et al. investigated plentiful works related to code smell from 1990 to 2017 and found the ones defined by Fowler were extensively studied. Code smell is a poor, sub-optimal coding structure, which may hinder comprehension, increase security risks and fault-proneness, and reduce maintainability. When extending the app with new functions, the subtle latent errors may bring fatal consequences and hinder the project’s progress. Some fields, such as aerospace, medical, self-driving, etc., will suffer huge losses and irreversible results upon software faults.
+
+Previous studies identified negative designs based on Java static code metrics for most Android apps, as they are typically developed in Java/C++. In essence, these studies still work for Android apps, but Android features distribute smells differently, and some specific code smells are more frequent. App development, as compared to traditional software, are the highly integrated environment and heavy reliance on package usage. Therefore the constant permission acquisition and confusing API calls during usage pose a security risk. The studies revealed that security risks are often accompanied by irregular coding structures, and Reimann et al. summarize a set of poor programming habits (e.g., a nonstatic internal class containing a reference to an external class), namely Android-specific code smells. The Android code smells may threaten the security, data integrity, and software quality of mobile apps. Given the above research, this paper defines security-related code smells from the perspective of Android security, that is, a symptom of code predicting security risks.
+
+# 2 Counting model
+In this paper, we utilize faults to comprehensively assess Android quality, including software defects such as performance, memory, and security. The importance of smells is quantified by examining the distribution relationship between faults and code smells, where faults and smells are obtained by counting. The counting model is the simplest way to fit such a series of integers, where the count type is the response variable. The Poisson regression model is the classical count model, but with the precondition: the mean = the variance. To permit the variance of the observed data over the mean, Greenwood et al. extended the Poisson regression to a NB regression. The NB distribution consists of a connected compound Poisson distribution, with the Poisson mean obeying the 𝛾 distribution, and its probability distribution equation is:
+Pr (Y = y) = Γ(y + 𝜏)(𝜆 + 𝜏)𝜏 (𝜆 + 𝜏)y, y!Γ(𝜏) 𝜏 𝜆 y = 0, 1, … ; 𝜆, 𝜏 > 0,
+where 𝜆 = E(Y), and 𝜏 refers to the over-dispersion. Y denotes the counting type argument with nonnegative integers, and the variance is 𝜆 + 𝜆²/𝜏. When 𝜏 → ∞, the variance equals the mean, and the data degenerates to Poisson distribution.
+
+In some cases, the probability of a “zero” event is easily underestimated, making it impossible to fit the two data distributions satisfactorily. Johnson et al. observed the “zero inflation” phenomenon and proposed the fence model to...
+
+# 1097024x, 2023, 11
+Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# ZHONG et al.
+
+overcome this shortcoming. Then, Greene et al applied the principle to the NB distribution and proposed ZINB regression, where the Berndt–Hall–Hall–Hausman (BHHH) method is utilized to calculate the SEs of the model parameters The ZINB regression model separates the data into two components. The variables above zero obey the NB distribution, while the zero variables obey the discrete distribution, with the following equation:
+Pr (Y = y) =
+⎧p + (1 − p)(1 + 𝜆)−𝜏
+⎨(1 − p) y!Γ(𝜏)(1 + 𝜏𝜆)−𝜏 (1 + 𝜏)−y, y = 0
+⎩Γ(y+𝜏) 𝜏 𝜆, y = 1, 2, …
+where 𝜏 represents the overdispersion, and the mean and variance are: E(Y) = (1 − p)𝜆 and var(Y) = (1 − p)𝜆(1 + p𝜆 + 𝜆/𝜏). When 𝜏 → ∞ and p → 0, the data obey ZINB and NB distributions, respectively.
+
+To determine the suitable analysis technology, we test the distribution of our data. Since the faults and smells data studied in this paper do not obey normal distributions and nearly half of the data were zero, see Figure 3, we adopted the NB and ZINB models to investigate the distribution relationship between the data.
+
+# 2 Spearman rank correlation coefficient
+There are two classical coefficients to measure the correlation between indicators: Spearman rank correlation coefficient and Pearson correlation coefficient The Pearson correlation coefficient has two restrictions: (1) the data obey the normal distribution; (2) the data units are consistent, and the zeros are relative, rather than absolute. If the measured metrics do not meet the Pearson conditions, it is necessary to consider the Spearman rank correlation coefficient. It tends to be applied for calculating the correlation between the sorted variables, so the initial data need to be transformed into ordered data. Assuming xi and y i are a pair of order data with a monotonically increasing trend, the Spearman rank correlation coefficient is calculated as follows:
+𝜌 = √Σi(xi − x)²Σi(y i − y)².Σi(xi − x)(y i − y)
+The Spearman correlation is not strict on data preconditions and ignores the overall data distribution and sample size. This paper uses Spearman’s rank correlation coefficient to measure the correlation between code smells.
+
+# 3 DEFDIQ METHODOLOGY
+# 3 Overall framework
+We propose DefDIQ, research on the definition, detection, and impact quantification for Android code smell. As shown in Figure 1, DefDIQ consists of three primary research components: (1) define 15 novel security-related Android code smells.
+
+Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# Targeted Repair
+# GitHub
+F I G U R E 1 DefDIQ flowchart.
+
+and offer targeted repair suggestions, (2) realize DACS to detect targeted smells in Android apps source code automatically, and (3) construct fault counting models to investigate the distribution of custom smells and faults occurrences, quantify the impact of Android code smells and generate repair priorities.
+
+# 3 Define Android code smells
+Code smells are mainly attributed to deviations from standard coding practices by developers, and are likely leading to security risks and faults. Also, with the specific structure, smells can be identified by relevant information. Previous research findings indicate that Android code smells perform better in security risk prediction. Therefore, we analyzed the security structure in Android apps and defined 15 novel Android code smells by collecting programming practices, coding specifications, and Android code features related to Android security and defect prediction.
+
+# 3 DACS implementation
+Code smells are subjective, so the community lacks the tools to identify the code smells we defined. Accordingly, we design a lightweight automatic detection tool–DACS for the 15 custom smells. DACS implements detection algorithms based on detailed definitions and generates a smell rule library. Firstly, DACS extracts semantics in the leaves and syntax in the nonleaves, effectively representing the semantic and structural information of the source code via AST. Then search the AST with the detection rule library and identify the code smells. DACS implements a detection subsystem for each code smell and presents the final result as a .csv file or an interface. The source code of DACS is publicly available on GitHub at https://github.com/strongcat0325/DACS.git.
+
+# 3 Statistical analysis
+We construct fault counting models with NB and ZINB to investigate the distribution between the occurrences of smells and faults, and statically analyze whether custom smells have an impact on faults. Based on the constructed models, we quantify the impact of code smells and generate repair priority, providing a practical guideline for inexperienced developers. Among them, the fault is a key indicator of app quality. We obtained faults information by the commit specification.
+
+# 3 Android code smell definition
+This paper summarizes and formally defines 15 novel Android code smells and provides targeted repair suggestions. The detailed definition lists are given below.
+
+- Weak Crypto Algorithm (WCA): The weak crypto phenomenon usually occurs in Android apps, mainly for two reasons: using weak crypto algorithms; using strong crypto algorithms, but with vulnerabilities in the implementation.

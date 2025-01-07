@@ -1,0 +1,71 @@
+# Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks From Android Applications
+GEOCHANG JEON, MINSEONG CHOI, SUNJUN LEE, JEONG HYUN YI, (Member, IEEE), AND HAEHYUN CHO
+School of Software, Soongsil University, Seoul 06978, South Korea
+Cyber Security Research Center, Soongsil University, Seoul 06978, South Korea
+Corresponding author: Haehyun Cho (haehyun@ssu.ac.kr)
+This work was supported by the National Research Foundation of Korea (NRF) Grant through the Korean Government (MSIT) under Grant NRF-2021R1A4A1029650.
+
+# ABSTRACT
+Sensitive information leakages from applications are a critical issue in the Android ecosystem. Despite the advance of techniques to secure applications such as packing and obfuscation, a lot of applications are still under the threat of repackaging attacks that inject malicious code and re-distribute applications. Also, as we are becoming more dependent on mobile technologies, more sensitive information is used on our mobile devices. Hence, it is of great importance to reduce the risk of such sensitive information leaks. In this paper, we first present a threat model that attempts to leak users’ sensitive information by using the repackaging attack, named ReMaCi attack. By analyzing the top 8,546 applications downloaded from Google Play Store, we show that 50% of them are really vulnerable to the ReMaCi attack. We, thus, propose a novel, automated static anti-analysis tool, called AmpDroid, for preventing sensitive information leaks. AmpDroid identifies sensitive dataflows and isolates the code that handles the sensitive data from an application. To demonstrate the effectiveness of AmpDroid, we perform the security and performance evaluation of AmpDroid, comparing it with other obfuscation tools.
+
+# INDEX TERMS
+Sensitive information leaks, obfuscation, android security, code protection.
+
+# I. INTRODUCTION
+As we are becoming more dependent on mobile technologies, the amount of sensitive information such as user names, phone numbers, e-mail addresses, and credit card numbers used on our mobile devices has been dramatically increased , . Not to mention, currently, sensitive information leakages from applications are a critical issue in the Android ecosystem , . Therefore, it is of great importance to reduce the risk of such sensitive information leaks. Especially, to reduce the risk, we must secure sensitive data flows in applications . If attackers identified such sensitive data flows in Android applications, they can leak the sensitive data of users by conducting repackaging attacks –. Attackers abuse the repackaging policy of Android that allows an application to re-distribute to third-party markets with a different developer’s signature. Therefore, it is possible to inject malicious code leaking confidential information to an application and re-distribute it.
+
+However, despite the advance of techniques to secure applications such as packing and obfuscation from attacks, a lot of applications are still under the threat of repackaging attacks . Especially, such techniques are ineffective when attackers use dynamic analysis methods to reveal sensitive data flows that should not be exposed , . It is worth noting that simply encrypting sensitive data cannot prevent its leakages. This is because, by the nature of program execution, encrypted data must be decrypted by the application itself before the data is used. Therefore, if attackers can identify where encrypted sensitive data is decrypted, a sensitive information leak can occur by employing the repackaging attack. The repackaging attack is to redistribute an application to third-party markets after an attacker injects malicious codes to leak sensitive information from the application or to access unpermitted files.
+
+In this paper, we focus on the threat: (1) We first present the threat model, named Repackaging with Malicious Code.
+
+119578 This work is licensed under a Creative Commons Attribution 4 License. For more information, see https://creativecommons.org/licenses/by/4/
+VOLUME 9, 2021
+# EEE Access
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+Injected (ReMaCi) attacks, and show that roughly 50% of top-downloaded applications in the Google Play Store are really vulnerable to the attack model. (2) We propose an automated anti-analysis system, named AmpDroid, that generates multi-layered bytecode for preventing the ReMaCi attack. AmpDroid identifies sensitive data flows and isolates code that handles the sensitive data from an application so that attackers cannot analyze the application. The isolated code is separately managed and be provided to the application when it executes.
+
+To demonstrate the effectiveness of AmpDroid, we implement a proof-of-concept of it with sub-applications and thoroughly evaluate AmpDroid. Our evaluation results show that AmpDroid can effectively mitigate the ReMaCi attack and show that AmpDroid imposes a reasonable performance and memory overhead on applications in comparison with other state-of-the-art obfuscation tools (i.e., Liapp , Obfuscapk , and Dexprotector ). In the spirit of open science, we have released the source code of AmpDroid that we developed as part of our research
+In summary, this paper has the following contributions.
+
+- We demonstrate the severity of private information leakage in real-world applications.
+
+- We present an automated multi-layered bytecode generation system that identifies sensitive data flows and prevents sensitive information leaks by isolating code handling the sensitive information.
+
+- We implement the proof-of-concept of AmpDroid and thoroughly evaluate it in comparison with state-of-the-art obfuscation tools.
+
+# II. BACKGROUND
+In this section, we introduce sensitive data flows in commercial applications and how the sensitive data can be leaked, and look around obfuscation techniques.
+
+# A. SENSITIVE DATA FLOW
+A data flow is a term to show how data passes from one component to another, through an application. In this work, we define a sensitive data flow as that shows how sensitive information such as credit card number, phone number, e-mail, and International Mobile Equipment Identify (IMEI), is passed among variables or methods. We introduce real-world examples of the sensitive data flow in Android applications that we identified
+Listing 1 shows Smali instructions that we traced by using a dynamic analyzer of a commercial application (Payment teacher manager app in Korea, 1ver ). Reg5 of the com.google.gson.Gson.a method contains not only the message interface between the server with the client but also unencrypted personal information as shown from Line 7 to 17. This private information including member_id, member_phone, member_nm, and member_e-mail, member_idx is stored into the internal string object for displaying it on the screen (Line 21 to 24).
+
+# Listing 1. Getting user information from server in payment application downloaded from google play store.
+
+Listing 2 shows another Smali instruction that sets the text of the TextView with a phone number to display it (same application with Listing 1). Reg1 containing an unencrypted phone number in Line 8 is transferred as the first argument of the onTextChanged function in Line 13.
+
+If attackers identified such sensitive data flows in Android applications, they can leak the sensitive data of users by performing repackaging attacks –. We discuss this attack model in detail (in Section III).
+
+# B. OBFUSCATION TECHNIQUES
+We introduce obfuscation techniques that make reverse engineering very difficult, which in turn can be used to prevent exposures of sensitive data flows.
+
+# 1) IDENTIFIER RENAMING
+Well-defined identifiers of applications help attackers understand the internal logic of the code and its semantics , . Identifier renaming is an obfuscation technique to change identifiers such as package, class, method, and field names to random strings ,.
+
+# 2) CONTROL FLOW OBFUSCATION
+Control flow obfuscation is to alters control flows of an application program without altering its semantics ,.
+
+VOLUME 9, 2021 119579
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+# Listing 2. Updating user phone number in TextView.
+
+This technique makes it difficult for making static analysis very difficult to determine the original control flows.
+
+# 3) API HIDING
+API hiding is a frequently used obfuscation technique for Java applications for preventing being statically analyzed by hiding which APIs are called by an application. APIs invoked by the application are dynamically determined during the runtime based on the context. Albeit API hiding can effectively hinder a static analysis, we can easily reveal APIs used in applications by directly monitoring instructions executed –.
+
+# 4) DATA ENCRYPTION
+Any type of data used in an application including code can be stored as encrypted data , . Applications using encrypted data must decrypt the data when they actually use it. Therefore, similar to the API hiding technique, encrypted data can effectively impede static analysis methods. However, unfortunately, all of the above obfuscation techniques are not able to completely protect sensitive data flows from being revealed.
+
+# III. REMACI ATTACK
+In this work, we assume that an attacker attempts to leak sensitive information in an android application through the repackaging attack. The repackaging attack is to re-distribute applications after inserting malicious code to an original application downloaded from application stores such as Google Play Store . We define such attacks for leaking sensitive information as the Repackaging with Malicious Code Injected (ReMaCi) attack.

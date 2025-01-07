@@ -1,0 +1,65 @@
+# 4 Information leakage
+In current Android architecture design, apps are restricted from accessing resources or other apps unless it is authorized by the users. Users have to grant all resource access requests before installing and using an app. Information leakage occurs when users grant resources without any restriction from OS. However, Android’s permission control mechanism has been proven ineffective to protect user’s privacy and resource from malicious apps. Studies showed that more than 70% of smart phone apps request to collect data irrelevant to the main function of the app . With more than 1 million available apps in Google Play, and a great number of apps from miscellaneous third-party markets, a significant number of malicious apps have been exposed to Android users for installation. However, when installing a new app, only a small portion of users pay attention to the resource being requested, since they tend to rush through prompted permission request screens to get to use the application. Only a small portion (3%) of users are cautious and make correct answers to permission granting questions. In addition, the current Android permission warnings do not help most users make correct security decisions . The ”blaming the users” approach has become a failure to protect Android users.
+
+As pointed out in , the reasons for the ineffectiveness of the current permission control system include: (1) inexperienced users do not realize resource requests are irrelevant and will compromise their privacy, (2) users have the urge to use the app and may be obliged to exchange their privacy for using the app.
+
+# 4 Privilege escalation
+Privilege escalation or permission escalation attacks were leveraged by exploiting publicly available Android kernel vulnerabilities to gain elevated access to resources that are normally protected from an application or user. This type of attack can result in unauthorized actions from applications with more privileges than intended, which causes many sensitive information leakage. Android exported components can be exploited to gain access to the critical permissions.
+
+# 4 Repackaging Apps
+Repackaging is one of the most important and common security issues of the Android OS. Repackaging is the process of disassembling/decompiling of .apk files using reverse-engineering techniques and adding (injecting) malicious code into the main source code. Repackaging techniques that can be used on the Android platform allow malicious code to be disguised as a normal app. It is difficult to distinguish between a repackaged malicious code and a normal app because the repackaged app usually appears to function in the same way as the legitimate one. The repackaging steps are as follows :
+- Unpacking: unpacking APK files using available tools such as apktool, which is a tool based on reverse-engineering.
+
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# 4 Denial of Service (DoS) attack
+The increasing number of smartphone users and prevalence of mobile devices (phones, tablets) which are connected to the Internet can be a platform for growth of DoS attacks. Since the majority of smartphones are not equipped with the same protections (i.e. anti-virus programs) as PCs, malicious apps find it as a proper platform for DoS attacks. Overusing limited CPU, memory, network bandwidth and battery power are the main goals of DoS attacks.
+
+# 4 Colluding
+Colluding threat is a client-side attack. In this attack, users install a set of apps developed by the same developer and same certificate and grant different types of permissions including sensitive and non-sensitive. After installing apps, these apps can take advantage of a shared UID and get access to all their permissions and resources.
+
+# 5 Proposed Solutions
+Considering the security issues that we described in section 4, so far there have been proposed many studies towards the principles and practices to manage resource usage  and security solutions to address these vulnerabilities. The existing security and privacy solutions are classified into three categories. We explain the categories in more details in related sections. Since proposed works that we cover in this survey, use different tools and techniques to implement their solutions. Before going into further details, in this section we described the main categories and all existing applied techniques.
+
+# 5 Existing techniques and mechanisms
+# 5 Static Analysis
+Those works that use static analysis approach  are based on the application’s structure and code . In this section we describe the main techniques of static analysis.
+
+- Application Signature As we described before, any Android application has a unique signature. Signature-based solutions check the contents or patterns of an application against a dictionary of malware signatures. If they find a matching, they can take action. This method is somewhat limited by the fact that it can only identify a limited amount of emerging threats, e.g. generic, or extremely broad, signatures.
+
+- Permission Analysis This mechanism works based on granted permissions to the applications. They assess the risk of the granted permissions and the sensitivity of the resources. Depending on the risk level, they analyze and detect the malicious apps.
+
+# Android Security Threats and Defenses
+# 5 Analysis Techniques
+# 5 Control Flow Analysis
+In this type of static analysis techniques, it needs to extract apps’ Control Flow Graph (CFG) and look for existing possible resource misusing and vulnerabilities within the application’s code. Based on the discovered threats and vulnerabilities, they make a decision on maliciousness or vulnerability of the application.
+
+# 5 Dynamic Analysis
+Existing works that use dynamic analysis  mainly work based on application behavior analysis during the runtime process. There are three main parameters that can be considered as application’s behavior and activities: system calls, battery consumption, and network usage.
+
+# 5 Crowdsourcing
+Crowdsourcing is the process of obtaining needed services, ideas, or content by soliciting contributions from a large group of people . In Android OS security scope, it is defined as a process in which we collect data from users or devices toward improving the security of devices and privacy preserving. For example, it can be collecting the system call log of a device or users’ reviews on an app.
+
+# 5 Policy-based
+Using this technique, solutions require users to define several policies on the prepared services in order to customize the service. For example, in smartphone security area, the policies can be the level of permission granting restriction to applications.
+
+# 5 Recommendation-based
+In this approach, they help inexperienced users through providing recommendations on challenging app security and privacy decisions such as granting permissions to apps and restricting apps’ resource accesses.
+
+# 5 Taxonomy of existing solution
+In this subsection we present our taxonomy of existing related security systems on Android OS. Since existing works are implemented in different ways and architectures using different techniques and mechanisms, we can categorize them in many ways. Our classification is objective-based. We group existing works in a category if they have same objective and characteristics. We categorize them into three main category: (1) Prevention-based, (2) Analysis-based and (3) Runtime Monitoring.
+
+# 5 Prevention-based
+Since Dalvik bytecode is vulnerable to reverse engineering, hackers are increasingly aiming at binary code targets to launch attacks on high-value mobile applications (paid/free) across all platforms. They can directly access, compromise, and exploit the binary code (e.g., analyze or reverse engineer sensitive code, modify code to change application behavior, or inject malicious code) . Based on a new research study done by ARXAN , 97% of the top 100 paid Android apps and 87% of the top 100 paid Apple iOS apps have been hacked using repackaging.
+
+In this subsection, we review remarkable existing works with focus on app repackaging attacks (code modification or code injection) and reverse engineering (code analysis).
+
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# 5 Kirin
+Mitigating malicious apps at install time using certification process on apps is the main goal of Kirin . Kirin uses a set of predefined security rules on apps’ requested permissions to find matched malicious permission requests and characteristics. Here, the rules are defined based on those permissions that are sensitive and leads to misusing of permissions and dangerous activities.
+
+They use a static analysis tool called Pscout in order to extract all permission specifications for Android apps without modifying the apps. Using this system at install time can help users to make real-time decisions whether installing the apps or not. They tested the Kirin using 311 downloaded apps from top ranked applications from an official Android app Market. After experiments, Kirin detects 5 malicious apps with a high level of security risk. Figure 5 shows the Kirin based software installer flow and its components.
+
+# 5 AppInk
+In order to mitigate app repackaging, Zhou et al.  propose and develop a graph-based dynamic watermarking mechanism for Android apps. They designed and developed a tool named AppInk, which takes the source code of an app and a watermark value as inputs, in order to automatically generate a new app with a transparently-embedded watermark and the associated manifest app.

@@ -1,0 +1,75 @@
+Attacks at this layer mainly focus on breaking the DAC sandbox by exploiting particular kernel vulnerabilities, while defensive techniques focus on hardening the kernel to either eliminate the vulnerability or reduce impact when exploits occur. Detailed descriptions of attacks and defenses of this layer are discussed in Section 3.
+
+# 2. Android Application Framework (AAF)
+Abstracted from the Linux DAC model, in order to provide apps fine-grained accesses to resources (such as GPS or contacts),
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 38:4 M. Xu et al.
+
+Android implements its permission model at the AAF. To gain such permissions, the developer first declares the resources required for his app; then, the user approves the declared permissions upon app installation. Researchers have explored many security issues with such a permission model and have proposed various new models to solve them as discussed in Section 4.
+
+Besides issues in the permission model, another common attack vector for Android app isolation schemes are the use of side channels and covert channels. These attacks and particularly their mitigations have not been studied thoroughly in Android; thus, such attacks will be emerging threats for new platforms like the IoT. We study their eligibility, potential threats, and possible mitigation in Section 5.
+
+In addition to the permission model, AAF provides a rich set of features such as dynamic code loading and accessibility. Unfortunately, retrofitting new features into the existing Android security model often introduces vulnerabilities. We approach them systematically in Section 6.
+
+# 2. Application Layer
+Android apps, whether pre-installed or user-installed, generally adhere to a modularized design to facilitate component reuse. An app must be divided into Activities, Services, BroadcastReceivers, and ContentProviders, which are held together by an AndroidManifest.xml file. The majority of app components communicate through Intent, the default Intercomponent Communication (ICC) channel, and share their data with other apps using Content Provider, which can be queried in an SQL-like way. App developers also have the freedom to build apps in native code and enjoy the rich services provided by the Android framework, such as cryptography and SD Card access. If, however, developers fail to utilize these services or adhere to the aforementioned principles either by mistake or carelessness, they leave their apps and users open to attack. A handful of studies have been done regarding this issue, as we describe in Section 4 and Section 6.
+
+# 2. Device Fragmentation
+In Figure 1, components in gray boxes reflect the impact of the fragmentation of Android devices. These components are sometimes highly customized by device distributors like OEMs and carriers. However, such customization frequently introduces new security issues, as explained in Section 7.
+
+# 2. Security Practices Across the Ecosystem
+Compared to traditional desktop systems, mobile platforms like Android generally have more diversified participants, which in turn brings new features into the ecosystem. For example, one feature common in all the major mobile ecosystems is the app store model, which has only recently started to emerge in desktop systems (e.g., Windows 10 and Mac OS). Such features bring both complications and opportunities to Android platform security.
+
+# 2. Core Participants
+Out of the hundreds of stakeholders involved in the Android ecosystem, we focus on four entities: users, developers, app stores, and the Open Handset Alliance (Google, OEMs, and carriers), since they are the core participants of the Android ecosystem. The interactions between these participants are essentially flows of software/apps and revenue. We visualize these interactions in Figure 2.
+
+When an attacker (particularly, a malware writer) is considered in the ecosystem (also shown in Figure 2), the interaction graph suggests two goals the ecosystem should achieve: (1) preventing malware from reaching the end user and (2) preventing profit from flowing to the attacker.
+
+# 2. Malware Defense Practices
+To achieve the goals in taming malware attacks, we have identified the following practices that can be employed by different entities in order to collectively make the ecosystem more secure.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 38:5
+# Table I. Security Practices in the Current Android Ecosystem. We Categorize Our Approaches in Terms of the Incentives Relationship in Figure 2
+—Malicious behavior detection: To detect the malicious behaviors of apps, Google Play introduced Bouncer [Poeplau et al. 2014], a malware scanning service to detect malicious in-store and prestore apps. Researchers have also explored a variety of new techniques (Section 8) to this end.
+
+—Repackaging detection and prevention: Taming app repackaging is crucial to a successful and secure ecosystem, which has attracted much research in this area (Section 9).
+
+—Infection channel cut-off: allows app downloading from alternative stores, researchers have proposed to cut off malware distribution from app stores and untrusted sources (Section 10).
+
+—Incentive elimination: Android’s profit model involves sharing revenue between developers and the app store (e.g., Google Play and Amazon App Store). Such a model indirectly undermines illegal malware by suppressing malware writers’ incentives (Section 11).
+
+Unlike the current open app distribution model that
+Table I shows how each practice might be adopted by the core participants described in Figure 2.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Table II. Past Vulnerabilities in the Android Platform
+# 3. SYSTEM PRIVILEGE ESCALATION
+Preventing users or high-level apps from acquiring system privilege (i.e., root privilege) is a primary security assumption on the Android platform. If this assumption is broken, many fundamental protection mechanisms (e.g., the Android permission model) cannot guarantee the security they intend, since these mechanisms are built upon this assumption.
+
+In this section, we describe attacks and defenses related to system privilege escalation on Android. Although this topic is well studied in traditional Linux-based systems, these studies are not directly transferable to the Android domain due to the amount of customization Android introduced to overcome various hardware restrictions in the mobile environment, for example, limitations in memory, battery, and computing power, as well as heterogeneity in hardware drivers. Therefore, unlike traditional Linux-based systems, Android is unique in that high-level apps are running on top of not only Linux Kernel but also Android customization, as illustrated in Figure 1. As such, this architectural design exposes wider attack surfaces than traditional Linux-based systems.
+
+To clearly show where the current Android security stands against system privilege escalation attacks, Table II illustrates various attacks against the Linux kernel, customized drivers, or system daemon programs (Section 3), and further indicates whether each attack can be stopped using state-of-the-art mitigation techniques (Section 3). We also want to highlight one major behavioral difference between Linux users and Android users: the latter, even inexperienced users, may intentionally root their devices, making privilege escalation prevention even more complicated (Section 3).
+
+# 3. Vulnerabilities and Attack Surfaces
+In general, all components of the Android OS layer can be targeted by system privilege escalation attacks because they are running with system privileges and attackers can gain desired system privilege by exploiting them. Specifically, the attack surfaces include Android Linux Kernel and Android system components and can further be classified, based on the source of vulnerabilities, as shown in the following.
+
+# 3. Mainline Linux Kernel
+Core operating system services of Android (e.g., scheduling, mem_write, socket) are supported by the mainline Linux kernel. Thus, Android can suffer from the vulnerabilities found in the mainline Linux Kernel related to these.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 3. Existing Techniques
+# 3. Exploiting Services
+For example, Mempodroid [Freeman 2012], inspired by its Linux counterpart Mempodipper [Donenfeld 2012], exploits the same mem_write vulnerability to gain root access in the Android kernel. TowerRoot [geohot 2014] abuses a recently found vulnerability in the futex system call to root the various Android devices.
+
+# 3. Native Daemons
+Native daemons have always been an attractive target for subverting the Android system, largely because most of them are run with system privilege, and tend to contain legacy bugs from the low-level programming language they are using. Many severe attacks against the native runtime have been reported: RAtC [thesnkchrmr 2011] and Zimperlich [Sebastian 2011] acquire root privilege with fork bombs to prevent adbd and zygote, respectively, from dropping root privilege; psneuter [Choong 2012] and KITNO [AVO 2011] abuse an implementation bug in init to change the system settings to prevent adbd from dropping its root privilege; Zergrush [F-Secure 2011b] and GingerBreak [F-Secure 2011a] exploit vold; and bin4ry [vuldb.com 2013] exploits the adbd daemon.
+
+# 3. Third-Party Drivers
+Android relies on hardware manufacturers to provide custom drivers, many of which are close-sourced and are implemented with little concern for security. For example, levitator exploits bugs in the PowerVR SGX driver and diagroot exploits bugs in the Qualcomm diagnostic driver to mount a privilege escalation attack.

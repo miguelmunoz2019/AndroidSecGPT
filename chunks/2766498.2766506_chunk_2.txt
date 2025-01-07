@@ -1,0 +1,66 @@
+To follow up, we asked participants to elicit from memory the permissions they check when installing an application. Lastly, we asked participants to select the data categories they would be comfortable sharing with any application. The data categories used are Google’s recently updated permission groups which follow Felt et al.’s  permission recommendations:
+1. Profile: access to user profile (e.g., name, social stream and subscribed feeds);
+2. Location: access to GPS- or network-based location;
+3. Contacts: access to contact list data;
+4. Documents: access to documents (e.g., pictures, music, storage, dictionary, logs);
+5. Calendar: access to calendar events information;
+6. Messages and calls: access to message and call information and history;
+7. Accounts: access to device accounts (e.g., Google, Facebook, Twitter);
+8. Browser: access to browsing history and bookmarks;
+9. Network and Internet: access to Internet, and networks’ information (e.g., Wi-Fi access points, connected Bluetooth devices).
+
+We concluded with a semi-structured interview where we further clarified the rationale behind participants’ answers, solicited further comment and asked if they had any questions.
+
+# 3 Results and Analysis
+For our statistical analysis, we grouped the ratings: 1 (“totally disagree”) and 2 (“slightly disagree”) as “Disagree”; 3 (“not sure”) as “Undecided”; and ratings 4 (“slightly agree”) and 5 (“totally agree”) as “Agree.” We do so to simplify analysis and ensure consistency between answers from different participants. Similar to , we found that recognizing (Cockran’s Q χ2 (2) = 13, p = 0, ϕ = 0) and trusting (Cockran’s Q χ2(2) = 18, p = 0, ϕ = 0) the application developer are significant factors that are considered when installing an application. Contrary to Felt et al.’s  results, with a medium effect, our participants do check an application’s permissions before installing it (Cockran’s Q (2) = 9, p = 0, ϕ = 0).
+
+Similarly, stored (Cockran’s Q χ2(2)=6, p = 0, ϕ = 0) and about how participants worry about where application data is secure (Cockran’s Q χ2(2)=7, p = 0, ϕ = 0). However, during our interviews, all participants confessed that they do not know where the data is actually stored, referring to “somewhere in the cloud,” and do not fully understand how secure different networks are. One participant remarked “…isn’t the 3G mobile network secure? (P24)” i.e., thinking that using a data plan on its own is safe.
+
+Paradoxically, participants largely rely on the Google Play ratings (χ2(2)=43, p < 0, ϕ = 1) for making decisions (Cockran’s Q χ2(2)=15, p = 0, ϕ = 0) but do not rate applications themselves (Cockran’s Q).
+
+Overall, our participants only recalled on average 3 (SD=2) permissions, with the most common being messages and calls (73%), contacts (46%) and location (43%). See Figure 1. When asked about how important the permissions were to them, 6 of the 30 participants said they “[…]do not care about the permissions[…].” Instead, they rely on feedback from others.
+
+1 https://support.google.com/googleplay/answer/6014972?p=app_permissions
+ratings on the Google Play store. One participant responded that users do not know where their data is being stored or where it is being sent; the most important permissions are “those that cost money,” dismissing the rest.
+
+# Participants' permissions recall
+Users do not know whether network communications are secure; Users rely on others’ feedback (e.g., reviews, ratings) without necessarily rating themselves.
+
+# 4. Securacy’s Design, Implementation & Evaluation
+We used our findings to design a security application that reduced the number of times users need to recall the underlying meaning of permissions. Instead, our application only notifies users if an application they installed uses permissions they do not generally find acceptable. The tool also provides further insight into the location of the server an application communicates with, and whether the communication takes place over a secure network connection. In addition, it leverages users’ reliance on others’ feedback to evaluate an application. We further investigated the following research questions:
+1. Which servers do applications use the most and where are they located?
+2. Are applications using secure or insecure network connections?
+3. How do users rate an application from a security and privacy standpoint?
+To investigate these questions, we designed and implemented an app called Securacy using AWARE. AWARE is event-driven and does not affect device usage. After deploying Securacy to the application store, we recruited 218 anonymous participants by advertising on Facebook and Twitter. We offered no additional compensation beyond use of the Securacy app itself. For a period of approximately 6 months (between January-June, 2014), we collected the following data:
+- Foreground application: the application the user is currently using;
+- Installed, removed or updated application: the applications the user installed, removed or updated;
+- Application requests from the application manifest;
+- Application permissions: server connections: the permissions the application-server connection information (e.g., server IP address, the port used to connect and geo-IP location);
+- User location: captured only when a network connection is established;
+- User permission concerns: users’ explicitly indicated concerns about data access;
+- User ratings: users’ application ratings over time.
+
+We explained Securacy’s data collection process clearly on the Google Play storefront so potential users knew how we were processing their data. Our research protocol was reviewed and approved by University of Oulu’s ethics committee. No personal data was collected.
+
+# Figures
+# Summary
+In summary, we found from our questionnaire and semi-structured interviews that:
+- Users do recognize and trust popular application developers;
+- Users do not fully understand what some permissions do, why they are needed or for what are they used for;
+2 Video: https://www.youtube.com/watch?v=sazpo_r8CZU
+3 Freely available at http://www.awareframework.com
+# 4 Design & Implementation
+The main interface of Securacy lists all installed apps, the public rating – an average of all users’ ratings – for an app, and a red flag if the application requests one or more of the permissions a user is concerned about. A screenshot is shown in Figure 3 - right.
+
+Users’ perspectives on what is secure and private are diverse, and it is thus challenging to assess automatically . When users run our application for the first time, they have the opportunity to indicate what data they do not generally expect applications to access. A screenshot is shown in Figure 3 - left. These can be edited at any time from Securacy’s main menu. For practicality and to reduce potential user burden in managing permissions for each application individually, we used the permission categories as an overarching permission filter for any application the user installed, removed or updated.
+
+Requiring users to review a list of permissions immediately before installing every application has been reported as a nuisance, interrupting the installation flow  and is an administrative burden for the user . In contrast to e.g. Lin et al.’s proposal that permissions’ presentation on the app store should be modified to include rationale for their use , we focused on extending install-time functionality. Securacy acts unobtrusively as soon as an application is installed, and interacts only if needed with the user before the application is executed for the first time.
+
+Concretely, when an application is installed or updated, Securacy checks its permissions automatically. Once a new application is installed, the user needs to explicitly launch an application for it to access any data on the device. Therefore, this just-in-time approach allows us to check the application’s security and privacy standing according to the public ratings (i.e., application’s average rating from all Securacy users) before the user actually uses the application (Figure 4).
+
+For reassurance, Securacy notifies the user if any of the permission concerns are triggered, and if available, displays the app public rating. If there is no rating, the user is encouraged to rate the app. At this point, when the user taps the notification, the user will be able to see preliminary information.
+
+Securacy
+Securacy reveals a range of information for each individual app, including the application name and icon, public rating, the user’s own rating, any permission concerns, and the use of secure or insecure network connections. Securacy also shows a map of all known server connections for an application, collected from all Securacy users, regardless of whether it has been rated yet.
+
+If the user rates an application for the first time, we capture the rating decision process using an in-situ mobile questionnaire. Example screenshots, including the questionnaire, are shown in Figure 5 - right. If the user uninstalls a previously rated app, we also use the mobile questionnaire to ask “Which of these statements explain why you removed [application name]”; we use the same explanations from the rating questionnaire as shown in Figure 5 - right. Open-ended data (e.g., “Other”) can also be collected by this questionnaire.

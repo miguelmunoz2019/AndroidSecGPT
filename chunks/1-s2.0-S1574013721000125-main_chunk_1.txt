@@ -1,0 +1,77 @@
+# Computer Science Review 40 (2021) 100372
+# Contents lists available at ScienceDirect
+# Computer Science Review
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/cosrev
+# Review Article
+# Comparative analysis of Android and iOS from security viewpoint
+Shivi Garg a,b, Niyati Baliyan b,∗
+a Faculty of Computer Engineering, J.C. Bose University of Science and Technology, YMCA, Faridabad, India
+b Information Technology Department, Indira Gandhi Delhi Technical University for Women, Delhi, India
+# a r t i c l e i n f o
+Article history:
+Received 5 May 2020
+Accepted 23 January 2021
+Available online 13 February 2021
+# Keywords:
+Android, iOS, Malware, Security, Smartphones, Vulnerabilities
+Smartphone usage has increased exponentially in the recent years. Android and iOS are the most popular smartphone platforms, while the ease of use along with the computational power to handle a wide array of applications attracts millions of users worldwide, also raises the security concerns on these platforms. This paper presents a comparative analysis between Android and iOS on a wide range of security aspects. It analyzes data for the period 2015-2019 and gives a detailed snapshot of not only the quantum of vulnerabilities, but also their impact. In addition, the paper leverages the well-established security triad i.e. CIA (Confidentiality, Integrity, Availability) to compare both the operating systems. The comprehensive and pragmatic approach taken in the paper makes it easier to infer that Android is more susceptible to security breaches and malware attacks as compared to iOS. Hence, researchers should divert their efforts and focus on finding solutions to problems pertaining to Android. The paper concludes by laying down future research directions and scope of work, which can be leveraged not only by application developers, but also by researchers. This will help make Android safer for users and will further increase its demand as a mobile operating system.
+
+© 2021 Elsevier Inc. All rights reserved.
+
+# Contents
+1. Introduction......................................................................................................................................................................................................................... 1
+2. Related work ....................................................................................................................................................................................................................... 2
+3. Comparison between Android and iOS............................................................................................................................................................................ 3
+1. System architecture ............................................................................................................................................................................................... 3
+2. Security ................................................................................................................................................................................................................... 5
+3. Isolation mechanism.............................................................................................................................................................................................. 5
+4. Encryption mechanism.......................................................................................................................................................................................... 5
+5. App permissions..................................................................................................................................................................................................... 5
+6. Auto erase mechanism .......................................................................................................................................................................................... 6
+7. Application provenance......................................................................................................................................................................................... 6
+4. Software vulnerabilities common in Android and iOS .................................................................................................................................................. 7
+5. Data collection .................................................................................................................................................................................................................... 7
+6. Vulnerability trends in Android vs. iOS ........................................................................................................................................................................... 7
+7. Malware attacks in Android and iOS ............................................................................................................................................................................... 11
+8. Research directions and future scope .............................................................................................................................................................................. 11
+9. Conclusion ........................................................................................................................................................................................................................... 12
+Declaration of competing interest.................................................................................................................................................................................... 13
+References ........................................................................................................................................................................................................................... 13
+# 1. Introduction
+∗ Corresponding author.
+
+E-mail addresses: shivi002phd16@igdtuw.ac.in (S. Garg), niyatibaliyan@igdtuw.ac.in (N. Baliyan).
+
+Technological advancements in smartphones are at par with personal computers. With increased computing power, smartphones are becoming ubiquitous part of daily life. Hence, number of smartphone users has exponentially risen in the last five years. The fact is established with the help of Statista , where the
+https://doi.org/10/j.cosrev
+1574-0137/© 2021 Elsevier Inc. All rights reserved.
+
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+2016 years, mean severity score and vulnerability assessment based on confidentiality, integrity and availability triad
+2017 3. Thorough investigation of strengths and weaknesses of related works are also discussed
+2018 4. Discussion on various research challenges along with future work presented for academicians and application developers in order to cope with increasing vulnerabilities
+2019 2020- The paper is structured as follows: Section 2 discusses the approaches for the smartphone security from the past with their strengths and weaknesses. Section 3 presents the comparative analysis of Android and iOS based on architecture, security model, isolation mechanism, encryption mechanism, app permissions, and auto-erase mechanism. Section 4 describes common vulnerabilities prevalent in Android and iOS. Section 5 discusses the data collection methodology along with the preprocessing. Section 6 presents the vulnerability trends of Android and iOS over the years, mean severity score and vulnerability assessment on confidentiality, integrity and availability triad. In Section 7, malware attacks on Android and iOS are discussed in the time period of 2015–2019. Furthermore, Section 8 explains future directions that should be adopted by the researchers and app developers to avoid growing hazards. Finally, the conclusion is provided in Section 9 of the paper.
+
+# 2. Related work
+Research work carried out in the domain of smartphone security deals with issues like vulnerabilities in smartphones, malware impact, security procedures in mobile platforms, and different policies used for safety and privacy of users.
+
+Hidhaya and Geetha  detected web view vulnerabilities, which can cause malicious attacks on smartphones. They used static analysis techniques to analyze the apps. They achieved a detection accuracy of 85%, however, run time/dynamic behavior of the apps was not analyzed. Zhuang  studied smartphone security vulnerabilities based on the apps using SSL protocol for secure communication, WebView technology, and HTML5-based. Author was able to demonstrate SSL validation, WebView code injection and HTML5-based application attacks in an accurate and explicit way. However, the work was not very comprehensive since they used only function to analyze SSL vulnerabilities. Ahvanooey et al.  surveyed on smartphone security and studied the attacks on mobile applications from 2011–2017. The survey was not very comprehensive and does not provide a clear idea of the mobile platform vulnerabilities. Talal et al.  work comprehensively illustrated the smartphone security in four different categories — mobile security aspects, solutions related to smartphone security, studies related to threats posed by smartphone malware and malware classification into families. The first category reviewed survey articles related to smartphone security. The second category discussed articles on solutions related to smartphone security. Malware related studies and threats posed by malware are included in the third category, and lastly the ranking and classification of malware into families is discussed.
+
+It is also seen that Android is more popular than iOS. According to ZDNet , Google revealed that it has ∼2 billion active Android devices in 2019, making the largest mobile OS by user numbers. On the other hand, Apple has 1 billion users across all products, including macOS and iOS devices.
+
+The key contributions of this paper are:
+1. Comparative analysis of Android and iOS based on architecture, security model, isolation mechanism, encryption mechanism, app permissions, and auto-erase mechanism
+2. Listing of common vulnerabilities prevalent in both Android and iOS, their distribution pattern over the recent
+S. Garg and N. Baliyan
+Computer Science Review 40 (2021) 100372
+Google Play App Store
+Then, MSR classification was analyzed based on the user experiences. These steps were then combined into an application installation procedure. The discussed approaches fail to enforce access control mechanisms to access a resource or data in the permission sets, thereby bypassing the permissions once the root privilege is obtained. The customized Linux kernel of Android can make it vulnerable when the root privileges are obtained. Code-signing method is used by Android, which contains the self-signed certificates of developers without verifying the certification authority . Cho and Seo  demonstrated a method to mount a malware by exploiting the code-signing process used in Android. They also proposed a countermeasure to prevent this attack. Due to this, repackaged malware can be easily distributed.
+
+The security mechanisms in iOS are stronger as compared to Android. However, researches in the past have shown how iOS is vulnerable to malware attacks. The studies [13–15] revealed that when SSH server is actively running, iOS can be easily jailbroken. Teufl et al.  also analyzed that backup stored on the iTunes can be easily attacked by using different techniques. Brute-force attack can be performed on the encrypted backup. If the backup is not encrypted, the attacker can gain access and manipulate with the backup files. Zdziarski  also detected various attack points, back doors, and surveillance mechanisms in iOS devices. He identified that iOS can be easily accessed via Universal Serial Bus (USB), Wi-fi or when paired with the compromised system. An attacker can target the iOS device on a Wi-Fi network by scanning TCP:62078 and can authenticate this pairing record. Moreover, the attacker can steal sensitive user information when a trusted relationship between a system and iOS device is established.
+
+The discussed approaches are not comprehensive enough to present all the security aspects of Android and iOS. Most of the research articles lack the holistic view of smartphone vulnerabilities and impact in terms of confidentiality, integrity and availability. This study is first of its kind, which covers all the security aspects of mobile platforms.
+
+# 3. Comparison between Android and iOS
+Android and iOS are the most popular mobile platforms available in the market. The on-going Android vs. iOS battle seems to be never ending. Section 3 elaborates this in terms of different parameters, with more focus on security aspects.

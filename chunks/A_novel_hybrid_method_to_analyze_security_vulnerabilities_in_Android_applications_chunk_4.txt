@@ -1,0 +1,48 @@
+# (2) Static analysis results on real-world apps
+In total, we have collected 10 194 real-world applications from various functional categories by the end of 2017. Most of these applications originate from Google Play and others from mainstream application markets of China. Table 3 shows the size and number distribution of these real-world applications. The average size of all applications for analysis is 11 MB. The eight types of vulnerabilities are detected by our static analysis. We successfully analyze 10 151 real-world applications, and all the results are shown in Fig. 6. Dynamically loading file accounts for the largest proportion at 57%. More than half of all applications contain another vulnerability, that is, the unrestricted component. Given that Android applications are component-based, the interaction between components can complete complex business logic. Numerous potential vulnerabilities exist in the components of Android apps. Notably, about half of the applications have potential security vulnerabilities.
+
+# Junwei Tang et al.: A Novel Hybrid Method to Analyze Security Vulnerabilities in Android Applications
+# Percentage (%)
+# Average time (s)
+In addition, these remaining logs can be obtained by an attacker, which results in a privacy leakage. The applications with the vulnerability named insecure JavaScript in WebView, which executes JavaScript code through the API of the WebView component, also accounts for about one-third of these applications. This condition also shows that as more applications start to use WebView, the proportion of hybrid applications will increase. This kind of vulnerability of sensitive data processed in plaintext is a situation that requires attention. This vulnerability accounts for one-third of the total and causes serious user privacy leaks. Developers need to pay more attention to the security of sensitive data transmission in their applications and avoid direct plaintext data processing.
+
+illustrates the average time of these 10 151 applications, that is, the average consumption time of static analysis for applications of different sizes.
+
+More information can be obtained by classifying these applications based on their sizes. For applications smaller than 1 MB, the percentage of vulnerable applications (61%) is considerably lower than the average percentage of all applications. The percentage of applications larger than 1 MB containing security vulnerabilities is notably higher (more than 87%). For applications with sizes less than 1 MB, the proportion containing one type of vulnerability accounts for 19%.
+
+# Vulnerability distribution for each category of applications of different sizes.
+
+# Distribution of number of vulnerability in applications of different sizes.
+
+The vulnerability is higher than that with multiple types. The opposite is true for applications larger than 1 MB. Moreover, as the size of applications increases, the proportion of applications containing potential security vulnerabilities also increases, whereas the proportion of applications containing only one type of vulnerabilities relatively decreases. That is, the larger the application, the more likely it is to contain multiple types of security vulnerabilities.
+
+# 4 Evaluate the accuracy of static analysis by a labeled dataset and dynamic executable scripts
+First, we have developed a labeled application dataset containing various security vulnerabilities and evaluated the accuracy of our system based on this dataset. Next, we run real-world applications with potential security vulnerabilities detected by static analysis dynamically through our executable scripts, collect their runtime information, and further verify the accuracy of our static analysis for real-world applications.
+
+The specific results are described in Table 4. The experimental results can confirm that the static analysis of our system is highly effective and can accurately detect the potential vulnerabilities of 56 applications in our test set.
+
+# Junwei Tang et al.: A Novel Hybrid Method to Analyze Security Vulnerabilities in Android Applications
+(2) Further verify accuracy of static analysis for real-world applications by dynamic scripts
+We can further confirm the existence of vulnerabilities by taking advantage of the results of static analysis and driving the application to run in accordance with specific executable scripts. We randomly select 20 real-world applications for each vulnerability category detected by static analysis for dynamic verification.
+
+To achieve compatibility with more target applications, we use scripts based on coordinates rather than widgets. First, a target application is manually operated, and the script generation module automatically generates a corresponding executable script. We can apply the basic script in the coordinate format to other target applications without modification or minor modifications (usually replacing the package name and the starting activity name). This avoids substantial manual work. The dynamic scripts primarily enable the applications to execute specific operations of UIs. Finally, combined with information on API hooks and vulnerability patterns, the final verification is completed.
+
+# 4 Detect other types of security vulnerabilities by dynamic analysis
+Given the limited accuracy of static analysis and the incompleteness of vulnerability pattern, certain security vulnerabilities cannot be easily detected by static analysis technology alone. The dynamic executable script analysis can directly run the target application, drive it to execute the corresponding program logic that may trigger the vulnerability, and finally, complete the detection and judgment of the vulnerability.
+
+# 600
+# Tsinghua Science and Technology, October 2020, 25(5): 589–603
+We use the input unverified vulnerability as an example to illustrate the specific analysis of the vulnerability by our dynamic scripts. The types of vulnerabilities that can be analyzed by dynamic scripts rather than static analysis can be extended and are not limited to this type of vulnerability. Figure 10 describes the core script used for testing whether an application has input unverified vulnerability.
+
+First, we use the script generation module to record all our manual operations on the target application. We correctly input the required information. Thus, the application completes the input successfully, jumps to the subsequent processes, and finally, generates an executable script for the whole processes. This condition requires a small amount of manual work. Here, we focus on the input verification of the login or registration interfaces.
+
+Then, we arbitrarily construct the input information (one can manually modify the script, or the script generation module automatically generates the input text based on certain rules) and continuously update the newly generated base script. More updated scripts may be present. The updated scripts keep the application running. As long as the arbitrarily constructed input information (neither the standard required e-mail information nor phone number information, etc.) can also pass the verification and enter the subsequent process, we determine that the application has an input unverified vulnerability.
+
+We dynamically analyze 20 applications known to have the input unverified vulnerability by our dynamic scripts and API hooks. Only one of the 20 target applications failed in the analysis. Further analysis shows that one of the application analyses failed because the application added measures that caused the re-signature to fail. Given that our dynamic script is based on the instrumentation, it cannot be dynamically executed if the re-signature fails.
+
+# 4 Comparison with existing systems
+Junwei Tang et al.: A Novel Hybrid Method to Analyze Security Vulnerabilities in Android Applications 601
+systems, cannot handle several packed applications. Given that our system is extended and improves the early version of FlowDroid, it also features the corresponding limitations, such as excessive time consumption and false positives. In addition, if certain measures, such as signature verification mechanism, are added into the application, the re-signed application cannot be opened and run normally, which will result in the failure of our dynamic executable scripts. Expectedly, if we have a source code for the target application, no such problem would occur. In the future, we can improve our system to adapt to more applications.
+
+# 6 Related Work
+Most previous vulnerability analyses focused on static analysis. CHEX is an Android application static analysis framework, which can analyze the data flow of Android applications and find the component hijacking vulnerability. Zhou and Jiang mainly focused on content provider component and discovered two security vulnerabilities related to content providers, namely, passive content leak and content pollution, which may lead to the privacy data leakage in Android applications. However, they only focused on the vulnerabilities of content provider component, which have been patched by subsequent applications and systems.

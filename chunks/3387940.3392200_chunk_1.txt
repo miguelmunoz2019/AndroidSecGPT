@@ -1,0 +1,58 @@
+# 2020 IEEE/ACM 42nd International Conference on Software Engineering Workshops (ICSEW)
+# Automatic repair of OWASP Top 10 security vulnerabilities: A survey
+Alexander Marchand-Melsom ∗
+alexamar@stud.ntnu.no
+Norwegian University of Science and Technology
+Trondheim, Norway
+Duong Bao Nguyen Mai∗
+dbmai@stud.ntnu.no
+Norwegian University of Science and Technology
+Trondheim, Norway
+# ABSTRACT
+Current work on automatic program repair has not focused on actually prevalent vulnerabilities in web applications, such as described in the OWASP Top 10 categories, leading to a scarcely explored field, which in turn leads to a gap between industry needs and research efforts. In order to assess the extent of this gap, we have surveyed and analyzed the literature on fully automatic source-code manipulating program repair of OWASP Top 10 vulnerabilities, as well as their corresponding test suites. We find that there is a significant gap in the coverage of the OWASP Top 10 vulnerabilities, and that the test suites used to test the analyzed approaches are highly inadequate. Few approaches cover multiple OWASP Top 10 vulnerabilities, and there is no combination of existing test suites that achieves a total coverage of OWASP Top 10.
+
+Adequate test suites being crucial to properly benchmark future APR tools, we further analyse the Java test suites used by the surveyed papers to test their approach and two systematic Java test suites (Juliet Test Suite [ 30 ] and Vulnerability Assessment Knowledge Base (VAKB) [ 32 ] [ 34 ]), and establish their coverage of OWASP Top 10.
+
+# CCS CONCEPTS
+• Security and privacy → Web application security; • General and reference → Surveys and overviews.
+
+# KEYWORDS
+OWASP Top 10, automatic program repair, survey
+# ACM Reference Format:
+Alexander Marchand-Melsom and Duong Bao Nguyen Mai. 2020. Automatic repair of OWASP Top 10 security vulnerabilities: A survey. In IEEE/ACM 42nd International Conference on Software Engineering Workshops (ICSEW’20), May 23–29, 2020, Seoul, Republic of Korea. APR 2020, Seoul, South Korea, 8 pages. https://doi.org/10/3387940
+# 1 INTRODUCTION
+For more than 20 years, researchers have attempted to create an automatic tool to repair defective programs. While the field of general bug fixing has seen a substantial rise of activity in recent years, there is yet to be a tool that properly addresses security vulnerabilities. Despite efforts at securing software, the fact remains that security vulnerabilities are a significant threat to many organisations, potentially leading to crippling economic losses. Fully automatizing the process of finding and repairing security vulnerabilities would be a significant step towards a more secure digital world.
+
+This paper is organized as follows. Section 2 presents its related work, while we present our approach in Section 3. The research results are presented in Section 4. We discuss these results and compare them to the related work in Section 5. Finally, we conclude and discuss future work in Section 6.
+
+# 2 RELATED WORK
+Liu et al. [ 17 ] systematically reviewed and classified the literature for Test-Based APR tools according to their approach. The authors discussed core issues in research of APR, which include test suite quality, fault localization accuracy, how to generate a patch, and evaluation metrics. They observed that there was a pressing need for a high quality peer-reviewed test suite for APR, but also that the way these tools were evaluated needed to be addressed, as both patch correctness and the generation of a human-readable optimal patch should be weighed in their benchmarking.
+
+Shafiq et al. [ 35] systematically reviewed and classified automatic repair tools. For each solution, they individually identified its strengths.
+
+and weaknesses, and aggregated them according to the used algorithms. The subsequent classification of solutions is first made according to whether they are bug fixing solutions, debugging solutions, or solutions using search algorithms, and then according to six categories: Approaches, Techniques, Tools, Frameworks, Methods, and Systems.
+
+Gazzola et al.  reviewed, classified, and compared techniques from 108 papers about APR. They identified two main approaches to APR tools: Generate-and-validate (G&amp;V) and Semantics-driven. Kong et al.  reviewed five APR techniques: GenProg, RSRepair, AE, Kali, and a brute-force based technique. They evaluated these techniques on a test suite composed of 17 programs of varying size, containing a total of 180 defects. The brute-force technique fared best for small sized programs, but none of the surveyed tools performed well on large test programs, with all tools suffering a significant performance drop. The authors conclude on this by stating that none of the surveyed techniques are ready to be used on large real-world programs.
+
+Durieux et al.  tested 11 Java test-suite-based repair tools on five different benchmarks. They found that while the tools’ performance varied greatly from benchmark to benchmark, they all were able to generate a substantially more significant amount of patches for the Defects4J benchmark . The authors suggested this may be indicative of serious benchmark overfitting, and pointed out that in order to mitigate this problem, APR tools should be evaluated on diverse benchmarks.
+
+Khalilian et al.  evaluated three APR techniques. In an effort to mitigate the absence of standard common benchmarks and provide a comparison framework for APR tools, the authors first compared the surveyed tools according to a set of criteria, then classified them according to a five-level maturity model they created.
+
+Qi et al.  systematically surveyed recent research on APR, and evaluated their evaluation metrics. They isolated 12 main evaluation metrics, categorizing them further into two classes: repair effectiveness and repair efficiency. These findings point to the problem that there currently is no consensus on what metrics should be used to measure a tool’s performance. In light of this, the authors suggest metrics that they view should be included in any evaluation.
+
+Monperrus  compiled a bibliography of existing publications in APR, and categorised them according to their approach. A continuously updated version of this bibliography has also been made available by the same author.
+
+# 3 RESEARCH IMPLEMENTATION AND DESIGN
+Existing surveys on APR lack a focus on security bugs in general and OWASP Top 10 vulnerabilities in particular. Furthermore, few surveys question the reliability of the reported performance of APR approaches. This leads to a great uncertainty on what is currently the state-of-the-art and makes it more difficult to identify successful approaches which could be extended. It is also unclear how APR approaches for software security should be tested, and whether existing test suites used to test approaches are adequate, which is problematic for useful comparisons of APR approaches.
+
+Our aim in this survey is to shed light on these issues and attempt to provide an overview over the state-of-the-art, and which test suites future APR approaches for vulnerabilities should use. Our scope will be defined by the following inclusion criteria for the approach described by each publication:
+- The approach needs to address a vulnerability found in one or several OWASP Top 10 categories;
+- The approach needs to be fully automatic, i.e. it should not require any interaction with a human being beyond its launch;
+- The approach needs to effectuate its repair by modifying the source code.
+
+We use the following inclusion criteria for the selection of systematic test suites:
+- The test suite needs to be systematic, i.e. it should have set procedures for inclusion or exclusion of new test cases;
+- The test suite needs to contain test cases in Java;
+- The test suite needs to contain test cases relating to security vulnerabilities.
+
+We chose to limit our scope to Java for systematic test suites because of its prevalence in security-critical applications such as financial services.

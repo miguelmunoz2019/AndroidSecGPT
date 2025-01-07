@@ -1,0 +1,52 @@
+# 2019 IEEE Eurasia Conference on Biomedical Engineering, Healthcare and Sustainability (IEEE ECBIOS 2019)
+# Preventing Activity Hijacking Attacks in Android APP
+# Min-Hao Wu1,3,a, Fu-Hau Hsu2,4,b, Ting-Cheng Chang1,3,c, Liang Hsuan Lin2,4,d
+1College of Information & Mechanical and Electrical Engineering, Ningde Normal University
+2Department of Computer Science and Information Engineering, National Central University
+3No College Road, Dong Qiao Economic and Technology Development Zone, Ning De City, Fu Jian Province, China.
+
+4No. 300, Zhongda Rd, Zhongli District, Taoyuan City 32001, Taiwan.
+
+mhwu@ndnu.edu.cn;
+hsufh@csie.ncu.edu.tw;
+18250922163@163.com;
+dlinliang258369@gmail.com
+# Abstract
+Android malware or detection technology has continued to develop. Variants of this malware are generated rapidly, such as value-added services for current software in which the hijacked malware subscribes to certain unwanted services. There is a considerable amount of adware in Android mobile devices. This adware may deliver advertising disguised as emergency notifications. In addition to adware, many types of malware attempt data theft, malicious downloads, crack software, and click-through fraud, and operate as spyware tools. These malicious tools present many risks to the software on Android systems, such as the theft of financial information. Anti-virus companies test and analyze a large number of suspicious samples, and the detection or feature extraction efficiency of static analysis scan engines detects malicious software under low. Finally, the Android market has serious security problems.
+
+Nowadays, the number of smartphone users is growing at a steady pace. More and more people rely on smartphones to carry their business data or connect to social media. However, users are probably unaware that important personal information may be leaked from their smartphone. In 2015, the International Data Corporation  (IDC) reported that Android and iOS constitute almost all of the worldwide smartphone market.
+
+# Introduction
+The use of smartphones has grown at an alarming rate, becoming the market’s top mobile platform in a very short space of time. This success has been due to open source licenses, aggressive marketing strategies, and a unique combination of stylish interfaces. Smartphones have attracted a large number of users to handset manufacturers, mobile networks, silicon manufacturers, and application programs. Worldwide, there are numerous products, applications, and devices. In recent years, the Android operating system has achieved the highest market share of all smartphone devices. To improve the smart mobile device had existed of the most security issues or consistency of the product by comparison with the current closed for smart mobile devices (such as iOS or Windows Phone). Each application is subjected to strict examination and control to identify any security problems.
+
+The Android system is no longer just a telephone—the system now affects everyday life, operating as a computer, television, and global positioning system. The Internet business where the ability to gather a large number of Apps in a short time, as long as a sufficient amount of Apps in the Google Play. Many Android apps are free, using in-app.
+
+# Worldwide Smartphone Shipment Market Share by OS, 2010 - 2014
+# 2019 IEEE Eurasia Conference on Biomedical Engineering, Healthcare and Sustainability (IEEE ECBIOS 2019)
+Advertising to earn fees. However, some can also steal private data to make money, or even directly steal airtime. These malicious Android apps have been known to make a lot of money for hackers in a short space of time. As the Android system has become more popular, the number of developers has grown significantly. Regardless of whether the app developer is professional or amateur, some security vulnerabilities may be unknowingly introduced during the development phase. When such apps are published to Google Play or third-party websites, users may download the apps. This method detects possible hijacks with low-overhead reachability tests that flow with the analytical point of view the information from these weaknesses in the Android application. This method uses a static programming analysis approach with an anti-analysis technology that runs a dataflow analyzer on the Android programming.
+
+Attacks using keystroke inference have been used to break the integrity of the graphical user interface (GUI) and steal the users credentials [2─4]. In 2011, a vulnerability was discovered on Android devices that allowed a user’s private information to be stolen from an application . The malicious developer had to install an app on the Android device that allowed an application to create an overlay screen that peeked at another application’s login screen. When the user went to login to the desired application, their private information would be sent to the correct application as well as to the remote server of the malicious developer, who then had access to the victim’s private information. There are many attack methods for hijacking Android components to access private information or change the system behavior. If the content provider is hijacked, the attacker may be able to alter the user’s call logs, text messages, and sensitive data. After an attacker has successfully hijacked a component, they may acquire sensitive data or device information in the background, and even modify the system workflow.
+
+In Section 2, we introduce the Android architecture and the fundamental structure (e.g., ActivityManagerService) of our solution. To describe the concept of Activity Hijacking Attacks, we introduce the related Component Hijacking Vulnerabilities in Section 3. We then present our Activity Hijacking Attacks scheme in Section 4, which contains the results of an evaluation in which we examine Activity Hijacking Attacks using well-known benchmarks, proof-of-concept test cases, and measure the performance overhead of the system. Finally, conclusions to this study.
+
+# Related works
+This section gives a brief introduction to the Android system, its architecture, and fundamental building blocks. We then discuss some studies related to the Android system in detail.
+
+In recent years, Android has become one of the most popular mobile operating systems. However, the poor design of certain applications leads to security weaknesses that seriously undermine the security and privacy of users. In 2012, Lu et al.  proposed an automatic static analysis method called Android Component Hijacking Attacks that identifies the vulnerability of an app’s dataflow. This method analyzes Android apps and detects possible hijack-enabled flows by conducting low-overhead reachability tests on customized system dependence graphs. The component hijacking vulnerabilities use static analysis with an automatic audit of Android application elements to exploit hijacking weaknesses.
+
+The system service provides a long-running operation in the Android system. It helps application framework APIs to access the underlying hardware, and even provides functionalities for user-level applications. For instance, the ActivityManagerService, which is described in detail later, is used to manage the lifecycle of each application’s activity in the entire system, and WindowManagerService is the interface that an application uses to draw or change the foreground window.
+
+The Binder IPC provides a comparable mechanism between applications, and also helps the application framework to access the system services to acquire device information. For example, an application that wishes to obtain the device location using LocationManager. The upper-left shows an example app that is using the LocationManager provided by the framework. The LocationManager asks the service manager.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:19:11 UTC from IEEE Xplore. Restrictions apply. ISBN: 978-1-7281-0763-9
+# 2019 IEEE Eurasia Conference on Biomedical Engineering, Healthcare and Sustainability (IEEE ECBIOS 2019)
+for permission to use the location service, and the service manager needs the binder’s help to pass the message to the location manager. Finally, the real GPS information of the device is passed to the app.
+
+Owing to the API exposed by the Application Framework, developers can build their own applications with thousands of interesting functionalities. The application components are the fundamental building blocks of an app. Each component provides its own special purpose for users to build their application. The following table 1 shows the four major components of the Android system.
+
+# Our Scheme
+The AMS interacts with WindowManager and the View System. To prevent our event from being driven by Activity Hijacking Attacks, we first provide an overview of Activity Hijacking Attacks, including the design principles and core components. The system implementation is then described in detail.
+
+The threat model and attack motivation were described in Section 1. Such attacks first collect information about the device, and, being a service in the system, wait for the user to attempt a login. At this point, the attack tool launches a forged login activity to trick users into keying in their personal information.
+
+Therefore, the Activity Hijacking Attacks design principles follow the original activity in terms of what is shown on the screen, and the new activity appears in the system under a different package name. The new activity’s layout has two EditText fields with one password input type. Under the above principles, we can identify the new activity as a possible forged login activity. To achieve these principles, our proposed Activity Hijacking Attacks scheme is implemented in the Android framework.

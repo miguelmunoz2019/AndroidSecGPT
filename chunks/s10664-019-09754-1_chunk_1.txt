@@ -1,0 +1,44 @@
+# Empirical Software Engineering (2020) 25:2341–2377
+https://doi.org/10/s10664-019-09754-1
+# Third-party libraries in mobile apps
+# When, how, and why developers update them
+Pasquale Salza1 Filomena Ferrucci3· Fabio Palomba1 · Dario Di Nucci2 · Andrea De Lucia3 ·
+Published online: 24 August 2019
+© Springer Science+Business Media, LLC, part of Springer Nature 2019
+# Abstract
+When developing new software, third-party libraries are commonly used to reduce implementation efforts. However, even these libraries undergo evolution activities to offer new functionalities and fix bugs or security issues. The research community has mainly investigated third-party libraries in the context of desktop applications, while only little is known regarding the mobile context. In this paper, we bridge this gap by investigating when, how, and why mobile developers update third-party libraries. By mining 2752 mobile apps, we study (i) whether mobile developers update third-party libraries, (ii) how much such apps lag behind the latest version of their dependencies, (iii) which are the categories of libraries that are more prone to be updated, and (iv) what are the common patterns followed by developers when updating a library. Then, we perform a survey with 73 mobile developers that aims at shedding lights on the reasons why they update (or not) third-party libraries. We find that mobile developers rarely update libraries, and when they do, they mainly tend to update libraries related to the Graphical User Interface. Avoiding bug propagation and making the app compatible with new Android releases are the top reasons why developers update their libraries.
+
+# Keywords
+Third-party libraries · API usage · Empirical study · Mining software repository
+# 1 Introduction
+In modern development practices, a common practice to implement new software is to reuse existing code, as it avoids the costs related to the implementation of complex functions and modules, and it guarantees the usage of source code previously tested and validated.
+
+Nowadays, a steadily higher number of companies develop software by means of Application Programming Interfaces (APIs), i.e., a set of subroutines and functionalities made
+Communicated by: Chanchal Roy, Janet Siegmund, and David Lo
+Pasquale Salza
+salza@ifi.uzh.ch
+Extended author information available on the last page of the article.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+available in the form of comprehensive packages, called third-party libraries, to allow other software systems to evolve by re-using such components. For instance, large companies like G OOGLE or A PPLE provide hundreds of APIs that allow software houses and newcomers to build upon these APIs their own software and re-distribute it into the market.
+
+However, as any other software system, even libraries need to change to be adapted to new market requirements and/or to be fixed with regard to defects experienced by clients. Therefore, an update issued by the providers may contain improvements that make more stable and reliable the external APIs on which other systems are build.
+
+As soon as a new update is made available, the developer of an app that was using a previous version of the library may decide to upgrade it and adopt the implemented improvements. However, it can happen that a new version may require too much effort to be included in a project or simply be defective, thus not being considered for an upgrade of its version. For the same reason, the developer may consider a downgrade to a previous version instead of an upgrade, in order to guarantee the stability of the app.
+
+The aspects related to how the changes made to libraries are propagated through the clients have been studied in the last years by the research community. Previous researchers focused on the understanding of the dynamics behind the update strategies and the effects of such changes to client systems. In particular, most of this work has investigated the APIs usage in desktop applications (a.k.a. “traditional” applications (Kirubakaran and Karthikeyani 2013; Muccini et al. 2012), namely the software running on a single computer) with respect to (i) the reasons pushing developers in using a specific version of an API , (ii) the mechanisms adopted to guarantee backward compatibility , and (iii) the impact of API deprecations on the source code of client systems.
+
+Despite the important research efforts conducted so far, we still identify a lack of knowledge on how third-party libraries are treated in mobile applications. Indeed, while some studies have been conducted to evaluate the diffuseness of third-party libraries in mobile apps (Mojica Ruiz et al. 2012; Viennot et al. 2014; Linares-Vásquez et al. 2014), the impact of their non-functional attributes on the commercial success of mobile apps (Dering and McDaniel 2014; Bavota et al. 2015), and their visualization (Minelli and Lanza 2013a, b), to date there is still lack of knowledge about the extent to which the phenomenon of change propagation is present in mobile applications and how developers deal with it.
+
+There are a number of reasons that make the mobile context particularly interesting with respect to studying the developers’ decisions on whether to update third-party libraries. First, both mobile applications and mobile third-party libraries are often subject to continuous evolutionary development and maintenance (Mojica Ruiz et al. 2012; Viennot et al. 2014; Linares-Vásquez et al. 2014), with new releases being available on a much more frequent basis than desktop applications: this aspect can influence the behavior of developers, who might be more conservative when updating external libraries close to a new release. Secondly, mobile apps are often developed by young developers with little experience : this naturally makes them different than the general population of desktop application developers and may influence the way they deal with third-party libraries. Thirdly, certain non-functional requirements (e.g. energy consumption Palomba et al. 2019) are generally more pressing concerns for mobile developers with respect to the others : the usage and update of third-party libraries may have an impact on such non-functional requirements and, for this reason, developers might be more inclined to update them. Finally, the presence of active user communities that continuously report change requests through user reviews  may lead developers to be more prone to adopt and update third-party libraries.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+that speed up the process of addressing the users’ requests. As a consequence, understanding the mobile developers’ behavior with respect to the management of libraries becomes a major challenge to face toward the definition of techniques and tools supporting developers during their daily activities.
+
+In our previous work Salza et al. (2018), we started addressing this challenge by conducting a large-scale empirical investigation on how mobile developers update the libraries used versions in their code
+Specifically, we mined the evolution history of 291 Android apps in order to study the change propagation problem under four different perspectives:
+1. we studied whether mobile developers update the used version of external libraries;
+2. we performed a fine-grained investigation of the categories of libraries for which developers are more prone to update the used versions, shedding lights on the likely reasons pushing developers in having more care of them;
+3. we extracted the common patterns followed by mobile developers to update the use of libraries by means of an open coding procedure, and verified whether high- and low-rated apps present peculiar update patterns.
+
+The results of our previous study highlighted that only 38% of the external libraries in our dataset were subject to at least one version change during the evolution history of the analyzed apps. Moreover, most of the updates were focused on third-party libraries related to the Graphical User Interface (GUI) of the app (≈ 50%) or tools aimed at supporting development activities (27%). By analyzing more in depth the likely causes behind the higher number of version changes for these categories, we discovered that developers aim at keeping the graphical user interface up to date with the latest tendencies, or updating Android support tools in order to develop for the latest Android versions. Furthermore, the results of our previous study showed that the main causes for the 62% of libraries whose version is not changed, are the carelessness of developers or a high cost/benefit ratio. Finally, we found that only 15% of the library uses have been updated constantly during the evolution of the apps, and that most of them were related to successful apps.

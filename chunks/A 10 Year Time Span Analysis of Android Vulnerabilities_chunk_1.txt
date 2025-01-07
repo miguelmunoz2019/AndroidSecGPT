@@ -1,0 +1,126 @@
+# A 10 Year Time Span Analysis of Android Vulnerabilities
+by
+# Adam Paul Hooper
+A Dissertation Presented in Partial Fulfillment
+of the Requirements for the Degree
+# Doctor of Science in Cybersecurity
+# CAPITOL TECHNOLOGY UNIVERSITY
+May 2023
+© 2023 by Adam Paul Hooper
+ALL RIGHTS RESERVED
+# A 10 Year Time Span Analysis of Android Vulnerabilities
+# Approved:
+Dr. Ian McAndrew, Chair
+Dr. William H. Butler, Committee Member
+Dr. Kellep Charles, External Examiner
+# Accepted and Signed:
+Man MAndewu
+___________________________________________                     16th of May 2023 _
+Ian McAndrew, Ph.D.                                                           Date
+________________________________________________ May 16, 2023
+William H. Butler, D.Sc.                                                      Date
+May 16, 2023
+Kellep Charles, D.Sc.                                                         Date
+Man MAndewu
+______________________________________________16th of May 2023 _
+Ian McAndrew, PhD, FRAeS                                                       Date
+Dean of Doctoral Programs
+Capitol Technology University
+# ABSTRACT
+Vulnerabilities have been continually discovered and disclosed within the Android operating system since the initial public release. Such findings are recorded and tracked in Critical Vulnerabilities and Exposures and the National Vulnerability Database. As iterations in the operating system version are developed, vulnerabilities continue to evolve and occasionally reappear. Past flaws, which were mitigated in prior releases, have the potential to reappear as the code base evolves. Such instances may be exploited in the wild, with a likelihood of being re-exploited across numerous releases, including major revisions. Utilizing the metrics of past vulnerabilities and the affected versions, it is possible to demonstrate reoccurrence in a quantifiable method over a multi-year time span. Leveraging well established forecasting algorithms, it is possible to predict a likely continuation in the reoccurrence of vulnerabilities. Additionally, the descriptive statistical analysis method allowed for the use of a large index of data samples for future reoccurrence trend detection on various metrics of the Android OS and attack vectors of the vulnerabilities. Such metrics include the investigation of API and SDK and the correlation with the KEV, as highlighted by CISA utilizing the snowball approach of sampling in anticipation of parametric data with a fixed parameter set. Implications from this data strive to shed light on past mistakes and drive industry to consider lessons learned in order to reduce vulnerability reoccurrence and heighten overall operating system security.
+
+Keywords: Android, version, vulnerability, mitigation, reoccurrence
+# DEDICATION AND ACKNOWLEDGEMENT
+I dedicate this work to my family and am thankful for all of the support over the past few years to reach this milestone. First, my wife, Amy, who continually pushed me to press on even when life and work circumstances seemed insurmountable. Next, to my four beautiful daughters whose own accomplishments in education continue to be a regular motivator and make me proud of such a motivated and brilliant household.
+
+Finally, to extended family and friends, whose constant “Are you done yet?” questions nudged me towards completion.
+
+I would also like to acknowledge my Chair, Dr. McAndrew, who helped clear hurdles and press on towards submission. Additionally, Dr. Butler, as a professor and committee member whose encouragement and feedback helped me remain the course. Finally, to my peers who provided suggestions and motivation along the way.
+
+# TABLE OF CONTENTS
+# CHAPTER 1: INTRODUCTION
+Background of Study .......................................................................................................... 1
+Problem Statement .............................................................................................................. 4
+Purpose of Dissertation Study............................................................................................. 5
+Significance of the Study.................................................................................................... 8
+Nature of Study................................................................................................................... 9
+Hypotheses/Research Questions ....................................................................................... 10
+Conceptual Framework ..................................................................................................... 12
+Definitions......................................................................................................................... 20
+Assumptions...................................................................................................................... 21
+Scope, Limitations, and Delimitations.............................................................................. 21
+Chapter Summary ............................................................................................................. 23
+# CHAPTER 2: LITERATURE REVIEW
+Articles .............................................................................................................................. 24
+Research Documents......................................................................................................... 25
+Journals Researched .......................................................................................................... 30
+Currently Unknown Research Gaps.................................................................................. 46
+Chapter Conclusion........................................................................................................... 46
+# CHAPTER 3: METHOD
+Research Method and Design Appropriateness ................................................................ 51
+Population, Sampling, and Data Collection Procedures and Rationale ............................ 52
+Validity: Internal and External.......................................................................................... 56
+# Data Analysis
+.................................................................................................................... 56
+# Organization and Clarity
+.................................................................................................................... 57
+# Chapter Summary
+.................................................................................................................... 58
+# CHAPTER 4: RESULTS
+# Pilot Study
+......................................................................................................................... 59
+# Case Study
+......................................................................................................................... 64
+# Findings
+............................................................................................................................. 83
+# Summary
+........................................................................................................................... 86
+# CHAPTER 5: Findings and recommendations
+# Limitations
+........................................................................................................................ 87
+# Findings and Interpretations
+........................................................................................................................... 100
+# Original Contributions
+............................................................................................................................ 103
+# Study Taxonomy
+............................................................................................................................. 104
+# Recommendations for Future Research
+......................................................................................................................... 104
+# Chapter Summary
+......................................................................................................................... 106
+# APPENDIX A: CVE Dataset Dates
+................................................................................................................ 124
+# APPENDIX B: CVE MATRIX
+...................................................................................................................... 126
+# APPENDIX C: FORECAST SPREADSHEET CALCULATIONS
+..................................................................................................... 135
+# LIST OF FIGURES
+# CHAPTER 1: INTRODUCTION
+The adoption of operating systems (OS) was previously dominated by Microsoft on desktop platforms, and the market share since has been overcome by the presence of other OS distributions, partially due to the increased use of mobile devices.
+
+One OS available on mobile devices is Google’s Android OS. As with each flavor of OS, Google’s Android has demonstrated an increasing number of vulnerabilities with each release . The trending and analysis of vulnerabilities over an extended period of time across releases has not been performed on the Android OS, resulting in the industry lacking information on the potential improvements to security posture (Thomas, Beresford, & Rice, 2015). In regards to other OSs, mobile and desktop variants, taxonomies have been developed which analyze vulnerabilities on UNIX based releases; however, the data is constrained to a single distribution (Li & Li, 2006). This study seeks to analyze the vulnerabilities discovered and published in Common Vulnerabilities and Exposures (CVE) for the Android OS over a 10 year time span.
+
+Chapter 1 of the dissertation will contain the background of the study, the problem statement, and the purpose of the dissertation study. Following the aforementioned sections will be the significance of the study, the nature of the study, the hypotheses, and research questions. Finally, the conceptual framework and definitions will be covered, ending with the assumptions, scope, limitations, delimitations, and the summary.
+
+# Background of Study
+The research is aimed to discover patterns and trends of vulnerabilities known to exist in the Android OS. Unmitigated vulnerabilities in recent instances of the Android
+OS deployed to consumer devices have not been studied to determine potential real-world security impacts. The study would leverage a time series analysis over a 10 year period to analyze the rate of vulnerability change. The study would attempt to achieve improvements in security posture across all Android OS architecture by analyzing data across respective versions and releases. The lack of analysis of data trends over an extended time period represents a gap in knowledge from a scientific perspective which would have an impact on the industries understanding. Knowledge gained from the research may allow for a more focused improvement on the Android security landscape.
+
+A study has not been performed on the current iterations of the Android OS above version 5.x of vulnerabilities and malware detected running in the wild, leaving the industry without a scholarly knowledge of known threats. Previous studies in the area of vulnerabilities and malware detected in the Android OS has been limited to versions 5.x and prior. No known studies have been published which cover vulnerabilities from the initial version with available CVEs dating from version 1 in 2009. Current implementations of Android are considered to be versions 6.x-11.x, which are presently distributed by manufacturers on existing devices. The OS developer, Google, and vendors which utilize the OS in their distributed devices do not have relevant scientific data to further their development of future releases or mitigate vulnerabilities in current releases.
+
+One question the study seeks to answer is to what extent is the rate of vulnerabilities changing. The importance of the question of the extent of vulnerability changes may be evident by the increased detection of vulnerabilities over time since the inception of the OS. An additional question to answer is if each platform or the overall posture has improved over time. Changes in security posture over time may demonstrate
+trending that can be used to target common vulnerabilities and mitigate the threats before
+the OS version is released to the public. Finally, is to determine if any vendors are
+performing better from a security perspective than others. Rating the performance of one
+vendor over another will allow the industry as a whole to determine better practices for
+implementing security standards during the development and sustainment life cycles.
+
+The pool of data from which the study will be based on will be pulled from
+published CVE data. The social relevance of the published data may be evident by the
+potential availability of unpublished or zero-day vulnerabilities. Although not a
+consideration of this study, the examination of vulnerabilities not available via the CVE
+data demonstrates a knowledge gap observed by the general public. The overall goal of
+the study is to accomplish the creation of a defined matrix which demonstrates
+vulnerabilities across a fixed period among all Android versions. Made publicly
+available, the data generated by the study may generate future theoretical interest if a
+detectable trend or pattern is observed in the outcome of the matrixed data’s results.

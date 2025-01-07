@@ -1,0 +1,100 @@
+- Implementation in software development: Specifically including:
+1. Methods with weak crypto hash functions (such as MD2, MD4, MD5, SHA1, or RIPEMD) will trigger code smells;
+2. Methods execute the DES algorithm or initialize in AES by ECB mode;
+3. Method with RSA algorithm for the key length < 512 bits;
+4. Recommend to adopt Cipher.getInstance(RSA/ECB/OAEPWithSHA256AndMGF1Padding) for the crypto algorithm, or hackers will send malicious attacks by received packets.
+
+- Repair suggestions:
+1. Recommend developers to adopt SHA256 and SHA3 functions instead of weak crypto hash functions;
+2. Recommend developers to adopt AES algorithm, specify CBC or CFB mode available with PKCS5Padding;
+3. Recommend developers set the key length to 2048 bits in the RSA algorithm.
+
+- Improper certificate validation (ICV): Android provides an embedded process to verify certificates signed by CA. When applying a self-signed certificate, the operating system will verify it through the apps. Developers often fail to implement proper certificate validation, modify certain methods but neglect the underlying logic and code implementation inside, leaving the communication channel over SSL/TLS vulnerable to man-in-the-middle attacks.
+
+- Implementation in software development:
+1. HTTPs communication via Webview, simply handling certificate errors with proceed() in the onReceivedSslError() method;
+2. Developers customized to implement class X509TrustManager, rewrite method checkClientTrusted() and checkServerTrusted(), but there is no logical code for reviewing the certificate in the method (empty implementation), will generate code smell;
+3. Developers adopt a custom implemented class HostnameVerifier, there is no check on the validity of the host name in the verify() (directly return true);
+4. Method with unsafe HostnameVerifier: org.apache.http.conn.ssl.AllowAllHostnameVerifier, org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER, is equivalent to nonverification.
+
+- Repair suggestions:
+1. Recommend developers not to override onReceivedSslError() and not to leave the certificate problem unsolved to avoid the leakage of communication data;
+2. For HTTPS websites with certificates signed by authorities, developers can adopt the certificate verification mechanism from Android instead of implementing it;
+3. Implement HTTPS domain verification code in HostnameVerifier, that is, verify whether the domain connected to the HTTPS site and in the SSL certificate is the same;
+4. Recommend developers to adopt the secure Android built-in HostnameVerifier: org.apache.http.conn.ssl.SSLSocketFactory.STRICT_HOSTNAME_VERIFIER).
+
+- Unconstrained intercomponent communication (UICC): External apps can freely call components of an app, and there are no restrictions in the communication.
+
+- Implementation in software development: Several apps reuse the third party components (Activity/ContentProvider/Service/BroadcastReceiver) by setting the attribute exported or IntentFilter in Android-Manifest.xml. For instance, when the exported is true, or the exported value is not set but set to the IntentFilter, the component is exposed to the risk of being invoked by malware.
+
+- Repair suggestions: Recommend developers to set the exported value to false so that external apps are unable to invoke the component. If the developer expects a specific app to visit the component, then exported cannot be set to false, and the attribute permission needs to be set to a custom permission string.
+
+- Custom scheme channel (CSC): When customizing the page jump protocol scheme in Android, there is a risk that external attackers can access app data through web pages.
+
+- Implementation in software development: The IntentFilter (with three attributes: action, category, data) in AndroidManifest.xml is for parsing implicit intent. Including: 1) If data android: scheme is...
+
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+# 2302 ZHONG et al.
+
+specified, then start the intent class to complete communications among the components, and the attackers can visit the app components by web, causing code smell; 2) If the browser supports Intent Scheme Uri, and sets no filtering rules, then the attacker can visit the browser’s files (whether private or public) through JS code, such as stealing cookies files.
+
+Repair suggestions: 1) Recommend developers not to specify the attribute data android:scheme; 2) If invoking the function Intent. parseUri, then the intent must set strict filtering conditions with at least three modes: addCategory(“android.intent.category.”), setComponent(null), setSelector(null).
+
+# Headers attachment (HA)
+When communicating with a server by HTTP requests, developers typically send sensitive data that relies on header transmission, such as platform ID, channel ID, system version, and other common information. Storing these sensitive data in header files causes insecurity in the communication process.
+
+Implementation in software development: Storing private data in header files is generally considered a code smell. There are three types of header attachments: set the http header parameters of OkHttpClient, HttpURLConnection and HttpClient.
+
+Repair suggestions: Before authenticating a third-party service, developers should not store sensitive data in the header.
+
+# Exposed clipboard (EC)
+In Android apps, the clipboard can store data temporarily in RAM leading to easy theft.
+
+Implementation in software development: The app invokes settext()/getText() or setPrimaryClip()/getPrimaryClip() of the ClipboardManager for writing/reading data to the clipboard. It is insecure to store private data (especially passwords) in the clipboard, which is readable by any app.
+
+Repair suggestions: Developers should avoid storing data in the clipboard.
+
+# Broken web view’s sandbox (BWS)
+In the Android SDK, WebView provides a browser allowing users to visit the web in the apps. Among them, the improper utilization of WebView will easily cause arbitrary execution of codes.
+
+Implementation in software development: This code smell occurs for three main reasons: 1) The addJavascriptInterface interface in the WebView generates a Java object, and JS invokes the object’s methods to communicate with local apps. JS can do anything after getting the object, including reading sensitive information on the device’s SD card; 2) The Js interface of searchBoxJavaBridge generates JS mapping objects by default, causing the execution of arbitrary code, triggering code smell; 3) Similarly, the Js interface of accessibility and accessibilityTraversal will also lead to the arbitrary execution of codes, generating code smell.
+
+Repair suggestions: 1) Before Android 4, the result to JS is handled by prompt() method; after Android 4, Google provides the annotation @JavascriptInterface to avoid vulnerability attacks; 2) Remove the searchBoxJavaBridge interface by invoking the removeJavascriptInterface() method; 3) Remove the accessibility and accessibilityTraversal interfaces.
+
+# Web view plain secret (WPS)
+In Android apps, the WebView enables password saving by default and generate code smell.
+
+Implementation in software development: WebView.setSavePassword(true). When the user fills in and agrees to save the password, it will be stored in the database in plain-text.
+
+Repair suggestions: Suggest the user to close the password saving function: WebView.setSavePassword(false).
+
+# Web view domain not strict (WDNS)
+Android built-in method setAllowFileAccess() is for setting whether to allow the WebView to use the file protocol, the default setting is true, making it possible to visit some files.
+
+Implementation in software development: When the following setting is true: 1) setAllowFileAccessFromFileURLs(), for setting whether the JS code in the file path is available to visit the local files; 2) setAllowUniversalAccessFromFileURLs(), for setting whether the JS code in the file path is available to visit cross-domain sources, such as http domain; 3) setJavaScriptEnabled(), for setting whether to allow loading JavaScript.
+
+Repair suggestions: For general apps, developers should prohibit the file protocol, that is, setAllowFileAccess(false); for apps requiring special functions with file protocol, developers should set the above attributes to the prohibited state.
+
+# Data back up any (DBA)
+An incorrect setting of the allowBackup property in the Android configuration, which is used to manage data archiving for Android apps, can result in arbitrary copies of data.
+
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+# ZHONG et al.
+
+# Implementation in software development:
+When the value of allowBackup is true, ADB debugging tool can copy and export data without super administrator authentication. Attackers will obtain private data by USB debugging, thus leading to user privacy leakage. We define this behavior as a smell.
+
+# Repair suggestions:
+Recommend developers set the attribute allowBackup in the AndroidManifest.xml to false.
+
+# Global file readable/writable (GFRW):
+In Android apps, Activity exports data to a file by openFileOutput(String globalfile_name, int operation_mode). Improper setting of “operation_mode” will cause malicious data reading.
+
+# Implementation in software development:
+The details including: 1) When the operation mode is set to MODE_WORLD_READABLE, attackers can read sensitive information in the file. This behavior will produce smell; 2) When the operating mode is set to MODE_WORLD_WRITEABLE, attackers can write the file’s contents freely and destroy the app’s integrity, producing code smell.
+
+# Repair suggestions:
+Developers should identify whether sensitive data is stored in the file. If sensitive data exists, they should: 1) Avoid setting the mode to MODE_WORLD_READABLE; 2) Avoid setting the mode to MODE_WORLD_WRITEABLE.
+
+# Configuration file readable/writable (CRW):
+SharedPreferences(String config_name, int operation_mode) is a common data storage method in Android, improper setting of “operation_mode” will cause malicious data reading.

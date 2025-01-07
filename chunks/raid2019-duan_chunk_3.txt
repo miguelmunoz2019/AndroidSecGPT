@@ -1,0 +1,80 @@
+# 5 Value-Sensitive Differential Slicing
+In this section, we first introduce some important definitions and then describe how our slicing algorithm works in detail.
+
+# 5 Formal Definitions
+We formally define the impact of a code change and then lay out our definitions on the relationships between program behaviors and variable value sets, upon which the soundness of our slicing algorithm is built.
+
+Definition 1. We denote impact of a code change on a code statement as I(d, c), where
+- d represents a code change in the new library;
+- c represents a code statement that has not changed from the old to the new version of the library;
+Therefore, I(d, c) ≠ / means that a code change d has no impact on code statement c. Intuitively, I(d, c) = / means that a code change d has no impact on c. We then define a code change that has no impact on a code statement as:
+Definition 2. I(d, c) = / ⇐⇒ Bc0 d ⊆ B, where
+- Bcd is a set of behaviors representing all possible program behaviors of c with d applied;
+- Bc is a set of behaviors representing all possible program behaviors of c without applying d;
+Here, the impact of a code change to a certain code statement is represented by the change of program behaviors for that code statement. If and only if all the possible program behaviors of a code statement c with the code change d applied are still within the original behavior set, we can say d has no impact on c.
+
+We then have the following definition on the relationship between value set  of all the variables within one code statement and the program behaviors of that code statement:
+Definition 3. V Sd (I, c) ⊆ V S(I, c) ⇒ Bc ⊆ Bc, where
+- V Sd (I, c) denotes the value set of all the variables I (global and local) and their combinations used in a code statement c with d applied;
+- V S(I, c) denotes the value set of all the variables I (global and local) and their combinations used in a code statement c without applying d;
+Essentially, this definition shows that if the value sets of all variables and their combinations used in a code statement are unchanged or a subset of the original value sets, then the program behaviors of that code statement must stay unchanged or a subset of the original ones. It gives a strong mapping from value sets of all variables in a code statement to the program behaviors of that statement. Together with Definition 2, we can draw a link between value sets of all variables in a code statement and the impact of a code change to that code statement. Specifically, our impact analysis can remove the over-conservativeness by examining the value set changes of all variables in a code statement between old and new versions of the library. If the value sets are unchanged or a subset of the original set for a statement before and after applying a code change, that means the code change has no impact on the statement and our algorithm can safely stop further slicing.
+
+This may seem to be counter-intuitive at first glance. For example, if after applying code change d, statement c has only one behavior in its behavior set while the original behavior set has 100 behaviors, d would still be considered as having no impact on c as long as the one behavior is within the original behavior set. In our case, we can safely stop slicing since we know the original code c can correctly handle d and its affected behavior (it is within the original behavior set and introduces no unexpected behavior).
+
+# 5 Basic Scheme
+The core idea is to take into account the value changes of all variables between old and new versions of the code and leverage this info to reduce the over-conservativeness of the traditional slicing.
+
+Intuitively, the basic scheme starts from a code change and performs whole library-wise context- and flow-sensitive value-set analysis (VSA)  on all variables and their combinations for each code statement that has dependency (control or data) with the code change. Then it compares the value sets for the variables within these code statements between two versions of the library. If there exists no change in the value sets, which means the code change has no impact on the current code statement, then our algorithm does not include that code statement in the slice. Since many values cannot be statically determined, we compute value formulas in a context- and flow-sensitive fashion as the value-set for non-constant variables.
+
+Theoretically, this analysis is sound with respect to the definition of impact and could remove the over-conservativeness of traditional slicing. However, it clearly introduces a huge
+USENIX Association 22nd International Symposium on Research in Attacks, Intrusions and Defenses 281
+performance overhead for the whole library-wise context- and flow-sensitive VSA on all variables and their combinations on every control or data dependent code statement for a single code change (there could be thousands of code changes between two versions), rendering the algorithm impractical. Consequently, we present two optimizations to this basic scheme to improve the runtime performance as well as to further reduce the over-conservativeness. Again, source code is listed just for ease of presentation while LIBBANDAID works on byte-code.
+
+# 5 Slice-wise VSA
+To reduce the complexity, we propose an optimization to narrow down the search space to the current slice which begins from the code change.
+
+Listing 2: Slice-wise VSA
+1    void postSingleEvent ( Obj event ) {
+2          subscriptions = subscriptionsByEventType.ifget() ;
+3              ( subscriptions != null
+4              + && !subscriptions.isEmpty()) {
+5                for ( Subscription sc : subscriptions ) {
+6                      postToSubscription (sc , event );
+7                }
+8                subscriptionFound = true;
+9          }
+10    void... { (s. threadMode ) {
+11           postToSubscription ( Subscription s , Obj event )
+12          switch
+13          case PostThread :
+14                invokeSubscriber (s , event );
+15          ...
+
+Listing 2 shows a real-world security commit from a popular library EventBus . At Ln, a condition check !subscriptions.isEmpty() is added in the new version. The traditional forward slicing will start from the code change and include every single line from Ln to Ln and even more codes in functions like invokeSubscriber() since they all have dependency with the code change. However, by manual investigation, we know the code change does not actually introduce any new behavior to postToSubscription().
+
+For the basic scheme, we compute value sets for all variables and their combinations in every code statement that is data-dependent on the code change. For instance, for code at Ln, we calculate value sets for variables sc and event as well as their combinations (say, sc = 1 only if event == 0). This calculation can only be done in a whole library-wise context-sensitive fashion since the value of event is from the caller function postSingleEvent().
+
+To accelerate the process, we can perform VSA only within the slice instead of the whole program. This is because our analysis is to include all code statements that can be affected by the starting of the slice (a code change). That is, as long as the code change (Ln) does not affect the value sets of sc or event or their combinations, we could stop VSA and keep our slicing from further propagating into postToSubscription(). This analysis can be done much faster within the current slice other than the whole library. As a result, a much smaller slice (Ln-8) will be produced in a very lightweight fashion.
+
+This optimization is an approximation to the basic scheme algorithm. It sacrifices precision of the whole library-wise VSA but greatly improves the performance. Consequently, it is more conservative than the basic scheme. For example, in a case where an assignment a = 1 is inserted in a new library, every code that uses the variable a will be included under our optimization. However, a library-wise VSA may tell us that a = 1 is still within the original value-set. Therefore, we do not need to include the code statements that are data-dependent on the newly inserted assignment.
+
+# 5 Intra-procedural VSA
+As discussed, the first optimization that searches only within the slice may bring over-conservativeness. As a result, we propose a second optimization to relax the search scope of VSA to the beginning of the function that contains the code change.
+
+Listing 3: Intra-procedural VSA
+1    void onResume () {
+2          if ( hasDropboxApp ( officialAuthIntent ))
+3          else startActivity ( officialAuthIntent );
+4
+5                startWebAuth ( state );
+6    }
+7    boolean hasDropboxApp () {packInfo . sigs ) {
+8          for ( Signature sig :
+9                 - for(String dbSig : DROPBOX_SIGS)
+10                       - if (dbSig.equals(signature))
+11                             - return true;
+12
+13                 + if (!DROPBOX_SIGS.contains(sig)
+14                       + return false;
+15          }
+16          ...

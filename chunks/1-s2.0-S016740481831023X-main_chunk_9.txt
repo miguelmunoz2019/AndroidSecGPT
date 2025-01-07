@@ -1,0 +1,39 @@
+number. Number of apps available in leading app stores as of march 2017. 2017.
+
+Samsung. Samsung mobile security blog. 2017. Link used to report vulnerabilities: http://security.samsungmobile.com/smrreport.html.
+
+Barral D, Dewey D. “Plug and root,” the USB key to the kingdom. Proceedings of the 2005 black hat. Las Vegas, NV, USA, 2005.
+
+Cabaj K, Caviglione L, Mazurczyk W, Wendzel S, Woodward A, Zander S. The new threats of information hiding: the road ahead. IT Profr 2018;20(3):31–9.
+
+Camredon B. Usbiquitous: USB intrusion toolkit. Proceedings of the 2016 symposium sur la sécurité des technologies de l’information et des communications. Rennes, 2016.
+
+Dominic Spill MO, Boone J. NSA playset: USB tools. Proceedings of the eleventh ShmooCon information security conference, 2015.
+
+Dominic Spill MO, Kershaw M. What’s on the wire? Physical layer tapping with project daisho. Proceedings of the 2013 black hat. Las Vegas, NV, USA, 2013.
+
+Elenkov N. Secure USB debugging in android 4. 2013.
+
+Guri M. Beatcoin: laking private keys from air-gapped cryptocurrency wallets. CoRR 2018. abs/1804.
+
+Guri M, Monitz M, Elovici Y. USBee: air-gap covert-channel via electromagnetic emission from USB. In: Proceedings of the fourteenth annual conference on privacy, security and trust (PST); 2016. p. 264–8.
+
+Guri M, Poliak Y, Shapira B, Elovici Y. JoKER: trusted detection of kernel rootkits in android devices via JTAG interface, 1; 2015. p. 65–73.
+
+Hoggard H. Android 4 secure USB debugging bypass. 2014.
+
+Hypponen M. The conficker mystery. Proceedings of the 2009 black hat. Las Vegas, NV, USA, 2009.
+
+Kamkar S. USBdriveby. 2014.
+
+Kamkar S. Poisontap. 2016.
+
+Karsten Nohl SK, Lell J. BadUSB – on accessories that turn evil. Proceedings of the 2014 black hat. Las Vegas, NV, USA, 2014.
+
+Kierznowski D. In: Technical report. BadUSB 2: USB man in the middle attacks. Royal Holloway University of London; 2016.
+
+Kopecek D. USBGuard: take control over your USB devices. Proceedings of the free and open source software developers’ European meeting. Brussels, Belgium, 2016.
+
+Krzysztof Opasiak is a Ph.D. student at the Institute of Telecommunications at Warsaw University of Technology, Poland. His research interests include mobile devices security and external interfaces security. He also works as Senior Software Engineer in Samsung R&D Institute Poland, where he is dedicated to work on open source software.
+
+Wojciech Mazurczyk is an associate professor at the Institute of Telecommunications at Warsaw University of Technology (WUT). His research interests include network security, information hiding, and network forensics. Mazurczyk received Ph.D. and D.Sc. degrees in telecommunications from WUT. He is also an Associate Editor of the IEEE Transactions on Information Forensics and Security and Mobile Communications and Networks Series Editor for the IEEE Communications Magazine..

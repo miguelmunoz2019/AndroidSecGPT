@@ -1,0 +1,68 @@
+# Journal of Multidisciplinary Healthcare
+ISSN: (Print) (Online) Journal homepage: www.tandfonline.com/journals/djmd20
+# A Review of Mobile Applications Available in the App and Google Play Stores Used During the COVID-19 Outbreak
+Turki Alanzi
+# To cite this article:
+Turki Alanzi (2021) A Review of Mobile Applications Available in the App and Google Play Stores Used During the COVID-19 Outbreak, Journal of Multidisciplinary Healthcare, , 45-57, DOI: 10/JMDH.S285014
+# To link to this article:
+https://doi.org/10/JMDH.S285014
+© 2021 Alanzi.
+
+Published online: 12 Jan 2021.
+
+Submit your article to this journal
+Article views: 2299
+View related articles
+View Crossmark data
+Citing articles: 46 View citing articles
+Full Terms & Conditions of access and use can be found at https://www.tandfonline.com/action/journalInformation?journalCode=djmd20
+# Journal of Multidisciplinary Healthcare
+# Dovepress
+# Open Access Full Text Article
+# R E V I E W
+# A Review of Mobile Applications Available in the App and Google Play Stores Used During the COVID-19 Outbreak
+This article was published in the following Dove Press journal: Journal of Multidisciplinary Healthcare
+Turki Alanzi
+Health Information Management and Technology Department, College of Public Health, Imam Abdulrahman Bin Faisal University, Dammam, Saudi Arabia
+# Purpose
+The objective of this paper was to review the functionalities and effectiveness of the free mobile health applications available in the Google Play and App stores used in Saudi Arabia, Italy, Singapore, the United Kingdom, USA, and India during the COVID-19 outbreak.
+
+# Methods
+This study adopted a systematic search strategy to identify the free mobile applications available in the App and Google Play stores related to the COVID-19 outbreak. According to the PRISMA flowchart of the search, only 12 applications met the inclusion criterion.
+
+# Results
+The 12 mobile applications that met the inclusion criterion were: Mawid, Tabaud, Tawakkalna, Sehha, Aarogya setu, TraceTogether, COVID safe, Immuni, COVID symptom study, COVID watch, NHS COVID-19, and PathCheck. The following features and functionalities of the apps were described:
+- App overview: price, ratings, android, iOS, developer/owner, country, status
+- Health tools: user status-risk assessment, self-assessment, E-pass integration, test results reporting, online consultation, contact tracing
+- Learning options: personalized notes, educational resources, COVID-19 information
+- Communication tools: query resolution, appointments, social network, notifications
+- App design: data visualization, program plan
+- Networking tools: location mapping – GPS, connectivity with other devices
+- Safety and security options: alerts, data protection
+Also, the effectiveness of the apps was analyzed.
+
+# Conclusion
+The analysis revealed that various applications have been developed for different functions like contact tracing, awareness building, appointment booking, online consultation, etc. However, only a few applications have integrated various functions and features such as self-assessment, consultation, support and access to information. Also, most of the apps are focused on contact tracing, while very few are dedicated to raising awareness and sharing information about the COVID-19 pandemic. Likewise, the majority of applications rely on GPS and Bluetooth technologies for relevant functions. No apps were identified that had built-in social media features. It is suggested to design and develop an integrated mobile health application with most of the features and functionalities analyzed in this study.
+
+# Keywords
+COVID-19, pandemic, healthcare, m-health, e-health, mobile applications, virtual care, telehealth
+# Introduction
+Since its outbreak in December 2019, the number of COVID-19 cases has been rapidly increasing across the world. As of 21st August 2020, there were more than 226 million confirmed cases worldwide, including more than 7 million deaths
+Journal of Multidisciplinary Healthcare 2021:14 45–57
+© 2021 Alanzi. This work is published and licensed by Dove Medical Press Limited. The full terms of this license are available at https://www.dovepress.com/terms.php and incorporate the Creative Commons Attribution – Non Commercial (unported, v3) License (http://creativecommons.org/licenses/by-nc/3/). By accessing the work you hereby accept the Terms. Non-commercial uses of the work are permitted without any further permission from Dove Medical Press Limited, provided the work is properly attributed. For permission for commercial use of this work, please see paragraphs 4 and 5 of our Terms (https://www.dovepress.com/terms.php).
+
+# Alanzi
+# Dovepress
+The most affected countries were the USA (55 million cases), Brazil (35 million cases), India (29 million cases), the UK (3 million cases), Saudi Arabia (3 million cases), and Italy (2 million cases) However, the recovery rates differ significantly across the countries due to various factors such as health interventions, effective planning and methods for managing the outbreak The COVID-19 outbreak has severely impacted various industries, being the healthcare industry one of the most affected. It faces a severe burden with the allocation of resources, delivering services and containing the spread of the COVID-19 virus–5 In order to minimize the impact of COVID-19 on the healthcare industry, improve the delivery of healthcare services, and facilitate the process of returning to normal life, countries are developing various strategies.
+
+Adopting health interventions using innovative technologies such as mobile health applications integrated with Bluetooth, global positioning system (GPS), artificial intelligence (AI), and machine learning (ML) techniques can significantly improve the delivery of healthcare services remotely while following preventive measures such as social distancing and home quarantine–8 Likewise, implementing closures and curfews to prevent transmission. Telemedicine, virtual software, and virtual care are useful tools of information and communication technologies (ICT) for the remote treatment of COVID-19 patients–11 These digital technologies are universal in scope and minimize the exposure of patients and physicians to the COVID-19 virus. In this regard, the global penetration of ICT around the world related to the smartphone area in 2019 was 3 billion users, and it is projected to reach 3 billion in 2021
+Consequently, various countries have developed mobile health applications to improve the delivery of healthcare services to contain the spread of the novel coronavirus during the COVID-19 pandemic–21 It is pertinent to point out that in general several of these studies are related to the present investigation. For example, one study indicated that more than 2 million participants used a free smartphone-based app to report potential symptoms of COVID-19 in the United Kingdom and the USA Another study used the COVID-19 Symptom Tracker mobile application to collect data on symptoms, risk factors, and clinical outcomes of the COVID-19 pandemic in the United Kingdom and in the USA Alike, a literature review identified the COVID-19 apps accessible in Canadian application stores at the start of the pandemic
+Also, the apps on COVID-19 launched between April 18 and May 5, 2020 in the USA were examined by Ming et al As there is a rapid progression in the nature of the pandemic, with new symptoms and cases, and new emerging technologies, there is a need for a worldwide regular review of mobile applications. Although there are studies focused on the analysis of the features and functionalities, their evaluations are restricted to the general features of the apps such as usability and ease of use, but did not include COVID-19 specific functionalities and features In general, there is limited research evaluating the mobile applications used for the COVID-19 outbreak
+46 submit your manuscript | www.dovepress.com Journal of Multidisciplinary Healthcare 2021:14 DovePress
+Therefore, to address these gaps it is necessary to review and evaluate the various features, functionalities, and effectiveness of these mobile applications on the light of the COVID-19 new challenges. Concerning this issue, the findings of this paper may have positive implications for medical practitioners, application developers, social communities, scientific institutions, and technological organizations. A comprehensive review of various COVID-19 related mobile applications can help app developers understand the drawbacks of current applications, and also help integrate various functionalities and innovative technologies to develop future apps. Similarly, medical practitioners can also review various applications, and suggest the most effective app for the patients, enabling them to better control their health and adopt COVID-19 mitigation strategies by increasing awareness through mobile applications. By referring the effective application, healthcare operations such as diagnosis, consultation can be managed online, which not only saves time and money, but also helps prevent the COVID-19 transmission by reducing travel.
+
+In this sense, the main objective of this paper was to review the functionalities and effectiveness of the most common free mobile health applications available in the Google Play and App stores used in Saudi Arabia, Italy, Singapore, the United Kingdom, USA, and India during the COVID-19 outbreak.
+
+# Methods
+# Identification of Mobile Applications
+This study adopted a systematic search strategy to identify the free mobile applications related to the COVID-19 outbreak available in the App and Google Play stores. Keywords such as COVID, track, trace, COVID safe, appointments, and COVID information were used in this search. The search was conducted in August 2020.

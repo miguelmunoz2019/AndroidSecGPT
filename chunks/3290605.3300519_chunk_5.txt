@@ -1,0 +1,12 @@
+# 9 CONCLUSION AND FUTURE WORK
+We presented a survey study with 123 participants to explore how they address software security, as well as security motivators and deterrents. Participants consider security as part of their development process to varying degrees. Most interestingly, we believe that our results affirm that developers are not the weakest link. Our analysis shows that participants are self-driven in their work in general, as well as in their software security efforts. Our study are not explicitly ignoring security, dismissing it, or considering it outside of their responsibility. In fact, they are most motivated towards software security when they recognize and identify with its importance. On the other hand, the most important deterrents for software security relate to the (mis)management of the process. For example, dealing with competing priorities, and the lack of security plans, procedures, knowledge, or resources are the main causes for deferring security. Our work highlights the need to look beyond the individual and to focus on understanding organizational issues that lead to insecure practices.
+
+For future work it would be interesting to explore potential relationships between motivations, deterrents, and strategies for software security (e.g., do certain deterrents lead developers to adopt certain strategies?) In addition, as our results indicated that experiencing a security issue (e.g., a breach) can increase software security awareness, it would be interesting to investigate security procedures and attitudes in companies that have experienced such issues and compare it to others that have not.
+
+# 10 ACKNOWLEDGMENTS
+We thank our participants for their time. H. Assal acknowledges her NSERC Postgraduate Scholarship (PGS-D). S. Chiasson acknowledges funding from NSERC for her Canada Research Chair and Discovery grants.
+
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK.

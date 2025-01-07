@@ -1,0 +1,72 @@
+We also observed evolution of repackage detection techniques, from simply porting traditional approaches for desktop application repackaging detection (such as Droid-MOSS) to leveraging Android-specific features such as events and user interactions (such as ViewDroid).
+
+# 9. Repackaging Prevention
+Besides detection, solutions have been proposed to tame app repackaging in a more fundamental way.
+
+# 9. Embedding Watermark Into the App Executable
+AppInk [Zhou et al. 2013a] presents a toolkit that can (1) embed a runtime watermark in the app by instrumenting its source code and (2) generate a complementary verification app that can automatically extract and verify the embedded watermark. Developers publish the watermarked app to app stores and the verification app is requested on demand to prove the originality.
+
+# 9. Ensuring App Authenticity Verification without Relying on CA
+AppIntegrity [Vidas and Christin 2013] modifies the current app signing and verification procedures to achieve a simple authentication protocol. Instead of embedding the verification key in the app package, it suggests app developers place the verification key behind the DNS that is within his/her control and use the package name as a hint to direct users to his/her DNS. However, this approach is prone to man-in-the-middle attacks and lacks practicality as not every app developer has Domain Name System (DNS) service or prefers to name their app packages in this way.
+
+# 9. Making Repackaging Technically Hard
+For example, DIVILAR [Zhou et al. 2014b] obfuscates Dalvik bytecode with a randomized virtual instruction set, and translates its obfuscated code with a customized interpreter at runtime. Such an approach significantly increases the bar for reverse engineers, but considering limited resources in mobile, this approach may result in a high performance penalty.
+
+# 9. Open Problems
+# 9. Repackaging Detection Algorithms Prone to Code Obfuscation
+For repackaging detection, all the algorithms we surveyed rely on static analysis, thus are prone to obfuscation techniques such as code encryption and dynamic code loading (see Section 6 and Section 8). More critically, all surveyed algorithms perform analysis only on DEX bytecode, limiting its effectiveness in practice where 16% apps have native code embedded [Qian et al. 2014]. One option to solve these problems is to leverage dynamic features such as UI changes, event sequences, or other runtime invariants. The intuition is that, since fake apps usually want to preserve or mimic the appearance and the user experience of the original apps, dynamic features may be more resilient.
+
+# 9. Repackaging Prevention Algorithms Lack Deployability
+For repackaging protection, none of the techniques proposed are readily deployable due to high performance penalty incurred or drastic changes made to the app publish/download process. Therefore, the quest for efficient repackaging prevention techniques is still open for research.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 9. Malicious Behavior Extraction
+Since most malware is repackaging benign apps, an intuition would be to extract out the added component to improve malware analysis accuracy or efficiency. For example, it would be beneficial to separate the privacy invasive functionalities in a benign app from the malicious behaviors of the malicious part. However, such a goal could be difficult due to potentially unlimited ways a malware might use to repackage a benign app. Hence, automated malicious behavior extraction remains an open problem in both app repackaging and malware detection areas.
+
+# 10. INFECTION CHANNELS CUT-OFF
+This section describes how Android malware finds their ways into users’ devices from an ecosystem perspective and compares research proposals to cut off these infection channels.
+
+Due to the openness of the Android app distribution environment, malware can be distributed from either trusted app stores like Google Play or other sources such as web forums or alternative app stores. We survey the existing and potential mechanisms that could prevent malware distribution through both channels.
+
+# 10. Trusted App Stores
+Many trusted app stores already utilize some vetting mechanisms to minimize malware distribution. For example, Google Play uses Bouncer [Poeplau et al. 2014] to prevent malicious apps from getting into the store. Another mechanism is app rating and reviews. Although app rating is not generally viewed as a security mechanism, app rating/reviewing can be an effective way for users to alert the app store and other users.
+
+# 10. Untrusted Sources
+Various techniques can entice users to download an app from untrusted sources: search engine optimization [Gu 2014], in-app promotion [Apvrille 2014], phishing [Naraine 2012], and drive-by attacks [Lookout, Inc. 2012a]. Malware can also be silently installed through adb if a user connects his/her device to a compromised computer [Kassner 2014]. To defeat this threat, stock Nexus devices provide an option to prevent installing apps from untrusted sources. Users can also install antivirus apps to protect them against known malware.
+
+# 10. Open Problems
+# 10. Inefficiencies in User Feedback
+Although user feedback like app review/rating might be an effective sociological mechanism to minimize malware distribution from an app store, it is plagued by two factors:
+- App reputation is subject to rating optimization services where app developers pay the service providers to help boost their apps’ reputation rating by false downloads or false comments, as shown by AppWatcher [Xie and Zhu 2015].
+
+- User feedback cannot be used to discover zero-day malware as feedback is only effective with a large sample size, that is, number of users downloading the malware. The malware may have already achieved its popularity goal at this stage.
+
+Therefore, how to leverage user feedback and other nontechnical solutions in infection channel cut-off is a promising research problem, which might require interdisciplinary efforts from humanity, physiology, etc.
+
+# 10. Collective App Vetting
+For trusted app stores, one possible way to enhance the vetting process is to invite independent parties, especially security-oriented parties such as antivirus vendors, to jointly analyze and endorse/rate apps. In this case, users can get more assurance from security experts about the apps they download.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 10. Cloud-Based Malware Scanning
+Without strong DRM (Digital Rights Management) protection, it is impossible to prevent malware infection through untrusted sources. However, given DRM is against the open nature of the Android ecosystem, the best way to prevent malware infection through untrusted sources is probably to warn users [Willis 2013] of potential threats by allowing the system to submit the downloaded app to cloud services for repackage check [Lindorfer et al. 2014], reputation check [Rajab et al. 2013], etc.
+
+# 11. INCENTIVE ELIMINATION
+Incentive elimination is an underresearched area that lacks direction and quantitative studies. It also requires creative approaches to counter malware writers’ incentives. This section describes our perspectives on potential research opportunities to reduce the incentives for malware creation.
+
+# 11. Understanding Attacker’s Monetization Schemes
+Attackers create Android malware for various reasons, but the primary incentive is financial return. Such an incentive exists because the current Android landscape provides many malicious monetization opportunities that have emerged into a business considered as malware-as-a-service. Table IX summarizes some of the monetization schemes identified in recently discovered Android malware samples based on industry reports [Chien 2011; Lookout, Inc. 2012b].
+
+**Table IX. Summary of Popular Monetization Schemes by Malware**
+We believe that as long as these schemes exist, it is highly likely that new (and potentially more sophisticated) malware will be created to meet attackers’ monetary incentives. From this perspective, a complete elimination of monetization schemes is the best cure for malware issues in the Android ecosystem.
+
+However, elimination of those incentives usually requires multiple parties’ collective effort, not only just the core participants of the Android ecosystem. For example, in order to prevent search engine poisoning or click fraud, search engine or ad providers need to employ techniques that make it difficult to generate legitimate search or click requests automatically, which by itself is another hot research topic [Lu et al. 2011]. As another example, to stop man-in-the-mobile attacks, instead of using SMS, financial institutions should require users to use a stand-alone hardware-based token generator in a two factor authentication scheme. Fortunately, such incentive elimination efforts also align with their own interests.
+
+Meanwhile, we do not deny the fact that many incentives are hard to be eliminated, at least for now, such as virtual currency mining and invasive advertisements. Therefore,  Kumar and Kaur  provides some examples on how to monetize stolen IMEI numbers, which might not be obvious based on the Symantec and Lookout report.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 11. Creating Legitimate Monetization Channels
+While blocking illegal monetization channels is important, we believe creating legitimate channels is equally important. This is a general solution the Android ecosystem can offer to eliminate or at least reduce most of the incentives mentioned in Section 11.

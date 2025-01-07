@@ -1,0 +1,62 @@
+# 7 Dialog Design Patterns
+After analyzing how well our sorting into our taxonomy works we now perform a manual inspection of design requirement.
+
+# 7 Consent Dialogs and Dark Patterns
+While running the apps, we applied our consent dialog detection. Overall, we detected 814 (22%) apps displaying a privacy consent dialog on start. 232 (6%) displayed a link, 165 (4%) displayed a notice, and 434 (11%) displayed a proper dialog. Overall, the differences between Android and iOS are minuscule. The results are listed in Table 1, also stating the distribution for Android and iOS individually.
+
+# 7 Dark Patterns
+After sorting all detected privacy consent dialog into our taxonomy, we are left with 434 (11%) proper dialogs. Those pass the first muster towards fulfilling our minimal privacy consent dialog design criteria and we are interested in a more in-depth analysis of their design elements. As established in Section 3, a consent inquiry has to be explicit, present an actual choice, and must not trick the user into consenting.
+
+We applied our detection facilities to extract elements of detected proper dialogs and determine if our stated design criteria are met as detailed in Section 6. An overview of the results is given by the UpSet plot in Figure 1.
+
+We detected at least one violation of our design requirements in 429 apps (98%). On Android, we detected a violation in 246 (98%) dialogs, and on iOS in 183 (99%).
+
+However, a violation of our design requirements is by itself not necessarily a GDPR violation. They may only invalidate the consent given and, thus, render any personal data collection based on such a consent a possible violation. We, consequently, still have to analyze the data transmission done by those apps.
+
+# 7 Before and After Consent
+During our dialog analysis, we collected all transmitted traffic, each time running the app for 60 seconds. Between each app execution, the environment was reset by removing the app. The first collection established the transmitted traffic before any interaction with the consent dialog. The second collected the transmitted traffic after interaction with the consent dialog.
+
+While running the apps, we successfully intercepted 128468 requests with 50% of apps making less than 35 and 75% of apps making less than 15 requests. 187 apps made no request at all out of which 149 were on Android and 38 on iOS.
+
+We analyzed the obtained traffic and leveraged our tracking endpoint specific processors. Overall 25% of all intercepted traffic was directed to one of our monitored tracking domains with 14% of traffic being covered by our endpoint parser. We distinguish between anonymously transmitted data and pseudonymous transmitted data, i.e., data that is accompanied or by itself an identifier.
+
+# 7 Before Consent
+Analyzing the transmitted traffic, 1285 (35%) apps sent at least one request containing a unique identifier rendering the contained information at least pseudonymous and thus covered by the GDPR. The majority of the transmitted data was transmitted pseudonymously. The distribution of different data types transmitted anonymously or pseudonymously is presented in Figure 2.
+
+Overall, 17418 requests went to one tracker covered by our endpoint parser before any interaction took place. Mapping the requests back to apps, leads to 3013 (82%) of apps contacted one of our covered tracking endpoints before any interaction took place.
+
+# 7 After (No) Consent
+For each proper dialog, we repeated our collection twice if a dialog had the appropriate buttons. Once for rejecting consent and in a separate run accepting the consent dialog using Appium. Overall we performed 350 accept and 112 reject analysis. We then monitored the transmitted traffic after interaction.
+
+This resulted in 6653 and 839 requests for accept and reject, respectively. Overall, 77 apps transmitted pseudonymous data after accepting the consent dialog out of which 75 were new.
+
+We observed 5 transmitting pseudonymous data after interacting with an unambiguous reject button out of which all 5 were new. Of the traffic intercepted after giving consent 7% went to one of our covered endpoints. Meanwhile after rejecting consent, the proportion was 10%. Figure 2 shows the amount of different data points transmitted to trackers after giving consent. There is no corresponding figure for transmitted data after declining consent due to the low number of observed requests.
+
+# Figures
+UpSet plot  showing the different possible combinations of Dark Patterns we have detected in consent dialogs. The upper violin plot illustrates the distribution of top chart positions among the apps in the respective set.
+
+The amount of transmissions of our monitored data types before and after giving consent. The data is grouped by whether they were transmitted anonymously or in combination with a unique identifier. Both IDFA and Google Advertising ID are included in GlobalOSAdvertisingIdentifier.
+
+USENIX Association
+32nd USENIX Security Symposium 5477
+# 7 Relevance of Consent
+Overall, we detected pseudonymous data transmission aggregated across our runs with and without interaction for 355 (81%) apps with any type of consent dialog. Out of the apps using a dark pattern in their dialog, 187 (43%) transmit pseudonymous data in any of our runs. This means that 43% of all detected proper dialogs presumably failed to acquire valid consent for the observed data collection.
+
+# 7 Detected IAB TCF Property Strings
+We already statically inferred that only a small subset of apps are using one CMP out of our selection of possible CMPs. However, we want to verify and augment those numbers with actual observed CMP usage and how sensible retrieved CMP data is. During our runs, we also collected the property strings set by an app during execution and analyzed them to check whether they belong to the IAB TCF  by searching for property strings starting with IABTCF_. Besides the standardized data storage format this framework also provides the largest amount of covered CMPs in our list and provides a feasible approach to gain insight into the actual usage of CMPs, though, with a selection bias for IAB TCF compliant CMPs.
+
+We detected 146 apps setting such a string (76 on Android, and 70 on iOS). For 57 of those apps, we did not detect a dialog. During manual confirmation, only 17 were actually showing a dialog and thus were missed by us due to highly specific sentences or rendering the display as an image rendering use of Appium to extract text impossible (see Section 7). 2 apps were setting the any TCF related string after interaction, the remaining 123 set the values before interaction. We analyzed whether the value for the applicability of the GDPR is set, what CMP is being used, and the configuration string itself containing agreed-to collection purposes and vendors.
+
+Applicability of the GDPR: A total of 129 apps correctly stored that the GDPR applies, 8 apps incorrectly assumed that the GDPR does not apply. This information is stored as a Boolean value labeled ’IABTCF_gdprApplies’.
+
+Used CMPs: 121 apps set the CMP value, with Sourcepoint (55 apps) and Google (23 apps) being the most popular by far. Followed by OneTrust with only 14 apps. The remaining CMPs only having single digit usage numbers.
+
+Agreed-to Collection Purposes and Vendors: We detected the TC string also containing purposes and vendors in 64 apps. Out of 24 possible different purposes, on average consent was stored for 7 with a median value of 10. On average 262 vendors were consented to with a median value of 137.
+
+# 8 No Regard for Consent
+In Section 4, we have downloaded 4779 apps, statically analyzed the library usage to detect inclusion of CMPs in Section 5, and run each app to collect traffic while analyzing and interacting with presented consent dialogs in Section 7. We interacted with the dialogs by either accepting or if possible rejecting consent to data collection.
+
+In this section, we discuss the implications of our results. We compare them with corresponding results in previous work on mobile application data collection and web-based consent dialogs. Finally, we discuss consequences and possible solutions to the observed lack of regard for consent and respect of privacy by app developers in a call to action.
+
+# 8 No Real Prevalence of CMPs or the TCF
+Overall, we detected only minor usage of CMPs with only 252 (5%) apps containing any class or library contained in our curated list of popular CMP identifiers. All of them were IAB TCF compliant. This statically retrieved number was confirmed by our dynamic analysis as we only detected a TCF-related settings in 146 (4%) apps. This highly limits any analysis approach based on frameworks and hinders researchers, privacy advocates, and possibly privacy enforcing tools from leveraging the power of a framework to research and improve the state of consent on a fine-grained level, such as the purposes for which consent is given.

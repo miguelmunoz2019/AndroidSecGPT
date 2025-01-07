@@ -1,0 +1,69 @@
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+Yutian Tang
+ShanghaiTech University
+Shanghai, China
+csytang@ieee.org
+Yulei Sui
+University of Technology Sydney
+Sydney, Australia
+yulei.sui@uts.edu.au
+Haoyu Wang
+Beijing University of Posts and Telecommunications
+Beijing, China
+haoyuwang@bupt.edu.cn
+Xiapu Luo∗
+The Hong Kong Polytechnic University
+Hong Kong, China
+csxluo@comp.polyu.edu.hk
+Hao Zhou
+The Hong Kong Polytechnic University
+Hong Kong, China
+sunmoonsky0001@gmail.com
+Zhou Xu∗
+Chongqing University
+Chongqing, China
+zhouxullx@cqu.edu.cn
+# ABSTRACT
+Android deep link is a URL that takes users to a specific page of a mobile app, enabling seamless user experience from a webpage to an app. Android app link, a new type of deep link introduced in Android 6, is claimed to offer more benefits, such as supporting instant apps and providing more secure verification to protect against hijacking attacks that previous deep links cannot. However, we find that the app link is not as secure as claimed, because the verification process can be bypassed by exploiting instant apps.
+
+In this paper, we explore the weakness of the existing app link mechanism and propose three feasible hijacking attacks. Our findings show that even popular apps are subject to these attacks, such as Twitter, Whatsapp, Facebook Message. Our observation is confirmed by Google. To measure the severity of these vulnerabilities, we develop an automatic tool to detect vulnerable apps, and perform a large-scale empirical study on 400,000 Android apps.
+
+Experiment results suggest that app link hijacking vulnerabilities are prevalent in the ecosystem. Specifically, 27% apps are vulnerable to link hijacking with smart text selection (STS); 30% apps are vulnerable to link hijacking without STS, and all instant apps are vulnerable to instant app attack. We provide an in-depth understanding of the mechanisms behind these types of attacks. Furthermore, we propose the corresponding detection and defense methods that can successfully prevent the proposed hijackings for all the evaluated apps, thus raising the bar against the attacks on Android app links. Our insights and findings demonstrate the urgency to identify and prevent app link hijacking attacks.
+
+# 1 INTRODUCTION
+Mobile apps are pervasive. Android, as the dominant mobile operating system, supports a wide variety and a large number of mobile apps. To provide integrated service to users, Android integrates various functionalities from different apps. The deep link is a mechanism in Android to allow such seamless web-to-app communications. A deep link is a universal resource identifier (URI) for app content, such as a specific Activity. For example, clicking a deep link (e.g., yelp:///career/home) on a webpage in the mobile Chrome, a user is automatically redirected to the Yelp app by Android. Here, Chrome hands over the control to the Yelp app as the latter is more suitable for the task.
+
+App Link. Despite the convenience, researchers also identified serious security issues in deep links. A most significant hijacking example is an app can register another app’s scheme with a deep link and deceive users into opening the malicious app. To prevent this, Android promotes a new type of deep link called app link since Android 6.
+
+The target of the app link is taking users directly to a link’s specific content in an app. App links are different from deep links in two aspects: first, app links only support links with HTTP(S) (e.g., http(s)://...). However, deep links support customized schemes (e.g., yelp://...); second, the app link verification is enforced for enabling app links. Whereas, such verification is not enforced for deep links. To pass the app link verification, a developer must do the followings: first, a user has to claim the app link in the app’s.
+
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA © 2020 Association for Computing Machinery. ACM ISBN 978-1-4503-7043-1/20/11. . . $15 https://doi.org/10/3368089
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+# Yutian Tang, Yulei Sui, Haoyu Wang, Xiapu Luo, Hao Zhou, and Zhou Xu
+manifest file (AndroidManifest.xml); second, the user has to publish a digital asset link (DAL) on their domain. The rules and syntax for constructing DAL are presented in the official tutorial.
+
+# Instant App
+Despite the efforts made by the Android security team and researchers , app links are still not as secure as expected, especially when it is under the context of instant apps . Instant apps are recently promoted by Android to enable on-demand use of modules in an app without the installation of the entire app. To build an instant app, developers must split an app into modules and associate URLs with these modules. These modules are named as features in an instant app.
+
+Each instant app consists of one base feature module and zero or more feature modules. The feature modules can access all public functions in the base feature module. Inside each module, there is at least one Activity that serves as an entrance to the module. This Activity is always associated with a URI, through which users can access the Activity and other services in the module. When a user clicks the URI, the module is downloaded and its Activity is launched to the user.
+
+If a user accesses a feature module, an Android Package (a.k.a. APK, the binary format of an app) that contains the base feature module and the feature module is downloaded to the device. Otherwise, an APK that only contains the base feature module is downloaded  to the device. Fig. 1 shows an example of Google Trips instant app (com.google.android.apps.travel.onthego), which only contains the base module.
+
+In Google Trips, there are two Activities that are associated with URLs. To be exact, InstantHomeActivity and ExploreActivity are bound to links google.com/tripsapp and google.com/tripsapp/trip/em, respectively. Once the link (i.e., google.com/tripsapp) is clicked, the module (base module in this case) is downloaded to the device. Then InstantHomeActivity is shown to users.
+
+Compared with normal apps, instant apps have the following unique features: first, an instant app does not require any installation; and second, an instant app can provide on-demand modules for app users. A module is downloaded to the target device if and only if a user attempts to access certain functions inside that module.
+
+# Attacks
+However, we find that app link verification can be easily bypassed by exploiting instant apps (detailed in Section 4). Attackers can manipulate a malicious instant app (MIA) to launch three types of attacks, including link hijacking with STS (§4), link hijacking without STS (§4), and instant app hijacking (§4). STS is a novel feature introduced in Android 8.
+
+With STS, Android can recognize the text selected or tapped and recommend the next logical step. For example, if a user selects a sequence of numbers, STS recognizes them as a possible phone number and recommends the user to make a phone call. In this attack, the STS is spoofed to recommend our MIA for users. If a user select our MIA, they can be hijacked.
+
+We validate these attacks on the latest Android versions (both Android 9 and 10). The attacks can be launched successfully on a Pixel device. We already reported the weakness of the app link mechanism to Google through its Vulnerability Reward Program (VRP). Google confirmed the vulnerability we reported. Our Android Id is 128919672.
+
+To further measure the severity of these attacks, we develop a tool called MIAFinder to detect apps that are vulnerable to the aforementioned three types of attacks (detailed in Section 4). We then apply MIAFinder to 400,000 Android apps in the wild. Experiment results suggest that app link vulnerabilities are prevalent in Android’s ecosystem, with over 30% of apps are fragile to these attacks (detailed in Section 6). To defense the app link attacks, we propose a novel API named verifyDomainPackage and generate a patch that integrates the verifyDomainPackage API for the latest Android (10). The experiments show that verifyDomainPackage can successfully prevent all the three types of attacks (detailed in Section 7).
+
+# Contributions
+The major contributions as follow:
+- New Vulnerabilities and Attacks. We present the weakness of the app link mechanism in Android and present three kinds of attacks accordingly. These attacks are demonstrated to be practical and reproducible. For example, we demonstrate that our attacks can even hijack some popular apps, such as Gmail, Facebook Message, system SMS, and Whatsapp. To the best of our knowledge, this is the first end-to-end study of the security issues in the app link mechanism. Our observation is acknowledged by Google.

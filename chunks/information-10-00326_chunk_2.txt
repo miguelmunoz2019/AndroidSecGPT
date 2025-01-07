@@ -1,0 +1,74 @@
+Android Sinks APIs are the calls into resource methods accepting at least one non-constant data value from the application code as a parameter, if and only if a new value is written or an existing one is overwritten on the resource. The sendTextMessage() resource method is an example of an Android sink as both the message text and the phone number it receives are possibly non-constants.
+
+# 3. Related Work
+In this section, the pre-eminent available vulnerability detection tools are summarised. These tools perform static or dynamic analysis or both. The summary performed below is concerned with categorising the features of the tools, deciding whether it is static or dynamic. Table 1 lists the features of those tools. Moreover, the features covered in this work, discussed later in Section 4, are marked in the last column of the table. The implemented features are discussed in details later in the paper.
+
+Similar to AndroShield, Ostorlab  has the same goal, which is to be a platform used by mobile developers to check for vulnerabilities in applications via static and dynamic analysis. The free version of Ostorlab does not provide any dynamic analysis features. Although providing APIs and documentation on how to use Ostorlab platform, it lacks providing the source code, modules or architecture. Looking at the tools at Table 1, QARK , for example, is a static analysis tool. It is capable of finding common security vulnerabilities in Android applications. QARK detects vulnerabilities like: Improperly Protected Exported Components detection, Enable Backups Feature detection, Debuggable App Mode detection, and Exported Activities and Services detection alongside the ones detected by the static analysis of Androshield. The main advantage of Androshield over QARK is that Androshield de-compiles the APK file to Jimple, while QARK decompiles it to Java bytecode. Jimple is an intermediate representation of a Java program designed to be easier to optimize than Java bytecode. It is typed, has a concrete syntax and is based on three-address code. It includes only 15 different operations, thus simplifying flow analysis. By contrast, Java bytecode includes over 200 different operations.
+
+For dynamic analysis, one of the tools that compare to Androshield is Inspeckage  which also offers analyzing network traffic and information gathering. Information gathering includes requested permissions, app permissions, shared libraries, checking whether the app is debuggable or not, and exported components. What makes Androshield different from Inspeckage is that Inspeckage offers dynamic analysis only and requires Xposed Framework  to be installed as a prerequisite while Androshield offers both static and dynamic analyses without the need for prerequisite frameworks.
+
+All vulnerabilities covered by AndroShield are written in bold in Table 1, underlining the ones covered only by AndroShield.
+
+# Information 2019, 10, 326
+# Information 2019, 10, 326
+# 6 of 16
+# 4. Methodology and Architecture
+This section discusses the proposed architecture along with how static and dynamic analysis are applied to detect Android vulnerabilities.
+
+# 4. Proposed Architecture
+As shown in Figure 1, the architecture is a three-tier architecture divided into Presentation, Application and Data layers.
+
+# 4. Application Layer
+This layer is considered the core of the business logic execution. It is divided into six modules, with each one being responsible for a single task:
+- (a) Web App API module which is responsible for handling the transfer of data between the presentation layer and the core logic.
+
+- (b) Once the user uploads the APK file, the Reverse Engineering module handles it. The reverse engineering process is crucial to proceed to vulnerability detection. The Jimple—simplified Java language with a fewer number of instructions—and Manifest files are extracted in this phase.
+
+- (c) Once the files are extracted, the Static Analysis module performs Manifest File Analysis and Source Code Scanning on the Jimple and the Manifest files to find the vulnerabilities. The found vulnerabilities (i.e., Information leaks, APK Information and permissions) are sent to the Reporting module.
+
+- (d) Before performing Dynamic Analysis, Emulator and Input Generator module has to simulate the user actions. The log file along with the captured APIs are sent to the Dynamic Analysis module.
+
+- (e) The Dynamic Analysis module performs security analysis using dynamic analysis which includes API Calls Analysis and Intent Crash Analysis. The resulting insecure internet request(s) and intent crashes are then sent to the Reporting module.
+
+- (f) Finally, the Reporting module compiles all the received information into a single report.
+
+# 4. Presentation Layer
+The Presentation layer is where the user interaction happens and it is divided into three modules that send and receive data from the application layer. The three modules are Registration and Login, APK Upload and Analysis Report, and Old Reports modules. The Registration and Login module is responsible for handling user permissions and account management. The APK Upload and Analysis Report module is responsible for sending the APK file to the Web App API and then display the APK.
+
+# Information 2019, 10, 326
+# 4. Data Layer
+The Data layer is where user data, vulnerabilities, and APK info are stored. Old reports associated with each user are stored as well.
+
+# 4. Methodology
+- APK Reverse Engineering: The first step after the APK file is submitted is to de-compile (reverse engineer) it. The aim of this stage is to get the code and the manifest file of the submitted APK file. ApkAnalyzer —an Android SDK command-line tool—was used to perform the reverse engineering task with the help of Soot —a Java optimization framework. It is important to note here that before any application is zipped into the final APK file, the Android program (the Java source code) is compiled into a single DEX (Dalvik Executable) file. Alternatively, it will be compiled into multiple DEX files if the app and the libraries it references exceed 64KB. Then, the DEX file(s) are reversed and then transformed into JAR files—which are compiled Java files. ApkAnalyzer handles this process, it extracts the DEX files from the APK file, then transforms them into Jimple files directly by soot framework that can be used for performing the analysis. The output of this phase includes the code as well as the extracted binary manifest file.
+
+- Decoding Manifest File: The output manifest file is in binary format. At this step, the manifest file is transformed from binary format to XML format.
+
+- Extracting Meta-data: Having the XML version of the manifest file, the following information is extracted:
+1. Package Name
+2. Version Name
+3. Version Code
+4. Minimum SDK Version
+5. Target SDK Version
+6. Debug Mode (Yes/No)
+7. Backup Mode (Yes/No)
+8. Test Only Flag (Yes/No)
+They are then displayed in the report and some are used as well for Static Analysis phase.
+
+- Performing Static Analysis: In this phase, the static analysis uses the reverse engineered code to trace vulnerabilities. During static analysis, the code is analyzed without executing the application. Details of the static analysis are discussed in Section 4.
+
+- Performing Dynamic Analysis: Dynamic analysis focuses on tracing vulnerabilities while the application is running. Vulnerabilities, in this case, are not detected by analyzing the code in the static phase. Details of the dynamic analysis are discussed in Section 4.
+
+- Generating the Report: The final phase is to combine all the information gathered and visualize them in a user-friendly report format.
+
+# 4. Static Analysis
+Static Analysis is performed by passing through two stages: (a) Manifest File Analysis and (b) Source Code Scanning.
+
+# Manifest File Analysis
+This phase aims to match vulnerabilities’ attribute names. The following list shows the top attributes and when to consider each one vulnerable.
+
+- Backup Flag is considered vulnerable if its value is true. Backup is done by copying the application data (for example, application database and files) to the SD card. Application information on the SD card is less secure than on the mobile phone memory. This is because it is easier to grant write permission on SD cards. Vulnerability risk of enabling backup is estimated Low as the information that is backed up may not have sensitive information to be fully risky.
+
+- Debug Flag is considered vulnerable if its value is true. Android application developers use debug mode to be able to log important fields and verify whether or not they are correct. Unfortunately, forgetting to change the application to be in release mode enables hackers to easily sniff on the application. Vulnerability risk of enabling debug mode is estimated High as a lot of information can be revealed while the application is in debug mode.
+
+- Exported Components (activities and services) are considered vulnerable if they exist. Leaving more components opened to other applications and services requires more interfaces to secure against attacks. A malicious user can fuzz on the interfaces until finding a way to break an interface. Vulnerability risk of exported components is estimated Low as the getaways may be secured and may be the components are exported on purpose not by mistake, so it is not as risky as other vulnerabilities.

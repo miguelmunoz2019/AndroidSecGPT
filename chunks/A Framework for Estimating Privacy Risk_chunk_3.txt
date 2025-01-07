@@ -1,0 +1,49 @@
+Last but not least, we map identity assets in ITAP dataset to both privacy policy and XML file. Overall, the entire experimental dataset collects 70% of identity assets in the ITAP dataset while privacy policies collect 67% of identity assets and XML files only have 10% of identity assets which makes sense since we parse the entire privacy policy to map identity assets and meanwhile the maximum number of permissions that an app would request is only 32.
+
+# Distribution of Categories
+0     0 1     0     0     0      0     0     0     0    0
+Privacy Rank
+# Evaluation of Ranking App Risk.
+
+We adopt two baselines to evaluate the effectiveness of our approaches in terms of ranking App risks. The first work was introduced in 2019 by O’Loughlin et al. . They evaluated the presence and quality of a privacy policy of apps with questions that aim to assess comprehensiveness of an app’s documentation in describing data collection and storage.
+
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+practices and policies. By answering their questions in their work, they divided the score of the privacy policy into three ranks: “Acceptable”, “Questionable”, and “Unacceptable”. In this section, we denote this approach as “OLoughlin”.
+
+# XML Distribution
+0
+0
+0
+0
+0
+Basic
+Dynamic
+10 20 30 40 50 60
+Number of Permissions
+The other tool that we use in this comparison as baseline is the ImmuniWeb RMobile App Scanner  (short for ImmuniWeb). It is a tool that develops Machine Learning and Artificial Intelligence technologies for Application Security Testing and Attack Surface Management. Their automated tests reveal several security risk flaws and weaknesses that may impact the application. We pick tests that are related to privacy and data access like Exposure of potentially sensitive data. The level of each risk that has been detected can be divided into four ranks: “High”, “Medium”, “Low”, and “Warning”. “High” denotes the red light which indicates that this App has higher risk with respect to the according weakness or flaw.
+
+We pick the most popular apps in our experimental dataset to compare our dynamic approach to different measurements. Each of the popular apps has over 5 million downloads in Google Play.
+
+K. C. Chang et al.
+
+app does not mention whether its server encrypts users’ information or not, this app is labeled as “Unacceptable”. Duckduckgo and OpenVPN, which are located in the middle of the table, are the only two apps that are labeled as “Acceptable” in OLoughlin.
+
+# 4 Related Work
+Generally speaking, research on mobile privacy risk can be divided into three categories: mobile App’s permission analysis, mobile App’s privacy policy analysis, and mobile security and privacy framework.
+
+For the first category, mobile App’s permission analysis, several works have been published. More and more mobile applications are providing novel services by requesting bunch of access permissions of user’s sensitive information. To understand this, for example, Au et al.  surveyed the permission systems of several popular smartphone operating systems and taxonomize them by the amount of control and information they provide users and the level of interactivity they require from users. Felt et al.  built a tool to determine the set of API calls that an application uses and then map those API calls to permissions. It generates the maximum set of permissions needed for an application and they compared them to the set of permissions actually requested.
+
+However, these approaches are very hard to implement in practice. On the other hand, some researchers have dug into this area by constructing machine-learning-based researches. Wijesekera et al.  built a classifier to make privacy decisions on the user’s behalf by detecting when context has changed and, when necessary, inferring privacy preferences based on the user’s past decisions and behavior. It grants appropriate resource permission requests without further user intervention, denies inappropriate requests, and only prompts the user when the
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+system is uncertain of the user’s preferences. Li et al.  introduced Significant Permission IDentification (SigPID), a malware detection system based on permission usage analysis to cope with the rapid increase in the number of Android malware. They used several levels of pruning by mining the permission data to identify the most significant permissions. Then, they constructed machine-learning-based classifiers to classify different families of malware and benign apps.
+
+Even so, users often do not fond of security software that frequently scan their devices. Therefore, Zhu et al.  introduced the techniques to automatically detect the potential security risk for each mobile App by exploiting the requested permissions. Then, they designed a mobile App recommendation system with privacy and security awareness which can provide App recommendations by considering both the Apps’ popularity and the users’ security preferences. However, these approaches do not take the identity assets that Apps collect. Privacy risk exists because of insecure data access. Therefore, in this work we map each permission requested by mobile Apps to several identity assets and build our own privacy risk score software.
+
+The other category is about mobile App’s privacy policy. Privacy policies help users understand what portion of their sensitive data would be collected and used or shared by a specific mobile application. However, not every application has a privacy policy. For example, Dehling et al.  surveyed popular medical health Apps in Apple iTunes Store and Google Play to assess the quality of medical health App’s privacy policies. They found out that of the 600 most commonly used apps, only 183 had privacy policies. Liu et al.  examined web sites of the Fortune 500 and showed that only slightly more than 50 percent of Fortune 500 web sites provide privacy policies on their home pages. With the lack of taking user’s privacy into concern, some works provide guidelines for building software and privacy policies. Harris  issued recommendations for mobile application developers and the mobile industry to safeguard consumer’s privacy. This work provided guidance on developing strong privacy practices, translating these practices into mobile-friendly policies, and coordinating with mobile industry actors to promote comprehensive transparency.
+
+Researchers have also begun to explore techniques for mitigating digital privacy risk. Zaeem et al.  proposed a technique that parses privacy policies and automatically generating summaries. They used data mining models to analyze the text of privacy policies, train their model with 400 privacy policies, and answer 10 basic questions concerning the privacy and security of user data. O’Loughlin et al.  reviewed data security and privacy policies of 116 mobile apps for depression. They constructed a list of questions and answer them by reviewing privacy policies. They showed that only 4% of privacy policies of mobile Apps are acceptable. Harkous et al.  proposed an automated framework for privacy policy analysis (Polisis). They built it with a novel hierarchy of neural-network classifiers and trained their model with 130k privacy policies. They provided PriBot which is a program that can answer users questions related to those privacy polices they have. Within 700 participants, PriBot’s top-
+230 K. C. Chang et al.
+
+3 answers is relevant to users for 89% of the test questions. Nevertheless, these works do not look up what sets of identity assets are being collected by those privacy policies. Our work not only map permissions but also privacy policies to identity assets.
+
+The last category is about security and privacy frameworks for mobile Apps. People have proposed scoring framework on social media. Petkos et al.  proposed a privacy scoring framework for Online Social Network (OSN) users with respect to the information about them that is disclosed and that can be inferred by OSN service operators and third parties. It took into account user’s personal preferences, different types of information, and inferred information. To fight against malwares, many works have been published to address data leakage problem. Rao et al.  presented Meddle, a platform that leverages virtual private networks (VPNs) and software middleboxes to improve transparency and control for Internet traffic from mobile systems. By controlling privacy leaks and detecting ISP interference with Internet traffic they found identity assets leaked from popular Apps and by malwares. Enck et al.  proposed a malware detection system named TaintDroid. “Taint” values can be assigned to sensitive data and their flow can be continuously tracked through each app execution, raising alerts when they flow to the network interface. Hornyack et al.  introduced AppFence. They implemented data shadowing, to prevent applications from accessing sensitive information that is not required to provide user-desired functionality, and exfiltration blocking, to block outgoing communications tainted by sensitive data. Gibler et al.  presented AndroidLeaks, a static analysis framework for automatically finding potential leaks of sensitive information in Android applications on a massive scale. AndroidLeaks drastically reduces the number of applications and the number of traces that a security auditor has to verify manually.

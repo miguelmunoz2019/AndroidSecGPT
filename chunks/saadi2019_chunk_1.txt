@@ -1,0 +1,66 @@
+# Proposed security by IDS-AM in Android system
+Chaimae SAADI1, ibtissame kandrouch2 and Habiba CHAOUI3
+Systems Engineering Laboratory, Data Analysis and Security Team National School of Applied Sciences, Campus Universitaire, B.P 241, Kénitra 14000, Morocco
+chaimaesaadi900@gmail.com1 ibtissame.kandrouch@uit.ac.ma2, mejhed90@gmail.com3
+# Abstract
+Mobile systems are always growing, automatically they need enough resources to secure them. Indeed, traditional techniques for protecting the mobile environment are no longer effective. We need to look for new mechanisms to protect the mobile environment from malicious behavior. In this paper, we examine one of the most popular systems, Android OS. Next, we will propose a distributed architecture based on IDS-AM to detect intrusions by mobile agents (IDS-AM).
+
+Keywords— Android, IDS, IDS-AM, mobile agents, attacks.
+
+# 1. INTRODUCTION
+With the advent of the mobile operating system, including Android devices, the security threat is increasing and mobile security enhancement solutions that can mitigate the associated risk are lacking . So android devices have serious problems with malwares, in 2016 according to a recent report from Kaspersky Lab and INTERPOL, Android users would be prime targets for malware. Indeed, over 98% of detections Kaspersky Lab to Android . On an open market such as that of Android, the quality of applications is moderated by the user reviews . If an application is reported by some users as malware, Google removes this malicious application. Security is primarily based on the user should not install an application with a small number of comments or requesting not required permissions for the application . This paper proposes a methodology to automatically detect an intrusion (malware, virus, bug…) using IDS, that is an integral part of any complete security package of a modern. An IDS is used to detect the intrusions by supervising a network or a system and analyzes collected flows of audit.
+
+This paper is organized as follows: Section 2 presents some security issues in android environment, and we provide background overview information about the current status of security solutions in this platform. Then in section 3 we propose a solution that enables an Androphone to detect an intrusion using IDS based on new architecture that have three agents: monitoring, analyzing and reporting. And finally in section 4 we will show the test and result of implementation of this architecture in real environment.
+
+# 2. RELATED WORK
+The use of intrusion detection techniques has been attempted by many researchers to detect malware on Android devices.
+
+used DroidBox, the Android application sandbox, to generate behavioral graphs to help analyze runtime activities and establish functional patterns. The patterns were then used in cross-examining naming classification of malware families by known antivirus vendors. But the test that was made is not efficient with all types of malwares.  proposed a solution based on monitoring events happening, on kernel level.  used kernel system calls, network activity events and file system logs to detect anomalies in the system. At that time, there were no real Android devices available, so they failed to test their operating system properly.  developed abnormally a framework for anomaly detection on Android Smartphones. The framework monitored the information obtained from the Smartphone. Then, it applied machine learning to classify the collected data as normal or malicious. Yet they could not find real malware to test their solution.  proposed a methodology to automatically detect the use of a considered permission and to warn the user about its use when this occurs.  proposed to achieve this goal without modifying the Android operating system a methodology that decompiles the application and injects a small patch into the Bytecode before repackaging the application. The introduced patch sends notification to a third party application that can be used as a monitoring application or an authorization service. But this solution detected just
+978-1-7281-1482-8/19/$31 ©2019 IEEE
+# 2. Android Overview
+Google Android is an open source Linux Based operating System, which allows modification on kernel level. Android consists of five layers of services :
+1. Kernel layer based on Linux, it is closest to hardware.
+
+2. Runtime layer contains a Dalvik Virtual Machine (DVM) and each app operates in its own DVM.
+
+3. Libraries are specific to hardware architecture on the device.
+
+4. Framework layer implements application level services such as Inter-Process Communication (IPC).
+
+5. The Application framework defines the creation and working of apps.
+
+The following figure summarizes all this five layers.
+
+Fig 2. Android architecture 
+# 2. Android security
+Android security depends on different parts of the OS. It is built on top of a Linux kernel. Then, as each application runs as an independent process, isolation is guaranteed by the UNIX permissions of standard user processes. Each process contains an instance of the DVM that also provides some isolation between the application and the OS. Nevertheless, Android gives the ability to run native libraries that could endanger the system.
+
+# Attacking android
+Fig 3. Distribution of new mobile malware by type in 2014 and 2015 
+Fig 4. Top 20 malicious mobile programs 
+In the following paragraph, we discuss the results of the classification and the characteristics of Android malwares given in.
+
+- Trojans look like a normal app, but they perform harmful behavior without knowledge of the users.
+
+- Spyware may present itself as good applications, but has a hidden agenda to silently monitor contacts, messages, location etc. that leads to steal private data.
+
+- Worm app can create similar copies of itself and spreads them through network and media.
+
+- Backdoor authorize other malware to enter the system facilitating them the bypass of the normal security procedures.
+
+- Botnet apps compromise the device to create a Bot, so that the device is controlled by Botmaster (remote server), called, through specific commands.
+
+- Ransomware can lock the user device to make it inaccessible until some ransom amount is paid through online payment service.
+
+As mentioned before, the approaches proved valuable in protecting Smartphones but they have a lot of restrictions. Most of the existing methods learn from traditional IDS. The special character of the Smartphone is not fully taken into account. Our presented approaches allow us to extract as many features as we would like. This makes the detection capability become more efficient. The intrusion detection system we proposed not only can find abnormality but also can locate the malware, and send reporting log to the system for taking appropriate measures, that are predefined. The main role of this solution is to detect a suspicious behavior in the system caused by malicious applications particularly malwares.
+
+For this, we discover smartphone anomalies in real time, efficient selection and extraction of features are essential.
+
+# 3. PROPOSED IDS ARCHITECTURE
+In order to cope against abnormality particularly malwares, we proposed a new architecture of intrusion detection system. It is used to help users find the suspicious behavior on the Smartphones. The architecture of intrusion detection system based on the android platform can be seen on Figure 5.
+
+As shown in Figure 5, the data extraction has three functional modules, namely, system status monitoring, network monitoring, and process monitoring. The system status monitoring module monitors real-time system behaviors, such as CPU usage, battery consumption, memory usage. We find indeed malware that can consume a lot of loads and traffic. The main work of the process monitoring module is extracting.
+
+The characteristics of all processes running on the phone. This means information about applications running in real time so that we can find malicious applications that can damage the system or steal private data such as SMS, contacts, location, etc. The network monitoring module analyzes the incoming and outgoing network traffic On the smartphone, we can get the source IP address, the destination IP address, the protocol type (TCP / UDP / ICMP), the port number source and the destination port number. All this information is used to identify the creator of each network connection.
+
+Data analysis uses a detection algorithm to determine if the Android system is an invasion. However, it is not enough to find the anomaly of the Android system. In order to further analyze the anomalies of the Android system and to locate malware, we also need to monitor the process and network traffic, providing data analysis for a more detailed data source.

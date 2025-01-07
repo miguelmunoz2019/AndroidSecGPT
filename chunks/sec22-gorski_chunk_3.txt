@@ -1,0 +1,55 @@
+# Alternate Approaches
+While FRED uses static program analysis to help discover improper file re-delegation, alternative approaches exist for identifying the regular expressions of file paths accessed by RPC entry points. Dynamic analysis provides evidence that files are accessed during execution; however, code coverage and test case generation are frequently limiting factors for dynamic approaches. Recently, Centaur  proposed phased concrete-to-symbolic execution (PC2SE) to avoid state space explosion during the initialization phase of Android’s system services. This optimized symbolic execution is a promising direction for future work; however, its dependence on concrete execution within an emulator limits its application to non-AOSP firmware images. We apply FRED to non-AOSP firmware in Section 5.
+
+# 4 Design
+This section details the design of FRED following the first three steps described in Section 3.
+
+# 4 Identifying File Methods
+FRED seeks to identify the highest abstraction level possible for file methods in order to best match the potential file paths to the RPC entry points. Figure 3 shows four data flow paths of interest. First, Figure 3a depicts when the file path originates in native code and is either directly or indirectly passed.
+
+1528 31st USENIX Security Symposium USENIX Association
+# Java File Methods
+File path input as a String, File, or Path Object
+java.io.FileInputStream java.io.FileWriter ... android.util.AtomicFile android.os.FileUtils ...
+
+Java com.android.server.net. NetworkStatsFactory: ...
+
+Native File path input as a String Native nativeReadNetworkStatsDetail Native Native
+open unlink ... open unlink ... open unlink ... open unlink ...
+
+# (a) JNI methods using file paths
+# (b) JNI methods using file paths
+# (c) Java API File Methods
+# (d) Android API File Methods
+Next, Figure 3b depicts when the file path originates in Java code and is passed to a JNI method that is not a generic file method. Finally, Figures 3c and 3d depict when the file paths are passed to the Java or Android API file methods designed as generic file methods.
+
+# 4 Libc File Methods
+Standard libc file methods are well-known and defined in a handful of header files, including stdio.h, fcntl.h, unistd.h, sys/stat.h, and stdlib.h. Libc file methods can be distinguished from other methods by their arguments. Specifically, a libc file method has either a string file path or a file descriptor as an argument. We manually explored the approximately 400 methods in these header files and identify 70 libc file methods (e.g., fopen, open, rename, and unlink).
+
+Android also uses Fortify  to ensure developers properly use standard libc methods. Fortify wraps the standard libc methods at compile time with methods that perform safety checks at both runtime and compile time. Since FRED analyzes compiled native binaries (Section 4), these Fortified libc methods must also be included in our list of libc file methods. Our manual investigation identified 6 additional libc file methods for Android 10.
+
+# 4 JNI File Methods
+To find the JNI file methods, FRED first uses Soot  to extract a list of all JNI methods. Each method is then processed to add back in argument variable names by extracting them from the Java source code using features available in the standard javac compiler . Since many JNI file methods have names similar to the libc file methods they invoke, we use keywords from the file methods determined in Section 4 (e.g., open, read, write, link, unlink, and remove) along with their synonyms to identify potential JNI file methods. We then identified the JNI file methods by further filtering the resulting methods using their arguments, looking for methods with argument names or types such as file, path, fd, and fileDescriptor. If the Java source code for the operating system is not available, such as in OEM builds of Android, we decompile the Java code of the OEM build and manually inspect the call sites of the JNI methods to determine the arguments purpose from context in the code.
+
+# 4 API File Methods
+As shown in Figure 3, two classes of API file methods exist: 1) standard Java API methods, and 2) Android API methods that make use of the standard Java API methods while providing additional functionality. FRED identifies these API file methods using the JNI file methods identified in Section 4. Intuitively, FRED begins with the set of all API methods in Android. It then traverses the call graph from each API method to find a path to a JNI file method. However, given how heavily interconnected Android’s API methods are, relying only on the occurrence of JNI file methods in the call graph to identify API file methods results in many false positives. Therefore, we use an iterative process with manual refinement to improve precision.
+
+Extracting API Methods: FRED extracts the complete set of the Android API methods available to both third-party applications and system developers from the framework Jar file from an AOSP build. Java language abstractions (e.g., abstract classes and interfaces) complicate the identification of callable methods. For example, java.nio.file.FileSystem is an abstract class and only defines private methods; however, class implementations are accessible through static methods in the class java.nio.file.FileSystems. To consider such overriding methods, FRED uses Soot  to load and extract the classes and methods within the Jar file. It then uses Soot’s class hierarchy analysis (CHA)  of all the classes and methods, including additional methods that override methods from the current set of API methods.
+
+Identifying API File Methods: FRED performs a reaching analysis on the call graph of each API with calls to file methods as sinks. Soot’s CHA over-approximates the runtime call graph, introducing edges between methods that do not exist at runtime. As such, FRED’s reaching analysis over-approximates the actual API file methods.
+
+# 4 Extracting File Paths Used in Java Code
+For each RPC entry point, FRED identifies all calls to file methods. It then performs a backwards inter-procedural data flow analysis to identify the file paths passed to those file methods. We now describe FRED’s data flow analysis in Java code. Section 4 discusses C/C++ code called through JNI.
+
+Java file paths are represented by the three key classes: java.lang.String, java.io.File, or java.nio.file.Path, where File and Path are wrappers for a String representation of the file path. These wrappers use a combination of class constructors and methods to specify the String value. Therefore, extracting the file paths used in the file methods can be reduced to reconstructing strings. To extract all the possible file paths accessed for a given RPC entry point, FRED performs a backwards inter-procedural data flow analysis from the variable containing the representation of the file path opened by a file method to the RPC entry point.
+
+Since complete file paths cannot always be determined via static analysis, FRED creates regular expressions to match the concrete security sensitive file paths identified in Section 4. However, before generating these regular expressions, FRED captures these partial file paths using an intermediate expression generated during the data flow analysis.
+
+# 4 Intermediate Expressions
+FRED uses intermediate expressions to represent both file paths and metadata (e.g., source method and statement) for each expression part. The metadata aids post-processing, making it possible to detect situations not handled by the data flow analysis, and to simplify the expressions when transforming them to regular expressions.
+
+FRED’s intermediate expressions are trees that join string segments using boolean decisions. Each node in an intermediate expression tree is either a Leaf or a Branch.
+
+As shown in Table 1, each Leaf node is sub-divided into Constant, Any, Unknown, and PlaceHolder. A Constant node identifies literal constants hard-coded into the Java source code. An Any node represents a value that could not be determined from the source code. Examples of Any nodes include values representing a UserId, package name, time stamp, or array value. In Section 4, these values resolve to regular expressions of either .* or \d+. In contrast, an Unknown node indicates the data flow analysis encountered a situation that it could not handle. Finally, a PlaceHolder node is used for values that have not yet been computed by the data flow analysis. The occurrence of Unknown and PlaceHolder nodes in the final intermediate expression output indicates that the data flow analysis needs modification to handle a special case.
+
+Branch nodes are primarily either an Append or an Or node. An Append node represents a boolean AND operation, where child nodes are concatenated in the order listed. The Append node is specifically designed to handle the concatenation of strings and other values that commonly occur when a file path is constructed in Java source code. In contrast, an Or node represents a boolean OR operation and captures when the data flow analysis encounters a variable with multiple possible values. There are also several other subtypes of Branch nodes. Section 4 describes them in more detail.

@@ -1,0 +1,93 @@
+In mobile security SMS is also a weak point sometime. It causes in the mobile system having binary SMS system. It leads the denial of service attack. We can see such witness in SIMENS S55 model having Chinese Character. Similarly in earlier days few Nokia phones are also unable to recognize denial of service attack. It is important to note that distributed denial of service is also an important attack to the mobile and the telecommunication system.
+
+In mobile security another focus attacking place is GSM network. The GSM encryption belongs to A5 algorithm and their vulnerabilities is an important concern. We can see this kind of attack in some of the Europeans countries. Gradually A5/3 and A5/4 algorithm have been popular against this kind of attack. After the development of 2G GSM we can see the vulnerabilities. The hackers in recent past can also break the GSM algorithm.
+
+As far as the WIFI is concerned in recent past the attackers can get information of a smart phone by find out the vulnerabilities. The security of wireless network previously secured by WEP (Wired equivalent privacy algorithm) keys but the weakness of WEP altered by WIFI Protected Access (WPA) and WPA3 algorithm. The protocol Temporal Key Integrity (TKIP) has been introduced to allow the migration of WPA2 and WPA3.
+
+In the recent past security is also an important concern for Bluetooth system. With Bluetooth one can easily break the vulnerabilities. The attackers are required to connect to port for accessing or controlling the device or mobile. In Bluetooth system attackers send a file and if users download the file then the system may be corrupted such as CABIR (SYMBIAN).
+
+# 6. Security Management & Mobile Security
+There are different tools and defending methods exists for Security Management and among these few important are as follows—
+# Operating Systems—
+Operating System is the core of Mobile devices and there are different mechanism for ensuring and protecting Operating Systems from the threat. Smart phones are able in accommodating different kind of applications into it and thus there should be proper mechanism to detect the vulnerabilities and any kind of virus, malware, spyware etc. Sandbox is an important matter in mobile and each mobile phone needs to plan for specific Sandbox in this regard. Few important concern (mainly in Android) in this regard are include—
+- The intrusion of the rootkit is very important and thus proper rootkit detection mechanism is very important.
+
+- Process isolation is also very important in android based systems and for proper and scientific security this should be keep in mind. Moreover here each process once start should complete and then only may enter other program. This approach will reduce the chances of vulnerability.
+
+SIMS Pandeshwar & Srinivas University Mukka
+Page 115
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+• File system permission is a very important concern of android based systems and use of locking memory permission is also with this kind of system.
+
+• Memory protection is an important feature and function of Operating Systems of android based or any similar kind of devices.
+
+• Development through runtime environment is an important concern and here valuable to note that high level language based designed products are suitable for this purpose ,,.
+
+# Hardware Systems—
+The hardware system is vulnerable in different situations. There are different types of attacks/vulnerabilities viz.—
+• Electromagnetic waveform is a vital reason for the attacks and these are increasing every day.
+
+• Juice jacking is the vulnerability of mobile security in different context. This is may be applicable in public places during charging of mobile phones in the bus, flights, train and other places. Such type of incident may noticed in different places. Different malicious attacks may be happen in this case. Here actually, USB charger mainly used for the attacking victims.
+
+• Jail breaking and rooting is another vulnerability and related to the physical vulnerability. It is related to the operating systems security.
+
+# Malicious Software based Vulnerability—
+There are different types of vulnerability can be noted in malicious software as far as Mobile devices are concerned. These days smart phones are highly using for the internet purpose and we aware that a malware is a program responsible for harming the system. A study noted that, the malware variant has been increased in recent past up to 54%. Worms, viruses are considered important in this category , . The malicious attacks can be possible with three types viz.—
+• Infection of the systems and that can be classified into Explicit Permission, Implied Permission, Common Interaction, No Interaction—all these malicious software are important to attack the mobile device.
+
+• The accomplishment of its goal; which include the affecting the systems after entering the malicious software into the systems and that is done by the monetary damage, damage data and/or device, as well as concealed damage.
+
+• Spread of the malware to other systems is another way to vulnerable the systems and among these important. Here Wi-Fi, Bluetooth and infrared or even using remote networks viz. telephones calls or SMS or emails spreading can be done.
+
+Day by day the malware is increasing and these include the Viruses and Trojans, Ransomware, Spyware etc. Though, according to the Information Scientist few attacks of the systems are includes (refer Fig: 1)
+SIMS Pandeshwar & Srinivas University Mukka
+Page 116
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+# Vulnerability in Mobile Devices
+- Data Leakage
+- Wi Fi Interferences
+- Old Devices
+- Social Engineering
+- Cryptojacking Attacks etc
+Fig: 1- The vulnerability in Mobile Devices at a glance
+# 7. Mobile Security Policy and Countermeasure
+The Mobile Security can be bring with different countermeasure and policy and among these few important are include as follows—
+# In Operating Systems—
+In a mobile, the first preference of the security is required for Operating Systems; resource management, schedule processing and other components role needs to be useful and secure in different sense. The sandbox is the important component of the mobile; where different applications are stored together and thus it is required the operating systems should be secure.
+
+# In Security Software—
+Security Software is another important component and way to secure the mobile devices. Apart and above of the operating systems security this is important and essential and this is required to protect the mobile systems. Antivirus and firewall is essential to protect the systems. Importantly, it is required as signature detection software detects malicious executable files. The following are important concern in this regard—
+- Visual Notification is another important action required for securing mobile devices; especially mobile phones. This is the image based result, viz. incoming call
+SIMS Pandeshwar & Srinivas University Mukka
+Page 117
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+Information on the display unit. Hence if a call trigged by malicious apps that can be noted and detect, if possible.
+
+- Turing Test is another way to bring the security in the mobile devices. It is the applications of Artificial Intelligence; required to distinguish human and virtual users; viz. Captcha.
+
+- Technique of identifying a person by means of their morphology is another security measure. The field in generally may be called as Biometrics. Biometrics is used by studying face, eyes etc. Here no need to remember the password as well. Hence this can be a good tool for mobile security.
+
+# Resource Monitoring in Devices
+There are different ways in resource monitoring and we can get an idea on suspicious attack and among these few important are depicted as follows—
+- Monitoring battery consumption of the phone may be useful to detect whether any malicious application running or not.
+
+- Every application has a specified memory requirement and it can be suspicious when a applications requires more than that.
+
+- In smart phones many applications are run via network and like previous point on memory, the speed of operation of the application can be monitored. Sometimes higher bandwidth than the requirement can be treated as suspicious.
+
+# Network Related Issues
+As far as Network Surveillances is concerned following are important to noted—
+- Spam is common in Emails and thus for the Emailing services in mobile spam matter should be consider as important.
+
+- Encryption of stored information and data needs to be keep safe and here encryption may be used. Additionally for transferring data also encryption algorithm can be useful.
+
+- Telecom Network monitoring is also important issues for secure mobile based services.

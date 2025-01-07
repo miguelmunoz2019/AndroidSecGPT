@@ -1,0 +1,78 @@
+# 4 Fault counting model experiment
+# 4 Data collection
+In this paper, we collect 575 practical Android apps from GitHub and count the faults based on keywords (see Section 3 for the details). To guarantee the correspondence between the faults and apps, DefDIQ records the faults within one development version, so the 4575 original apps were reduced to 645. We randomly selected 516 apps as training data and the rest as prediction data. The obtained original data is shown in Figure 3.
+
+Two main factors were considered in determining the model parameters:
+1. The model is vulnerable to over-fitting with excessive parameters or insufficient sample data. Through investigation, we found that most studies constructed models with ≤ 6 parameters, 10,32-34 so we set around five parameters for the fault counting model.
+
+2. The correlation between the parameters. The higher correlation between code smells implies that some smells are redundant and multicollinear, which leads to (1) an unnecessary increase in the feature dimensions, (2) a high tendency to over-fit the model, and (3) interaction between features will reduce model credibility.
+
+To determine suitable parameters to complete the model construction, we detected 15 smells by DACS and counted the occurrences of each smell in 4575 apps, and the percentages are shown in Figure 5. To reduce model errors caused by insufficient data, we selected smells with higher occurrences for model construction. Besides, we measured Spearman rank correlation to discover the relationship among 15 custom Android code smells based on DACS detection results. Figure 6 demonstrates the confusion matrix of Spearman correlation coefficients for code smells, which can visualize the magnitude of the correlation. We found that the correlation among the code smells was quite low (<0), except for the strong correlation for WCA with CSC, MU, SDV, MU with SDV, and HA with MU, SDV. These code smells are independent and will not affect each other, meeting the prerequisites of some regression models while avoiding the experiment’s randomness and ensuring the experiment design’s rationality. Therefore, we take into account the occurrences of the 15 code smells as well as their correlations to select appropriate ones as parameters for fault counting model construction.
+
+Finally, we selected WCA, HA, DBA, MU, and SDV as the arguments to fit the faults counting model. In addition, we take the code size into account (NCLOC) as an additional factor to investigate whether file size affects faults. Figure 7 shows a matrix scatter matrices of the five smells, provides the faults distribution in the apps, and visualizes the changing relationship between the smells and faults. Furthermore, Figure 7 illustrates the difference in the density and distribution of code smells in apps, where the horizontal and vertical coordinates are two different code smells.
+
+# Code Smell Detection result
+# F I G U R E 5
+Code smell detection results statistics.
+
+# F I G U R E 6
+Correlation between Android code smells.
+
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+ZHONG et al. 2311
+150000,
+pooooooooO
+DBA,
+1 HA 98000808 8 8
+O
+MU '9c8e88cd
+L 88 1 83 88 SDV
+3 8 8 8
+WCA 8
+ncloc
+8a8e8o
+0 0 200 400
+A scatter plot matrix of code smells.
+
+p-Value explanation.
+
+# 4 Experimental hypothesis
+This part aims to investigate whether the five code smells targeted are more likely to be associated with fault-prone files.
+
+We adopted a two-sided hypothesis test with a significance level of 𝛼 = 0 to determine the model parameters by p-value.
+
+p-Value is an indicator for judging whether to accept the original hypothesis, as explained in Table 3. Specifically, we test the following hypothesis at the significance level of p &lt; 0.
+
+Hypothesis 1. WCA has no effect on the fault counts in apps (either alone or in combination).
+
+Hypothesis 2. HA has no effect on the faults counts in apps (either alone or in combination).
+
+# 4 Experimental settings
+DefDIQ constructs a simple and suitable fault counting regression model with minimal parameters under the condition of highly fitted. Hence, we apply the NB and ZINB to model the relationship between fault counts and code smells, respectively. p-Values overrode partial hypotheses to filter out some code smells and their combinations affecting faults. After repeated model evaluation and selection, they finally determined the free parameters (code smells). Specifically, the gradual regression steps for model construction are as follows.
+
+- The first-order model contains all independent arguments, that is, five custom code smells, NCLOC, and combinations. It separates and analyzes the effect of each argument on the faults.
+
+- Select arguments from the first-order model with significant correlation to the fault counts (p-value < 0) and build a simpler data model.
+
+- Repeat the previous task, gradually constructing simpler and better-fitting models for the data.
+
+# 4 Evaluation method
+To compare the fitness of the NB and ZINB regression model on the relationship between faults and code smells, we adopted the AIC and BIC values of the fault counting models under both algorithms to select the counting model with the higher fitting degree. AIC is a weighted function of fitting accuracy and parameters number, and the contribution is to find the accurate model containing the least free parameters based on information entropy. And the AIC compares the deviation of the fitted values of the fault counting model constructed by the regression function with the true values to assess the model’s goodness. AIC is obtained by Equation (8).
+
+AIC = −2ln(L) + 2𝛼, (8)
+where L denotes the likelihood function, and 𝛼 represents the number of free parameters that can be estimated. AIC is inversely related to whether the model can better reveal a significant relationship between the response variables and arguments. A smaller AIC value indicates a better fit between the model and the true values, suggesting a higher degree of fitting for the fault counting model.
+
+BIC is an evaluation metric in Bayesian statistics for choosing among two or more alternative models. Although the model selection criteria of AIC and BIC are distinct, there are many similarities, such as the similar interpretation of penalty terms. As demonstrated in Equations (8) and (9), when the likelihood value is larger (more accurate model), and the number of free parameters in the model is larger (simpler model), the AIC and BIC values will be smaller, indicating better model performance. For larger data volume, BIC sets a penalty parameter ln(n) with a larger weight than AIC to determine the optimal parameters and alleviate the overfitting of the model. In addition, BIC also considers the sample number. When there are excessive data samples, the evaluation metric can balance the model in terms of accuracy and complexity.
+
+BIC = −2ln(L) + 𝛼ln(n), (9)
+where L denotes the likelihood function, 𝛼 is the parameter estimated by the model, and n is the sample size (the observations or data points number). The smaller the value of the BIC, the better the model performs.
+
+# Code smell detection results
+# Lin’s concordance of manual and detect Android code smell detection results
+# 5 EXPERIMENTAL RESULTS
+# 5 Answer to RQ1
+In this experiment, we took 15 custom Android code smells as detection objects and statistically recorded the code instances of each code smell (at the method level). DACS identified a total of 322 code smell instances, and the most common ones are WCA (163 instances), UR (61 instances), and DBA (17 instances). Statistically, the 20 open-source apps contain 2232 java files, with 283 files containing the defined code smells.
+
+As shown in Table 4, DACS and manual detection are consistent in detecting ICV, ISU, and DBA, and the results are closer in detecting other code smells. However, DACS tended to detect more instances of code smells than manual detection. The main reason is that manual detection will combine the context-sensitive code to determine whether the developers deal with some dangerous behaviors. If there is a corresponding handling method, our programmer will not categorize this code structure as a smell, even if the code contains vulnerable fragments. DACS relies purely on matching rules for detection, which is not very flexible, so there is a certain amount of over-reporting and false judgments.
+
+For the 15 custom Android code smells, DACS can identify almost all code smell instances in Android apps correctly. As shown in Table 5, Lin’s correlation coefficient rc reaches 0 with a confidence interval (99%, 99%), indicating a high agreement degree for DACS and manual detection results. Only in two cases did the results not meet the desired level, and there will be missed detection, namely malicious unzipping code smell (MU) and header file code smell (HA).

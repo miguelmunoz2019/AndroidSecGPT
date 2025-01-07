@@ -1,0 +1,101 @@
+Duan Y, Zhang M, Bhaskar AV, Yin H, Pan X, Li T, Wang X, Wang X. In: NDSS. Things you may not know about Android (un) packers: a systematic study based on whole-system emulation; 2018.
+
+Egele M, Brumley D, Fratantonio Y, Kruegel C. An empirical study of cryptographic misuse in android applications. In: Proceedings of the 2013 ACM SIGSAC conference on Computer & Communications Security; 2013. p. 73–84.
+
+Enck W, Gilbert P, Han S, Tendulkar V, Chun BG, Cox LP, Jung J, McDaniel P, Sheth AN. TaintDroid: an information-flow tracking system for realtime privacy monitoring on smartphones. ACM Trans. Comput. Syst. (TOCS) 2014;32(2):1–29.
+
+Ernst MD, Just R, Millstein S, Dietl W, Pernsteiner S, Roesner F, Koscher K, Barros PB, Bhoraskar R, Han S, Vines P. Collaborative verification of information flow for a high-assurance app store. In: Proceedings of the ACM SIGSAC Conference on Computer and Communications Security; 2014. p. 1092–104.
+
+Ernst MD. Static and dynamic analysis: synergy and duality. In: WODA 2003: ICSE Workshop on Dynamic Analysis; 2003. p. 24–7.
+
+Evolution of the Mobile Phone, 2020. Available from: https://www.tigermobiles.com/evolution/#start/.
+
+Fadadu F, Handa A, Kumar N, Shukla SK. Evading API call sequence based malware classifiers. In: International Conference on Information and Communications Security; 2019. p. 18–33.
+
+Fang K, Yan G. Emulation-instrumented fuzz testing of 4G/LTE Android mobile devices guided by reinforcement learning. In: European Symposium on Research in Computer Security; 2018. p. 20–40.
+
+Faruki P, Bharmal A, Laxmi V, Ganmoor V, Gaur MS, Conti M, Rajarajan M. Android security: a survey of issues, malware penetration, and defenses. IEEE Commun. Surv. Tutor. 2014;17(2):998–1022.
+
+Faruki P, Bhandari S, Laxmi V, Gaur M, Conti M. Droidanalyst: synergic app framework for static and dynamic app analysis. In: Recent Advances in Computational Intelligence in Defense and Security; 2016. p. 519–52.
+
+Feng Y, Anand S, Dillig I, Aiken A. Apposcopy: Semantics-based detection of android malware through static analysis. In: Proceedings of the 22nd ACM SIGSOFT International Symposium on Foundations of Software Engineering; 2014. p. 576–87.
+
+Fink, S. and Dolby, J., 2012. WALA-The TJ Watson libraries for analysis.
+
+Firdaus A, Anuar NB, Karim A, Ab Razak MF. Discovering optimal features using static analysis and a genetic search based method for Android malware detection. Front. Inf. Technol. Electron. Eng. 2018;19(6):712–36.
+
+Gajrani J, Agarwal U, Laxmi V, Bezawada B, Gaur MS, Tripathi M, Zemmari A. EspyDroid+: precise reflection analysis of android apps. Comput. Secur. 2020;90.
+
+#metrics/.
+
+Gordon MI, Kim D, Perkins JH, Gilham L, Nguyen N, Rinard MC. Information flow analysis of android applications in droidsafe, 15; 2015. p. 110.
+
+Graa M, Boulahia NC, Cuppens F, Cavalliy A. Protection against code obfuscation attacks based on control dependencies in Android Systems. In: Eighth International Conference on Software Security and Reliability-Companion; 2014. p. 149–57.
+
+Graa M, Cuppens-Boulahia N, Cuppens F, Lanet JL, Moussaileb R. Detection of side channel attacks based on data tainting in android systems. In: IFIP International Conference on ICT Systems Security and Privacy Protection; 2017. p. 205–18.
+
+Guo C, Zhang J, Yan J, Zhang Z, Zhang Y. Characterizing and detecting resource leaks in Android applications. In: 28th International Conference on Automated Software Engineering (ASE); 2013. p. 389–98.
+
+Ham YJ, Lee HW, Lim JD, Kim JN. DroidVulMon –Android based mobile device vulnerability analysis and monitoring system. In: Seventh International Conference on Next Generation Mobile Apps, Services and Technologies; 2013. p. 26–31.
+
+Han X, Olivier B. Interpretable and adversarially-resistant behavioral malware signatures. In: Proceedings of the 35th Annual ACM Symposium on Applied Computing; 2020. p. 1668–77.
+
+Han H, Lim S, Suh K, Park S, Cho SJ, Park M. Enhanced Android malware detection: an SVM-based machine learning approach. In: International Conference on Big Data and Smart Computing (BigComp); 2020. p. 75–81.
+
+Hao S, Li D, Halfond WG, Govindan R. Estimating mobile application energy consumption using program analysis. In: 35th International Conference on Software Engineering (ICSE); 2013a. p. 92–101.
+
+Hao S, Li D, Halfond WG, Govindan R. SIF: a selective instrumentation framework for mobile applications. In: Proceeding of the 11th annual international conference on Mobile systems, applications, and services; 2013b. p. 167–80.
+
+Haris, M., Haddadi, H. and Hui, P., 2014. Privacy leakage in mobile computing: tools, methods, and characteristics. arXiv preprint arXiv:1410.
+
+Hassanshahi B, Jia Y, Yap RH, Saxena P, Liang Z. Web-to-application injection attacks on android: characterization and detection. In: European Symposium on Research in Computer Security; 2015. p. 577–98.
+
+He J, Chen T, Wang P, Wu Z, Yan J. Android multitasking mechanism: formal semantics and static analysis of apps. In: Asian Symposium on Programming Languages and Systems; 2019. p. 291–312.
+
+Heuser S, Nadkarni A, Enck W, Sadeghi AR. {ASM}: a programmable interface for extending android security. In: 23rd {USENIX} Security Symposium ({USENIX} Security 14); 2014. p. 1005–19.
+
+Hoffmann J, Ussath M, Holz T, Spreitzenbarth M. Slicing droids: program slicing for smali code. In: Proceedings of the 28th Annual ACM Symposium on Applied Computing; 2013. p. 1844–51.
+
+Hsien-De Huang T, Kao HY. R2-d2: color-inspired convolutional neural network (CNN)-based android malware detections. In: International Conference on Big Data (Big Data); 2018. p. 2633–42.
+
+Hu W, Tao J, Ma X, Zhou W, Zhao S, Han T. Migdroid: detecting app-repackaging android malware via method invocation graph. In: 23rd International Conference on Computer Communication and Networks (ICCCN); 2014. p. 1–7.
+
+Huang J, Zhang X, Tan L, Wang P, Liang B. Asdroid: detecting stealthy behaviors in android applications by user interface and program behavior contradiction. In: Proceedings of the 36th International Conference on Software Engineering; 2014. p. 1036–46.
+
+Huang W, Dong Y, Milanova A, Dolby J. Scalable and precise taint analysis for android. In: Proceedings of the 2015 International Symposium on Software Testing and Analysis; 2015a. p. 106–17.
+
+Huang H, Chen K, Ren C, Liu P, Zhu S, Wu D. Towards discovering and understanding unexpected hazards in tailoring antivirus software for android. In: Proceedings of the 10th ACM Symposium on Information, Computer and Communications Security; 2015b. p. 7–18.
+
+Jensen CS, Prasad MR, Møller A. Automated testing with targeted event sequence generation. In: Proceedings of the 2013 International Symposium on Software Testing and Analysis; 2013. p. 67–77.
+
+Jiang YZX, Xuxian Z. Detecting passive content leaks and pollution in android applications. Proceedings of the 20th Network and Distributed System Security Symposium (NDSS), 2013.
+
+Jiang L, Zhuang Y. Detect storage vulnerability of user-input privacy in Android applications with static and dynamic analysis. In: International Conference on Cloud Computing and Security; 2017. p. 280–91.
+
+Jiang H, Yang H, Qin S, Su Z, Zhang J, Yan J. Detecting energy bugs in Android apps using static analysis. In: International Conference on Formal Engineering Methods; 2017. p. 192–208.
+
+Kabakus AT. What static analysis can utmost offer for Android malware detection. Inf. Technol. Control 2019;48(2):235–49.
+
+Karim I, Cicala F, Hussain SR, Chowdhury O, Bertino E. Opening Pandora’s box through ATFuzzer: dynamic analysis of AT interface for Android smartphones. In: Proceedings of the 35th Annual Computer Security Applications Conference; 2019. p. 529–43.
+
+Kitchenham B, Brereton P. A systematic review of systematic review process research in software engineering. Inf. Softw. Technol. 2013;55(12):2049–75.
+
+Lam P, Bodden E, Lhoták O, Hendren L. The Soot framework for Java program analysis: a retrospective, 15; 2011. p. 35.
+
+Li D, Hao S, Halfond WG, Govindan R. Calculating source line level energy information for android applications. In: Proceedings of the 2013 International Symposium on Software Testing and Analysis; 2013. p. 78–89.
+
+Li D, Tran AH, Halfond WG. Making web applications more energy efficient for OLED smartphones. In: Proceedings of the 36th International Conference on Software Engineering; 2014. p. 527–38.
+
+# 28
+# c o m p u t e r s & s e c u r i t y
+Octeau D, McDaniel P, Jha S, Bartel A, Bodden E, Klein J, Le Traon Y. Effective inter-component communication mapping in android: an essential step towards holistic security analysis. In: 22nd {USENIX} Security Symposium ({USENIX} Security 13); 2013. p. 543–58.
+
+Octeau D, Luchaup D, Dering M, Jha S, McDaniel P. Composite constant propagation: application to android inter-component communication analysis, 1; 2015. p. 77–88.
+
+Octeau D, Jha S, Dering M, McDaniel P, Bartel A, Li L, Klein J, Le Traon Y. Combining static analysis with probabilistic models to enable market-scale android inter-component analysis. In: Proceedings of the 43rd Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages; 2016. p. 469–84.
+
+Pan L, Cui B, Yan J, Ma X, Yan J, Zhang J. Androlic: an extensible flow, context, object, field, and path-sensitive static analysis framework for Android. In: Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis; 2019. p. 394–7.
+
+Pang Y, Xue X, Wang H. Predicting vulnerable software components through deep neural network. In: Proceedings of the 2017 International Conference on Deep Learning Technologies; 2017. p. 6–10.
+
+Poeplau S, Fratantonio Y, Bianchi A, Kruegel C, Vigna G. Execute this! analyzing unsafe and malicious dynamic code loading in android applications, 14; 2014. p. 23–6.

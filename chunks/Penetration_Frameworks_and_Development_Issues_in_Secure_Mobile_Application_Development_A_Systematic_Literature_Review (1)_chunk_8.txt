@@ -1,0 +1,8 @@
+# Authors
+# IKRAM UL HAQ
+received the M.S. degree in software engineering from Bahria University, Islamabad, Pakistan, in 2013. He is currently a Computer Forensic Investigator with specialization in design of information systems. He has over 19 years of experience in the field of information systems, software development, team management, and project management. His main research interests include cyber security, big data, deep learning, and artificial intelligence. He is serving for Public Sector Organization.
+
+# TAMIM AHMED KHAN
+received the B.E. degree (Hons.) in software engineering from The University of Sheffield, U.K., in 1995, the M.B.A. degree in finance and accounting from Preston University, Islamabad, Pakistan, in 1997, the M.S. degree in computer engineering from CASE, Texila University, Pakistan, in 2006, and the Ph.D. degree in software engineering from the University of Leicester, U.K., in 2012. He is currently working as a Professor with the Department of Software Engineering, Bahria University, Islamabad. His research interests include service oriented architectures, e-learning, and software quality assurance.
+
+VOLUME 9, 2021 87825.

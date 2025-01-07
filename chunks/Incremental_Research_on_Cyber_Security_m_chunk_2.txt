@@ -1,0 +1,52 @@
+Dini et al.  also include system calls feature. Haung et al.  used ML algorithms for the detection of malicious applications using a permission-based approach in which requested permissions were compared with the required ones. Different labeling techniques were applied based on the source of the application and methods for anti-virus classification.
+
+# 4. Applications of AI Algorithms to defense against Cyber Crimes in Smart Phones
+Available academic resources show that AI techniques already have numerous applications in combating cybercrimes. AISs, just like the biological immune systems which they are based on, are employed to uphold stability in a changing environment. The immune-based intrusion detection comprises the evolution of immune cytes (self-tolerance, clone, variation, etc.) and antigens detection simultaneously. An immune system produces antibodies to resist pathogens and the intrusion intensity can be estimated by variation of the antibody concentration.
+
+Therefore, AISs play an important role in the cybersecurity research, for instance, neural networks are being applied to intrusion detection and prevention, but there are also proposals for using neural networks in "Denial of Service (DoS) detection, computer worm detection, spam detection, zombie detection, malware classification, and forensic investigations" . AI techniques such as Heuristics, Data Mining, Neural Networks, and AISs, have also been applied to new-generation anti-virus technology . Some IDSs use intelligent agent technology which is sometimes even combined with mobile agent technology.
+
+Mobile intelligent agents can travel among collection points to uncover suspicious cyber activity . Wang et al. (2008) stated that the future of anti-virus detection technology is in the application of Heuristic Technology which means "the knowledge and skills that use some methods to determine and intelligently analyze codes to detect the unknown virus by some rules while scanning” . This section will briefly present related work and some existing applications of AI techniques to cyber defense. Barika et al. (2009) presented a detailed architecture of a distributed IDS based on artificial neural network for enhanced intrusion detection in networks.
+
+# 5. Adoption of Machine Learning Algorithms
+Received: Dec 20, 2019
+Revised: March 21, 2020
+Accepted: May 1, 2020
+DOI: 10/zenodo
+# Journal of Cybersecurity and Information Management (JCIM)
+# Vol. 3, No. 1, PP. 14-20, 2020
+Machine Learning is a branch of Computer Science that lets a computer learn automatically instead of being precisely programmed . It evolved from the study of pattern recognition and computational learning theory in artificial intelligence . It involves the development of programs that can learn, grow, and change with their experience on data. There are various types of machine learning algorithms available, here for better reliability on the security aspects of the cyber system the Ensemble ANFIS algorithm is used as it paves way for the easy embedding of the AI Concepts. An ANFIS network has applied for classification detecting malware and good ware applications. In ANFIS first model fuzzy inference system contains the fuzzy model.  proposed by Takagi, Sugeno, and Kang to generate fuzzy rules by formulating from an input-output dataset.
+
+There are various Machine Learning algorithms varying with the type of application. Some of them are:
+1. Artificial Neural Networks: It a machine-learning algorithm inspired by the structure and function of biological neural networks. They are used to model the complex relationships between inputs and outputs.
+
+2. Deep Learning: It consists of multiple hidden layers in an artificial neural network. This approach tries to replicate the human brain in which it processes light and sound. It is widely used in computer vision and voice recognition.
+
+3. Genetic Algorithms: It is a search technique, which is based on natural selection and uses methods and mutation and crossover to generate a new genotype (a set of parameters that define a proposed solution to the problem).
+
+4. Linear Discriminated Analysis: It a data classification algorithm and a generalization of Fischer's linear discriminated technique to find the linear combination of features (Class variance and between-class variance) to separate two or more classes of data. In LDA, a linear function of attributes is created and the class function giving the highest probability represents the predicted class.
+
+5. Support Vector Machines: These are a set of supervised learning techniques that are used for regression and data classification. Based on their learning from past samples, these predict the category or class of a new sample. SVM tries to find a decision boundary at maximum distance from any sample in the training data. Here we Consider has three inputs and one output in the fuzzy interface. Takagi and Sugeno’s type rule contains if-then rules of Sreejith and Babu (2015) as follows:
+If x is A y is B and z is C then q is f (x, y, z) (1) where A, B and C are the fuzzy sets in the backgrounds and q = f (x, b, z) is a crumbly function in the consequent. f (x, y, z) is a polynomial for the input x, y, and z. When f (x, y, z) is a constant, a zero-order Sugeno fuzzy model is formed.
+
+Rule1: If x is y, y is z is then = x + y + z (2)
+Rule2: If x and y is z is then = x + y + z (3)
+Rule3: If xy is z is then = x y + z (4)
+In this system, each rule adds the constant term with input variables to produce an output which is linear combination input. The final output is the weighted average of each rule's output. Receiving on the final result of input entropy, the ensemble-ANFIS classifier predicts the class accurately where it belongs to. As a result, if the value is greater than or equal to one, the applications are considered to be malware else if the result is zero then it is a good ware application. The major goal of the research is to compare different ML-based classification schemes to assess their efficacy in determining malware.
+
+We applied seven different ML techniques to identify the most appropriate classification method for our model. These include Logistic Regression, Decision Tree, Random Forest, Gradient-boosted Tree, Multilayer Perception, SVM, and Isotonic Regression. We initially used all 83 features to train our model. However, it took more than 6 hours to train the dataset. We noticed that all features were not significant in detecting the malware. To determine relevant features, we applied the Chi-Square method to obtain p-values. Attributes with p-value > 0 were discarded. In total, 29 features were selected out of the total 83 features. After reducing the features, the training time.
+
+Received: Dec 20, 2019
+Revised: March 21, 2020
+Accepted: May 1, 2020
+DOI: 10/zenodo
+# Journal of Cybersecurity and Information Management (JCIM)
+# Vol. 3, No. 1, PP. 14-20, 2020
+was reduced to 90 minutes. For performance comparison, we utilized five metrics, that is, Precision, Recall, F1 score, Accuracy, and false-positive rate. The process of Machine Learning is similar to Data Mining because both look through data to recognize patterns.
+
+# 5. Results and Discussions
+The performance of this work is measured using precision, recall, F measure, accuracy which shows that an efficient result towards the proposed protocol. These results are discussed briefly below.
+
+The above Performance analysis chart proves that the adoption of machine learning algorithms records positive results than the existing system. So applications of Machine Learning algorithms in classifying and detecting malware proves to be the best and it gives the end-user to breathe easy in using the android applications regardless of the fear which rises out due to the cyber attacks.
+
+# 6. Conclusions
+Computing Techniques such as ubiquitous and mobile computing has increased the flexibility for mobile users to access the services from service providers. Most of the Android applications are commonly found freeware which enables the user to access the data in a single touch in hand. Taking this as an advantage, intruders started to create threats to the user by adding spyware in android applications. Therefore many applications that are considered as spyware injected are collected as samples and a chart is prepared to identify the malware classifications and detection approaches along with the malware avoidance techniques applied in that by the spyware writers and the demerit of the system are analyzed. Hence an approach is proposed using machine learning methods to detect the malware applications. The experimental results show that the ANFIS method detects malware application with high accuracy. The detection rate is also high compared with other techniques. This method can efficiently detect more malware applications in android smartphones.

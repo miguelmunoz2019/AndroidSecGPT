@@ -1,0 +1,63 @@
+# (6) Disable Bluetooth and Wi-Fi when not needed:
+minimizing both Bluetooth and Wi-Fi usage reduces exposure to having vulnerabilities exploited, although the flaws are not in these standards, but in their implementations . Here, it should be noticed that the disabling action requires an intentional interaction from a user. However, there are tools (e.g., Auto-Bluetooth) that turn Bluetooth on or off without any user interaction, based on the rules defined by a user.
+
+# (7) Be aware of social engineering techniques:
+social engineering is a term that encompasses a broad spectrum of malicious activity such as phishing, pretexting, baiting, quid pro quo, and tailgating (“piggybacking”). With this human-centric focus in mind, it is up to a user to be aware of malicious “actors” who engage in social engineering attacks hunting for human greed and ignorance . Organizations, in particular security analysts, might also consider conducting social engineering penetration tests (also known as social pen testing) among employees. By design, social pen testing is the practice of applying social engineering scams on an organization’s employees to evaluate their capability to provide sensitive information. Such an assessment is beneficial by providing a real attestation on the level of adherence to the company’s security policies by particular individuals.
+
+# (8) Be sure not to jailbreak your device:
+jailbreaking is a privilege escalation with the aim of removing software restrictions imposed by the device manufacturer. In other words, deploying a series of kernel patches permits a root access which allows software, not available and distributed via the app store, to be installed. Jailbreaking can seriously expose an operating system to additional vulnerabilities, effectively exploited by attackers . One should also keep in mind that, in case of removing manufacturer restrictions, the device’s warranty will most likely be voided. Moreover, a decrease of overall system stability might occur since buggy apps tend to utilize substantial amounts of hardware resources.
+
+# (9) Be sure not to grant unnecessary permissions to applications:
+app permissions are the privileges an app has—like being able to access peripherals such as the camera, contact list, or location. Current versions of operating systems come in a variety of flavors depending on the manufacturer. The major tenet is to grant only those permissions that are necessary for the application to work properly. In other words, a user should always employ the principle of least privilege (PoLP) . On the contrary, granted permissions can be described as the keys that unlock the app’s functionality. Therefore, a good design pins runtime permissions with specific actions and tasks, which justify the permission requests.
+
+# Mobile Information Systems
+# 10. Install mobile security and antivirus applications:
+Since there is no additional protection by default, mobile security and antivirus real-time scanners safeguard against malicious applications and viruses, as well as identity theft, ransomware, and cryptominers. Moreover, some tools can also scan URLs and block dangerous sites, monitor links in text messages, and provide parental control . There is no doubt that experts highly recommend using such tools, but nothing comes for free. In their case, the side effects refer to additional hardware resource allocation and increased battery drain due to the processes executed in the background.
+
+Naturally, following these ten best practices will not 100 percent guarantee mobile device security; however, it will leverage the security level by reducing the attack vector and lowering the risk of system outages and malformed requests.
+
+# 5. The Survey Report
+The data for this study were collected by using the survey instrument since our intention was to formulate a relevant answer for the third research question. We selected this type of research method for three reasons: first, due to the descriptive nature of the question, which simply aims to describe the variables intended to be measured. Second, the survey is claimed to be a good instrument for obtaining empirical descriptions about people’s attitudes and opinions . Third, our target respondents were geographically dispersed and working at home because of the restrictions in force due to the COVID-19 epidemic.
+
+# 5. Design and Settings.
+
+The survey consisted of two parts. The first part included ten questions that addressed the best practice usage by the mobile application users. The second part, including five questions, aimed at collecting demographic data (gender and age), as well as the level of education, professional experience (in years), and the sector of professional activity (also in years). We used Google Forms to collect the data since they have the benefits of being user-friendly and free of charge.
+
+The self-administered, anonymous form was disseminated by e-mail among mobile application users and published on forum groups available for students of the Gdańsk University of Technology (GUT) and the Wroclaw University of Economics (UE). Therefore, we applied convenience sampling, a nonprobability sampling, where members are willing to voluntarily participate in a study.
+
+Before the final launch, the draft questionnaire was independently reviewed by three experts to ensure content reliability and validity. In particular, the evaluation aimed to assess the accuracy of the measurement scales (reliability) and to appraise the degree to which the scale measures what it is intended to measure (validity).
+
+The survey was launched on 1st May and closed on 19th May 2020. Afterwards, the primary dataset was further processed in a spreadsheet editor that let us perform the necessary calculations and operations such as data aggregation, comparison, and visualization.
+
+# 5. Respondents.
+
+In total, during the period of twenty days, we collected data from 167 respondents, of whom 63% (106) were male and 36% (61) were female. The age distribution shows that the majority (77%) were aged 20–29 years, 17% were aged 30 or more, and only 5% were 19 or under. Therefore, 59% of the respondents declared secondary education, whereas the rest (40%) had graduate degrees. The distribution of professional experience was relatively low, which is reasonable given the respondents’ ages: 65% declared having two years or less, while the remainder (34%) could be said to have moderate professional experience. A summary of the demographic data is given in Table 2.
+
+Finally, we would like to highlight the survey’s diversity, as it broadly involved a wide range of respondents who not only represent the IT sector but also others. It is worth noting here that a more diverse sample brings the promise of less bias.
+
+# 5. Findings and Discussion.
+
+As the data are quantitative in nature, each individual best practice, along with the findings and discussion, has been combined to complement and enrich argumentation driven by numerical data. Hence, the review and analysis of the existing knowledge in the field resulted in the qualitative information. We argue that the applied mixed-methods approach brings added value by highlighting other related issues which were not directly included in the survey question pool.
+
+Q1. Which authentication method do you use to secure your smartphone?
+- (i) Fingerprint scanner: 53% (89)
+- (ii) PIN: 12% (21)
+- (iii) Pattern lock: 12% (20)
+- (iv) Facial recognition: 10% (17)
+- (v) Password: 4% (8)
+- (vi) Iris scanner: 1% (2)
+- (vii) None: 6% (10)
+Over half of the respondents (53%) have declared using the fingerprint scanner method to recognizing their identity. The second most frequent (12%) authentication method was based on a PIN, which is relatively strong, as a typical four-digit option provides 104 possible combinations. Twelve percent of the users used a pattern lock method that relies on a preselected pattern on a grid of dots to unlock the mobile device. The second biometric method, namely, facial recognition, also based on “who the user is,” was claimed to be used by over ten percent (10%) of the users. The “old standby” password was rarely used, as only 4% of users pointed to this method. Last but not least, iris scanning, with the angle and distance guided by on-screen feedback, was very rarely used (1%) by the users.
+
+It is worth noting here that particular biometric methods are mandatory to use mobile applications that require a
+# Mobile Information Systems
+higher level of security such as mobile banking (m-banking), online payments, and online financial transactions . In addition, biometric methods are easy to use since users do not have to remember a PIN, pattern, or password. Moreover, since the PIN-, pattern-, and password-based security methods fail to address the requirements of the restricted and highly sensitive data in mobile applications, voice recognition systems are currently more often being implemented in a wide range of mobile services . Obviously, an attack on voice is feasible since such systems can be deceived if an attacker records the user’s voice and plays it back during the authentication time window.
+
+# Q2. Do you update the mobile applications installed on your mobile device?
+- (i) Yes, but at a convenient time for me (e.g., Wi-Fi availability): 50% (85).
+
+- (ii) Yes, immediately after being informed by the relevant notification: 21% (35).
+
+- (iii) Updates are automatically installed: 21% (35).
+
+- (iv) No. I intentionally block all updates: 5% (9).

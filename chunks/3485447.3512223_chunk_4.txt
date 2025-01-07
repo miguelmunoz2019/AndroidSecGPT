@@ -1,0 +1,56 @@
+Obviously, our dataset does not include all the government websites and apps available throughout the world. Furthermore, during our crawling process, we may not have encountered all trackers that are time dependent . We use EasyList/EasyPrivacy  to filter third parties (e.g., trackers, advertisers) in government websites. Some of these filtered third parties may operate in an advertising context and may not necessarily track users, or vice-versa. It is also possible that third parties blocked by EasyList rules perform the dual role of advertising and tracking. However, the presence of third-party ad/annoyance domains is not expected on government sites as government services do not rely on ad revenue. Also government websites may intentionally use third-party scripts for tracking/analytics, and we still label such activities as tracking, as there is no technical barrier for these third-parties to use analytics data also for tracking/profiling. Determining the geolocation using IP address (see Appendix E) may not be accurate in some cases (e.g., CDN-fronted websites, non-CDN websites with multiple regional servers behind a load-balancer). However, this is less of a concern for our country-level attribution; e.g., Gharaibeh et al.  reported 95% accuracy for country-level IP-geolocation. We crawled government sites from a location outside of their home countries, except for government sites pertaining to the country where the crawler is located (i.e., Canada, the Netherlands, California). Government sites of some countries (e.g., Egypt, Iran), may not properly function when accessed from outside of the country. Also, we particularly focus on Android apps due to its larger market share, and do not consider iOS apps for this paper Android apps with obfuscated code may have impacted our static analysis, but not so on our dynamic analysis. In addition, during the dynamic analysis of apps, we did not collect traffic for those apps using SSL pinning (as we could not automatically perform un-pinning).
+
+We involve manual steps in our methodology for verification, only when automation is unreliable or challenging (e.g., verify websites crawled pertain only to governments), to ensure that our results are reliable.
+
+# 4 RESULTS: GOVERNMENT WEBSITES
+In this section, we summarize our main findings on tracking and security issues on government sites. We also report additional results on use of fingerprinting APIs in Appendix F.
+
+# 3 Ethical considerations and limitations
+During deep crawling to scrape inner-links to other government sites, we randomize the URLs fed to the crawler, to avoid generating a large amount of traffic to any web server hosting a government site. We do not use the sensitive information (e.g., user identifiers and passwords) extracted from static and dynamic analyses of Android apps for any intrusive validations that may have an impact to
+# 4 Third-party tracking scripts
+We found 29% (44,880/150,244) of government websites had one or more known trackers on their landing pages, and a total of 748 unique known trackers (524,906 total known trackers). The most common known trackers were youtube.com (19,565, 13% of websites), doubleclick.net (19,339, 12%) and google.com (5478, 3%), all owned by Alphabet; see Figure 2 for the top-10 known trackers.
+
+5The URL is of the form <Firebase project name>.firebaseio.com/.json (e.g., https://mi-senado-colombia.firebaseio.com/.json).
+
+6As of August 2021, according to one estimate, Android has 72% market-share worldwide (https://gs.statcounter.com/os-market-share/mobile/worldwide).
+
+# WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Samarasinghe et al. No. of websites with trackers
+Note that YouTube videos and Google maps are often present on government sites. We also compared the presence of third party scripts (known trackers) by country; see Figure 3a. China had a high number of government sites with known trackers (5394 sites with known trackers, out of a total of 12,583 sites, 42%). Russia (1623/1818, 89%) and Tajikistan (10/11, 90%) also had a high percentage of government websites with known trackers.
+
+# 4 Third-party cookies
+We found many third party persistent cookies (i.e., cookies that do not expire after a session) set by known trackers, with varying validity periods; see Table 1. YouTube is the most common tracking cookie set in a large number of government sites (56,444 out of 150,244 government sites, 37%). About 11% (17,312) of government sites included cookies set by YouTube that expired within a month. YouTube cookies on 13% (19,566) of government sites are set to expire in the year 9999. Cookies set by YouTube are used to associate site visits with a Google account (if logged in) and contain information on browsing behaviours of users . Also, doubleclick.net cookies on government sites (18,219, 12%) were set to expire between 1-5 years. 14 known trackers set cookies with over 5-year expiry periods; these trackers provide services in sectors including: ads/analytics (nr-data.net, cnzz.com, rezync.com, bitrix.info, 51.la), business (gemius.pl, pixlee.co), social networking (twimg.com, ok.ru), travel (sinoptik.ua), news (cctv.com) and file sharing (radikal.ru).
+
+We found government websites in 112 countries set known tracking cookies on all of its websites (20,558/150,244, 13%). The percentage of government websites setting known tracking cookies is over 80% in 170 (out of 206) countries; see Figure 3b (also Figure 4 for region-specific prevalence of these tracking cookies). The lowest percentage of government websites with known tracking cookies was from North America (5783/7681 websites, 75%). The US government sites had the lowest proportion known tracking cookies (5417/7314, 74%), in part possibly due to California Consumer Privacy Act (CCPA) . In contrast, despite GDPR , the percentage of government websites with known tracking cookies in the European Union was very high (2306/2355, 97%).
+
+**Cookie expiry**
+# 4 Government sites and tracking domains flagged as malicious
+We found 0% (304) government sites were flagged as suspicious or malicious by VirusTotal (at least by one engine). We skipped the sites flagged as malicious by Quttera and CRDF VirusTotal engines, as the categorization returned by those engines were inconsistent. In addition, we only considered the sites that apparently were used for malicious purposes according to VirusTotal category labels and.
+
+# Et tu, Brute? Privacy Analysis of Government Websites and Mobile Apps
+WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Websites with Trackers
+# Dynamic Analysis Results
+We found that 2% (30/1166) government Android apps possibly exposed their Firebase databases with sensitive user information (as apparent from the data types); however, we did not verify/use/store this info (deleted immediately after checking the data types). Notable examples: an official app of the Colombian senate (gov.senado.app), and a real-estate regulation app from the government of Saudi Arabia (sa.housing.mullak) apparently leak user names and passwords.
+
+Known tracking cookies and scripts found by inspecting the pcap files collected from our dynamic analysis (see Section 3). 7 apps from Bangladesh, Brazil, India, Malaysia, Nigeria, Palestine, United Arab Emirates sent login information over clear text via HTTP. These apps provide various services, including: crowd funding (com.synesis.donationapp in Bangladesh); provisioning birth/death/marriage certificates, and property tax details (in.gov.lsgkerala.mgov, in Kerala, India); services for teachers (com.trcn.teachers, in Nigeria); anti-drug volunteer management (my.gov.onegovappstore.skuadaadk, in Malaysia); and salary payments and other services for government employees (ps.gov.mtit.mservices, in Gaza, Palestine).
+
+We also found 15 malicious domains host known tracking scripts in 377 government sites as per VirusTotal (at least by one engine); see Table 4 (in the Appendix). We used the same procedure as for government sites to scan tracking domains with VirusTotal. 8 (out of 51) malicious domains set cookies on 311 government sites; see Table 5 (in the Appendix). We observed 50bang.org set cookies on 299 government sites.
+
+# Results: Government Android Apps
+In this section, we present privacy and security issues found in government Android apps using static and dynamic analysis methods.
+
+# Static Analysis Results: Tracking SDKs and Exposed Databases
+From MobSF, we found a total of 1647 tracking SDKs (59 unique) in 1166 apps. With LiteRadar, we checked the usage types of these SDKs (e.g., Google Mobile Services is used as a development aid). Most tracking SDKs were also from Google (611/1647, 37%). Other tracking SDKs include Facebook (105/1647, 6%), Microsoft (34/1647, 2%) and One Signal (48/1647, 2%).
+
+40/1166 government apps from 22 countries were flagged as malicious by VirusTotal (at least by one engine). 10 of these apps contained a stealthy malware disguising as a legitimate process executing harmful tasks.
+
+# WWW ’22, April 25–29, 2022, Virtual Event, Lyon, France
+# Samarasinghe et al.
+
+# Default/admin user ID and password
+# API key
+a newer version), 3 apps included a stealthy adware showing as an ad blocker for Android devices (Android.WIN32.FakeAdBlocker.a), 2 apps included obfuscated malicious software that installs other malware (Trojan.Trojan.Dropper.AndroidOS.Hqwar.bb). We also observed calls to 2 malicious 3rd-party domains by government apps. According to VirusTotal community comments, 2 apps (com.linkdev.dhcc.masaar and com.rajerawanna offered by United Arab Emirates and India, respectively) made calls to a malicious domain (api.ipify.org) that is infected by Cobalt Strike.
+
+# 6 DISCUSSION
+In this section, we discuss privacy implications of our findings, and list a few recommendations to mitigate these issues.

@@ -1,0 +1,55 @@
+Empirical Software Engineering (2020) 25:5084–5136
+However, for our approach to be robust with the inclusion of a few non-safe apps in the training set, we need a threshold larger than zero. We therefore consider those APIs that are rarely used when servicing action requests as uncommon by computing the threshold as explained above. In practice, even if tcomApi is not zero, it should still be close to zero.
+
+Next, we compute the dispersion around the frequency vector m to understand how much an app should be far from this vector to be considered as an outlier. As suggested by literature (Hodge and Austin 2004), dispersion is evaluated with respect to the Euclidean distance between an app appi and m with the following equation:
+d(appi, m) = √∑(m[j] − M[i, j])²
+where j = 1 to n.
+
+As shown in the figure, in this example, apps have a median distance of 0 from m, with very few cases with a distance larger than 0.
+
+We resort to the boxplot approach proposed by Laurikkala et al. (2000) to detect outliers. The threshold called toutlier is computed in the same way as drawing outlier dots in boxplots:
+toutlier = Q3 + step
+step = 1(Q3 − Q1)
+First we compute the difference between the upper quartile (75th percentile, Q3 = 0 in the example) and the lower quartile (25th percentile, Q1 = 0 in the example). In the example of Fig. 9, this difference is 0. The step is computed by multiplying this difference by 1, i.e., in the example is step = 0. Eventually, toutlier is computed as the sum of the upper quartile Q3 and the step. Therefore, the threshold for the example is toutlier = 1.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 6 Outlier Detection
+The second step of our approach takes as inputs the clusters and the permission re-delegation models obtained in the previous step, and the AUT. It then reports whether the AUT contains anomalous permission re-delegation behaviors. It contains three sub-steps: cluster assignment, API reachability analysis, and anomalies identification, which are explained in the following subsections.
+
+# 6 Cluster Assignment
+First of all we need to determine which permission re-delegation model to use among those available to compare the AUT against similar apps. That is, among the clusters we generated in Section 5, we need to identify the cluster the AUT belongs to. To achieve this objective, the description of the AUT is subject to the same sub-steps — app descriptions preprocessing and topics discovery — discussed in Section 5.
+
+When topics and topic probabilities are computed, we use a simple, efficient classification algorithm called Naive Bayes (available in Weka ) to learn a classification model and assign the right cluster. The classifier is trained on the same “safe” 11,796 training apps we used for inferring the permission re-delegation models, using the topic probabilities of the apps as features and their clusters as labels. This classification model is then applied to the AUT, to identify the cluster with the most similar topic probabilities.
+
+It should be noted that clustering and training of Naive Bayes classifier is performed only once at learning time, and then it is available for classifying each AUT. Clustering and classifier training is not repeated for each AUT, so cluster assignment is expected to be fast. For cluster assignment of the AUT, we do not use the clustering algorithm used in Section 5.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 6 API Reachability Analysis
+Like in Section 5, API reachability analysis is performed on the call graph, in order to identify privileged APIs that are reachable from public entry point(s). If no public entry point is found or no privileged API is reachable from public entry points, our analysis terminates here and it reports that there is no permission re-delegation vulnerability in this AUT (because permission re-delegation vulnerability arises only when an AUT executes a reachable privileged API).
+
+# 6 Anomalies Identification
+We first generate a vector *xaut storing the information of reachable privileged APIs in the AUT. Two examples of this vector are shown in Fig. 11, first and second line, respectively for two apps AUTa and AUTb. That is, the i−th element of a vector is set to 1 if APIi is reachable, the element is 0 otherwise. For instance, the first and second elements of xaut,a are set to 1 because calls to APIs openConnection and connect are reachable from public entry points in the code of AUTa. Similarly, the third and fourth elements of xaut,b are set to 1 because calls to APIs sendTextMessage and setWifiEnabled* are reachable.
+
+# Figures
+Empirical Software Engineering (2020) 25:5084–5136 5101
+in the app code. This corresponds to computing new rows of the matrix M as discussed in Section 5 (see Fig. 8).
+
+To evaluate how different AUTa is from the cluster norm, we compute the Euclidean distance da between xaut,a and the frequency vector ˜ (Fig. 11). It is computed as da = d(˜m, xaut,a) = 0. We then compare da with the dispersion of permission re-delegation behaviors observed in the apps of the cluster (Fig. 9). That is, we compare da = 0 and the threshold toutlier = 1. Since da &lt; toutlier, it is concluded that the permission re-delegation behavior of AUTa is similar to those behaviors observed in the cluster and the AUTa is flagged as normal.
+
+Likewise, for AUTb, we can compute db = d(˜m, xaut,b) = 1. Since db &gt; toutlier, it is concluded that the permission re-delegation behavior of AUTb is substantially different from those behaviors observed in the cluster, which is a case of anomalous permission re-delegation, flagging the AUTb as an outlier.
+
+When the AUT is flagged as an outlier (as in the case of AUTb), there could be two cases of anomaly: 1) the AUT does not expose an API that is commonly exposed in the cluster; or 2) the AUT does expose an API that is not commonly exposed in the cluster. Clearly, we are only interested in the second case. An outlier app might expose several privileged APIs, and the anomaly could be limited to a subset of them. Therefore, we still need to identify which privileged APIs are the anomalous ones. An API *i* is not commonly used for permission re-delegation in the cluster when its frequency is below the threshold tcomApi, i.e., ˜[i] ≤ tcomApi.
+
+Therefore, the conditions for detecting anomalous permission re-delegation in the AUT with respect to APIi are:
+1. d(˜m, xaut) &gt; toutlier: It means that the AUT shows a permission re-delegation profile that is substantially different than the permission re-delegation profile observed on apps with similar features. So the AUT is flagged as an outlier. More conditions are required to determine what is the problematic API.
+
+2. m˜[i] ≤ tcomApi: It means that the APIi is a privileged API that is not commonly executed by the apps in this cluster when servicing action requests.
+
+3. xaut[i] = 1: It means that the AUT executes APIi when servicing action requests coming from other apps (public entry points). In other words, the AUT exposes this privileged feature as a service to other (potentially malicious) apps.
+
+In our running example above, AUTb is an outlier because db &gt; toutlier. The privileged APIs sendTextMessage and setWifiEnabled are not commonly executed in its cluster because tcomApi = 0 and m˜ = 0 and m = 0 (Fig. 11). Therefore, the sendTextMessage and setWifiEnabled APIs satisfy the second condition. These two APIs are exposed by our outlier app AUTb. As shown in Fig. 11, xaut,b = xaut,b = 1. Therefore, they also satisfy the third condition and are reported as anomalous privileged APIs.
+
+Note that it is possible that vectors Xaut and ˜ have different lengths. Xaut would have shorter length than m when the permission delegation model has APIs not observed in the ˜AUT. In this case, we extend Xaut to ˜’s length by adding zeros in the positions that correspond to the missing APIs. And we apply the same technique above to flag the anomalous APIs. On the other hand, when an AUT uses APIs that are never observed in the model, we flag it as an outlier and report those APIs as anomalous. We also use the above conditions 2 and 3 to flag the privileged APIs observed in the AUT but rarely observed in the model as anomalous.
+
+# 7 Test Case Generation
+The last step of our approach takes the outlier AUT and the list of anomalous privileged APIs as input. The objective is to generate security test cases, in the form of action requests, that execute those anomalous privileged APIs. Such test cases represent proof-of-concept attacks for permission re-delegation vulnerabilities — executable scenarios that demonstrate the presence of security defects and that document them. It contains two sub-steps: path extraction and genetic algorithm, which are explained in the following subsections.

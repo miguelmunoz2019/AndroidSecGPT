@@ -1,0 +1,81 @@
+# B. Best Feature Set for Predicting Vulnerabilities (RQ1)
+RQ1 aims to report the best feature set for prediction because the best feature set will play a significant role in the accuracy of the machine learning models.
+
+# 1) Prediction using the First Feature Set:
+This experiment focuses on prediction using the feature set acquired using the Sequential Forward Selector (SFS) algorithm. Feature selection based on SFS resulted in 31 features as the final features when selecting the best number of features. The algorithm chooses features as a whole subset. Hence, the individual importance of each feature is not recorded in this method. The results of this experiment are the performance indices of the ML models when the first feature set is fitted. The SFS method chooses the following 31 features (metrics) as best contributing:
+- CBO
+- DIT
+- RFC
+- LCOM
+- TCC
+- LCC
+- NoSI
+- LOC
+- totalMethodsQty
+- privateMethodsQty
+- protectedMethodsQty
+- visibleMethodsQty
+- synchronizedMethodsQty
+- totalFieldsQty
+- protectedFieldsQty
+- defaultFieldsQty
+- finalFieldsQty
+- returnQty
+- loopQty
+- tryCatchQty
+- paranthesizedExpsQty
+- stringLiteralsQty
+- numbersQty
+- assignmentsQty
+- mathOperationsQty
+- variablesQty
+- maxNestedBlocksQty
+- anonymousClassesQty
+- innerClassesQty
+- uniqueWordsQty
+- logStatementsQty
+# 2) Prediction using the Second Feature Set:
+This experiment focuses on prediction using the feature set acquired using the Recursive Forward Elimination (RFE) algorithm. A set of 22 features were fit into the training and test data, and the three models predicted the target feature vulnerability. The results of this experiment are the performance indices of the ML models when the second feature set is fitted. RFE algorithm chose 22 features in total. The features along with their rankings by the algorithm are as shown in Figure 3 with the features marked with 1 being the top-ranked ones.
+
+# C. Machine Learning to Predict Vulnerabilities (RQ2)
+RQ2 aims to report the best performing model in terms of prediction accuracy.
+
+# 1) Choosing the Best Performing Model:
+This experiment focuses on comparing the ML models to select the best classifier. It will be conducted using the finalized feature set for optimal performance. Table II shows the performance of the DT classifier when no pruning is performed, i.e., the model.
+
+# Table III: Prediction Results using the SFS Algorithm.
+
+# Table IV: Predicting Performance using RFE algorithm.
+
+# Table II: Performance of the DT Model Without and With Pruning.
+
+is overfitted along with the performance metrics of the DT classifier post pruning. Tables III and IV present prediction performance utilizing the SFS and RFE feature selection methods, respectively. Notably, precision and recall can be recorded only for binary classification, where the result is usually 1 (vulnerable) or 0 (not vulnerable). Based on the feature set selected by the SFS method, DT performed best in terms of accuracy (76%). In contrast, the NB model outperformed others in precision (87%), and LR performed best in recall (88%). The scenario is different when using the RFE selected features and an additional model, KNN. More concretely, KNN outperformed three other models in terms of accuracy (80%).
+
+We also made a comparison with other static code analysis benchmark tools, e.g., SonarQube . Table V shows the comparison between the best performance (with the best performing models) and SonarQube w.r.t. various measures. SonarQube had a higher accuracy but very low precision and recall. Overall, SonarQube could better classify the negative classes than the positive ones. This could be because it uses predefined rules to detect vulnerabilities in the source code.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:35:06 UTC from IEEE Xplore. Restrictions apply.
+
+# Muticlas ROC cune
+# Cbs [4Rcst
+# (a) KNN
+# (b) LR
+# (c) NB
+# (d) DT
+**Table V: Comparison with SonarQube as Benchmark Tool.**
+and does not rely on metrics. Also, the vulnerabilities in Apache Tomcat are more project-specific. In contrast, the vulnerabilities detected by SonarQube are more general to the entirety of Java-based applications. It is difficult to detect new types of vulnerabilities unless the corresponding rules are updated in SonarQube.
+
+# VI. ANALYSIS AND DISCUSSION
+The feature sets derived with SFS and RFE include 31 and 22 features, respectively. With these differing features, both the feature sets produced almost similar performance when fitted into ML models. However, the feature set by RFE performed similarly to the one by SFS with a significantly smaller number of features, and the set by RFE is the better feature set.
+
+In the beginning, SFS features were fitted into the DT model, and the models’ performance was recorded. We observed that the DT model is overfitted, and hence, we pruned the DT model. The DT is a binary classifier model and one of the fastest among the four. Later, the RFE feature set was fitted into the DT model, which yielded the same prediction accuracy of 77%. Therefore, we obtained the purpose of feature selection and obtained the best results with the smallest feature set.
+
+We witnessed that the DT model functioned well as a binary classifier compared to NB and LR models. However, the DT model delivered poor in predicting vulnerability severity. Thus, we introduced a multi-class classifier, namely KNN. Our results imply that the KNN classifier performed significantly better than other models (DT, NB, LR) when predicting the severity of a vulnerability. The KNN classifier reached an accuracy score of 74% while predicting the severity of the vulnerabilities. At the same time, the DT, NB, and LR models provided accuracy scores of 40%, 38%, and 43%, respectively.
+
+Threats to Validity: This study focused on the prediction of security vulnerabilities in the Apache Tomcat open-source project. To minimize the threats to external validity, we considered seven different versions of Apache Tomcat. However, other systems need to be analyzed to further generalize our findings. To minimize the threats to internal validity, we experimented with several ML models and two feature selection methods. However, the results reported in this study are further subject to improvement using more sophisticated ML models and feature selection techniques. Also, vulnerability predictions are made at the class level. However, a finer – method or line-level – prediction would be useful for the developers. To minimize the threats to the reliability and repeatability validity, the dataset and model implementations are made available online.
+
+# VII. CONCLUSION AND FUTURE WORK
+This study responded to two research questions on the best feature set and the best performing model in predicting security vulnerabilities. The best feature set was determined by employing two feature selection techniques and examining the performance results. To achieve the best performing model, the experiments were carried out using four supervised machine learning models. Among the Decision Tree (DT), Naive Bayes (NB), and Logistic Regression (LR), our results suggested that the pruned DT delivered better than the other two models in predicting security vulnerability. However, as a binary classifier, DT could not handle severity and the types with multiple classes. The presence of vulnerability is merely a binary value (yes/no), but the severity has four classes (High, Important, Moderate, Low). Thus, the KNN model was considered, and it performed better than the DT model while predicting all the target classes. Consequently, the KNN classifier was selected as the better performing model among the four. This answers RQ2 on choosing the best performing model.
+
+The models and feature sets used in this experiment are subject to enrichment for better performance. More sophisticated feature selection methods can be applied. Also, ensemble methods, simple multi-layer perceptron, and deep neural networks can be applied to make more accurate predictions. Moreover, the results obtained using this experiment are distinct only to Apache Tomcat, and more experiments are required with different systems.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12,2024 at 03:35:06 UTC from IEEE Xplore. Restrictions apply..

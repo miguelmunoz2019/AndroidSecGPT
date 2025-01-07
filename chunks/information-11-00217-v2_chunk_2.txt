@@ -1,0 +1,72 @@
+# 2. Research Methodology
+In this section, we present the research methodology that we used, and we emphasize the differences with our previous work . Our methodology includes the following six main steps:
+1. Application selection: We have searched inside Google Play Store for Android secure and privacy-friendly barcode reader applications and we have selected 100 of them. This extends the work of  where we only considered 28 apps.
+
+2. Information gathering: We have extracted all the features and permissions from the app descriptions.
+
+3. Application tests: We have installed the apps, evaluated them and compared their capabilities w.r.t. the app descriptions.
+
+4. Application Categorization: According to the app features, we have divided them into five different groups, refining the categorization of ;
+5. Recommendation proposal: We have listed guidance tips for developers to build secure and privacy-friendly barcode reader apps;
+6. User security and usability awareness evaluation: We have conducted a user survey to evaluate the user experience. This survey extends the one of , as it was refined and the number of proposed questions was increased.
+
+# 3. QR Code Readers
+Exploring Google Play Store  for secure QR code readers lead to a selection of more than 100 apps. All these apps support the standard scanning service but some of them also claim to provide security features. According to  most barcode scanners apps are not able to protect users against the selection of malicious QR codes, or against privacy violations. In this study, we aim at studying barcode reader applications from security, privacy and usability perspectives. Our preliminary results in  showed that several apps use weak security mechanisms, e.g., weak algorithms or short key lengths. Moreover, several apps do not follow standard structures or optimal encoding schemes.
+
+Our proposed app, in Section 5 overcomes all these limitations. Table 1 lists the following features of the selected apps:
+- App developer: the identity of developer or company name.
+
+- Version: analyzed app version.
+
+- Installs: number of app installations from Google Play.
+
+- Category: App’s category (w.r.t. later classification).
+
+- Rate: a 5-point scale users evaluation of an app from Google Play. N/A means not available.
+
+- 1D/2D: ability to read 1D and 2D barcodes. QR stays for QR codes.
+
+- Format: the reader displays the barcode type it has identified, e.g., QR code, etc.
+
+# Information 2020, 11, 217
+a Always displays QR code; b Free version to test functionality; c Displays barcode image; d Two buttons to read 1D barcode or QR code.
+
+# 3. URL Security Applications
+Embedding barcodes with malicious links is one of the most common attacks that targets a user device. In this section, we presents QR code readers that provide security services on links, by checking the encoded online content. Multiple technologies can be used for detecting malicious URLs, e.g., Artificial Intelligence techniques, black and white lists, etc., however, in this context, we do not focus on the adopted technology but on the features provided by the readers.
+
+G Data QR code reader  is a free Android application that checks the online content of a QR code, detects suspicious links, shows the complete URL and extends short ones, and blocks users from visiting unsafe URLs in their browser.
+
+Information 2020, 11, 217 7 of 23
+KasperSky QR Scanner  is a free app that checks QR code URLs against malicious Web pages. The app description does not provide any detail regarding the used protection methods, and the main limitation of the app is that it allows to directly visits links, detected as benign, without asking for user confirmation.
+
+The Norton Snap QR code scanner  is another application that validates QR code URLs against Web attacks. This app alerts users for benign/malicious links, blocks malicious URLs, and retrieves the full encoded URL.
+
+Other URL security applications such as: Trend Micro , FANSec , Dennings , Avira , iTechSo , KidControl , iTechSol  and X & C Hi-Tech Inc.  provide URL checking services. However, they do not retrieve the full URLs. If the encoded URLs are shortened or redirected, the users will not be able to check the final URL destination.
+
+QR Code Scanner & Barcode Reader for CM Browser  is a lightweight QR code scanner based on the CM browser: it is the browser itself that provides security services, checks URLs, and blocks advertisements.
+
+TeaCapps barcode scanner  checks URLs by employing Chrome Custom Tabs, which uses Google Safe Browsing technology.
+
+G-Scan and G-tos scan barcode scanners  check URLs, alert users in case of malicious links and gets the full expanded URLs.
+
+a Directly opens the URL if it is safe. N/A means not available.
+
+The main limitation of these apps is that URL-checking scanners works against online attacks, by detecting malicious/suspected Web pages, while other offline attacks such as SQL and command injections cannot be prevented. Moreover, some of these applications do not provide information about their URLs checking techniques, i.e., how they classify URLs into benign or malicious.
+
+# 3. Crypto-Based Security Applications
+Cryptographic mechanisms can be used to encrypt, sign and control the access to QR code content. Adopting data encryption provides confidentiality and access control for the encoded contents, so that
+only the authorized users (who have the decryption key) can retrieve the encoded data. Moreover, digital signatures can achieve authentication, integrity and non-repudiation. Recent studies also investigate the use of Visual Secret Sharing schemes for QR Code, to provide additional security mechanisms, e.g., to online transaction [ 114 ]. Choosing the suitable algorithm, key length and structure are discussed in multiple studies [ 6 ,115 ], but the key factor on barcode usability is the size overhead [ 116 ]. However, there are few applications that offer generating and reading cryptographic QR codes.
+
+Madiff Net reader application [ 20 ] is free and available in several languages, such as: English, Vietnamese and Chinese. Madiff Net supports scanning and generating password-protected QR codes, in which the content is encrypted using a shared key between the generator and the barcode reader. The developer does not mention the used algorithm but keys are 6 bytes of length, and the ciphertext is a base 64 string. Since the algorithm is unknown, we cannot evaluate the strength of this app. In addition, Madiff Net uses a base 64 encoding scheme for bytes inside QR codes which causes size overhead.
+
+QR Droid Private  is a free, well-designed interface, which provides scanning and QR code generation services. This app supports URL shortening, QR code sharing and content encryption. QR Droid Private adopts a weak encryption algorithm, i.e., Data Encryption Standard (DES) with breakable key size of 56 bits. It uses a keyword structure, in which the ciphertext is encoded in base 64. There are two versions, private and full. The private version needs few permissions to generate QR codes, while the full version needs more permissions.
+
+Crypto Message  is a security application that supports an encryption service for encoding text messages inside QR codes. This application offers the creation of QR codes in the free version, while decoding requires the paid version. It adopts Advanced Encryption Standard (AES) with four modes that include: Electronic Codebook (ECB), Cipher Block Chaining (CBC), Counter (CTR), and Output Feedback (OFB) modes. It uses key size of 128, 192 and 256 bits, and encodes ciphertexts as hexadecimal or base 64 strings. Finally, Crypto Message is not able to decode barcodes that are created by other applications.
+
+The algorithm, the key size and the structure of EC QR [33 ,41 , 78, 79, 81 ,83 ] are not available and cannot be evaluated. However, the developers claim they support message encryption and other security features.
+
+Observe that, all the above mentioned applications have some limitations: (1) They assume no standard method of encoding cryptographic data in QR codes, i.e., each application adopts its own structure. Thus, in order to decode a crypto-barcode, the user will need to use the same generating application, while, on the other hand, the study of [ 116 ] suggests the use of the standard JavaScript Object Notation (JSON) as a general structure to be used with crypto-QR codes. (2) Some of these applications use weak encryption algorithms such as: DES and AES-ECB. (3) These applications employ base 64 and hexadecimal strings to represent ciphertexts, which lead to size overhead.
+
+The password-protected QR codes achieve confidentiality and access control, so that only authorized users who have the key (password) can decrypt and access contents. However, encrypting the contents is not the optimal mechanism to protect users who scan the QR code, since even encrypted data may include malicious URLs or offline attacks. Digital Signature can be useful to protect users, as it employs public-key cryptography, to validate authentication, integrity and non-repudiation of QR code contents [116 ].
+
+presents a summary of crypto-based QR code scanners and it includes the app developer, encryption, digital signature (DS), algorithm (Alg), key length (KL), encoding scheme (EncS), and structure (Str).

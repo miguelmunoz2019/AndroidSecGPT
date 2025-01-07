@@ -1,0 +1,60 @@
+# 3 OTP AUTHENTICATION IN ANDROID
+Analyzing OTP authentication protocols implemented in real-world servers require addressing several challenges. Below, we describe the challenges, each followed by our approach to address it.
+
+# Challenge 1: How to identify OTP authentication implementations that violation the aforementioned OTP rules without access to the source code?
+Static code analysis is the most popular technique to locate implementation flaws. However, this technique does not work because server source code is not publicly available. The other technique is to identify functionalities supported by servers and interact with servers. Many attack-based techniques have been proposed based on this approach  . However, we cannot apply this approach in our case for ethical reasons.
+
+Our approach 1: Interacting with servers. We search for implementation violations via legitimate interactions with servers. Executing an app triggers the validation functionalities of OTP authentication implemented in the app server. Referring to the OTP rules defined in Section 2, we design experiments to test the functionalities and determine whether the implemented OTP authentication protocol obeys all the OTP rules.
+
+# Challenge 2: How to locate the app code that triggers the validation functionalities of OTP authentication?
+We perform login by executing Android apps to explore the functionalities of OTP authentication at remote servers. Hence, we need to locate OTP login Activities in apps. To find such Activities, we decompile each app and search for functions declaring login Activities. However, developers use a variety of names for these functions, which makes identification more complicated. While we can recognize the login functions by matching data- and control-dependencies with execution patterns, such a strategy does not always succeed because the code decompilation of an app may be incomplete. Thus, we need a broader approach to identify login functions that requires less code information.
+
+Our approach 2: Recognizing OTP login functions semantically. Login Activity declarations, including class information (i.e., class name and name of the extended class) and function information (i.e., function name and argument name) are more complete than other relevant information, such as control-dependencies and API names. Moreover, login Activity declarations reflect which functionalities are included in the class. Although name recognition is challenging, we observe that developers prefer to use similar words to name similar functionalities. This provides a way to identify login-related functions by applying syntax and lexical analysis.
+
+# Challenge 3: How to perform login Activities to interact with each server?
+Once the login Activity declarations are located, we send login requests via the login Activity in each app, triggering the OTP validation system at the remote server. We can manually send login requests, but it does not scale to a large number of apps. To automate the process, we need to design a system that follows the login process precisely. Otherwise, irrelevant services might be triggered, which cause unexpected errors. For example, a button requesting a password reset might be clicked accidentally, possibly switching from the current login page to a password reset page.
+
+Our approach 3: Extracting the position of each widget. After app decompilation, there is a file describing all the involved widgets, including their names, layouts, types, positions, etc. The widget type information helps to identify the widgets used for editing texts and clicking buttons. The widget name implies its purpose, and its layout gives its position. Through this information we can locate the required widgets precisely and execute further operations.
+
+# Challenge 4: How to parse the received server messages?
+Responses from a server are texts containing both useful information (e.g., valid OTP, its expiration, etc.) and irrelevant material. Furthermore, OTP authentication protocols implemented in different servers have different functionalities, which indicates that their responses differ. To deal with this issue, we need a mechanism to systematically process these server messages and recognize the fields containing the useful information.
+
+Our approach 4: Examining altered fields in each message. We identify fields that are altered by comparing multiple responses. Although OTP authentication protocols with different functionalities may give different responses, some essential fields in these responses still follow particular formats. For example, the description of OTP expiration is usually in the format of a decimal followed by a string as “second(s)”, “minute(s)” or “hour(s)”. With some prior information like this, we discover the used formats and furthermore.
+
+# AUTH-EYE
+# OTP List
+# Apps
+1. Login Code Detector
+2. Servers
+3. Auth Message Analyzer
+4. Report
+# OTP Rules
+find what functionality is implemented by sending multiple requests to the same server.
+
+# 4 SYSTEM DESIGN: AUTH-EYE
+This section describes our automated system, AUTH-EYE, which analyzes Android apps and detects violations of the OTP rules defined in Section 2. AUTH-EYE is built following the approaches outlined in Section 3 to address the critical challenges while examining OTP protocol implementations. AUTH-EYE comprises two components: a Login Code Detector and an Auth Message Analyzer, and Figure 1 illustrates the system workflow. We next describe the system in detail.
+
+# 4 Login Code Detector
+As mentioned earlier, our focus is on the SMS OTP authentication protocol. The function of the login code detector is to analyze a set of apps and generate an OTP List of the apps that implement SMS OTP login activities. AUTH-EYE achieves this in two steps: app decompilation and Login Activity locating, which are detailed as follows.
+
+# 4 App Decompilation
+AUTH-EYE is built on top of the JEB Android decompiler . The login code detector first takes apps as inputs and uses JEB to decompile them into their java source code.
+
+# 4 Login Activity Locating
+Since AUTH-EYE only focuses on OTP authentication, it first needs to distinguish Activities of OTP authentication from that of password authentication. However, since both Activities are named similarly in layout files, it is hard for AUTH-EYE to distinguish OTP authentication via the layout files only. Therefore, AUTH-EYE examines the java source code of each app to identify those which implement login activities. AUTH-EYE first looks for Activities that were declared by developers (i.e., customized classes and functions) and then identifies functions that fulfill login Activities. The examination steps of how AUTH-EYE recognizes OTP login Activities in apps are detailed below.
+
+# Customized Package Selection
+We observe that Activities commonly exist in customized packages (i.e., declared by developers) and seldom exist in third-party libraries. Therefore, AUTH-EYE needs to distinguish customized packages from the standard packages declared in third-party libraries. AUTH-EYE adopts a heuristic approach to achieve this target: it ONLY collects class names of Activities in an app and analyzes the first two fields in a class name. For example, in the class name cx.itxxx.usercenter.activity4, the first two fields, cn.itxxx, indicate the identity of the developer, while the last part, usercenter.activity, refers to the functions that are related to an Activity. In one app there often exist many Activities. AUTH-EYE defines the most frequently appeared first-two-fields prefix as the developer’s information, and then deems packages with this developer’s information as customized packages. According to our manual inspection on 2,210 popular Android apps, 2,153 apps follow this pattern and thus AUTH-EYE could apply this approach to locate customized packages.
+
+# Login Function Identification
+Once the customized packages are identified, AUTH-EYE locates classes and functions with login Activities. A common strategy for understanding a function semantically is to search for specific words and dependency patterns. However, in our case this strategy fails to extract semantic information effectively for the following reasons:
+- Non-Uniform Representation: Developers often choose function and variable names arbitrarily. They often use different names for functions and variables with the same purpose, such as the AccountLoginActivity login functions and PhoneLogin. For a matching approach to succeed, we thus need a dataset with a large number of potential keywords.
+
+- Vague Explanation: Developers may use identical words but combine these words in different orders to name different functions. The meanings of these functions are significantly different. This makes a simple keyword comparison inaccurate. For example, the function LoginPhoneAct refers to the activity of extracting phone settings, but PhoneLoginAct specifies login via mobile phone.
+
+- Unclear Expression: Developers often use abbreviations and colloquial terms (e.g., AccountAct) to declare an Activity. Moreover, the decompilation replaces some.
+
+4 We used ‘x’ to conceal the details of this developer
+# APIs by using abstract formats, e.g., UserLogin.a. Ab- breviations and abstract formats like this are more difficult to recognize through a simple keyword match- ing.
+
+- Partial Decompilation: We cannot completely decomp- ile apps with protected code snippets. Hence, the patterns extracted through the data and control depen- dencies may be inadequate.

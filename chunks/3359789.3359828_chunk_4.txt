@@ -1,0 +1,50 @@
+To gain a further understanding of these difficulties, we manually inspected the source code of each app. We found that class names are usually fully decompiled, and follow some specific formats. For example, developers use similar words (e.g., login, auth) with similar formats to name a login Activity. Therefore, we propose a natural language processing  (NLP) based approach, which is widely used to evaluate the semantic similarity between a pair of words, to extract the semantic information from class and function names and so address the second challenge.
+
+We first manually construct a reference set for similarity comparison. We collected the login-related class names and function names from 4,665 repositories posted on Github5, where open source apps display the code with login Activities. A context is required for measuring the semantic similarity between an unknown name and names in the reference set. Because we compare the semantic similarity of two words defined in programming code, text corpora such as Wikipedia and Google Book Ngram Corpus are not appropriate. Instead, we generated our own code corpus by using all posts on Stack-Overflow. To compare an unknown name with names in the reference set, AUTH-EYE converts the words in code corpus into sets of vectors by using Word2vec  and computes a cosine distance between the unknown name and each name in the reference set. The cosine distance between two words gives a measure of their semantic similarity, where a greater cosine distance represents a higher semantic similarity. Using the reference set, AUTH-EYE proceeds according to the following steps to identify functions related to login Activities:
+1. AUTH-EYE splits each name into several words based on the occurrence of uppercase letters to improve the accuracy of a comparison between an unknown name and names in the reference set. We assume the standard programming practice in which the names of classes and functions are usually a combination of several words, capitalized at word boundaries.
+
+2. AUTH-EYE compares each word with the names in the reference set and computes the corresponding similarity scores. The highest score found for the word is taken as its similarity score.
+
+3. AUTH-EYE calculates the semantic similarity by taking the average similarity of all words in the name. If the average similarity score is higher than a threshold, the corresponding class name is labeled as a “login”.
+
+4. AUTH-EYE runs steps (1) - (3) iteratively to distinguish “login” classes and then repeats the three steps to label “login” functions in these classes.
+
+For example, consider the function name doLogin. The highest semantic similarity score is 0 if AUTH-EYE compares the entire name with each word in the reference set. If the name is divided into single words as “do” and “Login”, its average semantic similarity is 0 as the similarity scores for two words are 0 and 0, respectively.
+
+# SMS OTP Identification
+AUTH-EYE examines the identified login function to determine whether its functionality is SMS OTP login.
+
+Even though the java code for each app may be only partially decompiled, the layout XML file can be fully extracted. Therefore, AUTH-EYE identifies the apps implementing SMS OTP login Activities by analyzing the layout XML files instead of analyzing the login function code. For each identified login function, AUTH-EYE uses UI Automator  to find the name of the corresponding layout XML file from the “public.xml” file. In the layout XML file, UI Automator parses all the information describing each widget, such as type, text, orientation, and position (i.e., its layout).
+
+Differently from the case with function declarations, we find that each widget is named formally. Thus, we manually collected a set of keywords (e.g., “smscode” and “mobile-phone”) from 13 repositories posted on Github6 to construct a keyword list. In order to identify whether a widget is related to SMS OTP login, AUTH-EYE chooses the widgets for edit text and button. For each widget, AUTH-EYE compares the text in the field of android:text with the words in the keyword list. If any keyword is included in the widget text field, an SMS OTP login is identified, which indicates that its server validates the user’s identity through the OTP authentication protocol. AUTH-EYE finally generates an OTP list containing those apps that are identified using SMS OTP login. The widget descriptions, that are relevant to SMS OTP login, are also included.
+
+# 4 Auth Message Analyzer
+Taking the OTP app list as an input, the Auth message analyzer of AUTH-EYE then executes OTP login Activities through each listed app to interact with its server. By examining server responses and checking the OTP values, AUTH-EYE determines whether the implemented OTP authentication protocol violates any of the OTP rules.
+
+# 4 OTP Login Execution
+AUTH-EYE utilizes Monkey tool, an UI/Application Exerciser , which triggers SMS OTP login Activities by generating pseudo-random streams of user events (e.g., clicks and button touches). However, the executions of Monkey are somewhat imprecise so that some redundant Activities may be performed accidentally, causing unexpected errors. To improve the efficiency and effectiveness of the automated OTP login testing, AUTH-EYE makes use of the orientation information parsed by UI Automator to precisely locate the widgets (i.e., edit text and button) that are related to SMS OTP login Activities.
+
+To execute a login Activity, AUTH-EYE calls the function dispatchString() to enter a valid mobile phone number into the edit text widget. It then clicks the button to send the mobile phone number to the server, requesting a pseudo-random OTP value. The server response is a text message containing the OTP value and some textual descriptions. AUTH-EYE needs to accurately extract the OTP value in this message (note that AUTH-EYE has been given root permission for the tested Android phone in advance to extract the SMS messages from database /data/data/android.providers.telephony/databases/mmssms.db). We thus manually analyzed response messages generated by executing the SMS OTP login in 200 apps and found that the messages with OTPs followed formal formats. Therefore, we created a list of keywords that describe OTP values such as “password”, “OTP”. In detail, AUTH-EYE applies a keyword matching to parse each response message. Given the keywords, AUTH-EYE extracts the OTP value from each message in the following steps:
+1. AUTH-EYE pre-processes a response message by applying Porter Stemmer  to convert words to their root forms. For example, the root form of “time” and “times” is “time”.
+
+2. AUTH-EYE divides the message into several blocks based on the text spaces. Each block contains a numeric value or a word.
+
+3. AUTH-EYE searches for the block whose word matches any of the predefined keywords. If a match is found, AUTH-EYE selects the content in the subsequent numeric block as the OTP value.
+
+An interesting observation is that many Android apps nowadays ONLY use OTP authentication and do not adopt a password authentication. In this situation AUTH-EYE could easily conduct the test without considering the password login issue. For those apps with a two-factor authentication (i.e., a login requires both the password and the OTP), AUTH-EYE relies on a manual account registration and login as the prerequisite to conduct the following evaluation.
+
+# 4 Evaluating Rule Violations
+AUTH-EYE executes the following tests to check each app’s compliance with the OTP rules.
+
+R1: OTP Randomness. To assess the randomness of the pseudo-random values generated by a server for each authentication session, AUTH-EYE sends 30 OTP requests to each server and parses the response messages to extract a sequence of OTPs for each server.
+
+AUTH-EYE proceeds in two ways to generate the value sequences for examination. In the first, AUTH-EYE consumes each received OTP before sending a new login request. In the second, AUTH-EYE sends login requests without consuming the values for OTP authentication. From the sequence of OTPs, AUTH-EYE evaluates the randomness from the following two perspectives:
+- Repetition: AUTH-EYE identifies whether a subsequence appears periodically in the sequence, or the same value appears repeatedly in the sequence.
+
+- Static: AUTH-EYE examines the sequence with constant values.
+
+We observed some apps reject repeated requests when certain numbers of request are reached, and so prevent acquisition of the 30 values required. In such cases, we wait until the validation works again before re-starting the test. Most apps only block the account for around 10 minutes, and rarely for one hour. Only a few apps block the account for as long as 24 hours.
+
+It is important to mention that if the value sequence passes the above checks, it can only be regarded as potentially random. In this study, we did not test the values in the sequence using more rigorous tests for randomness because that requires a larger number of OTPs. Due to the constraints set in each validation system, collecting a sufficiently large number of OTPs is time-consuming, and even perhaps impossible in practice.
+
+R2: OTP Length. AUTH-EYE checks the length of each OTP, which should be at least six digits. If a server generates an OTP with length less than six digits, AUTH-EYE labels the corresponding app as vulnerable.

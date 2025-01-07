@@ -1,0 +1,69 @@
+# IEICE TRANS. INF. & SYST., VOL.E103–D, NO FEBRUARY 2020
+# PAPER
+# Special Section on Security, Privacy, Anonymity and Trust in Cyberspace Computing and Communications
+# Study on the Vulnerabilities of Free and Paid Mobile Apps Associated with Software Library∗
+Takuya WATANABE†,††a), Nonmember, Mitsuaki AKIYAMA†, Member, Fumihiro KANEI†, Nonmember, Eitaro SHIOJI†, Member, Yuta TAKATA†††, Nonmember, Bo SUN††††, Member, Yuta ISHII, Toshiki SHIBAHARA†, Nonmembers, Takeshi YAGI†††††, and Tatsuya MORI††b), Members
+# SUMMARY
+This paper reports a large-scale study that aims to understand how mobile application (app) vulnerabilities are associated with software libraries. We analyze both free and paid apps. Studying paid apps was quite meaningful because it helped us understand how differences in app development/maintenance affect the vulnerabilities associated with libraries. We analyzed 30k free and paid apps collected from the official Android marketplace. Our extensive analyses revealed that approximately 70%/50% of vulnerabilities of free/paid apps stem from software libraries, particularly from third-party libraries. Somewhat paradoxically, we found that more expensive/popular paid apps tend to have more vulnerabilities. This comes from the fact that more expensive/popular paid apps tend to have more functionality, i.e., more code and libraries, which increases the probability of vulnerabilities. Based on our findings, we provide suggestions to stakeholders of mobile app distribution ecosystems.
+
+key words: mobile app, software library, vulnerability
+# 1. Introduction
+Software libraries play a vital role in the development of modern mobile applications (app). They enable developers to improve development efficiency and app quality. In fact, Wang et al. reported that more than 60% of sub-packages in Android apps originate from third-party libraries . Although software libraries offer many advantages, in some cases, they could be the source of security problems, e.g., vulnerabilities or potentially harmful functionalities. Chen et al.  recently reported that 6% of apps published to Google Play were potentially harmful apps associated with harmful software libraries. These observations indicate that libraries can be the origins of the mobile app vulnerabilities.
+
+We report a large-scale study to understand how mobile app vulnerabilities are associated with software libraries.
+
+Manuscript received March 10, 2019.
+
+Manuscript revised October 20, 2019.
+
+†The authors are with NTT Secure Platform Laboratories, Musashino-shi, 180–8585 Japan.
+
+††The authors are with Waseda University, Tokyo, 169–8555 Japan.
+
+†††The author is with PwC Cyber Services LLC, Tokyo, 100–0004 Japan.
+
+††††The author is with National Institute of Information and Communications Technology, Koganei-shi, 184–8795 Japan.
+
+†††††The author is with NTT Security (Japan) KK, Tokyo, 101–0021, Japan.
+
+∗Early version of this paper  was presented at International Conference on Mining Software Repositories (MSR 2017).
+
+a) E-mail: takuya.watanabe.yf@hco.ntt.co.jp
+b) E-mail: mori@nsl.cs.waseda.ac.jp
+DOI: 10/transinfINP0011
+To the best of our knowledge, this is the first study that uses large datasets to systematically quantify the vulnerabilities associated with libraries. To perform our analysis, we developed two frameworks, Droid-L and Droid-V, to detect/classify software libraries used in mobile apps and quantify how vulnerable mobile app libraries are, respectively. By linking the output of the two frameworks, we can specify the mobile app vulnerabilities associated with libraries. As the number of active mobile apps published in prominent mobile app marketplaces has exceeded four million , using a small sample of apps may result in intrinsic bias. However, analyzing all available mobile apps is not feasible. Thus, we applied proper sampling approaches to generate a dataset that is sufficient to extract statistically reliable results. We adopted two sampling approaches, i.e., top-K relative to the number of installs and random sampling. Top-K reflects the most influential apps and random sampling reflects the statistics of each population.
+
+A unique and noteworthy approach of this study is that we analyze both free and paid apps. Very few studies have investigated the security of paid apps. We employ a relatively large number of paid apps to ensure statistically reliable results. Studying paid apps enables us to understand how differences in the development/maintenance of apps affect vulnerabilities associated with libraries. We examined software updates for these apps six months after they were originally collected. We collected 2M free apps to construct a database (DB) to detect/classify the libraries used in apps. In total, we used 2M free apps and 30K paid apps for our analyses.
+
+Our primary findings are as follows.
+
+- Roughly 70% of free apps and roughly 50% of paid apps with vulnerabilities were vulnerable due to libraries.
+
+- More expensive/popular paid apps tend to have more vulnerabilities than other paid apps.
+
+- Paid apps tend to have not been updated for longer periods than the free apps; thus, vulnerable libraries in paid apps have not been updated for longer periods than the free apps.
+
+- Approximately one-half of the vulnerabilities detected by existing vulnerability checking tools are found in unreachable code.
+
+Based on these findings, we derive suggestions for stakeholders in mobile app distribution ecosystems.
+
+Copyright c 2020 The Institute of Electronics, Information and Communication Engineers©
+# WATANABE et al.: STUDY ON THE VULNERABILITIES OF FREE AND PAID MOBILE APPS
+(Sect. 6).
+
+The remainder of this paper is organized as follows. In Sect. 2, we present a high-level overview of the methodologies developed for our analysis. In Sects. 3 and 4, we describe the Droid-L and Droid-V frameworks, respectively. In Sect. 5, we characterize the dataset used for the analysis. Findings are presented in Sect. 6. Limitations of the analysis and future research directions are discussed in Sect. 7. We also consider ethical issues associated with this research in Sect. 7. Section 8 provides a summary of related work, and conclusions are presented in Sect. 9.
+
+# 2. Overview of Methodologies
+# 3. Droid-L: Library Detector
+The Droid-L system detects and classifies software libraries. Figure 2 shows an overview of the Droid-L system, which comprises a fingerprint DB and a dead code checker. For a given APK file, the system first decompiles the file and extracts packages. The system then computes a fingerprint for each package and compares the computed fingerprints to the library fingerprint DB, which we describe in the next section. The fingerprint DB returns one of three library categories, i.e., official, private, or third-party. If the DB does not return anything, this implies that the package is not a library. Next, the system applies the dead code checker to the extracted libraries. The dead code checker employs static call graph analysis to determine if the detected library code is dead code. In the following, we describe these two components in detail.
+
+# 3 Building the Fingerprint DB
+As shown in Fig. 2, the role of the fingerprint DB is to classify a given package as official, private, or third-party (Sect. 3). To build such a DB, we take the following two-stage approach. First, we employ cluster analysis to extract a set of packages with similar characteristics, which we call a fingerprint. A fingerprint is a unique signature that represents an extracted cluster. Then, we classify the extracted clusters using two heuristics. The first heuristic is the naming convention of Java packages. Each package has an intrinsic name that may suggest which category it should belong to. For example, com.google.ads represents the AdSense library supported by the official Android SDK manager. The second heuristic is the number of distinct developer certificates per cluster. This feature is useful to determine how a detected library is used by developers. If it is a widely used public library, we will find many distinct certificates for apps that use the given library; if it is used by a single developer, the library is likely a private library. Once we build a library fingerprint using a large collection of apps, we can extract software libraries and classify them into categories for a given app. Note that we assume that code other than the detected software libraries is attributed to app developers. We discuss the limitation of this assumption in Sect. 3.
+
+# 3 Clustering Packages
+To detect libraries contained in the collected apps, we begin by clustering packages. Similar packages used in many apps are clustered. A set of clustered packages possibly represents a software library. There are several ways to cluster packages , , . LibRadar  leverages stable API.
+
+# IEICE TRANS. INF. & SYST., VOL.E103–D, NO FEBRUARY 2020
+features that are resilient to code obfuscation or minor software updates. LibFinder  compares two packages at the method level using control flow graphs.
+
+Due to its simplicity and high scalability, we adopted the approach used in LibRadar as our base and extended it for our purpose. Note that we could adopt other clustering approaches, such as LibFinder or other clustering algorithms using features extracted from packages.

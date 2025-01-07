@@ -1,0 +1,59 @@
+# C. MACHINE LEARNING BASED TECHNIQUES
+As we know, machine learning technique has been used in many cyber security related areas , , , , , . In the malware analysis area, it is expensive and difficult for security experts to manually generating and updating the malware detection patterns (or signatures) for Android malware. Inspired by the efficiency and generaliza- tion ability of machine learning technique, many machine learning involved methods have been designed to automat- ically detect or further classify Android malware samples. Drebin is a traditional and notable machine learning method which can detect Android malicious samples directly on the mobile devices . Drebin employed semantic features parsed from both AndroidManifest.xml files and disassem- bled binary classes.dex files. In addition, the papers , , , , , and  all used machine learning related methods. In summary, the key challenge of machine learning related methods is how to obtain the robust and informative features to represent Android malware samples. The seman- tic features may be directly derived from statistical features (for example, API calls, requested or used permissions ), features of a tree structure (for example, abstract syntax tree) or features of a graph structure (for example, API call graphs (ACG) , data flow graphs (DFG) or control flow graphs (CFG)).
+
+# III. METHODOLOGY
+In this part, we give the detailed introduction of our proposed framework in Fig. 1.
+
+# A. OVERVIEW
+The proposed framework consists of three phases. Firstly, the training Android malware samples will be collected with low impact or high impact ground truth. Secondly, based on the collected malware applications, reverse engineering will be conducted to extract features from the disassem- bled binary classes.dex codes and from AndroidManifest.xml. These extracted semantic features will be employed to rep- resent the impact characteristics of each Android malware sample. Then the extracted string features will be encoded into numerical vector representations. Finally, with the vec- tor representations, we train the impact prediction model to categorize the candidate Android malware samples into low impact or high impact. The details of each step will be presented in the following sections.
+
+66306
+VOLUME 7, 2019
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+# B. DATA COLLECTION
+The critical challenge of the proposed research problem origins from the absence of an Android malware dataset with impact ground truth available. Thus, to further validate our proposed solution to the research problem, we have to construct a dataset with high impact or low impact ground truth. Fig. 2 presents the steps of how to construct the Android malware dataset together with impact ground truth (called Mal_Impact Dataset, denoted as D).
+
+In this work, the constructed Mal_Impact Dataset is built on three open sourced Android malware datasets with family labels:
+- Source_1: contagion mobile3
+- The contagion mobile website is actively open for sharing the malware dataset. Anyone can upload the mobile malware samples to Contagio mobile mini-dump through dropbox. And people can download any malware samples. Currently, contagion website contains malware samples with family labels from 2011 till now.
+
+Source_2: Android malware samples4
+- The repository contains live Android malware applications. Anyone can upload and share the Android malware samples in this repository. At the time when this paper is written, this site contains about 144 Android malicious samples within 26 families.
+
+Source_3: Android Malware Dataset5
+If an instance of malware appears in two or three sources, then we aggregate these malware samples together and remove the duplicates. The final malware dataset will be the union of the three malware sources as shown in Eq.(1).
+
+Source_1 ∪ Source_2 ∪ Source_3 (1)
+# C. METRICS FOR MALWARE IMPACT
+The next challenge is on how to define metrics to evaluate the Android malware impact. Theoretically, there are many metrics available that we can employ to scale the malware impact, for instances, the economic loss or the number of compromised devices resulted by the Android malicious samples. But in reality, it is difficult to collect all the precise metrics values due to various reasons, e.g., it is infeasible for individuals to access the accurate value of global economic loss. Thus, as a proof-of-concept, we define two metrics to evaluate the Android malware impact in this paper:
+- Impact Metrics_1: The size of affected Android end devices that the malware family has resulted in, also named SOD for short.
+
+- Impact Metrics_2: The size of countries the candidate malware family has infected, also called SOC for short.
+
+Having defined the Android malware impact metrics, we should set the impact metrics threshold value to segregate low and high impact Android malicious samples. In this work, all the malicious samples within the candidate Android malware family are labeled as high impact malicious samples once one of the two setting conditions is met. Otherwise the malware samples within this Android malware family are then categorized to the low impact samples.
+
+- Condition 1: SOD≥ 1e5, the specific malware family has affected over 1e5 end devices.
+
+- Condition 2: SOC≥ 10, the specific malware family has infected more than 10 countries.
+
+# D. SETUP THE GROUND TRUTH
+To setup the ground truth, the best and most reliable way is the manual annotation at individual malware sample level. However, this is difficult, infeasible and resources consuming for us to setup the impact ground truth for many malicious samples. In addition, the following impact prediction model
+VOLUME 7, 2019 66307
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+is trained without considering the family-boundary of the data. As a proof-of-concept, the ground truth (low impact or high impact) of Android malware samples are annotated on Android malware family-grained. The malicious samples within the high impact families are all annotated as high impact (denoted as High_Mal), while Android malicious samples within other Android malware families will be labeled with low impact ground truth (denoted as Low_Mal).
+
+The baseline Android malware families listi (denoted as Fam_list) can be accessed from this website For each malware family f, we retrieve the values of the defined two impact metrics SOD and SOC from open-source information from various sources. In this work, we collect the related information from various sources, e.g., cyber-security news, white papers, or other related reports published by security vendors, or security-labs (for example, CheckPoint, Symantec, Kaspersky and McAfee).
+
+Let’s explain the ground truth annotation process through a case study. According to a published research report of CheckPoint in 2016, the Android malware family called Copycat has affected more than 14 million mobile devices, rooted about 8 million infected devices, earned about $1 million in false advertisement income for the hackers behind the malware campaign Therefore, all the malware samples within Copycat are annotated with high impact ground truth.
+
+# E. CONSTRUCT THE ANDROID MALWARE IMPACT DATASET
+With the available Android malware data and the corresponding impact ground truth, we construct the final Android malware dataset with impact ground truth, called the Mal_Impact Dataset (D). The information about the collected high impact malware samples (High_Mal) is listed in Table 2, and the details of Android malicious samples (Low_Mal) with low impact ground truth can be found in Table 3.
+
+# F. REVERSE ENGINEERING, FEATURE EXTRACTION AND EMBEDDING
+After the Mal_Impact Dataset D is constructed, the robust and informative semantic feature set F are decoded to capture the patterns for high impact malware data (High_Mal) and
+6 https://forensics.spreitzenbarth.de/android-malware/
+7 https://www.checkpoint.com/downloads/resources/copycat-research-report.pdf
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+low impact malware data (Low_Mal) in order to accurately separate them. In this paper, we perform reverse engineering of malware samples to parse the features. Generally, the semantic features are parsed from the disassembled binary classes.dex codes and the AndroidManifest.xml files. Each Android application package must contain the AndroidManifest.xml file. This AndroidManifest.xml file contains the essential information of the application, such as the components, the requested permissions, hardwares and filtered intents of the application. We will extract these information to characterize the impact of malware samples. In the following experiment setup, such information are parsed as features to represent each Android malware sample.
+
+Android application packages are usually implemented using Java programming language and then compiled into classes.dex bytecodes for its execution in the Dalvik virtual machine. The classes.dex bytecode contains the comprehensive semantic knowledge about the critical API calls and data access within an application. Besides, the classes.dex bytecode can be efficiently disassembled and parsed.

@@ -1,0 +1,90 @@
+Firefox Focus (or Focus) is a dedicated privacy browser application provided by Mozilla. This browser has functionalities, such as blocking advertisements and online trackers, resulting in better performance while maintaining the privacy and security of its users . As of 1 October 2020, this application has been downloaded more than five million times from the Google Play Store. Fig. 4c shows the onboarding page of the application showing a statement of privacy.
+
+Among the available artefacts (e.g., code comments, README files), we decided to explore issue discussions in these projects to answer our research questions. Research  has shown that issues provide a place where users, contributors, and project maintainers can propose features, share their thoughts and knowledge, and comment on and criticise design decisions. We wrote a script utilising github3.py library to collect issues from these projects’ repositories via the GitHub public API. We collected all of the 11,928 issues consisting of 62,526 posts from the Signal, K-9, and Focus repositories.
+
+shows the number of collected issues and their corresponding number of posts.
+
+These three projects were used in both the pilot and the main study.
+
+3 https://k9mail.github.io/documentation/security/pgpmime.html.
+
+4 https://github3.readthedocs.io.
+
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+# Welcome K-9 Mail
+K-9 Mail is a powerful free email client for Android.
+
+# Features Include:
+- Push Mail IMAP/IMAP IDLE
+- Better performance
+- Message (email) folder subscriptions
+- Altering synchronization
+- Return-address configuration
+- Saving attachments
+- Empty trash
+Please note that K-9 does not support most free Hotmail accounts.
+
+# Power up your privacy
+Take privacy with you:
+Be yourself in every message:
+Terms Privacy Policy
+Import settings
+Next
+Signal K-9 Focus
+The number of issues and posts collected.
+
+# 3. Pilot study
+The pilot study was carried out to inform several key study design decisions: (i) identifying the criteria to determine whether human values are present and (ii) exploring the possibilities to discover themes specific to software engineering that may not yet be captured in the existing values models. This exploration was conducted because, to the best of our knowledge, there is no statement in prior works that the current human value models are exhaustive for software engineering fields. However, we still need to use the concepts and definitions of human values (i.e., Schwartz’s theory) to ensure a similar understanding between the analysts involved. Fig. 5 shows how our pilot analysis was related to Schwartz’s values. Initially, Schwartz’s theory was used as a base for understanding human values. Then, we reflected on the descriptions we developed for value analysis with Schwartz’s values.
+
+# 3. Pilot process
+The pilot study consists of four steps: issues sampling, allocating the analysts, pilot analysis, and discussion, described as follows:
+- Issues sampling: We started with Signal and K-9 as they have similar functionalities. We randomly selected 30 issues from these two projects such that each issue has 20 posts, hence comprising 600 posts in total.
+
+- Issues allocation: The pilot study involved six analysts (2 Females, 4 Males) ranging from Ph.D. students to an associate professor. All analysts had a reasonable understanding of human values before the study started, and all except one had a software engineering background.
+
+# 3. Pilot results
+Our pilot study uncovered two perspectives on human values analysis. The first perspective concerns the (social) interaction between contributors (i.e., contributor-to-contributor). For instance, a contributor was grateful to another contributor who guided them to solve an issue: “Thanks for all the effort!”. The second perspective concerns how the application supports or violates users’ values (i.e., app-to-user). This analysis perspective could come from developers or end-users of the app. For example, users expressed their anger when a malfunction of the app costs him/her (i.e., wealth value): “This app is heavy on my data-bill”. In another example, developers expressed their concerns about a possible privacy breach in the application: “It’s bad enough that [the app]...”.
+
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+app] uses phone numbers plus SMS for signup as opposed to usernames plus proof-of-work. Although the contributor-to-contributor perspective is also interesting, we only focused on the app-to-user perspective in our main study.
+
+# The pilot study led to the following observations:
+- PO1: Some analysts were uncertain whether a theme they found in an issue discussion could be considered as a value (i.e., our objective). To address this, we considered a theme is a value theme if a phrase expresses the implications to users was found, resulting in dismay or appreciation of the app. This consideration is aligned with a human value’s feature that explains ‘when values are activated, they become infused with feeling such that people feel aroused when their values are threatened’ . Another literature also proposed that ‘emotion is a source for values importance’ . For instance, users posted their displeasure for a malfunction in importing settings, preventing them from migrating the app to another device. We considered this issue has a value theme of portability because it fuels user dissatisfaction with the app.
+
+- PO2: All analysts were comfortable using terminologies from Schwartz’s models for some of their themes. We expected this to happen and decided to allow those terms to be used.
+
+- PO3: In some cases, the analysts proposed a value with similar descriptions, but they adopted different terms to label them, such as usability and convenience. We calibrated those terms using the descriptions and examples provided by the analysts (see Table 2).
+
+- PO4: Some emerging themes, such as efficiency and accessibility were relevant to SE. However, these value themes could not be easily mapped into Schwartz’s values. This observation means either the analysts have different ways of thinking and require an extra inference process to map these themes to Schwartz’s values, or the themes could not be mapped at all. For example, accessibility theme could be mapped to Universalism - Concern or Benevolence - Caring in Schwartz’s refined theory. We believe this stems from the difference in levels of abstraction between the themes and the concept of human values. These themes are technical, while the concept of human values is abstract. We retain these themes and provide our suggestion of possible mapping to human values.
+
+We calibrated the discovered values list by mapping each theme from all analysts based on their similarities and corresponding examples from the issue discussions. Then, we reached a consensus name for those similar terms. Table 2 shows the themes discovered by the analysts, the mapping between the potentially similar themes, and also the proposed name for each value. For example, we found that there is a value term ‘convenience’ from a secondary analyst (SA4), which was later defined into two different terms: usability and efficiency. Based on the discussions, we observed that, for some cases, ‘convenience’ referred to how easy the app is for users. In another case, it referred to how quickly users can do tasks in the app.
+
+We developed definitions to guide values discovery in the main study based on our discussion results. First, we defined how a theme found could be considered as a value theme:
+# Definition 1 (Value Theme)
+A theme that emerges from issue discussions can be considered a value theme if the theme captures a response of dismay or appreciation by a contributor towards the app.
+
+As an example for Definition 1, a contributor reported that “... a mobile search (without server) using a single word query on 200 email takes more than a minute and k9 freezes and screen goes black, . . . this is extremely annoying". In this example, we analysed that the contributor values efficiency such that the slow search annoyed this contributor.
+
+Afterwards, we define when a value theme is present in issue discussions as follows:
+# Definition 2 (Value Theme Presence)
+A value theme is present when a theme from Definition 1 is discovered in issue discussions.
+
+For example, contributors posted their opinion, “I dislike this because it is reliant on additional apps and resources". Based on Definition 2, we considered that value theme is present in this phrase because the value theme of independence found in the phrase.
+
+Regarding the decision for the analysis method for the main study, we found that several value themes, such as usability and efficiency were discovered in issue discussions. These themes are not easily mapped to Schwartz’s values in our discussions. For this reason, we decided to keep using open coding in the main study.
+
+# Main study
+In the main study, we analysed issue discussions to discover human values using the definitions developed in the pilot study. Besides that, we also used themes found during the pilot study as an initial set of value themes (see Table 2). However, we did not limit our main study.
+
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+The mapping of values discovered in the pilot study.
+
+PA: Primary Analyst; SA#: Secondary Analyst.
+
+The number of issues for the main study.

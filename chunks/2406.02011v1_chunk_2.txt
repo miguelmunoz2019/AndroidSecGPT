@@ -1,0 +1,46 @@
+Android applications and framework layers are executed in Android Runtime (ART). ART is the runtime system that executes Dalvik Executable format and Dalvik bytecode. Since Android 5 Lollipop, it replaces the Dalvik Virtual Machine (DVM), a register and Java-based virtual machine designed to give an efficient abstraction layer to the OS. With the DVM, developers had to partially compile the app, while the DVM did the other parts at runtime. Instead, in Android RunTime (ART), Dalvik bytecode is compiled for ARM assembly during installation, and the app can run directly by executing machine instructions.
+
+# 2 Android apps
+As described in the previous paragraph, Android apps  work in the Android application layer, which allows developers to extend OS functionalities without altering lower levels. To build an Android app, developers write source code in Java/Kotlin that is compiled to .class files. Then, these are translated to Dalvik bytecode and compiled to a single .dex file (Dalvik Executable), which is optimized, loaded, and interpreted by the Dalvik Virtual Machine when the app is run. Once the app is compiled, it is packed as an .APK file, a sort of zip archive containing all files needed for its execution, and structured as follows:
+# Risk Algorithm Native Code Vulnerabilities Android
+– AndroidManifest.xml, a file containing components and permissions needed by the app;
+– classes.dex containing the assembled source code (i.e. list of classes, methods, and bytecode);
+– res, a directory containing all elements related to the visual presentation;
+– assets, a directory containing external resources used by the app while under execution;
+– META-INF, a directory with the files used by the Java platform to interpret and configure the app;
+– lib, a directory containing all platform-dependent native libraries written in C/C++ and compiled in the different ABIs (Application Binary Interface3) found in different sub-directories.
+
+Each app is also made of four different active asynchronous component types. These are the activities, entry points for user interaction; services, general-purpose entry points to keep the app running in the background; broadcast receivers, intercommunication activities between the apps and the system; content providers, whose aim is to allow apps to store and share data in the file system.
+
+# 2 Native Libraries
+As explained before, developers use Native Code to interact with native components and hardware. Moreover, developers can use Android NDK (Native Developer Kit ) to import third-party native libraries without re-implementing them. These libraries are typically compiled C/C++ code with two kinds of extensions: .so, which can be defined as native shared libraries; .a, namely native static libraries, which are those linked to others.
+
+Once compiled, the libraries are ELF (Executable and Linkable Format) files like the ones resulting from compiling a C code for Linux. The three most essential headers are (i) ELF header, with the magic number to recognize the file format, compilation architecture, version, and information about sections; (ii) program header to create a process image; (iii) section header containing all the file’s sections (.bss, .data, .text, etc.).
+
+The analysis of an ELF can be performed with several command line tools (e.g. readelf and elfdump), reverse engineering software such as IDAPro and Ghidra, or python libraries like pwntools, which was employed in this work as explained later in Section 4.
+
+# 2 Common Vulnerability Exposure
+Once a vulnerability is found in any application or hardware, it is often disclosed in a public dataset following the CVE standard  with a name featuring the
+3 An application binary interface (ABI) is an interface between the operating system and its applications. Each ABI is defined in Android by the combination of CPU and instruction set because each device uses its own.
+
+# 2 Risk Assessment
+In this work, we developed a risk assessment algorithm for vulnerabilities in the Native Code of Android applications. We now provide a brief introduction to the topic.
+
+Risk assessment includes a set of techniques and methods to determine the risk of an asset in a specific scenario. It is not only used in cybersecurity, but it is a general concept that can be applied to almost every field where undesired events could affect and damage the system. Given a specific scenario and a potential threat to an asset, we have to evaluate the likelihood of the threat damaging the asset4 in a quantitative (with numbers and specific metric measure), semi-quantitative (with numbers without a specific metric measure) or
+In cybersecurity, the asset is the technical infrastructure we have to protect from cybercriminals.
+
+# 2 CVE and Vulnerability Databases
+form CVE-DisclosureYear-ProgressiveNumberForThatYear. Each database entry contains the product (i.e. an extensive library known commercially, such as Libpng or OpenCV), the affected product vendors, the publication date, and a human-readable description. The latter is very important, as it contains information about the vulnerability, such as the name of the vulnerable product (with the version) and the name of the function that allows the attack to be carried out. Sometimes, the attack and procedure to patch the vulnerability are also described. Each CVE is also quantified with a score according to CVSS (Common Vulnerability Score System) . The latter defines three metric groups:
+- Base Metric, a constant severity value over time and across the user platform. It is composed of the Exploitability metric, which expresses the ease and technical levels required to exploit the vulnerability, and the Impact metric that quantifies the damage due to a successful exploit;
+- Temporal Metric, a severity value that considers vulnerability’s changes over time but is constant across the user platform;
+- Environmental Metric, which reflects severity scores depending on the user’s environment, possibly considering the presence of defence systems and security controls to mitigate the consequences of an attack.
+
+At the moment of writing this paper, different vulnerabilities have been published for Android: about 6305 vulnerabilities in Android OS by Google, more than 100 by Samsung, and only 2 for Motorola; only 3 vulnerabilities regarding Android hardware. Additionally, some vulnerabilities directly concern Android applications (the majority of them regarding Java management). Notably, vulnerabilities in Android Native Code cannot be addressed easily and directly as the Native Code is mostly embedded in other third-party libraries (see later sections of this work, particularly in Table 4).
+
+Up to now, there are different public databases containing CVEs, such as Mitre CVE , CVE Details , and National Vulnerability Database by NIST (NVD) . Most public databases about vulnerabilities are derived from Mitre, but they add some details and more technical information.
+
+# Risk Algorithm Native Code Vulnerabilities Android
+The threat is often considered a deliberate attack, depending on the attacker’s capability and the infrastructure protection mechanisms. The damage, of course, is the loss of infrastructure when the attack is successful. Technically, the risk assessment procedure involves tests such as penetration tests and simulation attacks where the company assesses the likelihood of being attacked. In general, after a risk assessment study, the company takes countermeasures to improve the protection of the assets. Different standards have been published about risk assessment, such as ISO 27005:2008  (the one we used in this work) and NIST 800-30.
+
+# 3 Related Works
+Identifying Android Native Code vulnerabilities is one of the emerging research fields of cybersecurity, and as far as we know, very few works have been published on this topic. The prominent one is Librarian , where the authors studied vulnerabilities in the top 200 Android apps downloaded from Google PlayStore from September 2013 to May 2020. They studied a new algorithm called bin2sim, capable of extracting 6 features from each ELF in the app. Additionally, by applying binary similarities techniques, the tool correctly identifies different libraries and versions, implementing a whitelist approach for vulnerability detection. Despite the accuracy of this tool, their methodology is very heavy from the point of view of computational complexity. Moreover, they only say whether the APK and the native library are vulnerable or not without assigning a risk score. Since it is one of the most recent works on this topic, we decided to compare our methodology with their results, as we also based the product selection on their criteria and considered the ± two years time elapsed to patch a vulnerability. As described in Section 5, we had to find a way to compare our risk score on their dataset with their result because of the lack of score in their results.

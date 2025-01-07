@@ -1,0 +1,46 @@
+32. R. Kissel, K. Stine, M. Scholl, H. Rossman, J. Fahlsing, and J. Gulick. Security considerations in the system development life cycle. 2008.
+
+33. K. Krippendorff. Estimating the reliability, systematic error and random error of interval data. Educational and Psychological Measurement, 30(1):61–70, 1970.
+
+34. K. Krippendorff. Testing the reliability of content analysis data. The content analysis reader, pages 350–357, 2009.
+
+35. R. C. Martin. Agile software development: principles, patterns, and practices. Prentice Hall, 2002.
+
+36. G. McGraw. Software security: building security in. Addison-Wesley, Upper Saddle River, NJ, 2006.
+
+37. G. McGraw. Seven myths of software security best practices. http://searchsecurity.techtarget.com/opinion/McGraw-Seven-myths-of-software-security-best-practices, 2015.
+
+38. P. Morrison. A Security Practices Evaluation Framework. In Proceedings of the 37th International USENIX Association Fourteenth Symposium on Usable Privacy and Security.
+
+#touch, 2013.
+
+21. G. Wurster and P. C. van Oorschot. The developer is the enemy. In Proceedings of the 2008 New Security Paradigms Workshop, NSPW ’08, pages 89–97, New York, NY, USA, 2008. ACM.
+
+22. S. Xiao, J. Witschey, and E. Murphy-Hill. Social influences on secure development tool adoption: Why security tools spread. In ACM CSCW, 2014.
+
+23. J. Xie, H. R. Lipford, and B. Chu. Why do programmers make security errors? In VL/HCC, pages 161–164, Sept 2011.
+
+# APPENDIX
+# A. INTERVIEW SCRIPT
+The following questions represent the main themes discussed during the interviews. We may have probed for more details depending on participants’ responses.
+
+- What type of development do you do?
+- What are your main priorities when doing development? (In order of priority)
+- Do your priorities change when a deadline approaches?
+- What about security? Is it something you worry about?
+- How does security fit in your priorities?
+- Which software security best practices are you familiar with?
+- Are there any obligations by your supervisor/employer for performing security testing?
+- What methods do you use to try to ensure the security of applications?
+- Do you perform testing on your (or someone else’s) applications/code?
+- Do you perform code reviews?
+# B. PARTICIPANTS DEMOGRAPHICS
+Years: years of experience in development
+SK: self-rating of security knowledge 1(no knowledge) - 5(expert)
+?: indicates participant’s previous company
+SME: Small-Medium Enterprise
+USENIX Association Fourteenth Symposium on Usable Privacy and Security 295
+# C. DEGREE OF SECURITY IN THE SDLC
+# (b) The Security Inattentive
+296 Fourteenth Symposium on Usable Privacy and Security
+USENIX Association.

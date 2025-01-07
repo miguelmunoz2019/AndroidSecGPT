@@ -1,0 +1,48 @@
+- Identifying local-verification vulnerability: During the iteration of each function, if we notice the tainted data (by querying the corresponding class field) is used by Unity API CrossPlatformValidator.Validate, and also there is no program path that also sends the tainted data to networking APIs, we conclude a local-verification vulnerability is detected.
+
+- Identifying no-verification vulnerability: We check every function to make sure there is no payment data (or its propagation) sent to the outside (e.g., through network APIs) and meanwhile no local-verification APIs involved. If so, we conclude it is a no-verification vulnerability.
+
+Therefore, we have used a very conservative policy to detect the vulnerability: if a game neither belongs to local verification nor no-verification, it will be classified into remote-verification, which includes the cases that we cannot identify the receipt data-use and the receipt is sent to the server. However, it is not guaranteed that those games are secure. Because we cannot confirm that the server will verify the transaction due to the lack of access to server side code. As such, we assume it is remote-verification, to avoid having too many false positives. Certainly, this will lead to false negatives. Being a vulnerability detection tool, we consider this is acceptable, as we cannot guarantee to detect all the vulnerabilities.
+
+# 6 Evaluation
+We have implemented PAYMENTSCOPE based on Ghidra, and its source code has been made available at https://github.com/OSUSecLab/PaymentScope. In this section, we present the evaluation results. We first describe how we collect the game apps and set up our testing environment in §6. Then, we provide our detailed results of the identified vulnerabilities and also how PAYMENTSCOPE performs in §6. Finally, we present the security analysis including case studies of these identified vulnerabilities in §6.
+
+# 5 Vulnerability Detection
+With the identified tainted classes and their corresponding tainted fields, we then iterate all of the functions again, to identify whether the known taint sinks have accessed any tainted fields. At a high level, we have two types of known taint sinks: (1) the APIs that send out data (e.g., flowing into network related APIs) and these APIs include HTTP/HTTPS and Socket, and (2) payment local verification API (e.g., UnityEngine.Purchasing.Security.CrossPlatformValidator.Validate). If any of these taint sinks have
+# 6 Experiment Setup
+Dataset. We aim to understand the developer’s practice at scale, and therefore we would like to test all the Android apps on Google Play as what we have done in our prior works such as LeakScope . Interestingly, instead of crawling apps directly from Google Play, we notice that we can actually leverage an existing app repository, AndroZoo . However, there are more than 10 million apps in AndroZoo, many of which no longer exist in Google Play. Therefore, we only focus on the apps that are still in Google Play, which eventually resulting
+USENIX Association 31st USENIX Security Symposium 3101
+# 31st USENIX Security Symposium
+# Hauoig / GUIICBIIOU
+1
+1
+1
+1
+0
+corquo
+1
+21l5j684
+7
+enoueboje
+biakja11
+# Disjoint (by Supported Architectures)
+# Joint (by Supported Architecture)
+has any association with the game category (based on what has been assigned by Google Play), and this result is presented in Figure 6b. Interestingly, we can see that the vulnerable rate for different categories varies a lot (from 64% to 93%), and there are two categories, namely “Arcade” (90%) and “Trivia” (93%), which have an extremely high vulnerability rate. A possible reason is that games in these two categories are more likely single-player games, and these games depend less on the servers (i.e., mostly off-line games). As such, developers are very likely to implement the in-game purchasing with only local verification or without verification at all. In contrast, games in the category of “Card” (64%) often provide multi-player features that heavily depend on the network service, and developers are more likely to verify the in-game purchasing using server-side verification.
+
+Efficiency. When conducting the experiments, we run 24 instances of Ghidra in parallel to analyze the games. It took 669 hours (almost 28 days) to perform the analysis. Among the processing time, it took Ghidra 665 hours to pre-process the inputs (e.g., converting binary to P-Code), and only took 4 hours to actually perform the payment-aware data flow analysis. Also, for each game, Ghidra created a project, and those projects occupied 5 TB hard drive space in total.
+
+To zoom in the internals of how PAYMENTSCOPE analyzed each game, we present a set of intermediate results in Table 2. For simplicity, we chose the top game in each category, if there are multiple games with the same download number, we randomly pick one up from them to show the result. Specifically, as shown in the table, we particularly present the binary file size of libil2cpp.so, the number of extracted classes and the number of extracted functions from the metadata (namely the size of GCT and GFT), the total number of tainted items, the total number of instructions involved in taint analysis, the total number of functions that are iterated by our data flow analysis, and finally the total number of identified traced paths.
+
+We can see that all the binaries are bigger than 15MB (one game is even more than 80MB) which is the main reason why it took Ghidra so long to pre-process. For |GCT | and |GFT |, we can see that they both contain thousands of items. But for the taintedness identification, we do not see many instructions (maximum less than two thousand instruction) are involved, partially because the payment data will not propagate to too many other variables. Also, interestingly, for game Happy Glass, the numbers are all 0. With further investigation, we found that the game never calls API get_receipt.
+
+# 6 Vulnerability Analysis
+(I) False positive and false negative analysis. Being a static analysis tool, PAYMENTSCOPE could have false positives (FPs) and false negatives (FNs). Specifically, the FPs in our context are the games that are secure but reported as vulnerable and the FNs are the games that are vulnerable but reported as secure (i.e., we consider it uses remote-verification as described in §5). To quantify FPs and FNs, we have to manually examine the games. In particular, to quantify FPs, we need to test whether the identified vulnerable games can indeed purchase for free; to quantify FNs, we need to test whether the games identified non-vulnerable indeed secure (containing remote verification). However, such a manual analysis will be very time consuming and it is not practical to test all games. For instance it took us more than 30 minutes to play the game EGGLIA until the IAP option shows up. Therefore, we have to sample the games for our manual analysis. To avoid potential biases, we eventually sampled 280 games (220 for FPs and 60 for FNs) with the following two strategies:
+- Targeted selection. We first select the games in the targeted group based on the number of installs. Specifically, to test FPs, we select the top 10 no-verification games and the top 10 local-verification games; to test FNs, we select the top 10 remote-verification games.
+
+- Random selection. We then randomly select the games. In particlar, to test FPs, we randomly selected 200 games from 8,954 vulnerable games; to test FNs, we select 50 games from 1,686 secure (remote-verification) games.
+
+Techniques to launch the attacks. To confirm the vulnerability of these games, there are multiple ways such as
+# virtualization and repackaging. In the following, we describe how to test them to confirm the vulnerabilities:
+• Injecting fake transaction using virtualization. A fake transaction needs to be injected to the game when a purchase request has been initialized. In particular, we need to hijack the return value of the purchasing API (Step ❸ in Figure 2), and replace it with a fake success transaction so that the game believes the transaction has succeeded. To this end, we first launch the Payment Request (Step ❶ in Figure 2), but we then cancel the payment when the purchasing confirmation dialog pops up. Through the use of virtualization , we dynamically hook the Android system APIs by using our prior work AutoForge , to hijack the Intent which contains the return values (e.g., state, receipt) of the payment transaction, this attack succeeds.
+
+• Disabling local-verification using code patching. Some tested games would verify the transaction locally. Therefore, when this fake transaction receipt is passed to CrossPlatformValidator.Validate API, it will certainly fail the validation check if we use the original code, but we can first patch this API to make the validation always return true regardless of the receipt. Note that the static binary code patching will change the signatures of the entire game APK, and the games that check their integrity  may refuse to run. As such, we use Frida  to instrument the code at run time. Frida will be enabled right before we trigger the IAP.

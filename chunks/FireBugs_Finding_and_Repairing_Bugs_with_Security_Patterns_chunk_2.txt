@@ -1,0 +1,14 @@
+TABLE III: The 200 subject Android projects partitioned by 11 categories with the average number of Lines of Source Code (LOC) and the average number of classes, methods, and fields. Cn is a category of Android apps, including browser, client, demo, dev tool, entertainment, finance, health, library, security, social, and utility.
+
+In these subject Android apps, a number of vulnerabilities have been uncovered over the years. Open source projects maintain a public repository that contains a history of all code modifications so that previous versions can be reconstructed. A defect tracking system, where vulnerabilities are reported and fixed, can be used to find security bugs in real-world applications. This makes it possible to identify when professional software developers have patched such problems.
+
+Our overall strategy is to identify, collect, and analyze a corpus of such project repositories. For each project, we identify a subset of code modifications where vulnerabilities have been fixed. For each vulnerability, we extract two versions of the system, V1 and V2, representing the versions of the code before and after the vulnerability was fixed, respectively. We then analyze V1 and apply our generated patch to it, creating a new version Vg. The behavior of Vg is compared to V2 to verify that the vulnerability in V1 has been fixed in an identical manner. The behavior can be compared by running tests which are typically included in the project repository. For fixes where tests are not available, they can be created using existing test generators such as Randoop.
+
+# V. Conclusion
+Security failures often cause crucial issues in software systems. Isolating security faults in software is challenging and inspecting legacy systems to find security bugs is even more difficult. This paper presents FireBugs to find and repair security bugs based on seven common security patterns. In the evaluation, we investigated 2,800 Android app repositories to apply our approach to 200 subject projects that use javax.crypto APIs. Our vision is to provide tool-assisted capabilities to automatically reduce software maintenance burdens of the number of outstanding software defects that exceed available resources. Our ultimate goal is to design more security patterns that have a positive impact on software quality by disseminating correlated sets of best security design practices and knowledge.
+
+#5: Password-based cryptography specification. https://www.ietf.org/rfc/rfc2898.txt.
+
+22. Xiaoxia Ren, Ophelia C Chesley, and Barbara G Ryder. Identifying failure causes in Java programs: An application of change impact analysis. IEEE Transactions on Software Engineering, 32(9):718–732, 2006.
+
+23. Carlos Pacheco and Michael D Ernst. Randoop: feedback-directed random testing for Java. In Companion to the 22nd ACM SIGPLAN Conference on Object-Oriented Programming Systems and Applications, pages 815–816. ACM, 2007..

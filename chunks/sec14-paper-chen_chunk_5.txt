@@ -1,0 +1,44 @@
+Note that this is not the first attack popping up a phishing Activity to steal user input, but we argue that it is the first general one that can hijack any Activities during an app’s lifetime. Previous study  pops up a fake login.
+
+# Activity Hijacking Attack Overview
+In step 2, once the Activity inference reports that the target victim Activity, e.g., LoginActivity, is about to enter the foreground, the attack app simultaneously injects a pre-prepared phishing LoginActivity into the foreground. Note that the challenge here is that this introduces a race condition where the injected phishing Activity might enter the foreground too early or too late, causing visual disruption (e.g., broken animation). With carefully designed timing, we prepare the injection at the perfect time without any human-observable glitches during the transition (see video demos ). Thus, the user will not notice any differences, and continue entering the password. At this point, the information is stolen and the attack succeeds.
+
+In step 3, the attack app ends the attack as unsuspectingly as possible. Since the attack app now becomes the foreground app, it needs to somehow transition back to the original app without raising much suspicion.
+
+# Attack Design Details
+# Activity injection
+To understand how it is possible to inject an Activity from one app into the foreground and preempt the existing one, we have to understand the design principle of smartphone UI. If we think about apps such as the alarm and reminder apps, they indeed require the ability to pop up a window and preempt any foreground Activities. In Android, such functionality is supported in two ways without requiring any permissions: (1) starting an Activity with a restricted launching mode “SingleInstance” ; (2) starting an Activity from an Android broadcast receiver . In our design, since the timing of the injection is critical, we choose the former as it can be launched 30 ms faster.
+
+# UI phishing
+To ensure that the phishing Activity’s UI appears the same as the victim Activity, we disassemble the victim app’s apk using apktool  and copy all related UI resources to the attack app. However, sometimes the Activity UI may have dynamically loaded areas which are not determined by the UI resources, e.g., the account verification image in banking apps. To solve that, the attacker can make those areas transparent, given that Android supports partially transparent Activity.
+
+# Activity transition animation modifying
+Since our injection introduces an additional Activity transition which is racing with the original transition, the animation of the additional transition would clearly disrupt the flow. Fortunately, this problem can be solved by disabling the transition animation (allowed by Android) by modifying an Activity configuration of the attack app without needing any permissions. This helps the injection become totally seamless, and as will be discussed in §9, enforcing this animation may be a feasible mitigation of our attack.
+
+# Injection timing constraint
+For the attack to succeed, the Activity injection needs to happen before any user interaction begins, otherwise the UI change triggered by it may be disrupted by the injected Activity. Since the injection with the current inference technique takes quite long (the injected Activity will show up after around 1300 ms from the first detected shared vm increase as measured in §5), any user interaction during this period would cause disruptions. To reduce the delay, we adapt the inference to start much earlier. As shown in Fig. 13, we now start the inference as soon as the shared vm decrease is observed (roughly corresponding to the Activity entering animation start time). In contrast, our original inference starts after the last shared vm increase.
+
+Note that this would limit the feature collection up to the point of the shared vm decrease, thus impacting the inference accuracy. Fortunately, as indicated in Fig. 10, such change does allow the network event feature, the
+majority of the CPU utilization time features, and the transition model to be included in the inference, which are the three most important contributors to the final accuracy as discussed in §5. Based on our evaluation, this would reduce the delay to only around 500 ms.
+
+Unsuspicious attack ending. As described in §6, in step 3 we try to transition from the attack app back to the victim unsuspiciously. Since the phishing Activity now has the information entered on the screen, it is too abrupt to directly close it and jump back to the victim. In our design, we leverage “benign” abnormal events to hide the attack behavior, e.g., the attack app can show “server error” after the user clicks on the login button, and then quickly destroy itself and fall back to the victim.
+
+Deal with cached user data. It is common that some sensitive data may be cached, thus won’t be entered at all, e.g., the user name in login Activity. Without waiting for them to expire, it is difficult to capture any fresh input. Note that we can simply inject the phishing Activity with all fields left blank. The challenge is to not alert the user with any other observable suspicious behavior. Specifically, depending on the implementation, we find that the cached user data sometimes show up immediately in the very first frame of the Activity entering animation (t0 in Fig. 13). Thus, our later injection would clear the cached fields, which causes visual disruption. Our solution is to pop up a tailored cache expiration message (replicating the one from the app), and then clear such cached data, prompting users to re-enter them.
+
+# 6 Attack Implementation and Evaluation
+# Implementation.
+
+We implement Activity hijacking attack against 4 Activities: H&amp;R Block’s LoginActivity and RefundInfoActivity for stealing the login credentials and SSN, and NewEgg’s ShippingAddressAddActivity and PaymentOptionsModifyActivity for stealing the shipping/billing address and credit card information. The latter two Activities do not appear frequently in the check-out process since the corresponding information may be cached. Thus, to force the user to re-enter them, our attack injects these two Activities into the check-out process. The user would simply think that the cached information has expired. In this case the fake cache expiration messages are not needed, since the attack can fall back to the check-out process naturally after entering that information. Attack demos can be found in.
+
+# Evaluation.
+
+The most important metric for our attack is the Activity injection delay, which is the time from t1 to t2 in Fig. 13. In Android, it is hard to know precisely the animation ending time t1, so the delay is measured from t0 to t2 as an upper bound. In the evaluation the Activity injection is performed 50 times for the LoginActivity of H&amp;R Block app, and the average injection delay is 488 ms. Most of the delay time is spent in onCreate() (242 ms) and performTraverse() (153 ms). From our experience, the injection is fast enough to complete before any user interaction starts.
+
+# 7 Enabled Attack: Camera Peeking
+In this section, we show another new attack enabled by the Activity inference: camera peeking attack.
+
+# 7 Camera Peeking Attack Overview
+Due to privacy concerns, many apps store photo images shot by the camera only in memory and never make them publicly accessible, for example by writing them to external storage. This applies to many apps such as banking apps (e.g., Chase), shopping apps (e.g., Amazon and Best Buy), and search apps (e.g., Google Goggles). Such photo images contain highly-sensitive information such as the user’s life events, shopping interests, home address and signature (on the check). Surprisingly, we show that with Activity tracking such sensitive and well-protected camera photo images can be successfully stolen by a background attack app. Different from PlaceRaider , our attack targets at the camera photo shot by the user, instead of random ones of the environment. Our attack follows a simple idea: when an Activity is using the camera, the attack app quickly takes a separate image while the camera is still in the same position. In the following, we detail our design and implementation.
+
+# 7 Attack Design Details
+Background on Android camera resource management. With the camera permission, an Android app can obtain and release the camera by calling open() and release(). Once the camera is obtained, an app can then take pictures by calling takePicture(). There are two important properties: (1) exclusive usage. The camera can be used by only one app at any point in time; (2) slow initialization. Camera initialization needs to work with hardware, so open() typically takes 500–1000 ms (measured on Samsung Galaxy S3 devices).

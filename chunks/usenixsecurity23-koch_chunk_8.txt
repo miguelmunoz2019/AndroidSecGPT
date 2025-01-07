@@ -1,0 +1,30 @@
+15. L. Rocher, J.M. Hendrick, and Y.A. de Montjoye. Estimating the success of re-identifications in incomplete datasets using generative models. In Nature Communications 10, 2019.
+
+16. Iskander Sánchez-Rola, Matteo Dell’Amico, Platon Kotzias, Davide Balzarotti, Leyla Bilge, Pierre-Antoine Vervier, and Igor Santos. Can i opt out yet?: Gdpr and the global illusion of cookie control. Proceedings of the 2019 ACM Asia Conference on Computer and Communications Security, 2019.
+
+17. Ani Karini Muniz Schiebert and Benjamin Altpeter. https://www.datarequests.org/blog/gdpr-territorial-scope/. accessed: 2022-05-07.
+
+18. Rocky Slavin, Xiaoyin Wang, Mitra Bokaei Hosseini, James Hester, Ram Krishnan, Jaspreet Bhatia, Travis D. Breaux, and Jianwei Niu. Toward a framework for detecting privacy policy violations in android application code. In Proceedings of the 38th International Conference on Software Engineering (ICSE ’16), 2016.
+
+19. Ryan Stevens, Clint Gibler, Jon Crussell, Jeremy Erickson, and Hao Chen. Investigating user privacy in android ad libraries. In Workshop on Mobile Security Technologies (MoST), 2012.
+
+20. Marianthi Theoharidou, Alexios Mylonas, and Dimitris Gritzalis. A risk assessment method for smartphones. In Information Security and Privacy Research, 2012.
+
+21. Martino Trevisan, Stefano Traverso, Eleonora Bassi, and Marco Mellia. 4 years of eu cookie law: Results and lessons learned. 2019.
+
+# Appendix
+# Targeted Tracker
+It is not only interesting to see how much requests is transmitted but also who is on the receiving end. Across all our supported endpoints Firebase was the most popular endpoint for receiving data. Figure 3 shows a scatter plot associating our supported endpoints with the amount of received data points. Overall if an endpoint collected on an operating system, it across a large variety of different data points, however, not all tracker are active on all platforms. Figure 4 shows the data send to our monitored endpoints after giving consent respectively.
+
+Initial observation shows that Facebook, Doubleclick, Mopub, and start.io show anomalies concerning the operating system.
+
+Facebook primarily collects data on Android. However, we still intercept a significant number of requests directed at Facebook, but they do not contain any of our supported personal information. Even after giving consent this pattern does not change. Our hypothesis is that the Facebook associated libraries do not perform any data collection on iOS anymore but are still left in by the developer.
+
+Doubleclick seems to collect only data on iOS. We identified the url https://googleads.g.doubleclick.net/mads/gma and https://googleads.g.doubleclick.net/getconfig/pubsetting as observed popular endpoints.
+
+Mopub is only active on Android. However, Mopub was acquired by AppLovin and has sunset on March 31, 2022 . It is surprising to still see Mopub requests. We explain this artifact by apps still using an old library either due to developers holding off on making the required code changes or the app not having been updated since.
+
+start.io also is only active on Android. We are monitoring three different endpoints and neither is targeted by any requests on iOS.
+
+# Regular Expressions
+Due to space constraints we cannot include our used regular expressions to identify dialog and dialog elements. However, they are published with our code at pending publication..

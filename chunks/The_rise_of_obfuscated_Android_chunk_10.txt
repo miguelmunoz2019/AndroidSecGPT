@@ -1,0 +1,49 @@
+# (e) Android Exploits:
+As mentioned earlier, Android is based on Linux OS; it has inherited Linux exploits. Recently, malware authors developed and published the Android exploit code Dirty-Cow CVE-2016-5195 . The Dirty Cow exploit has been existing in Linux since 2007; it affects all Android versions. Existing fixes for Linux exploits are inefficient; Android fixes are still expected from vendors like Google or Samsung. Researchers must study such exploits and recommend proper ways to fix newly discovered exploits. Additionally, researchers need to examine the Android operating system and identify potential exploits and offer solutions before attackers abuse such exploits.
+
+# (f) Code Integrity Verification:
+Verification means that the application integrity is authenticated against repackaging by guaranteed third-party authentication authorities. Vidas & Christin (2013) proposed a simple mechanism that alleviates the specific problem of verifying the authenticity of an App to protect the user from repackaged apps that contain malicious code. Their approach is based on creating a simple public-key infrastructure backed by the domain name system. This area of research needs more attention compared to others. App integrity significantly increases the effort required for a successful attack. Under this new model, the attacker must either obtain the original publisher’s secret signing key, control the publisher’s web server, or commit a man-in-the-middle (MitM) attack on the publisher’s DNS records and web server. The attacker must now conduct two successful attacks in all cases, and the secondary attack requires more effort than application repackaging. It is worth noting that code verification, and not code analysis, is recommended, as it is necessary to consider the.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+44/61
+complexity of the available applications. Code verification does not require much effort, as it involves checking the code’s integrity by using the public-key infrastructure.
+
+# (g) Process Authentication:
+Some researchers leverage the process of model authentication to eliminate the need for an external Certification Authority (CA) that protects the system from many exploits (Almohri, Yao & Kafura, 2014). However, they are still unable to detect the payload that is downloaded to install malicious applications. For example, DroidBarrier is designed to prevent such installations by detecting their unauthenticated processes, thereby foiling this form of attack. However, DroidBarrier (Almohri, Yao & Kafura, 2014) cannot guarantee the isolation of hijacked processes described under attacks. Therefore, it is generally advisable to monitor processes running on the device. If an unauthenticated process is launched, the process must be isolated to hinder damaging the device and analyze and detect the malicious application. This way, if a malicious application bypasses the detection barrier and downloads a malicious payload, it is caught when running an unauthenticated process to execute that payload.
+
+# (h) Triggering Malicious Code Assurance:
+The process of ensuring the malicious code runs during the dynamic analysis sandboxing. TriggerScope  statically tries to detect suspicious triggering; however, its limitation as static analysis makes it easy to be evaded by code obfuscation. Likewise, Groddroid  developed a framework to launch the branches of each function to make sure that the malicious code starts. However, it fails to follow the components of background services, which misses the main activity. Groddroid is still an open issue among researchers and is known as code coverage. It is essential to address this issue by covering possible branches in the source code of the applications.
+
+# CONCLUSIONS
+Global evasion techniques make Android malware more advanced and sophisticated, which was our motivation for this study. We aim to highlight the most critical weaknesses of Android malware detection frameworks, mainly when malware uses different evasions techniques. Therefore, this study scrutinizes top Android malware detection frameworks against 18 evaluation test benches to evaluate the effectiveness of the evasions detection techniques in Android malware detection frameworks. Therefore, the study introduces a new evasion taxonomy that categorizes the evasion techniques into two main groups, polymorphism and metamorphism, where each group has branches; the polymorphism group includes package transformation, and the encryption metamorphism group contains code obfuscation, advanced transformation, and anti-emulation branches. The study also pointed out the lack of research in evaluating the malware detection against different evasion techniques; hence we scrutinized the frameworks based on every evasion technique and categorized the evaluations based on the malware detection methods. Our analysis results conclude a lack of research evaluating the current Android.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+45/61
+# Malware Detection Framework Robustness Against State-of-the-Art Evasion Techniques
+We also concluded that static analysis based detection is easily evaded with simple obfuscation. On the contrary, dynamic and hybrid analyses address advanced code transformation techniques and other advanced evasions. However, preliminary studies have evaluated their frameworks against evasion techniques. The missing framework evaluations are due to the lack of standard benchmark evasion datasets with updated standard malware datasets and the lack of comprehensive test benches tools to assess the efficiency of the existing and future frameworks. This study advises the research community to exert more effort into detecting anti-emulation evasion as indicated in the map of evasions and detection techniques. We also plan to create a standard evaluation framework to include all types of evasion techniques and consider the new generation of malware that combines multiple evasion techniques.
+
+# Additional Information and Declarations
+# Funding
+This work was supported by Fundamental Research Grant Scheme under the Ministry of Education Malaysia (FRGS/1/2018/ICT03/UM/02/3). The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
+
+# Grant Disclosures
+The following grant information was disclosed by the authors: Fundamental Research Grant Scheme under the Ministry of Education Malaysia: FRGS/1/2018/ICT03/UM/02/3.
+
+# Competing Interests
+The authors declare that they have no competing interests.
+
+# Author Contributions
+Wael F. Elsersy conceived and designed the experiments, performed the experiments, analyzed the data, prepared figures and/or tables, authored or reviewed drafts of the paper, and approved the final draft.
+
+Ali Feizollah conceived and designed the experiments, analyzed the data, prepared figures and/or tables, authored or reviewed drafts of the paper, and approved the final draft.
+
+Nor Badrul Anuar conceived and designed the experiments, authored or reviewed drafts of the paper, and approved the final draft.
+
+# Data Availability
+The following information was supplied regarding data availability: The cited papers (Endnote version 20) are available in the Supplemental File.
+
+# Supplemental Information
+Supplemental information for this article can be found online at http://dx.doi.org/10/peerj-cs#supplemental-information.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+46/61.

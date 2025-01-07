@@ -1,0 +1,52 @@
+# 5. Attack Test Environment Deployment
++e man-in-the-middle attack test is implemented based on Burp Suite. It is primarily viewed with the Proxy tool in the toolkit. Proxy is one of the popular web application penetration test tools, is a Proxy server that intercepts HTTP/S. As a middleman
+# Security and Communication Networks
+2037, 2019, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2019/7193684 by Cochrane Colombia, Wiley Online Library on [09/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# 5. Return Attack Results and Integration with the UI Traversal Module
+To return the results of the Burp Suite to our SSLDetecter system in real time and to guide the UI strategy whether it needs to continue traversing, the Burp Suite’s Extender module needs to be extended to complete the following functions:
+1. Successfully determine and filter whether the request is HTTPS
+2. Determine whether the HTTPS request is successful
+3. Save the record and inform the UI Traversal Module
+Based on the extension API provided by Burp Suite, we have designed the SSLlistener.jar plug-in. The SSLlistener.jar plug-in implements the IBurpExtender and IProxyListener interfaces and calls the registerProxyListener() function to register the agent listener. Burp Suite triggers this agent listener when it processes a network request or network response. In the agent listener processProxyMessage() function, the getHttpService() function is called to retrieve specific information about the intercepted network request or response, such as message type, host name, protocol, and port.
+
+During server authentication, the “middle man” (the extended Burp Suite in our SSLDetecter) intercepts the server certificate and sends the forged certificate to the client. Due to the SSL security vulnerability on the client side, the “middle man” is mistaken for the server without valid validation of the forged certificate. The “middle man” successfully obtains confidential information such as negotiation key and encryption message in the communication process and can even tamper with the transmitted data. The status code 200 indicates that the...
+
+2037, 2019, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2019/7193684 by Cochrane Colombia, Wiley Online Library on [09/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+# Security and Communication Networks
+server has successfully processed the request. Typically, this means that the server is providing the requested content. So, by implementing the filter conditions including the network message protocol is HTTPS request and the network request status code is 200, the MITM attack test module judges that the man-in-the-middle attack is successful. These applications come from multiple application markets and multiple application categories, that is, we use real-world applications for analysis, rather than our own development.
+
+Then the function writeToFile() is called to write this record which contains the information of the port, the smartphone serial number, the package name of the target application, and so on to the specific file. At the same time, the file listener thread opened by the UI traversal module captures an event of a specific port file modification. The UI traversal module reads the latest modified content of the file synchronously and matches the host name and the application package name running on the test smartphone of the corresponding port with the obtained information. This will determine which application on the test smartphone’s HTTPS request is successfully executed by a MITM attack. In addition, if the network request is sent from the application’s own code instead of the third-party library, it can indicate that the application has an SSL security vulnerability. The UI traversal module will record the results and stop exploring the application.
+
+# 6. Evaluation
+Here, we mainly describe the specific experimental process of evaluating our SSLDetecter system.  gives us great inspiration on how to describe the whole experimental process. Our goal is to evaluate the effectiveness of our system and compare it with existing systems to draw conclusions.
+
+# 6. Research Questions
+This section introduces the research questions to be answered in our study.
+
+- RQ1: in our traversal strategy, what is threshold of the interface state similarity to determine whether two interfaces are the same?
+- RQ2: what is the coverage rate of our system to automatically traverse Android apps and does it perform better than Google’s official automated testing tool, Monkey ?
+- RQ3: compared with the existing tool SMV-HUNTER, how effective is our system to detect SSL vulnerabilities in Android applications?
+- RQ4: which markets and categories of applications might be more vulnerable to SSL security vulnerabilities?
+# 6. Objects of the Experiment
+The objects of our experiment are the real-world Android applications. No matter what category the application belongs to or what functions it has (our static analysis can preliminarily screen out the applications without networking functions), it usually can be tested by our SSLDetecter system. The applications include two aspects: one part is used to evaluate the effect of automatic.
+
+# 6. Metrics Definition
+Here, we define the metrics that we use to answer our research questions.
+
+1. Traversal Coverage (activity coverage) reflects the degree to which our system automates the execution of Android applications. Activity represents the visual interface of Android application. We record the number of activities traversed by the test application and then compare it with the total number of activities in the application. Although there are more accurate coverage calculation methods , the core goal of our system is to use automated traversal to complete the dynamic detection of applied SSL security vulnerabilities. Therefore, we choose a relatively simple calculation method to express, as shown in the following formula:
+TC% = (number of activities traversed / total number of activities in the app) * 100. (3)
+Average Analysis Time reflects the time cost of the system analyzing the target applications. The shorter the analysis time, the higher the efficiency of the system, and it is more conducive to large-scale application analysis. The time cost of static analysis and the time cost of dynamic analysis can be calculated separately. It is shown as:
+AAT = total time to analyze the apps / total number of apps analyzed (4)
+Detection Rate refers to the percentage of positive results in the total number of the experiment. For the same target data set, the more the positive results are detected (i.e., the number of applications that do have SSL vulnerabilities detected in our experiments), the more accurate and effective the system will be to detect the SSL vulnerabilities in Android applications. It is shown in the following formula:
+DR% = (number of apps detected / total number of apps) * 100. (5)
+# 6. Experimental Procedure
+In order to answer the research questions raised, we mainly conduct the following 4 experimental processes. These steps mainly include collecting applications, prescreening applications through static analysis, automating traversal of applications and conducting MITM attacks, and collecting and analyzing of experimental data.
+
+In the collecting applications step, we use the crawler technology to collect thousands of real-world Android applications from mainstream application markets in China (such as Xiaomi, Baidu market, and OPPO). These applications vary in size and type, which can better reflect the application distribution in the application markets. Due to the large number of applications, it is not necessary to analyze all of them in a time-consuming manner. We randomly select applications for SSL vulnerability detection. In addition, in order to analyze the traversal coverage of our system, we randomly selected applications to evaluate the traversal coverage of the system in combination with manual analysis.
+
+In the prescreening applications step, we screen the randomly selected real-world Android applications in accordance with the static code analysis techniques described in Section 5. After the successful screening, not only the suspicious application is obtained but also the information of one or more of the four SSL vulnerability categories that may exist in the application. For applications that cannot be statically analyzed, we proceed directly to the subsequent dynamic traversal analysis.
+
+In the automating traversal of applications and conducting MITM attacks step, we use the automated traversal techniques described in Section 5 to analyze the applications filtered by the previous step. Our system is deployed in Linux/Unix environments (such as Ubuntu and Mac OS). The experimental software and hardware environment information is shown in Table 3. Our system has connected two Android device simulators for testing and analysis.
+
+While driving applications traversal execution, we conduct MITM attacks synchronously. We deploy the MITM attack test module as described in Section 5. The MITM attack test module communicates with the UI traversal module through a specific file. According to the success of the attack, it can be judged whether the application does have an SSL security vulnerability.

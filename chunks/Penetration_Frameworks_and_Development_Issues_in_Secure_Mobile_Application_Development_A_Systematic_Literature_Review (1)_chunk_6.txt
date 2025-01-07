@@ -1,0 +1,115 @@
+# Discussion:
+Mobile application development is a new field and a number of programmers are shifting to mobile app development. Security requirements are not captured during development and penetration testing since it is considered as nonfunctional requirement and is performed at the time of deployment.
+
+VOLUME 9, 2021 87821
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+# Adherence to Best Practices
+- Lack of documentation
+- Exposed Components
+- Limiting Computing Power
+# Developer Challenges
+- Limited Hardware and Resources
+- Power Drain Issues
+- Testing Complexity
+- Lack of security knowledge
+- Complexity of Testing
+- Lack of automated testing
+# Hardware Resource and OS Issues
+- Emerging Security
+- Security and Privacy
+- Flaws
+- Mishandled IPC communication
+- Manifest file and component configuration
+- Configuration Issues
+This makes the application vulnerable and late pen-testing and test and patch technique also consumes more time and cost.
+
+The research indicates that developers lack security awareness and make ad-hoc decisions for implementation of security during the development stage. Data encryption and other recommended security and privacy measures and best-practices are not adhered. Third party tools are often used for penetration testing which do often cover the complete app environment as well as escalated provisions and inter-process communications. Non-authentic libraries are often used which compromise privacy and result in loss of user’s data. Security is not considered during the early phases of the software development life cycle. Penetration testing is considered a non-functional activity and lack of pen-tests results in a faulty application. Unified modeling language doesn’t allow to model android attack vector as it does not have specific elements to model these interactions for the android environment.
+
+Based on the research, it is evident that developers can adopt the following practices to secure the application:
+- Write efficient and secure code using best coding practices.
+
+- Data should be encrypted and inter-process communication should be secured.
+
+- Code of third-party libraries should be thoroughly tested for vulnerabilities before embedding them.
+
+- High-level authentication code and policies should be implemented.
+
+- Security policies should be implemented at each stage of SDLC.
+
+- Application should have a mechanism to detect code tampering.
+
+- Use of modern malware detection tools with deep learning abilities can secure the application.
+
+- Minimum privileges should be assigned to the application and sessions should be handled properly.
+
+# VI. FUTURE DIRECTION
+The fast-paced android app market is facilitating the businesses but at the same time it is alarming that a number of applications are vulnerable. In this research, we have discussed many frameworks and tools for android penetration testing. We have also discussed various developer issues related to android application development. Based on the research and answers to the research questions, we will make the following contributions to help the developers to produce time-efficient and secure applications:
+- Highly proficient hybrid learning enabled intelligent multivector malware detection mechanism.
+
+87822
+VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+- A novel model-based Android Penetration secure framework which can outperform both in terms of time efficiency and detection accuracy.
+
+- A vulnerability repository which can be updated to provide tooltips while designing the application using Java classes to identify related threats.
+
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+1. L. Liu, J. Xu, C. Guo, J. Kang, S. Xu, and B. Zhang, ‘‘Exposing SQL injection vulnerability through penetration test based on finite state machine,’’ in Proc. 2nd IEEE Int. Conf. Comput. Commun. (ICCC), Oct. 2016, pp. 1171–1175.
+
+2. N. Mahendra and S. Ahmad, ‘‘A categorized review on software security testing,’’ Int. J. Comput. Appl., vol. 154, no. 1, pp. 21–25, Nov. 2016, doi: 10/ijca2016912023.
+
+3. C.-K. Chen, Z.-K. Zhang, S.-H. Lee, and S. Shieh, ‘‘Penetration testing in the IoT age,’’ Computer, vol. 51, no. 4, pp. 82–85, Apr. 2018.
+
+4. S. Malek, N. Esfahani, T. Kacem, R. Mahmood, N. Mirzaei, and A. Stavrou, ‘‘A framework for automated security testing of Android applications on the cloud,’’ in Proc. IEEE 6th Int. Conf. Softw. Secur. Rel. Companion, Jun. 2012, pp. 35–36.
+
+5. Y. V. N. Manikanta and A. Sardana, ‘‘Protecting Web applications from SQL injection attacks by using framework and database firewall,’’ in Proc. Int. Conf. Adv. Comput., Commun. Informat. (ICACCI), 2012, pp. 609–613.
+
+6. F. Martinelli, F. Mercaldo, and A. Saracino, ‘‘BRIDEMAID: An hybrid tool for accurate detection of Android malware,’’ in Proc. ACM Asia Conf. Comput. Commun. Secur., Apr. 2017, pp. 899–901.
+
+7. M. Felderer, P. Zech, R. Breu, M. Büchler, and A. Pretschner, ‘‘Model-based security testing: A taxonomy and systematic classification,’’ Softw. Test., Verification Rel., vol. 26, no. 2, pp. 119–148, Mar. 2016.
+
+8. M. Mirjalili, A. Nowroozi, and M. Alidoosti, ‘‘A survey on Web penetration test,’’ Adv. Comput. Sci., Int. J., vol. 3, no. 6, pp. 107–121, 2014.
+
+9. O. Olsen, P. Middleton, J. Ezzo, P. C. Gotzsche, V. Hadhazy, A. Herxheimer, J. Kleijnen, and H. McIntosh, ‘‘Quality of cochrane reviews: Assessment of sample from 1998,’’ BMJ, vol. 323, no. 7317, pp. 829–832, Oct. 2001, doi: 10/bmj.
+
+10. A. D. Oxman, ‘‘Systematic reviews: Checklists for review articles,’’ BMJ, vol. 309, no. 6955, pp. 648–651, Sep. 1994, doi: 10/bmj.
+
+11. M. Refai, ‘‘Exploiting a buffer overflow using metasploit framework,’’ in Proc. Int. Conf. Privacy, Secur. Trust Bridge Gap Between PST Technol. Bus. Services (PST), Oct. 2006, p. 74.
+
+12. B. Rexha, A. Halili, K. Rrmoku, and D. Imeraj, ‘‘Impact of secure programming on Web application vulnerabilities,’’ in Proc. IEEE Int. Conf. Comput. Graph., Vis. Inf. Secur. (CGVIS), Nov. 2015, pp. 61–66.
+
+13. A. Rodriguez-Mota, P. J. Escamilla-Ambrosio, S. Morales-Ortega, M. Salinas-Rosales, and E. Aguirre-Anaya, ‘‘Towards a 2-hybrid Android malware detection test framework,’’ in Proc. Int. Conf. Electron., Commun. Comput. (CONIELECOMP), Feb. 2016, pp. 54–61.
+
+14. S. Sandhya, S. Purkayastha, E. Joshua, and A. Deep, ‘‘Assessment of website security by penetration testing using wireshark,’’ in Proc. 4th Int. Conf. Adv. Comput. Commun. Syst. (ICACCS), Jan. 2017, pp. 1–4.
+
+15. L. Yang, H. Zhang, H. Shen, X. Huang, X. Zhou, G. Rong, and D. Shao, ‘‘Quality assessment in systematic literature reviews: A software engineering perspective,’’ Inf. Softw. Technol., vol. 130, Feb. 2021, Art. no. 106397, doi: 10/j.infsof.
+
+16. S. Leonhardt, J. Petersohn, and C. Schmid, ‘‘Penetration testing,’’ STL GmbH Stuttgart, Stuttgart, Germany, Tech. Rep., 2011.
+
+17. A. Shabtai, Y. Fledel, U. Kanonov, Y. Elovici, S. Dolev, and C. Glezer, ‘‘Google Android: A comprehensive security assessment,’’ IEEE Secur. Privacy Mag., vol. 8, no. 2, pp. 35–44, Mar. 2010, doi: 10/msp.
+
+18. A. Shanley and M. N. Johnstone, ‘‘Selection of penetration testing methodologies: A comparison and evaluation,’’ presented at the Austral. Inf. Secur. Manage. Conf., 2015.
+
+19. K. Shaukat, A. Faisal, R. Masood, A. Usman, and U. Shaukat, ‘‘Security quality assurance through penetration testing,’’ in Proc. 19th Int. Multi-Topic Conf. (INMIC), Dec. 2016, pp. 1–6.
+
+20. S. Faily, J. McAlaney, and C. Iacob, ‘‘Ethical dilemmas and dimensions in penetration testing,’’ in Proc. HAISA, Jun. 2015, pp. 233–242.
+
+21. M. B. Shuaibu and R. A. Ibrahim, ‘‘Web application development model with security concern in the entire life-cycle,’’ in Proc. 4th IEEE Int. Conf. Eng. Technol. Appl. Sci. (ICETAS), Nov. 2017, pp. 1–6.
+
+22. A. K. Singh and S. Roy, ‘‘A network based vulnerability scanner for detecting SQLI attacks in Web applications,’’ in Proc. 1st Int. Conf. Recent Adv. Inf. Technol. (RAIT), Mar. 2012, pp. 585–590.
+
+23. Y. Stefinko, A. Piskozub, and R. Banakh, ‘‘Manual and automated penetration testing. Benefits and drawbacks. Modern tendency,’’ in Proc. 13th Int. Conf. Modern Problems Radio Eng., Telecommun. Comput. Sci. (TCSET), Feb. 2016, pp. 488–491.
+
+24. S. Holla and M. M. Katti, ‘‘Android based mobile application development and its security,’’ Int. J. Comput. Trends Technol., vol. 3, no. 3, pp. 486–490, 2012.
+
+25. K. Tam, A. Feizollah, N. B. Anuar, R. Salleh, and L. Cavallaro, ‘‘The evolution of Android malware and Android analysis techniques,’’ ACM Comput. Surveys, vol. 49, no. 4, pp. 1–41, Feb. 2017, doi: 10/3017427.
+
+26. T. Dimkov, W. Pieters, and P. Hartel, ‘‘Two methodologies for physical penetration testing using social engineering,’’ in Proc. 26th Annu. Comput. Secur. Appl. Conf. (ACSAC), Dec. 2010, pp. 399–408.
+
+27. V. Tilemachos and C. Manifavas, ‘‘An automated network intrusion process and countermeasures,’’ in Proc. 19th Panhellenic Conf. Informat., Oct. 2015, pp. 156–160.
+
+28. I. A. Tondel, M. G. Jaatun, and P. H. Meland, ‘‘Security requirements for the rest of us: A survey,’’ IEEE Softw., vol. 25, no. 1, pp. 20–27, Jan. 2008, doi: 10/ms.
+
+29. E. Ungan, S. Trudel, and L. Poulin, ‘‘Using FSM patterns to size security non-functional requirements with COSMIC,’’ in Proc. 27th Int. Workshop Softw. Meas. 12th Int. Conf. Softw. Process Product Meas., Oct. 2017, pp. 64–76.
+
+30. M. Usman, M. Z. Iqbal, and M. U. Khan, ‘‘A product-line model-driven engineering approach for generating feature-based mobile applications,’’ J. Syst. Softw., vol. 123, pp. 1–32, Jan. 2017, doi: 10/j.jss.

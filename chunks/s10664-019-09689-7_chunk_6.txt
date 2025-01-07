@@ -1,0 +1,60 @@
+Very frequent are also vulnerabilities related to data handling, typically found in functionalities that process data (MITRE 2017p) (134 instances—13%). These include, for example, type errors like the one related to CVE-2016-3918:
+AttachmentProvider.java in AOSP Mail in Android [...] does not ensure that certain values are integers, which allows attackers to read arbitrary attachments [...]
+The vulnerability was fixed in commit 6b2b0bd that, as reported in the commit message: Limits account id and id to longs [...] Both id and account id are now parsed into longs (and if either fails, an error will be logged and null will be returned). Note that the data handling category includes several different sub-categories such as numeric errors (e.g., signed to unsigned conversion error) and information exposure (e.g., exposure of private information)—see Fig. 4.
+
+Improper input validation (80 instances—8%) includes vulnerabilities caused by a missing or improper validation of inputs that can affect the control/data flow of the program (MITRE 2017p). Vulnerabilities in this category include (but are not limited to—see Fig. 3) unchecked input for loop condition and improper validation of function arguments.
+
+The latter are the most popular in this category and, while their fixing is generally simple (e.g., the addition of a missing/improper argument validation), they can result in severe attacks like the one possible by exploiting CVE-2016-3910 (9 out of 10 in severity score) which was fixed by adding size checks on the sound model data structure.
+
+Initialization and cleanup errors and improper check or handling of exceptional conditions are the cause for 53 (5%) and 94 (9%), respectively, of the categorized vulnerabilities. These categories include, among others, the missing initialization of a variable and uncaught exceptions. An example for the latter is the vulnerability CVE-2017-0394, allowing to perform a denial of service attack crashing the phone by exploiting an uncaught exception. The vulnerability has been fixed in commit 1cdced5, reporting the message: Catch SIP exceptions which can crash Phone process on answer, where SIP refers to the Session Initiation Protocol allowing apps to integrate Internet telephony features.
+
+Indicator of poor quality code (68 instances—6%) includes weaknesses that can lead to unpredictable behavior. For example, cases of uncontrolled recursion such as the one described in CVE-2017-0692, fixed in commit 6db4826 (commit note: fix infinite recursion) by adding the condition if (offset <= nodeOffset) inside a for loop checking for the need to interrupt the recursion with a return statement.
+
+Time and state vulnerabilities represent 52 (5%) instances of our taxonomy. They represent “weaknesses related to the improper management of time and state in an environment
+# Empirical Software Engineering (2019) 24:2056–2101
+Total number of Android vulnerabilities across OS versions. The black horizontal lines denote the time when a new version of Android was released (e.g., P4 version, Android C, Android D, etc.)
+that supports simultaneous or near-simultaneous computation by multiple systems, processes, or threads” (MITRE 2017p). Classic examples of this category are race conditions between threads such as CVE-2017-0387, fixed by the developers in commit 675e212 by implementing a mutex (mutual exclusion) lock mechanism.
+
+Security features are involved in 45 vulnerabilities (4%) related to cryptographic issues, user interface security issues, credentials management problems, etc. (see Fig. 3). For example, CVE-2011-2344 reports a vulnerability due to inadequate encryption strength possibly causing severe attacks allowing the stealing of private pictures:
+Android Picasa in Android [...] uses a cleartext HTTP session when transmitting the authToken obtained from ClientLogin, which allows remote attackers to gain privileges and access private pictures and web albums by sniffing the token from connections with picasaweb.google.com
+Finally, other less diffused vulnerabilities are those falling in the categories: behavioral problems (17), weaknesses that affect files or directories (6), injection flaws (4), and improper fulfillment of API contract (4). A description of these categories can be found in the CWE dictionary (MITRE 2017p), while Android-related examples from our dataset are available in our online appendix (Mazuera-Rozo et al. 2017).
+
+# Evolution of the vulnerabilities over time
+The number of reported vulnerabilities increased drastically after the 2015-1 “Stage-fright Vulnerability” issue and the creation of the Google Project Zero in July 2014. Thus, for the analysis we distinguish two time periods: (i) from the first semester of 2008 to the first semester of 2015 (included), and (ii) from the second semester of 2015 to the first semester of 2017 (included) From the first semester of 2008 to the first semester of 2015
+5 We found 129 vulnerabilities for the 2017-2 period, but we excluded this semester from the RQ 5 analysis because we do not have complete data for 2017-2.
+
+Empirical Software Engineering (2019) 24:2056–2101 2073
+# Changes over time for the top-5 vulnerability categories
+(included) only 59 vulnerabilities were identified. Regarding the affected layers (during this period) of the OS, 32 vulnerabilities (54%) impacted the application layer while the rest is homogeneously distributed in the remaining layers Among the 32 vulnerabilities affecting the application layer, 12 are related to Adobe Flash Player. In relation to the vulnerabilities category, about 50% of the vulnerabilities belong to three categories: security features (12), permissions, privileges, and access control (9), and weaknesses that affect the memory (7).
+
+We now analyze the evolution of the types of vulnerabilities over time, considering 885 vulnerabilities out of the 1,047 related to the second time period, since there are 162 vulnerabilities for which we were not able to manually identify the type. Figure 6 depicts changes in the frequencies of the five most frequent types of vulnerabilities in the Android OS: (i) permissions, privileges and access control, (ii) weaknesses that affect memory, (iii) data handling, (iv) improper management of exceptions, and (v) improper input validation. Figure 6 shows that there is an increasing tendency in the number of vulnerabilities for the five categories, being permissions, privileges and access control the category with the highest increment, in particular from 2016-2 to 2017-1. Most of these vulnerabilities belong to kernel programs/subsystems and are due to the mishandling of access control decisions, enabling behaviors like the execution of arbitrary code within the context of the kernel.
+
+# Qualitative analysis of patches
+We manually analyzed a sample of patches for the vulnerabilities to identify the underlying code issues. Note that in our dataset we only found
+We were not able to classify the layer affected by 5 vulnerabilities.
+
+Empirical Software Engineering (2019) 24:2056–2101
+Types of changes performed by Android OS developers to fix 178 security vulnerabilities. It is worth noting that a patch could have more than one type of change, thus, the sum of the instances in the categories is greater than 178.
+
+331 vulnerabilities with a fixing commit (as mentioned in Section 3), therefore, we randomly selected 178 vulnerabilities (which is a representative sample of the 331 fixing commits with 95%±5 confidence level) for the manual analysis of the underlying code issues.
+
+Each evaluated patch was analyzed with the purpose of reporting whether there are common patterns in the changes conducted by developers to fix vulnerabilities. Figure 7 depicts the common patterns grouped into five different categories:
+- Checks (131 instances): Changes that have the purpose of properly checking for unusual or exceptional conditions that are not expected to occur frequently, or preconditions required for the proper execution of a code block.
+
+- Business logic and rules (38 instances): Changes oriented toward correctly guaranteeing the business processes, application logic, and sequences of behaviors. This type of code changes is very specific to the part of the system that is fixed and, therefore, there are no specific “common change pattern” as in the case of the “Checks” category.
+
+- Practices (27 instances): Changes that introduce the usage of secure coding practices.
+
+- Resources handling (11 instances): Changes addressing the proper management of system resources.
+
+- Android-related (16 instances): Changes aimed at fixing issues in mechanisms that are specific to the Android platform such as fixes in permissions and inter process communication.
+
+Most of the fixes are categorized as Checks, in particular, Bounds checks added to the code with the purpose of validating whether a variable is within the expected.
+
+Note that there is also an Unclear category because in six cases we were not able to identify the type of change because of the patches complexity. For instance, in CVE-2016-3751 several changes were done over 207 files, thus it was not easy to categorize the changes.
+
+Empirical Software Engineering (2019) 24:2056–2101 2075
+bounds of a structure or collection. Examples of vulnerabilities in this subcategory are CVE-2015-3871 and CVE-2015-3864, described respectively as follows:
+- CVE-2015-3871: libstagefright in Android before 5 LMY48T allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via a crafted media file.
+
+- CVE-2015-3864: Integer underflow in the MPEG4Extractor::parseChunk function in MPEG4Extractor.cpp in libstagefright in mediaserver in Android before 5 LMY48M allows remote attackers to execute arbitrary code via crafted MPEG-4 data.

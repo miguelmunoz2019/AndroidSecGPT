@@ -1,0 +1,53 @@
+# AndroVul: a repository for Android security vulnerabilities
+Zakeya Namrud
+Sègla Kpodjedo
+Chamseddine Talhi
+zakeya.namrud@ens.etsmtl.ca
+segla.kpodjedo@etsmtl.ca
+chamseddine.talhi@etsmtl.ca
+ETS Montreal
+Montreal, Quebec, Canada
+ABSTRACT
+Security issues in mobile apps are increasingly relevant as these software have become part of the daily life for billions. As the dominant OS, Android is a primary target for ill-intentioned programmers willing to exploit vulnerabilities and spread malwares. Significant research has been devoted to the identification of these malwares. The current paper aims to contribute to that research effort, with a focus on providing an additional benchmark of Android vulnerabilities to be used in the detection of malwares. Our proposal is AndroVul, a repository for Android security vulnerabilities, including dangerous permissions, security code smells and dangerous shell commands. Our work builds on AndroZoo, a well known Android app dataset, and proposes data on vulnerabilities for a representative sample of about 16,000 Android apps. Moreover, we briefly describe and make available the scripts we wrote to automate the extraction of security vulnerabilities, given a list of apps; this allows any researcher to readily recreate a custom repository build from his or her apps of interest. Finally, we propose preliminary findings on the effectiveness of the vulnerability metrics present in our dataset, with respect to the detection of malicious apps. Our results show that the collected metrics, as input to even basic classifiers, are enough to achieve competitive results with respect to some recent malware detection works. Overall, Androvul, with its scripts and datasets, is intended as a starting package for mobile security researchers interested in jump-starting their investigations.
+
+# 1 INTRODUCTION
+With a market share of about 75%1, Android is without doubt the leading mobile Operating System (OS), and is well positioned to become the default OS for new applications centered on the Internet Of Things. Security aspects are thus increasingly relevant as there are more incentives for malware developers to target Android devices. Android security has been extensively researched and that effort has been helped by the AndroZoo2 dataset put together by Allix et al in 2016. The AndroZoo dataset is a very useful resource for Android researchers in general but security researchers still have many hurdles to pass from the moment they discover AndroZoo to the moment they can effectively get actionable data from it. We propose in this paper AndroVul3, a repository aiming to provide researchers working on anomaly detection of Android applications with i) a benchmark readily usable (to test hypotheses) and ii) scripts that will jumpstart their data collection. Our dataset includes data on 16,180 applications from Google Play store as well as third party stores. Our scripts extracted from these apps’ binaries (called APKs) 1) permissions classified as dangerous by the Android permission system, 2) data collected via AndroBugs, a popular Android vulnerability scanner4, and 3) security code smells, as recently defined by. Furthermore, we propose in this paper, preliminary experiments aimed at probing the predictive power of these various sources of vulnerability. The rest of the paper is organized as follows. Section 2 and 3 propose some background and related work. Section 4 and Section 5 present our scripts and datasets. In Section 6, we propose a preliminary empirical study based on the datasets. Then, Section 7 proposes a short discussion and Section 8, the conclusion.
+
+# CCS CONCEPTS
+• Security and privacy → Intrusion/anomaly detection and malware mitigation; Mobile platform security;
+# KEYWORDS
+Mobile security, static analysis, reverse engineering, mobile computing
+# ACM Reference Format:
+Zakeya Namrud, Sègla Kpodjedo, and Chamseddine Talhi. 2019. AndroVul: a repository for Android security vulnerabilities. In Proceedings of CASCON Conference (CASCON '19). Toronto, ON, Canada, 8 pages.
+
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for third-party components of this work must be honored. For all other uses, contact the owner/author(s).
+
+1 http://gs.statcounter.com/os-market-share/mobile/worldwide
+2 https://AndroZoo.uni.lu/
+3 https://github.com/Zakeya/AndroVul
+4 https://www.androbugs.com/
+# 2 BACKGROUND
+In this section, we briefly present the possible security vulnerabilities our dataset is focused on: dangerous permissions (as defined by the Android system), troubling code attributes (as collected by AndroBugs) and security code smells (as proposed in ).
+
+# 2 Dangerous Permissions
+A key security mechanism of Android is its permission system, which controls the privileges of apps, making it so that apps must request specific permissions in order to perform specific functions. This mechanism requires that app developers declare which sensitive resources will be used by their apps. App users have to agree with the requests when installing or using the apps. Android defines several categories of permissions, among which "dangerous" ones, deemed more critical and privacy sensitive since they provide.
+
+# CASCON ’19, November 2019, Markham, Ontario, Canada
+# Z. Namrud, S. Kpodjedo, C. Talhi
+access to system features such as the camera, Internet, personal contacts, SMS etc. Table 3 in the appendix proposes a list of the various dangerous permissions as defined by the official Android developer resource5.
+
+# 2 AndroBugs
+Androbugs is a popular security testing tool that checks Android apps for vulnerabilities and potentially critical security issues. The tool reverse engineers APKs and looks for various issues, from failures to adhere to best practices to the use of dangerous shell commands or exposure to vulnerabilities from third party libraries. AndroBugs has a proven track record of discovering security vulnerabilities in some of the most popular apps or SDKs. It is a command line tool that issues reports with four severity levels: Critical6, Warning7, Notice8 and Info9.
+
+# 2 Security Code Smells
+“Code smells” refer to code source elements that may indicate deeper problems. In , Ghafari et al. introduce security code smells in Android apps as "symptoms in the code that signal the prospect of a security vulnerability". After reviewing the literature, they identified 28 security code smells that they regrouped into five categories, such as Insufficient Attack Protection, Security Invalidation, Broken Access Control, Sensitive Data Exposure, and Lax Input Validation.
+
+# 3 RELATED WORK
+# 3 Dataset
+Dataset availability is a key issue when it comes to getting insights about a topic or evaluating approaches or hypotheses. We briefly present below some of the most notable efforts related to this issue in the context of Android apps and more specifically their possible security concerns.
+
+A number of repositories have been proposed over the years for the study of mobile apps. F-Droid10 is such an effort; it is a repository of free open source Android apps that have been used in an impressive number of studies. Recently, Allix et al.  have proposed and continued to maintain AndroZoo, certainly the largest Android app repository, with millions of apps (and APKs) from the Google Play store and other third party markets. Even more recently, Geiger et al. made available a graph–based database with information (metadata, commit and code history) on 8,431 open-source Android apps available on GitHub and the Google Play Store. Also notable, although slightly older, is Krutz et al. , with a public dataset centered on the lifecycle of 1,179 Android apps from F-Droid. Complementary to these research initiatives, there are a number of websites such as AppAnnie and Koodous that gather Android apps and perform various types of analyses, including downloads over time and advertising analytics.
+
+When it comes to security aspects, there have been a number of papers proposing empirical studies on large numbers of Android apps but few propose publicly available datasets. Among those, we can cite Munaiah et al. which proposes data (app category, permissions etc.) on reverse engineered benign applications from Google Play store and malware applications from several sources.
+
+Our dataset on vulnerabilities of Android apps shares some similarity with the work of Gkortzis et al., which also proposes a dataset of security vulnerabilities but for open source systems (8,694). Similar to , we propose a subset of a well known mobile app repository; we start with AndroZoo while  builds on F-Droid. Similar to , we also propose scripts that interface with well known reverse engineering and static analysis tools, but we do so with a focus on security vulnerabilities and use a different set of tools. Overall, our dataset and scripts propose a unique offering for Android security researchers.

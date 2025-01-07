@@ -1,0 +1,55 @@
+# Cybersecurity Vulnerabilities in Mobile Fare Payment Applications: A Case Study
+# Kevin Dennis1, Maxat Alibayev1, Sean J. Barbeau2, and Jay Ligatti1
+# Abstract
+Mobile fare payment applications are becoming increasingly common in the public transportation industry as a convenience for customers and as part of an effort to reduce fare management costs and improve operations for agencies. However, there is relatively little literature on vulnerabilities and liabilities in mobile fare payment applications. Furthermore, few public agencies or supporting vendors have policies or established processes in place to receive vulnerability reports or patch vulnerabilities discovered in their technologies. Given the rapidly increasing number of data breaches in general industry IT systems, as well as that mobile fare payment apps are a nexus between customer and agency financial information, the security of these mobile applications deserves further scrutiny. This paper presents a vulnerability discovered in a mobile fare payment application deployed at a transit agency in Florida that, because of the system architecture, may have affected customers in as many as 40 cities across the United States, an estimated 1,554,000 users. Lessons learned from the vulnerability disclosure process followed by the research team as well as recommendations for public agencies seeking to improve the security of these types of applications are also discussed.
+
+# Introduction
+Cybersecurity is a significant concern across all industries. Many high-profile attacks and breaches have been reported such as the Equifax data breach (1) as well as the ransomware attacks in Atlanta (2) and Baltimore (3). The ransomware attack in Atlanta was estimated to have cost around $2 million, and costs from the Equifax breach have reached over $1 billion (4).
+
+Transportation technologies, as they continue to rapidly expand from individual nodes to large, interconnected networks of technologies, may be susceptible to many unique vulnerabilities that have yet to be discovered or patched. In addition, these technologies make an alluring target for adversaries seeking to cause wide-reaching and costly damage. Transportation agencies have already been affected by breaches. On February 22, 2018, the Colorado Department of Transportation shut down 2,000 employee computers after the SamSam ransomware virus infected their systems and stole files (5).
+
+Mobile fare payment applications are becoming increasingly commonplace in the public transportation industry as a convenience for customers and as part of an effort to reduce fare management costs and improve operations for agencies. However, there is relatively little literature on vulnerabilities and liabilities in mobile fare payment applications. Furthermore, few public agencies or their supporting vendors have policies in place to receive vulnerability reports or patch vulnerabilities discovered in their technologies, including mobile fare payment applications. Given the rapidly increasing number of data breaches in general industry IT systems, as well as that mobile fare payment apps are a nexus between customer and agency financial information which are, therefore, critical to operations, the security of these mobile applications deserves further scrutiny.
+
+This paper presents a vulnerability discovered in a mobile fare payment application deployed at a transit agency in Florida that, because of the system architecture, may have affected customers in as many as 40 cities across the United States. The paper begins with a brief background of mobile fare payment applications, including potential vulnerabilities, and a review of related work. The background is followed by an analysis of the vulnerability discovered in the mobile fare payment application.
+
+# Authors' Affiliations
+1 Computer Science and Engineering Department, University of South Florida, Tampa, FL
+2 Center for Urban Transportation Research, University of South Florida, Tampa, FL
+Corresponding Author: Sean J. Barbeau, barbeau@usf.edu
+# Transportation Research Record 00(0)
+# Mobile Fare Payment Applications and Their Vulnerabilities
+This section introduces mobile fare payment applications, describing the technologies involved and the benefits achieved by mobile fare payment.
+
+Mobile fare payment applications are a form of contactless electronic ticketing that enables passengers to purchase a ticket and validate the purchase using their mobile device. Mobile fare payment is typically added as an additional, more convenient fare payment option, rather than replacing existing options entirely (6, p. 36). Mobile fare payment may reduce production and cash-handling costs (7, p. 6). Passenger Transport reported that First Bus’s mobile fare payment system reduced boarding times by up to 75% (8).
+
+# Typical Implementations
+Mobile fare payment is typically implemented using one, or a combination, of the following technologies: visual validation; Quick Response (QR) codes; Near-Field Communications (NFC); or Bluetooth Low Energy (BLE).
+
+In a visual validation scheme, the user is provided with an image on their mobile device that is shown to agency staff to verify their ticket purchase. Visual validation requires no additional equipment on the vehicle or station and instead uses the data connection of the user’s device for any necessary communication with a remote server (6).
+
+QR codes (9) require QR scanners to be available on the vehicle, or at the station, and require a method for communicating with a remote server, such as Wi-Fi or cellular, for verification (6). In a QR code system, a QR code is provided to the user on their mobile device when they purchase of their ticket. This ticket is then held under a QR scanner for verification (7).
+
+NFC provides short-range radio communication between the user’s mobile device and the NFC device (10). Unlike visual validation or QR codes, NFC requires the mobile device to support it with specific hardware. NFC is a contactless payment form in which users bring their devices into proximity to the sensors, similar to RFID.
+
+BLE is a low-energy implementation of Bluetooth (11). BLE provides a larger communication range than NFC or RFID. This increased range allows mobile fare payment to be conducted in a Be-In/Be-Out (BIBO) style by detecting the device when the user passes through the gates or boards the vehicle (6), avoiding the constraint of passing the device by a sensor as in NFC.
+
+# Related Work
+Mobile fare payments are a relatively new technology, and little has been published on their security concerns. However, related studies on other forms of payment technologies may be relevant. Mobile fare payment shares the privacy concerns present in other forms of electronic ticketing described in Section 3. Kieseberg et al. (12) analyze the attack vectors generally present in QR codes. These include command injection, phishing, and other social engineering attacks. Private user information could also be stolen through Trojan applications that mislead users by masquerading as other applications—one such occurrence was discovered with the Uber app (13).
+
+Wang et al. (14) describe how a Sybil attack can be performed on crowdsourced applications. In a Sybil attack, the attackers create many fake users that report falsified traffic incidents, causing the application to reroute users and thus create traffic jams. Uber and Lyft drivers have reportedly executed a similar type of attack to artificially trigger surge pricing, increasing the amount of money they make for each ride (15).
+
+# Case Study: MyJTA Mobile Fare Payment App
+In this study, the MyJTA (16) Android application for the Jacksonville, Florida area was analyzed for vulnerabilities. The analysis focused on the application programming interface (API) communication between the application and back-end server, and the ticket activation process.
+
+# Tools
+To perform the analysis, the following tools were used: Fiddler (17); Android Studio (18); and apktool (19).
+
+Fiddler is a web debugging proxy from Telerik. The Fiddler application is used to establish a proxy to which the Android device can connect to capture the API requests made by the application. The application has a variety of features that enhance the analysis process, including HTTPS certificate generation to decrypt HTTPS traffic from the device, request replays (to repeat previous communication), and request editing (to modify the content of the communication).
+
+Apktool is a reverse engineering tool used to analyze and debug closed-source, compiled Android applications that are in the Android Package (APK) format. Apktool disassembles the resources inside an APK file to a
+# Dennis et al
+# 3
+human-readable format; it can be used to repackage edited resources to create an installable APK with modified code.
+
+# Target System
+The MyJTA mobile application provides users with the ability to review their rider history. This rider history provides a summary of each ticket purchase made by the user, including the fare type, transaction date, and total fee. When the rider opens this view, the application makes an API call to https://ppprk.com/apps/v7/mobile/api/index.php/getparkerhistory (getParkerHistory) to retrieve the user data. For the sake of brevity, this paper will refer to this as the getParkerHistory API. The mobile app vendor provides mobile app payment solutions for both public transportation and parking facilities, therefore the name, ‘parker history.’ To analyze the application, the research team created an account via the mobile app. This account served as the target for the discovered vulnerability.

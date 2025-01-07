@@ -1,0 +1,49 @@
+# Let the Cat Out of the Bag: Popular Android IoT Apps under Security Scrutiny
+Efstratios Chatzoglou 1, Georgios Kambourakis 2,* and Christos Smiliotopoulos 1
+1 Department of Information & Communication Systems Engineering, University of the Aegean, 811 00 Mitilini, Greece; efchatzoglou@gmail.com (E.C.); chr.smiliotopoulos@gmail.com (C.S.)
+2 European Union, Joint Research Centre, 21027 Ispra, Italy
+* Correspondence: georgios.kampourakis@ec.europa.eu; Tel.: +39-0332-78-5013
+# Citation
+Chatzoglou, E.; Kambourakis, G.; Smiliotopoulos, C. Let the Cat Out of the Bag: Popular Android IoT Apps under Security Scrutiny. Sensors 2022, 22, 513. https://doi.org/10/s22020513
+# Abstract
+The impact that IoT technologies have on our everyday life is indisputable. Wearables, smart appliances, lighting, security controls, and others make our life simpler and more comfortable. For the sake of easy monitoring and administration, such devices are typically accompanied by smartphone apps, which are becoming increasingly popular, and sometimes are even required to operate the device. Nevertheless, the use of such apps may indirectly magnify the attack surface of the IoT device itself and expose the end-user to security and privacy breaches. Therefore, a key question arises: do these apps curtail their functionality to the minimum needed, and additionally, are they secure against known vulnerabilities and flaws? In seek of concrete answers to the aforesaid question, this work scrutinizes more than forty chart-topping Android official apps belonging to six diverse mainstream categories of IoT devices. We attentively analyse each app statically, and almost half of them dynamically, after pairing them with real-life IoT devices. The results collected span several axes, namely sensitive permissions, misconfigurations, weaknesses, vulnerabilities, and other issues, including trackers, manifest data, shared software, and more. The short answer to the posed question is that the majority of such apps still remain susceptible to a range of security and privacy issues, which in turn, and at least to a significant degree, reflects the general proclivity in this ecosystem.
+
+# Keywords
+IoT; vulnerabilities; weaknesses; security; Android; static; dynamic
+# Academic Editors
+Jun Zhao, Feng Li, Zeeshan Kaleem, Quoc-Viet PHAM, Huimei Han and Helin Yang
+# 1. Introduction
+The mushrooming of Internet of Things (IoT) devices augments the security stakes and challenges by far, even to a degree that threatens the entire Internet community. By operating networks of myriads of IoT devices, cyber assailants can target through their Denial of Service (DoS) bomb sight any website or Internet service and potentially bring it down to its knees. Nowadays, the great majority of personal IoT devices, including Small Office Home Office (SOHO) ones such as wireless Access Points (APs) are accompanied by a smartphone application (app). In this respect, any potential security and privacy issue may stem from either the IoT device itself, the associated app, or both. Simply put, the attack surface of virtually any IoT device is conceivably increased due to the accompanying app. Furthermore, of course there exists a plethora of apps that can be used to control and administer a variety of devices and across disparate manufacturers or vendors.
+
+Under this prism, it is of great interest to examine if and to what degree chart-topping mobile apps destined to IoT devices of diverse categories, say, smart TV, personal assistants, smart wearable, and others present security and privacy issues that can degrade the end-user’s security or privacy level, and directly or indirectly expose the device to attacks and hijacking. Particularly, we pursue to answer two key questions regarding the security and privacy state of this kind of apps: Do they restrict their functionality to the absolute minimum? and do they remain free of known misconfigurations, vulnerabilities, and privacy leaks?
+# Publisher’s Note
+MDPI stays neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+Copyright: © 2022 by the authors. Licensee MDPI, Basel, Switzerland. This article is an open access article distributed under the terms and conditions of the Creative Commons Attribution (CC BY) license (https://creativecommons.org/licenses/by/4/).
+
+Sensors 2022, 22, 513
+Having this goal in mind, the work at hand scrutinizes more than 40 popular Android accompanying apps belonging to 6 different categories of IoT devices, namely APs, smart TVs, wireless IP cameras, smart wearable, smart assistant, and Smart bulb/plug. The examined apps are the official versions, that is, those provided by the respective vendor and uploaded to Google Play Store. The term “popular” means that we only consider apps that exceed 1M downloads.
+
+The contributions of this work vis-à-vis the related work presented in Section 6 are as follows.
+
+- We conduct an up-to-date, full-fledged, both shallow and deep analysis of more than four tens of mainstream IoT official Android apps spread across the 6 most popular diverse categories of home/office and wearable devices.
+
+- Contrary to previous work that concentrates on device’s firmware, the use of fuzz testing, and individual app features, say, network communications, the results of our analysis stem from a plethora of both static and dynamic features, the latter after pairing the app with real-life well-known assorted IoT devices. In this respect, the methodology and the results given by this work tackle the specific issue from a more holistic viewpoint.
+
+- The multi-category approach followed, caters for the drawing of important conclusions, directly originating from the juxtaposition of the distinct categories of apps.
+
+Overall, the results provided by this work can at minimum serve a couple of objectives. The first is related to the improvement of the sound design of future IoT apps from a security and end-user privacy perspective. The audience here is mostly app designers and developers. Secondly, having in mind that the outcomes of this effort mostly reflect the general tendency in this field, it can be directly used as a basis towards advancing research efforts, mostly focusing on fostering best practices that facilitate the abatement of the attack surface, deterring data leakage, and cultivating a security and privacy by design mindset overall. In particular, for privacy, the key matter being in jeopardy here is the so-called principle of minimal privilege, requiring that a user, process, or piece of code in general, must be inherently enabled to only access the data and resources that are absolutely essential for accomplishing its mission.
+
+The remainder of this paper is structured as follows. The next section briefly describes the methodology used to analyze the different apps. Section 3 elaborates on the Android permissions used by each app, focusing on sensitive runtime permissions from an end-user’s privacy perspective. Section 4 proceeds to a deeper level of static analysis by examining security and privacy issues related to the app’s code, the use of trackers, shared libraries, outdated libraries, and others. The results of dynamically analyzing several apps after pairing them with real-life IoT devices are given in Section 5. The related work is presented in Section 6. The last section concludes and gives pointers to future work.
+
+# 2. Methodology
+Forty-one apps (packages) were collected from the Google Play Store with data freeze as of 5 October 2021. The apps were chosen based on three distinct criteria, as follows.
+
+- Based on the number of IoT devices we possess, which naturally is bounded, six popular IoT categories were created, namely, APs, smart TV, wireless IP cameras, smart wearable, smart assistant, and smart bulb/plugs. In this sense, IoT devices that fall into other IoT device categories, say, smart home climate control appliances or smart locks, were intentionally neglected.
+
+- For the given categories, the available official apps were selected based on their popularity, i.e., more than 1M+ downloads in the Google Play Store. Note that for certain devices, there may exist more than one official app. For instance, TP-Link offers at least three official apps, namely “TP-Link Tapo”, “Kasa Smart” and “TP-LINK tpCamera”, which can be used to manage an IoT device.
+
+Sensors 2022, 22, 513
+• Apps that have been analyzed in the past in the context of other research, including that in  have been excluded. For instance, the “Kasa Smart” app mentioned in the previous bullet point falls into this category. All the apps’ noteworthy details are summarized in Table 1 following an alphabetical order, first per IoT group and then per app name in that group. The same sorting order is used for the rest of the tables and figures across the rest of the sections of this work.
+
+Most of the included apps are applicable to multiple devices, i.e., operate across all devices that belong to a specific IoT category. Interestingly, the majority of the apps, including Samsung SmartThings and MyFRITZ!App, can manage multiple devices across different IoT categories. Therefore, for instance, the MyFRITZ!App is included in the smart assistant IoT category, as being the more relevant one. Based on Nov. 2021 data , the distribution of Android users across the different versions of this operating system (OS) is, 3%, 5%, 11%, 14%, 28%, and 33% for v6, v7, v8, v9, v10, and v11, respectively. For this reason, Android versions prior to v6 are excluded from this study.

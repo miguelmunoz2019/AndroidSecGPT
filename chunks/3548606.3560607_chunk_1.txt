@@ -1,0 +1,65 @@
+# Detecting and Measuring Misconfigured Manifests in Android Apps
+Yuqing Yang, Mohamed ElsabaghQuokka*, Chaoshun Zuo
+The Ohio State University
+yang@osu.edu, melsabagh@quokka.io, zuo@osu.edu
+Ryan JohnsonQuokka*, Angelos StavrouQuokka*, Zhiqiang Lin
+The Ohio State University
+rjohnson@quokka.io, astavrou@quokka.io, zlin@cse.ohio-state.edu
+# ABSTRACT
+The manifest file of an Android app is crucial for app security as it declares sensitive app configurations, such as access permissions required to access app components. Surprisingly, we noticed a number of widely-used apps (some with over 500 million downloads) containing misconfigurations in their manifest files that can result in severe security issues. This paper presents ManiScope, a tool to automatically detect misconfigurations of manifest files when given an Android APK. The key idea is to build a manifest XML Schema by extracting manifest constraints from the manifest documentation with novel domain-aware NLP techniques and rules, and validate manifest files against the schema to detect misconfigurations. We have implemented ManiScope, with which we have identified 609,428 (33%) misconfigured Android apps out of 1,853,862 apps from Google Play, and 246,658 (35%) misconfigured ones out of 692,106 pre-installed apps from 4,580 Samsung firmwares, respectively. Among them, 84,117 (13%) of misconfigured Google Play apps and 56,611 (22%) of misconfigured pre-installed apps have various security implications including app defrauding, message spoofing, secret data leakage, and component hijacking.
+
+# 1 INTRODUCTION
+Android follows a declarative app deployment model where each app is required to declare certain configurations in a file named AndroidManifest.xml in the root directory of an app package (APK) . This app manifest file describes essential information about the app to both Android marketplaces and the Android OS to guarantee proper publishing, installation, and execution of the app on an end-user’s device. Among many others, an app manifest file declares a variety of important information, including the unique app package name, Android versions compatible with the app, app components and their security and access control settings, permissions requested by the app, and configurations necessary for libraries and features needed by the app.
+
+Due to its importance to app security and reliability, an app manifest file must pass multiple checks by Android app development tools during app development , by Google Play during app publishing , and by the Android runtime during app installation and execution . However, by examining the open-source code and documentation on how Android validates a manifest file, we found that the validation process does not provide systematic coverage of all possible manifest misconfigurations. While we cannot access the source code of Google Play, we notice from this documentation  that Google Play just filters the elements and attributes that are related to feature requirements and compatibility, so as to avoid the app being installed on an incompatible device. Consequently, this can lead to apps with misconfigured manifest files in the wild, creating security issues as witnessed by the disclosed CVEs (e.g., CVE-2017-16835  and CVE-2017-17551 ).
+
+Moreover, our preliminary investigation showed that even some applications associated with world’s top vendor, e.g., Amazon as shown in Figure 1, may also involve such mistakes, which may lead to concerning purchase replay attack, inflicting losses to the vendor. As such, it is imperative to perform a large-scale study to understand the problem of the misconfigured manifest files, including the history of this misconfiguration problem, the prevalence of misconfiguration in current market, and the impact of these misconfigured manifest in the entire ecosystem, so as to raise the awareness from the community and draw insights to help mitigate this problem. To perform a systematic and automatic check of the misconfiguration, we utilize a standard approach to validate the XML files with XSD schema. To generate the XSD schema, we leverage the official documentation of Android manifest file, which is provided by Google because it is the only source and standard for developer’s reference when creating manifest files. Putting it all together, we develop a systematic approach to validate the manifest files.
+
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+CCS ’22, November 7–11, 2022, Los Angeles, CA, USA © 2022 Association for Computing Machinery. ACM ISBN 978-1-4503-9450-5/22/11. . . $15 https://doi.org/10/3548606
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# Yuqing Yang et al.
+
+# ManiScope, an NLP-based context-aware analysis tool to identify the manifest entities and their constraints from the documentation, and then generate the XSD for the validation.
+
+We have implemented ManiScope and tested it with 1,853,862 Android apps collected from Google Play between January 2020 and May 2020, and 692,106 pre-installed apps from 4,580 Samsung firmwares (which were released between September 2011 and January 2020) collected from SamMobile . Our investigation revealed a worrying situation: for Google Play apps, ManiScope detected 265,028 misconfigured elements in 230,330 apps and 718,207 misconfigured attributes in 428,440 apps (in total 609,428 unique misconfigured apps). For the pre-installed apps, ManiScope detected 1,731,451 misconfigured elements in 152,046 apps and 386,346 misconfigured attributes in 114,494 apps (in total 246,658 unique misconfigured apps). These results indicate a concerning prevalence of manifest misconfigurations across mobile apps, and these problems can date back to the very early Android version (as early as Android 2+). Moreover, we found that 84,117 (13%) of misconfigured Google Play apps and 56,611 (22%) of misconfigured pre-installed apps could have various security issues, ranging from component hijacking, data leakage, and app crashes, among others.
+
+# Contributions.
+
+- We present ManiScope, a novel and open-source tool that is able to extract manifest constraints from the Android documentation, build a manifest XML Schema, and detect misconfigurations in Android app manifests.
+
+- We propose novel domain- and context-aware NLP techniques to extract manifest constraints from the documentation and handle ambiguities and incomplete sentences in the natural language texts of the documentation.
+
+- We present a large-scale study on over 2 million apps and detected that about a third of these apps contain misconfigurations. We provide an analysis of the prevalence, history and the security threats of these misconfigurations and their root causes.
+
+# 2 PRELIMINARIES
+# 2 Android App Manifest File
+An Android app is packaged as an archive file (APK) that contains app code, assets, certificates, along with an app manifest file called AndroidManifest.xml, which is an XML file that specifies app components (the building blocks of an app, such as activity and receiver), permissions, and various configurations needed for the proper execution of the app . When installing an app, the Android PackageParser configures the app’s metadata and runtime settings based on the configurations defined in the app’s AndroidManifest.xml.
+
+As illustrated in Figure 1, app manifest files are composed of XML elements. Each element has a start and an end tag, can have a number of attributes (e.g., attribute android:name at line 5 that sets the name of the receiver element), and can contain other nested elements. The elements are organized in a tree structure where a child element can belong to only one parent element (e.g., the <intent-filter> element at line 6 is nested in its parent element <receiver>).
+
+01 &lt;manifest package="com.example.app"...&gt;
+02  ...
+
+03  &lt;application ...&gt;
+04  ...
+
+05   &lt;receiver android:name="com.amazon.*"&gt;
+06    &lt;intent-filter&gt;
+07     &lt;action
+08      android:name="com.amazon.*.NOTIFY"
+09      android:permission="com.amazon.*.Permission.NOTIFY"&gt;
+11     &lt;/action&gt;
+12    &lt;/intent-filter&gt;
+13   &lt;/receiver&gt;
+14  ...
+
+15  &lt;/application&gt;                      01
+16  ...
+
+17 &lt;/manifest&gt;
+# 2 Misconfigurations in Manifest Files
+The structure of a manifest XML tree specifies the relative positions of the manifest elements, though it does not enforce any particular occurrence constraints. Elements and attributes in an Android app manifest file can be required or optional, and some elements can also occur multiple times. For example, according to the Android Manifest Documentation , an <action> element must occur at least once inside an <intent-filter> parent element.
+
+When developing Android apps, developers have to manually configure app manifest files, though there are some tools to partially automate some of the configurations. Such manual configurations can certainly introduce errors, as evidenced by the example in Figure 1 in which the android:permission attribute, which is supposed to declare the permission required to access the <receiver> component, is incorrectly placed in the <action> element instead of <receiver>. As a result, the receiver component is left unprotected at runtime, allowing arbitrary apps to access and invoke its functionality.

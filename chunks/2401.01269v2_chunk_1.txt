@@ -1,0 +1,51 @@
+# LLbezpeky: Leveraging Large Language Models for Vulnerability Detection
+Noble Saji Mathews
+University of Waterloo, Canada
+noblesaji.mathews@uwaterloo.ca
+Yelizaveta Brus
+University of Waterloo, Canada
+ybrus@uwaterloo.ca
+Yousra Aafer
+University of Waterloo, Canada
+yousra.aafer@uwaterloo.ca
+Meiyappan Nagappan
+University of Waterloo, Canada
+mei.nagappan@uwaterloo.ca
+Shane McIntosh
+University of Waterloo, Canada
+shane.mcintoch@uwaterloo.ca
+# Abstract
+Despite the continued research and progress in building secure systems, Android applications continue to be ridden with vulnerabilities, necessitating effective detection methods. Current strategies involving static and dynamic analysis tools come with limitations like overwhelming number of false positives and limited scope of analysis which make either difficult to adopt. Over the past years, machine learning based approaches have been extensively explored for vulnerability detection, but its real-world applicability is constrained by data requirements and feature engineering challenges. Large Language Models (LLMs), with their vast parameters, have shown tremendous potential in understanding semantics in human as well as programming languages. We dive into the efficacy of LLMs for detecting vulnerabilities in the context of Android security. We focus on building an AI-driven workflow to assist developers in identifying and rectifying vulnerabilities. Our experiments show that LLMs outperform our expectations in finding issues within applications correctly flagging insecure apps in 91% of cases in the Ghera benchmark. We use inferences from our experiments towards building a robust and actionable vulnerability detection system and demonstrate its effectiveness. Our experiments also shed light on how different various simple configurations can affect the True Positive (TP) and False Positive (FP) rates.
+
+# 1 INTRODUCTION
+Despite advancements in building secure systems and extensive research in the area, Android applications remain prone to a range of vulnerabilities and even vulnerability reintroduction for fixed issues , creating a pressing demand for effective vulnerability detection methodologies. Current approaches to tackle this primarily revolve around static and dynamic analysis tools . However, they have their distinct limitations, such as vast false positives in the case of static analysis tools  and an overwhelming amount of effort that goes into building these frameworks and adapting them to newer vulnerability types.
+
+In the past few years, there have also been numerous explorations into the use of machine learning to uncover vulnerabilities , however, the applicability of these remains limited in real-world settings due to the vast amount of training data required and an explicit focus on feature engineering to approximate the complexity of the systems being analyzed. With the advent of LLMs, huge billion parameter models have pushed the boundaries of what was thought achievable through an Artificially Intelligent system. These are believed to acquire “embodied knowledge about syntax, semantics, and ontology inherent in human language”  and have also shown significant power when dealing with programming languages due to their relatively simpler underlying Grammar and Semantics . This brings a question to mind, How good are these Language Models at detecting vulnerabilities? There have been several recent explorations into the use of these large language models and improving their efficacy for vulnerability detection in general, and these have shown promising results.
+
+Current work in the literature has looked at the performance of GPT-based models for the task of vulnerability detection in code , Cheskov et al. report it to be not very effective but they employ a very simplistic approach. Other recent work has shown that extended prompting and LLM-driven methods complemented by other techniques have yielded more accurate results than simple prompting for detecting CWEs present in code . There has also been a much more detailed exploration that looks into various aspects of using LLMs for software security with promising results . We explore this area further in the context of Android Security, attempting to build an AI-enabled workflow that would enable developers to detect and aide in remediating vulnerabilities or even aid developers in writing secure code by acting as a pair programmer. Do note that fine-tuning models or training our own LLM is out of scope of this research, we primarily seek to explore if and how the latent knowledge present in these LLMs can be used for Android analysis.
+
+For this exploration into the use of new and emerging technologies it is critical we lay out a few fundamental questions, to begin with, and direct our efforts. We attempt to answer as
+# CS858, Project Proposal, LLbezpeky
+Noble Saji Mathews, Yelizaveta Brus, Yousra Aafer, Meiyappan Nagappan, and Shane McIntosh
+many of the following as possible based on insights gained from this exploration:
+- RQ1: Can LLMs detect Android vulnerabilities with basic prompting techniques?
+- If so how good are they at this compared to existing tools?
+- What kind of vulnerabilities are LLMs good at uncovering? Can these systems detect newer vulnerabilities that are less well-known?
+- Do we require fine-tuning of either the Model or the embeddings to achieve better results?
+- RQ2: What kind of Input would such a system need to be able to understand and discover issues in the code?
+- How could we supply this additional context? What kind of Knowledge bases would aid LLMs in discovering complicated bugs? (API Usage, Permissions Involved, Framework Endpoints, Cross-language and dynamic components)
+- Can existing solutions / static tools be used in tandem with these LLMs? or is it better to address only some classes of vulnerabilities with each type of approach?
+To build out such a workflow there are 2 key elements we need to address (We give a brief overview of these in the following sections)
+- How do we get LLMs (particularly Instruct Trained Models) to do what we want? -> Prompt Engineering
+- How do we supply the code and additional context to an LLM -> Retrieval Augmented Generation
+# 1 PROMPT ENGINEERING
+Prompt Engineering, a novel technique in artificial intelligence, is instrumental in enhancing the efficacy of language models for specific tasks. It involves intricate prompt construction that optimizes AI performance by eliciting improved responses . One groundbreaking strategy within Prompt Engineering is the Chain-of-Thought Prompting introduced by Wei et al. (2022) . This approach pushes the boundary of AI’s reasoning by guiding the model through a sequence of prompts that enrich and build upon each other. It allows for more depth in AI reasoning, particularly when paired with few-shot prompting, proving useful for complex tasks that necessitate multiple stages of reasoning.
+
+# 1 RETRIEVAL-AUGMENTED GENERATION
+Retrieval Augmented Generation (RAG) is an AI framework designed to enhance the quality of responses generated by large language models (LLMs) . RAG allows LLMs to build on a specialized body of knowledge to answer questions more accurately. It’s like giving the model an open-book exam, where it can browse through content in a book, as opposed to trying to remember facts from memory. In our case, this knowledge base would be specific to Android and could include any or all of the following:
+- Additional code that needs to be fetched from a large codebase
+- Static / Code analysis results that could prove useful to comment about a specific issue
+- Documentation and additional information that allows the LLM to garner a better understanding of the system and task at hand
+We initially focus our efforts on prompt engineering to leverage the LLM’s knowledge for tracing Android vulnerabilities. We attempt to compare the detection capability of the LLM with other strategies on the same set of applications, thereby providing insights on which approach can uncover more vulnerabilities with fewer false positives. We use these insights to continually update and improve the instructions used for prompting over the course of the experiments.
+
+In order to do this we need a benchmark dataset designed to test Android Security Analysis tools. For this study we target smaller apps that replicate individual vulnerability types. However to understand our design objectives we need to structure our pipeline so it can logically be extended to real applications. In the next section we move on to a case study attempting detection in an app that has multiple seeded vulnerabilities. This involves integrating retrieval mechanisms for obtaining additional context that can significantly enhance the feasibility and performance of such systems. Retrieval mechanisms are critical in real-world scenarios when dealing with larger applications due to the limited token window of present-day LLMs. Hence it is also important that we focus on optimizing the size of the input to the model while ensuring the LLM has enough context to make a sound decision.

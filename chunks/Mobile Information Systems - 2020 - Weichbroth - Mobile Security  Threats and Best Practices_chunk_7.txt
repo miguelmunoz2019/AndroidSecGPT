@@ -1,0 +1,101 @@
+-e current advanced security technologies, available from either the level of the operating system or application, reveal a low level of vulnerabilities and weakness. -erefore, the overall security depends on the demonstrated user behavior and arbitrary undertaken efforts. Having said that, we argue that understanding factors affecting users’ intentions and motivations to accept and use particular technologies is crucial to raising security and privacy concerns at the individual level. Hence, future work will cover identifying and modeling users’ perceptions of security and usability of mobile applications.
+
+# 7. Conclusions
+Security is always an arms race between attackers and defenders. Since the mobile application market is growing, at the same time, mobile security will continue to deliver a plethora of issues to face. In other words, security is often a matter of balancing risk and reward, defense versus convenience. In this line of thinking, the potential risks and benefits, and their tradeoffs, undoubtedly deserve further and deeper investigation. -e outcome of this paper is a holistic picture of this phenomenon, which examines the negative events, conditions and circumstances that have the potential to cause the loss of assets, and the countermeasures that aim to eliminate them and provide adequate and effective protection for a user.
+
+During the World Economic Forum of 2019 , the participants came to the conclusion that the past ten years mark only the start of the global cybersecurity journey. New architectures and cooperation are still required as we stand at the brink of a new era of cybercrime, which will be empowered by new and emergent technology. -ese three technologies, namely, 5G networks and infrastructure
+# Mobile Information Systems
+Convergence, artificial intelligence, and biometrics, are going to define the next ten years of global cybersecurity.
+
+# Conflicts of Interest
+The authors declare that they have no conflicts of interest.
+
+# Mobile Information Systems
+Development Conference, pp. 145–155, Kennesaw, GA, USA, October 2010.
+
+1. B. Potter, “Mobile security risks: ever evolving,” Network Security, vol. 2007, no. 8, pp. 19-20, 2007.
+
+2. OWASP Top Ten, https://owasp.org/www-project-top-ten/, 2020.
+
+3. J. Fitzgerald, “Managing mobile devices,” Computer Fraud & Security, vol. 4, pp. 18-19, 2009.
+
+4. E. Kim, D. Gardner, S. Deshpande, R. Contu, D. Kish, and C. Canales, “Forecast analysis: information security, worldwide, 2Q18 update,” 2020, https://www.gartner.com/en/documents/3889055.
+
+5. Top 7 Mobile Security Threats in 2020, https://usa.kaspersky.com/resource-center/threats/top-seven-mobile-security-threats-smart-phones-tablets-and-mobile-internet-devices-what-the-future-has-in-store, 2020.
+
+6. D. Emm, “Mobile malware-new avenues,” Network Security, vol. 2006, no. 11, pp. 4–6, 2006.
+
+7. The TOP 10 Mobile Risks of 2016, https://www.techrepublic.com/article/the-top-10-mobile-risks-of-2016/, 2020.
+
+8. R. Sobers, “110 must-know cybersecurity statistics for 2020,” 2020, https://www.varonis.com/blog/cybersecurity-statistics/.
+
+9. New MobileIron Report Details Most Common Mobile Threats and Blacklisted Apps, https://www.techrepublic.com/article/new-mobileiron-report-details-most-common-mobile-threats-and-blacklisted-apps/, 2020.
+
+10. A. Harkness, “Mobile malware threats,” 2019, https://www.netmotionsoftware.com/blog/security/mobile-malware-threats.
+
+11. What Is Phishing Scam, https://usa.kaspersky.com/resource-center/threats/spam-phishing, 2020.
+
+12. Mobile Theft Loss Report, https://preyproject.com/uploads/2019/02/Mobile-Theft-Loss-Report-2018.pdf, 2018.
+
+13. M. Bishop, Introduction to Computer Security, Addison-Wesley Professional, Boston, MA, USA, 2004.
+
+14. T. Caldwell, “Making security awareness training work,” Computer Fraud & Security, vol. 2016, no. 6, pp. 8–14, 2016.
+
+15. N. Gerber, B. Reinheimer, and M. Volkamer, “Home sweet home? Investigating users’ awareness of smart home privacy threats,” in Proceedings of the An Interactive Workshop on the Human Aspects of Smarthome Security and Privacy (WSSP), Baltimore, MD, USA, August 2018.
+
+16. K. O’Loughlin, M. Neary, E. C. Adkins, and S. M. Schueller, “Reviewing the data security and privacy policies of mobile apps for depression,” Internet Interventions, vol. 15, pp. 110–115, 2019.
+
+17. A. Przybyłek and D. Kotecka, “Making agile retrospectives more awesome,” in Proceedings of the 2017 Federated Conference on Computer Science and Information Systems (FedCSIS), pp. 1211–1216, IEEE, Prague, Czech Republic, September 2017.
+
+18. A. Przybylek and W. Kowalski, “Utilizing online collaborative games to facilitate Agile Software Development,” in Proceedings of the 2018 Federated Conference on Computer Science and Information Systems (FedCSIS), pp. 811–815, IEEE, Poznań, Poland, September 2018.
+
+19. M. H. Hussein, S. H. Ow, L. S. Cheong, M.-K. Wong, and N. Ale Ebrahim, “Effects of digital game-based learning on elementary science learning: a systematic review,” IEEE Access, vol. 7, pp. 62465–62478, 2019.
+
+20. Webopedia, “Mobile security best practices,” 2020, https://www.webopedia.com/TERM/M/mobile_security_best_practices.html.
+
+21. F. Stroud, “Mobile security best practices,” 2020, https://www.webopedia.com/TERM/M/mobile_security_best_practices.html.
+
+22. H. Dowden, “The 6 mobile device security best practices you should know in 2020,” 2020, https://www.ntiva.com/blog/top-5-mobile-device-security-best-practices-2020.
+
+23. D. Hein, “7 essential mobile security best practices for businesses,” 2020, https://solutionsreview.com/mobile-device-management/7-essential-mobile-security-best-practices-for-businesses/.
+
+24. S. Lerner, “Mobile device security best practices. How to protect portable technology,” 2020, https://www.enterprisemobilityexchange.com/eme-security/articles/mobile-device-security.
+
+25. J. Mark, “8 best practices for mobile device security,” 2020, https://www.jmark.com/8-best-practices-mobile-device-security/.
+
+26. A. D. Kent, L. M. Liebrock, and J. C. Neil, “Authentication graphs: analyzing user behavior within an enterprise network,” Computers & Security, vol. 48, pp. 150–166, 2015.
+
+27. D. Dasgupta, A. Roy, and A. Nag, “Multi-factor authentication,” in Advances in User Authentication, pp. 185–233, Springer, Cham, Switzerland, 2017.
+
+28. H. Patel, “14 best practices for your mobile app security,” 2020, https://www.tristatetechnology.com/blog/best-practices-to-improve-mobile-app-security/.
+
+29. M. Ciampa, Security Awareness: Applying Practical Security in Your World, Cengage Learning, Boston, MA, USA, 2013.
+
+30. K. Lab, “Best practices. Encryption,” 2020, https://media.kaspersky.com/pdf/b2b/Encryption_Best_Practice_Guide_2015.pdf.
+
+31. L. Phifer, “Best practices for improving mobile data security,” 2020, https://searchmobilecomputing.techtarget.com/tip/Best-practices-for-improving-mobile-data-security.
+
+32. A. S. K. Pathan, M. M. Monowar, and Z. M. Fadlullah, Building Next-Generation Converged Networks: Theory and Practice, CRC Press, Boca Raton, FL, USA, 2013.
+
+33. S. Abraham and I. Chengalur-Smith, “An overview of social engineering malware: trends, tactics, and implications,” Technology in Society, vol. 32, no. 3, pp. 183–196, 2010.
+
+34. D. Burley, R. Carpinella, D. Chesebrough et al., Cybersecurity in our Digital Lives, Vol. 2, Hudson Whitman/ECP, New York, NY, USA, 2015.
+
+35. V. K. Velu, Mobile Application Penetration Testing, Packt Publishing Ltd., Birmingham, UK, 2016.
+
+36. M. E. Vermaat, S. L. Sebok, S. M. Freund, J. T. Campbell, and M. Frydenberg, Discovering Computers 2018: Digital Technology, Data, and Devices, Nelson Education, Toronto, Canada, 2017.
+
+37. I. Illahi, H. Liu, Q. Umer, and S. A. H. Zaidi, “An empirical study on competitive crowdsource software development: motivating and inhibiting factors,” IEEE Access, vol. 7, pp. 62042–62057, 2019.
+
+38. G. R. Murray, C. R. Rugeley, D.-G. Mitchell, and J. J. Mondak, “Convenient yet not a convenience sample: jury pools as experimental subject pools,” Social Science Research, vol. 42, no. 1, pp. 246–253, 2013.
+
+39. Z. Siddiqui, O. Tayan, and M. Khurram Khan, “Security analysis of smartphone and cloud computing authentication frameworks and protocols,” IEEE Access, vol. 6, pp. 34527–34542, 2018.
+
+40. E. Alepis and C. Patsakis, “Monkey says, monkey does: security and privacy on voice assistants,” IEEE Access, vol. 5, pp. 17841–17851, 2017.
+
+41. Z. Rui and Z. Yan, “A survey on biometric authentication: toward secure and privacy-preserving identification,” IEEE Access, vol. 7, pp. 5994–6009, 2018.
+
+Downloaded from https://onlinelibrary.wiley.com/doi/10/2020/8828078 by Cochrane Colombia, Wiley Online Library on [08/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# Mobile Information Systems
+9071, 2020, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2020/8828078 by Cochrane Colombia, Wiley Online Library on [08/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License..

@@ -1,0 +1,49 @@
+# b. Agents of Data Analysis
+The data analysis agent is the main element of the intrusion detection system. It analyzes the extracted data provided by the data extraction agents. It uses the Bayes algorithm to analyze and determine if there is abnormal behavior. First, based on the behavioral characteristics of the set of learning samples, we establish the normal behavior profile of the Android system. We then extract the behavior characteristics from the data needed to test and establish the current profile. And afterwards we make a comparison of the retained profile with the contour of the normal behavior. If it exceeds the established threshold, it is thought that there has been abnormal behavior. The intrusion detection system generates an alarm. The reporting process further, otherwise it is considered normal behavior. Indeed, this element can compare a normal behavior that is extracted by the Android system and an abnormal behavior that is extracted by one of the three elements of the extraction of data. We have therefore used a Naïve Bayes classifier which can affect the most likely class to a given example described by its feature vector.
+
+# C:
+have two possible values namely c1 = "normal" and c2 = "abnormal".
+
+characteristics of the behavior of the Android system. Each element refers to feature of android system ( Xi→ i= 1,2…,n).
+
+This classifier can calculate the maximum of two probabilities which are:
+P(C =c1 | X =x): the probability x of occurrence of c1
+P(C =c2 | X =x): the probability x of occurrence of c2
+It means that will use this expression: Max{P(C =c1 | X =x), P(C=c2 | X=x)}
+# c. Agents of Reporting
+The reporting agent's main purpose is to present a report on the security of the Android system. There are two ways to report the positive and the passive relationship. Passive reports to present the normal behavior of the Android system. In the event of a serious threat, the alarm information is saved as a log file. Then the administrator analyzes the log and takes the appropriate measures. It means that we take a positive reporting approach and take the appropriate measures based on predefined rules, such as uninstall the application, terminate the process, cut off all wireless connections, encrypt the data, change the Firewall Policy etc.
+
+In this paper, the intrusion detection system divides the reporting into two levels. We set log file according to the behavior of the android system. Once the phone was found to be invaded, the intrusion detection system alerts the user which would take the appropriate correction measures.
+
+# 4. TEST AND RESULTS
+locate the source of malware. This figure shows the result of extraction some information about process.
+
+# 4. Test environment
+JADE (Java Agent DEvelopment Framework) is a software Framework fully implemented in the Java language. JADE system supports coordination between several agents FIPA and provides a standard implementation of the communication language FIPA-ACL. In this section we will show how to start JADE platform and we will make agents communicate between them. Indeed in this test we will create five agents for each element of architecture.
+
+# 4. Network monitoring Agent
+Network monitoring agent (Netm) captures packets from different network interfaces and prepares these packets to send to the other agent, which can analyses information about the network such IP address to locate the source of malware. This figure shows the result of extraction some information about network.
+
+Fig 6. Result of extraction IP address and Mac address
+# 4. System state monitoring agent
+System state monitoring agent (Sym) extracts features of physical elements from the system of Smartphone, such as CPU usage and memory usage and prepares these features to send to the other agent. This figure shows the result of extraction some information about system state.
+
+Fig 7. Result of extraction CPU and Memory usage
+# 4. Process monitoring agent
+Process monitoring agent (Prm) extracts some information about processes such as ID, name, and prepares these data to send to the other agent, and to
+# 4. Data analysis agent
+Data analysis agent (AnalysisBNC) analyses the data which are sending by (Sym) using the Bayes naïve classifier, to detect anomalies in the system.
+
+# 4. Reporting agent
+Reporting agent (Report) alert the user of Smartphone using a message that a malicious application is running, so the user must take some correctives measures such as delete the malicious application or end a process …
+# 4. Communication between mobile agents
+In this proposed architecture, after the creation of agents, (Netm, Prm, Sym, AnalysisBNC, and Report) we must assure the communication between them, so JADE proposes ACL messages which are very simple to use. This figure shows the architecture of the proposed solution using agents and ACL messages for communication.
+
+mentioned that the implementation of this work is in progress. Indeed the finale version of this paper will be done after we finish the evaluation of this solution.
+
+The ACLMessage class represents messages which can be exchanged by the agents. When an agent wants to send a message, it must create a new object ACLMessage, and then call the send() method, which can send the message to the receiver. When an agent wants to receive a message, it must use the receive() method. The content of the messages is an interaction between mobile agents and their environments. In this case, the content is about traffic network, particularly IP address and the Mac address, system state such as CPU and memory usage, process such as ID process, and ACL message for displaying the result of analyze. The following figure shows the result of this test.
+
+After analyzing Data which are from system state monitoring (Sym), the result of this analyze is sending to (Report) agent, in this case it displays that the comportment of system is abnormal.
+
+# 5. CONCLUSION AND FUTURE WORK
+Smartphone security is becoming more and more serious. Intrusion detection systems for smartphones will become one of the interesting points of future research. In particular, malware for the Android system is also experiencing abnormal growth. Our future work using this architecture consists to complete the implementation by integrating the solution in Android System. And finally we.

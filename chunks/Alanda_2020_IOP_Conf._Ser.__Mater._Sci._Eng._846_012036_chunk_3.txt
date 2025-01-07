@@ -1,0 +1,7 @@
+From the 10 weaknesses discussed earlier in this study also tested several applications that can be downloaded at Playstore. The results of security testing on 5 applications in PlayStore can be seen in Table 13
+# 5. Conclusion
+In this research do some assessments for the weaknesses in mobile applications based on OWASP Mobile top 10. From the results of testing several android applications on Playstore applications have
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+doi:10/1757-899X/846/1/012036
+vulnerabilities. 80% vulnerability the same as on OWASP Mobile to 10. In addition to testing, it also provides recommendations for various vulnerabilities of mobile applications so it can increase application security.

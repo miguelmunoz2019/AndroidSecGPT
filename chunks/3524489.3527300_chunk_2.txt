@@ -1,0 +1,146 @@
+# 3 In-Vehicle Communication
+Modern car’s are equipped with Electronic Control Units (ECU) which control one or multiple subsystems in a vehicle such as braking, engine, and steering. These subsystems interconnects by means of different busses. These busses and protocols vary based on the manufacturer and different vehicle models of the same brand. Some example of these busses are: Controller Area Network (CAN) bus, designed to allow different micro controllers to communicate with each other’s application without a host computer; Local In- terconnect Network (LIN) bus, a serial network protocol used for communication between vehicle components; Media Oriented Systems Transport (MOST) bus, a serial communication system for transmitting audio, video and control data via fibre optic cables; BroadR-Reach technology, provides standards for ethernet connectivity within Automotive environment. These technologies provide no security or authentication therefore it’s integration with infotainment systems requires proper security analysis.
+
+# 4 VULNERABILITIES
+This section focuses on vulnerabilities that are common in Android Mobile, Auto and Automotive platforms and some of which are specific to Android Automotive platform. Tables 1 list vulnerabilities that are automotive specifics and Table 2 list vulnerabilities that are common to all Android platforms including Mobile, Auto and Automotive.
+
+Most of the vulnerabilities were discussed by Benjamin Eriksson et al.  and Amit et al.  in their papers while we added two extra vulnerabilities, namely: deriving speed from location information and precise location information. We also verified these vulnerabilities existence in Android Automotive platform, we created example projects and we carried out the test in both Android Auto and Android Automotive emulators which were part of Android SDK 9. In those tables, (true, false and not-applicable (N/A)) in auto and automotive columns defines which vulnerabilities were reproducible on those platforms.
+
+# 4 Sound Blast
+Sound Blast is a vulnerability through which a third party app can control audio volume in a vehicle. A specially designed use case where sudden change of volume at vehicle high speed can be disastrous for the driver, passengers and vehicles around it. In Android apps, AudioManager class is responsible for adjusting audio volume programmatically. It does not require any special permission from the user to control audio. However, there is a fixed volume policy that can be configured by Android device manufacturers which prevents this API to adjust volume at run time. This policy is required in Android Automotive to prevent sound blast vulnerability. As seen in the Table 1, this vulnerability was reproducible on Android Auto but not on Android Automotive as their emulators are configured with fixed volume policy, but this will vary from different manufacturers and their adoption of this policy.
+
+# Listing 1: Sound blast vulnerability example code
+private void setMaxVolume() {
+// Initializing Audio Manager Instance
+AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+// Getting device max stream volume
+int maxVolume = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+// Setting device stream volume to max
+am.setStreamVolume(AudioManager.STREAM_MUSIC, maxVolume, 0);
+}
+private void setMinVolume() {
+// Initializing Audio Manager Instance
+AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+// Getting device min stream volume
+int minVolume = am.getStreamMinVolume(AudioManager.STREAM_MUSIC);
+// Setting device stream volume to min
+am.setStreamVolume(AudioManager.STREAM_MUSIC, minVolume, 0);
+}
+Listing 1 shows the example usage of this API, AudioManager initialization is at line 3 & 11, setting volume to max is at line 5, 7 or min at line 13, 15. This a non compliant solution as setStreamVolume can be used to alter volume of the device instantly, which can be used to distract the driver if used in a malicious way.
+
+# Listing 2: Sound blast vulnerability solution
+private ReentrantLock lock = new ReentrantLock();
+private Handler handler = new Handler();
+private void adjustVolume() {
+try { // Applying lock so it can only be used if unlocked.
+
+lock.lock();
+// Initializing AudioManager instance.
+
+AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+// Increasing stream volume one step at a time.
+
+am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, 0);
+}
+}
+# 4 Fork Bomb
+This vulnerability can cause the Infotainment Head Unit (IHU) to occupy all the system resources, causing it to freeze or force a reboot. To perform this, root permissions were required on the device then any application can perform Remote Code Execution (RCE) on Android shell. This case was not reproducible from the Android Automotive emulator as they can not be rooted but it might be possible to root Android Automotive emulator if it was built manually from AOSP.
+
+# Listing 3: Fork bomb vulnerability
+public class ShellExecutor {
+public static String execute(String command) {
+// String builder to capture shell output
+StringBuilder output = new StringBuilder();
+// Shell Process
+Process p;
+try {
+// Runtime class that executes shell commands and returns the shell process.
+
+p = Runtime.getRuntime().exec(command);
+p.waitFor();
+// Creating stream readers to read shell output
+InputStreamReader inputStreamReader = new InputStreamReader(p.getInputStream());
+BufferedReader reader = new BufferedReader(inputStreamReader);
+// Reading shell output line by line and appending it to string builder.
+
+String line = "";
+while ((line = reader.readLine()) != null) {
+output.append(line).append("\n");
+}
+} catch (Exception e) {
+e.printStackTrace();
+}
+// returning the captured output
+return output.toString();
+}
+}
+// Executing shell command using class above.
+
+ShellExecutor.execute("ls -a");
+Listing 3, shows an example code of how to execute shell commands with Android apps. Runtime class (line 9) allows an Android app to interface with the environment in which it’s running.
+
+# 4 Intent Storm
+Intents in Android can be used to launch activities, however continuously launching intents from a thread within a loop can cause Android Automotive User Interface (UI) unresponsive. A specially designed scenario in a malicious app can cause the automotive infotainment system unresponsive which can be distracted for the driver. These cases were tested on Android Automotive emulators where UI became unresponsive and took a good amount of time to respond or to kill the malicious application.
+
+Listing 4, shows a non compliant code example of intent storm vulnerability. MainActivity is continuously spawned within an infinite loop causing UI to become unresponsive as it’s occupying system resources. Whereas, listing 5, shows a compliant code example.
+
+# Listing 4: Intent storm vulnerability
+private void launchActivity() {
+// Infinite loop to launch Activity continuously.
+
+// Rendering app as unresponsive
+while (true) {
+Thread thread = new Thread(new Runnable() {
+@Override
+public void run() {
+Intent intent = new Intent(MainActivity.this, MainActivity.class);
+MainActivity.this.startActivity(intent);
+}
+});
+thread.start();
+}
+# Listing 5: Intent storm compliant example
+private void launchActivity() {
+Intent intent = new Intent(MainActivity.this, MainActivity.class);
+MainActivity.this.startActivity(intent);
+}
+# 4 Permissionless Speed
+In Android Automotive, Android apps require explicit permission to access vehicle speed which users need to approve it. However, It’s also possible to derive vehicle speed if Engine RPM, Current Gear and knowledge about wheel size are known. To access engine RPM information CAR_POWERTRAIN permission is required and to access Current Gear information CAR_INFO permission is required and both these permissions are implicit. Declaring them in the AndroidManifest.xml file will give the app permission to observe these properties.
+
+Listing 6, shows an example of how to access engine RPM and current gear information. Car instance is initialized in initCar method (line 13) with car service lifecycle listener which notifies the application that it’s safe to use car instance. Within the listener there is a method call to watchPropertySensor (line 17, 18) which initializes CarPropertyManager (line 20) service, this class provides the interface between car services and the application. Next, It prepares an array of properties that are relevant for deriving speed (line 21-26) and registering an event listeners (line 29-43) for these services. Any change to these services will trigger this event listener and from this way a malicious application can listen to current gear and engine RPM and with knowledge of wheel size, it can derive the vehicle speed.
+
+# Listing 6: Permissionless speed vulnerability
+// AndroidManifest.xml
+<uses-permission android:name="android.car.permission.CAR_INFO" />
+<uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+// JAVA
+public class CarSpeedActivity extends AppCompatActivity {
+private Car car;
+...
+
+private void initCar() {
+PackageManager pm = getPackageManager();
+if (!pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) { return; }
+if (car != null) { return; }
+// Car instance initialization
+car = Car.createCar(this, null, 100L, new Car.CarServiceLifecycleListener() {
+@Override
+public void onLifecycleChanged(Car car, boolean b) {
+if (car.isConnected() && !car.isConnecting()) {
+watchPropertySensor(car);
+}
+}
+});
+}
+private void watchPropertySensor(Car car) {
+// Initializing CarPropertyManager
+CarPropertyManager carPropertyManager = (CarPropertyManager) car.getCarManager(Car.PROPERTY_SERVICE);
+int[] properties = new int[] {
+VehiclePropertyIds.GEAR_SELECTION,
+VehiclePropertyIds.CURRENT_GEAR,
+VehiclePropertyIds.PERF_VEHICLE_SPEED,
+VehiclePropertyIds.ENGINE_RPM,
+VehiclePropertyIds.WHEEL_TICK
+};
+for (int property : properties) {
+// Registering callback listener for all relevant properties.

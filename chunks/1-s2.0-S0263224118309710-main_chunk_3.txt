@@ -1,0 +1,62 @@
+The above approaches demonstrate the rationale for applying security mechanisms and risk assessment in evaluating risk on Android applications. The risk assessment evaluation is similar to the malware detection system where performance evaluation such as accuracy, plays a significant role in measuring the efficiency. Various research has been conducted so as to gather the accuracy of risk evaluation which uses permission-based criteria. This approach also helps to locate the risk zone for Android applications. Using permissions to analyse risk that is associated with applications is a well-studied approach, both in industry and academic research. Major antivirus vendors use a similar approach to alert users of potentially risky or privacy-invasive applications. Kirin , for example, uses permission-based rules to prevent users from installing an application with risky permission combinations (e.g., Internet and Location permissions together be used to infiltrate location to the network). In contrast, Whyper  recommends using application descriptions as well as permissions to assess risk. The risk evaluation performed improves users’ awareness to the risk and protects them from the harmful applications. The box plot analysis that is applied in this study shows an acceptable evaluation rate that is able to project a risk zone. The following section describes the methodology applied.
+
+# 4. Research methodology
+This section presents the overall workflow of the experiment. The risk assessment approach was applied to effectively describe and analyze Android applications, in search for the risk zone. The
+# 4. Criteria selection
+This study used 10,000 Android applications samples as the training set. The total number of benign and malware samples were 5000 each. We manually predefined the samples with their appropriate labels, i.e. benign or malware. However, it is important to note that we validated the labelling process by checking the Android application’s status from VirusTotal. In other words, we label a sample as malware after running it through VirusTotal. VirusTotal is an online website that checks for viruses through URL or file upload. It is highly reliable as it inspects the sample and aggregates the result of over 70 antivirus scanners. VirusTotal is also widely used by researchers to provide the ground truth in their works. After that, this dataset samples are used for criteria selection.
+
+The criteria selection uses a specific metric which computes and returns a score for each feature individually. The Waikato Environment for Knowledge Analysis (WEKA) approach was implemented for the criteria selection which includes using Information Gain to select the best criteria for use. This paper utilized Weka as the machine learning platform. Weka is a well-established software that has a collection of machine learning algorithms. It is a well-rounded and complete software suite that fits the objective of this research. We implemented Information Gain in Weka directly to our dataset. This approach saves us time from manually coding the algorithm. Besides that, the reliability and accuracy of Weka’s algorithms are well recognized. The criteria with a high value of Information Gain is selected. In this way, 10, 20 and 30 criteria were selected based on Information Gain values ranging from 0 to 1. The best criteria helps to improve the performance measure. Table 2 shows a list of the criteria recorded using the Information Gain approach. These were then stored in the database for the risk assessment process.
+
+It appears that phone calls and messages were the top of the group in the permission-based system which represents the type of features noted on the Android developer. It is necessary to assert that this group is significant in the risk assessment approach.
+
+# 4. Risk assessment criteria
+Android applications require permission granting from the users in order to invoke the Android API successfully. The declared permission in AndroidManifest.xml file is important and effective for revealing the potential risk and for it to be used as a warning message to notify users. Most of the risky applications require a combination of some permissions in order to launch the attack. Fig. 1 illustrates the percentage of the top ten (10) most requested permission in the benign and malware applications of the sample dataset.
+
+# List of criteria.
+
+400 M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+an outcome that reflects the result of Zhou and Jiang (2012) in detecting malware by permission  which was the first research done on the Android malware family. Moreover, the malware also requests more permissions on communication such as SEND_SMS, RECEIVED_SMS, and READ_SMS. It seems clear that the malware application is more interested in dangerous permissions in order to gain access to sensitive information. It appears to be using the Internet as a medium.
+
+# 4. General framework
+The AHP was used to calculate the risk of the applications. Fig. 2 illustrates the main components of the EZADroid framework which is then categorized into three components: (a) response option, (b) response systems and (c) risk zone. The proposed framework attempts to identify the risk of Android applications whether it is malware or benign by assessing the risk zone. It is very important to choose appropriate approach, especially when dealing with the
+# 5. Proposed approach
+The risk assessment approach is used to improve the effectiveness of the risk evaluation by generating a risk zone for the user. It serves as a warning against malicious applications (e.g. very low, low, medium, and high). This study submits Android applications to VirusTotal to validate and ensure the trustworthiness of dataset. In addition, the proposed approach utilized the relevant features as criteria in multicriteria decision making by implementing machine learning approach to significantly increase detection accuracy for risk analysis and malware detection. The proposed approach achieved higher accuracy with 89%. The results also validated using statistical analysis. Table 3 presents the description of the proposed approach.
+
+# 5. Risk assessment phase
+The AHP approach was implemented to evaluate the risk. The approach uses a pair-wise comparison of criteria to evaluate the weight of the criteria; this is in line with the main objective of the hierarchical structure . The pair-wise comparison was performed through the matrix table which evaluates the consistency of the judgment . The comparison matrix (A) takes the size n x n where n denotes the number of criteria being compared, which is relative to the specific elements. The elements of the matrix are aij. Table matrix A demonstrates an evaluation that is similar to :
+aij = ajk ajk
+aij = 1/ajk
+where i, j and k are any elements of the matrix A.
+
+# 5. Judgment matrix
+In the AHP approach, the hierarchy of risk assessment is measured through pairwise comparisons which is important for estimating the relative elements noted in a hierarchy with a preceding level. The pairwise comparison is measured by using the ratio scale which is used to define the intensity of the important judgments. Table 4 shows the fundamental scale of the absolute numbers of the AHP approach . Table 4 illustrates the judgments through the fundamental scale of the AHP. These scales were used to determine the relative importance of each criterion, starting with the scale of 1 until 9. Table 5 illustrates the judgment matrix for the decision factor and indicator used in risk zone threshold. Table 5 shows a comparison of the same layers with the upper layers so as to generate a judgment matrix. The resulting risk assessment is demonstrated in the experiment and result section.
+
+# 6. Experiment and result
+The assessment consists of two (2) experiments. The first applies the risk assessment approach to evaluate the risk value. The second generates a risk zone. The experiment uses the box plot analysis to show the difference between the malware and the benign applications. The box plot analysis was able to discover.
+
+# 402
+# M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+# Fundamental scale of absolute numbers.
+
+Reciprocals of above: If nonzero numbers assigned to activity I when compared with activity j, then when compared with I, j has the reciprocal value.
+
+Rationals: Ratios originate from the scale.
+
+# Explanation
+Two activities contribute equally to the objective.
+
+One activity is slightly being favored over another based on experience and judgment.
+
+One activity is strongly being favored over another based on experience and judgment.
+
+One activity is very strongly favored over another based its dominance in practice.
+
+One activity is utmost important favored over another based on the highest possible order of affirmation.
+
+A sensible assumption: If consistency were to be forced by obtaining n numerical values to span the matrix.
+
+# The Judgment matrix criteria.
+
+Consistency ratio = 0.
+
+The risk potential and to predict the risky malware. It plays an important role in determining how relevant the EZADroid was. Finally, the risk zone was determined after the results were gathered. The following sections describe the experiment in greater details.

@@ -1,0 +1,46 @@
+Themes of analyzed apps
+# 4 Summary of results according to LINDDUN
+This section summarises the mapping between the identified issues for a given app and the LINDDUN threat categories – this data is provided as supplementary material in the file “Mapping Apps’ Issues to LINDDUN”. As shown in Table 4, considering App 1, three of the found issues were mapped to one or more of the Linkability threats. On average, we observed that apps had 22 privacy issues, ranging from 1 to 6 for each individual category. In what follows, we structure the results section around the seven LINDDUN threat categories, covering the main threats that manifest in the studied apps. Evidence gathered during the Privacy Analysis Process, such as the results of tools (e.g., MobSF, Qualys SSL, CLAUDETTE) and manual analysis of network traffic and logs, are used as examples of how the threats appear.
+
+Mapping summary, showing the number of times that one of the apps’ issues was mapped to a threat category. Note: (*) means that the dynamic analysis could not be performed for the app
+# 4 Linkability threats
+LINDDUN borrows most of its terminology definitions from the work of Pfitzmann and Hansen (2010), including the definition for linkability. Linkability is the ability to sufficiently distinguish whether two IOI are linked or not, even without knowing the actual identity of the subject of the linkable IOI. Typical examples are anonymous letters written by the same person, web pages visited by the same user, entries in two databases related to the same person, people related by a friendship link, etc.
+
+Such linkability threats are revealed during the dynamic analysis of an apps when network traffic was manually inspected. This is done using tools such as MobSF and Genymotion to emulate apps and capture their network traffic, logs, and generated data.
+
+The most prevalent type of threat refers to the linkability of contextual data (Ldf2) concerning data flows. Contextual data becomes linkable when non-anonymous communication (Ldf4) is used, which is the reality for all the selected apps. Hence, the data flow can be linked based on IP address, device IDs, sessions IDs, or even communication patterns (e.g., frequency, location, browser settings). An example of an app sharing linkable data to 3rd-parties, such as the user’s usage and activities in the app or the device configuration, is shown in Fig. 4. In this case, linkable data is shared with AppsFlyer, a mobile marketing analytics and attribution platform.
+
+Such linkability threats manifested in all the 18 apps that went through the dynamic analysis. User behaviour can be easily extracted from web traffic logs (i.e., it is easy to perform profiling of mental health apps’ users), even if one cannot re-identify a subject (see Fig. 5). Most apps also attempt to pseudo-anonymize users through anonymous IDs or hashed advertisement IDs, but these IDs can still be used to link data among various 3rd-parties. In particular circumstances, two apps exacerbate linkability threats by generating a perplexing number of HTTP(S) requests in a short period (i.e., App 23 made 507 and App 15 made 1124 requests). The more data is available, the worst it is in terms of linkability.
+
+# 4 Identifiability threats
+Identifiability of a subject from an attacker’s perspective means that an attacker can sufficiently identify a subject within a set of subjects (Pfitzmann and Hansen 2010). Examples are identifying the reader of a web page, the sender of an email, the person to whom an entry in a database relates, etc. It is worth mentioning that likability threats increase the risks of re-identification. The more information is linked, the higher the chance the combined data are identifiable (i.e., the more attributes are known, the smaller the anonymity set).
+
+Identifiability threats are also revealed through the dynamic analysis when inspecting network traffic, logged and stored data, using tools such as MobSF, Genymotion, Logcat dumps, and DB Browser SQLite. Here we are particularly interested in data flows that go to 3rd-parties or that may be accessible by attackers (i.e., situations in which users typically assume that they are anonymous). Identifiability of log-in used (I e1) and contextual data (I df2) were the most common types of threat found in the 18 apps that went through dynamic analysis. In such cases, users can be re-identified by leaked pseudo-identifiers, such as usernames and email addresses, as shown in Fig. 6.
+
+Identifiability may also manifest due to weak access control to stored data (I ds1). These situations were observed when apps leak personal information in the system logs (accessible by all apps), or store data in plain text, using databases or external storage. However, attackers would need physical access to the device to exploit such threats, and in such cases,
+POST https: //sdk_iad-02_braze_com/api/v3/data HTTP/1
+Accept-Encoding: gzip, deflate
+Content-Type: application/json
+X-Braze-Api-Key: b\' { "device id": "api_key": "1599059514", "tim": "sdk_version": "3", "app_version": "8", "app_version_code": "81200007", "attributes": { "email": [{ "name": "@gmail.com", "user_id": "" }] }, "events": { "ce": "data": {"n": "LOGIN"} }, "time": 1E9, "user_session_id": "46d7203e-cb58-4091-82c9-1dc36b9"
+it is likely that they already know the victim’s identity. Such types of threats are nonetheless discussed under the threat category of Disclosure of Information in Section 4.
+
+# 4 Non-repudiation threats
+Non-repudiation refers to not being able to deny a claim or action. Therefore, an attacker can prove that a user knows, has done, or said something, such as using mental health apps and services. Here, again, we are particularly interested in non-repudiation threats involving 3rd-party systems.
+
+Such threats are also identified during the dynamic analysis. We observed non-repudiation threats related to the disclosure of decrypted logs of network connections (NR df7), and when a person wanting deniability cannot edit a database (NR ds3). The analyzed apps communicate with several 3rd-parties, e.g., for marketing and advertising, cloud service provisioning, and payments services. This makes it impossible for users to determine to what extent their communication and data are collected, used, and stored. A rather worrying example is the logging of user actions in an app by a 3rd-party logging service using the insecure HTTP protocol, as shown in Fig. 7.
+
+Post
+http: l04s-01 logglyconLinputsHTTP/1
+Host : logs-01.loggly.com
+Proxy-Connection 189
+Content-Length: keep-alive
+Origin: http: [Llocalhost (Linux; Android 9;
+User-Agent: Mozilla/5 Samsung 410
+Reflectionmessage" 'level"A/B Journaling 'appVersion"verbose" "8 . 03" "platformVersion" : 9, "platform" android" "onLine true, "session) d" 3d282505-8eca-415d-a2a2-cf6674eelb21"
+# 4 Detectability threats
+Detectability refers to being able to sufficiently distinguish whether or not an IOI exists (Pfitzmann and Hansen 2010), even if the actual content is not known (i.e., no information is disclosed). Based on the detection of whether or not an IOI exists, one can infer or deduce certain information. For instance, by knowing that a user has a profile in a specific mental health service, you can deduce that they might be seeking psychological support or facing specific mental health conditions. Achieving undetectability in mobile and web applications is inherently complex, given that client-server communication is usually easily detectable.
+
+All apps that generate network traffic present detectability threats. Threats are observed during the dynamic analysis, such as no or weak covert channel (D df2), since data flows can be examined (D df7) and the timing of the requests is visible (D df13). The data stored by the apps is also detectable due to the weak access control to the data file system or database (D df1). Software developers cannot easily address such threats, considering that existing apps would have to provide relatively advanced privacy controls, such as using covert channels and anonymous communication. The reliance on various 3rd-party service providers makes it even more challenging.
+
+# 4 Disclosure of information threats
+Information disclosure refers to the unwanted and unauthorised revelation of information. For data flows, the channel is insufficiently protected (e.g., un-encrypted), and the message is not kept confidential. Similarly, the information is protected with weak access control mechanisms or kept in plain text for data stored.

@@ -1,0 +1,64 @@
+# 2. Developer Security Behavior
+A few teams have investigated the underlying causes behind software security problems. Oliveira et al.  used psychological manipulation to explore what caused developer volunteers to include vulnerabilities in software, finding two main causes: developers’ focus on ‘normal cases’ and a lack of priority for security. Assal and Chiasson  surveyed 123 North American developers, finding their respondents motivated to produce secure code—once the implications and possible damage to stakeholders are understood—but often prevented by lack of organizational and process support.
+
+Senarath and Arachchilage  used a task given to programmers to explore issues related to user privacy; their findings were that it was difficult to understand such requirements and to translate them into engineering techniques.
+
+Others have investigated the use and adoption of security–focused code analysis tools. Xie et al.  explored the impact of one such tool, finding that even when creating secure code is relatively easy developers still need motivation to make the needed changes. Witschey et al.  surveyed developers about their adoption of such tools, finding that the most important factor was seeing peers using them.
+
+Several researchers have investigated the process of updating software when security faults are detected. Derr et al.  investigated how Android app developers keep library versions up to date, surveying app developers and analyzing app binaries. They found that it was often possible to solve vulnerabilities by library updating without changes in code, but that frequent backward incompatible changes and incorrect Semantic Versioning in libraries currently make such updates difficult. Others investigated to what extent the fixes were necessary: Nayak et al.  found that less than 15% of known vulnerabilities were actually used in attacks, suggesting an opportunity for a more nuanced approach than just fixing everything. Vaniea and Rashidi  used a survey of 307 users to analyze the effectiveness of the update procedure. They derived advice for developers, including making it easy to find documentation, and planning a ‘recovery path’. Other researchers have investigated security requirements, especially related to privacy. Türpe  found a range of research related to security requirements, especially Threat Modeling techniques, but no agreement on terminology or approach.
+
+# 2. Developer Assurance Techniques
+An important approach to improving software quality has been changes to development processes. This may be through a Secure Software Development Lifecycle, a prescriptive set of instructions to managers, developers and stakeholders on how to add security activities to the development process ; or by empowering the developers to make their own decisions about how to achieve security . Particularly important is the need to align security goals with business needs . Though much work has been done to support evaluating security problems in terms of risk and impact , identifying the need for security experts to be business negotiators and evangelists , there has been little attention to developer interactions with other stakeholders on security.
+
+The specific techniques and approaches used by developers depend, of course, on their environment and constraints. There are more than twenty identifiable assurance techniques in regular use today, differing significantly in cost effectiveness, though there are combinations that are typically used together . In particular one can identify a set of about five ‘entry level’ assurance techniques that are widely used and can be introduced at relatively low cost . In terms of practical support for developers, a recent book ‘Agile Application Security’ by Bell et al.  provides guidance, a discussion of tools and detail on a range of assurance techniques.
+
+# 2. Related Work Summary
+Though there has been considerable work done on identifying practical assurance techniques and tools for security, and some work on motivating developers to use them and investigating reasons for vulnerabilities, there has been little or no work investigating whether the need for security does in practice correlate with better practices, and result in better security.
+
+In this paper we make a start at that investigation.
+
+# 3. Survey Methodology
+We conducted an online survey of Google Play Android developers in May 2019, receiving 345 complete responses. This section provides a detailed overview of our methodology, with the goal of making our research plan both transparent and reproducible, to allow readers and future researchers to better assess our contribution. Figure 1 summarizes the study procedure.
+
+# 3. Survey Questionnaire Structure
+We asked our respondents to answer questions about their Android application development behavior and context relevant for application security and privacy, and a set of demographic questions. Although this might have led to self-reporting and social desirability bias, we considered this approach the best practical approach to address the research. We implemented the questionnaire in Qualtrics , and developed it using an iterative process.
+
+# Appendix B
+Appendix B contains the full list of questions. In summary, we asked respondents:
+- Whether they worked in a team, and if so their role and the team size;
+- The Android development environments they used;
+- The number of recent releases for their most frequently updated app, and the proportions of updates addressing each of new features, library updates, security and privacy issues;
+- Their evaluations of the importance of security and of privacy, both implicitly and for sales;
+- Whether they receive support from security professionals or internal security champions, and if so, the nature of that support;
+- What events had led to recent changes in security;
+- Which secure development practices they used, and to what extent;
+- How long they had been programming, both generally and with Android;
+- How many apps they had developed, and whether it was their primary job;
+- Demographic information about gender, language, and country of residence.
+
+Definitions: In the questions, ‘recent’ was defined as the previous two years, and ‘security champion’ to be a non-expert who takes a particular interest in security . We asked developers with more than one app to provide answers for the most frequently updated one.
+
+# Secure Development Practices
+The questions about secure development practices asked specifically about five of the most frequently-used assurance techniques , as follows:
+# Question Wording
+All the questions about security processes were worded as questions of fact, rather than of future intentions as in some security surveys , to reduce the impact of desirability biases.
+
+# Omissions
+We considered asking about code analysis tools, since these are of particular interest to researchers. However, static analysis is only one of the five assurance techniques considered, and investigating all the techniques would have made the questionnaire unacceptably long without contributing to answers for the research questions.
+
+# 3. Survey Pre-Testing
+After developing an initial questionnaire, we conducted a set of pre-tests to glean insights into how survey respondents might interpret and answer questions, and how long they might take to complete the survey, as follows.
+
+# Expert Review
+After developing and revising a first version of the survey questionnaire, we asked an experienced usable security and privacy researcher with survey expertise, who is not part of the research team, to review our survey questionnaire and evaluate question wording, ordering, and bias. Expert reviewing is a method that supports identifying questions that require clarification and uncovering problems with question ordering or potential biases . Following the expert review, we improved the wording of several questions, and changed the survey software configuration to randomize the order of answers and questions wherever this was possible.
+
+# Face-to-face Testing
+To test our survey questions under realistic conditions, we then identified four local Android developers who were not previously involved in the research project, and asked each to complete the survey while discussing it with a researcher. As a result, we modified the wording of two questions and added one. We also noted that responses from those who had produced only simple apps were not interesting from a security viewpoint, and accordingly modified our criteria for invitations to only invite developers of ‘successful’ and ‘maintained’ apps: ones that had received more than 100 downloads and at least one update.
+
+# Pilot Survey
+To further test the questionnaire, we ran a set of pilot surveys with Android developers drawn from the same invitation list as the main survey (Section 3), inviting 5000 and gaining 30 completed entries. Participants of the pilot were excluded from the full survey.
+
+We used the results to check that the number of drop-outs during the survey was acceptable; it was, since of those who completed the first page of questions, only 21% dropped out later in the survey. In the pilot questionnaire we used a text field for developers to answer what changes they had made as a result of GDPR; we coded the pilot responses, and provided the most frequent answers as ‘tick boxes’ in the final survey.
+
+292 29th USENIX Security Symposium USENIX Association
+The results also helped focus and plan our analysis of the data.

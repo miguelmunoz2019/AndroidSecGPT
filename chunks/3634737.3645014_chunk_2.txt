@@ -1,0 +1,95 @@
+The Z-order of a view in the Android window system is crucial for
+visibility, with higher Z-order values enabling a view to overlay
+those with lower values. Thus, an accessibility service using TYPE_
+ACCESSIBILITY_OVERLAY can create views that effectively conceal
+others beneath them. Consequently, apps using TYPE_ACCESSIBIL-
+ITY_OVERLAY must adhere strictly to security guidelines to ensure
+legitimate use for accessibility purposes. Using accessibility ser-
+vices requires an app to request BIND_ACCESSIBILITY_SERVICE
+permission in its AndroidManifest.xml and obtain user consent.
+
+# 2 UI Overlay Attack Method
+The UI overlay attack conceals the privacy indicator when the
+camera is in use by overlaying a layout with a higher Z-order. Our
+implementation builds upon the third-party app ‘Privacy Indicators,’
+which is open-source under the MIT license.
+
+To execute a UI overlay attack, the application must have the
+BIND_ACCESSIBILITY_SERVICE permission to access the accessibil-
+ity service and TYPE_ACCESSIBILITY_OVERLAY when initializing a
+layout from the WindowManager service. This allows the attacker
+to draw over the Android privacy indicator during camera opera-
+tion. The FLAG_LAYOUT_NO_LIMITS and FLAG_LAYOUT_IN_SCREEN
+flags stretch the layout to the status bar. When the service is initi-
+ated, a layout is created that meets the above criteria. Its visibility
+is set to View.GONE. Consequently, it only appears when the cam-
+era or microphone is activated. When either of these sensors is
+activated, the visibility is changed to View.VISIBLE, overlaying
+the privacy indicator. The application must also register a callback
+from the CameraManager service to be alerted when the camera
+is in use. This callback is used to trigger the overlay of the layout
+when the camera is activated. The UI overlay attack can be divided
+into two categories:
+- Complete Obscuring Attack (COA): This attack completely
+masks all privacy indicator UI components, including the cam-
+era animations, microphone icons, and the green dot, by over-
+laying a black background identical in size to the Android sta-
+tus bar. This occurs because, in Samsung’s OneUI 4 version,
+the PRIVATE_FLAG_IS_ROUNDED_CONERS_OVERLAY flag for en-
+suring that the rounded corners of the privacy indicator are
+rendered with the highest Z-order.
+
+- Deceptive Obscuring Attack (DOA): This attack uses a de-
+ceptive status bar with a green battery symbol to obscure the
+Android privacy indicator. The goal of this attack is to camou-
+flage the green dot by superimposing it with the green battery
+icon or another system icon.
+
+# 2 UI Overlay Attack Results
+We demonstrated COA on a Samsung Galaxy S22 model running
+Android 12 (with OneUI 4). As shown in Figure 2(b), the malicious
+application generates a window layer that manifests as a long black
+bar obscuring the screen’s top. This layer hides the device’s status
+bar whenever the camera and microphone are activated.
+
+We also tested COA with third-party camera applications. We
+confirmed that the Android privacy indicator was obscured by the
+long black bar in all 10 applications, as shown in Figure 3. A few
+camera applications made the black bar stand out too much by using
+a white background, which led to inconsistencies. Nevertheless, the
+black bar still effectively obscured the Android privacy indicator.
+
+Malicious applications can also avoid this inconsistency by using
+a long black bar with the same color as the background used by a
+specific application.
+
+COA is viable only on devices where the PRIVATE_FLAG_IS_
+ROUNDED_CORNERS_OVERLAY flag is absent or misconfigured,
+thereby failing to guarantee the highest Z-order for the status bar.
+
+We chose the Samsung S22 as a representative model to demonstrate
+this vul- nerability. However, we note that all OS versions running
+Samsung OneUI 4 are susceptible. In contrast, the COA was unsuccessful
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+Yurak Choe, Hyungseok Yu, Taeho Kim, Shinjae Lee, Hojoon Lee, and Hyoungshick Kim
+095100#
+(a) A52s 5G with simple black bar
+(b) A52s 5G with deceptive status bar
+(c) Pixel 3 with simple black bar
+(d) Pixel 3 with deceptive status bar
+(e) Pixel 6 with simple black bar
+(f) Pixel 6 with deceptive status bar
+on both the Google Pixel 3 and Pixel 6 due to the proper implementation of the PRIVATE_FLAG_IS_ROUNDED_CORNERS_OVERLAY flag, ensuring the status bar’s highest Z-order. Following our security report, this vulnerability was correctly fixed in the Samsung S22 with the release of OneUI 4.
+
+DOA can be executed on any Android device running Android 12 or later that incorporates the Android privacy indicator feature. We demonstrated DOA on various models, including the Galaxy S22, Galaxy A52s 5G, Google Pixel 3, and Google Pixel 6, which serve as representative devices. Comprehensive demonstrations of the attack are available through video demos, including for the Galaxy A52s 5G illustrating DOA at https://www.youtube.com/shorts/1eiqnjZ8Foo, and for the Galaxy S22 demonstrating COA at https://www.youtube.com/shorts/CjTvgQcvOpM, highlighting the impact of UI overlay attacks.
+
+The effects of applying a simple black bar layer versus a deceptive status bar through a malicious application are compared in Figure 4. With the simple black bar layer applied, the green dot representing the Android privacy indicator is clearly visible. However, when the deceptive status bar is applied, the green dot becomes difficult to discern without close inspection. This phenomenon is consistently observed across all the devices, including the Samsung Galaxy S22, Galaxy A52s 5G, Google Pixel 3, and Google Pixel 6, indicating that this type of attack would be a common concern in the Android ecosystem. Surprisingly, this behavior persisted even in Android 13, hinting that the UI overlay attack technique could be a major ongoing security challenge for Android devices.
+
+We further carried out a test to demonstrate the effectiveness of the DOA attack without the user’s awareness, involving the activation of the camera in the background. For this, we employed the Background Video Recorder (BVR Pro) application available on the Google Play Store. BVR Pro facilitates background video recording, which can be activated by pressing the volume-up button. In this scenario, we observed that the Android privacy indicator could be obscured, similar to what we found in the foreground process scenario.
+
+# 2 User Study
+Our user study aimed to demonstrate the practical effectiveness of DOA. We recruited 44 participants, spanning various age groups (23 in their 20s, 10 in their 30s, 11 in their 40s) and genders (35 male, 9 female). Recruitment was conducted through advertisements on online notice boards at a university and selective recruitment from an IT company. Participants were compensated with a Starbucks card valued at approximately 10 USD. The study was conducted using our prepared Google Pixel 6 devices, not the participants’ personal devices. Before starting, participants were briefed and asked to sign a consent form. The study’s purpose was not disclosed to participants beforehand to ensure ecological validity.
+
+Participants in our study were alternately assigned to two groups: Group A and Group B. Group A’s age distribution included 12 participants aged 20-29, 5 aged 30-39, and 5 aged 40-49, while Group B had 11 in the 20-29 range, 5 in the 30-39 range, and 6 in the 40-49 range. Gender-wise, Group A had 19 males and 3 females, and Group B had 16 males and 6 females. Chi-square and Fisher’s exact tests confirmed no significant demographic differences between the groups. Group A was given a standard device without any additional software. Group B received a device with our application installed, designed to execute the DOA attack. This application displayed a deceptive status bar with a green battery icon, but it was designed not to cause actual harm. All participants were allowed to use the camera application for three minutes. Subsequently, they were asked to complete a questionnaire to gather information about their demographics and ability to recognize privacy indicator UI components. The complete questionnaire can be found in Appendix A.
+
+The study results, as presented in Appendix B, demonstrate a significant difference in the awareness of the Android privacy indicator between the two groups. In Group A, 14 out of 22 participants recognized the indicator, while in Group B, only 3 out of 22 participants recognized it. We conducted a Fisher’s exact test to determine the statistical significance between the recognition success rates of the two groups, finding a significant difference (𝑝 < 0). This suggests that UI overlay attacks by malicious applications can significantly hinder the recognition of the Android privacy indicator. Additionally, we investigated whether the age of participants influenced the study’s outcomes. However, no significant difference in recognition success rates was found across the three age groups.

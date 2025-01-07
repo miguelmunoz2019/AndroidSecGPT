@@ -1,0 +1,49 @@
+# 2 Android Design
+Many apps are available on the official Android app store (called Google Play). However, apps are provided by various developers with different levels of trust. The Android framework has been designed with the two-fold objectives of (i) allowing the integration and collaboration of apps from different vendors but still (ii) guaranteeing a certain level of separation to enforce security. Separation among apps is achieved by modeling distinct apps as distinct principals, and each principal is assigned with its own privileges, adopting a permission system to regulate access to sensitive resources.
+
+Apps are isolated from system resources. In order to access sensitive resources such as camera, GPS position, contact lists, apps have to explicitly request for permissions that must be authorized by the end users at installation time or later at runtime. The list of authorizations requested by an app is specified in its manifest file. Figure 1 shows a fragment of the manifest file of our running example app. In this example, the app requests for the permission CALL PHONE to initiate phone calls.
+
+The Android framework assigns apps with distinct Unix User IDs, so they run in their own private user space and memory. Best practices suggest to implement communication among apps through the IPC mechanism mediated by the Android framework.
+
+Through IPC, apps can collaborate, integrate and complement each other. For instance, an app that is able to make a phone call can accept action requests so that other apps do not need to re-implement this feature. An app can delegate a specific task to another app, without actually knowing which apps are available in the current device to accomplish that task. Different users might have different installed apps that are able to make phone calls, but the requester app does not need to know which one to contact. For the requester, it is enough that the delegated app is able to make phone calls. The requester app just needs to specify what should be done (and with what data), and the framework will identify an app that is able to accomplish it. To request an action, apps use IPC messages called intents. Intents are messages that contain the description (in a specific syntax) of the operation that the requester needs to perform. An app may specify the services it intends to expose to other apps by means of the intent filters of the XML manifest file. The framework relies on this file to decide which app to delegate.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+Intents can be either implicit or explicit. Implicit intents just specify the action to be performed. The Android framework checks the intent content to decide the most appropriate destination app(s). That is, it checks the content of an intent against the intent filters (i.e., with the service definitions) that are specified in the manifest files of the apps installed in the device.
+
+For example, when the user clicks on a phone number link in a web page, the browser generates an implicit intent with DIAL as the action and the scheme and number to call as the data, e.g., tel:+39. As this intent matches the intent-filter in Fig. 1, the request is dispatched to the corresponding DialerActivity activity. This activity in our running example app becomes active and is displayed on the screen to initiate the phone call.
+
+In explicit intents, the requester app specifies the receiver name as part of the intent. That is, the requester knows exactly which app to request the action from. Different Android users, however, may have a wide diversity of installed apps, therefore a specific app may not be available. Implicit intents, instead, work on the wide heterogeneity of device configurations.
+
+# 2 Genetic Algorithm
+Genetic algorithm is a population-based meta-heuristics technique proposed for solving optimization problems. An example of optimization problems is generating test inputs that are likely to expose specific program behaviors of interest. The genetic algorithm is inspired by natural evolution from biology . It searches for an optimal solution by gradually evolving an initial population of random solutions through generations. Individuals more near to the final solution are rewarded with a higher probability of transmitting their chromosomes to future generations. Fittest solutions are combined together with the hope of generating fitter ones, until the optimal solution is found. The pseudocode of the abstract genetic algorithm is shown in Fig. 2. Initially, the algorithm generates random individuals (candidate solutions). Then, the algorithm loops through three main steps until the termination conditions (optimal solution found or timeout) are met. The steps are:
+1. AssessFitness: this step computes the fitness of each individual solution and selects a set of fittest individuals (i.e., candidate solutions that are likely to generate the optimal solution).
+
+# 2. Crossover
+This step first pairs the individuals selected in the previous step. Then, it generates offspring from the pairs by swapping portions of their chromosomes.
+
+# 3. Motivate Example
+In this section, we discuss permission re-delegation vulnerability with a motivation example.
+
+# 3 Attack Scenario
+Apps that are granted with privileges should not contain permission re-delegation vulnerabilities; otherwise privileges could be the target of attacks. Less privileged apps could exploit such vulnerabilities by crafting malicious intent messages intended to make a vulnerable app misuse its permissions to leak sensitive data (e.g., GPS position or contacts), modify sensitive information (such as contacts or app private data) or perform costly operations (calls or SMS to premium numbers).
+
+In this paper, we define a privileged API as an Android API that requires a special permission to be executed.
+
+The scenario includes two apps: a benign but vulnerable Dialer app D and an attacker app A. Let us assume that D specifies the manifest file in Fig. 1. Among others, D is
+# Empirical Software Engineering (2020) 25:5084–5136
+granted with the special permission CALL PHONE for initiating phone call. An intent-filter is defined to allow other apps to request a phone call via this app. When A sends an intent message to D, D extracts the destination phone number from the message and requests a confirmation from the end-user. After the end-user confirms to call the destination number, the app initiates a call.
+
+We define a public entry point of D, a method in the code of D that is executed by the Android framework when an intent is sent to D, e.g., the onCreate method in Fig. 5. Figure 5 shows the intent handling snippet of the Dialer app. The code starts by getting the intent sent to the app (Line 1). If the action in the intent is DIAL, the app extracts the data from the intent (Lines 2-4). The data contains the scheme and the phone number. If the scheme is “tel”, the Dialer app then extracts the number associated to this scheme (Lines 7-8). Then depending on the number, that is, if the number starts with * or #, the app directly performs a configuration related task (e.g., getting serial number of the phone if the number is *#06#) without asking for end-user confirmation; otherwise the app initiates a phone call.
+
+In this example, the Dialer app has permission re-delegation vulnerability — the app makes configuration changes influenced by the data that comes from other apps. This feature is supposed to be internal, i.e., it should only be performed if the number is entered by the user using the internal dial-pad component, and no confirmation is requested from the end-user.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 3 Vulnerability Preconditions
+Based on the attack scenario explained above, we identify two preconditions that should be met in order to classify a case as a real permission re-delegation vulnerability.
+
+Privileged APIs can be executed only by apps that are granted with the permission to access the sensitive resources. An attacker app that lacks the permission to access sensitive resources needs to resort to an app that holds the required access right. It needs to make the app execute privileged APIs on its behalf without the intervention of the user. Thus, the first precondition of this vulnerability is the following:
+Precondition PR1: Privileged API call. While performing an action requested by an intent message, the app executes a privileged API without user intervention.
+
+Using the example of Figs. 1 and 4, this corresponds to an app that, after receiving an intent from an attacker app, for example, formats the device by invoking the privileged API DevicePolicyManager.wipeData(0), which requires the BIND DEVICE ADMIN permission.
+
+This is a case of permission re-delegation, as described by Felt et al. (2011), because an app performs a privileged action on behalf of another app that lacks the required permission.

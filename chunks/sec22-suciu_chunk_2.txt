@@ -1,0 +1,59 @@
+The estimates provided by these metrics are often inaccurate, as highlighted by prior work  and by our analysis in Section 5. For example, CVE-2018-8174, an exploitable Internet Explorer vulnerability, received a CVSS exploitability score of 1, placing it below 91% of vulnerability scores. Similarly, CVE-2018-8440, an exploited vulnerability affecting Windows 7 through 10 was assigned a score of 1.
+
+To understand why these metrics are poor at reflecting exploitability, we highlight the typical timeline of a vulnerability in Figure 1. The exploitability metrics depend on a technical analysis which is performed before the vulnerability is disclosed publicly, and which considers the vulnerability statically and in isolation.
+
+However, we observe that public disclosure is followed by the publication of various vulnerability artifacts such as write-ups and PoCs containing code and additional technical.
+
+# Discovery
+# Disclosure
+# Publication Delay (days)
+# Technical Exploitability
+# Metrics
+- Write-ups
+- Tweets
+- PoC Info
+- PoC Code
+# Exploit Development
+# Exploits
+Information about the vulnerability, and social media discussions around them. These artifacts often provide meaningful information about the likelihood of exploits. For CVE-2018-8174 it was reported that the publication of technical write-ups was a direct cause for exploit development in exploit kits , while a PoC for CVE-2018-8440 has been determined to trigger exploitation in the wild within two days . The examples highlight that existing metrics fail to take into account useful exploit information available only after disclosure and they do not update over time.
+
+# Expected Exploitability
+The problems mentioned above suggest that the evolution of exploitability over time can be described by a stochastic process. At a given point in time, exploitability is a random variable E encoding the probability of observing an exploit. E assigns a probability 0 to the subset of vulnerabilities that are provably unexploitable, and 1 to vulnerabilities with known exploits. Nevertheless, the true distribution E generating E is not available at scale, and instead we need to rely on a noisy version Etrain, as we will discuss in Section 3. This implies that in practice E has to be approximated from the available data, by computing the likelihood of exploits, which estimates the expected value of exploitability. We call this measure Expected Exploitability (EE). EE can be learned from historical data using supervised machine learning and can be used to assess the likelihood of exploits for new vulnerabilities before functional exploits are developed or discovered.
+
+Interestingly, some social media posts appear before disclosure. These "leaks from coordinated disclosure" were investigated by prior work.
+
+# Challenges in Utilizing Supervised Techniques
+We recognize three challenges in utilizing supervised techniques for learning, evaluating and using EE.
+
+# 1. Extracting Features from PoCs
+Prior work investigated the existence of PoCs as predictors for exploits, repeatedly showing that they lead to a poor precision . However, PoCs are designed to trigger the vulnerability, a step also required in a functional exploit. As a result, the structure and complexity of the PoC code can reflect exploitation difficulty directly: a complex PoC implies that the functional exploit will also be complex. To fully leverage the predictive power of PoCs, we need to capture these characteristics. We note that while public PoCs have a lower coverage compared to other artifact types, they are broadly available privately because they are often mandated when vulnerabilities are reported.
+
+Extracting features using NLP techniques from prior exploit prediction work  is not sufficient, because code semantics differs from that of natural language. Moreover, PoCs are written in different programming languages and are often malformed programs , combining code with free-form text, which limits the applicability of existing program analysis techniques. PoC feature extraction therefore requires text and code separation, and robust techniques to obtain useful code representations.
+
+# 2. Understanding and Mitigating Label Noise
+Prior work found that the labels available for training have biases , but to our knowledge no prior attempts were made to link this issue to the problem of label noise. The literature distinguishes two models of non-random label noise, according to the generating distribution: class-dependent and feature-dependent . The former assumes a uniform label flipping probability among all instances of a class, while the latter assumes that noise probability also depends on individual features of instances. If Etrain is affected by label noise, the test time performance of the classifier could suffer.
+
+By viewing exploitability as time-varying, it becomes immediately clear that exploit evidence datasets are prone to class-dependent noise. This is because exploits might not yet be developed or be kept secret. Therefore, a subset of vulnerabilities believed not to be exploited are in fact wrongly labeled at any given point in time.
+
+In addition, prior work noticed that individual vendors providing exploit evidence have uneven coverage of the vulnerability space (e.g. an exploit dataset from Symantec would not contain Linux exploits because the platform is not covered by the vendor) , suggesting that noise probability might be dependent on certain features. The problem of feature-dependent noise is much less studied , and discovering the characteristics of such noise on real-world applications is considered an open problem in machine learning.
+
+Exploit prediction therefore requires an empirical understanding of both the type and effects of label noise, as well as
+the design of learning techniques to address it. Evaluating the impact of time-varying exploitability. While some post-disclosure artifacts are likely to improve classification, publication delay might affect their utility as timely predictions. Our EE evaluation therefore needs to use metrics which highlight potential trade-offs between timeliness and performance. Moreover, the evaluation needs to test whether our classifier can capitalize on artifacts with high predictive power available before functional exploits are discovered, and whether EE can capture the imminence of certain exploits. Finally, we need to demonstrate the practical utility of EE over existing static metrics, in real-world scenarios involving vulnerability prioritization.
+
+# 4 Data Collection
+In this section we describe the methods used to collect the data used in our paper, as well as the techniques for discovering various timestamps in the lifecycle of vulnerabilities.
+
+# 4 Gathering Technical Information
+We use the CVEIDs to identify vulnerabilities, because it is one of the most prevalent and cross-referenced public vulnerability identification systems. Our collection contains vulnerabilities published between January 1999 and March 2020.
+
+# Public Vulnerability Information
+We begin by collecting information about the vulnerabilities targeted by the PoCs from the National Vulnerability Database (NVD) . NVD adds vulnerability information gathered by analysts, including textual descriptions of the issue, product and vulnerability type information, as well as the CVSS score. Nevertheless, NVD only contains high-level descriptions. In order to build a more complete coverage of the technical information available for each vulnerability, we search for external references in several public sources. We use the Bugtraq  and IBM X-Force Exchange , vulnerability databases which provide additional textual descriptions for the vulnerabilities. We also use Vulners , a database that collects in real time textual information from vendor advisories, security bulletins, third-party bug trackers and security databases. We filter out the reports that mention more than one CVEID, as it would be challenging to determine which particular one is discussed. In total, our collection contains 278,297 documents from 76 sources, referencing 102,936 vulnerabilities. We refer to these documents as write-ups, which, together with the NVD textual information and vulnerability details, provide a broader picture of the technical information publicly available for vulnerabilities.
+
+# Proof of Concepts (PoCs)
+We collect a dataset of public PoCs by scraping ExploitDB , Bugtraq  and Vulners , three popular vulnerability databases that contain exploits aggregated from multiple sources. Because there is substantial overlap across these sources, but the formatting of the PoCs might differ slightly, we remove duplicates using a content hash that is invariant to such minor whitespace differences. We preserve only the 48,709 PoCs that are linked to CVEIDs, which correspond to 21,849 distinct vulnerabilities.
+
+# Social Media Discussions
+We also collect social media discussions about vulnerabilities from Twitter, by gathering tweets mentioning CVE-IDs between January 2014 and December 2019. We collected 1 million tweets for 52,551 vulnerabilities by continuously monitored the Twitter Filtered Stream API , using the approach from our prior work . While the Twitter API does not sample returned tweets, short offline periods for our platform caused some posts to be lost. By a conservative estimate using the lost tweets which were later retweeted, our collection contains over 98% of all public tweets about these vulnerabilities.
+
+# Exploitation Evidence Ground Truth
+Because we are not aware of any comprehensive dataset of evidence about developed exploits, we aggregate evidence from multiple public sources. We begin from the Temporal CVSS score, which tracks the status of exploits and the confidence in these reports. The Exploit Code Maturity component has four possible values: "Unproven", "Proof-of-Concept", "Functional" and "High". The first two values indicate that the exploit is not practical or not functional, while the last two values indicate the existence of autonomous or functional exploits that work in.

@@ -1,0 +1,66 @@
+# 4. Issues
+# 4. Incorrect Assignment
+Under the current permission model, developers are responsible for claiming permissions for their apps. Since most developers are security-unaware, they are likely to overclaim permissions in order to ensure a smooth user experience, that is, an app runs well in all situations, and hence, ignoring the Principle.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Table III. Summary of Previous Work on Improving the Android Permission Model.
+
+© –© Corresponds to the Six1 Categories of Solutions Discussed in Section 4
+Required Modification
+- App Installer, ICC Monitor
+- ICC Monitor
+- Dalvik VM, Resource Manager
+- ContentProvider, ICC Monitor
+- App Repackaging
+- App Repackaging
+- System Service, Libc
+- App Repackaging
+- View Object
+- ICC Monitor, Kernel
+- Kernel, Dalvik VM, Libc
+- ICC Monitor
+- ICC Monitor, Kernel
+- App Installer, ICC Monitor
+- ICC Monitor, Kernel
+- App Installer, ICC Monitor
+- ICC Monitor, Kernel
+- ICC Monitor, Kernel
+- ICC Monitor, Kernel
+of Least Privilege (PoLP) [Felt et al. 2011b]. A previous work [Felt et al. 2011a] shows that 35% out of 900 Android apps analyzed are overprivileged due to developers’ overclaiming. Multiple problems can arise from this incorrect assignment issue. For example, once the app is exploited, the overclaimed permissions will be available to attackers as well, making complex attacks easier. Overclaiming permissions without corresponding functionalities will also result in higher risk ratings for the app when being scrutinized by automatic detection tools such as Google Bouncer [Poeplau et al. 2014], which leads to longer review time or even app rejection.
+
+# 4. Usability.
+
+Current Android permission model (prior to Android Marshmallow) relies on users to grant permissions to apps but fails to provide enough flexibility to users for addressing their own privacy requirements. Specifically, users have to either grant all the requested permissions to an app or decline to install it at all. This causes three problems: 1) Users have no choice but to grant redundant permissions in order to use an app. For example, even if users think the INTERNET permission is not necessary for a calculator app, they must grant this permission in order to install and use it. 2) Once the app is installed, it can abuse permissions without any restriction. For example, an app may send an unlimited number of text messages as long as it is granted the SEND_SMS permission. 3) There is no way to enforce runtime context-aware policies. For example, users may want to enforce a policy that disallows all access to personal identifiable data when the device is connected to public WiFi. Starting from Android Marshmallow, and also found in customized versions of Android OS like Cyanogenmod [CyanogenMod Team 2016] and Blackphone [Silent Circle 2016],
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 4. Current Issues with the Android Permission Model
+# 4. Runtime Permissions
+The system supports runtime permissions toggling, resembling the approach taken by iOS platform and partially solves these problems. Users have the flexibility to grant and revoke dangerous permissions after app installation and app developers can also prompt users for permission at runtime, all handled by the PackageManager service. However, for backward compatibility, apps targeting previous platforms still follow the current permission model by default. We anticipate that it will take one or two years before the new permission model is widely adopted by developers, as was seen in the transition from Android 2.X to Android 4.X [OpenSignal Inc. 2015].
+
+# 4. Granularity
+Researchers have argued that the Android permission model is currently too coarse-grained to ensure that an app behaves exactly the same as expected and agreed by users. For example, the INTERNET permission allows an app to access any domain address. This gives malicious apps an opportunity to launch attacks, for example, a malicious app that claims to offer Google Map service may talk to maps.google.com in the foreground, and leak location information to an attacker’s server in the background.
+
+Additionally, the current permission model grants permissions to all components in an app, despite the fact that they may come from various developers. This allows one component to abuse permissions required by another component [Paul Pearce et al. 2012]. For example, an advertisement (Ad) library may abuse the VIBRATE permission that is actually needed by the main functional component. Likewise, the main component can also abuse the LOCATION permission required by the Ad library.
+
+# 4. Transitivity
+The Android component model and the intent-based ICC allow apps to expose services (e.g., read location and send SMS) or data (e.g., pictures, recording) to other components or apps through legal interfaces. The design is intended to promote modularization and code re-use in app development; however, it also presents a challenge on both developers and users.
+
+Developers should write robust and secure interfaces that only accept intents from apps with required permissions. Failure to do so results in confused deputy attack [Felt et al. 2011c] where the deputy app fails to check whether the calling app has the credentials to use their permission-protected interfaces. For users, permission transitivity makes it harder to foresee how an app might use permissions from other apps, which enables collusion attack [Marforio et al. 2011] where two or more malicious apps with distinct but limited permissions collaborate to effectively generate a joint set of permissions.
+
+# 4. Authority
+The implied assumption in the current Android permission model is that the end user is the final authority for making permission granting decisions. However, researchers have began to challenge this assumption, that is, whether normal users are capable of or care enough to determine which permissions are appropriate for an app even if they are given sufficient flexibility in permission granting period. A previous survey [Felt et al. 2012b] shows that only 3% of Internet survey and 24% of laboratory study participants can successfully understand and grant permissions, while as many as 42% of users are unaware of permissions at all.
+
+# 4. Solutions
+# 4. Permission Claim Check
+To address the incorrect assignment problem, as Google fails to provide clear mappings between permissions claiming and how claimed permissions are actually being used, several tools are designed to fill the gap. Stowaway [Felt et al. 2011a] utilizes the static analysis to determine the set of API calls an app uses and then maps API calls to permissions. Permission over-claim can be determined by comparing the permissions used with the permissions claimed in the manifest file. Similarly, PScout [Au et al. 2012] applies static analysis to Android source.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 4. Permission Management Techniques
+# 4. API Call to Permission Mappings
+Code to construct the API call to permission mappings. The mappings can provide more complete information than the existing Android’s permission system documentation. In addition to finding mappings between API calls and permissions, WHYPER [Pandita et al. 2013] and AutoCog [Qu et al. 2014], analyze the app description using natural language processing (NLP) techniques to automatically assess description-to-permission fidelity. These two works intend to help both users and developers better understand why an app needs specific permissions and check for permission over-claim.
+
+# 4. Privacy/Context Awareness
+Privacy/context-aware permission management enhances usability by ensuring a smooth user experience. Such mechanisms are usually realized in the form of policy enforcement. By hooking into the ICC monitor, it is possible to intercept sensitive API calls and make decisions based on pre-defined policies. Apex [Nauman et al. 2010] provides a modified app installer that allows a user to selectively grant permissions to an app as well as limit the resource usage at the install-time. CRePE [Conti et al. 2010] introduces a context-related policy enforcement system, which allows a user to define context-related policies at both install-time and runtime. AppFence [Hornyack et al. 2011] achieves privacy control by allowing a user to either replace private data with shadow data to prevent privacy misuse, or reject transmission of on-device only data over the network. As the permission granting mechanism gets more complex, Felt et al. [2012a] propose a set of guidelines for platform designers to decide the most appropriate permission-granting mechanism for a sensitive API call.

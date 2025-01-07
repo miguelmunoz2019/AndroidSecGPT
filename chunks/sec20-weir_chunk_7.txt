@@ -1,0 +1,127 @@
+Q4 Are you working in a team with others, such as developers, testers, project managers? [YN]
+Q5* What is your role? [SSO?]
+Programmer, Tester, Project Manager, Non-Specific
+Q6* What other roles apart from yourself are there in your team? [MS?]
+Programmer, Tester, Project Manager, Non-Specific
+Q7* About how many people (including developers, project managers, testers) are there in your team? [N]
+Q8 Please select all the ways you use to develop Android apps [MSO]
+Native Java, JavaScript, C#, Dart, Python, Kotlin, Lua, Native C++
+Q10 How often did you release a new version of your app over the past two years? Please give your best estimate; if you have more than one app, please answer for that app that was most frequently updated. [SS]
+Never (0), Annually (1), Quarterly (4), Monthly (12), More frequently (24)
+Q11* Over the last one to two years, what content has been in your app updates (%)?
+New features 
+Non-security bug fixes 
+Security bug fixes 
+Third party library updates 
+Regular maintenance and refactoring 
+Q12 How important is each of the following for your app(s)?
+Runs on many different devices [LSS]
+Secure against malicious attackers [LSS]
+Protects users' privacy [LSS]
+Easy to use [LSS]
+Supports many features [LSS]
+Runs smoothly [LSS]
+Q13 How important is security for sales? [LSS]
+# Q14
+How knowledgeable do you consider yourself about information security? [LSS]
+# Q15
+Does your app development ever get support from professional security experts? [YN?]
+# Q16*
+Who are these professional security experts (on team/external)? [SS]
+# Q17*
+What support do you get from them? Please select all that apply [MSO]
+- Penetration testing
+- Security training
+- Audits
+- Design reviews
+- Working on team
+- I don't know
+# Q18*
+About how often do you get support from them? [SS?]
+- Continuously
+- Weekly
+- Monthly
+- Quarterly
+- Yearly
+# Q19
+Which of the following have led to changes in the security of your app(s) in the past one to two years? [MSO]
+- Decision from management
+- Security crisis within your organization
+- Media coverage about app security
+- Something bad happening to a competitor
+- Pressure from a partner company
+- Drive from product or sales team
+- Pressure from customers
+- Developer initiative
+- GDPR requirements
+- Something bad almost happening to your organization
+# Q20*
+What changes have you made as a result of GDPR requirements? [MSO]
+- Addition of popup dialog(s)
+- Removal of analytics or advertising based on it
+- Adding or changing privacy policy
+# Q21
+How much do you use each of the following techniques to find security problems? [SS for each:
+- Producing a threat assessment for the app
+- Scanning code with an automatic code review tool
+- Using a tool to scan for libraries with known vulnerabilities
+- Code review by someone other than the developer
+- Penetration testing
+# Q22
+What other techniques do you use (if any)? [O]
+# Q23
+Do you have a security champion within your team? A security champion -- or security hobbyist -- is a non-expert, who takes a particular interest in security. [YN?]
+# Q24
+For how many years have you been developing Android apps? [N]
+# Q25
+For how many years have you been programming in general (not just for Android)? [N]
+# Q26
+About how many Android apps have you helped develop in total? [N]
+# Q27
+Is developing Android apps your primary job? [YN]
+# Q28
+Have you contributed to an open source project in the past year? [YN]
+# Q29
+To which gender identity do you most identify? [SS]:
+- Female
+- Non-binary
+- Male
+- Prefer not to say
+# Q30
+What is the main spoken language you use at work? [SS]
+- English
+- Chinese
+- Spanish
+- Arabic
+- German
+- French
+- Other
+# Q31
+In which country do you currently reside? [SS]
+# Appendix C
+Calculation of Scores
+This section describes how scores were calculated from the survey answers.
+
+Likert-Style Scales were encoded as:
+- Extremely … (4)
+- Very … (3)
+- Moderately … (2)
+- Slightly …(1)
+- Not … at all (0)
+Assurance Technique Score: sum of all five sub-questions of Q21, each encoded as shown.
+
+Developer Knowledge Score: LSS encoding of Q14
+Expertise Support Score: as the following table.
+
+Requirements Score: sum of LSS encodings for Q12 (Secure against malicious attackers), Q12 (Protects users' privacy) and Q13
+Security Update Frequency Score: This required an Update Frequency Estimate of Q10 encoded as shown multiplied by Q11 (Security bug fixes) and divided by 100. The score was Log (this value plus 1).
+
+# Appendix D
+Model Comparison
+To compare a decision tree model, we used the Python scikit-learn library’s DecisionTreeRegressor, compared with Stats-Models’ OLS (Ordinary Least Squares).
+
+We compared each pair of models using the F-Test calculation , taking the number of ‘leaf nodes’ in the decision tree as the degrees of freedom for that model in the F-Test.
+
+Applying the Bonferroni correction , we took the required Alpha P-value for significance as 0. The calculated P-values values ranged from 0 to 0, and did not approach that value.
+
+USENIX Association 29th USENIX Security Symposium 305.

@@ -1,0 +1,64 @@
+# 2 Offensive Penetration testing tools
+Offensive Penetration testing tools  are often utilized by security researchers and hackers to detect, analyze and confirm security vulnerabilities in the codebase. These offensive security tools are capable of exploiting the vulnerability blindly even if the application doesn’t have intelligence to infer security vulnerability and considered to be Black-box
+4
+testing which is similar to Dynamic Application Security Testing. some of the popular Offensive Security tools are Metasploit , NMap , HashCat  etc.,
+# 2 Related Work
+Researchers have identified modern way of testing security vulnerabilities in binaries and executable libraries using Fuzz testing helps to help find crash location and provides the log and inputs. Fuzz testing has been successful at discovering security critical bugs in real software . Recently, researchers have devoted significant effort to devising new fuzzing techniques, strategies, and algorithms. Fuzz testing verifies security vulnerabilities in Application security layer rather than lower level device drivers.
+
+# 2 Fuzz Testing
+Fuzz testing has been used for Browser testing , Android fuzzing  and modern Application security has started leveraging fuzz testing approach for securing the native binaries, applications and mobile application. Vaggelis Atlidakis et al.  have come up with fuzzing cloud application and related APIs for properties changes in realtime which leads to security vulnerability. Fuzz testing methodology can be helpful when the payloads aren’t known but instead testing them for diverse set of payload inputs and testing for the behavioural changes in the application. However, these fuzz testing are considered to be black-box testing which doesn’t rely on the source code scanning and finding exact vulnerable patterns in the code. The major disadvantage of Fuzz testing is that security vulnerabilities are only found and verified manually whenever a crash occur and requires manual efforts to find the exact memory leak location. However, logical security vulnerabilities which are categorized similar to authorization vulnerabilities, business logic vulnerabilities are not leading to crashes go undetectable with the fuzz testing.
+
+# Chapter 3
+# Methodology
+This thesis focuses on building a generic framework for verifying exploitable security vulnerabilities in Android apps. Many open-source security scanners and static application security testing tools generate many false-positive results, which require manual verification by the security engineers. Whereas our specific framework accepts the results from the static code analysis, processes the information to exploit the issue further, and verifies them in real-time. This includes a framework to drive malicious payloads, create and launch malicious intents and verify the issue post exploiting in the Android app.
+
+# 3 Overview
+As shown in Figure 3, DEVAA framework integrates various components that work cohesively such as the static code analyzer, Android emulator system, Android Debug Bridge Interface . We chose gradle build system for building the application from the source code which additionally helps static code analyzer to index and search vulnerable patterns in the source code. The results from the static code analyzer are then passed on to the DEVAA framework manually by selecting the Android components with relevant payloads. DEVAA tries establishing connection with the emulator to inject those payloads into the Android application (APK) with the help of crafted intents to execute and verify the results.
+
+# Analysis
+# Emulator
+# Source Code
+# Statc Code Analyzer
+# Testcase Driver
+# Vulnerable Source and Sink
+# Android Components with vulnerability warnings
+# Paxload
+# Vulnerability Runner Component
+# Vulnerable App
+# 3 Source Code
+As a first step, We chose Gradle build system which is default build system adopted by Google, for compiling Android source code. As Java is primarily used for building Android applications, we adopted the gradle plugin for Android java to build, compile and generate application binaries which is helpful for both testing and vulnerable pattern detection process.
+
+# 3 Static Code Analyzer
+Choosing the right static code analyzer is important as we need to strike the balance between understanding Android build process and Android specific API’s while accepting vulnerable patterns as a query. Initially, we tried conducting standard reachability analysis with the help of call graph to map all the vulnerable source and sinks within the code base which created a lot of false positives and had the limitations of traversing across library modules, and annotation processing. Java call graphs are efficient for simple application projects which doesn’t resolve dependencies. However, Android application project is more complex in nature which by default utilizes more third-party libraries . Finally, we used CodeQL  for code scanning and vulnerability pattern detection, which is a codesearch.
+
+# CodeQL Query Example
+import java
+from IfStmt ifstmt, Block block
+where ifstmt.getThen() = block and
+block.getNumStmt() = 0
+select ifstmt, "This 'if' statement is redundant."
+Tool developed at Oxford university by the Semmle team and later acquired by Github. CodeQL is able to understand Android build system, index the source code, and provides query interface to interact with the code. Additionally, CodeQL is capable of performing Data flow analysis with the help of implemented methods while traversing the source code from source to sink. Below is a sample CodeQL query 3 checks for redundant 'if' statements in the code.
+
+# Vulnerable Source and Sink patterns
+The primary attack surface of Android application can be Intents , File , Network and ports . Intents are the primary dispatcher of data between Android components such as activities, providers, receivers and services. Among all the attack surfaces, Intent with exported components shares most of the attack surface area which accept external intents without access control enforcement and that are controlled by the Manifest file AndroidManifest.xml . They could further attack the app remotely by injecting payload into vulnerable network entries in the app.
+
+We primarily use CodeQL for scanning the source code and finding vulnerable patterns within the app. With the help of CodeQL, we could analyze the control flow graph by adding additional conditions globally across the source code while comparing the Call-graph which points only the direct the source and sink method without conditional flows. In this thesis, we have identified vulnerabilities from two categories in the OWASP Mobile
+# Top 10
+as Cross-site scripting (as M1 Improper Platform Usage) and Exposed content provider (as M2 Insecure Data storage attack). With these two vulnerability categories, we have generated the source and sink pattern of the attack to identify the exact flows between the Android components.
+
+# Source and Sink for Cross-Site Scripting Vulnerability
+Cross-Site Scripting attacks are a type of injection, in which malicious scripts are injected into otherwise benign and trusted websites or local pages. Cross-Site Scripting attacks occur when an attacker uses a Intent to send malicious JavaScript code, generally in the form of a browser side script, to a different application. As mentioned in the Table 3, the cross-site scripting vulnerability source and sink examples in the Android API which are categorized into three forms.
+
+# There are three forms of Cross-Site Scripting, usually targeting users’ Mobile Webview:
+# Reflected Cross-Site Scripting
+The application or API includes unvalidated and unescaped user input as part of HTML output. A successful attack can allow the attacker to execute arbitrary HTML and JavaScript in the victim’s browser. Typically the user will need to interact with some malicious link that points to an attacker-controlled page, such as malicious watering hole websites, advertisements, or similar.
+
+# Stored Cross-Site Scripting
+The application or API stores unsanitized user input that is viewed at a later time by another user or an administrator. Stored Cross-Site Scripting is often considered a high or critical risk. Most source of the stored cross-site scripting are based on developer and project specific as they may be from file, network or database layer. We didn't discuss specifically about stored cross-site scripting in this context as they have wide variety of source and sink pattern.
+
+# DOM Cross-Site Scripting
+JavaScript frameworks, single-page applications, and APIs that dynamically include attacker controllable data to a page are vulnerable to DOM Cross-Site Scripting. Ideally,
+The application would not send attacker controllable data to unsafe JavaScript APIs. Typical Cross-Site Scripting attacks include session stealing, account takeover, Remote Code execution via Javascript Interface, multi-factor authentication bypass, DOM node replacement or defacement (such as trojan login panels), attacks against the user’s browser such as malicious software downloads, key logging, and other client-side attacks.
+
+# Source and Sink for Exposed Content Provider
+As shown in the figure 3, Content providers can help an application manage access to data stored by itself, stored by other apps, and provide a way to share data with other apps. They encapsulate the data, and provide mechanisms for defining data security. Content providers are the standard interface that connects data in one process with code running in another process. One can easily extend the ContentProvider class and implement their own methods for adding interface for accessing the data source. There is an additional content provider named as FileProvider which is recently added to the development environment to prevent file access abuse and security vulnerability.

@@ -1,0 +1,53 @@
+3. A VBMeta signing key KC is either directly embedded in the final bootloader or retrieved from a separate TRH to verify flash partitions before loading the kernel. AVB implementations may also allow a user-defined VBMeta signing key KC′ to be set (typically in a TEE or TRH)—in this case, the Verified Boot state will be set to YELLOW to indicate that non-manufacturer keys were used to sign the partitions, but that verification with the user-defined keys has still been performed correctly (see Figure 2).
+
+Updating this key KC used to sign any partitions protected through AVB is supported through the use of chained partitions in the VBMeta struct (resulting in partition-specific signing keys Ki D for partition i that are in turn signed by KC/KC′), by updating the key used to sign the VBMeta struct itself (through flashing a new version of the final bootloader in an over-the-air update), or—in the case of user-defined keys—using direct physical access
+18 For example, Pixel devices support this through fastboot flash avb_custom_key as documented online at https://source.android.com/security/verifiedboot/device-state.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+19:26 R. Mayrhofer et al.
+
+# Valid OS found?
+Warning about 05 (Accept verification Yes mot being verified)
+Errors and any root of trust
+Dismiss after 10 seconds
+(4) The digest(s) embedded in VMBeta struct(s) are used by the Android Linux kernel to verify blocks within persistent, read-only partitions on-access using dm-verity (or for small partitions, direct verification before loading them atomically into memory). Inside the system partition, multiple public signing keys are used for different purposes, e.g., the platform signing key mentioned in Section 4 or keys used to verify the download of over-the-air (OTA) update packages before applying them. Updating those keys is trivial through simply flashing a new system partition.
+
+(5) All APKs are individually signed by the respective developer key KE for APK j (some may be signed by the platform signing key to be granted signature permissions for those components), which in turn are stored on the system or data partition. Integrity of updateable (system or user installed) apps is enforced via APK signing  and is checked by Android’s PackageManager during installation and update. Every app is signed and an update can only be installed if the new APK is signed with the same identity or by an identity that was delegated by the original signer.
+
+For runtime updateable apps, the APK Signature Scheme version 3 was introduced with Android 9 to support rotation of these individual signing keys.
+
+# 4 Patching
+Orthogonal to all the previous defense mechanisms, vulnerable code should be fixed to close discovered holes in any of the layers. Regular patching can be seen as another layer of defense. However, shipping updated code to the huge and diverse Android ecosystem is a challenge  (which is one of the reasons for applying the defense in depth strategy).
+
+Starting in August 2015, Android has publicly released a monthly security bulletin and patches for security vulnerabilities reported to Google. To address ecosystem diversity, project Treble  launched with Android 8, with a goal of reducing the time/cost of updating Android devices  and implemented through decoupling of the main system image from hardware-dependent chipset vendor/OEM customization. This modularization introduced a set of security-relevant changes:
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+• The SELinux policy is no longer monolithic but assembled at boot time from different partitions (currently system and vendor). Updating the policy for platform or hardware components can therefore be done independently through changes within the relevant partition.
+
+• Each of the new HAL components (mainly native daemons) runs in its own sandbox and is permitted access to only the hardware driver it controls; higher-level system processes accessing this hardware component are now limited to accessing this HAL instead of directly interacting with the hardware driver.
+
+As part of project Treble, approximately 20 HALs were moved out of system server, including the HALs for sensors, GPS, fingerprint, WiFi, and more. Previously, a compromise in any of those HALs would gain privileged system permissions, but in Android 8, permissions are restricted to the subset needed by the specific HAL. Similarly, HALs for audio, camera, and DRM have been moved out of audioserver, cameraserver, and drmserver respectively.
+
+In 2018, the Android Enterprise Recommended program as well as general agreements with OEMs added the requirement of 90-day guaranteed security updates.
+
+Starting with Android 10, some core system components can be updated through Google Play Store as standard APK files or—if required early in the boot process or involving native system libraries/services—as an APEX loopback filesystems in turn protected through dm-verity.
+
+# 5 SPECIAL CASES
+There are some special cases that require intentional deviations from the abstract security model to balance specific needs of various parties. This section describes some of these but is not intended to be a comprehensive list. One goal of defining the Android security model publicly is to enable researchers to discover potential additional gaps by comparing the implementation in AOSP with the model we describe, and to engage in conversation on those special cases.
+
+• Listing packages: The ability for one app to discover what other apps are installed on the device can be considered a potential information leak and violation of user consent (rule ©). However, app discovery is necessary for some direct app-to-app interaction that is derived from the open ecosystem principle (rule ©). As querying the list of all installed apps is potentially privacy sensitive and has been abused by malware, Android 11 supports more specific app-to-app interaction using platform components and limits general package visibility for apps targeting this API version. While this special case is still supported at the time of this writing, it will require the new QUERY_ALL_PACKAGES and may be limited further in the future.
+
+• VPN apps may monitor/block network traffic for other apps: This is generally a deviation from the application sandbox model, since one app may see and impact traffic from another app (developer consent). VPN apps are granted an exemption because of the value they offer users, such as improved privacy and data usage controls, and because user consent is clear. For applications that use end-to-end encryption, clear-text traffic is not available to the VPN application, partially restoring the confidentiality of the application sandbox.
+
+• Backup: Data from the private app directory is backed up by default. Android 9 added support for end-to-end encryption of backups to the Google cloud by entangling backup session keys with the user lockscreen knowledge factor . Apps may opt out by setting fields in their manifest.
+
+• Enterprise: Android allows so-called Device Owner (DO) or Profile Owner (PO) policies to be enforced by a Device Policy Controller (DPC) app. A DO is installed on the pri-
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+mary/main user account, while a PO is installed on a secondary user that acts as a work profile. Work profiles allow separation of personal from enterprise data on a single device and are based on Android multi-user support. This separation is enforced by the same isolation and containment methods that protect apps from each other but implement a significantly stricter divide between the profiles.
+
+A DPC introduces a fourth party to the consent model: Only if the policy allows an action (e.g., within the work profile controlled by a PO) in addition to consent by all other parties can it be executed. The distinction of personal and work profile is enhanced by the recent support of different user knowledge factors (handled by the lockscreen as explained above in Section 4), which lead to different encryption keys for FBE. Note that on devices with a work profile managed by PO but no full-device control (i.e., no DO), privacy guarantees for the personal profile still need to hold under this security model.
+
+• Factory Reset Protection: is an exception to not storing any persistent data across factory reset (rule ©), but is a deliberate deviation from this part of the model to mitigate the threat of theft and factory reset ([T.P2][T.P3]).

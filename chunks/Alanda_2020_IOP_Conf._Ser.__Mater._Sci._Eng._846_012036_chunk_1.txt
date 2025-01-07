@@ -1,0 +1,74 @@
+# IOP Conference Series: Materials Science and Engineering
+# PAPER • OPEN ACCESS
+# Mobile Application Security Penetration Testing Based on OWASP
+To cite this article: Aide Alanda et al 2020 IOP Conf. Ser.: Mater. Sci. Eng. 846 012036
+# You may also like
+- Wireless smartphone-assisted personal healthcare monitoring system using a MoS2-based flexible, wearable and ultra-low-cost functional sensor - Akash Shinde, Parikshit Sahatiya, Anand Kadu et al.
+
+- Watch-Type Dual-Mode Wearable Health Device - Hyusim Park, Liem H. T. Nguyen, Shanthala Lakshminarayana et al.
+
+View the article online for updates and enhancements.
+
+- Graph Structure-based Clustering Algorithm for Android Third-party Libraries - Shuyuan Liu and Gang Gan
+# PPRIMM
+October 6-/1, 2024
+HONOLULU, HI
+Early Registration Deadline: September 3, 2024
+# Joint International Meeting of
+The Electrochemical Society of Japan (ECSH)
+The Korean Electrochemical Society (KECS)
+The Electrochemical Society (ECS)
+This content was downloaded from IP address 186 on 09/08/2024 at 03:02
+# Mobile Application Security Penetration Testing Based on OWASP
+Alde Alanda1, Deni Satria2, H.A Mooduto3, Bobby Kurniawan4
+1Information Technology Department, Politeknik Negeri Padang alde@pnp.ac.id,
+deni@pnp.ac.id, hamodutoo@gmail.com,
+bobbykurniawan@gmail.com
+# Abstract
+Evolution of smartphones and smart devices affected one of the most used operating systems on smartphones and smart device is Android. Android growth with fast and affected the growth of applications used by that operating system. That application developed by many developers and can be downloadable on the play store. besides the benefits and features that operating systems are given and support from the application can affect security to users. The purpose of this research is to know vulnerability and technics that used to find a vulnerability in Android operating systems and Android applications. In addition, to give recommendations and prevention from the vulnerability. Technics and methods that used based on research from the OWASP Foundation consisting of 10 main vulnerability in Android application that is improper platform usage, insecure data storage, insecure communication, insecure authentication, insufficient cryptography, insecure authorization, client code quality, code tampering, reverse engineering, and extraneous functionality. The results from testing of five applications downloaded from Play Store. 4 application have vulnerability based on OWASP Mobile Top Ten documentation. The OWASP documentation can give an illustration of the vulnerability that most found in Android applications from the market.
+
+# 1. Introduction
+Android is an operating system that is widely used for mobile or smartphone. The development of Android can be said to be very fast so that a lot of updates from the previous operating system version. Android has applications that are used to do various things, such as word or data processing, image processing, sound processing, video processing, and various other application features. The application was developed using Java and Kotlin programming languages. The Kotlin programming language is a new, more practical programming language. However, at this time many developers have developed a framework for the creation and development of other mobile applications, both Android and IOS. The framework was developed using various programming languages and various technologies. Examples of such frameworks are React Native, Flutter, and Kivy. The rapid development of the Android operating system resulted in this operating system being widely used for mobile or smartphone platforms. This development ultimately makes the application.
+
+Content from this work may be used under the terms of the Creative Commons Attribution 3 licence. Any further distribution of this work must maintain attribution to the author(s) and the title of the work, journal citation and DOI.
+
+Published under licence by IOP Publishing Ltd
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+doi:10/1757-899X/846/1/012036
+that comes from the developer only concerned with the function without regard to the security of the application.
+
+Tests conducted on mobile applications since 2012, found several general categories from the client side that cause weaknesses in mobile applications, these weaknesses include insecure data storage with a percentage of 63%, insecure transmission of data with a percentage of 57%, lack of binary protection with a percentage of 92%, client-side injection with a percentage of 40%, hard-coded password / keys with a percentage of 23%, and leakage of sensitive data with a percentage of 69%.
+
+# 2. Literature Review
+# A. OWASP
+OWASP stands for Open Web Application Security Project is a non-profit organization located in the United States and was established on April 21, 2004. The OWASP Foundation itself was online on December 1, 2001, and has become an international organization and supports all OWASP activities in the world. OWASP is an open community that focuses on understanding, developing, obtaining, operating and maintaining applications that can be trusted. All OWASP tools, documents, and forums are free and open to anyone interested in improving and learning application security.
+
+One product of OWASP on mobile application security is documentation of the top 10 weaknesses that exist in mobile applications under the name OWASP Mobile Top Ten. OWASP Mobile Top Ten consists of the 10 most common weaknesses found during the development of mobile applications.
+
+# B. Penetration Testing
+Penetration testing is a very useful measurement tool for finding and finding weaknesses in network infrastructure, showing how vulnerable the network is when attacked. Penetration testing has proven effective in helping to deal with security issues on the network. Penetration testing techniques are not only aimed at applications, but can also be applied to networks, and operating systems, where the main purpose is to find and then try to exploit vulnerabilities that are known or detected in previous evaluations contained in certain technologies . Mobile devices such as smartphones and tablets are widely used for personal and business purposes. A mobile device may carry sensitive data and becomes an easy target for cyber criminals.
+
+Penetration testing, also referred to as pentest or white hat hacking, is the process of a company hiring computer security professionals to try to break into their IT infrastructure with the intent to find where
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+doi:10/1757-899X/846/1/012036
+The greatest vulnerabilities lie. Basically, a company hires security professionals to evaluate and hack into their network, servers, and services before the malicious users can do the same thing. Most penetration tests tend to focus on the exploitation of networks and the extraction of sensitive data, the loss of service and the inability of an organization to utilize its own wireless network can also have a significant impact on their productivity.
+
+# 3. Methodology
+This research uses internal network penetration testing method. The steps that will be carried out in this research can be seen in the picture below:
+1. Preparation, which is the stage that defines the scope of security testing, which includes the identification of security controls used, testing objectives, and sensitive data. In general, the preparation stage is all synchronization with the client in which there is an agreement between the examiner and the client to protect the examiner from legal actions.
+
+2. Intelligence Gathering is a stage to analyze the scope and architecture of the application to get a general understanding of the application.
+
+3. Mapping the Application, is the next step to complete the previous stage by scanning automatically and manually exploring applications. Mapping can provide a deeper understanding of the application to be tested such as entry points, data held, and other potential major weaknesses.
+
+4. Exploitation is the stage where security testers penetrate an application by exploiting the weaknesses that have been identified during the previous process. At this stage also the determination of real weaknesses and true positives. At this stage, using the attack reference found in OWASP top 10 to get the type of attack most often faced by mobile applications. At this stage several attack techniques will be carried out that are likely to be carried out on mobile applications. The OWASP Security Knowledge Framework is intended to be a tool that is used as a guide for building and verifying secure software. It can also be used to train developers about application security. Education is the first step in the Secure Software Development Lifecycle.
+
+5. Reporting, an important stage for the client, security testers provide weakness reports regarding the applications found and can explain the adverse effects of application weaknesses.
+
+# International Conference on Applied Sciences, Information and Technology 2019
+# IOP Conf. Series: Materials Science and Engineering 846 (2020) 012036
+# doi:10/1757-899X/846/1/012036
+# 4. Result and Discussion
+Application testing is based on documentation and methods contained in OWASP, which consists of 10 security issues in mobile applications that have been researched and are often encountered in the development of mobile applications.

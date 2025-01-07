@@ -1,0 +1,87 @@
+They improve the system through embedding software watermarks dynamically into the running state of an app to represent the ownership of developers. After embedding the watermarks, the repackaged app can be verified by an authorized verifying party and embedded watermarks can be recognized through the manifest app without any user effort and interaction. It is worthy to note that the embedded code segments can be later recovered in order to extract the watermarks values. Figure 4 shows the overall AppInk architecture and its related components.
+
+In order to demonstrate effectiveness and resistance of the proposed solution, they study two other works  and the results indicate that AppInk is effective in defending against common automatic repackaging attacks.
+
+# 5 Analysis-based solutions
+Similar to PC malware, mobile malware has begun taking steps to evade detection by camouflaging as benign apps. In this category, the main goal is to use static and dynamic analysis to detect security-sensitive and malicious behaviors of apps . Proposed works in this category focus types of attacks:
+# Android Security Threats and Defenses
+# Rashidi, Fung
+(1) malicious behavior detection, (2) app similarity detection in order to detect repackaged apps, (3) misusing of granted permissions and (4) detecting apps’ vulnerabilities. In this subsection we review works in any of the above subcategories.
+
+# Android Applications
+# RiskMon
+RiskMon  tries to answer the question ”are those behaviors necessarily inappropriate?”. RiskMon is a machine-learning approach for coping with this challenge and present a continuous and automated risk assessment framework.
+
+Regarding the implementation of RiskMon, it does not address the interactions between third-party applications and interactions that do not utilize Binder. This, indeed illustrates potential attack vectors that can bypass RiskMon.
+
+# RiskRanker
+RiskRanker , is a proactive scheme to spot zero-day Android malware . It tries to assess potential security risks caused by untrusted apps. The authors develop an automated system in order to analyze the dangerous behavior of apps dynamically.
+
+RiskRanker’s assessment system performs a two-stage risk analysis. First, it identifies apps with high and medium risk. In order to identify these apps it traces nonobfuscated executions of apps that invoke (i) launching root exploits, (ii) illegal cost creation, and (iii) privacy violation attacks. In the second stage of analysis, in order to discover those apps that encrypt exploit code to evade the first stage analysis it performs a further investigation through analyzing suspicious app behavior. To address this challenge, they develop a set of heuristics to map apps to related risk categories (High, Medium, and Low risk). Figure 7 shows the RiskRanker’s architecture.
+
+13
+# Android Security Threats and Defenses
+# Rashidi, Fung
+In order to evaluate the proposed solution, they implement a prototype to evaluate using 118, 318 apps (104, 874 distinct apps) collected from different official and unofficial app markets. After the evaluation process, the first-stage risk analysis has discovered 2, 461 suspicious apps and the second-stage analysis identified 840 apps. Among these discovered 3, 281 unique apps, they successfully uncover 322 (or 9%) zero-day malware belonging to 11 distinct families. It should be noted that the main challenge of the RiskRanker is that they use a same set of simple heuristics against encryption and code loading, which is not effective.
+
+# Java Libraries
+Dalkuna
+# Linux Kernel
+Droidscope
+# API
+Malware Sample
+Tracer
+Permission-based behavioral footprint
+Native Insn: Iracer Official Market
+Footprint-based Detection Engine
+App Repository
+Taint Tracker
+Heuristics-based Detection Engine
+Infection from known Malwares Infection from Zero-day Malwares
+Representative Android Markets DroidRanger
+# Figures
+# 5 DroidScope
+Lok et al. present DroidScope , an Android analysis platform, which is based on Virtualization Malware Analysis (VMA). DroidScope reconstructs both the OS level and Java-level semantics views. In fact, DroidScope is a Virtual Machine Introspection (VMI) dynamic analysis and it is built on QEMU  emulator with a set of defined APIs as custom analysis plugins. In order to collect apps’ activities and trace executions, DroidScope exports three types of APIs related to three layers of Android device: hardware, framework and Dalvik Virtual Machine.
+
+DroidScope is tested using two Android malware families, DroidKungFu and DroidDream, and the results show that DroidScope detects them successfully. Figure 8 shows the DroidScope’s architecture and its instrumentation interface.
+
+# 5 DroidRanger
+In this work , authors present a study to evaluate the safety of apps on Google Play and some other existing unofficial Android app markets. They propose a two-stage analysis to detect current known malware and zero-day malware. In order to detect known malware, they use a permission-based behavioral footprinting scheme. In the second stage, they apply a heuristics-based filtering scheme to identify certain inherent behaviors of unknown malicious families (zero-day malware).
+
+They tested the DroidRanger using 204, 040 apps collected from five different Android Markets. The results show that DroidRanger detected 211 malicious apps: 32 from the official Android Market (0% infection rate) and 179 from alternative marketplaces (infection rates ranging from 0% to 0%). The overall architecture of DroidRanger is shown in Figure 9.
+
+# Android Security Threats and Defenses
+# 5 DroidMOSS
+In this work, an application similarity measurement system called DroidMOSS  is proposed that applies a fuzzy hashing technique  to localize and detect the changes from app-repackaging behavior. In fact, DroidMOSS is proposed to detect repackaged applications on third-party Android marketplaces. Given an app from a third-party Android marketplace, they measure its similarity with those apps from the official Android markets.
+
+In order to detect a repackaged app, DroidMOSS extracts the DEC opcode sequence of an app and generates a signature fuzzy hashing signature from the opcode. Lastly, they calculate the edit distance to see how similar each app pair is. When the similarity exceeds certain threshold, they consider one app in the pair is repackaged. The above scenario is showed in Figure 5.
+
+DroidMOSS has several disadvantages. First, it only calculates the similarity for DEX bytecode and ignores the native code. Second, the opcode sequence does not consist of high level semantic information and this causes false negatives.
+
+# 5 WHYPER
+Pandita et al. propose WHYPER  as a Natural Language Processing (NLP) solution to measure the compatibility of requested permissions from apps. The related apps’ descriptions provided by developers and the answers of why the app needs the requested permissions are used to access the compatibility of the permission requests. WHYPER takes an application’s description from the market (provided by developers) and a semantic model of a permission as input, and determines which sentence (if any) in the description indicates the use of the permission.
+
+They have tested the WHYPER using 581 applications collected from current Android app markets. The results show 82% accuracy, and an average recall of 81% for three special permissions (address book, calendar, and record audio) that protect frequently used security and privacy sensitive resources. The main challenge of WHYPER is those apps that are not described by app developers and this causes false-positive detection. Figure 11 depicts an overview of WHYPER including its related components.
+
+# 5 PScout
+PScout  is proposed as a tool in order to extracts the permission specification (permission map) from the Android OS source code using static analysis. PScout works based on a call graph, constructed from API calls. The way that PScout extracts permission specifications is through performing repeated reachability analyses between API calls and permission checks on a call graph that is constructed from the Android framework’s code base.
+
+Compared to the closest related work, Stowaway , PScout is able to extract more permission specification. In the reported experimentation, they use PScout to analyze 4 versions of Android spanning.
+
+# Android Security Threats and Defenses
+# NLP Parser
+# WHYPER Framework
+# Intermediate
+Rashidi, Fung
+# Extract Android Source Information with Soot
+# Identify Permission Checks
+# Perform Backward Reachability Analysis
+# API Calls to Permission Mapping
+version 2 up to the recently released Android 4. On Android 2, PScout extracts 17,218 mappings, whereas Stowaway derives only 1,259. Figure 12 shows PScout architecture.
+
+# 5 AndroSimilar
+In  authors propose AndroSimilar, an approach which generates signature by extracting statistically improbable features, to detect malicious Android apps. They claim that it is effective against code obfuscation and repackaging. AndroSimilar uses techniques such as string encryption, method renaming, junk method injection, and control flow modification to detect Android malware. AndroSimilar is a syntactic footprinting mechanism  that finds regions of statistical similarity with known malware to detect those unknown, zero day samples.
+
+In AndroSimilar, they use a statistical attribute extraction approach that explores improbable byte features for capturing code homogeneity among variants of known apps. After capturing the common similarities among known apps, they identify code similarity of an unknown sample and explore its similarity with known malicious family.
+
+In fact, they generate signatures of known malware applications for different families of malware as a database of knowledge. Later, they compare the unknown applications with the captured features. If the similarity score of the comparison passes the pre-defined threshold, they label the app as a malware or repackaged app.

@@ -1,0 +1,57 @@
+We use five parts of cross-validation to evaluate the performance of the training data. Figure 8 represents the accuracy of each part. The performance of the model is evaluated by using three metrics which are accuracy, precision, and recall.
+
+- Accuracy: is the percentage of accurate outcomes, such as true positive (TP), the weakest (vulnerable) class that is correctly classified as weak) and true negative (TN), the strongest (vulnerable) class that is correctly classified as strong) (TN, the non-weak class that is correctly classified as negative).
+
+- Precision: refers to the probability of a vulnerable component being identified as such. It is determined using the formula TP/ (TP+FP).
+
+- Recall: refers to the probability that a part identified as vulnerable is not vulnerable. It's estimated using the formula TP/ (TP+ FN).
+
+The version of FB Reader is analyzed and the evolution is represented in Figure 11. We notice that the number of 3 criticality vulnerabilities remains consistent across versions. As a consequence, changing the number of vulnerabilities to 2 vulnerabilities changes the criticality. Once the results and the view are provided it is possible to achieve high accuracy and precision to construct the prediction and classification model. The black plane line in Figure 11 represents model accuracy, whereas the black dotted line represents the classifier's accuracy of any java class listed as not vulnerable. Many other classes are also predicated as non-vulnerable. The dotted line that shows accuracy is taken as a baseline to relate the performance of the prediction model.
+
+The model we created is somewhere in the range of 6% and 8% more precise than the gauge. Note, the separation between the two lines recoils for some time. Our method has a high level of precision, with a success rate of more than 80%. The accuracy of the prediction model for each of the four variants tested is also seen in Figure 8. Precision varies between 75% and 81%. This means that when a Java class is flagged as vulnerable by the model, it is extremely accurate. However, as seen in the figure, the recall estimate is poor. Recall rates range from 37% to 42%. As a consequence, the model is unreliable when it predicts that a Java class also isn't vulnerable. In conclusion, the model can then be used to coordinate the audit of Java classes or modules that pose a high risk of vulnerabilities. In any case, the overall list of extremely vulnerable classes could be greater than expected or projected.
+
+An investigation study for risk calculation of security vulnerabilities on … (Radhwan M. Abdullah)
+# 1744
+# ISSN: 2502-4752
+# Accuracy percentage corresponding to each fold or part
+# Performance
+Firefox---3% recall: 79-86, fall-out: 2225%; Red Hat Linux Kernel – precision: 5%, recall 80-90%, fall-out 22-25
+Precision: 70%, recall: 45%
+Precision: 12%, recall: 83%
+Recall: 3-93%, accuracy 43-98% fall-out: 0 – 58%
+C4 decision tree- mean precision: 72%, mean recall: 74%, mean accuracy: 73%, mean fall-out: 29%
+Median precision 60-67%; median recall 20-40%
+Recall: 57%; fall-out: 48%
+Precision: 61-68%, recall: 60-61%, accuracy: 84-85%, fall-out: 9-10%
+Wordpress – average precision: 28%, average recall: 24%, Wikkawiki – average precision: 62%, average recall: 39%
+# Indonesian J Elec Eng & Comp Sci, Vol. 25, No. 3, March 2022: 1736-1748
+# Indonesian J Elec Eng & Comp Sci
+ISSN: 2502-4752
+1745
+Version 0
+# Vulnerability Evolution Over Time
+# Model performance
+# 5. CONCLUSION
+The success of Android technology and applications has made them more tempting to cybercriminals. The malware detection program could be introduced and delivered in the form of a smartphone application that communicates the scanning results to the customer in an easy-to-understand manner. Protecting and making users aware of the malicious applications before installing is the first step.
+
+An investigation study for risk calculation of security vulnerabilities on … (Radhwan M. Abdullah)
+towards the security of the Android applications. Even though timely delivery can prevent critical vulnerabilities, not many applications provide prompt updates to patch the pitfalls. FUM scoring system can help overcome the asymmetry between manufacturer and consumer. Often users are duped into downloading malicious applications that seem to be legitimate. This arises largely because consumers are more concerned with the app's success and user reviews than with the consent invasions. MAETROID framework can tag such applications as per the threat score before installing them, so users are aware of the consequences of accepting the permissions clause. Assessments done by the RVC method shows the high-risk rating for the malicious applications which can be used as a metric when choosing an app. RVC uses a large database to use the historic data and compares the high-risk applications against them to analyse the risk rate. To properly control third-party mobile app marketplaces, we need a robust vetting process.
+
+# An investigation study for risk calculation of security vulnerabilities on …
+# BIOGRAPHIES OF AUTHORS
+# Radhwan M. Abdullah
+is currently a lecturer at College of Agriculture and Forestry, University of Mosul, Iraq. He earned his Master of Computer Science (Distributed Computing) in 2008 and Ph.D. in Computer Science (Networking) in 2014 from Universiti Putra Malaysia (UPM), Malaysia. His research interests include networking, Cloud and Fog Computing, IoT, Wireless Network, Routing in WiMAX. He can be contacted at email: radwanmas@uomosul.edu.iq.
+
+# Abedallah Zaid Abualkishik
+received the Master and PhD degree in Software Engineering. Dr. Abedallah is passionate about the managerial process of software development, coding themes, Big Data, Blockchain and Data Science. His research interests include software functional size measurement, software functional measures conversion, cost estimation, empirical software engineering, database, Big Data and Data Science. Currently, he is working as an assistant professor at college of computer information technology, American University in the Emirates, Dubai, UAE. Dr. Abedallah has published several high reputable refereed papers in high impact factor journals and international conferences. He is serving the scientific community as a regular reviewer for several high impact journals. In addition, he is working as a consultant for regional software development company to prepare accurate estimation for project deliverables. He can be contacted at email: azasoft1@gmail.com.
+
+# Najla Matti Isaacc
+is currently a lecturer at College of Agriculture and Forestry/Branch of Basic Science, University of Mosul, Iraq. She obtained his Bachelor and master’s degrees in Computer Science from University of Mosul. Her research interests include Pattern Recognition, Image Processing, Artificial Intelligence, Neural Network, Image Watermarking, and Cryptography. She can be contacted at email: najla.matti@uomosul.edu.iq.
+
+# Ali A. Alwan
+is currently an assistant professor at School of Theoretical and Applied Science, Ramapo College of New Jersey, United States. He received his Master of Computer Science in 2009 and Ph.D. in Computer Science in 2013 from Universiti Putra Malaysia (UPM), Malaysia. His research interests include databases (mobile, distributed and parallel), preference queries, web databases, probabilistic, incomplete and uncertain databases, query processing and optimization, data management, data integration, location-based social networks (LBSN), recommendation system, data mining, database in Cloud, Big data management, and crowd-sourced database. He can be contacted at email: aaljuboo@ramapo.edu.
+
+# Yonis Gulzar
+is currently an assistant professor at King Faisal University (KFU), Saudi Arabia. Before joining KFU, he was a part-time lecturer, teaching assistant as well as a research assistant in the Department of Computer Science at International Islamic University, Malaysia. He obtained his Ph.D. in Computer Science in 2018 from International Islamic University Malaysia. He received his Master in Computer Science in 2013 from Bangalore University, India. His research interests include preference queries, skyline queries, probabilistic and uncertain databases, query processing and optimisation and management of incomplete data, data integration, location-based social networks (LBSN), recommendation systems, and data management in cloud computing. He can be contacted at email: ygulzar@kfu.edu.sa.
+
+Indonesian J Elec Eng & Comp Sci, Vol. 25, No. 3, March 2022: 1736-1748.

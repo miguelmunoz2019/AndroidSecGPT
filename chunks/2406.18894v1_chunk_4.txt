@@ -1,0 +1,70 @@
+After averaging the “D” score for all the nine LLMs, we sort in ascending order the OWASP Top 10 vulnerabilities in Table 3. This mean score provides an estimation of the detection difficulty per vulnerability as experienced by the different LLMs. The same table also includes the best performer(s) along with its score in parentheses. As observed from the table, from an LLM viewpoint, M2 is the toughest vulnerability with an average score of 2. As explained in subsection 3, this poor outcome is conceivably due to lack of sufficient, up-to-date information at the LLMs’ side. Generally, this low score is somewhat expected, as for this vulnerability the LLMs are checking for known security issues in a list of libraries instead of analyzing the application’s code. On the other hand, the highest average detection score was observed in M5, where four LLMs achieved a perfect score.
+
+No less important, with reference to the last stage of the experiments as given in subsection 3, regarding the detection of privacy-invasive actions, six, eight, and six of the LLMs correctly perceived potential privacy-invasive actions.
+
+# 12
+# Vasileios Kouliaridis, Georgios Karopoulos, and Georgios Kambourakis
+For location, camera, and local file sharing, respectively. The best performer was Zephyr Alpha, which clearly marked two out of three codes as privacy-invasive and the other as potentially privacy-invasive. The worst performer in this type of experiments was MistralOrca, which was unable to detect any possible privacy-invasive actions.
+
+Additionally, Table 4 presents the results regarding the use of RAG on Code Llama. As explained in subsection 3, in this experiment, only half of the samples per vulnerability were indexed for RAG, along with text and code examples from Android’s app security guidelines  and all the CVEs related to the vulnerable libraries used for M2. After that, we analyzed the other half of the samples, i.e., the non-annotated ones with comments on the particular vulnerability. As observed from Table 4, the results show improvements in both the detection performance and the generation of code suggestions vis-à-vis the base model. Precisely, by feeding a large list of vulnerable libraries, the optimized Code Llama model achieved a perfect score for M2, an improvement of approximately 233% compared to that in Table 1. Nevertheless, for reaching this performance in real-world scenarios, the RAG process should involve an up-to-date dataset comprising known vulnerable library versions. Interestingly, except M2, the optimized Code Llama model detected the vulnerabilities and suggested improvements for all the M1, M3, M4, M5, M6, and M7 samples. As seen in the three bottom lines of Table 4, a nearly perfect performance (4/5) was also observed for all the M8, M9, and M10 samples.
+
+As previously mentioned, the performance of the LLMs was also compared against two reputable SASTs, namely Bearer and MobSFscan. Precisely, as shown in Table 5, across the 100 samples of Vulcorpus, Bearer found 29 security issues, while MobSFscan detected 12 issues. Excluding M2, this result suggests that, for several vulnerability types, the performance of at least some of the LLMs may significantly or even by far surpass that of well-known SASTs. For instance, comparing the numbers of Table 5 with the average scores of Ta-
+# Title Suppressed Due to Excessive Length
+# 5 Conclusions
+Our study provides empirical evidence regarding the effectiveness of using LLMs for Android code vulnerability analysis. GPT-4 and Code Llama emerged as the top performers among the nine LLMs tested, the latter excelling in detection, but failing to provide sufficient code improvements, and the former showing promising results both in detection and code improvement. Notably, the study highlights the superior performance of specific LLMs for particular types of vulnerabilities. For instance, MistralOrca and Zephyr Beta performed exceptionally well for M9, while Zephyr Alpha excelled in M10. These findings suggest that while some LLMs have a general proficiency in vulnerability detection, others may be more specialized, indicating the potential for strategic selection of LLMs based on the targeted vulnerability type. When comparing open LLM models with commercial ones, we can see that the open models were the best performers.
+
+Vasileios Kouliaridis, Georgios Karopoulos, and Georgios Kambourakis
+in seven out of ten categories of vulnerabilities, i.e., M3, M4, M5, M7, M8, M9, M10. On the other hand, considering mean detection and improvements scores, as presented in Table 1, the situation is mixed.
+
+Our findings also reveal that while some LLMs are capable of detecting Android code vulnerabilities, their overall performance is still in an early stage. For example, several LLMs struggled with M7, while others were unable to identify M2, reflecting the inherent complexity and subtlety of such vulnerabilities. This outcome points to a need for further research towards enhancing LLMs’ capabilities in more nuanced areas of Android security. As an additional step, we evaluated the use of RAG in fine-tuning LLMs for vulnerability analysis, with our results demonstrating that RAG can significantly reinforce detection performance. Regarding the detection of privacy-invasive actions, the obtained results indicate a mixed level of sensitivity among the LLMs, with Zephyr Alpha being the top performer. However, MistralOrca’s inability to identify any potential privacy-invasive actions underscores the variability in performance and the need for increased model robustness in privacy analysis concerning mobile platforms. No less important, after comparing the performance of LLMs with that of well-respected SASTs on the same set of vulnerable samples, it can be said that the former seem more adept at identifying code vulnerabilities.
+
+Altogether, the results of the present study provide valuable insights into the current state of LLMs in Android vulnerability detection. While certain models show high efficacy, there is ample room for improvement and targeted optimizations, particularly in addressing complex and subtle vulnerabilities. Nevertheless, for obtaining a more complete view, more experiments with larger datasets are needed.
+
+# Title Suppressed Due to Excessive Length
+1. code. In Proceedings of the 44th International Conference on Software Engineering, ICSE ’22, page 2377–2388, New York, NY, USA, 2022. Association for Computing Machinery.
+
+2. Jiawei Liu, Chunqiu Steven Xia, Yuyao Wang, and Lingming Zhang. Is your code generated by chatgpt really correct? rigorous evaluation of large language models for code generation, 2023.
+
+3. Bearer. https://github.com/Bearer/bearer. last visited 10/3/2024.
+
+4. Mobsfscan. https://github.com/MobSF/mobsfscan. last visited 10/3/2024.
+
+5. M. Al-Hawawreh, A. Aljuhani, and Y. Jararweh. Chatgpt for cybersecurity: practical applications, challenges, and future directions. Cluster Computing, 26:3421–3436, 2023.
+
+6. Yifan Yao, Jinhao Duan, Kaidi Xu, Yuanfang Cai, Zhibo Sun, and Yue Zhang. A survey on large language model (llm) security and privacy: The good, the bad, and the ugly. High-Confidence Computing, 4(2):100211, 2024.
+
+7. Maanak Gupta, Charankumar Akiri, Kshitiz Aryal, Eli Parker, and Lopamudra Praharaj. From chatgpt to threatgpt: Impact of generative ai in cybersecurity and privacy. IEEE Access, 11:80218–80245, 2023.
+
+8. Farzad Nourmohammadzadeh Motlagh, Mehrdad Hajizadeh, Mehryar Majd, Pejman Najafi, Feng Cheng, and Christoph Meinel. Large language models in cybersecurity: State-of-the-art, 2024.
+
+9. Chandra Thapa, Seung Ick Jang, Muhammad Ejaz Ahmed, Seyit Camtepe, Josef Pieprzyk, and Surya Nepal. Transformer-based language models for software vulnerability detection. In Proceedings of the 38th Annual Computer Security Applications Conference, ACSAC ’22, page 481–496, New York, NY, USA, 2022. Association for Computing Machinery.
+
+10. Zhihong Liu, Qing Liao, Wenchao Gu, and Cuiyun Gao. Software vulnerability detection with gpt and in-context learning. In 2023 8th International Conference on Data Science in Cyberspace (DSC), pages 229–236, 2023.
+
+11. Moumita Das Purba, Arpita Ghosh, Benjamin J. Radford, and Bill Chu. Software vulnerability detection using large language models. In 2023 IEEE 34th International Symposium on Software Reliability Engineering Workshops (ISSREW), pages 112–119, 2023.
+
+12. Gustavo Sandoval, Hammond Pearce, Teo Nys, Ramesh Karri, Siddharth Garg, and Brendan Dolan-Gavitt. Lost at C: A User Study on the Security Implications of Large Language Model Code Assistants. In 32nd USENIX Security Symposium (USENIX Security 23), pages 2205–2222, Anaheim, CA, August 2023. USENIX Association.
+
+13. Puzhuo Liu, Chengnian Sun, Yaowen Zheng, Xuan Feng, Chuan Qin, Yuncheng Wang, Zhi Li, and Limin Sun. Harnessing the power of llm to support binary taint analysis, 2023.
+
+14. Jin Wang, Zishan Huang, Hengli Liu, Nianyi Yang, and Yinhao Xiao. Defecthunter: A novel llm-driven boosted-conformer-based code vulnerability detection mechanism, 2023.
+
+15. Anton Cheshkov, Pavel Zadorozhny, and Rodion Levichev. Evaluation of chatgpt model for vulnerability detection, 2023.
+
+16. David Noever. Can large language models find and fix vulnerable software?, 2023.
+
+17. Yuqiang Sun, Daoyuan Wu, Yue Xue, Han Liu, Wei Ma, Lyuye Zhang, Miaolei Shi, and Yang Liu. Llm4vuln: A unified evaluation framework for decoupling and enhancing llms’ vulnerability reasoning, 2024.
+
+#AC last visited 10/3/2024.
+
+7. Android developers - intent. https://developer.android.com/reference/android/content/Intent#ACTION_OPEN_ last visited 10/3/2024.
+
+8. What we know about the xz utils backdoor that almost infected the world. https://arstechnica.com/security/2024/04/what-we-know-about-the-xz-utils-backdoor-that-almost-inf last visited 17/4/2024.
+
+9. Tom B. Brown et al. Language models are few-shot learners, 2020.
+
+10. OpenAI. GPT-4 is OpenAI’s most advanced system, producing safer and more useful responses, 2024. last visited 10/3/2024.
+
+11. OpenAI. Gpt-4 technical report, 2024.
+
+12. Hugo Touvron et al. Llama 2: Open foundation and fine-tuned chat models, 2023.

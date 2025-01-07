@@ -1,0 +1,51 @@
+used a deep learning algorithm paired with a statistical feature selection algorithm to predict vulnerable classes in Java-based Android applications. Livshits et al.  proposed a solution to reduce vulnerabilities using static analysis of the Java code by providing warnings about 29 vulnerabilities based on the Tainted-Object-Propagation analysis. Awni et al.  employed several datasets to test the performance of three machine learning models in their bug prediction study. Their supervised machine learning algorithms predict future defects based on historical information and it was showed that the model based on Decision Tree is the best performing than Linear Regression. Gupta and Saxena  proposed that object-oriented metrics like Coupling Between Objects (CBO) and Lines of Code (LOC) are related to the occurrence of a vulnerability in a class more than Depth of Inheritance Tree (DIT) and Number of Children (NoC), which tend to be less sensitive during prediction. The authors used static code metrics to train their models and showed that the Linear Regression classifier provides good accuracy. They trained and tested on the individual and combined datasets and obtained maximum accuracy of 76%. Rinkaj et al.  studied the correlation between object-oriented metrics and defects.
+
+# IV. METHOD
+# Phase 1: Data Collection
+The data collection phase begins with collecting the security vulnerability dataset from the Apache Tomcat website via a web scraper built using node.js. For each security vulnerability, we collect the type (22 vulnerability types) and severity (4 severity levels) of the vulnerability and the Java classes in Apache Tomcat affected by the vulnerability. Finally, all the data were consolidated into a single CSV file. We exclude the duplicate vulnerability entries. Afterwards, we downloaded the source code of each Apache Tomcat version. We also collected class-level code metrics for each version of source code using a tool called CK . This process resulted in 43 code metrics for each class in each version and stored in another CSV. Finally, the former and the latter CSVs are merged using right join, which resulted in 12,214 rows in the raw dataset. In total, 183 unique classes are involved in 22 security vulnerabilities in all versions of Tomcat, the distribution of which is shown in Figure 2. Moreover, 19 classes had high vulnerability, 65 classes with important vulnerability, 83 classes with low vulnerability, and 16 with moderate.
+
+# Types of Security Vulnerabilities in Apache Tomcat
+# Phase 2: Data Cleanup
+Upon forming the dataset, the second phase involves the dataset clean up, i.e., managing the irrelevant information for prediction. At first, we dropped all the null (i.e., NA) rows. Then, using Python’s pandas framework, the duplicate rows were removed, leaving unique instances. Our raw vulnerability dataset consisted of a high negative to positive class ratio, i.e., the dataset is imbalanced. Hence, we used oversampling methods to handle the imbalance in the dataset. A total of 10,039 rows remained after data cleanup.
+
+# Phase 3: Feature Selection
+Aniche-Ck’s tool  for metrics computation produces 43 metrics, i.e., features, for each class from which features with higher impact on the predictor variable will be selected using feature selection techniques. In this study, we experimented with two feature selection techniques: (1) Sequential Forward Selection (SFS) starts with an empty model and then starts fitting the model with individual feature one at a time and select the feature with the minimum p-value ; and (2) Recursive Forward Elimination (RFE), which is based on greedy optimization.
+
+# Phase 4: Building ML Models
+In this study, the target variable is the security vulnerability, thus we constructed and employed classification algorithms. Initially, we experimented with three machine learning algorithms: Naïve Bayes classifier (NB), Logistic Regression (LR), and Decision Tree (DT) classifiers. NB’s decision rule relies on Bayes’ theorem  while the LR works for discrete or categorical outcomes, making it an extension of linear regression. Then, predicted values are mapped to probabilities. In DT, observations about an item are followed by conclusions about its target feature using a choice tree where the leaves serve as category labels and branches produce category labels according to the alternatives.
+
+The ML models must be optimized independently. Beginning with the DT model, it was pruned since it was overfitted. Hence, the pruned DT model provided more accurate results instead of a hyper-accurate outcome. This helped predicting the vulnerable state of a class, i.e., whether or not a class possessed a security vulnerability. However, the DT model proved insufficient to predict the severity and the types of the vulnerabilities since DT works well as a binary classifier, thus, yielded poor accuracy results on predicting severity types. Therefore, a new model, the KNN classifier, was considered to predict the vulnerability severity for the concerned classes.
+
+# Cross Validation Techniques
+In this study, we experimented with two cross-validation techniques: hold-out method and k-fold cross-validation. The hold-out, a.k.a., one-fold validation, is one of the most commonly used approaches to validate a machine learning model, randomly splitting a given dataset into a training and testing set into a 70%-30% ratio. The k-fold cross-validation is a re-sampling procedure used to evaluate machine learning models on a limited data sample. This technique requires an input parameter k, which determines the number of folds required by the dataset. Thus, k = 10, for instance, leads to 10 fold validation. For k-fold cross-validation, we split the full dataset into k groups, and for each group, consider it as hold-out and the remaining groups as the training set.
+
+training set, and repeat this process k times.
+
+# Phase 5: Testing and Evaluation:
+We measure the accuracy based on Equation 1, where TP, TN, FP, and FN refers to true positive, true negative, false positive, and false negative, respectively.
+
+TP + TN
+accuracy = TP + TN + FP + FN
+We measure precision as the ratio between true positives and all positives, and recall is the ratio of true positives it correctly identifies among all the positives, as shown in Equation 2.
+
+TP
+precision = TP + FP
+TP
+recall = TP + FN
+# V. EXPERIMENTS AND RESULTS
+Classes are affected by the security vulnerabilities exist in the source code of each Apache Tomcat version. They are treated as positive instances, and the unaffected classes are considered negative ones. Consolidating the vulnerability information and the source code of all Tomcat versions, our final dataset had 12,214 rows. The data cleaning phase, e.g., null rows, duplicate rows, corrupt data, yielded 10,084 rows. Raw dataset and all the models built in this study are made available online.
+
+We conduct experiments in two steps. First, we predicted whether the classes were associated with security vulnerabilities (yes or no). In a further experiment, we attempt to predict the types and the severity of the vulnerabilities.
+
+In the first experiment, the training data was fit into the Decision Tree (DT), Logistic Regression (LR), and Naive Bayes (NB) models and the target feature (vulnerability) was predicted. After the prediction, the accuracy, precision, and recall values were recorded. Furthermore, an AUC-ROC (Area under the ROC Curve) curve graph was plotted with obtained results. AUC-ROC shows the discriminative power of the model between classes. The ROC curve is plotted with TPR (true positive) against the FPR (false positive rate).
+
+In another experiment, with the K-Nearest Neighbors (KNN) algorithm, we fit the training data into the KNN model and predict the vulnerability. In this case, the value of the n_nearest_neighbors was set to 109, being the square root of the total number of rows in the final dataset. After the prediction, we reported the accuracy, precision, and recall.
+
+# A. Optimizing ML Models
+This section explains the performance optimization of our ML models by tailoring various hyper-parameters for each model. From the basic implementation of the ML models, the DT model is witnessed to be overfitted. The model produced hyper-accurate results, which would result in poor performance with test data. To settle this issue, we used a post-pruning method (i.e., cost complexity-based pruning). Using this method, the ccp_alphas values are plotted in a chart. Furthermore, a chart that illustrates the relationship between the number of nodes and depth is outlined. Finally, we visualized the correlation between the accuracy and the ccp_alpha values. The optimal ccp_alpha value is inferred from the plots and is initialized with the DT model.
+
+For the LR model, the ’sag’ solver was used due to the larger dataset size. Moreover, the new "scikit.learn"  version for logistic regression has n_jobs that enables the user to control the CPU usage for the algorithm, which was also tuned for optimal performance.
+
+Furthermore, although the algorithms mentioned above would perform well for a binary classification such as the "vulnerability status", they would perform poorly with multi-class classifications, i.e., the severity and the vulnerability types. Thus, the KNN was considered for multi-class classification.
+
+In the following, we show the results and answer our two research questions.

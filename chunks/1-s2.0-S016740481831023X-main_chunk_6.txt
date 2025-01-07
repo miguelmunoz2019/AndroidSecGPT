@@ -1,0 +1,58 @@
+Below we describe identified vulnerabilities using the above mentioned ad-hoc classification. It is worth noting that all described attacks can be easily reproduced using the introduced in this paper adb-mitm tool.
+
+# 6. Session hijacking
+Secure USB Debugging introduced in Android 4 added a requirement that each ADB session has to complete the authentication phase. As previously described it is typically achieved using a challenge-response scheme. This type of attack aims at hijacking an ADB session of the previously authenticated host.
+
+It is worth recalling that the user may be authenticated in one of two ways depending on the scenario.
+
+Firstly, the user can be authenticated when the mobile device is connected to a given host for the first time or the user does not allow to trust this host every time the device is connected to it. This process starts when the device receives A_AUTH RSAPUBLICKEY message from the host. Then the user authentication is performed by unlocking the device and accepting a pop-up with the MD5 checksum of the received public key. It is obvious that to use this method an attacker would need to unlock the device which may reveal his presence.
+
+Secondly, the authentication scheme is utilized when the mobile device is connected to the host which has been previously trusted by the user. It means that the device should verify that the host which would like to start the ADB session owns a private key associated with one of the public keys marked as always trusted. This process is initiated when the A_AUTH TOKEN message is sent and stops when the host responds with an RSA signature (A_AUTH SIGNATURE) that can be verified with one of the trusted public keys. This authentication process does not require any user interaction and may be executed whenever adbd is running on the device.
+
+# Computers & Security 82 (2019) 80–98
+# USB
+It is worth noting that when the USB debugging option is enabled adbd is running automatically, each time the user plugs in USB cable. There is no pop-up displayed like in the case of the MTP where it happens each time the user connects the device. Therefore it is potentially a perfect attack vector to bypass the lock screen and get full access to the device.
+
+First, we tried to perform the replay attack. Fortunately, thanks to randomness of 20 bytes in the A_AUTH TOKEN challenge message this attack cannot be successful. However, the ADB protocol traffic analysis revealed that the A_AUTH SIGNATURE is the only message which has to be generated using suitable private key. There is no data integrity mechanism in any other step of the ADB communication. This effectively means that after receiving the A_AUTH SIGNATURE message with a valid signature mobile device will grant access to any sender of the message in this communication channel even if it does not own the corresponding private key. Therefore, the only thing that is needed to bypass the screen lock is to acquire a valid signature from the trusted host machine.
+
+This in turn can be easily achieved using our experimental test-bed. The only thing that needs to be achieved is to use USBProxy and allow the whole authentication process to complete successfully. Then everything is performed automatically and when the host is authenticated we may just disconnect the BBB from the host. As we disconnect only BBB from the host but not the device from the BBB, the mobile device assumes that it is still communicating with the same machine that provided a correct signature during the initial authentication process. Thus BBB is now able to send any custom command which effectively gives access to all user’s private data without unlocking the device screen. The communication flow for this attack has been presented in Fig. 11.
+
+Another a bit more sophisticated version of this attack but still derived from the previous one would be to replace MitM device with just a device emulator.
+
+Instead of getting in between the mobile device and the trusted host, it is possible to use BadUSB-like attack to create a device which will act as an Android-based phone and will send authentication requests to the legitimate host. The scenario of this attack would be to connect the victim device to the attacker’s computer. When the A_AUTH TOKEN is issued, it is only necessary to forward this message using different communication channel, e.g. WiFi, to the emulated device. Then this device just issues the same message to the trusted host and capture a valid signature for this challenge. This signature can be send back to the attackers PC and then to the victim’s device. As a result the device will authenticate attacker’s PC as a trusted host and will grant access to all device resources. The communication flow for this attack has been illustrated in Fig. 12.
+
+Obviously this attack has several limitations. The first is that it requires USB debugging to be activated on the mobile device. Secondly, it involves physical access to the USB host which has been previously trusted by the victim. Lastly, it entails adb server to be active or auto starting when the suitable USB device arrives on a legitimate USB host machine. As neither adb server nor adb daemon check if the machine is locked or not during the authentication phase, both the victim’s mobile device and the host PC may be locked.
+
+Lesson learned #1: the root cause of this vulnerability is due to the lack of session integrity mechanism in the ADB protocol. It means that the ADB protocol is simply unable to guarantee that the message sender is the same entity that owns the trusted private key.
+
+# 6. Data modification
+This type of attack aims at (mostly) unnoticeable message modification, usually to perform some malicious activities e.g. to infect a phone or a host.
+
+The basic idea of this attack is quite straightforward and simple. Neither USB protocol provides any integrity mechanisms nor ADB protocol does. This allows MitM device to modify the USB traffic between the host and the device.
+
+The modification of the USB traffic may occur in one of two phases: during the session creation (host authentication) or after it is completed.
+
+# Computers & Security 82 (2019) 80–98
+Modifications during session initialization may be used, to it and ADB is enabled. Thus such an injected public key effectively becomes a kind of the backdoor which opens the device for future attacks using, for example, the fake charging stations. It is also worth noting that after accepting the public key by the user no message is being sent to verify that the host owns the associated private key. This allows attacker to safely spread his public key across many devices without the risk of his private key being compromised. Unfortunately, many developers do not pay enough attention to this step and may accept the fake key. Lesson learned #2: this “vulnerability” is possible by exploiting human factor. Most of the inexperienced users do not verify their host key fingerprint before accepting it. They find it.
+
+# Computers & Security 82 (2019) 80–98
+# Message flow during MitM ADB session hijacking attack
+CNXN(<version> <maxp>) <system str>
+A_AUTH(TOKEN; RND) AUTH(TOKEN, RND)
+AUTH(SIGNATURE, SIGN(Priv; RND)) AUTH(SIGNATURE, SIGN(Priv RND))
+CNXN(<version> <maxp>) <system str>
+A_OPEN(<id1>, 0, "shell")
+A_OKAY(<id2>, <id1>)
+# Message flow during remote the ADB session hijacking attack
+CNXN(<version> <maxp>) <system str>
+AUTH(TOKEN, RND) RND Trigger _ enumeration
+CNXN(<version> <maxp?) <system str?>
+A_AUTH(TOKEN; RND)
+SIGN(Priv; RND) A_AUTH(SIGNATURE_ SIGN(Priv; RND))
+A_AUTH(SIGNATURE, SIGN(Priv, RND)) Disconnect
+CNXN(<version> <maxp>) <system str>
+OPEN(<id1>, 0, "shell")
+OKAY(<id2>, <id1>)
+Complicated, as it is not possible to get this fingerprint easily using adb command line tool. If this would be as easy as executing adb fingerprint command then most probably more developers would use it. Even better results could be achieved by replacing user unfriendly MD5 checksums with the verification of the random art of the host key or QR code usage. This could improve users’ experience and encourage more of them to verify if what they are accepting is really correct.
+
+Modifications of the data being sent during the ADB session may be used in many ways. The first example of such an attack may be injection of some malicious payload into files or shell commands sent over the USB bus. This involves mostly modification of the files transferred over the bus to infect them with some malware that is able to exploit other bugs in the Android or PC OSes. A good example would be to inject exploits into pictures, pdfs or modify binaries to put there some custom code which could cause a security breach . Finally, it may even modify shell commands to exploit some vulnerabilities in the Android shell (which can be considered as a kind of Shellshock attack variant, Response, 2014).

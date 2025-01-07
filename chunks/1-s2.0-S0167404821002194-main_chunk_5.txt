@@ -1,0 +1,57 @@
+# 7. Decompilation (step 1)
+Androguard (Release 3) Desnos (2011) is used to implement the decompilation phase. Androguard results in three objects. Information about the APK (e.g., manifest content, package name, permissions) is included in the first object (i.e., aA). DEX files of the APK file are included in the second object (i.e., dA). The third object includes information about dex classes (i.e., dxA).
+
+# 7. Identification of interface and webviewclient classes (step 2)
+The implementation of this module relies on the Androgurad methods get_item_type() of dA and get_method_annotations() that is included in one of the attributes of dA. These methods enable constructing the sets MA and Ic. To analyze applications that target a minSdk less than 17, where annotating interface methods is not necessary, we do as follows: this module searches for all the methods in classes of dxA to find instructions that invoke the APIs addJavascriptInterface and setWebViewClient; the parameters of these instructions enables collecting Ic17, Cw, W, and Wu.
+
+# 7. Identification of relevant methods (step 3)
+The implementation of Algorithm 1 benefits from the objects produced by our reverse engineering tool. The implementation of steps 4, 11, 16, 19, and 23 uses the Androguard API c.get_methods() to extract methods of a class c. This API is included in the object dxA. The API get_min_sdk_version() (contained in the object aA) is used to implement step 14 of the algorithm, where the minSdk needs to be checked. Each method of the app has an Androguard object that includes an attribute called name. For a method m, this attribute is read via the code m.name to implement the steps 12 and 24.
+
+# 7. Methods abstraction and path analysis (step 4 and step 5)
+The implementation of these modules uses several Androguard APIs including:
+# 7. Custom thresholds
+Dense calculations in W ebV Sec might lead to large consumption of time and computation resources. Therefore, we heuristically fixed a set of thresholds to limit this consumption with very little effect on the precision of the W ebV Sec results. These thresholds are as follows:
+- An upper bound (denoted by thm) on the number of methods to be analyzed. We heuristically fixed thm to 600. This number is reasonable because it covers almost all methods of interface and webViewClient classes in the apps of our dataset. These are the methods that would include the studied vulnerabilities in most cases. However, increasing this threshold results in studying methods of classes using the webView objects. This makes the analysis more inclusive than using a lower threshold and hence increases the probability of discovering vulnerabilities related to the added methods. However, heuristically, it is rare to find vulnerabilities related to these added methods.
+
+- The number of paths of WebView interface and WebView-Client methods that are to be analyzed. We heuristically found that it is mostly enough to analyze the longest path. The experiments showed that this longest path in most cases includes key instructions relevant to W ebV Sec. This is so because in most cases the short paths inside the methods of interface and webViewClient represent else branches opting-out using webView objects. Therefore analyzing these short paths mostly does not affect the precision of W ebV Sec.
+
+For each method, we first build its execution path in the form of lists of instruction blocks using the APIs basic_blocks.gets() and get_next(). Hence each method path is a list of blocks. For each path, we then iterate its blocks to extract the block instructions using the get_nb_instructions() that return the number of instructions in a block. This is useful for finding the longest path of a method.
+
+# 8. Evaluation
+This section presents the results of our experiments conducted for evaluating W ebV Sec. We got the dataset from a reputable benchmark, namely AndroZoo Allix et al. (2016). All experiments were done on a Dell (Vostro) device with processor: Intel(R) Core(TM) i7-3612 QM CPU @ 2 GHz, 8 GB RAM, and Windows 10 (64-bits) operating system. All implementations were written in Python on top of Androguard Desnos (2011).
+
+# c o m p u t e r s & s e c u r i t y 1 0 9 ( 2 0 2 1 ) 1 0 2 3 9 5
+# Listing 6 – AndroZoo Command.
+
+The symbol means that the technique does not provide the statistics.
+
+the tool we adopted for reverse engineering Android applications. We make all our results and data files available.
+
+We downloaded a random set of 2000 applications, whose sha256 is available online, in early 2020. The instruction we used to download the dataset is given in Listing 6. We limited the download to applications that Androzoo obtained from the Google Play Store. We also restricted our download to recent apps by specifying the publishing dates of dataset from 2019 onwards. The list after the option “-md” in the instruction is a metadata that AndroZoo provides for each downloaded APK.
+
+Tables 8 and 9 contain the statistics we collected through our experiments where we compared W ebV Sec against BabelView, answering the following research questions:
+# RQ1. Applicability, effectiveness, and performance:
+How does W ebV Sec compare against alternative approaches in applicability, discovering WebView vulnerabilities and in performance?
+# RQ2. Half vulnerabilities:
+How does W ebV Sec compare with alternative approaches in discovering paths that read a value and paths that send out a value?
+# RQ3. Accuracy:
+What is the accuracy of W ebV Sec and the alternative approaches?
+We also conclude the current state of WebView use by programmers in Android applications with the following question:
+# RQ4. WebView usage in Android ecosystem:
+What is the current usage of all elements that contribute to the vulnerabilities of our threat model (e.g., WebView, interfaces, WebView-Client)?
+# 8. Applicability, effectiveness, and performance
+For a complete evaluation, we compared the applicability, effectiveness, and performance of W ebV Sec with one of the state-of-the-art techniques, BabelView Rizzo et al. (2018), which we selected for the following criteria. First, BabelView is a recent technique that addresses recent versions of Android. Second, the implementation of BabelView is available as a public tool suite. Third, BabelView is one of the most closely related techniques to W ebV Sec. BabelView was implemented using the Soot framework Vallée-Rai et al. (2010). To eliminate bias in favor of W ebV Sec, we used the list of sources and sinks provided by BabelView in our experiments. We also ran W ebV Sec and BabelView on the same dataset.
+
+Applicability. Running W ebV Sec on the 2000 applications of the data set resulted in only 6 cases that Androguard failed to decompile. The remaining 1994 applications were successfully analyzed by W ebV Sec. Therefore, we ran W ebV Sec and BabelView on these 1994 applications. Out of the 1994 applications, BabelView analyzed and produced reports for only 881 applications. However, W ebV Sec analyzed and produced reports for all 1994 applications. W ebV Sec revealed that almost 94% (1872 applications) of the analyzed sample specifies a minimum SDK that is less than or equal to 17. This confirms the applicability of W ebV Sec to applications that target old versions of Android, where the annotation of interface methods is not required. The annotation details were presented in Section 2.
+
+Effectiveness. To evaluate whether W ebV Sec can discover vulnerability types presented in Section 4, we developed a toy Android app that includes all types of vulnerabilities. The app includes 30 vulnerabilities that are distributed among the 4 types. While our technique, W ebV Sec, discovered all the 30 vulnerabilities, BabelView did not manage to discover any of these vulnerabilities. The running example of the paper was taken from this application. Files of the toy application and its analysis results are available online.
+
+1 https://github.com/maelzawawy/WebVSec.git
+2 https://github.com/maelzawawy/WebVSec.git
+4 https://github.com/ClaudioRizzo/BabelView
+3 https://play.google.com/store/
+5 https://github.com/maelzawawy/WebVSec.git
+# Computers & Security 109 (2021) 102395
+The symbol means that the technique does not provide the statistics.
+
+The total number of vulnerabilities discovered by WebV Sec is 82 in 48 applications. This number is a breakdown into 44 of type 1 vulnerability and 38 of type 3 vulnerability. The number of interface classes which methods contribute to type 1 vulnerability is 21 in 20 applications. The number of WebViewClient classes which methods contribute to type 3 vulnerability is 38 in 36 applications. Table 10 presents the list of 48 vulnerable applications. Fig. 3 shows the number of vulnerabilities found by WebV Sec in each application of the dataset used for the analysis.

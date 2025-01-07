@@ -1,0 +1,48 @@
+# IV. EMPIRICAL ANALYSIS
+We present the results and findings of our analysis of security- and privacy-relevant reviews on Google Play and the corresponding relevant changes in app updates. We refer to Section VI for a discussion of our findings.
+
+# A. Security and Privacy Related Reviews (SPR)
+In order to analyze whether SPR trigger security and privacy relevant changes in app updates, it is first necessary to map SPR to features that can be checked with code analysis techniques. To this end, we first map SPR to permissions (groups) and subsequently check for permission-based features in app versions released after the SPR was posted.
+
+# 1) Mentioned permissions:
+Our review classifier identified 5,527 SPR (0% of a total of 4,547,493 reviews) belonging to 1,269 distinct apps. Each of these apps has an average of 4 SPR (median = 2), where certain app categories received more SPR (e.g., Tools) while others received less (e.g., Games). Table II lists the number of SPR per category. For 2,898/5,527 SPR, we are able to identify 4,180 permission-related statements that can be assigned to 15 distinct permission groups. This implies that some SPR refer to multiple permissions. The remaining 2,629 security and privacy related reviews cannot unambiguously be mapped to permissions.
+
+**SECURITY- & PRIVACY- RELATED REVIEWS PER APP CATEGORY**
+without extra knowledge, e.g., “Worked fine, but removing due to permission change without saying why...and if it is just for ads say that” and “A Nice game, but ridiculous permissions the game is very good, but the permissions in the last update is ridiculous.” Figure 6 presents the permissions mentioned most in SPR. The list is headed by the permissions to access external storage, contacts and location. We created a separate category “personal information” for SPR when users complain about such data without mentioning specific permissions.
+
+# 2) Runtime permissions vs. install-time permissions:
+In October 2015, Google officially released Android 6 (API level 23) and shifted from an install-time permission model to a runtime permission delegation in which apps request dangerous permissions dynamically at runtime. For the 2,126 applications for which we built the version history, 1,073 (50%) have adopted runtime permissions in their latest version as of September 2017. Among the 1,269 apps that have at least one SPR, a similar fraction (49%) has adopted runtime permissions. To empirically investigate the effect of runtime permission requests on users’ perception, we calculate the percentage of SPR over the total number of app reviews before and after an app adopted runtime permissions. To this end, we check whether the targetSDK argument from the apps’ manifests is set to API level 23 or higher. We then conducted a t-test to compare the ratio of SPR per total reviews of app versions with runtime permission and with install-time permission. We found that there is significant difference between the SPR ratio of apps with install-time permission (mean = 0) and SPR ratio of apps with runtime permission (mean = 0) with a p-value of 0. This suggests that apps with runtime permissions receive a significantly higher number of SPR.
+
+# 3) Developer responses:
+Some SPR are written by users that do not understand context-specific permission requests or do not have sufficient knowledge to assess the necessity of a request . Incomplete or missing app descriptions that provide an intuition about the apps’ permission usage is one contributing factor. To allow interaction with users, Google offers a Reply to Reviews API . To analyze to which extent app developers make use of this feature, we crawl any developer replies that have been made to the set of 5,527 SPR. In total, we found 673 replies. With respect to the 5,527 SPR, developers also implicitly reacted in 3,359 cases with SPU in the subsequent app version. In 256 cases, the developer replied (without making SPU) and in 417 cases we could observe both replies and SPU. We manually examined these replies and grouped them into the following categories:
+- Explain (397): Developers explain the necessity of the mentioned permissions
+- Contact (130): Developers asked the user to contact them and to provide more information
+- Fix (96): Developers confirmed the SPR and reported that a fix is already published or in progress.
+
+- Pre-defined generic (50): Developers replied with pre-defined generic answer templates
+In about 56% of the cases, the developer explained the necessity of permissions. Besides missing app descriptions, install-time permissions are one of the factors that make it difficult for the user to make the connection between permission and functionality. In our data set, the developers replied with explanations for 234 app versions that were using install-time permissions, in contrast to only 163 explanations for apps with runtime permissions. Oftentimes, the developers ask users to provide more information via mail. The reason for this is the 350 character limit imposed by Google for both reviews and replies. This severely impedes providing comprehensive and detailed information about a specific issue. In 96 cases the developer confirmed the user observation and reported that the issue has already been fixed or the fix is in progress. For 78/96 cases, we could identify SPU in the subsequent version of the respective app. For these cases, we can be very certain that the SPU has been an immediate effect of an SPR. In 50 cases, the developer simply replied with a pre-defined template without responding to details of the review.
+
+# B. Security and Privacy Relevant App Updates (SPU)
+We consider changes in the permission usage of an app as SPU, since these changes would reflect what the user might perceive in terms of security and privacy. Our static analysis found the following SPU between all consecutive app releases in our data set:
+- Requested permissions removed from app: 1,608
+- Permission-protected API calls removed: 1,085
+- Lib calls removed that trigger protected APIs: 940
+In the following, we analyze those changes further.
+
+# 1) Permission changes:
+Acknowledge → Fix
+USER: New permissions Why would this app need access to my location?
+DEVELOPER: Fixed in version 2. Update will be available in some hours.
+
+Explanation → No Update
+USER: Why do you need access to my location? Why on gods good green earth does your app need access to my location info? One star for the privacy steal.
+
+DEVELOPER: Location used for showing and maintenance ads only. App doesn’t use/save/share your location.
+
+Explanation → Update
+USER: Why does it wait until you install it to tell you it’s a trial? Why does it need access to my photos and videos?
+DEVELOPER: Hello. We need access to SD card only for the specific situations like saving configuration files etc. We are working on a new version with runtime permissions support, so with the upcoming version we will request the permissions only when it will be necessary. Team (removed).
+
+after an SPR was posted on Play. Reading the device’s phone state and access to the external storage are the most frequently removed permissions, with external storage also being the top mentioned permission in SPR (see Section IV-A1). The majority of removed permissions allow access to sensitive data, thus indicating a raised privacy awareness of users. Figure 9 shows the top 10 permissions from permission-protected API calls that were removed from the apps. However, removing permission-protected calls does not necessarily mean that the app does no longer require that permission.
+
+2) Change attribution: We identify the root causes for the different results that we observe for removed permissions and permission APIs. An important aspect is statically included third-party code. Figure 10 lists the top 10 removed permissions required by permission-protected API calls triggered by calls to third-party libraries. Many of these permissions allow to retrieve data suitable for user tracking, which has been found in a variety of tracking and advertisement libraries . An interesting case is the WAKE LOCK permission. A study about wake lock misuse  showed that improper usage of this permission often manifests in battery drain, crashes, and app instabilities. Besides permission requests, these are events that can be observed by the user as well. We also found that in 98% (925) of the cases the complete library was removed as part of the app update. In only 14 cases merely the library functionality that required the permission was removed. Figure 11 shows the frequently removed libraries without the extremely common Play Service and Android support libraries. Half of these libraries constitute advertising libraries that require at least the INTERNET permission, typical uses often include ACCESS NETWORK STATE and location permissions as well. For apps that target install-time permissions, the INTERNET permission was frequently mentioned in SPR (228 instances), in particular when the app’s core functionality, e.g., calculator or flashlight, obviously did not require network access. With Android 6, Google downgraded this permission to a normal protection level. As a consequence, it is granted automatically and no longer shown to the user by default. SPR complaining about the INTERNET permission for app versions targeting Android 6 or higher dropped to just 38 instances.

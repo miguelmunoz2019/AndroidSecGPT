@@ -1,0 +1,56 @@
+Another group of works focuses on the risks of using unencrypted connections. Vanrykel et al.  study how apps send unique identifiers over unencrypted connections exposing the user to privacy threats, while  show how several apps are vulnerable to remote code injection due to code updating procedures over HTTP.
+
+Several works evaluate the adoption of secure connections among apps: Razaghpanah et al.  measured the adoption of different libraries performing SSL/TLS operations by fingerprinting their handshake. Oltrogge et al. , instead, measured the adoption of certificate pinning and, by surveying the developers they discovered that the implementation of pinning is considered complex and hard to correctly implement.
+
+Other works focus on identifying SSL problems among apps. One such example is by Fahl et al. , which applied static code analysis and found multiple applications with SSL/TLS code that is potentially vulnerable to MITM attacks. Hubbard et al.  and Onwuzurike et al. , instead, applied a combination of static and dynamic analysis to identify SSL vulnerabilities in popular Android apps.
+
+To conclude, Damjan et al.  propose a new defense mechanism to overcome the problem of broken SSL/TLS implementations named dynamic certificate pinning, while Zhao et al.  discuss several possible counter-measures against SSLStrip.
+
+# Code Reuse
+Several works highlighted how developers rely on online platforms like StackOverflow for their development process. Linares-Vásquez et al.  analyzed more than 213k questions on StackOverflow (related to Android) and built a system to pair a given snippet of code of StackOverflow with a given snippet of code within the Android framework. Their work showed how developers ask questions and change their code once the behavior of a given API changes. Fischer et al. , instead, measured the proliferation of security-related code snippets from StackOverflow in Android apps available on Google Play.  showed how more than 200k apps contain copy-pasted security-related code snippets from StackOverflow. A similar work, not focused on Android, is from Verdi et al.  in which they investigated security vulnerabilities in C++ code snippets shared on StackOverflow. They showed how 2,859 GitHub projects are still affected by vulnerabilities introduced by vulnerable C++ code snippet copied from StackOverflow.
+
+# Advertisements
+Ads on Android have been evaluated both in terms of privacy and security. The first category of works studies ad libraries to identify the privacy implications for the user. Book et al.  tracked the increase in the use of ad libraries among apps and highlight how the permissions used by these libraries may pose particular risks to user privacy. Son et al.  demonstrate how malicious ads can leak the PII of the user. Stevens et al.  instead show how users can be tracked across ad providers due to the amount of personal information sent from the ads libraries and expose how these libraries checked for permissions beyond the required ones to obtain more PII.
+
+The second group of works, instead, focuses mostly on the security impact of ad libraries and proposes different solutions to achieve privilege separation for applications and ads. AdDroid  proposes a new advertisement API to separate privileged advertising functionality from the app. AFrame  and AdSplit , instead, propose a different approach to let ad libraries run in a process separate from that of the application.
+
+# 9 Conclusion
+In this work, we performed the first large-scale analysis of Network Security Policies on the Android ecosystem and we systematically explored the adoption of this new defense mechanism by Android apps. Our analysis shows how developers are still allowing full cleartext on their application. We investigated why insecure communications are still vastly used by applications and we determined one of the root causes to be related to the complex ad ecosystem. Guided by these findings, we designed and implemented a drop-in extension on the actual NSP, which allows developers to specify a “per-package” policy, so that they can embed third-party ad libraries without needing to compromise their app’s security. We hope this work provides useful insights to speed up Google’s “HTTPS Everywhere on Android” effort.
+
+356 29th USENIX Security Symposium USENIX Association
+# Appendix
+# Network Libraries Compliance
+# A Complete Network Security Policy
+&lt;network-security-config&gt;
+&lt;domain-config cleartextTrafficPermitted="false"&gt;
+&lt;domain includeSubdomains="false"&gt;
+android.com
+&lt;/domain&gt;
+&lt;pin-set expiration="2020-12-12"&gt;
+&lt;pin digest="SHA-256"&gt;YZPgTZ+woNCCCIW3LH2CxQeLzB/1m42QcCTBSdgayjs=&lt;/pin&gt;
+&lt;/pin-set&gt;
+&lt;/domain-config&gt;
+&lt;debug-overrides&gt;
+&lt;trust-anchors&gt;
+&lt;certificates src="system"/&gt;
+&lt;certificates src="@raw/custom_cert"/&gt;
+&lt;/trust-anchors&gt;
+&lt;/debug-overrides&gt;
+&lt;/network-security-config&gt;
+USENIX Association 29th USENIX Security Symposium 359
+# Example of Real Network Security Policy
+&lt;domain - config &gt;
+&lt;domain &gt;example .com &lt;/domain &gt;
+&lt;pin -set &gt;
+&lt;pin digest="SHA -256"&gt;HASH &lt;/pin &gt;
+&lt;/pin -set &gt;
+&lt;/domain - config &gt;
+&lt;domain -config &gt;
+&lt;domain &gt;valid_domain &lt;/domain &gt;
+&lt;pin -set &gt;
+&lt;pin digest="SHA -256"&gt;BBBBB .. BBBBBB &lt;/pin &gt;
+&lt;/pin -set &gt;
+&lt;/domain -config &gt;
+(a) (b)
+# Advertisement Libraries
+360 29th USENIX Security Symposium USENIX Association.

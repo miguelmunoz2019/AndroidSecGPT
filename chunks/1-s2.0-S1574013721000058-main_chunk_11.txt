@@ -1,0 +1,109 @@
+32. Y. Aafer, W. Du, H. Yin, Droidapiminer: Mining api-level features for robust malware detection in android, in: International Conference on Security and Privacy in Communication Systems, Springer, 2013, pp. 86–103.
+
+33. D. Arp, M. Spreitzenbarth, M. Hubner, H. Gascon, K. Rieck, C. Siemens, Drebin: Effective and explainable detection of android malware in your pocket, in: Ndss, Vol. 14, 2014, pp. 23–26.
+
+34. M. Lindorfer, M. Neugschwandtner, C. Platzer, Marvin: Efficient and comprehensive mobile app classification through static and dynamic analysis, in: 2015 IEEE 39th Annual Computer Software and Applications Conference, Vol. 2, IEEE, 2015, pp. 422–433.
+
+35. Z. Cai, R.H. Yap, Inferring the detection logic and evaluating the effectiveness of android anti-virus apps, in: Proceedings of the Sixth ACM Conference on Data and Application Security and Privacy, 2016, pp. 172–182.
+
+36. T. Cho, H. Kim, J.H. Yi, Security assessment of code obfuscation based on dynamic monitoring in android things, IEEE Access 5 (2017) 6361–6371.
+
+37. Symantec Security Response, Server-side polymorphic android applications, 2020, [Accessed: 09-Apr-2020]. URL https://www.symantec.com/connect/blogs/server-side-polymorphic-android-applications.
+
+38. C. Wang, J. Davidson, J. Hill, J. Knight, Protection of software-based survivability mechanisms, in: 2001 International Conference on Dependable Systems and Networks, IEEE, 2001, pp. 193–202.
+
+39. S. Chow, Y. Gu, H. Johnson, V.A. Zakharov, An approach to the obfuscation of control-flow of sequential computer programs, in: International Conference on Information Security, Springer, 2001, pp. 144–155.
+
+40. Z. Kan, H. Wang, L. Wu, Y. Guo, G. Xu, Deobfuscating android native binary code, in: Proceedings of the 41st International Conference on Software Engineering: Companion Proceedings, in: ICSE ’19, IEEE Press, 2019, pp. 322–323, http://dx.doi.org/10/ICSE-Companion.
+
+41. S.K. Udupa, S.K. Debray, M. Madou, Deobfuscation: Reverse engineering obfuscated code, in: 12th Working Conference on Reverse Engineering (WCRE’05), IEEE, 2005, pp. 10–pp.
+
+42. K.Z. Chen, N.M. Johnson, V. D’Silva, S. Dai, K. MacNamara, T.R. Magrino, E.X. Wu, M. Rinard, D.X. Song, Contextual policy enforcement in android applications with permission event graphs, in: NDSS, 2013, p. 234.
+
+43. C. Zheng, S. Zhu, S. Dai, G. Gu, X. Gong, X. Han, W. Zou, Smartdroid: an automatic system for revealing ui-based trigger conditions in android applications, in: Proceedings of the Second ACM Workshop on Security and Privacy in Smartphones and Mobile Devices, 2012, pp. 93–104.
+
+44. L.K. Yan, H. Yin, Droidscope: Seamlessly reconstructing the {OS} and dalvik semantic views for dynamic android malware analysis, in: Presented As Part of the 21st {USENIX} Security Symposium ({USENIX} Security 12), 2012, pp. 569–584.
+
+45. A. Amamra, C. Talhi, J.-M. Robert, Smartphone malware detection: From a survey towards taxonomy, in: 2012 7th International Conference on Malicious and Unwanted Software, IEEE, 2012, pp. 79–86.
+
+46. O. Mirzaei, J.M. de Fuentes, J. Tapiador, L. Gonzalez-Manzano, Androdet: An adaptive android obfuscation detector, Future Gener. Comput. Syst. 90 (2019) 240–261.
+
+47. V. Afonso, A. Bianchi, Y. Fratantonio, A. Doupé, M. Polino, P. de Geus, C. Kruegel, G. Vigna, Going native: Using a large-scale analysis of android apps to create a practical native-code sandboxing policy, in: The Network and Distributed System Security Symposium, 2016, pp. 1–15.
+
+48. S. Alam, Z. Qu, R. Riley, Y. Chen, V. Rastogi, Droidnative, Comput. Secur. 65 (C) (2017) 230–246, http://dx.doi.org/10/j.cose.
+
+49. M. Sun, G. Tan, Nativeguard: Protecting android applications from third-party native libraries, in: Proceedings of the 2014 ACM Conference on Security and Privacy in Wireless & Mobile Networks, 2014, pp. 165–176.
+
+50. K. Lu, Deep analysis of android rootnik malware using advanced anti-debug and anti-hook, 2017, [Accessed: 09-Apr-2020]. URL https://www.fortinet.com/blog/threat-research/deep-analysis-of-android-rootnik-malware-using-advanced-anti-debug-and-anti-hook-part-i-debugging-in-the-scope-of-native-layer.html.
+
+51. Mobile Threat Response Team, Zniu: First android malware to exploit dirty cow vulnerability, 2017, [Accessed: 09-Apr-2020]. URL https://blog.trendmicro.com/trendlabs-security-intelligence/zniu-first-android-malware-exploit-dirty-cow-vulnerability/.
+
+52. M. Stone, Unpacking the packed unpacker: Reversing an android anti-analysis native library.
+
+53. P. Junod, J. Rinaldini, J. Wehrli, J. Michielin, Obfuscator-llvm–software protection for the masses, in: 2015 IEEE/ACM 1st International Workshop on Software Protection, IEEE, 2015, pp. 3–9.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+1. M. Backes, S. Bugiel, E. Derr, Reliable third-party library detection in android and its security applications, in: Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security, 2016, pp. 356–367.
+
+2. K. Chen, P. Liu, Y. Zhang, Achieving accuracy and scalability simultaneously in detecting application clones on android markets, in: Proceedings of the 36th International Conference on Software Engineering, 2014, pp. 175–186.
+
+3. K. Chen, X. Wang, Y. Chen, P. Wang, Y. Lee, X. Wang, B. Ma, A. Wang, Y. Zhang, W. Zou, Following devil’s footprints: Cross-platform analysis of potentially harmful libraries on android and ios, in: 2016 IEEE Symposium on Security and Privacy (SP), IEEE, 2016, pp. 357–376.
+
+4. J. Crussell, C. Gibler, H. Chen, Andarwin: Scalable detection of android application clones based on semantics, IEEE Trans. Mob. Comput. 14 (10) (2014) 2007–2019.
+
+5. L. Glanz, S. Amann, M. Eichberg, M. Reif, B. Hermann, J. Lerch, M. Mezini, CodeMatch: obfuscation won’t conceal your repackaged app, in: Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering, 2017, pp. 638–648.
+
+6. M.C. Grace, W. Zhou, X. Jiang, A.-R. Sadeghi, Unsafe exposure analysis of mobile in-app advertisements, in: Proceedings of the Fifth ACM Conference on Security and Privacy in Wireless and Mobile Networks, 2012, pp. 101–112.
+
+7. Z. Ma, H. Wang, Y. Guo, X. Chen, LibRadar: fast and accurate detection of third-party libraries in Android apps, in: Proceedings of the 38th International Conference on Software Engineering Companion, 2016, pp–656.
+
+8. H. Wang, Y. Guo, Z. Ma, X. Chen, Wukong: A scalable and accurate two-phase approach to android app clone detection, in: Proceedings of the 2015 International Symposium on Software Testing and Analysis, 2015, pp. 71–82.
+
+9. M. Li, W. Wang, P. Wang, S. Wang, D. Wu, J. Liu, R. Xue, W. Huo, Libd: scalable and precise third-party library detection in android markets, in: 2017 IEEE/ACM 39th International Conference on Software Engineering (ICSE), IEEE, 2017, pp. 335–346.
+
+10. Y. Wang, H. Wu, H. Zhang, A. Rountev, Orlis: Obfuscation-resilient library detection for android, in: 2018 IEEE/ACM 5th International Conference on Mobile Software Engineering and Systems (MOBILESoft), IEEE, 2018, pp. 13–23.
+
+11. C. Ren, K. Chen, P. Liu, Droidmarking: resilient software watermarking for impeding android application repackaging, in: Proceedings of the 29th ACM/IEEE International Conference on Automated Software Engineering, 2014, pp. 635–646.
+
+12. J. Qiu, B. Yadegari, B. Johannesmeyer, S. Debray, X. Su, Identifying and understanding self-checksumming defenses in software, in: Proceedings of the 5th ACM Conference on Data and Application Security and Privacy, 2015, pp. 207–218.
+
+13. Intertrust Secure Systems, Application shielding with intertrust’s white- cryption code protection, 2018, [Accessed: 09-Apr-2020]. URL https://www.infosecurityeurope.com/__novadocuments/594809.
+
+14. N. Totosis, C. Patsakis, Android hooking revisited, in: 2018 IEEE 16th Intl Conf on Dependable, Autonomic and Secure Computing, 16th Intl Conf on Pervasive Intelligence and Computing, 4th Intl Conf on Big Data Intelligence and Computing and Cyber Science and Technology Congress (DASC/PiCom/DataCom/CyberSciTech), IEEE, 2018, pp. 552–559.
+
+15. D. Maier, T. Müller, M. Protsenko, Divide-and-conquer: Why android malware cannot be stopped, in: 2014 Ninth International Conference on Availability, Reliability and Security, IEEE, 2014, pp. 30–39.
+
+16. T. Vidas, N. Christin, Evading android runtime analysis via sandbox detection, in: Proceedings of the 9th ACM Symposium on Information, Computer and Communications Security, 2014, pp. 447–458.
+
+17. L. SaurikIT, Cydia substrate, the powerful code modification platform behind cydia, 2016.
+
+18. X. Framework, The xposed framework source code, 2017.
+
+19. J. Lopes, Who Owns Your Runtime?, Nettitude Labs, 2017, URL https://labs.nettitude.com/blog/ios-and-android-runtime-and-anti- debugging-protections/.
+
+20. H. Cho, J. Lim, H. Kim, J.H. Yi, Anti-debugging scheme for protecting mobile apps on android platform, J. Supercomput. 72 (1) (2016) 232–246.
+
+21. S. Cesare, Linux anti-debugging techniques, in: Security Focus, 1999.
+
+22. M.N. Gagnon, S. Taylor, A.K. Ghosh, Software protection through anti-debugging, IEEE Secur. Priv. 5 (3) (2007) 82–84.
+
+23. Amat: Android malware analysis toolkit, 2020, [Accessed: 09-Apr-2020]. URL http://sourceforge.net/projects/amatlinux/.
+
+24. L. Weichselbaum, M. Neugschwandtner, M. Lindorfer, Y. Fratantonio, V. van der Veen, C. Platzer, Andrubis: Android Malware Under the Magnifying Glass, Tech. Rep. TR-ISECLAB-0414-001, Vienna University of Technology, 2014, pp. 1–10.
+
+25. K. Tam, S.J. Khan, A. Fattori, L. Cavallaro, Copperdroid: Automatic reconstruction of android malware behaviors, in: Ndss, 2015.
+
+26. A. Desnos, P. Lantz, Droidbox: an Android Application Sandbox for Dynamic Analysis, Tech. Rep, Lund Univ., 2011.
+
+27. Botnet Research Team and others, SandDroid: An Apk Analysis Sandbox, Xi’an jiaotong university, 2014.
+
+28. T. Bläsing, L. Batyuk, A.-D. Schmidt, S.A. Camtepe, S. Albayrak, An android application sandbox system for suspicious software detection, in: 2010 5th International Conference on Malicious and Unwanted Software, IEEE, 2010, pp. 55–62.
+
+29. T. Petsas, G. Voyatzis, E. Athanasopoulos, M. Polychronakis, S. Ioannidis, Rage against the virtual machine: hindering dynamic analysis of android malware, in: Proceedings of the Seventh European Workshop on System Security, 2014, pp. 1–6.
+
+30. P. Ferrie, Attacks on more virtual machine emulators. Symantec technology exchange 2007, 2017.
+
+31. R. Paleari, L. Martignoni, G.F. Roglia, D. Bruschi, A fistful of red-pills: How to automatically generate procedures to detect CPU emulators, in: Proceedings of the USENIX Workshop on Offensive Technologies (WOOT), Vol. 41, 2009, pp. 86.
+
+32. J. Rutkowska, Redpill: Detect vmm using (almost) one cpu instruction, 2004, http://invisiblethings.org/papers/redpill.html.

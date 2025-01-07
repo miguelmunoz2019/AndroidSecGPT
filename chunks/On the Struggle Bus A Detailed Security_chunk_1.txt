@@ -1,0 +1,78 @@
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+# Jorge Sanz Maroto, Haoyu Liu, and Paul Patras(B)
+# School of Informatics, The University of Edinburgh, Edinburgh, UK
+# paul.patras@ed.ac.uk
+# Abstract
+The growing shift from private to public transportation and the increasing use of smartphones have lead to the development of digital transport ticketing systems. Such systems allow transport operators to enhance their services and income, therefore are important assets that require secure implementation and protocols. This paper uncovers a range of vulnerabilities in the m-tickets app used by Lothian Buses, one of the leading transport operators in the United Kingdom (UK). The vulnerabilities identified enable attackers to predict, reactivate and modify tickets, all of which can have damaging consequences to the operator’s business. We further reveal poor implementation of encryption mechanisms, which can lead to information leakage, as well as how adversaries could harness the operator’s infrastructure to launch Denial of Service attacks. We propose several improvements to mitigate the weaknesses identified, in particular an alternative digital ticketing system, which can serve as a blueprint for increasing the robustness of similar apps.
+
+# Keywords
+Mobile app security · Reverse-engineering · Information leakage
+# 1 Introduction
+As of 2020, 3 billion smartphones have been produced , equivalent to 45% of the world population. The transportation industry is catching up with this trend and transitioning from cash-based ticketing systems to digital tickets. In a market that was estimated to be worth $500 billion in 2017 , the economic impact of public transport ticketing apps is ever-growing. As these systems become more widespread, it is vital that their operation cannot be tampered with for illicit purposes and user data remain protected.
+
+This paper investigates the security and robustness of m-tickets, a popular local transport ticketing app deployed among others by Lothian Buses. Lothian Buses manages the majority of public transport operations in Edinburgh, UK, and the Lothian region; it is also the biggest public municipal bus company in the UK, serving approximately 2 million passengers per week with a fleet of over 840 buses, and has a daily revenue of approximately £440,000 . We use this as a case study to reveal multiple weaknesses public transport ticketing apps suffer.
+
+©c Springer Nature Switzerland AG 2020 W. Susilo et al. (Eds.): ISC 2020, LNCS 12472, pp. 234–252, 2020. https://doi.org/10/978-3-030-62974-8_14
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+from, including the prediction of tickets and availability issues. Additionally, we propose solutions to the problems identified, in order to improve the security of such systems, whilst maintaining the intended functionality of the official apps.
+
+# Prior Work
+One of the most notable vulnerabilities in the UK public transport ticketing system was discovered by two Dutch security researchers in 2008 . By exploiting the fact that the older version of the London transport system’s Oyster card used Mifare 1k chips, the researchers were able to extract an Oyster card’s encryption key and use this to clone and modify other cards as desired. This led to a swap of all Oyster cards in circulation with newly developed, encrypted cards, despite the massive cost incurred.
+
+In terms of transport apps, get me there, which can be used for purchasing tickets valid in the Greater Manchester Metrolink tram system, was recently compromised, allowing hackers to create free tickets and defraud operators , while posting the methodology used on Reddit . The group explained how they were able to extract the private keys used to build the ticket QR codes directly from the source code, making the findings public without responsible disclosure. The app was developed by Corethree, the same company that developed the app in used by Lothian Buses, which we scrutinise in this study.
+
+# Contributions
+To the best of our knowledge, there are no scientific papers undertaking a formal security analysis on public transportation apps. This paper aims to fill this important gap and stimulate further research on this topic. As such, we make the following key contributions:
+1. We reverse-engineer the m-tickets app, revealing an exploit that enables to predict valid tickets for any future date; additionally, we devise a method to modify the characteristics of any given ticket.
+
+2. We design a simple app that works side by side with the official one, to reactivate old, expired tickets, thereby converting a single ticket purchase into an unlimited source of tickets.
+
+3. We propose an alternative system to fix all the vulnerabilities identified and preserve the intended app functionality.
+
+# Responsible Disclosure
+Prior to the submission of this manuscript, we contacted both the transport operator using this app and the company developing the app, to disclose the vulnerabilities found. The developers are now aware of the problems we discovered and are working towards fixing these vulnerabilities.
+
+# The M-Tickets App
+Lothian Buses is a company primarily owned by The City of Edinburgh Council (91% ownership), which operates the majority of bus services that run in Edinburgh and some throughout the surrounding Midlothian, East Lothian and West Lothian counties. The so called Lothian City division provides the local bus operations with an extensive network of routes that are active 24 h/day, 365
+# Transport for Edinburgh
+# Share Tickets
+# My Tickets
+ACTIVE hide tickets
+There are currently no active tickets
+AVAILABLE (1) hide tickets
+Adult SINGLE ticket
+AVAILABLE until 25/8/2020 at 19 to activate
+Tap
+More available tickets
+# (a) Main screen
+# Buy Tickets
+minimum oncpascnecr
+Jiter J804n cuvicl
+Send purchased tickets to your friends and family:
+Browtseticket categories here- Add tickets your basket and choose "Checkout" when you are ready to pay:
+# Lothian Buses
+Tickets for Lothian Buses
+# Edinburgh Trams
+Tickets for Edinburgh Trams
+# Airlink & Skylink
+Tickets for Airlink 100 and Skylink 200, 300 400 airport services
+# ECb East Coast buses
+Tickets for East Coast buses
+# (b) Buying different tickets
+# (c) Sharing a ticket
+days/year. In addition, the company owns four other divisions with a focus on sightseeing, private services, and commuter routes.
+
+Given the size of its customer base and the rapid uptake of mobile technology, the company has adopted a mobile app to offer a ticket purchasing and storage service to users. The m-tickets app is developed by Corethree, an award winning company  specialised in solving the ticketing challenges faced by public and private transport companies. Some of the apps in the company’s portfolio serve Transport for Greater Manchester, Transport of London, Northern Link Ferries, Translink, and many more. The m-tickets app is compiled from the same source code for both Android and iOS platforms, has over 200,000 downloads, and we estimate 20%–35% of these correspond to active users . Using the number of weekly customers, we expect the Lothian Buses app accounts for 12%–21% of the tickets purchased on a daily basis, generating between £19 and £34 million in revenue per year. Even though this is clearly an important asset for the company, the app was known to have several connectivity and availability problems , which we investigate in depth in this paper.
+
+In this work, we focus on the Android version of the app, specifically version 9 released on the 17th of July 2019, which at the time of writing is the latest version. Once the app is opened, the user is greeted with a screen displaying the number of tickets available or active (see Fig. 1a). The user has the option to buy (Fig. 1b) or share (Fig. 1c) tickets displayed next to the available ones. Ticket sharing is performed by asking the user for the recipient’s email address. The recipient will receive an email containing a hyperlink that, once...
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+clicked, adds the sent tickets to their respective list of available tickets. Both sharing and buying of tickets are not available without Internet access.
+
+# 3 Adversary Model
+We expect an attacker to already have a copy of the Android app and have basic understanding of the Android app ecosystem. Additionally, we expect the adversary to have some reverse-engineering knowledge and the appropriate tools to intercept traffic from and to the app. Lastly, the attacker would have basic networking and programming knowledge, enough to identify vulnerable code.
+
+Parts of the app that may be prone to attacks and possible scenarios include:
+1. Financial Interest. The app’s main purpose is to provide tickets to users; however, this has an implied given cost. An attacker may attempt to exploit this application to overcome the financial burden, by figuring out a way of obtaining valid tickets without paying.
+
+2. Denial of Service. Attackers may attempt to take control of the resources used by the transport operator and seek to disrupt the standard behavior of the app or servers. This may involve flooding target victims with unsolicited messages, which in the process can also harm the reputation of the operator, as the source of the hijacked resources would be attributed to them.

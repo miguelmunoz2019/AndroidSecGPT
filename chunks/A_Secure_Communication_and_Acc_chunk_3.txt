@@ -1,0 +1,62 @@
+# 4. “Isolation Application” Installation Module
+This module is used to create the isolated environment, i.e., to install the “isolation application.” There are many ways to install applications in Android, but in essence, they are all installed through PMS. We modified the relevant code in PMS so that it can install “isolated application” additionally. PMS generally completes the installation in four steps: parse, scan, reconcile, and commit. When PMS is ready to commit the installation results, the application is basically installed. Therefore, we choose to take over the installation process before PMS commits the installation results and starts installing the “isolation application,” as shown in Figure 5.
+
+From the view of the system, installation is the process that the application’s dynamic and static information is organized in the form of PackageSetting and Package and stored in the corresponding management table of PMS. In our scheme, installing the “isolation application” is completed in four steps as follows.
+
+1. Create a Package for the “isolation application.” The “isolation application” is similar to the host application in terms of many pieces of information, so the Package of the “isolation application” is created by copying that of the host application and modifying the different pieces of information in it. There are two essential modifications:
+- a. Add the symbol “+” at the end of the package name of the “isolation application,” so that our system can easily find the “isolation application” corresponding to the host application. For example, if the package name of the host application is “com.android.dialer,” then set the package name of the “isolation application” to “com.android.dialer+.”
+- b. Modify the permission request information of the “isolation application.” The Android permission mechanism is not modified in this paper, and the system still uses requestedPermissions for permission request judgment (introduced in Section 3). The new member libRequestedPermissions added in Section 3 is only used to temporarily store the permissions extraction results of the shared library and does not play a functional role. Therefore, the information in requestedPermissions needs to be replaced by the information in libRequestedPermissions in the Package of the “isolation application.”
+2. Create PackageSetting for the “isolation application,” which is similar to the process in Step 1.
+
+3. Register a new UID for the “isolation application,” which can be done by the function registerAppIdLPw provided by the system. After the UID is successfully registered, the value of the UID needs to be updated in PackageSetting and Package.
+
+4. Add Package and PackageSetting of the “isolation application” to the system, i.e., store the information created in Step 1 and Step 2 into the two core members of the PMS, which are mPackages and mSettings.
+
+# 4. Permission Management of Shared Libraries
+The permissions declared by the developer in the Manifest file will eventually be stored in requestedPermissions, but it does not indicate that the application has these permissions. The system actually records the status of an application for particular permission through PackageSetting.
+
+In earlier versions of Android, after the initialization of PackageSetting, the status of the application’s permissions is all False. And during the commit phase of the installation, the system grants these permissions. That is, the status will change to be True. In the high version of Android with the dynamic authorization mechanism, after the installation of the application, the status of the normal-level permission recorded in PackageSetting will be updated to True. In contrast, the status of the dangerous-level permission remains False and needs to be dynamically requested from the user. If the application dynamically applies for dangerous permission, the system will first check whether the permission is in requestedPermissions. If it is not, the system...
+
+# Security and Communication Networks
+# 6
+# Process of Host Creation
+# Process of Isolation Application Installation
+# Reconcile
+# Register
+# Commit
+# Result Storage
+will consider that the application does not declare this SharedLibraryLoad service. This is a new system service added by our scheme, used to coordinate the remote loading of shared libraries.
+
+Step 3: The SharedLibraryLoad service determines if the isolated environment is ready. If the “isolation application” is not started, the SharedLibraryLoad sends the request of starting the “isolation application” to AMS (Activity Manager Service). AMS is one of the core Android system services, mainly used to manage the lifecycle of applications.
+
+Step 4: AMS starts the “isolation application.” In this process, the “isolation application” can be started as a background process by configuring the start parameters.
+
+Step 5-6: After the “isolation application” is successfully started, the execution process will be returned to AMS, which will further send the start result to the SharedLibraryLoad service.
+
+Step 7–10: The SharedLibraryLoad service creates a request and delegates ART to load the shared library into the “isolation application” and then sends the result to the host application.
+
+After the above steps, the host application will mistakenly believe that its process has successfully loaded the shared library. Still, the shared library has been remotely loaded to the “isolation application,” satisfying the first design goal of the runtime phase.
+
+# 4. Runtime Parse
+The goals of the application runtime include the following. (1) When the host application loads a shared library, the relevant shared library should be loaded into the “isolation application.” (2) When the host application calls a shared library function, the request should be sent to the “isolation application” automatically. The function should be executed in the “isolation application” and the result should be returned to the host application, satisfying the first design goal of the runtime phase.
+
+# 4. Shared Library Remote Loading Module
+This module is used for remotely loading the shared library to the “isolation application.” The workflow of this module is shown in Figure 6, which consists of the following 10 steps.
+
+Step 1: The host application loads the shared libraries via ART.
+
+Step 2: If the current shared library needs to be isolated, SEBox blocks the loading process of the native shared library and sends the remote loading request to the.
+
+# 4. Native Function Remote Calling Module
+The shared library is loaded into the “isolation application.” When the host application calls a function in the shared library, the function should be executed in the “isolation application” and the result should be returned to the host application. This module is used for coordinating the above process, i.e., native method remote calls.
+
+The relevant structures in the ART virtual machine are modified in this paper. Each Java method has a corresponding ArtMethod Object in ART, which describes.
+
+# Security and Communication Networks
+# 5. Evaluation
+We evaluated SEBOX comprehensively from three perspectives. First, we constructed an actual threat scenario to test the functionality of SEBOX, i.e., to verify whether SEBOX can effectively intercept the overstepping behavior of a malicious native library. Second, SEBox was evaluated for performance on a representative benchmark suite and several benchmark apps. Finally, SEBox is compared to other similar works. SEBox is implemented based on AOSP (Android Open Source Project) 10_r1. The experiments were conducted on two Pixel2 smartphones running SEBox and the stock Android (AOSP 10_r1), respectively. All performance numbers were averaged over ten runs.
+
+# 5. Functionality Test
+To evaluate the functionality of SEBox, we constructed an actual threat scenario based on the threat model proposed in the overview section, as shown in Figure 8.
+
+The left part of Figure 8 shows the UI of the sample application. Once the “Get Current Time” area is clicked, the current time will be displayed in the white space. The middle part of Figure 8 shows the code logic of this application. The developer obtains the current time through the function getTime() provided by the third-party shared library and displays the result through the TextView (A UI component for Android). In the threat model of this paper, the TPL is not trusted, in which it is easier to insert malicious code. As shown in the lower part of Figure 8, the malicious code makes reflection calls on the API getLine1Number to get the user’s phone number and displays the result through the system log. Although this API is protected by the permission READ_PHONE_STATE of the Android system, the shared library can call this API as long as the host application has this permission. We install the application and grant it READ_PHONE_STATE permission on the stock Android system and SEBox. The system log output is shown in the right part of Figure 8 after clicking the “Get Current Time” area several times. Whenever a user obtains the current time in the stock Android system, the phone number will be leaked, while in the system based on SEBox, the shared library is isolated and runs in a low-permission environment. The library’s malicious code cannot work due to the lack of necessary permissions. Therefore, SEBox can effectively manage the permissions of shared libraries and prevent them from overusing permissions.

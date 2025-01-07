@@ -1,0 +1,64 @@
+We solved both challenges by leveraging hidden API endpoints to register apps to the corresponding accounts used for analysis as well as to download the corresponding APK and IPA files for Android and iOS, respectively. Neither Google nor Apple provide publicly advertised endpoints to automatically download a list of the current most popular apps or the apps themselves. However, using open source tools and adapting existing web APIs, we are able to automate app acquisition of the top 100 apps across different categories for both Android and iOS. Those categories encompass all main categories of both Android and iOS.
+
+Android To gain access to the top 100 apps across different categories on Android, we leverage the published charts by Google themselves. This ranking is not linked anywhere we know and was found by accident through search engines. We use the access point to access lists across the different categories whose IDs can be extracted via the Google Play Store interface and used the PlaystoreDownloader  to download and store the corresponding APKs.
+
+iOS By observing iTunes traffic, we discovered the required endpoint. We leverage the returned list for each category to download apps using IPATool . However, IPATool used to only be able to download already purchased apps. We overcame this limitation by further traffic analysis and reverse engineering of tools capable of buying but not downloading. Those insights have already been fed back to the community and are now part of the current IPATool.
+
+For our consent dialog detection and classification, we used our automated app acquisition to download the top 100 of each primary category for both Android and iOS. This resulted in the successful download of 3006 Android and 1773 iOS applications. We performed the downloads from 2022-11-17 to 2022-11-18 for Android and from 2022-12-04 to 2022-12-05 for iOS.
+
+# 5 Consent Management Platforms
+Consent Management Platforms (CMP) are off-the-shelf solutions to ensure legal compliance for data collection. They allow developers to forgo consent implementations and leverage standardization. CMPs are potentially useful for researchers as there is only a limited amount and each has a standardized method of recording consent. They also provide data collec-
+2 http://wwwu.com/
+3 https://play.google.com/store/apps
+5470 32nd USENIX Security Symposium USENIX Association
+# 5 Prevalence of CMPs
+Theoretically, CMPs allow developers to ensure that they stay within the boundaries of the law. However, due to their high configurability, this might not always be the case  and recent rulings have declared one large framework for CMPs to actually be in breach of the GDPR.
+
+As CMPs provide a high degree of standardization across apps that use them, they provide an easy to leverage approach towards an analysis framework. However, a sufficiently high usage across mobile applications has to be present.
+
+Analysis of the web has shown that between 6% and 13% of European websites deploy CMPs  and roughly 40% of the top 10k US websites . If this is also the case across sufficient mobile applications, this could ease our detection and analysis of privacy consent dialogs.
+
+The Interactive Advertising Bureau (IAB) has designed the Transparency and Consent Framework (TCF) that intends to work across multiple CMPs. According to their website, they have 79 web CMPs compliant with their framework and 32 with their mobile framework. This makes the TCF and any TCF-compliant CMP a great target for further consent and consent dialog analysis. However, even usage of the TCF might not ensure compliance with the GDPR, as a recent ruling declared it not GDPR-compliant.
+
+# 5 Static Analysis of CMP Usage
+To estimate the popularity of CMPs and TCF-compliant CMPs, we use static analysis to detect whether an app potentially uses a CMP. A large prevalence of CMPs would allow us to leverage the corresponding standardization. To detect potential usage of a CMP, we search the included libraries of the APKs and IPAs with a similar approach to what the Exodus Privacy project uses to check for the presence of tracking libraries : We extract a list of the contained libraries in the IPA and APK application packages and search for known CMP names. This provides a rough estimate on the minimal amount of CMPs being in use. We do not perform any further static analysis, e.g., analyzing liveness of the library code or configuration parameter.
+
+Android: To gain access to the included libraries, we use dexdump for Android APK files that can statically extract the names of the included classes from an APK. Those names are then searched for known CMPs.
+
+iOS: An IPA is essentially a ZIP file that stores all included libraries4. The included subdirectory names are then searched for known CMP identifiers.
+
+# 5 Detected CMP Usage
+We first curated a list of 26 different CMPs based on the official IAB TCF vendor list  as well as external resources . This list is a best effort approach towards detecting CMPs but not necessarily exhaustive. We were able to determine the CMP vendor names for 20 TCF-compliant CMPs and 6 additional CMPs. We searched 4779 apps and detected 252 (5%) applications containing libraries or classes matching our curated list.
+
+We detected IAB TCF-compliant CMPs in 252 apps (5%). 199 (6%) Android apps and 53 (2%) iOS apps contained at least one CMP.
+
+Note that simply including a CMP-related class or library does not necessarily mean actual (or proper) usage.
+
+# 5 Lessons Learned
+Overall, only a small fraction of apps use one of our CMPs. All of the detected CMPs were IAB compliant but with 5% of all apps too low to use for our purposes. As our analysis was static, we do not know the amount of apps actually using the included CMPs and we expect that the amount of actively used CMPs is even lower. Consequently, any analysis done based on CMPs would not yield meaningful results and miss a large fraction of applications.
+
+# 6 Analyzing Mobile Consent
+We have established that focusing our analysis of privacy consent dialogs by leveraging CMPs does not work, thus, a more complex analysis tool chain is required. Our analysis methodology dynamically identifies and analyzes existing consent solutions deployed by apps. We run each app, monitor network traffic, and extract and interact with any presented consent dialog to analyze how consent dialogs affect data transmission and what design choices were made with regard to coercing a user to give consent.
+
+We start by detailing our dynamic analysis and how we run, monitor, and interact with each mobile application. Our goal is to run each app, monitor traffic, as well as analyze, and interact with privacy consent dialogs. For this, we first detail how we designed our app execution and traffic recording into which we hook our consent dialog extraction and analysis leveraging Appium.
+
+We are dedicated to open source research and will open source our tools described below5.
+
+4The subdirectory is /Payload/&lt;app name&gt;.app/Frameworks/
+5https://github.com/the-ok-is-not-enough
+# 6 App Execution and Traffic Recording
+Execution of apps for iOS and Android face different challenges on a first view as either is their own operating system.
+
+For iOS we leverage a jailbroken iPhone, libimobiledevice , Frida  for automation, and SSL Kill Switch 2  to disable SSL certificate validation including certificate pinning. A pre-configured mitmproxy  is used to collect traffic. We mirror this setup for Android using a Galaxy A13 as a device, Frida and objection  for automation and disabling of SSL checking and certificate pinning.
+
+Either framework essentially executes four steps:
+1. Install the apps and give permissions. This uses the approach described by Koch et al.  using ideviceinstaller and the iPhone internal permission database for iOS or adb on Android that also allows granting permissions.
+
+2. Run the apps using Open  on iOS and objection on Android and perform any required interaction.
+
+3. Collect the traffic generated while the app is running via a pre-configured proxy running mitmproxy.
+
+4. Remove the app using again ideviceinstaller on iOS and adb on Android.
+
+# 6 Consent Dialog Extraction and Analysis
+We now address the question of how we detect and analyze displayed privacy consent dialog in an open app. Our first step is to introduce a taxonomy, classifying privacy consent dialog into three major types. Based on this taxonomy, we explain how we distinguish between those types and perform further analysis to detect deviation from the design requirements established in Section 3.

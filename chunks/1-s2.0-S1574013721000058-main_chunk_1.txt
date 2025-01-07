@@ -1,0 +1,98 @@
+# Computer Science Review 39 (2021) 100365
+# Contents lists available at ScienceDirect
+# Computer Science Review
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/cosrev
+# Review article
+# A survey of android application and malware hardening
+Vikas Sihag a,b,∗, Manu Vardhan b, Pradeep Singh b
+a Sardar Patel University of Police, Security and Criminal Justice, Jodhpur, India
+b National Institute of Technology, Raipur, India
+# a r t i c l e i n f o
+Article history:
+Received 22 June 2020
+Received in revised form 25 December 2020
+Accepted 13 January 2021
+Available online 22 January 2021
+# Keywords:
+Android, Malware analysis, Code obfuscation, Evasion techniques
+# Abstract
+In the age of increasing mobile and smart connectivity, malware poses an ever evolving threat to individuals, societies and nations. Anti-malware companies are often the first and only line of defense for mobile users. Driven by economic benefits, quantity and complexity of Android malware are increasing, thus making them difficult to detect. Malware authors employ multiple techniques (e.g. code obfuscation, packaging and encryption) to evade static analysis (signature based) and dynamic analysis (behavior based) detection methods. In this article, we present an overview of Android and its state of the art security services. We then present an exhaustive and analytic taxonomy of Android malware hardening techniques available in the literature. Furthermore, we review and analyze the code obfuscation and preventive techniques used by malware to evade detection. Hardening mechanisms are also popular amongst application developers to fortify against reverse engineering. Based on our in-depth survey, we highlight the issues related to them and manifest future directions. We believe the need to examine the effectiveness and efficiency of hardening techniques and their combination.
+
+# Contents
+1. Introduction......................................................................................................................................................................................................................... 2
+2. Android overview ............................................................................................................................................................................................................... 4
+1. Android architecture.............................................................................................................................................................................................. 4
+2. APK file structure................................................................................................................................................................................................... 4
+3. APK compilation and execution ........................................................................................................................................................................... 5
+4. Android security framework ................................................................................................................................................................................ 6
+1. Linux security ................................................................................................................................................................................................. 6
+2. Digital signature mechanism ........................................................................................................................................................................... 6
+3. Sandboxing........................................................................................................................................................................................................ 6
+4. Encryption ........................................................................................................................................................................................................ 7
+5. App manifest.................................................................................................................................................................................................... 7
+6. Inter Component Communication (ICC) ...................................................................................................................................................... 8
+7. Permission model .......................................................................................................................................................................................... 8
+5. Android application hardening .................................................................................................................................................................................. 8
+1. Trivial APK techniques .................................................................................................................................................................................... 9
+1. Repackaging ................................................................................................................................................................................................ 9
+2. Disassembling and reassembling................................................................................................................................................................. 10
+3. Realignment .................................................................................................................................................................................................. 10
+4. Manifest file modification ........................................................................................................................................................................... 10
+2. Code obfuscation.................................................................................................................................................................................................... 10
+1. Constant data obfuscation........................................................................................................................................................................... 10
+2. Variable data obfuscation........................................................................................................................................................................... 11
+3. Code logic obfuscation................................................................................................................................................................................ 12
+3. Preventive techniques ........................................................................................................................................................................................ 14
+1. Anti tampering ................................................................................................................................................................................................ 14
+∗ Corresponding author at: Sardar Patel University of Police, Security and Criminal Justice, Jodhpur, India.
+
+E-mail addresses: vikas.sihag@policeuniversity.ac.in (V. Sihag), mvardhan.cs@nitrr.ac.in (M. Vardhan), psingh.cs@nitrr.ac.in (P. Singh).
+
+https://doi.org/10/j.cosrev
+1574-0137/© 2021 Elsevier Inc. All rights reserved.
+
+# Computer Science Review 39 (2021) 100365
+# 1. Introduction
+Smartphone’s pervasive presence has offered new possibilities to life experiences, with its power to compute, sense, connect and to be mobile. Android OS since its release in 2008, has grown as the most preferred choice in the market with over 2 billion active devices worldwide and 74% share in December 2019 . Android’s success can be ascribed to its free open source code, which provides smartphone manufacturers with the liberty to transform their devices with pre-installed applications (aka apps) and customized user-interface for enriched customer experience. Google Play Store, Android’s official application hosting service has over 2 million apps generating about 140 million USD . The popularity of Android, its open environment and well established universal app distribution model accord to the creation of dangerous attack surfaces for threat actors targeting user’s security and privacy.
+
+Spotted in 2010, the first Android Malware was DroidSMS, which targeted users by subscribing premium SMS services. Since then multiple genres of malware have targeted Android ranging from downloaders to clickers, spyware to banking trojans and adware to ransomware. Recently CamScanner a popular document scanning app with more than 100 million downloads on Google Play store was identified to be infected with AndroidOS.Necro.n dropper, which once installed attempts to install a payload . Recently, 983 cases of known vulnerabilities and 655 zero-days were found among the top 5000 free apps (each with 1M to 500M downloads).
+
+The growing popularity of Android has brought the attention of developers adopting state of the art application hardening techniques like obfuscation and protection mechanisms as reflected in Fig. 1. By application hardening, we refer to enhancements of an application to deter tampering or reverse engineering. Malware researchers are propagating obfuscated and encrypted banking trojans, evading anti-malware scanners. They employ code obfuscation, encryption, dynamic loading and native code execution to circumvent Google Play protection [5–14]. App developers, on the other hand, are using them to prevent their source code and intellectual property from misuse. Both extremes, benign and malicious are fighting against app reversal. In computer science vocabulary, reverse engineering also known as back engineering is the process by which an object or executable file (APK archive for Android) is deconstructed to reveal its designs and architecture.
+
+A typical malware scanner, extract features and characteristics of a target application, which are then used to identify its behavior and thus understand its internal working. Application features present information about “What an application looks like” and "How an application behaves?". Features extracted using static analysis gives insight into the former and features extracted using dynamic analysis answers the latter. Static analysis investigates malware without the real code or instructions being executed. It provide basic information about app functionality and collect technical indicators, which may include file name, MD5 hashes, file type, file size, API calls, libraries, etc. Dynamic analysis executes and monitors an application, to track its behavior, understand features and identify indicators that can be used as detection signatures. Dynamic analysis technical indicators can include the location of files, registry keys, domain names, IP addresses and dynamic libraries.
+
+The goal of this survey is to review and classify the existing Android application hardening techniques. They are categorized based on their target and impact. In particular, we examine mechanisms targeting application APK file, application code or application execution environment. This survey would be beneficial to developers and researchers, to understand the current state of hardening techniques and their effectiveness.
+
+Unlike previous reviews, this survey does not do a general overview of Android malware evolution and detection techniques  but in detail focuses on Android application hardening methods systematically. It differs from previous surveys as depicted in Table 1. Previous works either reviewed code obfuscation methods or evasion/preventive techniques. The works on obfuscation except a few were limited to popular techniques. This paper assesses the effectiveness of obfuscation methods and compares the state of the art tools. The existing literature on preventive or evasion techniques is constrained to a few methods (anti-debugging, anti-emulator). This article provides a comprehensive view of all preventive measures to the best of our knowledge. This study fills the gap by presenting an eagle-eye view of application hardening used by malware authors and developers.
+
+# Organization of the paper
+The layout of the survey is illustrated in Fig. 2. We describe Android architecture (Section 2), application format, compilation and Android security framework. We elaborate application hardening techniques (Section 3) employed at various levels by both developers and malware authors. Furthermore, we assess effectiveness of obfuscation techniques (Section 4) and contrast state of the art hardening tools (Section 5). Subsequently we propose future research directions (Section 7) and conclude (Section 8).
+
+# 3. Anti hooking
+# 3. Anti debugging
+# 3. Anti emulation
+# 3. Device binding
+# 3. Anti rooting
+# 3. Anti tainting
+# 3. Anti keylogger
+# 3. Anti-screen reader
+# 3. Other techniques
+# 3. Network communication hardening
+# 3. Resource centric obfuscation
+# 4. Effectiveness of obfuscation methods
+# 5. Android obfuscators and hardening tools
+# 6. Related works
+# 7. Discussion and directions for future works
+# 8. Conclusion
+Declaration of competing interest
+References
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# 2. Android overview
+Android was designed by the Open Handset Alliance (OHA), which is a consortium led by Google of companies such as Samsung, Sony, Intel and more to give services and deploy handsets with Android platform. With the release of the very first model of Android on Nov 5, 2007, versions are released beneath a code-name predicated on desserts, such as Apple Pie, Gingerbread, Marshmallow, etc. In this section, we discuss the Android architecture, application file structure, application compilation, execution, and security framework.
+
+# 2. Android architecture
+Android is an open-source software stack of interfaces, with each layer, and the corresponding elements within each layer, tightly integrated and carefully tuned to provide the optimal application execution and development environment. The interfaces as depicted in Fig. 3 includes a Linux Kernel, set of libraries, runtime environment, API framework and applications.

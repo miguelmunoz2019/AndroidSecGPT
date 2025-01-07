@@ -1,0 +1,173 @@
+# Listing 10: Cross site scripting vulnerability
+WebView webView = findViewById(R.id.webView);
+webView.getSettings().setJavaScriptEnabled(true);
+webView.loadUrl("file:///android_res/raw/index.html");
+webView.addJavascriptInterface(new WebAppInterface(this), "Android");
+# 4 WebView URL Location Monitoring
+Browsing websites in WebView triggers WebViewClient shouldOverrideUrlLoading methods which can prevent or allow the WebView from visiting the URL. However, the same method can be used to track user visits to websites. This way an app can easily track user websites visits and can use it to show activity based ads, promotions, content, etc. This case is reproducible in both Android Auto and Android Automotive emulators. Listing 11, shows an example of how an app can track user website visits. shouldOverrideUrlLoading method gets invoked every time user hits a different URL in the browser. From the request object a malicious app can get the URL and upload it to their server.
+
+# Listing 11: Webview URL monitoring vulnerability
+webView.setWebViewClient(new WebViewClient() {
+@Override
+public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+view.loadUrl(request.getUrl().toString());
+Log.d("WebViewActivity", String.format("URL: %s", request.getUrl().toString()));
+return false;
+}
+});
+# 4 JavaScript interfacing Vulnerabilities
+Adding JavaScript Interface to WebView enables JavaScript to perform native Android functionality, the severity depends on the type of functionality exposed. As for the best practices, an app should expose the JavaScript interface to local web pages instead of all web pages. As we experimented on it, adding JavaScript interface works in both Android Auto and Android Automotive emulators. Listing 12, shows an example of how to define a JavaScript interface and listing 10 (line 4) shows how to inject it to the WebView.
+
+# Listing 12: Javascript interface definition example
+private static class WebAppInterface {
+private Context context;
+WebAppInterface(Context context) {
+this.context = context;
+}
+/** Show a toast from the web page */
+@JavascriptInterface
+public void showToast(String toast) {
+Toast.makeText(context, toast, Toast.LENGTH_SHORT).show();
+}
+}
+# 4 GPS Location Detection from WebView
+By enabling JavaScript in Android’s WebView, web pages can ask the app for user’s location. Once a user explicitly allows the app permission to access location then any web page can access user’s location without further permission from users. This case is reproducible in Android Auto. However, accessing location from Android Automotive’s WebView is not reproducible. Listing 13 and 14, shows example code for both Java and HTML page. On the web page, when the user clicks the button which invokes the getLocation function in the JavaScript side. It triggers the WebChromeClient listener on the Java side which checks for...
+
+the location permission. If it’s already granted by the user it simply
+allows the web page to access user location. Otherwise, it prompts
+the user for permission. This way any web page requesting location
+inside the WebView of this app can track the user’s location easily.
+
+# Listing 13: GPS location detection from WebView Java code
+// JAVA
+webView.setWebChromeClient(new WebChromeClient() {
+@Override
+public void onGeolocationPermissionsShowPrompt(String origin,
+GeolocationPermissions.Callback callback) {
+String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+if (ContextCompat.checkSelfPermission(WebViewActivityJava.this, permission
+callback.invoke(origin, true, false);) == PackageManager.PERMISSION_GRANTED) {
+} else {
+if (ActivityCompat.shouldShowRequestPermissionRationale(
+WebViewActivityJava.this, permission)) {
+// ask the user for permission
+String[] permissions = new String[] { permission };
+ActivityCompat.requestPermissions(WebViewActivityJava.this, permissions
+, 1);
+// we will use these when user responds
+geolocationOrigin = origin;
+geolocationCallback = callback;}} }});
+# Listing 14: GPS location detection from WebView HTML code
+# Extracting Location
+Location: ...
+
+Try It
+var x = document.getElementById("location");
+function getLocation () {
+if ( navigator . geolocation ) {
+navigator . geolocation . getCurrentPosition ( showPosition);}
+else {
+x. innerHTML = "Geolocation is not supported by this browser."
+;}}
+function showPosition(position ) {
+alert ( position )
+x. innerHTML = "Latitude: " + position.coords.latitude + "
+Longitude:
+" + position.coords.longitude;}
+function showAndroidToast(toast) {
+Android.showToast(toast ) ;}
+# 4 Information Leakage Vulnerabilities
+Information leakage in Android app happens when an app broad-
+cast an Intent object containing sensitive information to other apps
+and does not restrict the broadcast. So other apps can also listen
+to this broadcast. Listing 15 presents an example where an Intent
+is created on line 176. Sensitive car information is added to the
+Intent in (line 179-184). This information is then broadcasted to all
+apps (line 186). This example, demonstrates the case where any
+malicious app can eavesdrop on this Intent and send it’s sensitive
+information to a malicious server. However, the problem can be
+mitigated if security best practices are implemented. Listing 15
+(line 188 or 190) presents two possible solutions to mitigate the
+above leak. LocalBroadcastManager is responsible to broadcast In-
+tent within the same app’s components, i.e: activities, broadcast
+receivers and services. And sendBroadcast with custom permission
+on (line 190) ensures that the Intent will only be received by other
+applications that have the same custom permissions defined in their
+app’s manifest file. Other applications which don’t have that same
+custom permission defined will not be able to receive this intent.
+
+# Listing 15: Sources and Sink
+private void broadcastIntent() {
+Intent intent = createIntent(key, value);
+intent.setAction("com.example.intent.broadcast");
+CarInfoManager carInfo = (CarInfoManager) car.getCarManager(Car.
+
+INFO_SERVICE);
+intent.putExtra("Battery Capacity", carInfo.getEvBatteryCapacity());
+intent.putExtra("Connector Types", carInfo.getEvConnectorTypes());
+intent.putExtra("Fuel Capacity", carInfo.getFuelCapacity());
+intent.putExtra("Fuel Types", carInfo.getFuelTypes());
+intent.putExtra("Manufacturer", carInfo.getManufacturer());
+intent.putExtra("Model", carInfo.getModel());
+// SINK
+sendBroadcast(intent);
+// Solution 1
+LocalBroadcastManager.getInstance(this).sendBroadcast(v1);
+// Solution 2
+sendBroadcast(intent,"com.intent.broadcast.permission");
+}
+# 5 RELATED WORK
+Android Automotive is relatively new field as compared to Android.
+
+However, existing Android analysis tool can still look into common
+vulnerabilities. A survey paper by Keyur et al. [ 12] on Android
+analysis tool provides a list of Android tools. As shown in Table
+3, We checked source code repository and reported whether the
+tools are publicly available and whether they are still under active
+development.Static analysis tool like, CHEX [ 13 ] looks for component hi-
+jacking vulnerabilities in Android apps which includes permission
+re-delegation and leakage, intent spoofing, and private data leak-
+age. It takes Android Package Kit (APK) file and perform analysis
+directly in Dalvik Bytecode. First it discovers all the entry point
+in the apps then it construct call graphs, data dependency graph
+and use that to look for taints, data flow of sensitive sources into
+sensitive sinks. It then reports component hijacking flows. It tracks
+180 sources and sinks. This tool is not publicly available or hosted
+anywhere.
+
+SCanDroid [ 10] checks the data flow on Android app by extract-
+ing security specifications from manifest file. It can check for ICC
+related vulnerabilities. SCanDroid does not support analysis on
+APK file, was not tested on real world applications and is not main-
+tained. With all the changes in Android SDK and introduction of
+Automotive API, SCanDroid is simply not capable to detect tainted
+flows in Automotive apps.
+
+QARK [ 18] decompiles Android APK files and then searches
+the API usages for multiple vulnerabilities and provides detailed
+explanation. It can produces proof of concept exploits for a given
+APK file, such as insecure Intent broadcast. However, It does not
+provide any taint analysis.
+
+ComDroid [ 6 ] targets communication based vulnerabilities, how-
+ever, the tool is not available for public use. Since ComDroid was
+published in 2011, this indicates that tool is outdated and might not
+work with Android Automotive apps.
+
+Agrigento [7 ] provides a black box differential analysis technique
+for privacy leak detection. It works in two parts first it observes the
+network behaviour and then it modifies the sources of information
+and observe the changes in network results, as such, it monitors
+the network results to find information leakage in obfuscated and
+encrypted environment. SDLI [ 19 ], was built on top of a commer-
+cial static analyzer Julia, it generates XML reports for each inward
+and outward intent and compares XMLs reports for intent leakage,
+however, SDLI is not publically available. A recent work by Amit
+et al.  also explores the unprotected intent. The approach uses
+null fuzzing of intent to generate blank intents with no data to see
+which activities and services of apps became active due to it. Their
+approach helps in finding vulnerable communication component.
+
+As they report, due to intent fuzzing, many of the infotainment ser-
+vices became unresponsive and many apps crashed due to missing
+information. Their approach helps us understand the importance of secure app to app communication specially in the automotive domain. Unresponsive infotainment systems can lead to driver distraction which impacts the safety, security of the driver as well as vehicles around it.

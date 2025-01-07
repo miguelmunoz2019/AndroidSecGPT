@@ -1,0 +1,99 @@
+# 6 RELATED WORK
+Classical operating system security models are primarily concerned with defining access control (read/write/execute or more finely granular) by subjects (but most often single users, groups, or roles) to objects (typically files and other resources controlled by the OS, in combination with permissions sometimes also called protection domains ). The most common data structures for efficiently implementing these relations (which, conceptually, are sparse matrices) are Access Control Lists  and capability lists (e.g., Reference ). One of the first well-known and well-defined models was the Bell-LaPadula multi-level security model , which defined properties for assigning permissions and can be considered the abstract basis for Mandatory Access Control and Type Enforcement schemes like SELinux. Consequently, the Android platform security model implicitly builds upon these general models and their principle of least privilege.
+
+One fundamental difference is that, while classical models assume processes started by a user to be a proxy for their actions and therefore execute directly with user privileges, more contemporary models explicitly acknowledge the threat of malware started by a user and therefore aim to compartmentalize their actions. Many mobile OS (including Symbian as an earlier example) assign permissions to processes (i.e., applications) instead of users, and Android uses a comparable approach. A more detailed comparison to other mobile OS is out of scope in this article, and we refer to other surveys  as well as previous analysis of Android security mechanisms and how malware exploited weaknesses [14, 66, 70, 97–99, 145].
+
+# 7 CONCLUSION
+In this article, we described the Android platform security model and the complex threat model and ecosystem it needs to operate in. One of the abstract rules is a multi-party consent model that is different to most standard OS security models in the sense that it implicitly considers applications to have equal veto rights over actions in the same sense that the platform implementation and, obviously, users have. While this may seem restricting from a user point of view, it effectively limits the potential abuse a malicious app can do on data controlled by other apps; by avoiding an all-powerful user account with unfiltered access to all data (as is the default with most current desktop/server OS), whole classes of threats such as file encrypting ransomware or direct data exfiltration become impractical.
+
+AOSP implements the Android platform security model as well as the general security principles of “defense in depth” and “safe by default.” Different security mechanisms combine as multiple
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+layers of defense, and an important aspect is that even if security relevant bugs exist, they should not necessarily lead to exploits reachable from standard user space code. While the current model and its implementation already cover most of the threat model that is currently in scope of Android security and privacy considerations, there are some deliberate special cases to the conceptually simple security model, and there is room for future work:
+- Keystore already supports API flags/methods to request hardware- or authentication-bound keys. However, apps need to use these methods explicitly to benefit from improvements like Strongbox. Making encryption of app files or directories more transparent by supporting declarative use similar to network security config for TLS connections would make it easier for app developers to securely use these features.
+
+- It is common for malware to dynamically load its second stage depending on the respective device it is being installed on, to both try to exploit specific detected vulnerabilities and hide its payload from scanning in the app store. One potential mitigation is to require all executable code to: (a) be signed by a key that is trusted by the respective Android instance (e.g., with public keys that are pre-shipped in the firmware and/or can be added by end-users) or (b) have a special permission to dynamically load/create code during runtime that is not contained in the application bundle itself (the APK file). This could give better control over code integrity but would still not limit languages or platforms used to create these apps. It is recognized that this mitigation is limited to executable code. Interpreted code or server based configuration would bypass this mitigation.
+
+- Advanced attackers may gain access to OEM or vendor code signing keys. Even under such circumstance, it is beneficial to still retain some security and privacy assurances to users. One recent example is the specification and implementation of IAR for updateable code in TRH , and extending similar defenses to higher-level software is desirable . Potential approaches could be reproducible firmware builds or logs of released firmware hashes comparable to, e.g., Certificate Transparency.
+
+- Hardware level attacks are becoming more popular, and therefore additional (software and hardware) defense against, e.g., RAM-related attacks would add another layer of defense, although, most probably with a tradeoff in performance overhead.
+
+However, all such future work needs to be done considering its impact on the wider ecosystem and should be kept in line with fundamental Android security rules and principles.
+
+#kernel-components.
+
+5. 2018. CVE-2018-9341: Remote Code Execution in Media Frameworks. Retrieved from https://source.android.com/security/bulletin/2018-06-01#media-framework.
+
+6. 2018. SVE-2018-11599: Theft of Arbitrary Files Leading to Emails and Email Accounts Takeover. Retrieved from https://security.samsungmobile.com/securityUpdate.smsb.
+
+7. 2018. SVE-2018-11633: Buffer Overflow in Trustlet. Retrieved from https://security.samsungmobile.com/securityUpdate.smsb.
+
+8. 2019. Android Now FIDO2 Certified. Retrieved from https://fidoalliance.org/android-now-fido2-certified-accelerating-global-migration-beyond-passwords/.
+
+9. 2020. Personal identification—ISO-compliant driving licence—Part 5: Mobile driving licence (mDL) application. Draft International Standard: ISO/IEC DIS 18013-5.
+
+10. Y. Acar, M. Backes, S. Bugiel, S. Fahl, P. McDaniel, and M. Smith. 2016. SoK: Lessons learned from Android security research for appified software platforms. In Proceedings of the 2016 IEEE Symposium on Security and Privacy (SP’16). 433–451. DOI:https://doi.org/10/SP
+11. Anne Adams and Martina Angela Sasse. 1999. Users are not the enemy. Commun. ACM 42, 12 (Dec. 1999), 40–46. DOI:https://doi.org/10/322796
+12. Andrew Ahn. 2018. How We Fought Bad Apps and Malicious Developers in 2017. Retrieved from https://android-developers.googleblog.com/2018/01/how-we-fought-bad-apps-and-malicious.html.
+
+13. Bonnie Brinton Anderson, Anthony Vance, C. Brock Kirwan, Jeffrey L. Jenkins, and David Eargle. 2016. From warning to wallpaper: Why the brain habituates to security warnings and what can be done about it. J. Manage. Inf. Syst. 33, 3 (2016), 713–743. DOI:https://doi.org/10/07421222
+14. Anil Kumar Reddy, P. Paramasivam, and Prakash Babu Vemula. 2015. Mobile secure data protection using eMMC RPMB partition. In Proceedings of the 2015 International Conference on Computing and Network Communications (CoCoNet’15). 946–950. DOI:https://doi.org/10/CoCoNet
+15. AOSP. [n.d.]. Android Compatibility Definition Document. Retrieved from https://source.android.com/compatibility/cdd.
+
+16. AOSP. [n.d.]. Android Enterprise Recommended Requirements. https://www.android.com/enterprise/recommended/requirements/
+17. AOSP. [n.d.]. Android Platform Permissions Requesting Guidance. Retrieved from https://material.io/design/platform-guidance/android-permissions.html#request-types.
+
+18. AOSP. [n.d.]. Android Verified Boot Flow. Retrieved from https://source.android.com/security/verifiedboot/boot-flow.
+
+19. AOSP. [n.d.]. App Manifest Overview. Retrieved from https://developer.android.com/guide/topics/manifest/manifest-intro.
+
+20. AOSP. [n.d.]. App Manifest Permission Element. Retrieved from https://developer.android.com/guide/topics/manifest/permission-element.
+
+21. AOSP. [n.d.]. Developer Documentation android.security.identity. Retrieved from https://developer.android.com/reference/android/security/identity/package-summary.
+
+22. AOSP. [n.d.]. Developer Documentation android.security.keystore.KeyGenParameterSpec. Retrieved from https://developer.android.com/reference/android/security/keystore/KeyGenParameterSpec.
+
+23. AOSP. [n.d.]. Gatekeeper. Retrieved from https://source.android.com/security/authentication/gatekeeper.
+
+24. AOSP. [n.d.]. Hardware-backed Keystore. Retrieved from https://source.android.com/security/keystore/.
+
+25. AOSP. [n.d.]. Intents and Intent Filters. Retrieved from https://developer.android.com/guide/components/intents-filters.
+
+26. AOSP. [n.d.]. Network security configuration. Retrieved from https://developer.android.com/training/articles/security-config.
+
+27. AOSP. [n.d.]. Privacy: MAC Randomization. Retrieved from https://source.android.com/devices/tech/connect/wifi-mac-randomization.
+
+28. AOSP. [n.d.]. Privileged Permission Allowlisting. Retrieved from https://source.android.com/devices/tech/config/perms-whitelist.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+#process_types.
+
+3. AOSP. [n.d.]. Verifying Boot. Retrieved from https://source.android.com/security/verifiedboot/verified-boot.
+
+4. AOSP. [n.d.]. Verifying Hardware-backed Key Pairs with Key Attestation. Retrieved from https://developer.android.com/training/articles/security-key-attestation.
+
+5. AOSP. 2018. Android Protected Confirmation. Retrieved from https://developer.android.com/preview/features/security#android-protected-confirmation.
+
+6. AOSP. 2018. Android Verified Boot 2. Retrieved from https://android.googlesource.com/platform/external/avb/+android11-release/README.md.
+
+7. AOSP. 2018. APK Signature Scheme v3. Retrieved from https://source.android.com/security/apksigning/v3.
+
+8. AOSP. 2018. SELinux for Android 8: Changes & Customizations. Retrieved from https://source.android.com/security/selinux/images/SELinux_Treble.pdf.
+
+9. AOSP. 2019. Restrictions on Starting Activities from the Background. Retrieved from https://developer.android.com/guide/components/activities/background-starts.
+
+10. AOSP. 2020. Android 11 Biometric Authentication. Retrieved from https://developer.android.com/about/versions/11/features#biometric-auth.
+
+11. AOSP. 2020. Security and Privacy Enhancements in Android 10. Retrieved from https://source.android.com/security/enhancements/enhancements10.
+
+12. Dan Austin and Jeff Vander Stoep. 2016. Hardening the media stack. Retrieved from https://android-developers.googleblog.com/2016/05/hardening-media-stack.html.
+
+13. Adam J. Aviv, Katherine Gibson, Evan Mossop, Matt Blaze, and Jonathan M. Smith. 2010. Smudge attacks on smartphone touch screens. In Proceedings of the 4th USENIX Conference on Offensive Technologies (WOOT’10). USENIX Association, Berkeley, CA, 1–7.
+
+14. David Barrera, Daniel McCarney, Jeremy Clark, and Paul C. van Oorschot. 2014. Baton: Certificate agility for Android’s decentralized signing infrastructure. In Proceedings of the 2014 ACM Conference on Security and Privacy in Wireless and Mobile Networks (WiSec’14). Association for Computing Machinery, New York, NY, 1–12. DOI:https://doi.org/10/2627393
+15. D. Bell and L. LaPadula. 1975. Secure Computer System Unified Exposition and Multics Interpretation. Technical Report MTR-2997. MITRE Corp., Bedford, MA.
+
+16. James Bender. 2018. Google Play security metadata and offline app distribution. Retrieved from https://android-developers.googleblog.com/2018/06/google-play-security-metadata-and.html.

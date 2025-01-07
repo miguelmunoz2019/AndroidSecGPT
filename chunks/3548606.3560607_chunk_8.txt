@@ -1,0 +1,22 @@
+43. Rocky Slavin, Xiaoyin Wang, Mitra Bokaei Hosseini, James Hester, Ram Krishnan, Jaspreet Bhatia, Travis D. Breaux, and Jianwei Niu. 2016. Toward a framework for detecting privacy policy violations in Android application code. In Proceedings of the 38th International Conference on Software Engineering, ICSE 2016, Austin, TX, USA, May 14-22, 2016. ACM.
+
+44. John W. Stamey and Ryan A. Rossi. 2009. Automatically identifying relations in privacy policies. In Proceedings of the 27th Annual International Conference on Design of Communication, SIGDOC 2009. ACM.
+
+45. Henry S Thompson, Noah Mendelsohn, D Beech, and M Maloney. 2009. W3C XML schema definition language (XSD) 1 part 1: Structures. The World Wide Web Consortium (W3C), W3C Working Draft Dec 3 (2009).
+
+46. Peng Wang, Xianghang Mi, Xiaojing Liao, XiaoFeng Wang, Kan Yuan, Feng Qian, and Raheem A Beyah. 2018. Game of Missuggestions: Semantic Analysis of Search-Autocomplete Manipulations. In NDSS.
+
+47. Xiaoyin Wang, Xue Qin, Mitra Bokaei Hosseini, Rocky Slavin, Travis D. Breaux, and Jianwei Niu. 2018. GUILeak: tracing privacy policy claims on user input data for Android applications. In Proceedings of the 40th International Conference on Software Engineering, ICSE 2018. ACM.
+
+48. Tianyin Xu, Jiaqi Zhang, Peng Huang, Jing Zheng, Tianwei Sheng, Ding Yuan, Yuanyuan Zhou, and Shankar Pasupathy. 2013. Do not blame users for misconfigurations. In 24th Symposium on Operating Systems Principles, SOSP. ACM.
+
+49. Lihua Yuan, Jianning Mai, Zhendong Su, Hao Chen, Chen-Nee Chuah, and Prasant Mohapatra. 2006. FIREMAN: A Toolkit for FIREwall Modeling and ANalysis. In 2006 IEEE Symposium on Security and Privacy (S&P 2006), 21-24 May 2006, Berkeley, California, USA. IEEE Computer Society, 199–213.
+
+50. Lei Zhang, Zhemin Yang, Yuyu He, Zhenyu Zhang, Zhiyun Qian, Geng Hong, Yuan Zhang, and Min Yang. 2018. Invetter: Locating Insecure Input Validations in Android Services. In Proceedings of the 2018 ACM SIGSAC Conference on Computer and Communications Security (Toronto, Canada) (CCS ’18). ACM.
+
+51. Qingchuan Zhao, Chaoshun Zuo, Brendan Dolan-Gavitt, Giancarlo Pellegrino, and Zhiqiang Lin. 2020. Automatic Uncovering of Hidden Behaviors From Input.
+
+# Detecting and Measuring Misconfigured Manifests in Android Apps
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# Validation in Mobile Apps
+In Proceedings of the 2020 IEEE Symposium on Security and Privacy. San Francisco, CA..

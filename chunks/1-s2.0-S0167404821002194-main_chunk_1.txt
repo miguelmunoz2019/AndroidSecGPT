@@ -1,0 +1,60 @@
+# Vulnerabilities in Android webview objects: Still not the end!
+# Mohamed A. El-Zawawya,∗, Eleonora Losioukb, Mauro Conti b
+a Department of Mathematics, Faculty of Science, Cairo University, Giza 12613, Egypt
+b Department of Mathematics, University of Padua, Italy
+# Article information
+Article history:
+- Received 26 January 2021
+- Revised 27 May 2021
+- Accepted 4 July 2021
+- Available online 10 July 2021
+# Keywords:
+Android security, Taint analysis, Hybrid applications, Web view, Java script interfaces, Web view client
+# Abstract
+WebView objects allow Android apps to render web content in the app context. More specifically, in Android hybrid apps (i.e., those having both Android code and web code) the web content can interact with the underlying Android framework through Java interfaces and WebViewClient objects. Thus, while rendering web content a hybrid app can execute malicious Javascript code that can access the sensitive data on the device, bypassing the sandbox model usually adopted by standalone browsers. Researchers already analyzed the security issues of WebView objects, by focusing on Javascript interfaces. However, we believe that there are other aspects related to the rendering of web content in Android apps, such as WebViewClient objects, that could lead to security issues.
+
+In this paper, we introduce three new types of vulnerabilities related to WebView, that expose new attack surfaces concerning the most well-known vulnerability related to JavaScript interfaces. To detect these new types of vulnerabilities, we designed WebV Sec, a static analysis system that relies on a set of custom inference rules, heuristically formalized. By designing WebV Sec to detect also the vulnerability already described in the state-of-art, we were able to compare WebV Sec with BabelView on a set of 2000 applications. BabelView was found not able to detect our new three types of vulnerabilities and also less precise and efficient in detecting the already known vulnerability. In particular, over the 2000 analyzed apps, WebV Sec and BabelView identified 48 and 18 vulnerable apps, respectively. Among those, WebV Sec found 20 apps having a specific type of vulnerabilities and 36 apps having another type of vulnerabilities, while BabelView found 11 and 0 apps, respectively. In terms of efficiency, WebV Sec took 27 hours to analyze the whole set of 2000 applications against the 63 hours required by BabelView.
+
+© 2021 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+The use of Android on mobile and tablet devices has grown over the past years. Android covers almost 75% of the mobile market share worldwide, while mobile devices almost 53% motivated by the introduction of hybrid applications, in which core source code is written in HTML and JavaScript through.
+
+∗ Corresponding author. E-mail addresses: maelzawawy@cu.edu.eg (M.A. El-Zawawy), elosiouk@math.unipd.it (E. Losiouk), conti@math.unipd.it (M. Conti).
+
+https://doi.org/10/j.cose
+0167-4048/© 2021 Elsevier Ltd. All rights reserved.
+
+# Computers & Security 109 (2021) 102395
+Cross-platform tools, such as Apache Cordova Apache (0000). Identified 48 and 18 vulnerable apps, respectively. Among those, WebV Sec found 20 apps having a specific type of vulnerabilities and 36 apps having another type of vulnerabilities, while BabelView found 11 and 0 apps, respectively. In terms of efficiency, WebV Sec took 27 hours to analyze the whole set of 2000 applications against the 63 hours required by BabelView.
+
+The design model of WebView objects highly differs from the one adopted in standalone browsers. The latter adopts a sandbox mechanism that introduces an access control approach to prevent untrusted Javascript code from accessing sensitive data on the mobile device Ferri et al. (2010). Thus, in a standalone browser not only web pages are isolated from each other, but they are also isolated from the system. On the contrary, WebView objects use binding interfaces (through the addJavascriptInterface API) to allow Javascript code to access private data and system resources on the mobile device. Enabling the interaction between Javascript code and the underlying system breaks the security model used in standalone browsers. The malicious JavaScript can be part of any web page loaded in the WebView. Advertisement libraries used in the WebView may also allow malicious JavaScript to access private data. Overall, current WebView technologies are not robust enough to prevent vulnerabilities, such as Cross-Site Request Forgery, Cross-site scripting, and JSON hijacking Li et al. (2017); Luo et al. (2011, 2012); Mutchler et al. (2015). Consequently, attackers can manipulate WebViewClient listeners and access WebView interfaces through the injection of malicious JavaScript Fahl et al. (2012); Mutchler et al. (2015).
+
+Previous works Rizzo et al. (2018); Yang et al. (2017) addressed the security issues raised by WebView interfaces by mainly focusing on the vulnerabilities involved in the usage of JavaScript interfaces. However, no previous work considered the security issues raised by WebViewClients.
+
+In this paper, we identify three new types of WebView vulnerabilities, which are somehow related to the one already addressed by the state-of-art, but that introduce new attack surfaces. We heuristically designed seven rules that allow the detection of all such vulnerabilities and developed the WebV Sec system: a static analysis tool that relies on our seven inference rules to detect WebView vulnerabilities. We evaluated precision, efficiency, and effectiveness of WebV Sec over a set of 2000 applications and compared the results with BabelView, a state-of-the-art technique Rizzo et al. (2018). With our study, we prove that the current state-of-art works did not comprehensively address WebView technologies, thus failing in detecting our newly identified vulnerabilities. Moreover, WebV Sec was found to overcome both in terms of precision and efficiency.
+
+# 2. Background
+A WebView Developers (0000) is an Android system component enabling Android applications to render web pages and interact with web servers. It is possible to write and show HTML code inside an app via WebView. Listing 1 presents an example that embeds a browser in an Android app to display Google search engine. This is done in three steps: defining a WebView object (line 1), enabling the execution of JavaScript within the object (line 2), and using the API loadUrl to load a web page (line 3).
+
+WebView enables many forms of interaction between Android applications and web pages. Among those, we focus on running Java from Javascript and event monitoring. The running Java from Javascript mode consists of Java code, belonging to the app, being executed by Javascript code, belonging to a web page. The event monitoring form, instead, refers to the events that are registered in callback methods of WebViewClient objects and executed in response to specific events that occur on the web page.
+
+# 2. Running java from javascript.
+
+The JavaScript code in a WebView can invoke the Java code of some classes belonging to the Android app where it is executed Developers (0000). In the rest of the paper, we refer to these classes as interface classes. Objects of interface classes can be associated with WebView objects through the addJavascriptInterface API. Then, the Javascript code of the WebView can invoke only the public methods of interface classes that are annotated by @JavaScriptInterface. The annotation prevents attackers from executing arbitrary methods of interfaces by using Java reflection API. The annotations are not necessary for applications targeting Android versions before 4 (SDK17) InfoSecurity (2013). This is so because @JavaScriptInterface annotation did not exist in versions before 4.
+
+Listing 2 presents an example of interface class usage. In particular, the interface webviewInterface is first instantiated and bound to the webview object (line 1).
+
+# Computers & Security 109 (2021) 102395
+# Listing 1 – WebView Example.
+
+# Listing 2 – Interface Example.
+
+# Listing 3 – Example of Java invocation from JavaScript code.
+
+previously created in Listing 1. The binding object is called myInterfaceObj. The JavaScript code of a web page loaded in webview can use myInterfaceObj to run the annotated method readDeviceId(), as shown in Listing 3. On the contrary, the method toastDeviceId(String) of webviewInterface can not be invoked since it not annotated. However, the invocation of an annotated method might cause the invocation of a non-annotated one, as shown in the code of readDeviceId().
+
+Listing 2 clearly shows the extension of Same Origin Policy (SOP) applied to the context of WebView. Generally speaking, SOP refers to the access control policies applied to resources that might be shared between two web pages. In particular, a web page can access the data of another web page if both share the same origin. In the context of Android WebView, such access control policies are not applied to sensitive data stored in the underlying OS. Thus, any Javascript code can access such data. This is justified as follows. Suppose addJavascriptInterface is used to attach an interface I to a WebView W. This has the consequence of allowing all pages loaded in W to call methods of I, and hence access the same sensitive data accessible from I. Therefore, in this case, SOP is defeated as web pages from one origin are allowed to affect those from others.
+
+# 3. Related work
+# 2. Event monitoring.

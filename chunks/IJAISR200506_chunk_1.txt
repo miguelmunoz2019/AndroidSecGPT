@@ -1,0 +1,75 @@
+# Android Applications Development Intelligent Tutoring System
+Article · May 2020
+# Author
+Hazem A. S. Alrakhawi
+Islamic University of Gaza
+6 PUBLICATIONS 115 CITATIONS
+SEE PROFILE
+All content following this page was uploaded by Hazem A. S. Alrakhawi on 05 March 2023.
+
+The user has requested enhancement of the downloaded file.
+
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Android Applications Development Intelligent Tutoring System
+Hazem Awni Al Rekhawi
+Department of Information Technology, Faculty of Engineering & Information Technology
+Al-Azhar University, Gaza, Palestine
+Email: engazem@gmail.com
+# Abstract
+An intelligent tutoring system (ITS) is a computer system that aims to provide immediate and customized instruction or feedback to learners, usually without requiring intervention from a human teacher. ITSs have the common goal of enabling learning in a meaningful and effective manner by using a variety of computing technologies. The proposed system will be implemented using an intelligent tutoring system builder (ITSB). Undeniably, the importance of the mobile phone in our time and the importance of the Android system in particular, which provides millions of applications on the Play Store, international universities have specialized sections in the development of mobile applications to allow the students to develop the applications of Android and published on the Play Store. In this study, the researchers presented an intelligent tutoring system for teaching Android Applications Development. The idea of the system came after the study of the first author for the course of an intelligent tutoring system during the study of the master, where he learned through the course on the importance of an intelligent tutoring system and its advantages in the educational process and based on the experience of the first author in the development of Android applications since 2010 to the present time in addition to his work as an academic teacher in this and the need for such as an intelligent tutoring system to help the student and teacher in the educational process. The system was evaluated by teachers specialized in the development of Android applications as well as students who study in the development of Android applications in local universities in Gaza. The result was excellent.
+
+Keywords: ITS, Intelligent Tutoring System, Android, Android Applications Development, ITSB.
+
+# 1. Introduction
+An intelligent tutoring system (ITS) is a computer system that aims to provide immediate and customized instruction or feedback to learners, usually without requiring intervention from a human teacher . ITSs have the common goal of enabling learning in a meaningful and effective manner by using a variety of computing technologies. There are many examples of ITSs being used in both formal education and professional settings in which they have demonstrated their capabilities and limitations. There is a close relationship between intelligent tutoring, cognitive learning theories and design; and there is ongoing research to improve the effectiveness of ITS. An ITS typically aims to replicate the demonstrated benefits of one-to-one, personalized tutoring, in contexts where students would otherwise have access to one-to-many instruction from a single teacher (e.g., classroom lectures), or no teacher at all (e.g., online homework) . ITSs are often designed with the goal of providing access to high quality education to each and every student.
+
+The mobile applications have a preference over the web-based solutions because they are more transformative than the web and are growing at a much faster rate. The mobile application development space is dominated by the smartphones and among the smartphones, 84 % comprises of Android based devices. We have seen a massive proliferation in the use of mobile apps, particularly in the developing countries. As a result, developers are increasingly interested in the development of Android applications due to the increasing use of Android phones and the user's need for assistive applications.
+
+In fact, the researchers have eight years of experience in the development of Android applications, where he worked as a teacher in many local universities in addition to his work as a trainer for Android applications development course with local and international institutions and created many training materials for the development of Android applications.
+
+# 1 Statement of the Problem
+Undeniably, the development of smartphone applications is one of the most important disciplines currently being taught in universities through the Information Technology (IT) departments. The development of Android applications is especially important because it is important to open new business horizons through the creation and deployment of applications on the store as well as the possibility of working within local companies or on freelancing sites.
+
+Where the student suffers in the process of traditional education to develop Android applications of some difficulties that we have to help solve, the most prominent of these difficulties: the presence of large numbers of students in the classroom, making it difficult for the teacher to follow all students equally, and the existence of some individual differences in Students' comprehension requires a re-explanation by the teacher in some parts of the lesson and this is not easy.
+
+The development of Android applications requires a relatively large time for programming and solving the problems that students may face during practical application. The time component is one of the most important obstacles for students and
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+teachers. Some lessons require more time for the teacher to explain the lesson. Example The student needs more than one example and practice to install and understand the information and this is often not provided by the lecture.
+
+The shyness of the students is a strong barrier between the student and the teacher prevents the student's understanding of the lesson because of his inability to communicate with the teacher.
+
+Because the lessons of the development of Android applications are cumulative and interrelated, they require the student to attend lectures regularly so that the student avoids a gap between the previous lesson and later, and some students delay the time of lectures and the absence of others for certain circumstances is lost by some of the information explained during the delay or absence.
+
+The explanation of some information at the end of the lecture may not be absorbed by the student, especially since he may be satisfied with the information he received at the time of the lecture. In contrast, it is impossible to find the teacher with the student at any time and place to compensate for what he could not absorb.
+
+The proposed ITS is expected to create an appropriate learning environment and a reliable source of information to learn the development of Android applications and reduce the difficulties faced by students in traditional education with the possibility of rapid assessment and guidance of students through the system.
+
+# 1 Objectives
+Main objective: Develop an intelligent tutoring system to teach the development of Android applications through the use of computerized education, in addition to traditional methodological education, and to create a suitable learning environment for students to ensure that the objectives of the educational process are achieved. The system is expected to reduce the difficulties faced by students in learning the development of Android applications.
+
+Specific objectives:
+- Helping students learn how to develop Android applications
+- Raise the efficiency of students through the employment of computerized education.
+
+- Create an appropriate study environment to achieve the highest quality
+- Ease and flexibility in obtaining reliable information
+- Overcoming the time and place barrier between teacher and student.
+
+- The possibility of self-evaluation of the student through the system's short examinations.
+
+- The system allows the student to repeat the lesson more than once to understand.
+
+- The system takes into consideration persons with special needs who miss some lectures to their circumstances.
+
+# 1 Significance of the study
+The proposed ITS to teach the development of Android applications that connects computer education and artificial intelligence, which meets many goals such as taking into considerations the specific needs of each student and taking into considerations the individual differences in the level of students, and the system provides various techniques of text and visual training materials that the student easily interact with.
+
+The system ensures easy to explain lessons to students and provide examples and exercises at the end of each lesson in addition to tests for the level of the student are subject to it after the end of each unit.
+
+The system adapts to the level of the student so as to ensure the highest possible quality of the educational process through multiple levels of difficulty of the questions proposed by the system at random.
+
+The system presents the results for each student and guides them to their own weaknesses and any lessons they must read to understand them.

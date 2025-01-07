@@ -1,0 +1,94 @@
+# Product Development and Manufacturing
+As far as product development and manufacturing is concerned few things are important and among these valuable are—
+- Deleting debug mode is very important in the mobile phones. This mode needs to removed in the devices before its sell to the consumer. Today one manufacturer developed lot of devices and sometimes they sold it in debug mode; so these should be keep in mind carefully.
+
+- During the selling of a smart phone it is essential to keep that in Default setting; otherwise that can led Denial of Service attack.
+
+- The smart phone market is emerging and with lots of applications. It is worthy to note that the security audits of applications are very important and valuable otherwise the whole system may be corrupted or infected.
+
+SIMS Pandeshwar & Srinivas University Mukka
+Page 118
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+- Every applications in the android system is asked for permission during its installation and thus during such activity it is essential to read the content carefully and if found unethical or suspicious information.
+
+- Revocation procedure is another one in android system and can be managed by the app provider or system administrator; here uninstall of the app is possible globally. Hence this way security can be ensured.
+
+- Avoid heavily customized systems, may have dual effect of risking the introduction of new bugs in the system and it is an important security concern.
+
+- The updates of the software or patches must be come with the documentation by the manufacturer. Hence by reading everything one can update the systems easily.
+
+# User Awareness—
+User awareness is very important for running safe and secure android based system. It is a fact that most of the users are not read carefully the messages and details of the applications. Here application provider reputation, security messages, agreement messages are very important. Even there may be some software or application with intentions of phishing etc. Caring the phone with the owner is also important security measure in some cases. Different organizations and association has provided different framework and guidelines all of these need to follow by different stakeholders (refer fig: 2 for details). Different apps and system need to closedown if not required viz.—
+- Digital camera
+- GPS
+- Bluetooth interface
+- USB interface
+- Removable storage etc.
+
+Moreover latest android phones are come with inbuilt encryption systems with this it may be difficult to hack the systems or lose the information. Here the system may be encrypt or SD card etc.
+
+# Centralized Storage Systems—
+Sometimes it is better to keep the data and all the text in the company server and storage systems instead of Third Party Company or even own mobile devices.
+
+SIMS Pandeshwar & Srinivas University Mukka
+Page 119
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+ISBN No.: 978-81-941751-0-0
+IISO 27000 Series
+# HirusTCSR
+IT security
+# NiST SP800-53
+framework options
+# Cis
+800-171
+# Nist SP
+Controls
+# NIST
+Cybersecurity Framework
+Fig: 2- Major IT Security Framework providers
+# 8. Conclusion
+As a whole Mobile Security needs different counter measures and defending mechanisms but still there are certain issues for which it is difficult to perform the security. And among these few important are Operating Systems. It is worthy to note that, few operating systems are single tasking hence such are not capable to do the task along with firewall or antivirus. Energy autonomy is another important concern that should be kept in mind. It is worthy to note that, network utilization should not be too high for the security reason. Apart from the technological countermeasure, it is essential to have users' interest and awareness for the security related concern. Moreover, few things are essentials viz. rich operating systems, secure operating systems, secure element, secure applications etc.
+
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+ISBN No.: 978-81-941751-0-0
+1. Brooks, R. R. (2004). Mobile code paradigms and security issues. IEEE Internet Computing, 8(3), 54-59.
+
+2. Deng, H., Li, W., & Agrawal, D. P. (2002). Routing security in wireless ad hoc networks. IEEE Communications magazine, 40(10), 70-75.
+
+3. Djenouri, D., Khelladi, L., & Badache, N. (2005). Security issues of mobile ad hoc and sensor networks. In IEEE Communications Surveys Tutorials (Vol. 7, No. 4, pp. 2-28). IEEE Communications Society.
+
+4. Donald, A. C., Oli, S. A., & Arockiam, L. (2013). Mobile cloud security issues and challenges: A perspective. International Journal of Engineering and Innovative Technology, 3(1), 401.
+
+5. Geneiatakis, D., Kounelis, I., Neisse, R., Nai-Fovino, I., Steri, G., & Baldini, G. (2017, May). Security and privacy issues for an IoT based smart home. In 2017 40th International Convention on Information and Communication Technology, Electronics and Microelectronics (MIPRO) (pp. 1292-1297). IEEE.
+
+6. Goth, G. (2012). Mobile security issues come to the forefront. IEEE Internet Computing, 16(3), 7-9.
+
+7. Jain, A. K., & Shanbhag, D. (2012). Addressing security and privacy risks in mobile applications. IT Professional, 14(5), 28-33.
+
+8. Jansen, W. A. (2000). Countermeasures for mobile agent security. Computer communications, 23(17), 1667-1676.
+
+9. Kannhavong, B., Nakayama, H., Nemoto, Y., Kato, N., & Jamalipour, A. (2007). A survey of routing attacks in mobile ad hoc networks. IEEE Wireless communications, 14(5), 85-91.
+
+10. Martínez-Pérez, B., De La Torre-Díez, I., & López-Coronado, M. (2015). Privacy and security in mobile health apps: a review and recommendations. Journal of medical systems, 39(1), 181.
+
+11. Ngai, E. W., & Gunasekaran, A. (2007). A review for mobile commerce research and applications. Decision support systems, 43(1), 3-15.
+
+12. Nkosi, M. T., & Mekuria, F. (2010, November). Cloud computing for enhanced mobile health applications. In 2010 IEEE Second International Conference on Cloud Computing Technology and Science (pp. 629-633). IEEE.
+
+13. Siau, K., Lim, E. P., & Shen, Z. (2001). Mobile commerce: Promises, challenges and research agenda. Journal of Database Management (JDM), 12(3), 4-13.
+
+14. Siau, K., & Shen, Z. (2003). Mobile communications and mobile services. International Journal of Mobile Communications, 1(1-2), 3-14.
+
+15. Siau, K., & Shen, Z. (2003). Mobile communications and mobile services. International Journal of Mobile Communications, 1(1-2), 3-14.
+
+16. Varshney, U., Vetter, R. J., & Kalakota, R. (2000). Mobile commerce: A new frontier. Computer, 33(10), 32-38.
+
+SIMS Pandeshwar & Srinivas University Mukka
+Page 121
+Electronic copy available at: https://ssrn.com/abstract=3484091.

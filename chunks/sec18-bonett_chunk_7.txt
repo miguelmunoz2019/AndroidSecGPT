@@ -1,0 +1,47 @@
+# Android Application Security Tools:
+The popularity and open-source nature of Android has spurred an immense amount of research related to examining and improving the security of the underlying OS, SDK, and apps. Recently, Acar et al. have systematized Android security research , and we discuss work that introduces static analysis-based countermeasures for Android security issues according to Acar et al.’s categorization.
+
+Perhaps the most prevalent area of research in Android security has concerned the permissions system that mediates access to privileged hardware and software resources. Several approaches have motivated changes to Android’s permission model, or have proposed enhancements to it, with goals ranging from detecting or fixing unauthorized information disclosure or leaks in third party applications.
+
+USENIX Association 27th USENIX Security Symposium 1275
+cations  to detecting over-privilege in applications . Similarly, prior work has also focused on benign but vulnerable Android applications, and proposed techniques to detect or fix vulnerabilities such as cryptographic API misuse API  or unprotected application interfaces . Moreover, these techniques have often been deployed as modifications to Android’s permission enforcement , SDK tools , or inline reference monitors . While this paper demonstrates the evaluation of only a small subset of these tools with μSE, our experiments demonstrate that μSE has the potential to impact nearly all of them. For instance, μSE could be applied to further vet SSL analysis tools by purposely introducing complex SSL errors in real applications, or tools that analyze overprivilege or permission misuse, by developing security operators that attempt to misuse permissions to circumvent such monitors. Future work may use μSE to perform an in-depth analysis of these problems.
+
+# 9 Limitations
+1. Soundness of μSE: As acknowledged in Section 8, mSE does not aim to supplant formal verification (which would be sound), and does not claim soundness guarantees. Rather, mSE provides a systematic approach to semi-automatically uncover flaws in existing security tools, which is a significant advancement over manually-curated tests.
+
+2. Manual Effort: Presently, the workflow of μSE requires an analyst to manually analyze the result of μSE (i.e., uncaught mutants). However, as described in Section 6, μSE possesses enhancements that mitigate the manual effort by dynamically eliminating non-executable mutants, that would otherwise impose a burden on the analyst examining undetected mutants. In our experience, this analysis was completed in a reasonable time using the methodology outlined in Section 4.
+
+3. Limitations of Execution Engine: Like any dynamic analysis tool, the EE will not explore all possible program states, thus, there may be a set of mutants marked as non-executable by the EE, that may actually be executable under certain scenarios. However, the C RASH S COPE tool, which μSE’s EE is based upon, has been shown to perform comparably to other tools in terms of coverage . Future versions of μSE’s EE could rely on emerging input generation tools for Android apps.
+
+# 10 Conclusion
+We proposed the μSE framework for performing systematic security evaluation of Android static analysis tools to discover (undocumented) unsound assumptions, adopting the practice of mutation testing from SE to security. μSE not only detected major flaws in a popular, open-source Android security tool, but also demonstrated how these flaws propagated to other tools that inherited the security tool in question. With μSE, we demonstrated how mutation analysis can be feasibly used for gleaning unsound assumptions in existing tools, benefiting developers, researchers, and end users, by making such tools more secure and transparent.
+
+# 11 Acknowledgements
+We thank Rozda Askari for his help with setting up experiments. We thank the FlowDroid developers, as well as the developers of the other tools we evaluate in this paper, for making their tools available to the community, providing us with the necessary information for our analysis, and being open to suggestions and improvements. The authors have been supported in part by the NSF-1815336, NSF-714581 and NSF-714161 grants. Any opinions, findings, and conclusions expressed herein are the authors’ and do not necessarily reflect those of the sponsors.
+
+# A Fragment Use Study
+We performed a small-scale app study using the Soot static analysis library to deduce how commonly fragments were used in real apps. That is, we analyzed 240 top apps from every category on Google Play (i.e., a total of 8,664 apps collected as of June 2017 after removing duplicates), and observed that at least 4,273 apps (49%) used fragments in their main application code, while an additional 3,587 (41%) used fragments in packaged libraries. Note that while we did not execute the apps to determine if the fragment code was really executed, the fact that 7,860 out of 8,664 top apps, or 91% of popular apps contain fragment code indicates the possibility that fragments are widely used, and that accidental or malicious data leaks in a large number of apps could evade FlowDroid due to this flaw.
+
+# Code Snippets
+BroadcastReceiver receiver = new BroadcastReceiver() {
+@Override
+public void onReceive(Context context, Intent intent) {
+BroadcastReceiver receiver = new BroadcastReceiver() {
+@Override
+public void onReceive(Context context, Intent intent) {
+String dataLeak = Calendar.getInstance().getTimeZone().getDisplayName();
+Log.d("leak-1", dataLeak);
+}
+};
+IntentFilter filter = new IntentFilter();
+filter.addAction("android.intent.action.SEND");
+registerReceiver(receiver, filter);
+}
+};
+IntentFilter filter = new IntentFilter();
+filter.addAction("android.intent.action.SEND");
+registerReceiver(receiver, filter);
+Listing 3: Dynamically created Broadcast Receiver, created inside another, with data leak.
+
+# CrashScope (Execution Engine)
+The EE functions by statically analyzing the code of a target app to identify activities implementing potential contextual features (e.g., rotation, sensor usage) via API call-chain propagation. It then executes an app according to one of several exploration strategies while constructing a dynamic event-flow model of an app in an online fashion. These strategies are organized along three dimensions: (i) GUI-exploration, (ii) text-entry, and (iii) contextual features. The Execution Engine uses a Depth-First Search (DFS) heuristic to systematically explore the GUI, either starting from the top of the screen down, or from the bottom of the screen up. It is also able to dynamically infer the allowable text characters from the Android software keyboard and enter expected text or no text. Finally, the EE can exercise contextual features (e.g., rotation, simulating GPS coordinates). Since the goal of the EE is to explore as many screens of a target app as possible, the EE forgoes certain combinations of exploration strategies from CRASH SCOPE (e.g., entering unexpected text or disabling contextual features) prone to eliciting crashes from apps. The approach utilizes adb and Android’s uiautomator framework to interact with and extract GUI-related information from a target device or emulator..

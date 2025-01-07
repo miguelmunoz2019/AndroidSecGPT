@@ -1,0 +1,79 @@
+# Arabian Journal for Science and Engineering (2020) 45:3289–3315
+# Source code metrics for Android smells
+# Source code metrics used for detection
+DS Data Space, NB Network Bandwidth, ZF Zip Format, DT debuggable True, RB Restore Bundle, CPU Central Processing Unit, GPS Global Positioning System, LM Location Manager, LS Location Service, HM Hash Map, JDBC Java Database Connection, JSON Java Server Object Notation, IO Input/Output, BR Broadcast Receiver, NSIC Non-static Inner Classes, TS Thread Start & Stop, NSM Non-Static Methods, AM Accessing Members, UI User Interface, NL Nested Layout, MT Main Thread, OAM Overridden Activity Method, ICD Ignoring Content Description, MP Mode Public, SRA Set Repeating Alarm, OCC On Configuration Changed, NIFL Native Iterative For Loop, CLI Context Layout Inflator, OCI Opened Closable Interface, UIP UI Parameters, UX User Experience, WKL WakeLocks with no Timeout, Obj Object, DBF Document Builder Factory, DB Document Builder, NL Node List, M_Set Method Setter, M_Get Method Getter, M_STA Method Thread Start, M_STO Method Thread Stop, FACC Field Access, ALWT Android: layout Width, LL Linear Layout, OLM On Low Memory, ACD Android: Content Description, AL Any Layout, BGC Background color, MWR MODE_WORLD_READABLE, MWW MODE_WORLD_WRITEABLE, SR SetRepeating, ACC Android:Config Changes, TFL Traditional For Loop, MC Method Close, ANFD Android: Next Focus Down, ANFU Android: Next Focus Up, ANFR Android Next Focus Right, ANFL Android Next Focus Left, ALW Android Layout_Width, ALH Android Layout_Height, F Field, FT Field Type, AC Any Collection like List, Map, etc., CT Collection Type, AV Any View, BM Bitmap, FS File Size
+# 3300
+# Source Code
+classes and other source code artifacts. In Visitor Adapter, we collect source code data model by collection of source code artifacts.
+
+We want to clarify that JavaParser has some limitations: First, it is not easy to customize the existing features of JavaParser. Most of the implemented classes in JavaParser are immutable classes and we cannot extend or modify these classes. Second, JavaParser lacks attribute level analysis and is unable to identify the real scope of declared attributes in the case of inner classes. The attributes analysis scope resolution is very important for the detection of Android code bad smells such as Internal Getter/Setter. Finally, JavaParser has a symbol solver named as Javasymbolsolver. The Javasymbolsolver is a collection of ReflectionTypeSolver and JavaParserTypeSolver. It is used for scope and type resolution. Currently, the integrated symbol solver is immature and still under development. To overcome these limitations, a developer has to identify the parent of all source code components and assign scope levels accordingly. In order to determine the true scope of attributes, we filtered the attributes list in all the classes by comparing their ancestor type (using method getAncestorType()) with the class name. Through this step, we were able to resolve the problem of the scope of attributes within classes.
+
+JavaParser is not able to parse XML documents and to extract information from XML documents. In our experimental setup, 7 Android code smells selected for detection are based on XML files (containing both meta-data (Manifest file) and layout files (Design files). The smells with such information cannot be detected directly using JavaParser. The motivation for using DOM parser is to extract these 7 smells given below:
+1. Debuggable Release (Detected from Manifest file)
+2. Set ConfigChanges (Detected from Manifest file)
+3. Not Descriptive UI (Detected from Layout file)
+4. Nested Layout (Detected from Layout file)
+5. Untouchable (Detected from Layout file)
+6. Uncontrolled Focus Order (Detected from Layout file)
+7. Overdrawn Pixel (Detected from Layout file)
+The Document Object Model DOM is a hierarchy-based parser used to create an object model against the whole XML document. Conventionally in the software industry, DOM is used to parse the XML documents rather than SAX parser and JAXB (Java Architecture for XML Binding). The DOM breaks down the entire document into the following three pieces.
+
+1. Elements (tags)
+2. Attributes
+3. Data (values)
+The above-mentioned entities are represented by the Node class. Nodes can be accessed by using getNodeName, getNodeType and getNodeValue. Using DOM, we implemented parse level detection, i.e., detection of Android bad smells. DOM Parser is available at the link
+# 4 Detection Example: Leaking Thread
+Leaking Thread is a code bad smell specific to Android mobile applications. It is a result of improper implementation of threads while distributing responsibilities. Sometimes, developers write code that starts a thread in a class but they forget to define a mechanism for stopping the thread.
+
+We explain the presence of Leaking Thread code bad smell in the source code of an application as shown in Listing 1. Here, we can see a thread object with name smartWorker that is created in WorkHelper class. Before closing statement of class, the created thread smartWorker is started with method start(). It is necessary to stop a thread after completion of its job. We cannot see any mechanism of stopping the smartWorker by using stop() method in the example as shown in Listing 1.
+
+9 https://dom4j.github.io/
+# Arabian Journal for Science and Engineering (2020) 45:3289–3315
+# DABS-(Detection of Android Bad Smells)
+# Detection of Android Bad Smells
+Android Project Folder
+Browse
+# Android Bad Smells: Method Ignoring Method
+Start Parsing
+Detect Selected Smell
+Reset
+Public class WorkHelper
+Thread smanWorker = new Thread() {
+public void run() {
+try {
+doMyTask();
+} catch (InterruptedException ex) {
+handleTheException();
+}
+}
+};
+# Listing 1: Example of Leaking Thread Bad Smell
+Our approach and ADOCTOR report a successful detection in the above source code example. Following is the detection rule for Leaking Thread considering class C is using a thread named as T using our proposed approach. Source code as shown in Listing 2. The reason is that our approach is implemented based on method calling and filtering comment sections. The ADOCTOR reports one instance for Leaking Thread on the same source code as the approach implemented in ADOCTOR is based on simple text comparison and there is no method for filtering comments.
+
+Public class WorkHelper {
+Thread smanWorker = new Thread() {
+public void run() {
+try {
+doMyTask();
+} catch (InterruptedException ex) {
+handleTheException();
+}
+}
+};
+}
+# Listing 2: Example of Leaking Thread Bad Smell with Comments
+- Class C is using T by calling run method.
+
+- There is an absence of stop method for stopping T.
+
+We present another example to show how our results are different from ADOCTOR while detecting Leaking Thread bad smell as shown in Listing 2. Our approach reports zero instance for Leaking Thread bad smell from the above.
+
+# 4 Prototyping Tool
+We developed a prototyping tool to evaluate and realize the concept of our proposed approach. The prototype is implemented in Java programming language. It is a stand-alone tool but it can be integrated with other tools as a Plug-in.
+
+# Arabian Journal for Science and Engineering (2020) 45:3289–3315
+# 4 Limitations of Approach
+The presented approach relies on open source JavaParser for parsing source code and to extract information related to different Android code bad smells. If a file has syntax errors in any part of source code that is participating in the definition of an anti-pattern, then it may generate false positives or false negatives. We want to clarify that there will be no threat for non-availability of technique due to this problem. Secondly, the extension of our approach requires the creation of new parsers for other languages, extensive knowledge of source code metrics, definitions of Android code smells, threshold values for the detection of Android code smells and knowledge of data model used for intermediate representation. However, a user can extend our approach by adding definitions and detection algorithms for new Android bad smells. Java Parser requires source code that is error free and is executable.
+
+# 5 Evaluation
+Evaluation of our proposed approach is imperative to measure its accuracy, effectiveness, performance and quality. At the start, we performed experiments on small examples of Android APIs for testing definitions of selected code smells. We refined our definitions based on the initial results. After initial experiments, we selected 4 open source and 3 industrial Android-based applications of varying size for our further experimental evaluation. The open source applications are available freely on the web. The size for open source code applications with respect to number of classes ranges from 19 to 279 classes. The industrial applications are taken from software industry based on the commitment that they will be kept secret due to license issue. The size for Industrial applications in terms of number of classes varies from 78 to over 5000 classes. The objective of selecting both types of applications is to determine the accuracy and performance of our approach for all type of software applications. The selected Android applications are from different categories such as entertainment, management, graphics, blockers, monitoring and social.

@@ -1,0 +1,48 @@
+# Web APIs in Android through the Lens of Security
+# Pascal Gadient, Mohammad Ghafari, Marc-Andrea Tarnutzer, Oscar Nierstrasz
+# Software Composition Group, University of Bern
+# Bern, Switzerland
+# scg.unibe.ch/staff
+Abstract—Web communication has become an indispensable characteristic of mobile apps. However, it is not clear what data the apps transmit, to whom, and what consequences such transmissions have.
+
+We analyzed the web communications found in mobile apps from the perspective of security. We first manually studied 160 Android apps to identify the commonly-used communication libraries, and to understand how they are used in these apps. We then developed a tool to statically identify web API URLs used in the apps, and restore the JSON data schemas including the type and value of each parameter.
+
+We extracted 9 714 distinct web API URLs that were used in 3 376 apps. We found that developers often use the java.net package for network communication, however, third-party libraries like OkHttp are also used in many apps. We discovered that insecure HTTP connections are seven times more prevalent in closed-source than in open-source apps, and that embedded SQL and JavaScript code is used in web communication in more than 500 different apps. This finding is devastating; it leaves billions of users and API service providers vulnerable to attack.
+
+Index Terms—Web APIs, network libraries, communication, security
+# I. INTRODUCTION
+Mobile applications (apps) increasingly rely on web communication to provide their services. Apps access the internet through web APIs in order to use an increasing number of public web services, or to communicate with private backends. Researchers have recently studied the use of such APIs in mobile apps, and, for instance, found that a large number of web requests are not directly traceable to source code , cloud and mail service credentials are hard-coded in the apps , many web requests are harmful , many web links targeting well-known advertisement networks impose serious risks on users , and lax input validation in many web APIs could compromise the security and privacy of millions of users.
+
+We could not, however, find any publicly available tool that researchers can use to study web APIs. Also, There are several third-party libraries to implement network communication, but existing studies are mainly limited to java.net APIs. Finally, dissecting the distribution of elements that comprise the web API URLs is never studied, which is necessary for collecting security-related information stored in query keys and values, as well as to fuzz web APIs.
+
+We manually studied the use of common web communication frameworks in 160 randomly selected Android mobile apps, i.e., more than 4% of the whole dataset, and developed a static analysis tool to investigate whether network communications in 3 376 closed-source and open-source apps differ. We manually inspected the tool’s output for 100 random apps, and used the reported URLs to connect to the servers and to investigate their response. We found eight security code smells, i.e., symptoms in the code that signal the prospect of a security vulnerability , on both ends, dominated by the use of embedded computer languages. We handcrafted regular expressions to automatically identify the use of those languages, and other languages prevalent on GitHub.
+
+In this work we address the following research questions:
+RQ1: Which API frameworks are used in Android mobile apps, and what is the nature of the data that apps transmit through these frameworks? We identified six different web API communication libraries, and learned that open-source apps rely on simpler request paths including only one or two path segments, while closed-source apps mostly include two or three path segments. Unexpectedly, the opposite is true for key-value pairs: Open-source apps frequently use one to three pairs, while closed-source apps mainly use one pair. Fragments have only been used very sparsely in both types of apps. We found that open-source and closed-source apps are similar in the choice of web communication libraries, but advertising services are more prevalent in closed-source apps.
+
+RQ2: What security smells are present in web communication? We found eight security smells in the apps and the server software. For instance, 500 apps use embedded computer languages (e.g., SQL, and JavaScript commands) in web API communications, thus introducing the threat of code injection attacks. A horrific 67% of the closed-source and 9% of the open-source apps communicate with servers over insecure HTTP connections. Many apps neglect to use the HTTP strict transport security policy. Finally, we observed a lack of authentication and authorization mechanisms for services that are supposed to be private.
+
+In summary, this work attempts to shed more light on the use of web APIs in mobile apps, by studying what data the apps transmit, to whom, and for what purpose. The tool and the obtained results in this study are available online
+The remainder of this paper is organized as follows. We describe the methodology of our web API mining approach in section II, and we present the results of our empirical.
+
+1 https://github.com/pgadient/jandrolyzer
+978-1-7281-5143-4/20/$31 c 2020 IEEE© SANER 2020, London, ON, Canada
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 11,2024 at 02:56:03 UTC from IEEE Xplore. Restrictions apply.
+
+# II. WEB API MINING
+We manually inspected Android apps to identify what APIs developers use to call web services, and how they are used. Then we took advantage of this information to develop a tool to automatically extract the web API URLs and their corresponding HTTP request headers statically from the apps.
+
+# A. Library Inspection
+An Android app can call a web API either with the help of the built-in Java classes, or by using external third-party libraries. We consulted the official Java and Android documentations to compile a list of built-in APIs that are relevant to network communication, and to establish how these APIs are used. We mainly focused on the java.net package, which includes a number of classes such as Socket, HttpsURLConnection, and URLConnection to implement network-related operations.
+
+Next, we manually inspected 160 randomly selected apps from a dataset of 3,376 apps (see section III) that request Android’s INTERNET permission to investigate what third-party libraries they may use for web communication, and how. These libraries are often built on top of the built-in Java network APIs. Therefore, we first checked whether a call to such Java APIs exists, and, if so, we checked whether the call belongs to the app or an external library. For each library, we studied the documentation, and investigated how developers use the library in each app, e.g., to construct URLs, and to attach headers to web requests. During the inspection of each app, we collected the web API URLs and any data that are transmitted to the servers to determine if what we collect from the source code is actually helpful to issue valid requests.
+
+In this study, besides the native Java network libraries, we found that libraries such as Apache HttpClient, Glide, Ion, OkHttp, Retrofit, and Volley are used in the apps.
+
+While studying the use of web communication libraries, we also noticed that besides the built-in org.json package, developers often use two external libraries, namely Gson and Moshi, for parsing and manipulating JSON (JavaScript Object notation) data, which is commonly used for data exchange in web services.
+
+# B. API Miner
+We then developed a tool that leverages our finding in the library inspection phase, and statically analyzes apps to extract web API URLs, query keys and the corresponding values where applicable. The tool takes the following steps:
+1. Decompilation: Given an APK file, the tool first decompiles the app using the command line version of the JADX decompilation tool A successful decompilation will provide us with a project folder that contains decompiled Java source code of the app and the resource files. Although decompilation errors are common, JADX is quite robust and produces code with a correct syntax. In particular, method declarations and class structures remain intact with comments in place where the decompilation did not succeed completely. The tool uses the JavaParser framework to create an abstract syntax tree (AST) for every .java file within the project When the actual source code of an app is available, we use the information from the build and configuration files to accurately inject specific library versions into the JavaParser framework to enable the resolution of library dependencies in the subsequent app analysis. If the desired library version is unavailable in our collection, the next available more recent version is added instead. Closed-source apps (i.e., APKs) do not require those dependency injections as they already contain the required code themselves.
+
+2. Detection and Extraction: In principal, we need to track flows of data in relevant APIs, and several static analysis frameworks exist to track data flows in Android apps. Nevertheless, in our experience as well as according to recent studies, these tools may not perform as described in the relevant papers , , . We therefore decided to implement our own lightweight analysis tailored to reconstruct web APIs in the code.

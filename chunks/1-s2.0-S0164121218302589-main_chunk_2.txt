@@ -1,0 +1,88 @@
+The remainder of this paper is structured as follows. Section 2 provides an overview of the Android framework and its access control model to help the reader understand the discussion that follows. Section 3 motivates the research through an illustrative example. Section 4 describes DelDroid, while Section 5 describes its implementation. The evaluation results are presented in Section 6. Finally, the paper concludes with an overview of the related literature and discussions on limitations and directions for future work.
+
+# 2. Android background and research motivation
+This section provides a brief overview of the Android framework, and the over-privileged nature of its access control model, to help the reader follow the discussions that ensue.
+
+# Android framework
+Android is the most popular mobile platform accounting for 85% market share as of the first quarter of 2017 Smartphone OS market share, and more than 3 million Android apps are available only on Google Play, the official Google Android app store, as of June 2017. The Android framework includes a full Linux OS based on the ARM processor, system libraries, middleware, and a suite of pre-installed applications. Android applications (apps) are mainly written in the Java programming language by using a rich collection of APIs provided by the Android Software Development Kit (SDK). An app’s compiled code alongside data and resources are packed into an archive file, known as an Android package kit (APK). Once an APK is installed on an Android device, it runs by using the Android runtime (ART) environment.
+
+# Application configuration
+Each Android APK includes a mandatory configuration file, called manifest. It specifies, among other things, the principal components that constitute the app, including their types and capabilities, as well as required and enforce permissions. The manifest file values are bound to the app at compile time, and cannot be changed afterwards, unless the app is recompiled.
+
+# Application components
+Components are basic logical building blocks of apps. Each component can be invoked individually, either by its embodying app or by the system, upon permitted requests from other apps. Android defines four types of components:
+1. Activity components provide the basis of the Android user interface. Each app may have multiple Activities representing different screens of the app to the user.
+
+2. Service components provide background processing capabilities, and do not provide any
+# 2. Over-privileged resource access
+Android contains a plethora of sensitive system resources (e.g., GPS, camera, account manager, power manager) accessed by obtaining a handle to a system-level, long-running service (e.g., location service, camera service, account service, power manager service). System services are launched by com.android.server.SystemServer service, which is started at the boot time of the Android operating system. To use a system service, a component should have the appropriate permission that guards the service. For example, to track the user’s location, a component needs to obtain a handle to the location service, which requires the location permission (either ACCESS_COARSE_LOCATION or ACCESS_FINE_LOCATION).
+
+The permissions stated in the app manifest enable secure access to sensitive resources. However, a permission granted to an app transfers to all of the components in the app. Android’s coarse-grained permission model violates the principle of least privilege (Bugiel et al., 2013; Smalley and Craig, 2013), as often not all components of an app need access to the same sensitive resources. The shortcomings of Android’s permission model have been widely discussed in the literature , and shown to be the root cause of various security attacks, most notably privilege escalation.
+
+# 2. Over-privileged inter-component communication
+The ICC mechanism in the Android framework provides a flexible component-based development. However, this mechanism gives the components more communication privileges than they actually need and hence violates the principle of least privilege. Specifically, Android’s ICC mechanism leads to over-privileged architectures, where components needlessly have the ability to send Intent messages to invoke services of many other components within and outside their parent apps, and receive a variety of Intent messages implicitly exchanged in the system. A component is allowed to communicate with (1) all components in its parent app, (2) protected components in other apps as long as its parent app has the required permissions, and (3) any public (exported) component in other apps. A component is public if its VISIBLE attribute is set to true in the manifest file or declares at least one Intent Filter. Many developers are not aware of the fact that by specifying an Intent Filter for a component, Android by default makes that component public, thus allowing components from other apps to invoke its interfaces . Inter-app communication (IAC) privileges are thus often granted implicitly. Finally, a component does not require a permission to specify an Intent Filter with arbitrary action, thereby allowing that component to receive all implicit Intents exchanged in the system with the specified action.
+
+The over-privileged ICC mechanisms in Android are known to be the root cause of many security attacks, most notably hidden communications , Intent Spoofing and Unauthorized Intent Receipt ICC attacks . Moreover, comprehending the security posture of an Android system in light of this privilege management scheme is rather tedious and error prone for a security architect.
+
+# 3. Illustrative example
+To further motivate our research and illustrate our approach, we provide an example of a malicious component that employs the extra privileges afforded by Android to launch two security attacks: information leakage through hidden code , and privilege escalation.
+
+LevelUp is a Service in FunGame, a malicious Android game app, which once started, via the Main Activity, leverages dynamic behavior class from loading an external feature JAR of file Android placed to at load the a location malicious specified on line 9 of Listing 2. The dynamically loaded code allows LevelUp to communicate with the Sender Service as shown in Listing 2. On line 11 of Listing 2, LevelUp instantiates a DexClassLoader object and uses it to load the DEX (Dalvik Executable) file contained in the JAR file. Using Java reflection at line 13 of Listing 2, the mDexClassLoader object loads a class called HiddenBehavior and invokes getIntent method at line 16 of Listing 2. This method returns an implicit Intent, which LevelUp uses to communicate with Sender, as shown in line 17 of Listing 2.
+
+# 86
+M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+# FunGame
+# Messaging
+# i3
+# LevelUp
+# Main
+Explicit Intent
+Implicit Intent
+Dynamically Loaded Code
+Private component
+SMS permission
+Bluetooth permission
+Location permission
+1    public     class    Sender     extends      Service     {
+2         ...
+
+3         public    int    onStartCommand ( Intent           intent ,    int   flags ,    int   startId ) {
+4                // if   ( c h ec kC a ll in g Pe rm i ss io n (" android . permission . SEND_SMS ")          ==   PackageManager.
+
+PERMISSION_GRANTED )          {
+5                     String     phoneNumber       =  intent . getStringExtra ( " PHONE_NUMBER " ) ;
+6                     String     msg   =  intent . g etStringExtra ( " MSG_CONTENT " ) ;
+7                     SmsManager       smsManager       =  SmsManager . getDefault () ;
+8                     smsManager . sendTextMessage ( phoneNumber ,                  null ,   msg ,   null ,   null ) ;
+9                // }
+10          ...
+
+Listing 1. Vulnerable component, Sender Service, sends a text message.
+
+1    public     class    LevelUp     extends      Service     {
+2         ...
+
+3         public    int    onStartCommand ( Intent           intent ,    int   flags ,    int   startId ) {
+4            ...
+
+5            loadCode () ;
+6         }
+7         public    void    loadCode () {
+8            //   read   a  jar    file   that    contains      classes . dex     file.
+
+9            String     jarPath = Environment . g et E x t e r na l S t o r a g e D i r e c t o r y () . getAbsolutePath () + " / Download / hiddenCode.
+
+jar " ;
+10            // load    the   code
+11            DexClassLoader         mDexClassLoader          =  new   DexClassLoader ( jarPath ,           getDir ( " dex " ,    MODE_PRIVATE ).
+
+getAbsolutePath () , null ,          getClass () . getClassLoader () ) ;
+12            // use   java    reflection       to  load    a  class     and   call   its    method
+13            Class <? >    loadedClass       =   mDexClassLoader . loadClass ( " HiddenBehavior " ) ;
+14            Method     methodGetIntent         =   loadedClass . getMethod ( " getIntent " ,             android . content . Context . class ) ;
+15            Object     object    =  loadedClass . newInstance () ;
+16            Intent     intent    =  ( Intent )     methodGetIntent . invoke ( object ,            LevelUp . this ) ;
+17            startService ( intent ) ;
+18            ...
+
+Listing 2. Malicious component, LevelUp Service, uses dynamic class loading to hide its malicious behavior.

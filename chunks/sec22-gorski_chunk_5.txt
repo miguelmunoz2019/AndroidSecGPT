@@ -1,0 +1,45 @@
+Finally, FRED outputs a JSON file mapping each Java JNI method name to the file paths used in file methods, including when the path originates in Java. FRED then uses Soot’s call graph from RPC entry points to JNI calls to supplement the file paths identified in Section 4.
+
+# 4 Security-Sensitive File Paths
+FRED’s re-delegation analysis (Section 4) matches the file paths from Sections 4 and 4 with concrete file paths on a device. Using concrete file paths both reduces noise and helps determine if a re-delegation is possible on a given device. We further consider only security-sensitive concrete file paths to limit manual inspection to areas of potential vulnerabilities.
+
+FRED uses a real device to extract the concrete file paths and file access control policy. Specifically, FRED executes adb shell ls -laRZ as root on a rooted device to extract this information. FRED then processes the file system information to resolve symbolic links, taking care to avoid circular paths. In doing so, FRED ignores symbolic links in paths starting with /sys/.*/subsystem and /proc/.*/fd as these all point back to the root of the file system. We considered statically extracting files from the firmware image using BigMAC ; however, it has very limited ability to identify files in /data, which contains many security-sensitive files that match file paths determined by FRED.
+
+Finally, FRED classifies each concrete file and directory as security-sensitive based on the file owner and group. Specifically, we observe that most system services run as system and Android has multiple files in /system/etc/permissions that define GIDs that are automatically given to applications granted specific Android permissions. Therefore, a path is marked security sensitive if it has a owner or group of system, or the group corresponds to an Android permission GID.
+
+# 4 Re-Delegation Detection
+FRED’s re-delegation analysis identifies a set of candidate RPC entry points (Definition 1) for manual inspection. FRED focuses on exploitation by third-party applications as these represent the most significant risk. Malicious applications and services included in OEM builds are outside the scope of this paper. While it is possible for exploited system applications to exploit confused deputies, the interactions between system applications and system services have been considered by prior work.
+
+# Re-Delegation of System Files
+For each RPC entry point that accesses a system UID or GID file or directory, FRED checks if the RPC entry point’s authorization checks contain at least one system-level permission (i.e., those permissions without a protection level of normal, dangerous, instant, run-time, or pre23). If so, FRED excludes the RPC entry point from the candidate set. RPC entry points can also be restricted based on specific PIDs, UIDs, and GIDs. Similar to ARF , FRED checks if the first conditional statement is a check for a special UID, PID, or GID, and if the RPC entry point includes an authorization check that restricts it to special callers (e.g., calling getActiveAdminWithPolicyForUidLocked() in the DevicePolicyManagerService). If so, FRED excludes the RPC entry point. The remaining RPC entry points that access system UID or GID files and directories are candidates.
+
+# Re-Delegation of Other Files
+FRED also considers files and directories with a GID that maps to an Android permission. An RPC entry point is a candidate for manual inspection if the permissions mapped to a file’s GID is not a subset of the permissions checked by the RPC entry point. Similar to system files, FRED excludes RPC entry points that are not accessible to third-party applications.
+
+# Reducing Manual Inspection
+While performing manual inspection of the AOSP Android 10, we developed two methods to systematically reduce the number of candidate RPC entry points that require manual inspection.
+
+- System-Specified Values - We discovered a number of unresolved Any nodes that are the result of values that are both specific to the caller and cannot be influenced by the caller (e.g., application name, data path, and code path). As such, a file path constructed of such components is unique to the caller, implying the caller is intended to have access to these resources. Since these Any nodes caused the regular expressions to match the majority of file paths within the file system, they were excluded before matching security-sensitive files.
+
+- Safe File Method Callers - We also found that file methods accessing security-sensitive files were often called from the same method. Reviewing these methods, we found that many of them could only be called in safe ways. In total, we found 41 unique callers of file methods where the file being accessed could not be influenced or have its data retrieved by any entry point. We exclude the regular expressions stemming from these 41 sinks from the output of FRED.
+
+# 5 Evaluation
+This section demonstrates FRED’s utility by applying it to three Android firmware images and investigates potential vulnerabilities. Recall that FRED automates the discovery of candidate RPC entry points (Definition 1) and manual investigation is required to determine if a given candidate RPC entry point has improper file re-delegation (Definition 2).
+
+# 5 Experimental Setup
+Our current implementation of FRED was designed for AOSP version 10_r1 (i.e., API 29) built for a Pixel 3a device. We previously ran FRED on AOSP version 9_r11 for a Pixel 3 device, identifying the same vulnerabilities and comparable findings as those highlighted this section. We also ran FRED on two additional Android 10 firmware images. Our study included the following three devices.
+
+- AOSP Pixel 3a running a user debug build of Android 10 r1. This device represents the primary target used when developing FRED.
+
+- Google Pixel 3a running Android 10 build QQ3A-0805. This device represents a target close to our original target, demonstrating FRED’s ability to run on firmware images without source code. No changes were required to run FRED on this target.
+
+- Samsung S20 running Android 10 build QP1A-1. This device has significant differences from our original target. Running FRED on this target required modifications to ACMiner’s list of methods to not analyze to address call graph imprecision that prevented analysis from completing on our computing resources. We also added 88 file methods identified by re-running FRED’s semi-automated API file method analysis.
+
+Our analysis was run on a Dell R611 server with an Intel Xeon E5-2620 V3 (2 GHz) processor and 128 GB RAM running VMware ESXi. A single VM running Ubuntu 18 and OpenJDK 1_171 was given full host resources.
+
+ACMiner took approximately 1 hour and 45 minutes to extract authorization checks of RPC entry points for the AOSP Pixel 3a. FRED took approximately 10 minutes to construct a complete list of the security sensitive file paths, 1 hour and 16 minutes to extract the intermediate expressions from Java code, 15 minutes to extract file paths from native code, and 12 minutes to convert the intermediate expressions to regular expressions and identify candidate RPC entry points. For the Google Pixel 3a, all stages of the analysis had a runtime that was virtually the same as that of the AOSP Pixel 3a. However, as a result of the increased code base and the significant increase in the number of RPC entry points, the runtime of FRED on the Samsung S20 doubled to approximately 4 hours when extracting authorization checks and 2 hours and 45 minutes when extracting the intermediate expressions from Java code. All other stages had virtually the same runtime.
+
+# 5 FRED Characterization
+We initially analyzed an AOSP Pixel 3 running Android 9 (the current version when we began our work). We then migrated to different builds of Android 10. The following discussion focuses on the Android 10 builds. However, we
+# 5 File Methods in Practice
+JNI File Methods: The procedure in Section 4 took 24 hours to identify the JNI file methods from a total of 5,176 JNI methods for AOSP 9. The process only took an additional hour for the 240 JNI methods added to AOSP 10. As Google 10 only added 3 JNI methods over AOSP 10, it only took a few minutes. However, the added 1,607 JNI methods of the Samsung S20 device took an additional 3 hours to evaluate. As shown in Table 2, we identified 368 JNI file methods for AOSP 9 which was reduced to 360 JNI file methods for AOSP 10 because of changes in the code of the Java API. We did not find any additional JNI file methods for either the Google or Samsung devices.

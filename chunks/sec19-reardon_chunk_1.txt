@@ -1,0 +1,59 @@
+# 50 Ways to Leak Your Data: An Exploration of Apps’ Circumvention of the Android Permissions System
+Joel Reardon, University of Calgary / AppCensus Inc.; Álvaro Feal, IMDEA Networks Institute / Universidad Carlos III Madrid; Primal Wijesekera, U.C. Berkeley / ICSI; Amit Elazari Bar On, U.C. Berkeley; Narseo Vallina-Rodriguez, IMDEA Networks Institute / ICSI / AppCensus Inc.; Serge Egelman, U.C. Berkeley / ICSI / AppCensus Inc.
+
+https://www.usenix.org/conference/usenixsecurity19/presentation/reardon
+This paper is included in the Proceedings of the 28th USENIX Security Symposium.
+
+August 14–16, 2019 • Santa Clara, CA, USA
+978-1-939133-06-9
+Open access to the Proceedings of the 28th USENIX Security Symposium is sponsored by USENIX.
+
+# 50 Ways to Leak Your Data:
+# An Exploration of Apps’ Circumvention of the Android Permissions System
+Joel Reardon
+University of Calgary
+Álvaro Feal
+IMDEA Networks Institute
+Primal Wijesekera
+U.C. Berkeley / ICSI
+AppCensus, Inc.
+
+Amit Elazari Bar On
+U.C. Berkeley
+Narseo Vallina-Rodriguez
+IMDEA Networks Institute / ICSI
+Serge Egelman
+U.C. Berkeley / ICSI
+AppCensus, Inc.
+
+# Abstract
+Modern smartphone platforms implement permission-based models to protect access to sensitive data and system resources. However, apps can circumvent the permission model and gain access to protected data without user consent by using both covert and side channels. Side channels present in the implementation of the permission system allow apps to access protected data and system resources without permission; whereas covert channels enable communication between two colluding apps so that one app can share its permission-protected data with another app lacking those permissions. Both pose threats to user privacy.
+
+In this work, we make use of our infrastructure that runs hundreds of thousands of apps in an instrumented environment. This testing environment includes mechanisms to monitor apps’ runtime behaviour and network traffic. We look for evidence of side and covert channels being used in practice by searching for sensitive data being sent over the network for which the sending app did not have permissions to access it. We then reverse engineer the apps and third-party libraries responsible for this behaviour to determine how the unauthorized access occurred. We also use software fingerprinting methods to measure the static prevalence of the technique that we discover among other apps in our corpus.
+
+Using this testing environment and method, we uncovered a number of side and covert channels in active use by hundreds of popular apps and third-party SDKs to obtain unauthorized access to both unique identifiers as well as geolocation data. We have responsibly disclosed our findings to Google and have received a bug bounty for our work.
+
+# 1 Introduction
+Smartphones are used as general-purpose computers and therefore have access to a great deal of sensitive system resources (e.g., sensors such as the camera, microphone, or GPS), private data from the end user (e.g., user email or contacts list), and various persistent identifiers (e.g., IMEI). It is crucial to protect this information from unauthorized access. Android, the most-popular mobile phone operating system, implements a permission-based system to regulate access to these sensitive resources by third-party applications. In this model, app developers must explicitly request permission to access sensitive resources in their Android Manifest file. This model is supposed to give users control in deciding which apps can access which resources and information; in practice, it does not address the issue completely.
+
+The Android operating system sandboxes user-space apps to prevent them from interacting arbitrarily with other running apps. Android implements isolation by assigning each app a separate user ID and further mandatory access controls are implemented using SELinux. Each running process of an app can be either code from the app itself or from SDK libraries embedded within the app; these SDKs can come from Android (e.g., official Android support libraries) or from third-party providers. App developers integrate third-party libraries in their software for things like crash reporting, development support, analytics services, social-network integration, and advertising. By design, any third-party service bundled in an Android app inherits access to all permission-protected resources that the user grants to the app. In other words, if an app can access the user’s location, then all third-party services embedded in that app can as well.
+
+In practice, security mechanisms can often be circumvented; side channels and covert channels are two common techniques to circumvent a security mechanism. These channels occur when there is an alternate means to access the protected resource that is not audited by the security mechanism, thus leaving the resource unprotected. A side channel exposes a path to a resource that is outside the security mechanism; this can be because of a flaw in the design of the security mechanism or a flaw in the implementation of the design. A classic example of a side channel is that power usage of hardware when performing cryptographic operations can leak the particulars of a secret key. As an example in the physical world, the frequency of pizza deliveries to government buildings may leak information about political crises.
+
+USENIX Association
+28th USENIX Security Symposium
+603
+A covert channel is a more deliberate and intentional effort between two cooperating entities so that one with access to some data provides it to the other entity without access to the data in violation of the security mechanism . As an example, someone could execute an algorithm that alternates between high and low CPU load to pass a binary message to another party observing the CPU load.
+
+The research community has previously explored the potential for covert channels in Android using local sockets and shared storage , as well as other unorthodox means, such as vibrations and accelerometer data to send and receive data between two coordinated apps . Examples of side channels include using device sensors to infer the gender of the user  or uniquely identify the user . More recently, researchers demonstrated a new permission-less device fingerprinting technique that allows tracking Android and iOS devices across the Internet by using factory-set sensor calibration details . However, there has been little research in detecting and measuring at scale the prevalence of covert and side channels in apps that are available in the Google Play Store. Only isolated instances of malicious apps or libraries inferring users’ locations from WiFi access points were reported, a side channel that was abused in practice and resulted in about a million dollar fine by regulators.
+
+In fact, most of the existing literature is focused on understanding personal data collection using the system-supported access control mechanisms (i.e., Android permissions). With increased regulatory attention to data privacy and issues surrounding user consent, we believe it is imperative to understand the effectiveness (and limitations) of the permission system and whether it is being circumvented as a preliminary step towards implementing effective defenses.
+
+To this end, we extend the state of the art by developing methods to detect actual circumvention of the Android permission system, at scale in real apps by using a combination of dynamic and static analysis. We automatically executed over 88,000 Android apps in a heavily instrumented environment with capabilities to monitor apps’ behaviours at the system and network level, including a TLS man-in-the-middle proxy. In short, we ran apps to see when permission-protected data was transmitted by the device, and scanned the apps to see which ones should not have been able to access the transmitted data due to a lack of granted permissions. We grouped our findings by where on the Internet what data type was sent, as this allows us to attribute the observations to the actual app developer or embedded third-party libraries. We then reverse engineered the responsible component to determine exactly how the data was accessed. Finally, we statically analyzed our entire dataset to measure the prevalence of the channel. We focus on a subset of the dangerous permissions that prevent apps from accessing location data and identifiers. Instead of imagining new channels, our work focuses on tracing evidence that suggests that side- and covert-channel abuse is occurring in practice.
+
+We studied more than 88,000 apps across each category from the U.S. Google Play Store. We found a number of side and covert channels in active use, responsibly disclosed our findings to Google and the U.S. Federal Trade Commission (FTC), and received a bug bounty for our efforts.
+
+# In summary, the contributions of this work include:
+- We designed a pipeline for automatically discovering vulnerabilities in the Android permissions system through a combination of dynamic and static analysis, in effect creating a scalable honeypot environment.
+
+- We tested our pipeline on more than 88,000 apps and discovered a number of vulnerabilities, which we responsibly disclosed. These apps were downloaded from the U.S. Google Play Store and include popular apps from all categories. We further describe the vulnerabilities in detail, and measure the degree to which they are in active use, and thus pose a threat to users. We discovered covert and side channels used in the wild that compromise both users’ location data and persistent identifiers.

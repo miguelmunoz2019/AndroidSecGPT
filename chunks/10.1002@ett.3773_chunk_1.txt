@@ -1,0 +1,44 @@
+Received: 31 May 2019     Revised: 27 August 2019     Accepted: 5 September 2019
+Check for updates
+# SPECIAL ISSUE ARTICLE
+# Privacy issues of android application permissions: A literature review
+Gulshan Shrivastava1                          Prabhat Kumar1                    Deepak Gupta2                   Joel J. P. C. Rodrigues3,4
+1Department of Computer Science and Engineering, National Institute of Technology, Patna, India
+2Computer Science and Engineering, Maharaja Agrasen Institute of Technology, New Delhi, India
+3Department of Electrical Engineering, Federal University of Piauí (UFPI), Teresina, PI, Brazil
+4Covilhã Delegation, Instituto de Telecomunicações, Covilhã, Portugal
+# 1 INTRODUCTION
+The increasing use of the smartphones in the daily life has encouraged the mobile industry for the regeneration As reported in the works of Powar and Meshram2 and Felt et al,3 the Android mobile framework underwent a transformation by the manufacturing industry, customers, and the software extension community. In 2015, the official Android market (Google Play) reported over 1 million users downloaded the app,4 thus accounting for over a billion Android customers. Android is the most used mobile device operating system (OS) at present One of the primary reason for its rise is its availability as freeware OS. The earlier Android gadgets did not accept security patches, which leads to less number of users, but successive improvement6-8 has solved the problem.
+
+Android is the most popular OS at present. Android has customized our personal life as it finds in applications in a wide range of gadgets, like mobile phones and televisions. In the play store, there are over 2 billion active android users The Google has provided open source licenses, and the available source code is the reason behind the popularity of Android. Android is well known with the mobile organizations that require an instant, adaptable OS for their devices
+Trans Emerging Tel Tech. 2019;e3773. wileyonlinelibrary.com/journal/ett © 2019 John Wiley & Sons, Ltd. 1 of 17
+https://doi.org/10/ett
+Mobile device security is utmost important concern, but it also should be user friendly. However, it is the very fine ensuring a client's information protection along with the security. The mobile device companies are concerned regarding a user's security and data privacy. The internet creates complex issues for securing user's data privacy that handles threats and vulnerabilities. The data is instantly transferred from infected phones to premium-rate phone numbers without even knowledge of the client. Because of this, the individuals' data is being sent to the unauthorized third parties. This paper supplements the previous reviews by extending the scope of malware development and Android security issues. The permissions given by the defined smartphone are checked and compared, and these permissions are granted accordingly. This work consists of detailed literature review. Sections 2 and 3 discuss the background literature of permission analysis and its implementation in android. In Section 4, attacks are presented through permission techniques, and consequently, Section 5 deals with the methodology of permission analysis. Section 6 analyzes the approach for the literature review. In Sections 7 and 8, exclusion criteria and data extraction are studied, respectively. Section 9 discusses future research directions, and the last section finally conclude this paper.
+
+# 2 BACKGROUND INFORMATION ON PERMISSION ANALYSIS
+Malware detection on smartphones can be separated into static and dynamic types. In static detection, some features are removed from an app and analyzed before the app is executed, while in case dynamic detection, the app is executed via simulator and decided according to the log files. Both types have some advantages and disadvantages as stated in Table 1.
+
+# 2 Static analysis
+Static analysis is a way of detecting malicious behavior in the code segments. Static analysis consumes minimum time and resources as it does not involve the execution of the application by comparing to other analysis techniques for Android malware detection. This technique is carried out by removing the features without implementing the application on a device or emulator. However, this technique has a significant downside of code obfuscation and dynamic code loading. Code obfuscation makes the pattern matching incapable of detecting inconsistency. On the other side, the advantages of static analysis is that it can detect possible security violations, runtime errors, and logical inconsistencies. The permissions of API calls are usually used as static features as shown in Figure 1. The two main approaches for static analysis are signature based and permission based.
+
+- Signature-based approach
+This technique is also known as misuse detection technique. The commercial anti-malware yields are mostly used for the signature-based malware detection approaches. This technique provides a unique signature and removes the semantic patterns. Signature-based recognition is very capable for the already known malware, but the major problem of this approach is that it cannot identify the unknown malware types. Although the maximum malware remains undetected.
+
+# SHRIVASTAVA ET AL.
+
+# 3 of 17
+# All programs
+# Identify Suspicious Program
+# Defeating Antiforensic Code Analysis
+# Malicious Code Behavior
+# Identity
+due to the incomplete signature database, while we have detected the malware, its variants is required to be instantly update
+# Permission-based analysis
+Permission-based analysis is required where permission requested by an application shows a significant role in the access right. Applications must state which permissions they request or require in their manifest file. Android permission controls the required access to the application data. The data stored in the device cannot be accessed without the required permissions. AndroidManifest.XML file is present in the root directory, which stores essential information related to application on the Android system The permission mechanism should be working effectively before allowing the application to get the required asset. In any case, consents for every single proclaimed permission is not required for the particular application. It just examines the show document and no different records
+# 2 Dynamic analysis
+Dynamic analysis is the way of testing and evaluating the data in real time. The main aim of this analysis is to repeatedly examine the code offline and detecting the run-time error. This approach aims to evaluate the malware by executing the application By comparing with static analysis, this approach is more complicated as resource consumption is performed in real environment. The benefit of this method is that it loads target information to determine the application behavior during runtime. Sandbox, virtual machine, and other forms of operation environment are constructed by the dynamic behavioral detection method. To acquire the application behavior model, it stimulates the execution of the application
+# Two main approaches for dynamic analysis
+# Anomaly-based detection
+The performance of this approach depends on machine learning algorithm in order to detect the malicious behavior. The features from the existing malware are used to train the model that predicts unknown malware. To perform in-depth analysis of malware detection, it requires a lot of effort and resources. Applications (apps) installed are used for identifying the malicious behavior in the system. The major drawback of this process is that, if it invokes more system call, then it may even classify for the legitimate application
+# Taint analysis
+It checks the user's input and modify the variables accordingly. It is the most used method as it focuses only on those apps that are shared to get sensible information. Dynamic taint analysis is a scientific technique that is used for this approach followed by Taint Droid. This technique called taint, which marks the data of interest with an identifier. When the information is being used, the taint stays with this information For tracking Android, the Train Droid provides system-wide data stream. The multisourced sensitive data like microphone, camera, and GPS can also be tracked by this method. Sensitive data and information can automatically be tagged by Taint Droid. Taint Droid records the tagged data from the system over any channel The fundamental problem of this system is that it cannot track data that leaves and returns the channel.

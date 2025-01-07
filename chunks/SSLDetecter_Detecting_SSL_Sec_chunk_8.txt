@@ -1,0 +1,70 @@
+For the vulnerability of trusting all hosts, SSLDetecter detected 258 apps which are consistent with the SMV-HUNTER detection results. And the other 39 applications that are not detected by the SMV-HUNTER system due to the failure to acquire the target components. Further analysis of the 9 applications not detected by SSLDetecter shows that these 9 test applications communicate with other software (such as the system’s built-in browser, camera, WeChat, or QQ) during the running process, which caused the test applications to jump out of the interface more than three times and thus interrupted the traversal test.
+
+In addition, the details of each step of the two detection systems are discussed below. Table 7 describes the...
+
+# Security and Communication Networks
+The distribution of vulnerable applications detected by SMV-HUNTER and SSLDetecter.
+
+Detection rates of SMV-HUNTER and SSLDetecter.
+
+number of applications after each step of SMV-HUNTER analysis. SMV-HUNTER spends a lot of time in dynamic analysis. The reason is that for the collection of vulnerability target components built by static analysis, SMV-HUNTER needs to exhaust every component in the startup set and triggers events for every clickable widget and input widget on the interface. We analyze the 671 applications with the target component set, and the number of applications with more than 50 components to be started account for 25% of the total number of dynamic tests. Each of these applications is tested for about 30 minutes. In the application package named COM.-IMMOMO.MOMO, the number of target components that may have SSL security vulnerability is as high as 540, which takes several hours to test.
+
+Compared with SMV-HUNTER, SSLDetecter system can detect more applications with SSL vulnerabilities, which is mainly attributed to the fact that our system does not rely on static analysis to generate a set of target components. The application number results after each step of SSLDetecter are shown in Table 8. SSLDetecter does not build a set of target Activity components based on static analysis, which can effectively solve the detection problem of applications against static analysis (such as packed applications).
+
+Based on these experimental results, we answered the research question RQ3 as follows: our SSLDetecter system has improved the average detection rate by 6 percentage points and detection efficiency by 38% compared with SMV-HUNTER system, making it more suitable for SSL security vulnerability detection.
+
+# 6. Further Analysis of the Distribution of Applications with SSL Vulnerabilities
+The 424 applications with SSL security vulnerabilities are statistically analyzed from their categories and application markets. The results are shown in Figures 10 and 11. It can be seen from Figure 10 that SSL security vulnerabilities mainly exist in three categories: commercial, financial services and utility tools, whose applications are closely related to users’ privacy. For example, the weather
+# Security and Communication Networks
+# 17
+# XercentageAofAappsAwithAvulnerabilitiesA©Nw
+Forecast application in the utility tool needs to obtain the detection scheme for various markets with different levels of user’s geographical location information, the WeChat application in the social software needs to obtain the user’s mobile phone number, commercial and financial services involve the user’s bank account, Alipay account, and other confidential information. When users use insecure SSL protocol for network communication, their confidential information is at risk of being stolen, so it is necessary to carry out strict security audit for this type of applications. In the larger markets such as Myapp, 360 mobile assistant and HiMarket, the application security can be guaranteed to some extent due to the certain review mechanism before the application is put on the shelf. But there are still a few applications with SSL security vulnerabilities. Therefore, it is of great significance to propose an effective SSL vulnerability.
+
+# 6. Threats to Validity.
+
+Here are the threats that may affect the validity of our system.
+
+# 6. Internal Validity.
+
+In our experiment, we have to manually analyze some screenshot samples of applications to formulate the UI classification rules of Android applications.
+
+# Security and Communication Networks
+Therefore, the distributive relationship between objects and this threat, we randomly selected a large number of real-world application samples for evaluation. These samples cover a wide variety of categories and are widely distributed in size. The more comprehensive the object applications, the more truly it can reflect the detection effect of our system on the real world application.
+
+# 7. Conclusions and Future Work
+We propose a method of automatic detection of SSL security vulnerabilities in Android applications. The application is dynamically driven to run automatically through UI traversal technology. And the man-in-the-middle attack test is conducted in real time during the application running process to determine whether it can resist the MITM attack.
+
+In order to trigger as many different logic network request events as possible and return the attack results in real time, we propose a new traversal strategy by optimizing the widget tree according to the interface type and calculating the interface state similarity based on the widget path set.
+
+In addition, our traversal coverage calculation metrics are not sufficiently granular. The coverage calculated by this formula may not be a very accurate reflection of the coverage of our system compared with other systems. A better approach is to refine to a smaller level of widgets in the Activity interface. However, the error in the calculation of coverage does not directly affect the accuracy of detecting SSL vulnerabilities, which is the ultimate goal of our system.
+
+Based on the network port monitoring technology, we extend the function of the man-in-the-middle agent to achieve the purpose of rapid and accurate detection. We design and implement the Android application SSL security vulnerability automatic detection system SSLDetecter and verified the effectiveness and availability of the system through experiments. Compared with the existing system SMV-HUNTER, the time efficiency of our system increases by about 38% and the average detection rate increases by 6 percentage points, with more types of vulnerabilities detected. Our method can effectively carry out security analysis for packed applications which can resist static analysis to some extent.
+
+# 6. External Validity
+A possible threat to the external validity is the choice of the testing Android applications. Specific applications that have been artificially selected do not provide a good indication of the situation. To alleviate this, more attack test scenarios can be further added to dynamically verify SSL vulnerability types rather than just judging the existence of SSL vulnerabilities based on the success of the MITM attack.
+
+# Security and Communication Networks
+# Data Availability
+The data used to support the findings of this study are available from the corresponding author upon request.
+
+# Conflicts of Interest
+The authors declare that there are no conflicts of interest regarding the publication of this paper.
+
+# Security and Communication Networks
+testing of mobile apps,” IEEE Software, vol. 32, no. 5, pp. 53–59, 2015.
+
+Y.-M. Baek and D.-H. Bae, “Automated model-based Android GUI testing using multi-level GUI comparison criteria,” in Proceedings of 31st IEEE/ACM International Conference on Automated Software Engineering, pp. 238–249, Singapore, September 2016.
+
+https://github.com/androguard/androguard.
+
+C. Wohlin, P. Runeson, M. H¨ost et al., Experimentation in Software Engineering, Springer Science & Business Media, Berlin, Germany, 2012.
+
+https://developer.android.com/studio/test/monkey.html.
+
+D. Amalfitano, N. Amatucci, A. M. Memon, P. Tramontana, and A. R. Fasolino, “A general framework for comparing automatic testing techniques of Android mobile apps,” Journal of Systems and Software, vol. 125, pp. 322–343, 2017.
+
+D. Amalfitano, V. Riccio, N. Amatucci et al., “Combining automated GUI exploration of android apps with capture and replay through machine learning,” Information and Software Technology, vol. 105, pp. 95–116, 2019.
+
+T. Azim and I. Neamtiu, “Targeted and depth-first exploration for systematic testing of Android apps,” ACM SIGPLAN Notices, vol. 48, no. 10, pp. 641–660, 2013.
+
+Copyright © 2019 Junwei Tang et al. This is an open access article distributed under the Creative Commons Attribution License (the “License”), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. Notwithstanding the ProQuest Terms and Conditions, you may use this content in accordance with the terms of the License. http://creativecommons.org/licenses/by/4/.

@@ -1,0 +1,92 @@
+- Detection and Defense Techniques. We develop a static analysis tool named MIAFinder to automatically detect apps that are vulnerable to the three types of attacks. To defence these attacks, we further propose a defense mechanism and generate a patch for the latest Android 10. Experiment results show that our defense mechanism can successfully protect against these attacks.
+
+- Large-Scale Study. We have conducted a large-scale empirical study on 200,000 apps from Google Play and 200,000 apps from Tencent Myapp, the largest third-party app market in China. Our results demonstrate that 53,619 Google Play apps and 54,650 Tencent-Myapp apps are vulnerable to link hijacking with smart text selection (STS) attack; 57,442 Google Play apps and 62,496 Tencent-Myapp apps are vulnerable to link hijacking without smart text selection attack; and all instant apps are vulnerable to instant app hijacking attack.
+
+We hope that our efforts can raise awareness among relevant stakeholders (including smartphone vendors, app markets, app developers and mobile users). Hence, we have made our MIAFinder and all the experiments publicly available at: https://sites.google.com/view/instant-app-attacks.
+
+# 2 MOTIVATING EXAMPLES
+# Architecture of MIA
+We illustrate a malicious instant app (MIA) as shown in Fig. 3, which contains two parts, a phishing module and a benign module. When users use the MIA, only the functions in the benign module can be accessed. The benign module does not contain any harmful content, which makes users hard to recognize.
+
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+# Assumption & Setup
+We assume that a user installs a MIA from Google Play. For three different attacks, the settings for the MIAs are shown in Sec, Sec, and Sec respectively.
+
+# Attack Overview
+When a user selects a text whose content is a URL, Android suggests the MIA to respond to it. For example, if a user selects *www.yelp.com/biz/...* in an app (e.g, SMS app), the STS suggests our MIA to the user.
+
+When a user clicks a link (e.g. *www.yelp.com/biz/...*), (s)he is redirected to the MIA. For example, if a user clicks the link in an app (e.g, SMS app), the STS suggests our MIA to the user.
+
+To launch an instant app, Android launches the MIA. For example, if a user clicks *google.com/tripsapp* to launch Google Trip instant app, (s)he is redirected to our MIA.
+
+# Countermeasures
+To prevent this attack, developers can prevent users from selecting a text or stopping the STS. We propose 4 solutions for developers to prevent this attack (§5).
+
+# 1Pass:
+app link verification passed; Fail: app link verification failed; Nil: this field is unavailable; MIA: malicious instant app;
+that the instant app is malicious. Thus the MIA hides itself as a non-MIA. However, once users access the victim URL, the phishing module becomes active and hijacks the URL. As Android hands over the control to the phishing module without notifying users, the users are not aware that they are interacting with a malicious app. As we successfully upload our MIA to Google Play (see demo videos on the project page), our MIA can bypass the security checking from Google Play and launch attacks without users’ consent.
+
+# Link hijacking with STS
+As shown in Table 1, the attack relies on a novel feature, smart text selection (STS), which is introduced in Android 8. Once a user selects a piece of text, Android can recognize the text selected and then recommend the next logical step for the user. For example, when a user selects a sequence of numbers, STS may suggest the user make a phone call with the numbers selected. In STS, there are five functional texts for recommendations, including email address, phone number, physical address (in a longitude and latitude format), URL and date-time.
+
+As shown in Fig. 2 (1-1), once a Yelp URL (e.g., *www.yelp.com/biz/brunch-y-ckae-barcelona-2*) is selected, the STS recommends MIA as a possible solution for the URL. If a user launches the URL with the MIA, his/her privacy data can be collected by the MIA. Once the MIA collects the data from a user, the MIA then broadcasts the Intent to make the victim app (Yelp) to respond to the URL again.
+
+# Link hijacking without STS
+We assume that a user intends to open the Yelp app via a browser (e.g., Chrome). As shown in Fig (2-2), when a user clicks the URL (*www.yelp.com/biz/brunch-y-ckae-barcelona-2*) to launch the Yelp app, Android ranks all possible apps that can respond to this URL. Android always gives a higher priority to an instant app comparing to a none instant app to respond to a URL. Therefore, the MIA rather than the Yelp app is launched by Android.
+
+# Instant app hijacking
+If a user intends to launch an instant app, the process can also be hijacked. As shown in Fig. 2 (3-3), when a user clicks the URL *google.com/tripsapp to launch the Google Trips instant app; As both our MIA and the victim instant app (Google Trips) are instant apps, Android ranks them based on their package names. In this case, we set a “smaller” package name (a.example.instantappurlauto) comparing to the Google Trips (com.google.android.apps.travel.onthego*). The MIA is then ranked higher than the Google Trips instant app by Android for responding to the URL. As a result, the MIA rather than the Google Trips is launched by Android.
+
+# Differences in three attacks
+We compare the differences in the three attacks from the following aspects:
+- The victim apps. As shown in Table 1, only the instant app hijacking targets at attacking instant apps. Other attacks only work on typical apps (none instant app);
+# Link Hijacking with STS
+# 1
+yelp} 1/2 MIA collects privacy data from users and hides itself by re-broadcasting the URL with an Intent
+# 1
+www.yelp.com/biz/brunch-y-cake-barcelona-2
+# 1 Android
+recommends our MIA as a candidate for processing the URL
+# 2
+www.yelp.com/biz/brunch-y-cake-barcelona-2
+# 2
+Click a Yelp URL in an app
+# 2
+Android always uses our MIA to open the URL without users’ consent
+# 3
+google.com/tripsapp
+# 3
+Click an URL to open an instant app
+# 3
+Android always uses MIA to respond to the URL without users’ consent
+Google Trip (victim instant app)
+# Victim Apps
+# 3 BACKGROUND
+Recall our motivating examples, we highlight that our attacks can be launched no matter the app links are correctly configured or not. Therefore, in this section, we first present the background of app links, then introduce how Android verifies app links, and finally show the cases that can fail the app link verification process.
+
+# Google Play
+# Benign Module
+# Phishing Module
+During Installation
+1. get DAL (www.yelp.com/.well-known/assetlinks.json)
+2. return & verify
+3. registerWWW-yelp comdiz www.yelp.com/biz/* <->www.yelp.com assetlinks.json
+• Approaches to launch the attack. As shown in Fig and Table 1, only link hijacking with STS relies on the STS to launch the attack. Other attacks do not rely on the STS.
+
+Remarks. We emphasize that two extra points for these attacks.
+
+- We demonstrate that these attacks can hijack app links (URLs that are mapped to an app). If a URL does not map to any app, it also can be hijacked by link hijacking with/without STS.
+
+- The attacks proposed can be launched regardless of the correctness of app link configurations. That is, even if an app link is not correctly configured or the app link verification fails, attacks also can be launched.
+
+Based on the above two points, we can conclude that the attacks proposed are practical with high risks. On the one hand, all URLs can be hijacked by proposed attacks. On the other hand, all apps that define app links can be affected by our attacks.
+
+www.yelp.com/biz/brunch-y-cake-barcelona-2
+After Installation
+1. App link configuration and release. To use app links, a developer must register them (in the HTTP(S) scheme) in the app’s manifest file. Then, the developer publishes the DAL on the web. For example, in order to use app links in the Yelp app, the Yelp app developers need to register the Yelp domain (www.yelp.com) in the app, and also publish the DAL on Yelp’s server at www.yelp.com/.well-known/assetlinks.json.
+
+2. Verify app links. Once a user installs the Yelp app, the verification of app links in the Yelp happens. As shown in Fig. 4, the
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+The app registers its app links to Android. To verify these app links, Android extracts the DAL file (assetlinks.json) from the remote server (i.e., www.yelp.com). As the DAL file defines the authorized app, Android can check whether the package name, scheme, and certificate fingerprint of the app  match with a record on the DAL. If and only if the verification of app links passed, the app links become valid.

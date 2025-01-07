@@ -1,0 +1,50 @@
+Ref.  developed a service that employs statistical methods and regular expressions to examine Android applications and produces online reports. The report contains information in three categories, including privacy leaks, access to personal information and suspicious method calls. Furthermore, libraries and API calls that the application uses are shown. Although the system produces detailed reports, it is not user-focused, and only security experts can understand the technical details of the report.
+
+Ref.  is similar to the study in  and moves the virus scanning and finding procedure to the cloud. The system consists of 2 modules. The first module is comprised of anti-virus applications that run on virtual machines on a remote server. The second module runs on mobile devices and sends the files that need to be scanned to the cloud. The developed system separates the processes that require high memory and CPU from mobile devices and proposes a virus scanning and finding mechanism that has better performance.
+
+# IV. DISCUSSIONS AND FUTURE WORK
+In this section, we report our findings on currently proposed Android based mobile security solutions based on our taxonomy. Followings are the criteria to make our
+Copyright © 2014 MECS I.J. Computer Network and Information Security, 2014, 12, 9-20
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+# Assessment:
+- Overhead: Does the solution cause overhead on the users' mobile devices?
+- Usability: Is the proposed solution user-friendly?
+- Independency: Is proposed solution device dependent?
+- Availability: Is proposed solution available to end-users?
+Operating system-based solutions do not cause overhead since they are part of the operating system. However, users can only take advantage of this solution only if they install it on their devices. Therefore, the solution is device dependent. Additionally, these types of solutions are not publicly available for end-users and they are not official. Permission based solutions make changes in the permission list file of Android applications and they are device dependent. Modifying the permissions causes overhead. Although the solutions are usable, they are not publicly available to end-users. Source code based solutions run on mobile devices and make changes in the source code of applications. These changes cause overhead on the mobile device. Although these are available to researchers, they are not publicly available to end-users. Application based solutions are installed on users' mobile devices which makes them device dependent. They also cause overhead since they continuously run in the background. These solutions are usable and publicly available to mobile device owners. Service based solutions are more effective than other solutions. The security is moved to the cloud which makes them device independent. The end users can take advantage of these solutions since they are publicly available.
+
+As a future work, we propose a combination of service and permission based approach that can be designed and developed to better protect users' security. This kind of service will be device independent, available to end-users and researchers. Additionally, the proposed solution will not cause overhead on the mobile devices. The users will be able to make decisions about whether or not to install applications by searching the application in our system or by uploading the application file to our system. The design and implementation of this solution is left for future work.
+
+# V. CONCLUSION
+In the Android operating system, there is no security mechanism in place that checks whether applications are safe to install based on their malicious code or access to sensitive personal information. Applications are installed according to the users' free will, without any limitations or warnings. Considering the fact that users always blindly accept the requested permissions without knowing whether the application is safe or not, users' mobile devices become attractive targets of malicious applications, and the personal security and privacy of users are compromised.
+
+In this study, we investigated the security architecture of Android, the most popular operating system that has the largest market share worldwide. Furthermore, we analyzed the security solutions that were developed to protect the privacy and security of Android users in detail and presented the weaknesses and strengths of these solutions. Our study revealed the shortcomings of mobile security solutions. We believe that it will shed light on the topic for the research community who will work on this subject and that it will provide a basis for the development of mobile security solutions. Additionally, we presented the taxonomy of mobile security to help researchers better understand current state and challenges.
+
+In conclusion, the security mechanism of the Android operating system does not protect users effectively. Studies that aim to fill the gaps in terms of security fail to provide user-centric solutions. To provide solutions to existing security and privacy problems in the Android platform, there is an urgent need for user-centric, service-oriented solutions that examine whether an application is safe to install, accesses sensitive personal information and compromises the user's security and privacy. The solution must be device independent and must run on remote machines. Furthermore, it must help users become aware of the security implications of applications before installing them by providing easy to understand warnings and reports. Finally, the users must be able to customize the service rules according to their understanding of privacy.
+
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+SP ‘12, pages 95–109, Washington, DC, USA, 2012. IEEE Computer Society. doi:10/SP.
+
+Jon Oberheide, Evan Cooke, and Farnam Jahanian. Cloudav: N-version antivirus in the network cloud. In Proceedings of the 17th Conference on Security Symposium, SS‘08, pages 91–106, Berkeley, CA, USA, 2008. USENIX Association.
+
+Georgios Portokalidis, Philip Homburg, Kostas Anagnostakis, and Herbert Bos. Paranoid android: Versatile protection for smartphones. In Proceedings of the 26th Annual Computer Security Applications Conference, ACSAC ‘10, pages 347–356, New York, NY, USA, 2010. ACM. doi:10/1920261.
+
+Welderufael Berhane Tesfay, Todd Booth, and Karl Andersson. Reputation based security model for android applications. In Proceedings of the 2012 IEEE 11th International Conference on Trust, Security and Privacy in Computing and Communications, TRUSTCOM ‘12, pages 896–901, Washington, DC, USA, 2012. IEEE Computer Society. doi:10/TrustCom.
+
+L. Batyuk, M. Herpich, S.A Camtepe, K. Raddatz, A-D. Schmidt, and S. Albayrak. Using static analysis for automatic assessment and mitigation of unwanted and malicious activities within android applications. In Malicious and Unwanted Software (MALWARE), 2011 6th International Conference on, pages 66–72, Oct 2011. doi:10.
+
+Jon Oberheide, Kaushik Veeraraghavan, Evan Cooke, Jason Flinn, and Farnam Jahanian. Virtualized in-cloud security services for mobile devices. In Proceedings of the First Workshop on Virtualization in Mobile Computing, MobiVirt ‘08, pages 31–35, New York, NY, USA, 2008. ACM. doi:10/1622103.
+
+Mohammad Nauman, Sohail Khan, Xinwen Zhang, and Jean-Pierre Seifert. Beyond kernel-level integrity measurement: Enabling remote attestation for the android platform. In Alessandro Acquisti, Sean W. Smith, and Ahmad-Reza Sadeghi, editors, Trust and Trustworthy Computing, volume 6101 of Lecture Notes in Computer Science, pages 1–15. Springer Berlin Heidelberg, 2010. doi:10/978-3-642-13869-0_1.
+
+# Authors’ Profiles
+Abdul H. Zaim received his B.S. degree (with honor) in computer science and engineering from Yildiz Technical University, Istanbul, Turkey, in 1993, his MSc degree in computer engineering from Bogazici University, Istanbul, Turkey, in 1996, and his PhD degree in electrical and computer engineering from North Carolina State University, Raleigh, in 2001. As a teaching assistant and lecturer, he taught several courses at Istanbul and Yeditepe Universities between 1993 and 1997. In 1998 to 1999, he was with Alcatel, Raleigh, North Carolina. Between 2001 and 2002 he worked at MCNC, Raleigh, NC. He worked as a full professor for Istanbul University until 2010. He is currently a professor in Istanbul Commerce University Computer Engineering Department and director of Information Technology Application and Research Center. His research interests include computer performance evaluation, satellite and high-speed networks, network protocols, optical networks, and computer network design.
+
+Muhammed A. Aydin obtained his B.S. degree in computer engineering from Istanbul University in Istanbul, Turkey in 2001. He completed his Masters degree in computer engineering from Istanbul Technical University, Istanbul, Turkey in 2005. He received his Ph.D. degree in computer engineering from Istanbul University, Istanbul, Turkey in 2009. He has been working as an assistant professor in Istanbul University Department of Computer Engineering since 2009. His research interests include optical networks, network security, information security and cryptography.
+
+Asim S. Yuksel obtained his B.S. degree in computer engineering from Ege University, Izmir, Turkey in 2006. He completed his Masters degree in computer science from Indiana University School of Informatics and Computing, Indiana, USA in 2010. He is currently a Ph.D. candidate in Istanbul University Department of Computer Engineering.
+
+# How to cite this paper:
+Asim S. Yuksel, Abdul H. Zaim, Muhammed A. Aydin,"A Comprehensive Analysis of Android Security and Proposed Solutions", IJCNIS, vol, no, pp-20, 2014. DOI: 10/ijcnis
+Copyright © 2014 MECS I.J. Computer Network and Information Security, 2014, 12, 9-20.

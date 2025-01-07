@@ -1,0 +1,52 @@
+# SAMHI AND BARTEL: ON THE (IN)EFFECTIVENESS OF STATIC LOGIC BOMB DETECTION FOR ANDROID APPS
+checks if there is a ten days period between the current time and a pre-defined value. If the condition is satisfied, the application retrieves information about the type of operating system, the version of the Android framework, the model of the device, the number of the device, the operator, the type of network, and information about the storage. Then it sends all this information to a C&C server: ”http://search.gongfu-android.com:8511/search/sayhi.php”.
+
+# Exam Tool
+It allows students to cheat during an exam without looking at the phone but get the answer from a friend by the number of vibrations the phone would make depending on the received SMS. TSOPEN flagged this application with this logic bomb: #sms/#body.equals(”zebinjo”), it is clear that it is suspicious according to the definition of a logic bomb. However, is it malicious? Even if it calls a method categorized as sensitive (on the list of sensitive methods), the answer is no. Indeed, depending on the SMS received, the phone will vibrate according to a particular protocol defined in the application. But, a hard-coded response code is in the onReceive method of the BroadcastReceiver receiving the SMS. And when receiving exactly the string ”zebinjo” it will trigger the vibration according to the following scheme: ”abacdacdcadcdacdacadcacd–ca–c-da-dca-cda-c-ac-a-c-adc-a-c-a-dca-cac-a-dc-ad”, the code can be seen in Appendix F, available in the online supplemental material.
+
+This example shows why TSO PEN ’s approach cannot be entirely reliable because of the trigger’s focus and not the triggered behavior itself. It implies detecting malicious code, i.e., the problem reduces to detecting malicious code.
+
+# Another Example
+Another example of SMS-related triggered behavior is the family of tracker applications allowing users to get information on a device using SMS commands remotely. The application using this kind of triggered behavior we are going to analyze is ”MyCarTracks”. The trigger condition discovered by TSO PEN is #sms/#body.startsWith(”GETPOS”) visible in Appendix G, available in the online supplemental material. The next benign application named ”TrackMe” makes the use of a time-related trigger-based behavior, which is part of the definition of TSO PEN ’s approach but is clearly legitimate. The detected logic bomb is #now cmp 15L which is a comparison between the current date and a numeric value of 15, see Appendix C for the code. It appears that it is simply a check performed to verify the validity of the trial version of the application.
+
+# TRIG DB
+We have previously seen that the large-scale analysis produced a considerable number of false-positives. Therefore, manually analyzing all the applications flagged by TSO PEN is unthinkable. Nevertheless, we did so on several hundred applications to verify if we could find real logic bombs.
+
+We were able to gather 34 malicious applications containing logic bombs. We did so by reverse-engineering the applications and starting from the check found by TSO PEN.
+
+That way, we had a starting point to track the malicious code. First, we checked if the application was a known malware in databases like VirusTotal. It is not sufficient. Indeed we found many applications respecting this constraint, but the trigger found by the tool was not triggering the malicious code per se. Second, we tried to understand what was the purpose of the malware (also in databases like ) in order to compare it with the behavior of the code guarded by the trigger found by our tool. If the behaviors matched, obviously or otherwise, we kept the application for our database.
+
+Applications are mainly Trojans and Adwares. Each application contains one or more triggers. These logic bombs are SMS-based and time-based triggers.
+
+We also added 34 benign applications containing trigger behavior similar to malicious triggers. They mainly come from the Google Play market and are, for the majority, time-related.
+
+For each application, we noted the triggers of interest. For each trigger, we noted the type and location in the smali code.
+
+We believe this dataset to be useful for the community to encourage future research in finding and understanding logic bombs. Also, as this dataset is bound to grow, it can be used as a ground-truth to evaluate alternative approaches that aim at detecting logic bombs.
+
+Our manual investigations have shown that benign and malicious applications can use the same code for benign and/or malicious behavior. Therefore, in this case, the problem of qualifying malicious code remains. We make available a list of malicious/benign applications that make a similar usage of trigger-based behavior in TRIG DB in the repository of TSO PEN project.
+
+# RQ5: Are TRIGGER SCOPE’s Results Reproducible?
+The experiments have been conducted on two datasets: the first is a dataset of malicious applications, and the second is a dataset of benign applications. To faithfully reproduce the experiments, we wanted to use the datasets of the experiments in the original paper. Unfortunately, the list of benign applications has been lost. Hence, we created a new dataset which has the same properties as the original dataset. Concerning malicious applications, 3 out of the 14 considered in their experiments were shared with us.
+
+# Malicious Applications
+We have executed TSO PEN over the three malicious applications TRIGGER SCOPE’s authors were willing to share to check if the same logic bombs described in their paper could be found. The first one is called Holy Colbert, the second one comes from the Zitmo malware family, and the last one is the RCSAndroid malware.
+
+First, when executing TSO PEN over the application called ”Holy Colbert” coming from the so-called MalGenome dataset we effectively find the same time-bomb as they did, but not only, we also discovered an SMS-bomb, see Appendix B, available in the online supplemental material, for more details. The SMS-bomb revealed by our tool is
+# IEEE TRANSACTIONS ON DEPENDABLE AND SECURE COMPUTING, VOL. 19, NO. 6, NOVEMBER/DECEMBER 2022
+# 4 Reproducibility of T RIGGER SCOPE ’s Results
+In this section, we further investigate the discrepancies between TSOPEN ’s results and TRIGGER S COPE’s.
+
+In the original paper, they had a total of 9582 unique benign applications due to overlap between categories. We made the list of the 11338 applications public in the project repository for reproducibility purposes.
+
+First, we observe in Table 8 a considerable difference between our analysis and TRIGGER S COPE’s: while TSOPEN identified 3099 suspicious apps, T RIGGER S COPE identified only 356. While it is true that the two datasets are different, we did not expect to find a two order of magnitude difference between the results.
+
+Second, we extracted, from each application, and each potential suspicious check, different features to understand and verify our results. Among them, we retrieved the class containing the suspicious check and the method in which it appears, and the sensitive method invoked to flag it. It appears that only 20 methods in the list of sensitive methods represent 89% of the sensitive methods considered to flag the suspicious checks. The list of sensitive methods that we used might explain why we have such a difference in our results. Nevertheless, according to us, it cannot explain the gap alone because other factors could impact the results. Consequently, we also analyzed the classes and methods containing suspicious triggers to verify if some distinct pattern might emerge.
+
+We found 3165 different combinations of class/method among the 9535 suspicious triggers without any combination being overly represented. We manually analyzed the most used of them (i.e., the first 35) to verify if they were logic bombs. It seems that they enter the definition of a logic bomb according to the paper in question, but they are not.
+
+In Listing 3 we can see an example in the card.io library, which executes some code if some time has elapsed, then it executes the method called android.hardware.Camera.Open() which is considered suspicious in the list of sensitive methods. We chose this example to emphasize that most of them are based on time-related triggers. Better, we found that within the 9535 logic bombs found (among the 3099 applications flagged), only 3% were location-related and 1% were SMS-related.
+
+We also note that most of the suspicious triggers (43%) are part of a library used in applications. Manual analyses revealed that they are not logic bombs, thus introduce noise in the analysis.
+
+# Listing 3. Trigger in io.card.Payment.CardScanner Class of Card.io Library (simplified). The Camera.open() Method (on the list of Sensitive Methods) is Triggered -Not Only- Under the Condition Triggered by the while Instruction.

@@ -1,0 +1,52 @@
+R3: Retry Attempts. This rule limits the number of retry attempts allowed by validation systems. It is the second most violated OTP rule. AUTH-EYE identified 324 (59%) apps out of 544 apps violating this rule, i.e., allowing more than five attempts. Figure 3 shows the number of attempts allowed by validation systems. Only 220 (40%) apps have OTP validation systems complying with the rule, and most of these apps (77%) are from the category of Shopping and a few are from the Social category.
+
+20 attempts. Because AUTH-EYE was set to send a fake OTP at most 20 times for each app, it identified that the OTP validation systems in 126 apps still work after 20 times of retry. We surmised that these validation systems may not implement any limitation and are thus vulnerable to brute force attacks.
+
+Additionally, AUTH-EYE identified the delay protection implemented in the OTP validation systems of 97 apps. In these apps, the user has to wait for a specific period if an incorrect OTP value is entered. The waiting period set in these apps is usually one minute.
+
+# R2: OTP Length
+The third most violated OTP rule is setting the length of OTP values at fewer than six digits. As mentioned in Section 2, generating an OTP with short length (i.e., length < 6) negates the security benefits of the OTP authentication protocol.
+
+In total, the validation systems in 209 apps use values with less than six digits as OTP values. Although the OTP length could be set at 10 digits, we discovered that all the validation systems generate OTPs with at most six digits.
+
+# R4: OTP Consumption
+This rule is violated by 106 apps out of the 544 apps. Here, users are allowed to reuse an OTP for identity verification. A unique value for each validation session is essential in the OTP authentication protocol to protect against replay attacks. Accepting a repeated OTP value negates the benefit of using an OTP and can even make the OTP authentication protocol weaker than a password authentication protocol.
+
+Apps violated this OTP rule are only from eight categories: Shopping, Video Players & Editor, Books & Reference, Music & Audio, Travel & Local, Entertainment, and Productivity. 37% vulnerable apps and 18% vulnerable apps are from the categories of Books & Reference and Video Players & Editor, respectively.
+
+# R1: OTP Randomness
+This rule was violated by 71 apps. Two types of errors are identified by AUTH-EYE: repeated values and static values.
+
+AUTH-EYE found 56 apps generating repeated OTP values. To be specific, 21 apps generate a sequence of unique OTP values and then repeat the same sequence. The validation systems of 35 apps use the same OTP for n different requests, that is, the same OTP value is repeated n times. Based on our manual inspection, each value is repeated two or three times (i.e., n = 2 or n = 3).
+
+In addition, AUTH-EYE discovered that 15 apps provide only static OTP values to users for OTP authentication. This type of error makes the OTP authentication protocol perform as a simple password authentication protocol, in which the username is the user’s mobile phone number and the password is the fixed (short) OTP value. An attacker can then easily access the user’s account if the mobile phone number is leaked because the OTP value is shorter and simpler than a static password set by the client.
+
+The above results indicate that developers might not be aware of the critical importance played by randomness in authentication.
+
+# R5: OTP Expiration
+AUTH-EYE identified 73 apps that use TOTP authentication protocols, in which the OTP value may expire. Interestingly, only 33 apps reject the OTP value if it is expired, while the identity verification of 40 apps passed by providing expired OTP values. This implies that the implemented TOTP authentication protocols fail to work properly in the corresponding servers.
+
+For the remaining 471 apps, AUTH-EYE did not discover any expiration set for OTP values by only analyzing the responses. We might suppose that their validation systems allow the OTP values to be valid forever.
+
+We manually inspected those 1069 apps and found that 934 (87%) of them did implement login Activities. AUTH-EYE mistakenly identified some apps because their Activity names, such as loginFail and thirdLogin, have higher semantic similarity scores.
+
+# 5 Results for Multiple-Rules Violations
+We also investigated the status of multiple OTP rules violation in our tested apps, and listed the cases that severely threaten the security of OTP authentication in Table 3. As shown in the table, the most frequently occurred situation is the violation of both R2 and R4 (65 apps). In this situation, an attacker could guess the OTP through a brute force attack, since the number of legal OTPs is limited and the server also accepts a used OTP. Another common mistake is that 13 apps not only used an immutable OTP, but also violate other rules such as allowing an attack to guess the OTP, or always reuse the immutable OTP if a legal user does not enforce a new login request. There are also nine apps that violate both R4 and R5, and two apps violate R2 and R3 simultaneously. All those apps that violate multiple OTP rules are considered highly vulnerable, and we have contacted the developers and reported these issues.
+
+Note that we found all “potential vulnerable” apps violated R6 (i.e., the valid time window exceeds 30 seconds). Compared with a single rule violation, violations of both R6 and other rules will increase the risk. However, the violation of R6 often does not directly lead to an attack. Therefore, we do not consider this issue in our multiple rules violation investigation.
+
+# 5 Case Studies
+This section aims to highlight insights from case studies based on our manual inspections.
+
+# Matchless Functionality
+We found some apps whose validation systems do not match with the responses.
+
+- Expiration: We investigated a game manager app with more than 100,000 downloads. It transmits messages in secure ciphertext formats and the server responses suggest that authentication protocols (i.e., password authentication and OTP authentication) are correctly implemented. However, AUTH-EYE flagged this app because its validation system still accepts “expired” OTPs. By parsing the server responses, AUTH-EYE discovered that each OTP expired after 30 seconds. However, when AUTH-EYE consumed each OTP after 1 minute and 10 minutes, it passed the validation. We agree that remembering and validating OTP values for all login requests consume a large amount of storage and memory on the server side; but app security makes it essential to implement an efficient reset method for clearing expired values.
+
+- Consumption: Users commonly use finance apps to manage their investments. It is crucial that financial information is protected at all times. However, we found that the validation systems in three financial apps accept previously consumed OTPs. The OTP authentication of a financial app was labeled by AUTH-EYE as vulnerable. By checking its responses, we found that this app violates almost all OTP rules except for R1 (OTP Randomness) and R5 (Retry Attempts). The only protection scheme implemented is that its validation system blocks the user’s account and does not generate any OTP values if the user keeps sending requests more than five times. While verifying user identity, this app not only accepts consumed OTP values, but also transmits mobile phone numbers and OTP values in plaintext. This means that users’ private information (i.e., login information and private data) is exposed to attackers.
+
+# Deceptive Randomness
+Apps violating R1 (OTP Randomness) are from the categories of Beauty, Finance, News & Magazine, Photography and Video Players & Editors. The percentage from each category with violations is 11%, 7%, 33%, 3%, and 46%, respectively. We investigated these apps in detail. For 6 of the 15 apps which generate static values for OTP authentication, the OTP value is only renewed when the previous one is consumed. The other apps keep sending the same value to users.
+
+# Exposed Transmission
+As well as analyzing server responses, AUTH-EYE monitored traffic messages to identify whether an error occurred. From traffic messages, AUTH-EYE identified that most messages containing OTP values are not well-protected. The validation systems of 188 apps transmit the OTP values in plaintext over the unsecured network. 36 apps protect OTP values by using only an MD5 hash without salt, which is considered insecure. With respect to message transmission, we found that the most secure category is Travel & Local, where 98% apps encrypt their transmitted messages. The categories of Shopping and Social perform the worst with only 72% and 74% apps being secure. We observed that a Music app (10,070,000 downloads) only uses the user’s mobile phone number as the password no matter what user password and OTP are provided, and only the mobile phone number is transmitted to the validation system.

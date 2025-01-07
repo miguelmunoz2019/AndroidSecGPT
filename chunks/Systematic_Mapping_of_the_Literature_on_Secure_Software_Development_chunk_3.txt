@@ -1,0 +1,78 @@
+# C. RQ3: WHAT ARE THE TRENDS IN SOFTWARE DESIGN SECURITY?
+According to the ISO/IEC/IEEE 12207-2017 standard definitions, software design consists of two activities: software architectural design and software detailed design. Software design security deals with the design of software modules to meet security objectives specified in the security requirements stage. Early attention to security issues, such as captured security requirements and design an architecture, can decrease the likelihood of weaknesses in design.
+
+VOLUME 9, 2021 36861
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+In the present study, 149 papers (28% of the total sample) are related to secure software design topics. Figure 11 and Table 14 shows that security in a component-based software system, threat modeling, and security patterns are trends in design. Security in a component-based software system is an option to develop software using third-party software components since many times the security risks that can be inherited from such components are not taking into account, whether we use commercial off-the-shelf-products (COTS) or open-source software (OSS). Thread Modeling is an activity best executed in the software design phase and has the purpose of identifying the attacks that the software must withstand using the best defense strategy . Security patterns correspond to structured solutions for recurring security problems and are reusable to design secure applications. Security Patterns allow software architects and designers to produce systems that meet their security requirements, are maintainable and extensible from the smallest to the most extensive systems. ,.
+
+Other topics are design review activities performed at the end of the detailed design stage and before starting the coding and testing phases , . Architecture modeling includes the modeling of the architecture for comprehensive security analysis and the identification of possible attacks. Likewise, for architectural modeling, UML diagrams are used to represent entities, resources, privileges, safeguards, and
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+policies . Regarding identity and access management, the ISO 24760 standard defines them as a set of processes and policies involved in managing the life cycle of digital identity. Encryption Strategy is the encryption mechanism used to protect propagated data or inadvertent alteration, either of stored or transmitted data. This mechanism is considered comfortable, efficient, and cost-effective in the design process . Finally, the security design principles establish general rules and guidelines for design.
+
+# D. RQ4: WHAT ARE THE MOST FREQUENT TOPICS IN SOFTWARE CONSTRUCTION SECURITY?
+Software construction security refers to writing the code for specific situations to deal with security considerations. Encryption of security in software can be achieved by following the rules recommended in the Software Engineering Body of Knowledge (SWEBOK) . These rules emphasize that the Software modules must be as small as possible, with validated and documented privileges, and with the ability to avoid sharing objects in memory with other programs. Figure 12 and Table 15 shows the classification of 160 studies related to secure code construction, where the most frequent topic corresponds to Static code analysis (25%). The classification is based on the approach made by SafeCode and the Information Assurance Technology Analysis Center (IATAC) ,.
+
+A vulnerability is a weakness expressed in errors or flaws in the software, which can be exploited by an attacker . According to Andy Ozment, there are three leading causes of vulnerabilities in software: loss of motivation of
+VOLUME 9, 2021 36863
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+programmers due to constant changes in software require- for the construction of secure software . Figure 13 and Table 16 shows the classification of vulnerability issues in 159 studies. As it can be noticed, the two most referred
+36864
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# Vulnerability Scanning
+16%
+# Penetration Testing
+14%
+# Fuzz Testing
+13%
+# Static Analysis Security Testing
+13%
+# Reverse Engineering and Software Disassembling
+11%
+# Automatic Patch Generation
+# Dynamic Analysis Security Testing
+50
+# Code Review Coverage
+50/
+# Dynamic Symbolic Execution (DSE)
+5"0
+# Automated Testing
+3%/
+# Others
+12%
+10   12          16   18    20
+Number of papers
+Issues are detecting vulnerabilities and exploit vulnerabilities prevention.
+
+We also reviewed 57 articles to identify standards of vulnerabilities; the results appear in Figure 14 and Table 17. The National Vulnerability Database (NVD) and the Common Vulnerabilities and Exposures (CVE) are the ones that appeared most in the studies. Another noteworthy fact is that the vulnerability reports show that the vulnerabilities are related to common mistakes that are made during the programming phase.
+
+# E. RQ5: WHAT TECHNIQUES ARE PREVALENT AT SOFTWARE TESTING SECURITY?
+Software security tests verify that the software protects data and complies with the implementation of the Software security requirements. There is a diversity of techniques and tools in the software security testing stage, among which the most notable are vulnerability scanning, penetration tests, risk assessment, security audit, ethical hacking, posture assessment, and safety regression –. The present study identified 83 papers related to software testing security; Figure 15 and Table 18 summarizes the findings.
+
+# IV. CONCLUSION AND FUTURE WORK
+Unauthorized access to confidential data is frequent, and security threats grow exponentially. Hence the importance of developing secure software. However, in the literature it has been reported that secure software development approaches have weaknesses or are little or not accessible for their use in the software industry.
+
+To deepen into these issues, this study provides an overview of trends in secure software development by reviewing 528 articles. We found out that the most frequently reported topics are software construction security or secure coding, evaluation research in security, case study papers, vulnerabilities in web applications, need for assistance and training in security for developers, and proposal of new security software models. The topics less frequently reported are.
+
+VOLUME 9, 2021
+36865
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+security principles, agile techniques and methods, popular secure software development models (OWASP or Microsoft SDL), and artificial intelligence techniques. Specifically,
+in the security requirements stage, the most frequently reported are elicitation and analysis of security requirements and the Misuse case technique. Recurring themes in secure software design are security in component-based software development, threat modeling, and security patterns. The secure code construction stage reported most frequently to static code analysis, vulnerability detection, and public vulnerability database (NVD). In the software security testing stage, vulnerability scanning and penetration testing are the most recurrent topics.
+
+Finally, to know the characteristics of a secure software development method, technique, or tool, it is necessary to deepen the study by conducting systematic reviews.
+
+# APPENDIX
+# Papers Identified in the Systematic mapping of the literature on Secure Software Development
+This information is available at: http://inform.pucp.edu.pe/~jpowsang/ssd/mapping_study_appendix.htm
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# HERNAN NINA
+(Senior Member, IEEE) received the B.Sc. degree in informatics and system engineering and the Master of Administration degree from the Universidad Nacional de San Antonio Abad del Cusco (UNSAAC), Peru, the master’s degree in informatica with mention in software engineering from the Pontificia Universidad Católica del Perú (PUCP), and the Ph.D. degree in system engineering from Universidad Nacional Federico Villareal (UNFV), Peru. He was qualified as a Researcher from CONCYTEC, Peru. He is currently a Full Professor with the Universidad de Lima, Peru. His research interests include software engineering, innovation in higher education, and human–computer interaction. He is also a member of ACM. He has published several articles in the field of effort estimation for software development projects. His research interests include empirical software engineering, software metrics, software engineering education, and human–computer interaction. He is a member of ACM and the IEEE Computer Society. He has been elected President of the Peruvian Section of the IEEE Computer Society from 2015 to 2018.
+
+# JOSÉ ANTONIO POW-SANG
+(Senior Member, IEEE) received the B.Sc. degree in informatics engineering and the Licentiate degree in education for development from the Pontificia Universidad Católica del Perú (PUCP), and the master’s degree in software engineering and the Ph.D. degree in informatics engineering from the Universidad Politécnica de Madrid, Spain. He was the Executive Director of the Postgraduate School from 2013 to 2020 and the Director of the Master’s Program in Informatics from 2011 to 2020. He is currently a Full Professor.
+
+# MÓNICA VILLAVICENCIO
+received the Ph.D. degree in applied engineering from the École de technologie Súperieure, UQAM, Montreal, QC, Canada. She is currently a Full Professor with the Faculty of Electrical and Computer Engineering, Escuela Superior Politécnica del Litoral (ESPOL), Ecuador, where she teaches software engineering-related courses to undergraduate and graduate students. She is also the Director of the Doctorate Program of Applied Computer Science, ESPOL. Her research interests include agile software development, software measurement, software engineering education, and applied software engineering to the IoT and intelligent systems.
+
+VOLUME 9, 2021 36867.

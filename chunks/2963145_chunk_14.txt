@@ -1,0 +1,31 @@
+David Silver, Suman Jana, Dan Boneh, Eric Chen, and Collin Jackson. 2014. Password managers: Attacks and defenses. In Proceedings of the 23rd USENIX Security Symposium (Security). USENIX Association, San Diego, CA, 449–464.
+
+Stephen Smalley and Robert Craig. 2013. Security enhanced (SE) android: Bringing flexible MAC to android. In Proceedings of the 19th Annual Network and Distributed System Security Symposium (NDSS). The Internet Society, San Diego, CA, 9:1–9:18.
+
+Carlos A. Soto. 2005. A Menu of Bluetooth Attacks. . http://gcn.com/articles/2005/07/20/a-menu-of-bluetooth-attacks.aspx.
+
+Mengtao Sun and Gang Tan. 2014. NativeGuard: Protecting android applications from third-party native libraries. In Proceedings of the ACM Conference on Security and Privacy in Wireless and Mobile Networks (WiSec). ACM Press, Oxford, UK, 165–176.
+
+Xin Sun, Yibing Zhongyang, Zhi Xin, Bing Mao, and Li Xie. 2014. Detecting code reuse in android applications using component-based control flow graph. In Proceedings of the 29th International Conference on Systems Security and Privacy Protection (IFIPSEC). Springer, 142–155.
+
+SUSE. 2016. Live Kernel Patching with kGraft. (Feb. 2016). https://www.suse.com/promo/kgraft.html.
+
+Vanja Svajcer. 2014. Sophos Mobile Security Threat Report 2014. Technical Report. Sophos, Ltd.
+
+Azim Tanzirul and Neamtiu Iulian. 2013. Targeted and depth-first exploration for systematic testing of android apps. In Proceedings of the 24th Annual ACM Conference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA). ACM Press, Indianapolis, IN, 641–660.
+
+Chengkai Tao. 2014. Android App Update Flaw Affects China-Based Users. Technical Report. Trendmicro.
+
+Root Genius Team. 2016. Root Genius. (Feb. 2016). http://www.shuame.com/en/root.
+
+The Apache Software Foundation. 2016. Apache Cordova. (Feb. 2016). http://cordova.apache.org.
+
+thesnkchrmr. 2011. RageAgainstTheCage. . https://thesnkchrmr.wordpress.com/2011/03/24/rageagainstthecage/.
+
+Cody Toombs. 2014. [Lollipop Feature Spotlight] WebView Is Now Unbundled From Android And Free To Auto-Update From Google Play. (Oct. 2014). http://www.androidpolice.com/2014/10/19/lollipop-feature-spotlight-webview-now-unbundled-android-free-auto-update-google-play.
+
+Eran Tromer, Dag Arne Osvik, and Adi Shamir. 2010. Efficient cache attacks on AES, and countermeasures. Journal of Cryptology 23, 1 (2010), 37–71.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques.

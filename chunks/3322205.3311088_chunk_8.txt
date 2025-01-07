@@ -1,0 +1,67 @@
+The problem of security vulnerabilities in Android has been extensively studied. Unixdomain  and ION  study the Android sockets as well as low-level heap interfaces, and report unprotected public interfaces by finding missing permission validations. Kratos  and AceDroid  reveal vulnerabilities caused by inconsistent permission enforcement in Android system. ASV  discovers a design trait in the concurrency control mechanism of Android system server, which may be vulnerable to DoS attacks. These works focus on vulnerabilities of Android framework. Other prior researches reveal vulnerabilities of Android apps. MalloDroid , Georgiev, et al.  and Fahl, et al.  focus on the unsafe usage of SSL in Android apps and other non-browser apps. Poeplau, et al.  study the dynamic class loading feature of Android. Luo, et al.  and Chin, et al.  reveal the vulnerabilities caused by introducing Webviews into apps without proper input verification. CryptoLint  shows the vulnerabilities introduced by misusing cryptographic libraries in Android apps. The above related works focus on either Android framework or apps. Our paper is different because the security threats discussed in this paper are not caused by vulnerabilities of either the Android framework or virtualized apps, but are introduced by the app virtualization techniques.
+
+# Repackage detection in Android.
+
+This paper reveals that app virtualization is applied by malware as an alternative of repackage techniques. The existing work detects app repackage based on the code similarity between apps. Specifically, PiggyApp  detects the repackaged apps based on the assumption that they share the same primary modules as the original apps. DroidMOSS  proposes a fuzzy hashing technique to locate the changes in the repackaged app. DNADroid  computes the code similarity with the help of program dependency graphs. AnDarwin  detects repackage by computing similarity based on app’s semantic information. As introduced in Section 5, these works assume that the repackaged app and the original app share similar code in the execution file, and this assumption is not valid for repackaged apps which use the virtualization techniques. Besides, ViewDroid  computes the similarity between apps based on their user interface layout (various xmls under layout directory in apk). Similarly, when an app is repackaged with virtualization techniques, its layout files are different from those of the original apps.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 9 CONCLUSION
+In this work, we make the first attempt to systemically study the app virtualization in Android and their security threats to users. As a result, virtualization frameworks are used by more than 100 million users worldwide, and the major customization targets are the social communication apps and game apps. With a thorough study of 32 virtualization frameworks from Google Play, we propose seven attacks, and reveal that most of the frameworks are vulnerable to them. By deeply investigating their ecosystem, we show that attackers can easily distribute a malware that targets the virtualization frameworks. We present several demonstrations to illustrate these attacks. On the other side, we show that the virtualization techniques are also applied by malware as an alternative approach for repackage. To this end, we design and implement a new repackage detector, and find 180 repackaged app from four app stores. Our manual verification shows that only 16 apps are false positives. Finally, to mitigate the security threats, we propose several recommendations for both the virtualization frameworks and the app developers.
+
+#gref.
+
+4. Jeon Jinseong, Micinski Kristopher K., and Vaughan Jeffrey A. 2012. Dr. Android and Mr. Hide: Fine-grained Permissions in Android Applications. In SPSM.
+
+5. Crussell Jonathan, Gibler Clint, and Chen Hao. 2012. Attack of the Clones: Detecting Cloned Applications on Android Markets. In ESORICS.
+
+6. Crussell Jonathan, Gibler Clint, and Chen Hao. 2013. AnDarwin: Scalable Detection of Semantically Similar Android Applications. In ESORICS.
+
+7. Tongbo Luo, Hao Hao, and Wenliang Du. 2011. Attacks on WebView in the Android system. In ACSAC.
+
+8. Egele Manuel, Brumley David, Fratantonio Yanick, and Kruegel Christopher. 2013. An empirical study of cryptographic misuse in android applications. In CCS.
+
+9. Sebastian Poeplau, Yanick Fratantonio, and Antonio Bianchi. 2014. Execute This! Analyzing Unsafe and Malicious Dynamic Code Loading in Android Applications. In NDSS.
+
+10. Qemu. 2019. QEMU, the FAST! processor emulator. https://www.qemu.org.
+
+11. Yinfeng Qiu. 2012. Bypassing Android Permissions: What You Need to Know. https://blog.trendmicro.com/trendlabs-security-intelligence/bypassing-android-permissions-what-you-need-to-know/.
+
+12. Quora. 2016. Is the app parallel space on my android phone safe to use is there no risk of hacking or anything like that? https://www.quora.com/Is-the-app-parallel-space-on-my-android-phone-safe-to-use-is-there-no-risk-of-hacking-or-anything-like-that.
+
+13. Quora. 2016. What is the process of creating bots for Android games? https://www.quora.com/What-is-the-process-of-creating-bots-for-Android-games.
+
+14. Yuru Shao, Jason Ott, Qi Alfred Chen, Zhiyun Qian, and Z Morley Mao. 2016. Kratos: Discovering Inconsistent Security Policy Enforcement in the Android Framework. In NDSS.
+
+15. Yuru Shao, Jason Ott, Yunhan-Jack Jia, Zhiyun Qian, and Z.Morley Mao. 2016. The Misuse of Android Unix Domain Sockets and Security Implications. In CCS.
+
+16. Excelliance Tech. 2018. Multiple Accounts: Parallel App. https://play.google.com/store/apps/details?id=com.excelliance.multiaccounts.
+
+17. LBE Tech. 2018. Over 100 million users worldwide. https://www.facebook.com/parallelspaceapp.
+
+18. LBE Tech. 2018. Parallel Space - Multiple accounts & Two face. https://play.google.com/store/apps/details?id=com.lbe.parallel.intl.
+
+19. Julien Thomas. 2018. In-App virtualization to bypass Android security mechanisms of unrooted devices. https://2018.bsidesbud.com/wp-content/uploads/2018/03/julien_thomas.pdf.
+
+20. tiann. 2018. fuck_anti_virus.gradle. https://gist.github.com/tiann/42f829ae86b90934c8467f6f76dd6a85.
+
+21. VirtusTotal. 2018. VirtusTotal. https://www.virustotal.com.
+
+22. Lei Wu, Michael Grace, Yajin Zhou, Chiachih Wu, and Xuxian Jiang. 2013. The impact of vendor customizations on android security. In CCS.
+
+23. Zhou Wu, Zhou Yajin, and Jiang Xuxian. 2012. Detecting Repackaged Smartphone Applications in Third-Party Android Marketplaces. In CODASPY.
+
+24. Xen. 2019. Xen project. https://www.xenproject.org.
+
+25. Aafer Yousra, Huang Jianjun, and Sun Yi. 2018. AceDroid: Normalizing Diverse Android Access Control Checks for Inconsistency Detection. In NDSS.
+
+26. Fangfang Zhang, Heqing Huang, and Sencun Zhu. 2014. ViewDroid: Towards obfuscation-resilient mobile application repackaging detection. In WISEC.
+
+27. Hang Zhang, Dongdong She, and Zhiyun Qian. 2016. Android ION Hazard: The Curse of Customizable Memory Management System. In CCS.
+
+28. Cong Zheng, Tongbo Luo, Zhi Xu, Wenjun Hu, and Xin Ouyang. 2018. Android Plugin Becomes a Catastrophe to Android Ecosystem. In RESEC. ACM.
+
+29. Wu Zhou, Yajin Zhou, and Michael Grace. 2013. Fast, scalable detection of piggybacked mobile applications. In CODASPY.
+
+Received November 2018; revised December 2018; accepted January 2019
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019..

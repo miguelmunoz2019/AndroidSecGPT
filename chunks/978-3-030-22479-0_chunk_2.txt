@@ -1,0 +1,49 @@
+The WebView allows defining ad-hoc interfaces, called Javascript-Interfaces, that enable to invoke Java methods from the JavaScript code. This feature allows cross-platform frameworks (e.g., Cordova, PhoneGap) to design a set of plugins that can be embedded in apps and offer platform-specific functionality, such as the API for the file-system or the GPS location. To enable JavaScript interfaces, the developer needs to bind a set of Java methods to a WebView component using the addJavascriptInterface method. The communication between the JavaScript and the Java code is handled by the WebView using asynchronous callbacks. In detail, when some JavaScript code invokes Java code through an interface bounded to the WebView, it does not wait for the result: instead, when the result is ready, the Java code outside the WebView invokes a JavaScript callback function, passing the result back to the web page. This mechanism provides improved app performance and responsiveness, particularly in the case of long-running operations that would block the UI.
+
+# WebView Security Mechanisms
+As the WebView deals with web content that can include untrusted HTML and JavaScript code, it can suffer from well-known web security vulnerabilities such as cross-site scripting  or file-based cross-zone scripting . As countermeasures, the Android OS includes a set of mechanisms aimed at limiting the capability of the WebView to the minimum functionality required by hybrid apps. By default, the WebView does not execute JavaScript, thus requiring developers to enable this feature using the setJavascriptEnabled method. Besides, the application can either enable or disable the access of the WebView to specific resources like files, databases or geolocation  through the WebSettings object.
+
+Since API 17, the Java methods – which are exposed through a JavaScript interface – need to be explicitly annotated with the @JavascriptInterface . The aim is to restrict the access to the OS API, in order to prevent the invocation of any public Java method through code reflection.
+
+To further increase the resilience of the WebView component against untrusted contents, since API level 21 the Android OS implements the WebView as an independent app, thus offering a centralized update mechanism that relieves the developer from the burden of manually updating each hybrid app . Moreover, since API Level 26 the WebView renderer executes in a separate process . Finally, since Android 8, the WebView incorporates Google’s Safe Browsing protections to detect and warn users about potentially dangerous content.
+
+# Droids in Disarray: Detecting Frame Confusion in Hybrid Android Apps
+ous websites. Unfortunately, this option needs to be explicitly enabled by the developer through a specific tag in the Android Manifest.
+
+# 2 Frame Confusion
+Frame Confusion is a vulnerability affecting hybrid apps that allows malicious interactions among the main web page (hereafter, main frame) and different web domains hosted in inner Iframe elements (hereafter, child frames) through the asynchronous bridge between the Java and the JavaScript code, granted by the WebView. To this aim, the WebView maintains a map that links the WebView instance with a list of function calls in the native code registered to the JavascriptInterface. However, such a map does not include any restriction on web domains (and thus web pages) that can access the attached interfaces. Thus, if the main frame contains multiple child frames, each of them can independently and asynchronously access all the interfaces bound to the WebView component, in order to interact with the Java code. For this reason, the WebView is forced to return the results of each native method invocation to the main frame and not to the actual caller, be it the main frame or a child frame, thereby causing potentially unintended interactions between different frames, i.e., the Frame Confusion.
+
+Such interaction between the native and the web worlds allows bypassing the Same Origin Policy (SOP), which - in a standard web browser - completely isolates the contents of the main frame from the child frames, since they belong to different domains.
+
+# Attacking and Exploiting the Frame Confusion.
+
+The Frame Confusion vulnerability can be exploited either by using a compromised child frame or the main frame, as shown in Fig. 1 (taken from ). In detail, if an attacker is able to compromise a child frame (Fig. 1a), he triggers the invocation of native function.
+
+# 126 D. Caputo et al.
+
+calls through the WebView App (step 1), which computes the result (step 2) and sends the callback to the main frame (step 3). For instance, a malicious advertisement campaign - embedded in a child frame - can exploit this attack and affects the main frame, by, e.g., inducing an unwanted phone call or force the sending of an SMS.
+
+On the other hand, in case of a compromised main frame (Fig. 1b), the attacker is able to intercept all the callbacks triggered by the child frames, thus leading to possible information leaks. As an example, a benign child frame could inadvertently expose sensitive information like, e.g., the GPS location or the result of a SQL query, to the main frame in control of the attacker, through a native method invocation.
+
+The exploitation of the Frame Confusion vulnerability requires the attacker to affect any web domain in the main or a child Iframes that has access to the JavaScript interfaces. This condition is achieved through:
+- The direct control of a web page. In such a scenario, the attacker can be able either to take control over an existing web domain or to create an ad-hoc website, e.g., a malicious advertisement campaign.
+
+- The injection of malicious code in an existing web page. In this case, the attacker can exploit a weakness in the communication protocol of the hybrid app, e.g., a clear-text communication or a misconfigured SSL connection, to mount a Man-In-The-Middle attack3 and inject malicious code in the loaded web pages.
+
+It is worth noticing that the presence of other vulnerabilities in the JavaScript code, e.g., the adoption of JavaScript libraries with known vulnerabilities  or the presence of XSS vulnerabilities , further boosts the exploiting capabilities of the attacker.
+
+# Mitigations.
+
+As described above, the Frame Confusion allows violating the SOP by circumventing the sandbox of Iframes. Unfortunately, despite the recent security mechanisms added in the WebView component, the Frame Confusion is still unfixed at any Android API level. Still, the web world offers an extra set of security mechanisms that are able to restrict the communication among the main frame and the child frames, thus preventing the Frame Confusion vulnerability, i.e.:
+- the Iframe sandbox attribute , which enables a set of extra restrictions on any content hosted by an Iframe and, among them, it allows blocking the execution of JavaScript code. Although effective in principle, this mechanism completely prevents the execution of any JavaScript code, thus limiting the functionalities of the web page.
+
+- the Content Security Policy (CSP)  that allows for the definition of fine-grained restrictions on the execution of JavaScript code, including the possibility to define a set of trusted domains that are able to execute JavaScript,
+3 https://www.owasp.org/index.php/Man-in-the-middle attack.
+
+# Droids in Disarray: Detecting Frame Confusion in Hybrid Android Apps
+in a white-listing fashion. Although effective against the loading of an undesired web domain, the CSP cannot prevent the injection of the malicious code in a white-listed domain, thereby resulting ineffective against the Frame Confusion.
+
+Furthermore, previous security mechanisms are not enabled by default, thus leaving the burden of their configuration to the developer. All in all, at the current state of the art, none of the existing security mechanisms are able to effectively prevent the Frame Confusion.
+
+# 3 A Frame Confusion Detection Methodology
+The lack of a solution for preventing the Frame Confusion asks for – at least – a methodology to automatically detect such vulnerability. Unfortunately, at the current state of the art, the only way to detect Frame Confusion is through manual source-code inspection, mostly carried out by app developers. Such activity is error-prone and requires good skills in security analysis by the developing team. Furthermore, the complexity of Frame Confusion leads developers to false positives/negatives or, in the worst case, to underestimate or ignore the problem. To overcome this limitation, we propose a novel methodology for the automatic identification of the Frame Confusion in Android. To achieve such result, we first define a blueprint of the Frame Confusion vulnerability, and then we build an analysis flow that is able to detect it automatically, by exploiting a fruitful combination of static and dynamic analysis techniques.

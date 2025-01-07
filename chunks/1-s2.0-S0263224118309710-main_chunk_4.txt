@@ -1,0 +1,57 @@
+# 6. Evaluation procedure
+and effectiveness of research work . The performance of the model largely depends on the quality of the features rather than just the quantity. A large number of features may contain redundant information which leads to lower true positive rates. Besides that, this study used minimal features as an attempt to reduce the dimensionality of the dataset.
+
+This paper evaluates the risk of 5000 benign and 5000 malware applications extracted from the sample datasets. Each application permission was extracted so as to collect their permissions from AndroidManifest.xml. Each of the permission on the application was stored in the database as a criterion collection. This criterion is important to guarantee the accuracy of the proposed approach. The permission-based approach was used to identify the risk zone. After the EZADroid accepts the application’s permission-based behavioral data, it computes the risk value and then determines the risk zone to see whether the application is very low, low, medium or high risk.
+
+# Distributions of datasets.
+
+# 6. Risk assessment evaluation
+This section presents the risk assessment evaluation which uses the AHP approach. Table 7 shows the results obtained. It classifies the benign and malware applications accordingly. It appears that all the malware and benign applications had obtained the risk values from the AHP analysis. From the risk values noted, the risk zone was classified accordingly. In order to validate the experiment, VirusTotal  was used to strengthen the risk zone evaluation.
+
+In order to estimate the risk value of Android applications, this study calculate the risk value of permission using multicriteria decision making (Table 5). There are group of permission with different of value. Thus, this study able to evaluate the risk zone of Android application. The more permission used in dangerous category by Android application present higher risk value. It is certain.
+
+# 6. Risk zone threshold
+To establish a methodological approach for identifying the risk zone in the Android applications, this section explains the risk value and the zoning process. Four types of risk zones were applied in the experiment: very low, low, medium and high . These risk zones have been used in security for the purpose of evaluating the risk impact. The risk zone has been exemplified in the works undertaken by . They used the method for the Android platform and for incident prioritization. The risk zones of the current study are presented in different colors depending on the levels of risk as a means to increase awareness among Android users. This application of colors have also been applied by previous researchers.
+
+Illustrates the description of the risk zone.
+
+As the table illustrates, the risk zones determine the levels of severity of application. The different colors can further alert users of the severity of the risks involved. Very low and low-risk zone means that the risk of application is acceptable and safe to use. Fig. 3 illustrates the threshold for the risk zone.
+
+This threshold is not a definitive value. It subjected to other reassessments, thus different scales will produce a different distribution. The selection of this threshold is important to make a suitable and significant decision of the risk zones. The risk zone threshold was adopted from Table 10 which is the distribution analysis taken from the box plot of ten (10) permissions. Furthermore, this threshold indicates the significance of the mapping process between the risk zone and the risk response planning for future works.
+
+Lists the data analysis taken from the box plot which uses ten (10) permissions. The following section describes the results of the experiment.
+
+# 6. Result
+In order to avoid any bias, an arbitrary number of criteria selection was used. This study used the criteria selection approach with three different configurations: 10, 20 and 30 criteria to select the highest out of the 378 criteria featured by the feature selection algorithms (e.g. Information Gain). The box plot analysis shown in Fig. 4 is related to the risk value for malware and benign applications. The box plot analysis is also able to identify the criteria more effectively as it differentiates the benign from the malware.
+
+Samples evaluation and risk zone on applications.
+
+# 404
+# M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+# List of malware family and risk value.
+
+Description of the risk zone.
+
+Data analysis for 10 permission.
+
+applications. This difference will suggest that the two populations belong to different distributions. Figs. 4–6 illustrate the malware and benign applications. The trend illustrates that permission-based criteria are significant and relevant for conducting risk assessment.
+
+The distribution shown in Figs. 4–6 demonstrates a different value. This means that there is a distinction between the benign and malware applications. This evidence strengthens the experiment evaluation with a result showing an accuracy of over 80% for the risk zone. It is fascinating to note that the implementation of the EZADroid is able to determine the risk zone based on 10,000 samples.
+
+# 6. Statistical analysis
+This section presents a component of the data analytics. In the context of research, statistical analysis scrutinizes data and presents a selection taken from the population. This study applied linear regression which was used to specify the nature of the relation between the malware and benign applications. A total of 10,000 applications taken from the sample dataset were applied. The experiment was able to manage the dependent (risk value) and independent (risk zone) variable score into the same row. Table 13 illustrates the variables used for analysis and the results of the mean and standard deviation.
+
+In order to locate and interpret the relevant regression and correlation coefficients, the experiment needs to consider a variable Entered/Removed, model summary, ANOVA, and coefficient. Table 14 illustrates the independent variables. Tables 15–17 demonstrate the statistics of the data variable score. Table 15 demonstrates the correlation coefficient (r) and the coefficient of the determination (r square). It specifies the strength of the linear trend between the variables. Table 16 indicates the significant value of the independent-variable scores when compared to a predetermined a. Finally, Table 17 illustrates the y-intercept and the slope for the regression equation.
+
+The model summary shows the correlation between the two variables (r): correlation coefficient (r) and the coefficient of determination (r square). The value of R represents the correlation coefficient that indicates the relation strength between the independent variable to the dependent variable.
+
+In addition, previous study by , they mapped risk value to address the impact of incident in intrusion detection. Based on the risk value, the incidents are ranked from the highest to the lowest value where the highest value contribute to probability of malicious activity. By categorizing malware and benign, the EZADroid had achieved an accuracy rate of 89% of the malware and 87% for the benign outcomes, particularly when focusing on the 10 criteria selection only. The outcome thus implies that the EZADroid is able to evaluate the risk of the benign and malware applications effectively. Therefore, it improves our study goals to identify the risk of applications and detect malware. The high-risk zone detected from the 10 criteria have the highest proportion of risk with a total of 3622 malwares. This proportion is followed by the 20 and 30 criteria with a total of 3074 and 2376 malware, respectively.
+
+As can be seen from Fig. 7 which illustrates the risk zone evaluation on risk generated from the malware and benign applications using 10, 20 and 30 criteria, the total frequency of the application is measured by presenting the type of risk zone. In the 10 criteria selection, over 80% of the malware were detected as high risk. Based on this, it concluded that the proposed approach is efficient in evaluating the risk for most of the sample datasets. In order to warrant the significance of the proposed approach, a statistical analysis of the 10 criteria was conducted. The 10 criteria were selected because the results were more reliable, as shown on the box plot analysis.
+
+# M.F.A. Razak et al. / Measurement 133 (2019) 396–411
+Description statistics.
+
+Variables entered/removed.
+
+a Dependent variable: risk value.

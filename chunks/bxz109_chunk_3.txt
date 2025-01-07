@@ -1,0 +1,53 @@
+- Dynamic: This type is about how an application will behave if it is installed on the user’s devices.
+
+Applications analysis goes into three main steps: preprocessing or extracting the application data, estimating the risk by using the extracted feature and obtaining final risk values. Preprocessing is exploited to extract the application characteristics such as permissions, API function calls, intentions, material resources etc, since these characteristics can have a varied importance on the obtained risk value. To obtain a precise and effective security risk rate, it is necessary to use malicious application samples for calculating higher values.
+
+In the case of an unknown application, it is very likely to be safe, if the remoteness to the normal application center is less than the remoteness to the center of the malicious applications. Then, by applying this condition, we used the following formula:
+Section D: Security in Computer Systems and Networks The Computer Journal, Vol. 63 No. 4, 2020
+# Security Risk Value Estimate Method
+Each malicious application instance in our set is represented by a set of features common between malicious and normal applications. This is noted as f = { f1, f2, . . . , fn}, and m = {m1, m2, . . . , mn} denotes the malicious application available sets exploited in the risk rate estimate.
+
+For each feature, the average value of malicious applications is noted by Sm (fi), Sn (fi) representing the average value of normal applications set. The two values are computed based on the two following equations:
+Sm
+∀ fi ∈ F Sm(fi) = ∑Sm fij (1)
+∀ fi ∈ F Sn(fi) = ∑Sn Sn fi (2)
+Sm and Sn in the equations above represent, respectively, the size of malicious and normal applications we have; the feature description in the malicious application and in the normal applications is noted with fij and f, respectively. According to these formulations, we can calculate the malicious applications averages by exploiting the remoteness methods to obtain the risk rates. In other words, as shown in Figure 2, the centers are calculated for points reflection of normal and malicious applications samples. Then, we calculate the risk rate of an unknown application x by using the following equation:
+RVC (x) = √∑|F|2 / √∑|F|(Xsm − fjx)2 (3) / ∑|F|(Xsn − fix)2
+RVC (x) in this formulation represents the risk rate calculated based on the instance of an unknown application x. Indeed, by exploiting the equation above, we compute in an isolated way the average points by applying Formulations (1) and (2) for all available malicious applications.
+
+In addition, we get all the application x remoteness and the average of all its entities. The Formulation (3) is used to calculate the estimated risk value for the considered application x. This equation constituted of the two average points obtained for all the types of available applications. The risk value estimate for application x is gotten by comparing the malicious applications average behavior available in our samples with the application x remoteness and inversely related to the normal applications average behavior compared to the application remoteness. The data measured in this remoteness are adequate on the same scale. The pseudo-code of the main steps for calculating parameters and measuring the risk rate for a given application list Lx is illustrated by Algorithm 1. This list can contain one application when a user wants to install an application or all the already installed applications on his device.
+
+The symbols used in Algorithm 1 are represented in Table 1. The Algorithm 1 is used to calculate the average value of the normal and malicious applications by applying Formulations (1) and (2), which provide all the available features, the malicious applications set Sm and the normal applications set Sn represent the Algorithm 1 inputs. This algorithm execution helps us to get the average of all applications.
+
+Lines 3 to 11 calculate the average value for all features separately. The normal applications average behavior is measured by lines 3 to 6 and for malicious applications by lines 7 to 10. Line 14 returns these values. The risk value RVC is calculated for each application x belonging to Lx by executing lines 15 to 21 and obtained by the line 24.
+
+The security and privacy of the end user can be seriously damaged by the various malicious applications existing in the Android market, such as some Trojans that exploit the device monetary resources to send SMS or make advertising calls.
+
+# Section D: Security in Computer Systems and Networks
+The Computer Journal, Vol. 63 No. 4, 2020
+# Algorithm RVCcompter (F, Sn; Sm; Lx; XsnxXsa)
+In addition, there are many malicious applications that aim to disclose and steal the user personal information without his permission or to install new malicious applications in the background without his knowledge. This example shows that all malicious applications have different risk values depending on their malicious actions. The method proposed by our system allows us to take into consideration the available malware samples behaviors to obtain a more accurate risk estimate. The most dangerous samples may be subject to additional criteria when the average value is obtained for malicious applications. Furthermore, features with different risk values such as the ones that require permissions, like SEND_SMS, INSTALL_PACKAGES and DELETE_PACKAGES, are saved in the list of the most dangerous applications [24–26]. In another example, there are malicious applications that have certain monetary calls information allowing them to access private resources and personal information from the device owner. Twenty-six permissions have been identified as critical permissions by Sarma et al. . Besides, Yuan et al.  improved malicious applications detection using 64 API calls, and they exploited 18 dynamic behaviors. By applying these results, we can also guarantee a better risk estimate and adding an additional entity criterion to our proposed model. However, without applying this improvement, the empirical evaluation results of our system show that applied measures provide very good risk values and a very efficient malware detection rate.
+
+# ALGORITHM 1. RVC calculation.
+
+shows an example of the most five important features extracted from three malicious applications from our predefined dataset. Starting from Android version 6, users are not obliged to accept the permissions requested by an application to install it, so they can now grant permissions when running it. Android 6 also provides users with advanced features and control of their applications by allowing them to select the permission granted to an application through a configuration interface . For example, a user may refuse to give an application permission to view his contact list or read his SMS and at the same time allows it to access to the location of his device. For this case, in the implementation of our tool named PerUpSecure, our method RVC measures the risk rate of the applications installed on the user’s device as shown in Figure 3. Also, our tool helps the user to know if the application really needs the requested permissions or not.
+
+# 5. EXPERIMENTAL EVALUATION
+For our experimental evaluation, we used the tools Eclipse and MATLAB to provide the necessary codes to implement and evaluate the measures proposed by our system. These tools allowed us to get the risk score by evaluating and comparing two sets of malicious and normal applications.
+
+# Section D: Security in Computer Systems and Networks
+The Computer Journal, Vol. 63 No. 4, 2020
+# Security Risk Value Estimate Method
+Downloaded from https://academic.oup.com/comjnl/article/63/4/593/5618854 by Pontificia Universidad Javeriana user on 12 August 2024
+We first dealt with all the malicious applications collected on the web by Gates et al. . In addition, we evaluated all the existing applications on the Arp et al.  official website. Their applications set was a mix of malicious applications and innocent applications from different sources. We have exploited these applications to evaluate and compare our proposed approach with those proposed previously.
+
+Therefore, to obtain a precise and effective risk rate and thus guarantee a better detection rate, it is necessary to obtain lower values for normal applications. Indeed, we applied a detection rate evaluation to our measure RVC, and then we compared it.
+
+# Section D: Security in Computer Systems and Networks
+The Computer Journal, Vol. 63 No. 4, 2020
+# Section D: Security in Computer Systems and Networks
+# The Computer Journal, Vol. 63 No. 4, 2020
+600 E. Latifa et al.
+
+The area below the curve for an alert rate up to 190
+with that previously proposed by the approaches illustrated in Table 3.

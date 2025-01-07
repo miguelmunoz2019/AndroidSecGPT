@@ -1,0 +1,59 @@
+# Decompilation:
+Our system is built on top of APKTool, which is a reverse engineering tool. It relies on baksmali, a disassembler to convert Dalvik executable (.dex) files used by a Dalvik virtual machine into SMALI files. SMALI files are similar to the application’s original source for rebuilding the application, and each SMALI file represents a “.class” file, which is composed of class(es), function(s), and variable(s).
+
+# Auth Locator:
+Having the SMALI file of each application, all original source code information is able to be extracted including variable declarations, function calls, and dependency relationships. We further extract control and data dependencies in each application.
+
+# Control Dependency:
+It describes sequences of function executions. The sequentially executed functions are considered as control dependencies, that is, the successor instruction is directly dependent on its previously executed function and indirectly dependent on all the predecessor instructions. Prior to obtaining control dependencies, we define two types of statements for further analysis:
+- Conditional Transfer: It describes the conditional statements including IF-ELSE, IF-THEN-ELSE, and SWITCH-CASE. If the given condition is satisfied, the statements in the current branch are executed.
+
+1 APKTool: https://ibot-peaches.github.io/Apktool/install/
+68
+IEEE Wireless Communications • June 2020
+# Authentication Function Identify
+To achieve efficient dependency analysis, we retrieve the function calls that are relevant to authentication implementations. By analyzing the official Android documents provided for developers, we observe that certain functions must be called to implement password authentication in Android apps. Hence, we manually obtain these required functions from the official Android documents and use these functions as reference functions to identify password authentication. Five reference functions are listed in Table 1.
+
+# Functions
+# Data Dependency
+Execution information extracted from control dependencies are insufficient because they only introduce the execution sequences of functions without the involvement of variables. Unlike Java source code, SMALI code is bytecode where registers (e.g., V1, V2) are used to describe variables and commands used for demonstrating operations. Thus, the original functions and variable names are removed, which means that the inputs of some functions (i.e., argument names in the execution information) might be the same.
+
+Since one register might be used multiple times by different function calls, it is time-consuming to extract all data flow information related to a register for each function call. We rely on the located reference functions, and start from the involved arguments and construct the data dependencies, which illustrate the flow of variables. The flow of each involved variable (i.e., register) is stored in the format of (register, type, value). Starting from each function call, we first recognize the registers utilized in the function and then apply backward program slicing. We determine where a variable is declared and what value it contains. Each track of backward program slicing terminates when the following conditions are met:
+- When a constant value or string is assigned to the register
+- When the register is recognized as the return value of another function call
+- When the initial function is identified
+# Feature Construction
+As the authentication-related dependencies are demonstrated as a dependency graph, we traverse the dependency graph into a vector. We list the starting points at the row and the end point at the column. Suppose that A depends on B; we demonstrate such a dependency as {A, B} = 1; otherwise, {A, B} = 0.
+
+We finally combine the vectors of all input apps to construct a feature matrix. According to the label of each app (i.e., secure authentication, insecure certificate check, insecure hostname check, insecure OTP value), each vector is labeled as 0, 1, 2, 3, respectively.
+
+# Model Learning
+The goal of model learning is to learn a discriminative model that identifies apps containing authentication bugs. Our system takes as input the generated feature matrix and then relies on the model learning phase to learn some characteristics of each category from the given feature values of the scripts belonging to the three categories. As features for training are represented in vectors (i.e., the format of strings), we choose to apply LSTM, which is able to process an entire sequence of data.
+
+2 https://developer.android.com/training/id-auth
+IEEE Wireless Communications • June 2020
+# Our system
+# MalloDroid
+# Detection results
+The label prediction process takes as input the model PredIctIon discriminative model learned by the model learning phase. To identify bugs in the unlabeled apps, we construct the control and data dependencies of each app using the feature matrix generation component. Similarly, the app is decompiled by Apktool, and then we identify the authentication related function calls and construct the dependency graph. The dependency graph is finally traversed into a feature vector, which is taken as input of the label prediction phase. The discriminative model would assign the likelihoods of the vector to belong to each of the four categories, namely, secure authentication, insecure certificate check, insecure hostname check, and insecure OTP value. The category with the highest likelihood would be output as the predicted label for the app. This step is performed as a natural extension of model learning.
+
+# Evaluation
+In this section, we evaluate the effectiveness of our system by comparing it with a state-of-the-art tool, MalloDroid.
+
+# Experiment Setup
+# Dataset
+Since there is no existing dataset that contains labeled applications with authentication bugs, we built the ground truth ourselves. We collected 1200 free applications from the official Google Play Store . Applications are selected from six categories that are highly relevant to authentication: communication, dating, finance, health & fitness, shopping, and social networking. From each category, we chose the top 200 applications. To build the ground truth, we asked a team of researchers with two post-doctoral research fellows and one Ph.D. student to manually analyze the collected applications and check whether the password authentication scheme is securely implemented in each application. All the researchers have more than seven years of Java programming experience. First, the researchers were required to analyze these applications independently. Then we went through their annotations together and discussed the applications that were labeled differently. A final agreement would be made for applications with different labels. Finally, 1205 implementations of password authentication protocols were identified in 742 Android applications, in which some applications implemented multiple protocols. Among them, 284 applications used PAP, while 736 applications implemented the protection of SSL/TLS incorrectly. While analyzing OTP authentication, we identified 323 applications with OTP authentication. We further conducted bug detection of OTP authentication on these applications.
+
+# Setup
+We performed a 10-fold cross validation to run the experiment. First, the dataset was split into 10 folds. Each fold contained around 70 vulnerable applications. Because an application might have multiple authentication flaws, we tried to split them evenly into different groups, but the number of each type of authentication flaw in each group cannot be exactly the same. The experiment was run 10 times. During each time, one unique group was selected as a test group and the other nine groups were used as the training group. We then computed experiment results on average.
+
+# Evaluation Metrics
+To assess the effectiveness of our system, we used precision, recall, and F1 as the evaluation metrics, shown in Eq. 1, Eq. 2, and Eq. 3, respectively.
+
+Precision = TP / (TP + FP) (1)
+Recall = TP / (TP + FN) (2)
+F1 = 2 × Precision × Recall / (Precision + Recall) (3)
+# Performance
+To assess the performance of our system, we count the number of authentication bugs that are correctly detected by our system. The results are illustrated in Table 2: our system detected 691 authentication bugs. And it achieves the effectiveness of precision, recall, and F1 at 52, 93, and 67 percent. In comparison, MalloDroid achieves higher precision than that of our system because it labels all the potential bugs as authentication bugs, which also causes low recall (i.e., high false positive). While considering both true positives and false positives, our system performs better than MalloDroid with F1 at 67 percent. Note that different from our system, MalloDroid only verified the implementation correctness of SSL/TLS. Therefore, we only compare our system with MalloDroid on identifying the authentication bug of SSL/TLS. Obviously, our system performs much better than MalloDroid.
+
+We further counted the number of applications that use predictable OTP values for authentication and accept consumed OTP values. In total, our system successfully identified 26 applications that generate repeated OTP values. It describes the situation in which an OTP value is still repeated multiple times once it is being consumed. We also detected 39 applications that accept consumed OTP values.

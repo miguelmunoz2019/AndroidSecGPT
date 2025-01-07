@@ -1,0 +1,68 @@
+# Silver Surfers on the Tech Wave: Privacy
+# Analysis of Android Apps for the Elderly
+# Pranay Kapoor, Rohan Pagey, Mohammad Mannan, and Amr Youssef
+# Concordia University, Montreal, Quebec, Canada
+p apoo@live.concordia.ca, r pagey@live.concordia.ca, m.mannan@concordia.ca, youssef@ciise.concordia.ca
+# Abstract
+Like other segments of the population, elderly people are also rapidly adopting the use of various mobile apps, and numerous apps are also being developed exclusively focusing on their specific needs. Mobile apps help the elderly to improve their daily lives and connectivity, and their caregivers or family members to monitor the loved ones’ well-being and health-related activities. While very useful, these apps also deal with a lot of sensitive private data such as healthcare reports, live location, and Personally Identifiable Information (PII) of the elderly and caregivers. While the privacy and security issues in mobile applications for the general population have been widely analyzed, there is limited work that focuses on elderly apps. We shed light on the privacy and security issues in mobile apps intended for elderly users, using a combination of dynamic and static analysis on 146 popular Android apps from Google Play Store. To better understand some of these apps, we also test their corresponding IoT devices. Our analysis uncovers numerous security and privacy issues, leading to the leakage of private information and allowing adversaries to access user data. We find that 95/146 apps fail to adequately preserve the security and privacy of their users in one or more ways; specifically, 15 apps allow full account takeover, and 9 apps have an improper input validation check, where some of them allow an attacker to dump the database containing elderly and caregivers’ sensitive information. We hope our study will raise awareness about the security and privacy risks introduced by these apps, and direct the attention of developers to strengthen their defensive measures.
+
+# Keywords
+Elderly Privacy · Android Apps Privacy and Security
+# 1 Introduction
+The adoption of mobile devices is forcing the elderly to navigate the treacherous waters of a complex digital world , wherein online threats can even translate into offline harm. While over 53% of all elderly own a smartphone , and are keenly adopting mobile technology , several studies have shown that older adults are more vulnerable to security and privacy threats than the general population . According to US FBI and FTC, cybercrimes against older adults in the US have increased five times since 2014, costing over $650 million in yearly.
+
+P. Kapoor et al.
+
+losses . A combination of low self-efficacy, mistrust and lack of awareness and understanding of security hazards  makes the elderly reluctant to adopt cyber-secure habits, hence vulnerable
+Applications for the elderly offer various services such as care-giving, e-learning, and improving physical and mental health (e.g., apps for exercise and fitness). While these apps might be used daily by the elderly, their inherent privacy and security implications are not fully known. Weaknesses in elderly apps may expose sensitive private data, sometimes on a large scale, and endanger users’ safety (online and in the real world). Recent studies  have revealed several security and privacy issues in Android apps, but most large-scale research has been done on apps used by the general population (also see Sec. 6). A few studies have exposed privacy issues in only one particularly vulnerable group (e.g., elderly or children) on a small scale. The work on elderly groups is limited to the study of elderly behavior concerning their privacy and security.
+
+In this paper, we perform an in-depth analysis of 146 prominent elderly Android apps. We define a list of pertinent security and privacy related issues for these apps, and analyze them for such issues (e.g., security vulnerabilities, backend issues, presence of third-party trackers, and insecure data transmission). We also analyze three IoT devices to better understand the corresponding apps and their security implications. We combine the use of several existing tools that enable dynamic and static analysis to perform a wide range of security and privacy tests.
+
+# Contributions and Notable Findings
+1. We design a hybrid approach of dynamic and static analysis for evaluating security and privacy issues in elderly apps (and their corresponding IoT devices). We inspect the apps’ web traffic for personally identifiable information (PII) leakage, access control issues, improper authentication management, improper input validation, dangerous third-party library permissions, and the presence of third-party trackers.
+
+2. We apply our analysis framework to 146 Android apps (and the IoT devices corresponding to three apps). Overall, 95/146 apps fail to adequately protect the security and privacy of users due to one or more vulnerabilities.
+
+3. 4/146 Android apps (GoldenApp, POC EVV, Senior Discounts, Damava) do not properly authenticate their server API endpoints, allowing illegitimate access to view and obtain sensitive data such as elderly users’ physical address, email, health reports, and private messages on the platform.
+
+4. 15/146 Android apps (e.g., 40 Plus Senior Dating, All Well Senior Care, Seniority) allow an attacker to easily compromise the account of elderly users and caregivers.
+
+5. 9/146 (Senior Dating, Empowerji, GoldenApp, Caring Village, EZ Care, Generations Homecare System, EllieGrid, Seniority, Tricella Health) Android apps have improper input validation with injection attack vulnerabilities such as SQL injection, allowing an adversary to dump and modify the data.
+
+1 The term “vulnerable user” means a person “at-risk” due to his/her particular circumstances, and not to be confused with an app having a security “vulnerability”.
+
+# Privacy Analysis of Android Apps for the Elderly
+application’s database. We are assigned CVE-2022-30083 , with a CVSS score of 9/10 (critical), for the code injection issue we found in EllieGrid.
+
+16/146 Android apps transmit PII via HTTP to their client-side servers (e.g., Empowerji, GoldenApp), while 8/146 apps transmit PII (6/146 via HTTP and 2/146 via HTTPS) to various third-party domains.
+
+# 2 Potential Privacy and Security Issues and Threat Model
+# Potential Security and Privacy Issues
+We primarily consider two types of data that can be leaked over the network: (1) personally identifiable information (PII) and (2) smartphone device information and usage. A PII leak is any data leak which can be used to identify an individual (e.g., email ID, location/address, password, date of birth, health data, unique device serial number). Device information and usage is the combination of the device data (e.g., manufacturer, model, OS, API level, IP address, screen, battery, cellular carrier, free memory/disk, language, time zone, orientation), and user interaction (e.g., session time, button clicks, visited web pages). Device information and usage leaks can be used to identify an individual or a group of individuals. We tested the most prominent vulnerability types from the OWASP top 10 for Android, based on their CVSS scores. From that base knowledge, we define the following list of potential security and privacy issues to evaluate elderly apps.
+
+1. Improper authentication management: The ability of an attacker to gain access to a user’s account (unauthorized login).
+
+2. Improper access control: To be able to gain or observe other users’ data on a given platform without their authorization.
+
+3. Improper input validation: Possible injection attacks (e.g., SQL injection and code injection) resulting from missing/inadequate input validation, which may compromise sensitive user data.
+
+4. Vulnerable backend: The use of remotely exploitable outdated server software, and misconfigured or unauthenticated backend service (e.g., Firebase).
+
+5. Plaintext transmission of authentication secrets (e.g., passwords and session IDs), which can be easily captured by a network attacker to gain unauthorized access to user accounts.
+
+6. Insecure PII, device information and usage transmission: PII and device information and usage from the client-end is sent without encryption (i.e., plain HTTP).
+
+7. Data transmission to third-party: Any PII and device/usage information and usage data transmitted from the client side to third-party domains/trackers, or library providers.
+
+8. Inadequate security configurations: Android apps with misconfigured backend HTTP web servers (e.g., lack of Cross-Origin Resource Sharing or improper flash cross-domain policy), which may lead to large-scale attacks.
+
+# P. Kapoor et al.
+
+# 9. Dangerous permissions (e.g., Write External Storage, Access Fine Location)
+automatically acquired by a third-party library when requested by the elderly app, or by a malicious app using the same signed certificate third-party library as the elderly app developer.
+
+# Threat Model.
+
+We consider three attacker types with varying capabilities: (1) On-device attacker: a malicious app with limited permissions on the user’s device. (2) On-path attacker: an attacker who is placed between the user’s smartphone and its server. This attacker can eavesdrop, modify, and behave like a man-in-the-middle attacker between the user’s device and the app’s backend server. (3) Remote attacker: any attacker who can connect to an app’s backend server. Our threat model does not consider attacks requiring physical access to the device.
+
+# Ethical Considerations and Responsible Disclosure.

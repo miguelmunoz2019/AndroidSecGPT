@@ -1,0 +1,74 @@
+# 5. Analysis techniques aspects
+The third dimension talks about the different aspects of the program analyses techniques, which distinguishes them from each other. This dimension tries to answer RQ2 and RQ3, which is based on the design and implementation details of these approaches and current state of Android security. Seven
+# Computers & Security 100 (2021) 102087
+Sub-dimensions are discussed below, where the first four belong to static analysis techniques, the next two are applied to dynamic analyses and the last one is for ML techniques.
+
+# 5. Analysis techniques
+In this study, we have investigated six fundamental techniques. Table 7 shows the papers applying these analysis techniques. These are discussed as follows:
+1. Symbolic execution: Symbolic execution helps analyze the program by determining different inputs executing different parts of the program. Inputs for propagating the program execution are symbolic values. These symbolic values are then used to generate variables, expressions and constraints that are used to produce possible outcomes for each conditional branch. These inputs are then used as test cases to explore the given path. The given path is considered to be infeasible when no input is produced. AppIntent  generates GUI manipulations sequences using symbolic execution that lead to data transmission. Symbolic execution proves to be time-consuming for Android apps; however, AppIntent reduces the search space without sacrificing the code coverage.
+
+2. Taint analysis: It is a method of information flow analysis where an object is marked with an identifier, called as taint. The tainted object is then tracked using data-flow.
+
+analysis. An exception is raised when a tainted object flows to a sink. FlowDroid  detects sensitive data leaks by using static taint analysis. AppSealer (Zhang and Yin, 2014a) generates patches for Android component hijacking attacks by leveraging taint analysis.
+
+3. Program slicing: Program slicing is used to test a group of statements in a program for particular test cases or conditions that may affect a value at a particular point of time, while keeping the program behavior unchanged. Static program slices are large and consider all the possible execution program paths. Hoffmann et al. (2013) designed a framework SAAF. Program slices in SAAF track parameter values for a given Android method by performing backward data-flow analysis. CryptoLint  on the other hand, analyze cryptographic API methods by computing static program slices.
+
+4. Abstract interpretation: Abstract interpretation is generally viewed as a partial execution of a program, where the semantics of a program such as data flow, control flow, etc. are taken into consideration.
+
+5. Type/Model checking: Type and model checking are two commonly used approaches for program verification. Type checking verifies the type constraints of a program. It can occur either at compile time (static) or at execution time (dynamic). Type checking ensures the type-safety of a given program where there is a possibility of errors such as an integer operator applied to the strings or a float operation performed on an integer. On the other hand, model checking verifies the given specification of a finite-state system. Type and model checking are complimentary to each other where type checking is based on syntactic and modular style and model checking is based on semantic and whole-program style. As an example, COVERT  uses model checking to verify the security specifications of a given app. In another example, Cassandra  uses type checking to verify the compliance of Android.
+
+# Computers & Security 100 (2021) 102087
+# 5. Sensitivity analysis
+Static analyses techniques are required to be precise and abstract. Analysing sensitivities can fine tune the precision of a static analysis. Thus, different types of sensitivities are applied on the static analyses techniques are discussed. Table 8 classifies the different approaches according to the sensitivities they take into consideration. Fig. 11 shows the distribution of publications according to the sensitivities.
+
+1. Object Sensitivity: This approach distinguishes method calls made on different objects. The code in a method can call other methods to create instances of objects or manipulate existing objects.
+
+2. Context Sensitivity: This approach keeps track of the calling context of a method call and compute separate information for different calls of the same procedure.
+
+3. Flow Sensitivity: This approach considers the order of statements and computes the separate information for each statement.
+
+4. Path Sensitivity: This approach analyses execution path taken and distinguishes the information obtained from different paths.
+
+5. Field sensitivity: A field-sensitive approach models each field of each object.
+
+Field-sensitivity appears to be the most prominent with ∼29% of the publications since Android is based on Java (Object-Oriented language), where object fields hold the data pervasively. Flow-sensitivity and Context-sensitivity are also considered largely (with 24% and 25% publications respectively). Only, 5% of the publications consider Path-sensitivity, primarily due to the scalability issues that it poses. It is considered that approaches that use more sensitivity are more precise in analysis. However, they are less scalable. Hopper  considers all the sensitivities into account and generate accurate results, but raises scalability issues.
+
+# 5. Data structures
+Heavyweight static analysis approaches that tend to give but more accurate results leverage well-known data structures to provide abstraction to the underlying programs. Table 9 shows the publications leveraging data structures.
+
+1. Call Graph (CG): It is a directed graph, where each node indicates a method, and an edge represents the return from or call to a method.
+
+2. Control Flow Graph (CFG): CFG is a directed graph that represents the basic flow of statements in a program. The nodes represent the program statements and edges denote the control flow of a program.
+
+3. Inter-procedural Control Flow Graph (ICFG): It combines CG and CFG of all program procedures by connecting the call from and return to edges in the program procedure.
+
+CGs (with 38%) are used to propagate taint information and to determine the source-to-sink reachability analysis. As an example, ContentScope (Jiang and Xuxian, 2013) detects database leakage by traversing CG to find paths from pub-
+# 16
+# Computers & Security 100 (2021) 102087
+lic content provider interfaces to the database function APIs. PermissionFlow (Sbîrlea et al., 2013) maps Android permissions to the corresponding APIs by traversing CG. AsDroid  generates CG to track intent messages.
+
+27% of the publications use CFGs in this SLR. As an example, in ContentScope (Jiang and Xuxian, 2013) CFG is used to extract the constraints corresponding to potentially dangerous paths. These constraints are then fed into a constraint solver to generate inputs corresponding to candidate path executions.
+
+Another data structure is based on the combination of CFG and CG is ICFG that links the individual CFGs according to how they call each other. More advanced and comprehensive program analyses rely on ICFG. In FlowDroid , tainted variables are tracked by traversing ICFG. Epicc  traverses ICFG to perform string analysis. In IccTA  inter-component data leaks are detected by running data-flow analysis over ICFG. Only few approaches leverage ICFG since the generated ICFGs are complex and potentially not scalable.
+
+# 5. Code representation
+The intermediate representation (IR) of the code is a simplified format that represents the original Dalvik bytecode and processes it, since Dalvik bytecode is considered too complex and difficult to manipulate. Static analysis approaches are implemented as off-the-shelf frameworks that implement analysis on their own intermediate representation (IR) of program code. Various code representations and different tools used in static analysis approaches are enumerated in the Tables 10 and 11 respectively. The following code representations used in static analyses are:
+1. Smali: This intermediate representation (IR) is Apktool, reverse engineering tool for Android apps.
+
+2. Jimple: Jimple is known to be the simplified version of Java bytecode. It is used by Soot  framework. Soot uses Dexpler  plugin that translates Dalvik bytecode to Jimple IR.
+
+3. WALA: WALA stands for T. J. Watson Libraries for Analysis. WALA IR is SSA-based representation that is built
+# Computers & Security 100 (2021) 102087
+on a Java/Javascript static analysis framework WALA (Fink and Dolby, 2012).
+
+# 4. Java_bytecode/
+code format called Dex. It is different from Java and is executable by the Android virtual machine (VM). Tools such as ded , Dare , and dex2jar (dex2jar 2020) translates Dalvik to Java bytecode prior to the analysis using APK-to-JAR transformers.
+
+# 5. Dex_Assembler:
+It disassembles DEX files using dedexer, dexdump and dx tools.
+
+According to this study, Jimple is the most adopted IR (29%) and Soot is the most popular tool (25%) for static analysis of Android apps.
+
+To monitor the runtime behavior of the source code of a program, dynamic analysis is performed. There are two main aspects with respect to dynamic analysis.
+
+modifying VMs. There are two types of VMs-Dalvik VM and QEMU VM. Introspection based on Dalvik VM monitor the Android APIs execution through modifications in the Dalvik VM. QEMU based introspection are capable to trace native code. Dalvik VM are more efficient as compared to QEMU based VM. However, emulators are prone to emulator evasion.

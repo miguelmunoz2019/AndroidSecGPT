@@ -1,0 +1,58 @@
+# Computers & Security
+# 82 (2019) 80 – 98
+It is worth mentioning that not only USB standard itself evolved but also USB connectors standard. In the beginning it defined only full size Type A and Type B connectors. Later revisions of that standard introduced minimized form factors of that connectors. The biggest revolution was USB Type C connector introduced in 2014, as it is symmetrical for both sides of communication. As most of mobile devices on the market still utilizes USB 2 specification in this chapter we describe USB stack based on that standard but most of the information is valid also for the newer ones as well.
+
+A general, high-level concept of the USB is to extend machine’s functionality (equipped with such a port) with some additional features offered by the peripherals. In the USB terminology a machine which is extendable via USB is called USB host. Usually it is a piece of electronics which is directly used by a human user like a computer, a smart TV or a media player. In contrast, a peripheral which provides some additional functionality via USB is called a USB device. Previously a USB device was typically a much smaller and resource-limited device e.g. a pendrive or a web camera. Nowadays USB device mode is widely used in mobile devices which may have significantly larger computing power.
+
+# USB Stack Layers
+USB standard defines four layers of the USB stack:
+- Physical layer: which is responsible for the electric adjustment and low level signaling.
+
+- Link layer: which is responsible for the basic packet transfer between two USB ports.
+
+- Protocol layer: which ensures end-to-end messages reliability and manages bandwidth.
+
+- Functional layer: which allows developers to implement their own functionality on the top of the USB protocol.
+
+First three layers are generic and independent from the functionality which is being provided over the USB bus. Functional layer is used to define a function-specific protocol which can be used to provide even very specific functionality over the USB bus.
+
+USB standard allows to connect up to 127 USB devices to a single USB host controller. Obviously, mounting 127 USB ports in each USB host is infeasible. So a typical USB host is shipped with a few of physical USB connectors. To increase the number of available USB ports there is a dedicated class of the USB devices called USB hubs. They are equipped with a single upstream port which should be connected to the USB host and multiple downstream ports which can be used to connect more USB devices. So a typical physical USB topology is a tree topology with a USB host being a root of that tree, USB hubs being nodes and USB devices being the leaves.
+
+From a logical point of view USB hubs are transparent and used only as signal retransmitters. Thus the logical USB topology forms a star topology with the USB host being a central node and USB devices as leaves. On a functional level communication is always realized between the host and one of the connected USB devices. There is no logical connection between the USB devices.
+
+# Typical USB Device
+Typical USB device consists of the three basic elements:
+It may be seen as an equivalent of a Network Interface Card (NIC) in the networking environment.
+
+- Executive element: This may be a hardware component (like a flash memory in case of a pendrive) which is required to provide the desired functionality or just a software which provides required resources or an infrastructure.
+
+- MCU and firmware/software: This is the main controller which communicates with the UDC and the Executive element to implement device logic.
+
+The typical USB device block scheme is presented in Fig. 3.
+
+USB-enabled mobile devices usually do not use physical executive element but utilize their operating system infrastructure to emulate one. Also the device logic is usually fully implemented in the software. Linux kernel provides even a dedicated subsystem for the USB device logic implementation.
+
+# USB Device Controller (UDC)
+This is a piece of hardware which allows to communicate in the USB device mode.
+
+1 MicroController Unit.
+
+# Computers & Security 82 (2019) 80–98
+This allows implementing abstract functions relatively easily, when a hardware implementation would not be possible.
+
+In order to put multiple executive elements into a single device, the USB standard allows a single USB device to provide multiple unrelated functionalities. To make them work in an independent manner a single USB device may provide up to 31 independent data pipes. The ends of data pipes on the device’s side are called endpoints. They may be understood as an equivalent of ports from the Internet world. The endpoints are identified using a 4 bit number (0–15) and one direction bit. All endpoints apart from the endpoint 0 are unidirectional. Direction of the endpoint is always set from the USB host perspective which effectively means that IN endpoint may transfer the data from the device to the host.
+
+Different functionalities may have different requirements with respect to delays, reliability of delivery, etc. that is why the USB standard defines four different endpoint types based on the typical use cases:
+- Control: This is the only mandatory endpoint type and the only one which allows bidirectional communication using the same endpoint. This type is reserved for the endpoint 0, so each device may have only one such endpoint. After establishing the connection it is used to discover the USB device capabilities but it must be noted that it can be also used by the application. Due to poor throughput this endpoint type is usually used to send small portions of out-of-bound signaling data.
+
+- Bulk: This endpoint type is used to transfer large amounts of the delay-insensitive data. The reliable data delivery is provided but the delays for the data transfer may be significant. This type is widely used when communicating with pendrives and mobile devices.
+
+- Interrupt: This type is utilized to transfer small amounts (ca. 10 kb/s) of the time sensitive data. Both the error-free delivery and the maximum delay for the data transfer are guaranteed. This endpoint type is typically used for the Human Interface Devices like a keyboard or a mouse.
+
+- Isochronous: This type of endpoint is utilized to transfer large amounts of the delay-sensitive data. Only the maximum transfer delay is guaranteed. In the case of data error there is no retransmissions so the data may be dropped by the host without any notifications. Isochronous type is widely used whenever late data is as good as no data, e.g., for the video streaming.
+
+It is also worth mentioning that the USB standard does not provide any type of endpoint or feature to ensure data integrity or confidentiality. All data is sent through the USB in plaintext. Thus it is up to the functional layer to ensure all required security mechanisms.
+
+It must be also noted that the USB standard defines a generic logical structure of the USB device. All endpoints apart from endpoint 0 are grouped into interfaces. Interface is a group of endpoints which are used to implement some well-defined functionality. All interfaces are grouped into configurations and a configuration is a group of interfaces which can be utilized at the same time. The USB device may have multiple configurations but only one can be active at the given time instant. The USB host may communicate only with endpoints which belong to the active configuration. As endpoint 0 is not grouped into neither interface nor configuration it is always available for communication.
+
+One of the most famous and appreciated USB features by users is the Plug & Play philosophy implementation. This requires fully automated process of discovery, configuration and drivers probing for each new USB device. To make this possible, the host has to detect capabilities of each new device. In the USB terminology this process is called enumeration. Its core part is related to getting information about logical device layout. Each USB entity (device, configuration, interface, endpoint) is described using data structure called descriptor and contains the most important information about the given entity. This information is utilized by the host to choose one of the available configurations and then to select a suitable driver which will make device functionality available for the user. Although Plug & Play feature is very convenient for users, if misused, it may also become a serious security threat (Karsten Nohl and Lell, 2014).

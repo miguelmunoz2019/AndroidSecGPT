@@ -1,0 +1,17 @@
+# B. Offline Module
+Compared with online module, offline module doesn’t need connecting to the Internet. User should have got the APK file before detection and known the category the App belongs to. The detection process is similar to that of online module. Since database has stored some detection results, during every detection the checking program will first look up the App’s category in the database. If the category selected by user is different from that of database, the tool will present the detection results according to the category stored in database and remind user that there are two different categories of the App. If user wants to detect the App with another category, he should click the deletion button to clear the App’s information stored.
+
+# V. Experimental Results
+A total number of 1000 popular APK files were selected as test samples. The downloads of every sample App is no less than 500000. Run Droidtector to detect these APK files, the experimental results show that 479 applications face the problem of permissions overprivilege, accounting for 47% of all the sample Apps. The number of sample Apps and overprivileged Apps under each category are given by Table III. In 2011, Stowaway analyzed 940 Apps and found that one-third of them had overprivileged permissions. In 2012, PScout detected that 543 of 1260 Apps were in possession of overprivileged permissions, accounting for about 43%. In 2014, Spark-Android found
+# TABLE III
+# Numbers of Sample Apps and Overprivileged Apps
+124 out of 679 Apps, which account for about 18%, declared one or more overprivileged permissions. Fig. 4 gives the testing results comparison between our work and previous studies, from which we can see that the proportion of overprivileged Apps are increasing on the whole.
+
+The total number of dangerous permissions declared by 1000 Apps is 4825, about 4 dangerous permissions are declared by an App on average. A total number of 1229 dangerous permissions are overprivileged, each App averagely declares about 1 overprivileged permissions.
+
+This result indicates that one fourth of the dangerous permissions declared by an App is overprivileged.
+
+# VI. Conclusion
+The open-source feature of Android system makes it easy that any people can release the App developed by himself. Due to the absence of strict development specifications, Android Apps usually declare extra permissions which have nothing to do with their function. We call this issue permission overprivilege. The dangerous permissions defined by Android are related to user’s private information, therefore the overprivileged dangerous permission may lead to the leakage of user privacy. To address this problem, in this paper, we present a tool based on frequent item set mining to detect the overprivileged dangerous permission of an App. The tool have two kinds of work modes, one is online mode and another is offline mode.
+
+Online mode needs user to input correct App name and offline mode requires user to select a local APK file and specify its category. Finally, we test 1000 Apps crawled from Google Play and find 479 of them are overprivileged. The testing results comparison between our tool and previous research indicates that Apps’ permission overprivilege becomes more serious..

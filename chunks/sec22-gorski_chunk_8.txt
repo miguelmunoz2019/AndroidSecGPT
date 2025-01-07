@@ -1,0 +1,22 @@
+# Fields in Android Classes
+The use-def analysis occasionally encountered class fields which are initialized outside of the path from the RPC entry point to the file method. To handle these fields, we first perform a forward def-use analysis to determine all possible assignment sites for all the fields of the Android framework. Later, during our backwards data flow analysis, FRED replaced uses of class fields with their assignment sites and resolves them normally, combining all of the possible values with an Or node. For any class field whose value could not be resolved, FRED uses an Any node (e.g., fields in android.content.pm.PackageParser and android.content.pm.ApplicationInfo).
+
+# B Manual Inspection Methodology
+We used the following methodology when inspecting the candidate RPC entry points to determine if a vulnerability exists.
+
+USENIX Association 31st USENIX Security Symposium 1541
+# 1. Have FRED dump call graph representations of all candidate RPC entry points to aid in the analysis.
+
+# 2. Confirm that the RPC entry point is callable by a third party application by reviewing the authorization logic in the source/decompiled code. While FRED’s ability determine if a RPC entry point can be called by third party applications is effective for both the AOSP and Google builds of Android 10, Samsung’s unique authorization checks caused some reported RPC entry points to not be callable from third party applications.
+
+# 3. Using the source code and call graph dump, for each file path, determine if the statement that opens the file path is actually reachable from the RPC entry point and is not a result of the over approximation nature of CHA call graphs.
+
+# 4. For each file path of a candidate RPC entry point, determine if the file path can be influenced by the caller of the RPC entry point through arguments passed into the RPC or through other means by examining the call graph dumps and source/decompiled code. In practice, we observed no such RPCs.
+
+# 5. For each file path of a candidate RPC entry point, using the source/decompiled code and call graph dumps, determine if the arguments passed in or actions of a RPC caller effect modifications made to a file by the RPC or the data returned by the RPC from a file.
+
+# 6. As it is common for RPC entry points to delegate partial access to files with generally more restrictive access control policy, determine if this flow is intended and properly protected by some form of authorization logic. If the flow is determined to not be intended or properly protected by some form of authorization logic then it is considered a vulnerability, withstanding the SELinux policy confirmation.
+
+# 7. Confirm the SELinux policy does not restrict (a) the RPC entry point from accessing the file path and (b) third-party applications from calling the RPC entry point.
+
+1542 31st USENIX Security Symposium USENIX Association.

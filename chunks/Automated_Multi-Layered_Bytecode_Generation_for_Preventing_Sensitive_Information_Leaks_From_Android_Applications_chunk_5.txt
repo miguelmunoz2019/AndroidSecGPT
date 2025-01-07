@@ -1,0 +1,50 @@
+Zhang et al.  proposes the application code protection scheme that acquires a memory area where the binary is loaded and relocates it to a special area. Since it is relocated into the kernel area, the only user who can access the kernel is permitted to control the memory of the application. It is difficult to trace or penetrate because the data is hidden in the kernel. However, to apply this approach, the kernel of the Android device must be customized and it is difficult to use it in general.
+
+App Guardian  is a technique that provides immediate protection when an app is installed and does not need to change the operating system or target app. It is similar to our system in a point of achieving the goal of preventing sensitive information leaks. However, App Guardian focuses on finding some suspicious background processes to block gathering runtime information of the target app. It protects the runtime information gathering of the target app by pausing all suspicious background processes when the target app is running.
+
+On the other hand, Zhao et al.  introduced the Virtual Machine (VM)-based MultiDex and share object (SO) protection approach. They used the newly stack-based native code system to protect apps from reverse engineering techniques. They prevent reverse engineering by executing the app on different execution tracks every time. The key is to prevent dynamic cumulative attacks by running different VMs each time.
+
+# IX. CONCLUSION
+In this paper, we first assess real-world Android applications to illustrate that are really vulnerable to attacks for leaking sensitive information. We, then, proposed a novel system, AmpDroid, that can prevent sensitive information leaks by
+VOLUME 9, 2021 119587
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+generating Multi-Layered Bytecode. AmpDroid selects the sensitive code by identifying sensitive dataflows and isolates the code. We demonstrated the effectiveness of our system. In addition, we show that our system can be used for Android applications.
+
+# APPENDIX
+# A. THE TRACKING OF THE OBFUSCATED CODE BY DYNAMIC ANALYZER
+The obfuscation technique that makes it difficult to understand the code is one of the enhancing security of an application. Obfuscation can effectively prevent static analysis, but it can still be traced against dynamic analysis can monitors executable code. We used the Lipp and Obfuscapk tools to show that.
+
+# Listing 4. Monitoring the obfuscated code of Obfuscapk.
+
+# 1) LIAPP
+Listing 3 shows the execution log that a sample of Liapp (commercial obfuscation tool) applied code protection was dumped by a dynamic analyzer. The dynamically measured code is part of the onClick. Line 9 shows the etID of the EditText is moved to v5. And, the etPWD of the EditText is moved to v0 in Line 14. The value of etID and etPWD is copied to v5 through Line 20 to Line 29. The user account transformed with String is passed as a second argument of Toast’s makeText function in Line 31.
+
+119588
+VOLUME 9, 2021
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+Finally, we can see that the ID and password are sinking to the outside through Toast’s show. The codes executed at the runtime of Liapp are traceable because plain text is exposed.
+
+# 2) OBFUSCAPK
+Listing 4 shows the execution code of another tool, Obfuscapk’s CallIndirection and Reflection function. The id entered by the user is transferred to v5 in Line 4. Line 5 shows that the method name is replaced with NImOqzKvYLLigOdV due to the CallIndirection of Obfuscapk. This method cast the type to String over multiple function calls. The v5 (user-id) having the result of casting is passed via the CallIndirection of Obfuscapk. Finally, the user-id can be tracked by a dynamic analyzer that is sunk to the outside via the Show method of Toast Object.
+
+The above two samples show that the flow of sensitive data can be tracked by a dynamic binary instrumentation tool. Obfuscation, which makes the code difficult to understand, still has the limit that the original executable code can be dumped, and the monitored log can be used for tracking the flow of sensitive data. Thus there remains still a potential risk of sensitive data leaks.
+
+# G. Jeon et al.: Automated Multi-Layered Bytecode Generation for Preventing Sensitive Information Leaks
+# Authors
+# GEOCHANG JEON
+received the B.S. degree in computer science from Myongji University, Seoul, South Korea, in 2015. He is currently pursuing the master’s degree with the School of Software, Soongsil University. He was a Junior Researcher at the Network Laboratory, Telefield Company, South Korea, from 2018 to 2019. His research interests include android security, embedded systems, network security, and system software security.
+
+# JEONG HYUN YI (Member, IEEE)
+received the B.S. and M.S. degrees in computer science from Soongsil University, Seoul, South Korea, in 1993 and 1995, respectively, and the Ph.D. degree in information and computer science from the University of California at Irvine, Irvine, in 2005. He was a Principal Researcher at Samsung Advanced Institute of Technology, South Korea, from 2005 to 2008, and a member of Research Staff with the Electronics and Telecommunications Research Institute (ETRI), South Korea, from 1995 to 2001. From 2000 to 2001, he was a Guest Researcher with the National Institute of Standards and Technology (NIST), MD, USA. He is currently a Professor with the School of Software and the Director of the Cyber Security Research Center, Soongsil University. His research interests include mobile security and privacy, the IoT security, and applied cryptography.
+
+# MINSEONG CHOI
+received the B.S. degree in computer science from Soongsil University, in 2019, where he is currently pursuing the master’s degree with the School of Software. His research interests include mobile security and system security.
+
+# SUNJUN LEE
+received the B.S. and M.S. degrees in computer science and engineering from Soongsil University, in 2019 and 2021, respectively. He is currently a Research Staff with the Cyber Security Research Center. His research interests include binary analysis, reverse engineering, system security, and mobile security.
+
+# HAEHYUN CHO
+received the B.S. and M.S. degrees in computer science from Soongsil University, Seoul, South Korea, in 2013 and 2015, respectively, and the Ph.D. degree from the School of Computing, Informatics and Decision Systems Engineering of Arizona State University, majoring in computer science, and especially concentrating on information assurance. He is currently an Assistant Professor with the School of Software and the Co-Director of the Cyber Security Research Center, Soongsil University. His research interests include the field of systems security, which is to address and discover security concerns stemmed from insecure designs and implementations. He is passionate about analyzing, finding, and resolving security issues in a wide range of topics.
+
+119590
+VOLUME 9, 2021.

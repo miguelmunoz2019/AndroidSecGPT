@@ -1,0 +1,61 @@
+# 3 Overview
+Architecture. As mentioned earlier, our approach relies on the extraction of data sharing policies from ToS and analysis of policy compliance during a library’s interactions with other SDKs within the same app. In particular, the design of XFinder includes three major components, Data Policy Analyzer (DPA), Meta-DB Constructor, and Cross-library Analyzer (XLA), as outlined in Figure 3. DPA takes as its input a set of SDK ToSes associated with popular SDKs, which are widely deployed in Android apps. These ToSes are processed by DPA to output the SDKs’ data sharing policies (Section 3). The restricted data items governed by those data sharing policies, along with the corresponding SDK APIs that return those data items, are recorded in a Meta-DB (Section 3). To identify the leaks of those restricted data due to XLDH activities, XLA inspects the de-
+4136 30th USENIX Security Symposium USENIX Association
+# compiled code of an app to find all cross-library invocations
+on the sensitive SDK APIs (those that return the restricted data, as recorded in the Meta-DB); XLA then tracks down the data flow of their return value to identify an exfiltration (Section 3). The cross-library interactions discovered in this way are then checked against the data sharing policies that DPA extracted, for finding policy violations.
+
+# Example
+Here we use a real example to explain how XFinder works. Specifically, XFinder inspected the app "Columns Gembira" (com.frzgame.columns), which includes both an XLDH library Mobiburn and the Facebook SDK. In analyzing the app, XLA first scans all function calls to find out cross-library API calls, those with caller classes and callee classes in different libraries. For example, the class com.mobiburn.e.h in Mobiburn library is found to invoke function com.facebook.AccessToken.getToken() in the Facebook SDK, as shown in Figure 4a. Then XLA looks up the meta-DB to determine the return value of the function, which is the user’s Facebook session token, and further tracks down the data flow using taint tracking. In the end, we found that the token is used to fetch a user’s Facebook profile data (ID, name, gender, email, locale, link, etc.) in function com.mobiburn.e.h.getFbProfile(), and all the data including the token are sent out to the server of Mobiburn. (see Figure 4b)
+XFinder then checks whether such a data practice violates the data sharing policies specified in Facebook ToS. More specifically, given the statement of “keep private your secret key and access tokens" in Facebook’s ToS, DPA automatically extracted the data sharing policy (access token, condition:null), which indicates that access token is the restricted data item and it cannot be shared with and transferred to a third-party under any conditions (i.e., condition:null). Hence, the XLDH of the Mobiburn library violates the data sharing policy of Facebook SDK, and thus, XFinder flags Mobiburn as an XLDH library.
+
+# Dataset summary
+We summarize the dataset produced and consumed by each stage of our pipeline as below. Table 2 shows the datasets used in our study.
+
+In total, we collected 1M Android apps (Dg) from Google Play for XLDH library detection. More specifically, the dataset was collected based on a publicly-available app list (AndroZoo ), using an open-source Google Play crawler , which has been widely used in previous research such as . We used the default settings of the crawler to download the apps from Google Play from Oct. 03 to Oct. 15, 2019. In total, we successfully collected 93% of the apps on the list (1,341,148/1,440,160) from Google Play. Among them, we identified top 200 SDKs widely integrated into real-world apps (Section 3). After removing utility SDKs which are not associated with sensitive data, we further gathered ToSes for the remaining 40 SDKs from their vendor websites (Ctos).
+
+public class h {
+public static String getAccessToken () {
+Class [] param = new Class ;
+Class clz = Class.forName("com.facebook.AccessToken");
+Method meth1 = clz.getDeclaredMethod("getCurrentAccessToken", param);
+Object curToken = meth1.invoke(clz, null);
+Method meth2 = clz.getDeclaredMethod("getToken", param);
+return meth2.invoke(curToken, null);
+}
+public JSONObject getFbProfile (String token) {
+String uri = Uri.parse("https://graph.facebook.com/v2/me").
+
+appendParam("accesstoken", token).
+
+appendParam("fields", "id,first_name,gender,last_name,link,locale,name,timezone,updated_time,verified,email");
+HttpsURLConnection httpsURLConnection = new URL(uri).openConnection();
+return new JSONObject(httpsURLConnection.getInputStream().readLine());
+}
+}
+# (a) Reading app users’ Facebook access token and profile
+public class f {
+public void a() {
+JSONObject userData = new JSONObject();
+userData.put("accessToken", getAccessToken());
+userData.put("accountJson", getFbProfile());
+...
+
+HttpsURLConnection httpsURLConnection = new URL(this.serverUri).openConnection();
+DataOutputStream dataOutputStream = httpsURLConnection.getOutputStream();
+dataOutputStream.write(userData);
+}
+}
+# (b) Sending the Facebook token and profile to mobiburn server
+Code of XLDH library com.mobiburn
+After that, we bootstrapped our study by using DPA to automatically extract 1,056 data sharing policies, associated with 1,215 restricted data objects from the 40 SDK ToSes (Section 3). We constructed the Meta-DB (Section 3) which recorded all 936 sensitive APIs of the SDKs that return restricted data. Then, in XLA, we statically analyzed 1M Android apps (Dg) to extract cross-library API calls (Section 3). After filtering by Meta-DB, 1,934,874 of them are regarded as sensitive. Given those sensitive API calls, we tracked their data flows to check whether such flows are in compliance with the SDK’s data sharing policies. In particular, for restricted data not allowing access by a third-party or any party, we consider the exfiltration of the data a violation of the ToS and identify 15 XLDH libraries; For restricted data access requiring user consent or complying with regulations, we check whether such behavior was disclosed in the caller library’s privacy policy (Cp), which revealed 27 XLDH libraries. In total, our study reported 42 distinct XLDH libraries (4 manually found and 38 automatically detected) integrated in more than 19K apps and targeting at 16 victim SDKs.
+
+USENIX Association 30th USENIX Security Symposium 4137
+connect, associate, post, combine, lease, disclose, offer, distribute, afford, share, send, deliver, disseminate, transport, protect against, keep, proxy, request, track, aggregate, provide, give, transfer, cache, transmit, get, seek, possess, accumulate, convert, collect, use, store, gather, obtain, receive, access, save
+# 3 Data Policy Analyzer
+The goal of Data Policy Analyzer (DPA) is to extract third-party data sharing policies from an SDK ToS, which describe how restricted data items can be shared with or collected by other libraries. Here we describe a data sharing policy as a pair (object, condition), where object is the restricted data item of the SDK, such as utdid, password, and condition is the requirements and clauses for the operations on the restricted data, which can be empty. For example, the policy statement “the advertising identifier must not be associated with any persistent device identifier without explicit consent of the user", can be represented as (advertising ID and device ID, user consent). Note that in our study, we focus on ToS data sharing policies, and thus the subject of such a policy is the library developers (and their libraries) that call the target SDK and the operation on the restricted data is GET.
+
+During the analysis, our approach first runs a NER model to recover restricted data items. More specifically, the NER is customized on the ToS corpora and the entity category of restricted data items (e.g., utdid, password) using an efficient constituent parsing technique. Then, based on the restricted data items, we identify the sentences related to third-party data sharing policies from the ToS. After that, we extract the pair (object, condition) from the data sharing policies using restricted data as “anchors” to recognize the pattern of each policy’s grammatical structures and to locate the condition on data sharing. We elaborate on our methodology as follows.
+
+Restricted data object recognition. As mentioned earlier, identifying restricted data from an SDK ToS is an NER problem. Unfortunately, NER techniques today are known to be highly domain-specific: open-domain NER model does not work well on the security corpora, as restricted data are different from the common entity categories (e.g., location, people, organization) whose annotated datasets are available. In our study, we observe that restricted data in the SDK ToS is often characterized by a long noun phrase (e.g., Google Advertising ID, Facebook password, Amazon purchase history) covered by a single or multiple consecutive noun phrases in the constituency tree. Therefore we can utilize the features of the constituency tree to help identify such a phrase as an entity.
+
+More specifically, we include the constituency tree of a sentence as a feature, which enables our NER model to learn that certain types of phrasal nodes, such as NPs, are more likely to be entities, i.e., restricted data. Hence, we crafted several features based on constituency parsing tree tags for each word, which include a word’s tag, its parent tag, the left and right siblings, the location of the word in the span of NPs nodes. For example, the word “advertising" in the NP span “the advertising ID" has 5 features: its tag “NNP", its parent tag “NP", its left sibling “DT: the", its right sibling “NNP: ID" and its position of 1 under the span. Such features help the model to learn and inference similar long noun phrases (e.g., “the Twitter ID").

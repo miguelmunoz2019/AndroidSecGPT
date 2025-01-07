@@ -1,0 +1,10 @@
+# App-to-app Communication
+The works on the app to app communication leverage both static and dynamic analysis. On the one hand, researchers leverage static analysis to detect privacy leakage from the victim app to the malicious app [5–7, 19, 26–28, 30, 37, 39, 50–53, 56] using the call graph and taint analysis . On the other hand, some works explore privacy leakage issues with dynamic analysis . Different from all these works, our work highlights the deep link vulnerability introduced with instant apps.
+
+# 9 CONCLUSION
+In this paper, we revisit app links defined by Android and reveal three attack models that can be exploited. Our attacks showed strong evidence that existing limitations in verifying instant apps and drawbacks in launching instant apps (e.g., an instant app should not be given a higher priority comparing to a typical app). To evaluate whether existing Android apps are fragile to these attacks, we conduct a large-scale empirical study on 200,000 Android apps on Google Play and 200,000 apps on Tencent Myapp. As a result, there are 53,619 Google Play apps and 54,650 Tencent-Myapp apps that vulnerable to link hijacking with smart text selection; 57,442 Google Play apps and 62,496 Tencent-Myapp apps that vulnerable to link hijacking without smart text selection; and all instant apps are vulnerable to instant app hijacking. Finally, we make a series of suggestions to countermeasure the attacks we proposed.
+
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA
+Yutian Tang, Yulei Sui, Haoyu Wang, Xiapu Luo, Hao Zhou, and Zhou Xu
+# All Your App Links Are Belong to Us: Understanding the Threats of Instant Apps Based Attacks
+# ESEC/FSE ’20, November 8–13, 2020, Virtual Event, USA.

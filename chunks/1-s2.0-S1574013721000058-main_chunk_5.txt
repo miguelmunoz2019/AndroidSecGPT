@@ -1,0 +1,80 @@
+# White box cryptography
+An application processing encrypted data needs to use and manage keys, which are often used to secure a user’s private and transactional information. If an application is reversed with keys exposed, the sensitive data managed by the application may be bared. An extreme form of code obfuscation is white-box cryptography, which applies obfuscation, mathematical transformations and encryption to securely store the secret keys in applications without hardware keys or third party entities . The fundamental idea of white-box cryptography is to fuse the key with cipher logic (s-boxes, for example) such that the key no longer is found in the application code . It aims to provide one-way cryptographic functions, which are easy to encrypt or decrypt but hard to reverse the key . The first Data Encryption Standard (DES) and Advanced Encryption Standard (AES) based white box transformations were implemented by Chow et al.  along with Link and Neumann 2005 ; Bringer et al. 2006 . The secret key can be embedded within S-boxes and T-boxes for DES and AES based white box transformation respectively. Dual-ciphers, linear encoding and perturbation to the cipher equations are techniques used to strengthen white-box cryptography [61–63].
+
+# 3. Variable data obfuscation
+# Variable splitting
+In order to make it difficult for analyst to identify variables, they can be split into multiple variables. During obfuscation a variable can be split into two or more variables and then be reconstructed from its split parts during execution . A boolean variable for instance can be replaced by a boolean expression. A variable V can be split into k parts v1, v2, . . . , vk. As illustrated in code snippet 8, boolean variable x is concealed as XOR operation on x1 and x2 . If x = 1, it can be split into x1 = 1 & x2 = 0 and reconstructed using XOR operation.
+
+// before
+1 boolean x=true;
+Listing 7: Before variable splitting
+1 boolean x1 = false;
+2 boolean x2 = true;
+3 boolean x = x1 ^ x2;
+Listing 8: After variable splitting
+# Variable merging
+It involves merging multiple variables into a single variable. Variables v1, v2, . . . , vk can be merged into a single variable V. While merging the selected variables must be of same type . For example two 8-bit variables x1 = 10101010 and x2 = 11110000 are merged into a 16-bit integer x = 1010101011110000.
+
+# Identifier renaming
+The names of identifiers contain meaningful expressive information about the object they are used for. To avoid scanning engines relying on nomenclature for detection, it renames original identifiers such as classes, fields, methods and packages names by random or predefined names [12, 42, 65–69]. Renaming with meaningless names removes semantic information and induces more time to analyze an application code . APK obfuscation tools reuse short meaningless names for identifier renaming . Code listing 10 illustrates identifier renaming by ProGuard.
+
+1 const - string v10 , " profile "
+2 const - string v11 , " mount -o remount rw system\nexit\n"
+3 invoke - static {v10 , v11}, Lcom/android/root/Setting;-> runRootCommand (Ljava/lang/String;Ljava/lang/String;) Ljava/lang/String;
+4 move -result -object v7
+Listing 9: A byte code A code fragment from DroidDream malware
+1 const - string v10 , " profile "
+2 const - string v11 , " mount -o remount rw system\nexit\n"
+3 invoke - static {v10 , v11}, Lcom/hxbvgH/IWNcZs/jFAbKo;-> axDnBL (Ljava/lang/String;Ljava/lang/String;) Ljava/lang/String;
+4 move -result -object v7
+Listing 10: Listing 9 after identifier renaming
+# Data reordering
+Data and code locality plays a significant role during code analysis. Thus data reordering is often employed for data delocalization. It alters the order of data units within a code segment. It is applied to: (a) Reorder instance variable: randomizes the variable declarations, (b) Reorder array: Data reordering is also applicable on array . An example of which is reordering the elements in an array, storing the ith element in a new position determined by a function f(i), and (c) Reorder method: Methods within a code segment are reordered to harden the code reversing. This syntactic change is helpful in evading scanning engines based on instruction or dalvik opcode order.
+
+# Array restructuring
+Arrays as variable are transformed based on their structural property into subarrays or merged into one. Array flattening decreases the dimensions, whereas array folding increases the array dimensions as illustrated in Fig. 10. Array reordering as introduced in 3 decreases the data locality by permuting the variables in array.
+
+# Data Space Randomization (DSR)
+DSR was introduced by Bhatkar and Sekar in . DSR performs XOR operation on data variables stored in application memory with masks. Masks are randomly generated at runtime to mask the data variable. To unmask a data variable, the same mask value is required. DSR gives protection against targeting process memory during application execution.
+
+1 int x = 3;
+2 int y = 5;
+3 z = x + y;
+Listing 11: Addition operation
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Code reordering
+Code reordering modifying the byte code instructions order in smali methods of an application . It performs instruction reordering along with goto instructions to preserve the execution order. Code reordering is employed by malware authors as a defense against pattern matching based scanning engines . Dalvik byte code in listing 14 have code reordered from its original in listing 13 . Code reordering is applied to the methods that contain independent instructions and do not have control jumps.
+
+# Listing 13: A byte code A code fragment from DroidDream malware
+1 const - string v10 , " profile "
+2 const - string v11 , " mount -o remount rw system\nexit\n "
+3 invoke - static {v10 , v11}, Lcom/ android /root/ Setting;-> runRootCommand (Ljava/lang/ String ;Ljava/lang/ String ;) Ljava/lang/ String;
+4 move -result -object v7
+# Opaque predicates
+A predicate is a function which is called opaque if the outcome of the function is difficult to predict even after statically analyzing it . An opaque predicate is a condition that will make it more complex and difficult to interpret the code until the condition is executed. This condition is followed by a conditional jump . Unable to predict opaque predicate, both branches of the jump are seen possible even if only one is executed at each run time . As depicted in Fig. 11 it is even referred to as a branch that always executes in one direction, which is known to the author but is unknown to the analyst. Static properties of opaque predicates prevent the code interpretation from an analyst. The notion of dynamic opaque predicates was introduced by Palsberg et al. in . It implements a group of interconnected opaque predicates, all computing the same output in a single execution, but to the different output in other executions. Majumdar and Thomborsom in  introduced the opaque predicates that were temporarily unstable.
+
+# Listing 12: DSR obfuscated addition operation
+1 int x_mask = random ();
+2 int y_mask = random ();
+3 int x = 3 ^ x_mask;
+4 int y = 5 ^ y_mask;
+5 int mask_z = random ();
+6 int sum = ((x ^ mask_x) + (y ^ mask_y)) ^ mask_z
+# Listing 14: Reversed byte code of listing 13
+1 goto :i_1
+2 :i_3
+3 invoke - static {v10 , v11}, Lcom/ android /root/ Setting;-> runRootCommand (Ljava/lang/ String ;Ljava/lang/ String ;) Ljava/lang/ String;
+4 move -result -object v7
+5 goto :i_4 # next instruction
+6 :i_2
+7 const - string v11 , " mount -o remount rw system\nexit\n "
+8 goto :i_3
+9 :i_1
+10 const - string v10 , " profile "
+11 goto :i_2
+# Code logic obfuscation
+Code logic obfuscation includes transformations targeting the logic or semantics of the code, thus adding complexity.
+
+# Instruction substitution
+Instruction substitution was first introduced in . It is based on the fact that in the instruction set architecture, instructions can be replaced by other existing equivalent instruction. Registers can also be substituted. For example, instruction const/4 v0, #int 0 in listing 13 can be replaced by const/16 v0, #int 0.

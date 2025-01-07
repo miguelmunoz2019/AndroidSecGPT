@@ -1,0 +1,45 @@
+4042 31st USENIX Security Symposium USENIX Association
+company in the context of product design. They found that most results fall into a 10% margin of error, which fits their sample sizes of 150 per survey platform . In 2014, Schnorf et al. compared six survey sample providers and panels (e. g., Google Consumer Surveys). They distributed a survey regarding end-user privacy comfort to investigate potential differences between the survey providers by recruiting between 835 and, 1115 participants per sample. They found that the results differed based on platforms because some recruit random users while others use probabilistic methods or opt-ins . In 2019, Redmiles et al. compared Amazon MTurk with a census-representative sample from a web panel and probabilistic sample via telephone. They found that the results from MTurk were closer to the probabilistic sample and therefore the general US public than the web panel, suggesting that the choice of platform has an impact on results . A 2019 work by Chandler et al. compared MTurk and Prime Panels (an online research panel aggregate). They find similar data quality but more diverse participants on Prime Panels than on MTurk with more direct access to lesser represented user groups, albeit with inevitable trade-offs . While the above studies focused on the recruitment of end-users, our work is the first to compare six samples of expert users with a focus on participants’ software development experience.
+
+# 3 Security Studies with Software Developers
+In the following section, we investigate recruitment strategies and survey questions in security studies with experienced software developers. We aim to gain insights into common recruitment strategies and the experiences, skills and knowledge previous studies required from their participants. Therefore, we collected and reviewed five years of relevant research published at important security, privacy and HCI venues. We did not aim for an exhaustive literature review across all potential venues from the beginning of studying developers. Instead, our goal was to learn recent common practices. The literature review is the foundation of the comparative studies we conducted in Section 4. Figure 1 gives an overview of our overall methodology.
+
+# Literature Analysis
+Literature Selection informs and motivates Comparative Online Study
+Survey Design + Piloting + Survey Distribution + Data Analysis
+# 3 Literature Selection
+We broadly selected publications in the field of usable security and privacy that conducted user studies with security experts. Although we only survey developers, studies with different types of experts are often related and similar in nature, and therefore including them gives us a wider net, which helped us design a fitting survey questionnaire. We focused on works published between 2016 and 2020 at the top (usable) security and privacy, and human computer interaction venues: the USENIX Security Symposium (SEC) , the ACM Conference on Computer and Communications Security (CCS) , the IEEE Symposium on Security and Privacy (S&P) , the Network and Distributed System Security Symposium (NDSS) , the Symposium on Usable Privacy and Security (SOUPS) , the Human Factors in Computing
+USENIX Association 31st USENIX Security Symposium 4043
+# 3 Literature Survey
+For the remaining set of papers, we collected information about participant recruitment and survey questions if available. We extracted the following information: type of participants (e. g. software developers or system administrators), recruitment platform (e. g. MTurk or CS students), number of participants, and compensation amount and type. Two authors independently reviewed each paper for the above information in detail. Disagreements were immediately discussed and resolved. In the course of the detailed analysis, we removed 15 more papers for either a missing security focus or not recruiting expert users, leaving us with 59 papers in the final set (cf. Table 3 and 4 in Appendix A).
+
+For papers that included studies with both end-users and expert users, we only considered expert user information. To collect all information from each paper, we first checked if it was included and available as part of the paper, the appendix, or a replication package. For questions, we decided to focus purely on surveys and excluded questions from interview studies. Interviewers often use open-ended questions and encourage participants to elaborate their answers, which works well for explorative interviews, but might not translate well to quantitative survey questionnaires.
+
+Overall, we found participant recruitment information in 58 papers and 363 questions in 45 papers. In ten cases we could not find the information in the paper and contacted the authors. All but one acknowledged our request and provided us with the necessary information. One research team did not retain the original survey questions and could only provide us with rough estimates of the used questions. We assigned all extracted survey questions and answer options to one of the following categories:
+- General. Demographics such as age, gender, or education.
+
+- Experiences, Skills, and Knowledge. Security and programming experiences, skills and knowledge.
+
+- Scales. Established scales such as the System Usability Score (SUS) or the Secure Software Development Self-Efficacy Score (SSD-SES).
+
+- Specific. Specific questions for studies, e. g. self-assessment of task success or failure.
+
+We excluded specific questions from our survey if they were narrowly focused on e. g. a specific tool or area of development. In case multiple papers included questions with identical or similar phrasing, we merged them while keeping track of their origin.
+
+# 3 Results
+Below, we present and discuss the results of our literature survey used to inform and motivate the comparative studies in Section 4. However, we do not intend to systematize previous work (cf.  and  for respective systematizations).
+
+24 of the analyzed papers recruited participants with software development experience, ten recruited system administrators or operators, and another 24 recruited security experts. While these security experts all had computer science and security backgrounds, they differed from each other, e. g. in terms of experience in a certain job role, skills, or security certifications. In seven papers, we could not find sufficient details to determine the participants’ job role. One paper did not provide exact participant numbers. 23 papers offered fixed payments of varying amounts, some using gift cards. One paper used performance-based payments, and six raffled a prize among all participants. For the other papers, 21 did not mention any reward, and 11 stated that they did not reimburse participants. Overall, we identified 25 recruitment platforms.
+
+In 12 papers, recruitment was described at a superficial level, such as e. g. social media ads  or online cold calling . We assigned all 25 strategies to six categories (number of papers in parentheses):
+- Unsolicited Emailing (10): Papers in these categories sent unsolicited emails by collecting participants’ contact information. Example email collection platforms are GitHub (5) and Google Play (5).
+
+- Social or Regional Contacts (75): Strategies based on some form of professional or personal network (29), snowball sampling (10), as well as recruiting through security related events (13) or regional expert meetups (4). Also includes the distribution of flyers (6), Craigslist (2), and the recruitment of computer science students (11).
+
+- Social Media (10): Posting study information on social media platforms such as Twitter (5), Facebook Groups (1) and
+# 4     Comparative Study of Recruitment Platforms for Security Developer Studies
+Based on the results in Section 3 we designed, pre-tested and conducted a comparative online survey study with six samples of developers. We collected their demographic information, as well as data about participants’ security and programming knowledge, skills and experience with an online questionnaire.
+
+Before we recruited participants and conducted the surveys, we pre-tested our survey with cognitive interviews  with members of our research group who were not part of this project. This allowed us to gather insights into how participants interpret and answer questions. During our cognitive interviews, participants shared their thoughts as they answered each survey question. We used our findings to iteratively revise and adapt the survey questions and answer options to minimize bias and maximize validity.
+
+In a second pre-test, we refined our survey with two rounds of pilot studies on Prolific with 20 users each, similar to approaches in other works . To screen, we used Prolific filters based on self-reported computer programming and software development experience. We slightly adjusted and improved our phrasings for the final survey based on the results of our pilots.

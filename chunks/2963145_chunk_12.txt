@@ -1,0 +1,49 @@
+The argument is that, in general, monetary gains from mobile malware become significant only if there is a large infection rate, which implies that the app itself is popular enough to attract a large number of downloads. If the ecosystem has legitimate schemes to reward developers who can create apps with such popularity, they will have no incentive to create malware to achieve the same goal.
+
+Currently, the app store model of Android provides legitimate ways to reward developers who can create popular apps: profit sharing through (in-)app purchases. For developers of free apps, in-app advertisement is a common way to get compensation. However, in-app advertisement might impair user experience especially when developers opt for high-commission advertisement libraries, which in turn, usually use more invasive (or even malicious) ways in order to display advertisements. We believe more creative and diversified awarding schemes need to be designed to compensate developers of free apps.
+
+# 12. ANDROID SECURITY OUTLOOK
+Android is reaching further than smartphones. Emerging trends such as Internet-of-Things and digital identity are making Android security a more serious concern, as wide adoption of the Android platform gives attackers more incentives, and system compromisation leads to more serious damages. This section discusses new practices and attack surfaces, with the goal of soliciting more research in these areas.
+
+# 12. IoT
+# 12. Home Automation
+IoT enables the connections of virtually any personal devices or appliance such as refrigerator, TV, light switches, doorlock, etc. Backed by the Thread work group [Rockman 2014] (initiated by Google, Samsung, and ARM), Android has been selected as the potential standard operating system for IoT, particularly for home automation [Vance 2013]. And Google has opened its own IoT platform Brillo with an Android-based embedded OS [Google Inc. 2016a]. However, Android must be heavily customized to drive IoT especially in terms of security. For instance, the home automation protocol requires authentications between devices. Further, Android lacks a fine-grained access control mechanism for individual apps to manage external IoT devices. For example, an app having a Bluetooth permission can access arbitrary Bluetooth-enabled IoT devices without any per-device permission checks [Naveed et al. 2014]. Thus, fine-grained access control mechanisms for external devices (e.g., Dabinder [Naveed et al. 2014] and SEACAT [Demetriou et al. 2015]) are necessary to protect IoT devices from malicious apps.
+
+# 12. Cyber Physical System (CPS)
+Android is not limited to personal uses but also reaches further to CPS, by replacing traditional embedded systems. A previous work [Lei et al. 2013] shows a sensor-based voice message theft attack on mobile CPS. As Android is widely used in mobile CPS ranging from a handheld device for fire fighters, to a main controller of unmanned vehicle, to a remote controller of military arsenal, its security has became more serious than ever.
+
+# 12. Digital Identity
+The presence of mobile devices is one popular way to authenticate its owner; for example, Google Authenticator is a popular app used for the
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# Toward Engineering a Secure Android Ecosystem: A Survey of Existing Techniques
+# 12. Potential Massive Attacks
+# 12. USB
+In public places like airports, cafes, and libraries, users may plug their mobile devices into USB plugs. However, due to the multipurpose nature of USB ports (i.e., charging the battery, media exchange, and debugging), connecting the device to unknown USB ports exposes the device to the risk of arbitrary app installation by exploiting vendor-specific customization [Pereir et al. 2014].
+
+# 12. NFC and Bluetooth
+NFC and other similar proximity-based communication channels such as Bluetooth LE have been deployed to various Android devices. Gaining popularity in using NFC for Google Wallet or Android Beam, or pairing Bluetooth to various peripherals, a large number of blackbox fuzzing tools have been built in order to identify potential vulnerabilities [Miller 2012; Soto 2005]. Considering its communication proximity of 3–10cm, these attacks can be launched when the attacker approaches the device. Although it is a common practice that the majority of the NFC interactions only happens when the device screen is on and unlocked, attackers can easily find the attack windows such as during commuting time or near a store checkout counter.
+
+# 12. WiFi
+Mobile data usually does not come in unlimited volume or at high speed, therefore smartphone users tend to connect their phones to public WiFi without much care. When connected to an insecure Access Point (AP), DNS or Man-In-The-Middle attacks become more critical security issues compared to when connected in a typical desktop or server environment [Chaskar 2009], as mobile devices generally lack software/hardware components to defend such attacks. For example, with rogue WiFi, an attack that typically happens on desktop environment has found its way to mobile devices [Silver et al. 2014].
+
+# 12. Baseband
+Mobile devices are generally subject to exploits against the baseband chip, which is in charge of processing data transmitted between terminal and cellular base stations. One popular baseband processor from Qualcomm runs the custom RT kernel, REX, but without any standard protection schemes like ASLR and DEP [Delugre 2011; Weinmann 2012]. Omission of security schemes enables an attacker to unlock phones. Moreover, the whole software stack could be exposed if the device connects to a rogue base station [Weinmann 2012]. The mitigation to this exploit demands a mutual authentication scheme between the device and station.
+
+# 12. Silent Drive-By Installation
+Recent reports have shown possibilities of silent malware installation without any user interaction on the part of the victim by exploiting vulnerabilities on older versions of Android. Stagefright [Drake 2015] exploits Android’s libStageFright component that processes downloaded videos without users’ consent. The rendered MMS image from the SMS app enables a worm to penetrate silently. Fortunately, SEAndroid policies on recent Android versions have mitigated this attack. However, a more dangerous case have been revealed where a ransomware is silently installed by simply visiting an attacker controlled website [Constantin 2016]. Specifically, the JavaScript code on the website first exploits a vulnerability in libxslt and then drops the payload: TowelRoot kernel exploit. After the device is compromised, a ransomware is silently downloaded and installed. No user interaction is involved throughout the whole process.
+
+ACM Computing Surveys, Vol. 49, No. 2, Article 38, Publication date: August 2016.
+
+# 12. Privacy
+# 12. Ad Library
+Advertisement is key to the Android market, especially in the profit model. Section 4 points out finer-grained granularity assignment should be employed to separate ad library and app. But private data access for ad library is still a problem. The new Android ecosystem should respect the privacy of mobile users, unlike in the current Android model where each app keeps personal information and does not give any control (or opt-out option) to device owners. One solution is to provide a central storage as a “personal vault” and regulate apps’ accesses to the vault via well-specified APIs.
+
+# 12. Persistent Monitoring
+Ranging from fitness monitoring bands to health care accessories, Android becomes a central place to record personal, privacy-sensitive information. In particular, the always-on nature of these devices raises a question of having persistent threats of leaking the collected data [Naveed et al. 2014]. As Android-based devices become deeply insinuated to human’s life, a naive bug can lead to serious privacy violation.
+
+# 12. BYOD
+As enterprises use Android for their business or in workplaces, employees are usually required to carry multiple devices to isolate business activities from personal uses. However, carrying multiple devices is inconvenient and Bring Your Own Device (BYOD) gains popularity as employees can use a single device but protect business logic from personal uses purely by software [Andrus et al. 2011; Morrow 2012]. As 24% employees use mobiles to access or store business data, new security mechanisms that protect business data and also isolate user’s personal activity need a fair amount of research in order to provide provable and strong guarantees (perhaps, via new hardware) of their protections in a single software stack. Currently, KNOX [Samsung Electronics 2014] and Android for Work [Google Inc. 2016e] are the leading industry solutions that enable BYOD.
+
+# 13. TOWARD NEXT-GENERATION ANDROID ECOSYSTEM
+Based on our systematization of knowledge in improving the security of the Android ecosystem, we carefully envision the landscape of the next-generation Android ecosystem, as well as how existing and future Android security researches can fit into the landscape, as shown in Figure 4.

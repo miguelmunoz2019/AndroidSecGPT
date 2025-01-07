@@ -1,0 +1,87 @@
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+# PAPER 12
+# MOBILE APPLICATIONS SECURITY: AN OVERVIEW AND CURRENT TREND
+1 Executive Director, MCIS, Department of CIS, Raiganj University (RGU), West Bengal, P. K. Paul1, P. S. Aithal2
+2 Vice Chancellor, Srinivas University, Karnataka, India
+Corresponding Author: pkpaul.infotech@gmail.com
+# Abstract
+Mobile Security is an emerging concept and name in Information Technology Security. It is very close with Mobile Computing and concerns with the securing mobile based services and products. It is the protection and system against the attack and vulnerabilities and applicable to the smart phones, tablets, laptop etc. Mobile Security is also related with the wireless security. The concept of securing mobile devises becomes important and valuable and increasing rapidly in recent past. Today the organizations and institutions of different kinds are using various Information Technology tools and components and all are connected to the internet or online systems and as a result vulnerability became crucial. The mobile applications security may be two types active and passive. The device loss becomes an important concern and apart from these few important are application security, device leakages, malware attack, device theft etc. The individuals are also employing different tools and devices and all such products become challenge now days. There are different methods in attacking the systems and also preventing. All these attacking systems and preventing systems are increasing day by day. The domain Information Assurance, as deals with both technology and managerial affairs of the security; so the Mobile Security field is also an important area of the field. This is a conceptual paper and theoretical in nature and deals with several affairs of Mobile Security.
+
+# Keywords:
+Mobile Security, IT Security, Cloud Security, Information Assurance, IT Protection, Digitalization, Information Systems
+# 1. Introduction
+Mobile Security is the need of hour; organizations, institutions and individuals are today actively engaged with the mobile and similar devices and all such devices are great threats due to many reasons. Mobile Security or mobile device securities etc are today an important concern of Information Security, . There are different means for the attack and its prevention and among the threat of attack few important attack zones and areas are SMS and MMS, in Telecommunication Systems, attack based on GSM and Wi-Fi, Bluetooth systems, web browser, operating systems, attack based on hardware and infrastructure, password cracking in secured software, malware etc,.
+
+SIMS Pandeshwar & Srinivas University Mukka
+Page 112
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+There are different reasons for the security and among these device loss are important concern, many a times we may forgot to take the devices or simply lost the devices , , . Application security is another concern, which is also very important to take. Today many applications are available freely and that comes with different features and all these vulnerable in many contexts. Similarly data leakage is another concern and data loss results the malicious attack in some cases Malware attack is another concern that concerns about the Mobile Security. According to a study it has been noted that 81% of mobile malware are Trojans, and then rest it monitoring tools (10%) and also few malicious applications (5%). Today each and every organizations are giving importance to the wireless and mobile security there are different measures available to solve these, and different organizations are also involved into this , ,.
+
+# 2. Objective and Agenda
+As the current paper is theoretical and conceptual in nature and thus deals with various affairs leading to Mobile Security and allied areas and among these few important are—
+- To learn about the basics of Mobile Security including its features, characteristics and nature.
+
+- To learn about the field of Mobile Security and allied areas in brief.
+
+- To find out the threats and attacking systems to the mobile based IT products and services in brief.
+
+- To learn about the basics of prevention methods of Mobile Security in simple sense.
+
+- To learn about the limitations of such security measure in brief.
+
+- To learn about the Mobile Security Management concepts and tools to manage the overall system.
+
+# 3. Mobile Security: The Root
+Mobile Security is very much close with the wireless security. Very simply, Mobile Security is nothing but the securing mobile services and mobile devices from the third party attack or vulnerability. Today profit making as well as nonprofit making institutes are engaged with different kind of tools and technologies and most of these are mobile based and thus Mobile Security is very close concern about this , , . It is worthy to note that previous to the concept of Mobile Security the concept of computer security got popularized which is small area and very close to securing the computer itself. Gradually other areas of security has been conceptualized and among these important are IT Security, Information Security are important.
+
+IT Security is concern with different sub fields viz. Web Security, Network Security, Database Security and so emerging areas viz. Cloud Security, Mobile Security etc. Hence Mobile Security is the part of advanced IT Security in many contexts. Different Companies are using different strategies for the Mobile Security and among these, one important is allowing client and employers to use only respective or selected devices only. It has been noted as per a latest survey that 84 % of the threats are fall under the Trojans and rest from other insecure systems. Thus most of the organizations and institutions are using Mobile Security tools and strategy to keep the system smart and advanced , ,.
+
+The field Mobile Security is very close with the Wireless Security as well. But wireless security concept developed earlier than Mobile Security and today apart from wireless
+SIMS Pandeshwar & Srinivas University Mukka
+Page 113
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+# 4. Mobile Security and Attacks or Threat
+Mobile security is an important part of today’s Information Technology world. It is very close with mobile computing. In other word it is also called as security of mobile based devices like smart phones. Mobile security normally associated with smart phone, computer etc by the attackers. Normally this comes with short message service (SMS), multimedia messaging service (MMS), WIFI, Bluetooth etc. However few experts are also warns about the operating system security because attackers may use different objects by the browsers or OS or malicious software’s. It is worthy to note that downloadable apps sometime also cause for mobile security. Any smart phone or electronic devices should come with privacy and integrity applications.
+
+According to network expert the major target of the attackers are-
+- Data: As smart phone or electronic devices contains different kind of sensitive or virtual information such as –credit card no., authentication indication, audio, visual content, call log etc. So this is the prime target.
+
+- Identity: With an electronic device the owner can be identified easily and hare attackers may use this identity for different purposes.
+
+As far as modern threads are concern with mobile security; concerned with different objects such as-
+1. Boot nets
+2. Spyware
+3. Malicious link
+4. Malicious applications
+The first one normally holds malware and user get it normally by email attachment. Boot net is a combination of robot and network and it is normally denoting malicious affairs. Here attackers from the network place can control the device and harm the overall system.
+
+Spyware is useful simply to highjack the phone including hare the calls, see the text and content, to know the location of the device by the GPS.
+
+Malicious link normally spread on social networking site for wider distribution and that can be by the backdoors.
+
+Malicious application is available in different app platform. It is useful to get personal information or to enter into the system.
+
+Most of these attackers belong to different community. Many of them are unethical hackers, some of them are professional and they may work in commercial house or military services. However the concept of black hat attackers and grey hat attackers are gaining popularity.
+
+# 5. Different methods in Mobile Security
+There is different attacking system for mobile security and that may cause in the following-
+1. Attack based on SMS and MMS
+SIMS Pandeshwar & Srinivas University Mukka
+Page 114
+Electronic copy available at: https://ssrn.com/abstract=3484091
+# Research in Higher Education, Learning and Administration
+# IQAC 2019
+# ISBN No.: 978-81-941751-0-0
+# 2. Attack based on different kind of network like GSM network and WIFI based network
+1. Web browser
+2. Operating system
+3. Hardware and vulnerabilities
+4. Insecure software etc.

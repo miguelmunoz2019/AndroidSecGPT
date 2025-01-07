@@ -1,0 +1,63 @@
+# Empirical Software Engineering
+https://doi.org/10/s10664-018-9673-y
+# Security code smells in Android ICC
+Pascal Gadient1 · Mohammad Ghafari1 · Patrick Frischknecht1 · Oscar Nierstrasz1
+Published online: 14 December 2018
+© Springer Science+Business Media, LLC, part of Springer Nature 2018
+# Abstract
+Android Inter-Component Communication (ICC) is complex, largely unconstrained, and hard for developers to understand. As a consequence, ICC is a common source of security vulnerabilities in Android apps. To promote secure programming practices, we have reviewed related research, and identified avoidable ICC vulnerabilities in Android-run devices and the security code smells that indicate their presence. We explain the vulnerabilities and their corresponding smells, and we discuss how they can be eliminated or mitigated during development. We present a lightweight static analysis tool on top of Android Lint that analyzes the code under development and provides just-in-time feedback within the IDE about the presence of such smells in the code. Moreover, with the help of this tool we study the prevalence of security code smells in more than 700 open-source apps, and manually inspect around 15% of the apps to assess the extent to which identifying such smells uncovers ICC security vulnerabilities.
+
+# Keywords
+Security code smells · Vulnerability · Static analysis · Android
+# 1 Introduction
+Smartphones and tablets provide powerful features once offered only by computers. However, the risk of security vulnerabilities on these devices is tremendous: smartphones are increasingly used for security-sensitive services like e-commerce, e-banking, and personal healthcare, which make these multi-purpose devices an irresistible target of attack for criminals.
+
+# Communicated by:
+Coen de Roover, David Lo and Jianjun Zhao
+# Authors' Contact Information
+Pascal Gadient
+gadient@inf.unibe.ch
+Mohammad Ghafari
+ghafari@inf.unibe.ch
+Patrick Frischknecht
+patrick.frischknecht@students.unibe.ch
+Oscar Nierstrasz
+oscar@inf.unibe.ch
+# Affiliation
+1 Software Composition Group, University of Bern, Bern, Switzerland
+# Empirical Software Engineering
+A recent survey in the Stack Overflow website shows that about 65% of mobile developers work with Android (Stack Overflow developer survey results: http://insights.stackoverflow.com/survey/2017). This platform has captured over 80% of the smartphone market, and just its official app store contains more than 2 million apps. As a result, a security mistake in an in-house app may jeopardize the security and privacy of billions of users.
+
+The security of smartphones has been studied from various perspectives such as the device manufacturer , its platform , and end users (Jones and Chin 2015). Numerous security APIs, protocols, guidelines, and tools have been proposed. Nevertheless security concerns are often overridden by other concerns (Balebako and Cranor 2014). Many developers undermine their significant role in providing security . As a result, security issues in mobile apps continue to proliferate unabated (The ultimate security vulnerability datasource: http://www.cvedetails.com).
+
+Given this situation, in previous work we identified 28 security code smells, i.e., symptoms in the code that signal potential security vulnerabilities . We studied the prevalence of ten such smells, and realized that despite the diversity of apps in popularity, size, and release date, the majority suffer from at least three different security smells, and such smells are in fact good indicators of actual security vulnerabilities.
+
+To promote the adoption of secure programming practices, we build on our previous work, and identify security smells related to Android Inter-Component Communication (ICC). Android ICC is complex, largely unconstrained, and hard for developers to understand, and it is consequently a common source of security vulnerabilities in Android apps.
+
+We have reviewed state-of-the-art papers in security and existing benchmarks for Android vulnerabilities, and identified twelve security code smells pertinent to ICC vulnerabilities. In this paper we present these vulnerabilities and their corresponding smells in the code, and discuss how they could be eliminated or mitigated during development. We present a lightweight static analysis tool on top of Android Lint that analyzes the code under development, and provides just-in-time feedback within the IDE about the presence of such security smells in the code. Moreover, with the help of this tool we study the prevalence of security code smells in more than 700 open-source apps, and discuss the extent to which identifying these smells can uncover actual ICC security vulnerabilities. We address the following three research questions:
+- RQ1: What are the known ICC security code smells? We have reviewed related work, especially that appearing in top-tier conferences and journals, and identified twelve avoidable ICC vulnerabilities and the code smells that indicate their presence. We discuss each smell, the risk associated with it, and its mitigation during app development.
+
+- RQ2: How prevalent are the smells in benign apps? We have developed a tool that statically analyzes apps for the existence of ICC security smells, and we applied it to a repository of 732 apps, mostly available on GitHub. We discovered that almost all apps suffer from at least one category of ICC security smell, but fewer than 10% suffer from more than two categories of such smells. Interestingly, only small teams appear to be capable of consistently building software resistant to most security code smells. Furthermore, long-lived projects have more issues than recently created ones, and updates rarely have any impact on ICC security.
+
+- RQ3: To which extent does identifying security smells facilitate detection of security vulnerabilities? We inspected the identified smells in 100 apps, and verified whether they correspond to any security vulnerabilities. Our investigation showed that about half of the identified smells are in fact good indicators of security vulnerabilities.
+
+# Empirical Software Engineering
+To summarize, this work represents an effort to spread awareness about the impact of programming choices in making apps secure, and to fundamentally reduce the attack surface of ICC APIs in Android. We argue that this helps developers who develop security mechanisms to identify frequent problems, and also provides developers inexperienced in security with caveats about the prospect of security issues in their code. Existing analysis tools often overwhelm developers with too many identified issues at once. In contrast we provide feedback during app development where developers have the relevant context. Such feedback makes it easier to react to issues, and helps developers to learn from their mistakes . This paper goes beyond our earlier work  by (i) providing a completely new study on ICC vulnerabilities, one of the most prevalent Android security issues, and identifying the corresponding security smells, (ii) providing more precise, while still lightweight, static analysis tool support to identify such smells, (iii) integrating our analysis into Android Lint, thus providing just-in-time feedback to developers, (iv) experimentation on a new dataset of open-source Android apps, and (v) open-sourcing the lint checks as well as the analyzed data
+The remainder of this paper is organized as follows. We provide the necessary background about the Android OS and ICC risks from which Android apps suffer in Section 2. We introduce ICC-related security code smells in Section 3, followed by our empirical study in Section 4. We provide a brief overview of the related work in Section 5, before concluding the paper in Section 6.
+
+# 2 Background
+This section covers the necessary background in the Android platform, and briefly presents common security threats in the context of ICC scenarios.
+
+# 2 Android Architecture
+Android is the most popular operating system (OS) for smartphones and other types of mobile devices. It provides a rich set of APIs for app developers to access common features on mobile devices.
+
+An Android app consists of an .apk file containing the compiled bytecode, any needed data, and resource files. The Android platform assigns a unique user identifier (UID) to each app at installation time, and runs it in a unique process within a sandbox so that every app runs in isolation from other apps. Moreover, access to sensitive APIs is protected by a set of permissions that the user can grant to an app. In general, these permissions are text strings that correlate to a specific access grant, e.g., android.permission.CAMERA for camera access.
+
+Four types of components can exist in an app: activities, services, broadcast receivers, and content providers. In a nutshell:
+- Activities build the user interface of an app, and allow users to interact with the app.
+
+- Services run operations in the background, without a user interface.
+
+- Broadcast receivers receive system-wide “intents”, i.e., descriptions of operations to be performed, sent to multiple apps. Broadcast receivers act in the background, and often relay messages to activities or services.
+
+1 We are collaborating with Google to officially integrate these checks into Android Studio.

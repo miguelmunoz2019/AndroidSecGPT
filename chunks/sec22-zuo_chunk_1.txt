@@ -1,0 +1,91 @@
+# Playing Without Paying:
+# Detecting Vulnerable Payment Verification in Native Binaries of Unity Mobile Games
+Chaoshun Zuo and Zhiqiang Lin, The Ohio State University
+https://www.usenix.org/conference/usenixsecurity22/presentation/zuo
+This paper is included in the Proceedings of the 31st USENIX Security Symposium.
+
+August 10–12, 2022 • Boston, MA, USA
+978-1-939133-31-1
+Open access to the Proceedings of the 31st USENIX Security Symposium is sponsored by USENIX.
+
+# Playing Without Paying: Detecting Vulnerable Payment Verification in Native Binaries of Unity Mobile Games
+Chaoshun Zuo
+The Ohio State University
+zuo@osu.edu
+Zhiqiang Lin
+The Ohio State University
+zlin@cse.ohio-state.edu
+# Abstract
+Modern mobile games often contain in-app purchasing (IAP) for players to purchase digital items such as virtual currency, equipment, or extra moves. In theory, IAP should have been implemented securely; but in practice, we have found that many game developers have failed to do so, particularly by misplacing the trust of payment verification, e.g., by either locally verifying the payment transactions or without using any verification at all, leading to playing without paying vulnerabilities. This paper presents PAYMENTSCOPE, a static binary analysis tool to automatically identify vulnerable IAP implementations in mobile games. Through modeling of its IAP protocols with the SDK provided APIs using a payment-aware data flow analysis, PAYMENTSCOPE directly pinpoints untrusted payment verification vulnerabilities in game native binaries. We have implemented PAYMENTSCOPE on top of binary analysis framework Ghidra, and tested with 39,121 Unity (the most popular game engine) mobile games, with which PAYMENTSCOPE has identified 8,954 (22%) vulnerable games. Among them, 8,233 games do not verify the validity of payment transactions and 721 games simply verify the transactions locally. We have disclosed the identified vulnerabilities to developers of vulnerable games, and many of them have acknowledged our findings.
+
+# 1 Introduction
+Mobile platforms have become the largest segment of the computer game industry today. In 2021, mobile games have generated 79 billion (52%) USD in global revenue, surpassed the rest of the game industry combined, including boxed and downloaded PC games, tablet games, and browser PC games . There are various ways to monetize a mobile game, such as premium (players have to pay upfront), freemium (players only pay when needed), subscription (players pay monthly fees), and in-app advertisement. Increasingly, freemium, powered by the in-app purchasing (IAP) service provided by the app stores, has become the dominating monetization way for mobile games . Today, both Google Play and Apple AppStore have provided IAP APIs for in-game purchasing of various digital items such as virtual currency, equipment, extra moves, or removing of the advertisements for enhanced gaming experience.
+
+However, the APIs provided by Google Pay and Apple AppStore only handle the payment services for the IAP (e.g., by communicating with the credit card companies or banks, and finishing the financial transactions). The game developers still have to be responsible for the delivery of the purchased items. To alleviate the developer’s efforts, many SDK providers, e.g., Unity , the leading game engine provider , have provided wrapped APIs on top of Apple’s or Google’s. With these wrapped APIs, mobile games can also enjoy the portable benefit of across different platforms such as Android and iOS.
+
+Obviously, any in-game purchasing must be securely designed and implemented. While app stores have secured the payment transactions, the validation of the transactions is completely left to the developers. However, an in-game purchasing transaction is a complicated multi-party transaction. At a high level, it involves at least three parties: (i) mobile game app, (ii) game server, and (iii) payment provider. In theory, all these parties should have verified the validity of the purchasing transaction between each other, since both mobile games and mobile operating systems could have been compromised (e.g., the games could be repackaged or executed in a virtual environment with apps such as Parallel Space ).
+
+Unfortunately, in practice, we have observed that many game developers have failed to validate the transactions, even though there is a large body of work (e.g., ) that have pointed out the potential security risks in multi-party transactions . For instance, we found multiple extremely popular games (each with more than 100 million installs) do not verify the validity of the IAP transactions or simply rely on the client side verification to check whether the transaction is valid, allowing attackers to completely playing without paying. Even worse, the SDK providers (e.g., Unity) have provided such APIs for client side verification, whose execution cannot be trusted at all. Considering the increased amount of mobile games integrating with the IAP service, it
+# Brquue
+# BJcKELOTIG
+30 ISI IJJO2[ LGGGIJI QUIIA 89IJJG2" QU[OLTIISIG]A\' MG [OrTIq (GCpJIIdrigz Juq COIJqMIC(Gq $[LaG
+MG pSAG !bjGIJGIIGq OML GX(LSCIGq [LOIJJ nuiaEJIJJG pIUSLG? IQ[LSCKQE pom bsk - (ImCLG
+!UZGCIILG Vb? qgaGjobGL? VOAG] GI2GOAGLA' MG QIq (JJSI CAGU
+KuomjGqaGq OrILQuqW82" Jj2o AjUGLSPIG EJIG GGAGjObGIz WIuA Ol (JJGIJJ [JSAG SC- COUJLLIJJGq (pJcA SLGWgGGq AnJUGLSPJG (WO Eb?) MG pSAG q1- 5IS]
+OHL WJU- (LJUZJCQIOIJ? Jf JII' guq JJI (8*0249 OujA AGLIIA (JG (LJI?JC - (pGw: 8*533 (1 *d249) go UO AGLIA (GAJJQA 0 bgAIJJGUI VIEVLZCOBE OU
+IXG pJSAG SqqLG22Cq (pG2G
+HJOM [0bqboqr (jJG [Vb VBI? !I (JJG E9IJJG USQIAG pQIgLA' [JOM BGL[OLIJJGG" EOL bLGZGI(?
+WJOplIG gbbz J 1949 pArccogg IGAG]' HOmGAGI: (pGA CSIJIJO( pG
+BUOL
+!WboLsut (0 L9i2G qGAGIObGI?_ 42 (pJri? JIASLGUG?? JUq 3094 31st USENIX Security Symposium
+FIOTTGI' IUTfTSFGEMIC]926 (ZFITId JIGIJJ (0 pG brLcpszGq" VRerJG (JJG EJIJJG !2 qGAGpobcq !GWJ(6*& 2r6b 0: MIJGU EJIJG bjsAGL /4!2jG? [0 PriA 42849]
+(JJGLG corjq pG mb [0 2GAG1 2 cbz MJJGI bLocg2ziua JI !U-8J1JG
+CFIJ pG Jp2(LSCIGq JUq[SKGIJ CSLG pA (JJG gbb 2[OLG (6*& *Q008jG (6*8** 18A9 !UCo08jG bIgA ^2" C# !U nu)
+nuia (pJGA OUGU 012G gbb gGaGjobGi?- [V gqqWIOU' GGAGjObGL? conjq 02G (JG 2DK? MQIIG (JJC PIIIQE GOIbjGrGjA pJSIqIGq pA (pJG gbb 2[OLG?
+9 ZGLAICGDLOn!gsq pA gbb 2OLG? WNOpII6 WJGTU? [OL
+LcboLGq (JJSI QUIA !2 (JG IJJo2r bobrjsL OG [+3]: WGSIMpIIG' qsA' (JJGLG JLG WJJJUA EJIJJG GUTIUG? JAJIIIPIG' VIJOVE (JJGWJJ' !(
+Anioug Evdius (0 JIo?) VUQEVdius (0 J282} cogor @JlGzp/9q(0 Je8e) 8e88) Oulege Evdjug(I' 4882 (0'8832 COlous C9WUGWI9KGL (S 'asap cocozsq (3*J0je)Oear) vgop6 VIL (e seae) mpcDX (e Jaap) nuimi (Jr*a4o?)
+USENIX Association
+# Mobile Game
+# App Store
+# Game Server
+# 1 Payment Request
+# 2 Payment Processing
+# 3 Payment Response
+# 4 Transaction Validation
+# 5 Transaction Verification
+# 6 Verification Result
+# 7 Products Distribution
+Game APK
+├── ...
+
+├── AndroidManifest.xml· · · · · · · ·[ 39K]
+├── classes.dex· · · · · · · · · · · ·[7M]
+├── assets
+│ └── bin
+│    └── Data
+│      ├── ...
+
+│      └── Managed
+│        ├── ...
+
+│        └── Metadata
+│          └── global-metadata.dat   · · ·[5M]
+└── lib
+└── arm64-v8a
+├── libil2cpp.so· · · · · · · · · ·[ 30M]
+├── libmain.so· · · · · · · · · · ·[6K]
+└── libunity.so· · · · · · · · · ·[ 15M]
+developers, and the app store will use this ID to look up its price.
+
+• Step ❷: When receiving the purchasing request from the game app, the app store will validate the player’s identity and pop up a dialog to ask the player to confirm the payment, and then the app store will communicate with either the banks or the credit card company to finish the money transfer. To ensure the integrity of this financial transaction, the app store will sign it, with the app-specific private key for Android or developer-specific private key for iOS (developers have the corresponding public key when they register their development accounts), and then return the signature to the game app.
+
+• Step ❸: Once the app store finishes the payment transaction, the game will receive a payment response callback, which is either UnityEngine.Purchasing.IStoreListener.ProcessPurchase if the transaction succeeds, or UnityEngine.Purchasing.IStoreListener.OnPurchaseFailed if the transaction fails (e.g., insufficient funds, or cancelled by the user) in Unity games.
+
+• Step ❹: If the transaction succeeds, the game client typically will send the transaction to the game server to validate the transaction and distribute the digital items.
+
+• Step ❺: To validate the integrity of the transaction, the game server can either ask the app store to verify the transaction (e.g., by using REST API purchases.subscriptions.get for Google Play), and go to Step ❻, or alternatively, the game server can verify the transaction by validating the signature of the transaction using the app-specific public key owned by the developer, and in this case the server directly goes to Step ❼.
+
+• Step ❻: The app store validates the transaction and returns the transaction details (e.g., transaction timestamp, payment state, item price, expiration date) to the game server.
+
+The game binaries developed by Unity. Many mobile games today are developed using C# and with the Unity engine.

@@ -1,0 +1,62 @@
+# Repackaged.apk
+# Virtualization Repackaged.apk
+# Repackaged Class.dex
+# VirtualFramework Class.dex
+# originalApp.apk
+# maliciousPayload.dex
+# decompile
+# decompile
+# dynamic load
+Class MainActivity{
+originalApp Code
+maliciousPayload
+}
+Class MainActivity{
+Virtual framework
+installPkg(“originalApp.apk”)
+installPkg(“maliciousPayload.dex”)
+}
+(line 2 to line 6) to each other. Thus, we analyze the similarity between the components of each app. We consider two components to be similar if over 80% of their code is identical. Empirically, if more than 50 percent of the components are similar to each other, the corresponding app is very likely to use virtualization techniques. Second, apps with virtualization need to hook the original apps, thus, they commonly override the instrumentation callback (callApplicationOnCreate()). Our approach detects these two features, and reports an app if it matches both of them.
+
+# Identifying Repackage
+An app with virtualization is not necessarily a repackaged app. A benign app can also use virtualization to achieve modularity programming. Fortunately, we observe that, different from the benign apps, a malicious repackaged app tends to repackage an app that is developed by a different party. As a result, the certificate of the original app (originalApp.apk in Figure 8) is different from the certificate of the repackaged app (Virtualization_Repackaged.apk in Figure 8). Thus, we first recognize the inlined apk files of each app. Then, we compare the signature of the inlined files with that of the root apk file, and report an app if the signatures differ. Besides, some cases encrypt their inlined apk files so that we cannot obtain their signatures. Our tool labels them as suspicious apps.
+
+# 5 Data set
+With the help of our tool, we evaluated 250,145 apps from various app stores. As depicted in Table 5, we crawled 97,304 random apps from Google Play, and 152,841 random apps from three 3rd party Android app stores.
+
+# 5 Overall results and precision
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+Precision. To check the false positive rate of our results, we manually verify the reported apps. Because the suspicious apps use encryption to protect their code, and it is time-consuming to decrypt them, we verify all the repackaged apps and several random samples of suspicious apps. As a result, among the 180 repackaged apps, only 16 of them are false positives. The reasons for false positives are: six apps are virtualization frameworks with 3rd party plug-in apps. Our tool mistakenly classifies them into repackaged apps because the plug-in apps have different certificates from the frameworks. The remaining 10 false positives utilize the virtualization techniques to load 3rd party apps. Our investigation shows that these apps only load a small portion of the 3rd party apps, and reuse them as a separate module. All the false positives reuse the code from the virtualized apps. However, they have no malicious intent. Furthermore, to study whether the suspicious apps can be repackaged ones, we randomly select 10 samples and attempt to decrypt them manually. As a result, we successfully decrypt four of them, in which two samples are confirmed to be repackaged apps.
+
+To study the popularity of the repackaged apps, we collect their download numbers from app markets. The results show that some of the repackaged apps earn lots of downloads. For example, one repackaged version of a popular game app Daddy was a Thief has more than 500,000 downloads on YingYongBao, and another repackaged app has about 390,000 downloads. Figure 9 illustrates the download numbers of these repackaged apps.
+
+# 5 Findings
+Anti-virus tools are ineffective to detect malware using virtualization techniques. To measure whether the anti-virus tools can detect malware using virtualization techniques, we upload
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 17:18 L. Zhang et al.
+
+# 5 Case Study
+A batch creation of repackaged apps. YingYongBao is the largest Android app market in China . Our tool locates 168 repackaged apps from it. We further analyze these results and find that 58 of them are submitted by a same developer with similar package names, com.ab.pluginX (X stands for a random string for each app). Additionally, the original apps are placed under the assets directory, and renamed to plugin.apk. Considering the number of repackaged apps, it is highly likely that they are created from a same template.
+
+The results are collected by uploading the 10 commercial virtualization frameworks and 10 randomly selected repackaged apps.
+
+The results show that, none of the 64 anti-virus engines can detect all of them, and only 39 engines can detect part of the samples. We analyze the reports of these anti-virus engines, and find that 18 of them treat these apps as PUP (potential unwanted programs) or Riskware.
+
+Furthermore, we upload 10 benign virtualization frameworks to VirusTotal, and find that they are mistakenly reported as malware by 26 anti-virus engines. Depicted by Figure 10, many anti-virus engines cannot tell apart malware from the benign apps, and show similar results to both of them.
+
+Most of the repackaged apps are developed by a small number of groups. To study the developers of these repackaged apps, we conduct an experiment to categorize the signing certificates of these apps. As a result, we find that all these 164 true positive repackaged apps are signed with 6 certificates, which indicates that these apps are developed by a small number of developers. We manually check the code of these apps, and find that apps with a same signature have same code structures. Indeed, one of the malicious developers owns 58 repackaged apps, including com.gamecircus.PrizeClaw, com.rebeltwins.aliensdrivemecrazy and other popular apps. This indicates that virtualization techniques are capable of repackaging various Android apps, and can be helpful to generate plenty of repackaged apps.
+
+Apps are repackaged once and no need to update. An interesting finding is that most of the repackaged apps with virtualization techniques do not update on app stores. There is only one version of each app and it has no version change logs. With a deep investigation, we find that the repackaged apps can dynamically update themselves by replacing the apk files in their virtualization modules. As a result, once a repackaged app is installed, there is no need for the app developer to update it on the app stores.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+Interestingly, among the repackaged apps, one sample embeds two apk files under its assets directory. One is plugin.apk, and the other is a mis-spelled one, pulgin.apk. Furthermore, the app information of this repackaged app on YingYongBao contains mixed information from these two embedded apps. Specifically, the app description is inherited from plugin.apk, which is a car game. However, its category is Fly&Shoot game, which is the same as the pulgin.apk. This mistake demonstrates that the repackaged apps may be created without human efforts.
+
+A malware with severe obfuscation. Our tool locates a suspicious app, com.bantu.hxbzyz. According to its code in classes.dex, this app utilizes a virtualization framework KXQP to repackaged an app. Using the framework, it loads two encrypted files dynamically. One of them (named com.bantu.hxbzyz.jar) is the encrypted apk file of the original app. Interestingly, the other file is hidden in a suspicious png file (background.png). After decryption, this png file releases another two files. One of them is a supplement package of the virtualization framework, while the other one is further encrypted. We uploaded this encrypted file to VirusTotal , and 16 of the anti-virus engines detect this file as a Trojan.
+
+# 6 MITIGATION
+In §3 and §4, we show that malware can utilize the vulnerabilities of virtualization frameworks to attack benign apps, causing privacy leakage, code injection, and other security threats. In §5, we find that benign apps are repackaged by malware with virtualization techniques. To mitigate these security threats, this section provides some recommendations to both the virtualization frameworks and the app developers.

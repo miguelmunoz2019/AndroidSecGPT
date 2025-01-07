@@ -1,0 +1,64 @@
+# AndroShield: Automated Android Applications Vulnerability Detection, a Hybrid Static and Dynamic Analysis Approach
+# Amr Amin 1,†, Amgad Eldessouki 1,†, Menna Tullah Magdy 1,†, Nouran Abdeen 1,†, Hanan Hindy1,2,* and Islam Hegazy1,*
+1 Faculty of Computer & Information Sciences, Ain Shams University, Cairo 11566, Egypt;
+amr.amin.stdsw@cis.asu.edu.eg (A.A.);
+amgaddessouki@gmail.com (A.E.);
+menna.tullah.magdy731@gmail.com (M.T.M.);
+nouran.m.abdeen@gmail.com (N.A.)
+2 Division of Cyber-Security, Abertay University, Dundee DD1 1HG, UK
+* Correspondence: 1704847@abertay.ac.uk (H.H.);
+islheg@cis.asu.edu.eg (I.H.)
+† These authors contributed equally to this work.
+
+Received: 30 July 2019; Accepted: 18 October 2019; Published: 22 October 2019
+# Abstract
+The security of mobile applications has become a major research field which is associated with a lot of challenges. The high rate of developing mobile applications has resulted in less secure applications. This is due to what is called the “rush to release” as defined by Ponemon Institute. Security testing—which is considered one of the main phases of the development life cycle—is either not performed or given minimal time; hence, there is a need for security testing automation. One of the techniques used is Automated Vulnerability Detection. Vulnerability detection is one of the security tests that aims at pinpointing potential security leaks. Fixing those leaks results in protecting smart-phones and tablet mobile device users against attacks. This paper focuses on building a hybrid approach of static and dynamic analysis for detecting the vulnerabilities of Android applications. This approach is capsuled in a usable platform (web application) to make it easy to use for both public users and professional developers. Static analysis, on one hand, performs code analysis. It does not require running the application to detect vulnerabilities. Dynamic analysis, on the other hand, detects the vulnerabilities that are dependent on the run-time behaviour of the application and cannot be detected using static analysis. The model is evaluated against different applications with different security vulnerabilities. Compared with other detection platforms, our model detects information leaks as well as insecure network requests alongside other commonly detected flaws that harm users’ privacy. The code is available through a GitHub repository for public contribution.
+
+# Keywords
+vulnerability detection; Android applications; static analysis; dynamic analysis; mobile security; user privacy
+# 1. Introduction
+The dependence on mobile applications has increased dramatically over the past decade. Statista  shows that in 2017 there were 178 billion Android application downloads which rose to 205 billion in 2018. It is expected to reach 258 billion in 2022. Moreover, the number of available applications on Google Play store escalated from around 2 million in the first quarter of 2016 to 3 million in 2018. There are—on average—6140 applications released per day. With the increasing rate of the production of Android applications, the testing phase takes less time and security testing is sometimes neglected. Android, as one of the most popular mobile open-source operating systems, suffers more from different vulnerabilities. As a result, Android applications are vulnerable to malicious users and hackers who may gain access to unauthorised information. In its report
+Information 2019, 10, 326; doi:10/info10100326 www.mdpi.com/journal/information
+# Information 2019, 10, 326
+about mobile security , the Ponemon Institute states that around 33% of mobile applications are not tested and 38% of those involved in their study do not perform a vulnerability scan for their mobile applications.
+
+Third-party testing is one of the suggested solutions to overcome the limited time given to the security testing for any released application; however, third parties cannot cope with the pace of the released applications. Therefore, there is a need to develop automated tools to detect vulnerabilities.
+
+In this paper, we address the problem by introducing an automated vulnerability detection model. This model builds both static and dynamic analysis methods. Static analysis detects offline vulnerabilities (the ones that do not require the application to be running). It is based on application reverse engineering and code scanning. Dynamic analysis, on the contrary, detects the vulnerabilities that cannot be detected by static analysis. It is based on the run-time behaviour of the application. In order to perform dynamic analysis, application simulation runs are performed. After the analysis is finished, a report is generated consisting of three sections; (a) APK Information, which provides unique information about the uploaded application. (b) APK Permissions, which provides a list of the permissions granted to the app. (c) Finally, Vulnerabilities, which explains the detected vulnerabilities. The proposed system detects the following vulnerabilities: “Information Leaks”, “Intent Crashes”, “Insecure Network Requests”, “Exported Android Components”, “Enabled Backup Mode” and “Enabled Debug Mode”. Each vulnerability is associated with a risk level and a description.
+
+The current platform targets Android application vulnerability detection; however, it can be extended to involve other platforms. Extension to other platforms would involve overriding the emulator sniffing and code reverse engineering processes. The back-end web application and the reporting module would not require changes. The model is targeted for professional developers, on one hand, and daily application users on the other hand. The generated report includes information that the normal user can understand and can decide whether or not the application he/she is using is vulnerable. In addition, the professional developers and organisations can benefit from the details in the generated report to tackle and fix their security flaws.
+
+The rest of the paper is organised as follows. Section 2 defines the important concepts of static and dynamic analysis. Section 3 discusses the available vulnerability detection tools and how our work fits in the current research. Section 4 visualises the proposed architecture of the hybrid model as well as the methodology. Section 5 discusses the experimental results. Finally, Section 6 summarises the paper stating the conclusion and future work.
+
+# 2. Background
+# 2. Vulnerability Detection Techniques
+There are two techniques for automating vulnerability detection for mobile applications, static and dynamic analysis. Static analysis detects vulnerabilities without executing the application while dynamic analysis detects the vulnerabilities during the run-time of the application. Combining both techniques gives a more robust output and a higher probability of detecting malicious and vulnerable applications.
+
+# 2. Static Analysis
+Static analysis generally involves taking the source code—or object code in some cases—of a program and examining it without execution. The results are generated by checking the code structure, the sequences of statements, and how variable values are processed throughout the different function calls. A typical static analysis process starts by representing the analysed app code as abstract models (e.g., Call Graph (CG), Control-Flow Graph (CFG), or Unified Modelling Language (UML) class/sequence diagram) based on the purpose of analysis. The literature discusses many static analysis techniques, namely:
+Information 2019, 10, 326
+3 of 16
+# 2. Static Analysis
+- Control-Flow Analysis [3–5].
+
+- Data-Flow Analysis.
+
+- Points-to analysis.
+
+- Call-Graph (CG) algorithms.
+
+The advantages of static analysis include: (a) All code and manifest file—a file containing meta-data about the application—are analysed. (b) It is fast relative to dynamic analysis. (c) It requires fewer hardware resources relative to dynamic analysis.
+
+A lot of vulnerabilities can be detected using static analysis such as private data leaks, unauthorised access to protected or private resources and intent injection. It is also used to detect permission misuse, energy consumption, clone detection and test generation. Finally, it detects code verification and cryptography implementation issues as well.
+
+# 2. Dynamic Analysis
+Unlike static analysis, dynamic analysis is used to detect vulnerabilities that occur during run-time. Dynamic analysis is generally considered more complex than static analysis as it requires installing the applications as well as simulating the user input (i.e., inputs, touches and clicks). The most common dynamic analysis tests are; Fuzz Testing, Concolic Testing and Search-based Testing . The differences between them include test effectiveness, test generation and vulnerabilities coverage.
+
+Fuzz Testing is defined as “an automated software testing technique that involves providing invalid, unexpected, or random data as inputs to a computer program.” The program is then monitored for exceptions such as crashes, or failing built-in code assertions or for finding potential memory leaks.
+
+Concolic testing is “a hybrid software verification technique that merges both symbolic and concrete executions.” Symbolic execution treats program variables as symbolic variables, whereas concrete execution performs testing on particular input paths.
+
+Search-Based testing uses a meta-heuristic optimising search technique to automate a testing task such as simulated annealing and genetic algorithms.
+
+# 2. Android Sources and Sinks
+In order to understand how Android flows are analysed, sources and sinks are discussed in this section. Android Source APIs are the calls into resource methods returning non-constant values into the application code. For example, the getDeviceId() resource method is an Android source. It returns the International Mobile Equipment Identity (IMEI). The IMEI is considered non-constant as the method returns a different value on every mobile phone which implies that investigating the source code alone does not reveal this value. In contrast, a function that just reads a fixed constant value from a database is considered a resource method but, as per the definition, is not an Android source.

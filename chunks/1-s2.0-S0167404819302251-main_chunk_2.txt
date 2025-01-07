@@ -1,0 +1,67 @@
+# 2. Background
+Android provides four types of components as basic blocks of the app: Activity, service, content provider and broadcast receiver. Activity facilitates Graphical User Interface (GUI) and runs in foreground; all the background tasks are implemented as part of service; content provider manages data storage and access through files, SQLite databases, Internet, etc.; broadcast receiver registers itself for one or more events, and is notified by Android OS on the occurrence of these events. Java classes in the app, which do not extend any of these four components, are termed non-component classes. The interaction among components of same or different apps is through inter-component communication (ICC) feature called Intent. The communication APIs use Intent objects, which specify the target component explicitly or implicitly with the help of intent-filters. All the components are declared in the app’s manifest file AndroidManifest.xml. There is no single entry point of a component unlike the main() function in Java. Instead, Android supports defining callback methods (e.g., onClick(), onBackPressed(), etc.) in components and invocation of these is by the Android system based on the event. Android also provides another way of storing/retrieving data in the form of a key-value pair called SharedPreferences.
+
+# 2. A representative example
+This section presents an example app that illustrates how run-time binding of reflection APIs limits state-of-the-art static analysis approaches. Through this representative example app, we illustrate the challenges in dynamic analysis. The code base of the example app is a representative of obfuscation techniques used by various malware families and some real-world apps.
+
+The developed app consists of mainly eight components including six activity components, namely: Home (A), Instructions (B), Play (E), Rating (F), ScoreBoard (H), Settings (I), one service component named MyServices (C), one receiver component named SMS_rec (D), and two simple Java classes, named read (G) and write (J) as shown in Fig. 1. The figure includes the code of only the relevant components to save space and the complete app code is available at https://github.com/jyotigajrani/EspyDroidPlus. The paper uses alphabets in brackets for referring particular class and X.n refers to the nth line of class X in Fig. 1.
+
+The example reads the IMEI number of the host device and leaks the same to the system log using reflection APIs and obfuscation of parameters. Primarily, activities A and B contain reflection.
+
+# J. Gajrani, U. Agarwal and V. Laxmi et al. / Computers & Security 90 (2020) 101688
+# App Components
+public void onStart(Bundle savedInstanceState) {
+@Override
+Home SMS tec
+startActivity(new Intent(this, Instructions.class));
+}
+# B. Instructions
+@Override
+MyServices G. read
+public void onResume(Intent intent) {
+if (Build.BRAND.equals("generic")) {
+System.exit(0);
+} else {
+String meth = string forName(clz);
+getIntent().getStringExtra(eclz_);
+new String(Base64.decodeBase64(em));
+}
+}
+MyPrefsFile Class getMethod(eth).invoke();
+public static String 'MyPrefsFile' Class forName(clz).getMethod(meth).invoke();
+public static SharedPreferences getSharedPreferences(SF);
+public void write_sf() {
+SharedPreferences.Editor sf = getSharedPreferences("MyPrefsFile", MODE_PRIVATE).edit();
+sf.putString("imei", getDeviceId());
+sf.apply();
+}
+# API calls
+The execution of A leads to invocation of onCreate() lifecycle method of component B, which calls the method stored in variable meth of class clz (B-B). However, the values are bound to this variable at run-time due to encoded values. This obscures both string  and type inference  based static reflection analysis approaches in computing targets. The method actually calls the write_sf() method of class J. The write_sf() method reads the IMEI of the device by invoking getDeviceID() method and stores it in SharedPreferences "MyPrefsFile" (J-J). On return from B to A, onResume() life-cycle method of A is called. Execution of A invokes the method through reflection APIs where parameter meth is encoded through Base64 encoding.
+
+# Challenges for Analysis
+- Late binding of reflection targets: Android malware families like Obad, FakeNotify use reflection to call sensitive methods and use encrypted method names, which are decrypted at run-time. The encrypted parameters get their actual values only at run-time. Malware families such as Fakeinstaller.AH (Ruiz, Oct 2012) leak private data through the massive use of reflection, which obscure calls to sensitive source and sink APIs. Similarly, the targets of reflection APIs (A) have late binding and this thwarts static analysis solutions because of their inability to uncover parameter values in such cases.
+
+- Inter-component communication: In Android, due to the widespread usage of ICC, resolving of a value at any point has a dependency on the execution of code present in another component. This dependency is in terms of the values of global variables declared and initialized in other components, values written in shared preferences, values passed from one component to another in Intent extras, etc. Ripple  illustrates an example of AngryBird app where reflection targets depend on data-flow through Intents. The example of Fig. 1 shows that class name read.java is passed as extra information through the Intent from B to A activity (B).
+
+# Program Slicing
+Program slicing is a technique of reducing program in such a way that only those statements and variables that affect the execution of target instruction are computed (called slices) without affecting the program behavior.
+
+However, traditional algorithms for computing instruction level slices using def-use chains  fail for event based environments like Android when execution of any instruction is dependent on many factors like reflection, run-time dependency, etc. SharedPreferences, Intents, GUI events.
+
+Rasthofer et al. (2016) proposed Harvester, an approach for automatically extracting run-time values of parameters of various APIs of interest. Harvester computes instruction-level backward slices starting from the APIs of interest and afterwards executes each of the slice directly independent of its position in the original app which eliminates the need of any GUI interaction. The values of interest (VOIs) such as some class and method names that are dynamically loaded and invoked via reflection are logged at run-time. Harvester is resilient against code obfuscation where the parameters are obfuscated using various ways to hinder static analysis. However, the major limitation of Harvester is that it cannot calculate VOIs in cases of inter component dependency due to the limitation of the highly optimized backward slicing algorithm which is limited within the scope of a single class. One such case is shown in the example of Fig. 1 where the values cannot be inferred by the independent execution of components. The slice computed using instruction-level.
+
+4 J. Gajrani, U. Agarwal and V. Laxmi et al. / Computers & Security 90 (2020) 101688
+slicing is for component A is shown in Fig. 3. As seen from A A A the slice, the value of parameter at Line A is coming from Intent, which is not captured in the traditional slice.
+
+- Conditional constraint: Malware families such as Pincer, Basebridge, NickSpy (Jiang and Zhou, 2012) hinder dynamic analysis through various anti-emulation techniques , time-bombs, logic-bombs, and other conditions. These are presented as conditional checks. The example of Fig. 1 adds anti-emulation constraint (A-A) which check value of BRAND. The value is always “generic” or “generic_86” for emulator while for real device, the value depends on brand of device.
+
+- Complex GUI: Malware apps hide malicious code behind complex GUI widgets to hinder analysis by automated tools based on Monkey UI/Application Exerciser Monkey as these are not designed to tackle such complex GUI events. Moreover, providing correct text-input for automated solutions is very challenging.
+
+The above discussion highlights the need for developing approaches that overcome these complex challenges for the ensuring the privacy of Android Apps.
+
+# 2. Problem statement and scope
+We are assuming that the app is malicious and developed by attacker. A “Source” is an API that accesses user’s private data, and a “Sink” is an API that potentially leaks this data outside the application. The attacker obfuscates the path from Source to Sink APIs through use of reflection APIs. Further, the attacker is aware of evasive techniques, specifically, reflection with inter-component communication and obfuscation of parameters. Most of the reflection aware static analysis techniques are not able to reveal the leaks.
+
+Dynamic analysis is useful in such scenarios, dynamic analysis must generate the necessary GUI and system events leading to the execution of required malicious behavior during testing to achieve efficiency. Also, the dynamic analysis approach, if applied on apps having a large number of program paths results in non-trivial time of analysis and limited code coverage, which makes it unsuitable for large stores. This poses the requirement of an approach that can reduce the state space of dynamic analysis. The state-of-the-art solution  reduces the space sufficiently but results in loss of information such as data passed between components through inter-component communication.
+
+We aim to design a framework for identifying such hidden leaks with a good balance between state space reduction and accuracy. The key idea is to strengthen dynamic analysis by reducing the state space of Android apps by considering reflection APIs as the target. The target is to support state-of-the-art static analyzers in analyzing otherwise missed leaks without modifying them to improve the recall.

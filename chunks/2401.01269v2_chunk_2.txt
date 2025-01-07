@@ -1,0 +1,56 @@
+# 2 METHODOLOGY
+In our study, experiments were conducted with GPT-4, using the Ghera benchmark1 as the dataset. We use GPT-4 for our experiments as it is one of the most powerful available LLMs as of today. In our limited experiments with GPT-3 it struggles with following instructions properly. Further we also setup our experiments to work with Open LLMs but as of writing this report open models like Llama 2 perform significantly worse compared to their paid counterparts. Hence we stick with our decision to employ GPT-4 despite the higher costs incurred for inferences. Throughout the iterations, we refine the prompts, enhancing the information provided to the model, including specific details about vulnerabilities. In the final experiment, only “AndroidManifest.xml” and “Main-Activity.java” files if they exist in the analyzed project were presented to the model. We also provide a list of additional files present in the project. We also experiment with summarizing the content of files and providing that information.
+
+1Ghera Dataset
+# LLbezpeky: Leveraging Large Language Models for Vulnerability Detection
+# Knowledge Base
+# CS858, Project Proposal, LLbezpeky
+# Output
+Feature Extraction?
+to the model as well. We also implemented functionality to allow the model to request the content of specific files if necessary for further vulnerability identification.
+
+Ghera is a benchmark repository that predominantly catalogs vulnerabilities previously identified in Android applications, as established in existing literature. This repository is distinctively organized into benchmarks, each targeting a specific vulnerability. These benchmarks comprise three types of applications: a benign application that possesses the vulnerability, a malicious application designed to exploit this vulnerability, and a secure application that is immune to such exploitation. The benchmarks are practical, including instructions for building and executing the applications, thereby allowing for the empirical verification of the vulnerabilities and their corresponding exploits. Presently, Ghera’s collection exclusively consists of ’lean’ benchmarks, which are minimalistic apps specifically designed to showcase the vulnerabilities and their exploits, without incorporating additional complex functionalities. Ghera contains 69 different issues as of date that can be categorized into the following types:
+- Crypto: Vulnerabilities in app encryption methods, including block cipher issues and exposed encryption keys.
+
+- ICC: Risks in app communication components, such as dynamic receivers and intent hijacks.
+
+- Networking: Security issues in app network communications, including certificate mishandling and MitM attack susceptibility.
+
+- NonAPI: Vulnerabilities due to outdated libraries and inherited library flaws in apps.
+
+- Permission: Security risks from unnecessary or weak app permissions leading to potential unauthorized access.
+
+- Storage: Data storage vulnerabilities in apps, including external/internal storage risks and SQL injection threats.
+
+- System: System-related vulnerabilities in apps, focusing on privilege escalation and information exposure.
+
+- Web: Web component vulnerabilities in apps, such as MitM attack risks and code injection in WebViews.
+
+During the experimentation process, we found that the Ghera benchmarks contained explicit indications of "Benign" and "Secure" in both the file paths and the content. For our experiments to be valid and to minimize data leakage to the LLM about the ground truth, we replaced these values with "llbezpekymyapp" and "llsezpekymyapp" respectively. However, we include our insights from runs in Experiments 1 and 2 that had the leaked data to see how much it influences the results. Interestingly leakage of the word secure clearly influenced the outcomes and highlighted the need for clearly sanitizing the data from semantic names that can mislead the LLM’s reasoning. Do note that folder names still indicate the kind of vulnerability to some extent but this shouldn’t be a cause of concern in any of the subsequent experiments. Our analysis of these experiments and their outcomes will be described in the following section.
+
+# 3 RESULTS
+In this section, we discuss the various experiments conducted, the thought processes behind them, and the insights obtained.
+
+# 3 Experiment 1: Basic Prompting GPT4
+For this experiment, we explore basic prompting without providing any information about the vulnerability. We wish to figure out what kind of vulnerabilities if any GPT could detect without any explanation about the issue. Results are shown in Table 1.
+
+# CS858, Project Proposal, LLbezpeky
+Noble Saji Mathews, Yelizaveta Brus, Yousra Aafer, Meiyappan Nagappan, and Shane McIntosh
+# 3 Experiment 1: Initial Analysis
+It is interesting to note that even without any details about the vulnerability GPT4 could flag apps as insecure. However, it seems that the model just has a tendency toward marking apps as insecure as can be seen with secure apps in the cleaned dataset. We note that even though 58 out of 60 insecure are correctly identified with relevant snippets being highlighted 56 of the 59 secure apps are misclassified.
+
+# 3 Experiment 2: Providing a summary of the vulnerability
+In this experiment, we check if the model can verify the presence of specific vulnerabilities given a very brief summary. We hypothesize that specifying limited details about issues we are looking for would lead to context activation2 and enable the LLM to use its existing knowledge towards analysis. Therefore, we extended experiment 1 by providing short information about a vulnerability and the obtained results are shown in Table 2. This process involves creating brief textual descriptions that encapsulate how each vulnerability functions or why an app is susceptible to it. These summaries are crucial as they offer an initial understanding without the need for detailed, app-specific descriptions, which may not be readily available in real-world scenarios. Such summaries might be akin to Common Weakness Enumeration (CWE) descriptions, providing essential insights at a glance.
+
+# 3 Experiment 3: Requesting files as and when required
+For previous experiments we were sending all the needed files, we cannot use such techniques for real-world applications. Hence, we modified the prompt, so the model asks to provide more information if needed. Results are shown in Table 3. We initially focus on the AndroidManifest.xml and MainActivity.java files, recognizing that while vulnerabilities often reside deeper in the code, these files can provide vital starting points for analysis. From here, the model can request additional files as needed, thereby initiating the Retrieval Augmented Generation process in a structured manner.
+
+Our approach includes providing a summary of all files in the application, with the exception of the Manifest and the MainActivity file. The summary is generated by the LLM itself in a preprocessing step. The LLM is then enabled to request the content of specific files based on these summaries. This selective process is particularly useful in identifying vulnerabilities that might be indicated by exported components or specific implementations in the code. This methodology is a form of Retrieval Augmented Generation though at a very coarse granularity, aiming to probe its impact on the efficiency and accuracy of vulnerability detection.
+
+The undecidable case in this experiment requires the build.gradle file and the "libs" folder and even though that is correctly requested we currently only include code within "app/src/- main" and address this in the final architecture. We noticed that the model tends to ask for all files when implemented in a simple fashion so we ended up creating an alternate chain that summarizes all the files and includes this summary with the list of files. This actually had the opposite effect with the model never requesting any file in most cases. We justify the lower TP rates of 60% due to hallucinations made by the model based on the summaries. Another thing to note is that even though the impact is not significant, the generated reports lack clarity due to not having access to the exact implementation details. However there are clearly efficiency gains to an approach like this though while sacrificing on the quality of the report generated.
+
+We see that with just a short summary of the vulnerability we are able to improve on the number of Secure apps flagged as insecure by a significant margin. Another thing that can be noted from Figure 2 is that Experiment 2 actually reduces the time consumed by the model to return an inference both on secure and benign apps. We notes than we have a TP rate of 66% in this case as compared to 51% in the previous experiment (we consider undecidable as a misclassification).
+
+# LLbezpeky: Leveraging Large Language Models for Vulnerability Detection
+# CS858, Project Proposal, LLbezpeky
+Key Takeaways: From our experiments we see that given sufficient context GPT4 can successfully identify vulnerabilities. Summarizing clearly saves significantly on the costs, since the summaries can be used across scanners and is a one-time cost. Attempts at reducing the amount of information still need work and we need a critique process to deal with the models tendency to mark applications as insecure.

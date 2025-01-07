@@ -1,0 +1,17 @@
+13. Lewis Tunstall, Edward Beeching, Nathan Lambert, Nazneen Rajani, Kashif Rasul, Younes Belkada, Shengyi Huang, Leandro von Werra, Clémentine Fourrier, Nathan Habib, Nathan Sarrazin, Omar Sanseviero, Alexander M. Rush, and Thomas Wolf. Zephyr: Direct distillation of lm alignment, 2023.
+
+14. Nous hermes 2 mixtral 8x7b dpo. https://huggingface.co/NousResearch/Nous-Hermes-2-Mixtral-8x7B-DPO. last visited 10/3/2024.
+
+15. Wing Lian, Bleys Goodson, Guan Wang, Eugene Pentland, Austin Cook, Chanvichet Vong, and “Teknium”. Mistralorca: Mistral-7b model instruct-tuned on filtered openorcav1 gpt-4 dataset, 2023. last visited 10/3/2024.
+
+16. Subhabrata Mukherjee, Arindam Mitra, Ganesh Jawahar, Sahaj Agarwal, Hamid Palangi, and Ahmed Awadallah. Orca: Progressive learning from complex explanation traces of gpt-4, 2023.
+
+17. Shayne Longpre, Le Hou, Tu Vu, Albert Webson, Hyung Won Chung, Yi Tay, Denny Zhou, Quoc V. Le, Barret Zoph, Jason Wei, and Adam Roberts. The flan collection: Designing data and methods for effective instruction tuning, 2023.
+
+18. Code llama. https://ai.meta.com/blog/code-Llama-large-language-model-coding/. last visited 10/3/2024.
+
+19. Llamaindex. https://docs.llamaindex.ai/en/stable/. last visited 10/3/2024.
+
+20. Security guidelines. https://developer.android.com/privacy-and-security/security-tips. last visited 10/3/2024.
+
+21. Mobsf. https://github.com/MobSF/Mobile-Security-Framework-MobSF. last visited 10/3/2024..

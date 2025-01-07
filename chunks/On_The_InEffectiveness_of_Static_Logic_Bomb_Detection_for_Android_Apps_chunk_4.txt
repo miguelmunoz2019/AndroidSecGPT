@@ -1,0 +1,61 @@
+# 4 Trigger Filter
+In this experiment, we modify TSO PEN in order not to take into account any potential trigger if the values retrieved during the symbolic execution attributed to the test were purely symbolic or unknown. In Table 3 we can see that the number of suspicious triggers drops to 1033 and the number of applications with suspicious triggers to 381. This minor change produces results with a factor 5 change regarding the detection rate. Also, it allows our tool to get a false positive rate close to 3%. Unfortunately, the analysis misses all logic bombs where triggers are derived from purely symbolic values.
+
+Evolution of the false-negative rate as a function of the number of sensitive methods randomly removed from the list of sensitive methods considered.
+
+# SAMHI AND BARTEL: ON THE (IN)EFFECTIVENESS OF STATIC LOGIC BOMB DETECTION FOR ANDROID APPS
+# 4 Package Filter
+In this experiment, we modify TSO PEN in order to only take into account methods that are in the same package as the application under analysis. This filter is stronger than the library filter of Section 4 as it constrains more the analysis. The results of Table 3 shows that the number of methods analyzed is significantly reduced. Indeed, the time taken for the analysis is shallow compared to the other analyses. Also, the number of triggers yielded by TSOPEN reaches 83 in 31 different apps. The rate of false-positive is almost equal to the original one. This heuristic has a significant drawback, and an attacker could easily bypass this filter by changing the package name of classes implementing the triggered behavior. Unfortunately, the analysis does not take into account all the code outside of the package. In some applications this accounts for more than 93% of the code.
+
+Using the package filter can have a significant impact on the false positive rate.
+
+# 4 Library Filter
+In this experiment, we filter out well-known libraries in order to remove noise from the results. For this, we used a list that was made in a study about common libraries  used in Android applications. We manually analyzed 35 of them and confirmed that they contain only false-positives.
+
+After having filtered common libraries from the triggers found beforehand, our results reveal that a scaling approach with this analysis would still not be conceivable concerning the still high number of triggers detected. Indeed, Table 5 shows that even with a reduction of 43% of the number of suspicious triggers, there are 5391 suspicious triggers. Also, the number of applications flagged as containing a logic bomb goes from 3099 to 1701, a reduction of 45% for the tool but still greater by two orders of magnitude compared to the state-of-the-art. It means that among 11338 unique benign applications there are potentially 1701 false-positives (23%).
+
+Note that, despite being conservative, the false-positive rate calculated during this experiment is obtained by counting the number of benign applications flagged by our tool containing a logic bomb. This can be explained since a logic bomb necessarily contains malicious code, otherwise, it is triggered behavior. We acknowledge that even being relatively free from malicious applications, picking applications from Google Play is not sufficient to qualify the dataset’s applications as benign. Nevertheless, to stay in line with the literature, we use the same evaluation process.
+
+The majority of detected triggers filtered by the common libraries are time-related triggers. Out of the 4144 suspicious triggers filtered, 4065 (98%) are time-related whereas only 15 (0%) are SMS-related and 64 (1%) are location-related. It shows that common libraries make great use of time-related triggers. Besides, we have already said that suspicious time-related triggers definition was not narrow enough to detect it compared to SMS-related and location-related. We can say that even with an efficient library filter, time-related triggers are still commonly used in benign applications.
+
+The library filter does not have a significant impact on the false positive rate.
+
+# 4 Different List of Sensitive Methods
+To build the list of sensitive methods, we reused the results of Pscout  and SuSi , as in the literature. The constructed list contains 12755 methods. Nevertheless, we have seen that with this list, we obtain a high false-positive rate. That is why we decided to verify the impact if we were to use another, shorter list of sensitive methods.
+
+We started from the premise that a permission-based method is not necessarily sensitive. Therefore, we used a list of sink methods from FLOWDROID  as they can leak data, which is considered sensitive. The new list features 130 methods.
+
+Nevertheless, the number of triggers flagged by our tool (after re-running the experiment) stays relatively high by reaching 2855. They are distributed in 956 applications (11%, see Table 6). Even with a reduced list of methods considered for the control dependency step, the tool cannot make the difference between malicious and benign behavior. This shows the need for a more in-depth analysis of the guarded behavior of the triggers.
+
+Using a reduced list of sensitive methods which are all involved in data leak does not have a significant impact on the false positive rate.
+
+# 4 Concept Drift
+Differences in results between TSO PEN and existing experiments of the literature could be due to concept drift , i.e., the fact that applications used in the experiments of existing papers are older than the ones used in our paper. We launched experiments on multiple datasets of 10k apps.
+
+Comparison Between TSO PEN’s Results Before and After Filtering Common Libraries (LB: Logic Bomb)
+Experimental Results With Different List of Sensitive Methods
+# IEEE TRANSACTIONS ON DEPENDABLE AND SECURE COMPUTING, VOL. 19, NO. 6, NOVEMBER/DECEMBER 2022
+# 4 Call-Graph Construction Algorithm
+The literature might be imprecise and might not always provide all information regarding the implementation of the tool they developed. Mostly, a crucial part of performing inter-procedural analyses is the call-graph construction algorithm. Therefore, as we do not always know which call-graph algorithm is used, we renewed our previous experiment by varying the algorithm. For this, we used the following call-graph construction algorithms: SPARK , CHA , RTA  and VTA.
+
+**Experimental Results With Different Call-Graph Construction Algorithms and a Reduced List of Sensitive Methods Considered**
+(CHA: Class Hierarchy Analysis, RTA: Rapid Type Analysis, VTA: Variable Type Analysis).
+
+We have experimentally seen that minor changes in the implementation can have an important impact on the results. Using heuristics allows the approach to get a false-positive rate similar to the literature (0%). However, this result has a significant impact on the recall, the false-negative rate being raised between 70% and 95%.
+
+# 4 RQ3: Is it Possible to Locate the Malicious Code With Logic Bomb Detection?
+This is by far the most interesting question for this research area. Indeed, detecting malicious code is a difficult problem per se, that is why if this approach could help in this direction, it could be promising. In fact, TSOPEN’s approach is efficient for this purpose for applications taken individually. Indeed, we manually analyzed 200 apps, and we were able to locate quickly (i.e., in less than 2 minutes on average) the malicious code with the results yielded by TSOPEN. When a true-positive is encountered, we were able to directly inspect the method in which the logic bomb was. Consequently, we had malicious code at hand. Note that these manual analyses allowed us to construct TRIG DB, in Section IVD0c we give more details.
+
+During our numerous manual analyses, we were able to locate/track the malicious code easily. The condition of the logic bomb playing the role of the malicious code entry-point.
+
+# 4 RQ4: Do Benign and Malicious Applications use Similar Behavior Regarding the Approach Under Study and Why?
+In this section, we analyze randomly chosen malicious and benign Android applications containing a trigger.
+
+# a) Malicious
+The first malicious application we present is called “LittlePhoto”1 and allows a person with malicious intents to install third party applications and receive information about the device via HTTP by sending an SMS with “$$@@&&$$” or “$$@@&&@@” as the content. It can be viewed as a targeted attack which uses a logic bomb detected as #sms/#body.equals(’$$@@&&$$’). This kind of SMS-related logic bomb is usual in remote administration tool (RAT) or SMS-based backdoors.
+
+The second one is called “com.allen.mp”2 and this time relies on a time-related triggered behavior: “#now cmp 14400000L”. After decompiling the application and analyzing it (see Appendix E, available in the online supplemental material, for an example of the code), we found that it.
+
+1. 9c92c2279a33de01561ce775c8beee9bbb58895a1f632d19f41ac2b286e12bb2.
+
+2. 54f3c7f4a79184886e8a85a743f31743a0218ae9cc2be2a5e72c6ede33a4e66e.

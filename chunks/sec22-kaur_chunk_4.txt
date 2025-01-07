@@ -1,0 +1,168 @@
+Across all platforms, we find that participants reported experience in areas besides development, however, the extent of this varied. Most commonly, developers also had experience as software testers (58-70%). We found networking skills the most common on Google Play (45%) and the least common for Upwork (22%) and Prolific participants (21%). Reverse engineering knowledge was overall less common, with at most 22% on Freelancer. It was least common on Prolific (10%) or for students (13%). We report the most relevant general demographics in Table 2. Across all samples, our participants predominantly identified themselves as male (83%), with CS students (μ: 24) followed by Upwork (μ: 27) and Prolific (μ: 28) being the youngest groups and participants from Google Play (μ: 37) the oldest. Most participants (74%) studied computer science. However, except for MTurk, where 21% self-reported a computer security focus in their studies, at most 4% reported this on the other platforms. Furthermore, only a minority of participant reported a disability and only on Freelancer (45%) and MTurk (41%) we found a large portion to be a primary caregiver for children, elderly or disabled.
+
+Cultural background and language proficiency: Participants across all samples reported a wide variety of ethnicities (cf. Figure 9 in replication package ). Overall, we find that on Prolific (86%), Google Play (76%), MTurk (71%), and in the CS student sample (59%) most participants reported to be white or of European descent.
+
+English (US) was reported as the native language for a majority of participants on MTurk (78%) which is likely due to most of them being located in the U. S. (71%), whereas a plurality of participants on Google Play (40%) and in the student sample (40%) reported German as their native language. Participants on Prolific, Upwork and Freelancer reported a variety of native languages with none of them standing out. Despite only MTurk users being the only sample with a majority of native English speakers, a majority (89%) across all platforms reported being very comfortable in answering the survey in English on a five-point Likert scale.
+
+Education and employment: A majority of participants on MTurk (76%), Upwork (63%) and Freelancer (53%) reported having a Bachelor’s degree, while the most common degree on Google Play (27%) was a master’s degree. While not a majority, a Bachelor’s degree was most common for students (32%) and on Prolific (38%). Additionally, a majority within the student sample reported to be students (60%) or part-time employees (22%) as opposed to other samples.
+
+# 5 Participants’ Demographics
+where most were full-time employees or self-employed. An exception here was Prolific, where 26% of the participants reported to be students, the second-largest group after full-time employees (45%). Overall, most participants reported to work as a software developer (78%). No other job roles particularly stood out, but overall 34% of participants reported to work as an Engineer as a second most common job role. Job role distribution did not vary much between platforms with only students reporting to have roles like data science or ML specialist (20%) and academic researcher or scientist (20%) more than other platforms.
+
+Workplace size and working hours: Across all platforms, the majority of participants (70%) reported working in a small company with less than 500 employees. Additionally, students (μ: 22) reported the lowest overall working hours per week. Participants on Freelancer (μ: 39) followed by Google Play (μ: 37) and MTurk (μ: 36) reporting the highest working hours. This stresses how most participants, except for students, who more commonly work part-time, are full-time developers.
+
+Key Points | Participants’ Demographics: Software development experience is by far most common. Participants are also (less) experienced with security-relevant areas such as reverse engineering or vulnerability research. Current job roles encompass mostly development. The majority of our participants studied computer science with no security focus, and many participants work full-time in smaller companies. Disabilities are very rare. Caregiving (for children) was only common on MTurk and Freelancer. We find a wide variety of ethnicity and native languages between platforms. Bachelor/Master degrees are common.
+
+# 5 General Programming Experience and Knowledge
+In this section, we report our participants’ general programming experience and knowledge across all samples.
+
+Development experience: We asked participants to report their total and professional development experience in years (cf. Figure 3). Google Play participants reported both the highest overall (μ: 17) and professional development experience (μ: 11). In contrast, students were least experienced regarding both overall (μ: 7) and professional experience (μ: 2). For total programming experience, we find no significant difference, while the professional experience on Google Play is significantly higher than on Upwork (KW, H = 7, p ă 0) or for students (KW, H = 11, p = 0) after correction.
+
+Development tasks per week: Furthermore, we asked participants how many hours they spent on software development tasks per week. The majority of Freelancer (79%), Google Play (61%) and Upwork (63%) participants reported working more than 20 hours per week, confirming the previous findings of their commonly reported full-time status. Conversely, the majority on Prolific (60%) and in the student sample (65%) and a bit more than half of MTurk participants (54%) report that they work 20 hours or less.
+
+# 5 Security Experiences, Knowledge, and Skills
+In this section, we provide details on security experience, knowledge and skills our participants reported.
+
+# General security experience, knowledge and skills:
+We asked participants to report their general computer security experience in years, including studying or working (cf. Figure 3). Google Play participants self-reported the highest security experience (μ: 4) and Prolific users the lowest (μ: 1). However, we found no statistically significant differences between samples.
+
+Based on the SSD-SES scale  we found that participants across samples reported different confidence in their secure development skills (Freelancer.com: μ: 26; MTurk: μ: 26; Upwork: μ: 24; GPlay: μ: 22; CS Students μ: 21; Prolific: μ: 18), and the students’ confidence to be significantly lower than the other samples (Mann-Whitney U, U = 370–1107, p < 0).
+
+# Implementing specific security features:
+We were interested in learning our participants’ experiences with implementing specific security features, e.g., encryption or storing user credentials (cf. Figure 5). Our participants reported most experience with implementing input validation, authorization and authentication features, using API keys, using encryption.
+
+# Proficiency in programming, scripting and markup languages:
+An essential recruitment criteria for developer studies, especially those with practical tasks, is the proficiency with specific programming languages  or development areas . Hence, we asked them to rate their proficiencies with the top 15 programming, scripting, or markup languages (cf. Figure 4a), and different development areas.
+
+# Input validation
+42
+66
+79
+83
+83
+72
+# While working
+54
+23
+41
+48
+53
+38
+# Authorization / Authentication
+42
+59
+81
+86
+83
+69
+80
+# API keys
+40
+65
+79
+88
+86
+68
+70
+# Event by employer
+30
+12
+18
+21
+13
+12
+50
+# Encryption / Decryption
+63
+52
+56
+77
+75
+61
+60
+# Store user and password
+38
+50
+72
+65
+62
+52
+# School/college/university
+44
+40
+38
+33
+29
+62
+40
+# Secure network/comm.
+
+33
+25
+40
+41
+60
+35
+50
+# Transfer files securely
+28
+25
+43
+43
+35
+33
+40
+# Online courses
+16
+11
+26
+25
+19
+11
+# Key management
+30
+30
+26
+40
+42
+28
+# Signatures
+18
+12
+22
+30
+30
+22
+30
+# Fraud prevention
+10
+4
+9
+19
+18
+8
+20
+# None
+1
+11
+0
+1
+4
+6
+# Other
+1
+0
+2
+2
+0
+1
+# No training
+3
+31
+20
+15
+25
+17
+and storing user credentials. They reported the least experience with cryptographic key management, digital signatures and fraud prevention features. We also found that participants from Upwork, Freelancer and Google Play reported most experience with implementing specific security features. In contrast, participants from MTurk and Prolific reported the lowest experience. CS students were in the middle.
+
+Finding security problems in code: Furthermore, we asked participants how often they used specific techniques to find security problems in their code, including automated or manual code reviews, tools to scan their code for vulnerable libraries and penetration testing. Overall, we found the usage frequency for these techniques does not differ much between samples (cf. Figure 8 in replication package ). For most techniques, participants state to have used them once or occasionally (20-47%) or not at all (16-65%). Within all techniques, penetration tests are the least frequent (37-65% stated to not use or consider them), most likely due to their massive overhead. We find MTurk participants report generally higher frequencies, with 25-45% stating they use every technique for at least all builds or releases. We find that in general, code reviews are more frequent than other techniques, both manual reviews by other developers (32-47% at every build or release) or automated code scanning tools (22-45%).

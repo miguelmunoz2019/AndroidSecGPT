@@ -1,0 +1,75 @@
+# 5. Widget Extraction
+Appium encapsulates the Accessibility Service, and all widget information in the current interface can be obtained by calling the getPageSource() method. All widget information is marked by the extensible markup language (XML). The widget type is treated as a label, and the widget property information is described in the form of &lt;Key, Value&gt; pair. Firstly, the SAX interpreter is used to parse the XML file to obtain the property information of each widget. It mainly includes widget type (class name), clickable or not, location information (bounds), content information (content-desc), etc., and the dependency and hierarchical relationship among widgets to build the interface widget tree. Then the interface type is identified according to the interface characteristics, and the widget tree optimization strategies are carried out. Finally, generate the action sequence of the interface.
+
+# 5. Traverse Algorithm Design
+According to our GUI traversal model, a heuristic depth-first traversal algorithm is proposed. Algorithm 1 describes the detailed process of the algorithm. Take the apk file of the test application as input and install the application to run. Line 1 initializes the directed graph GUIGraph and the current GUI node cur to null. Lines 2–4 judge the interface type of the first interface entered after application’s startup, optimize the widget tree, generate the initial node, and assign it to the current node cur, and add the cur node to the node set of GUIGraph. Lines 5–7 loop to fetch the task execution from the task list of the current node cur until the traversal condition is reached: the task list is empty or SSL security vulnerability has been detected. Lines 8–20 deal with the situation when the task execution causes the interface to jump. Line 9 calculates the similarity between the interface next after the task has been executed and the interface that has been traversed. Lines 10–12 indicate that when the state of next is an old node that has been traversed, then the old node is assigned to the current node cur. At the same time, the information about the current task that causes the jump to the old node is added to the GUIGraph jump list. Lines 13–15 determine that when the old node is not the initial node initial and the task is empty, the return operation is performed to continue traversing the task list of the previous node. Lines 17–20 describe that when the next node is in a new state, a new GUI node is generated, which is assigned to the current node cur and processed to generate a task list. And add the new node to the GUIGraph node set and add information about the current task that causes the jump to the new node to the GUIGraph jump list. When the interface state does not change and the task list of the current node is not empty, continue to execute the remaining tasks in the task list and loop until the condition of traversal termination is reached.
+
+# 5. User Action Simulation
+There are two types of events in Android apps: button events and touch events. Button events refer to the home button, volume key, return key, and power button on mobile devices. These events are triggered by the event code of the key. The Appium framework client provides a pressKeyCode() method to simulate button events. Touch events refer to the events that simulate the operation of users on the mobile phone screen, such as click events, input events, and sliding events. For touch event emulation, you first need to locate the widget that you want to operate on and then perform the corresponding action according to the widget type. Appium client can locate widgets in various ways through the UIAutomator tools, such as widget ID, widget name, widget class name, widget XPath path, widget CSS properties, and so on. There are also rich APIs for action emulation for different types of widgets, such as button execution operation of the API AndroidElement.click().
+
+# Security and Communication Networks
+# Input: apk file of the test app
+1. Initialize GUIGraph, cur, initial ← ∅
+2. After the test apk starts, the interface type judgment and widget tree optimization are carried out to generate the initial node
+3. cur ← initial; //assign the initial node to the current node
+4. GUIGraph.Nodes.add(cur); //add the initial node to the list of nodes in the GUIGraph
+5. While cur.curTasks.hasNextTask() and not meet the stop condition do
+6. curTask ← cur.curTasks.nextTask(); //Take the task from the task list
+7. curTask.getEvent().runEvent(); //Simulate event action
+8. If the state of cur changed then //Interface state changes
+9. sim ← calculateSimilarity(new Similarity(next, GUIGraph)); //calculate the interface state similarity, sim is a Map structure and the keys are similar nodes, the values are the results of similarity
+10. If sim.getValue() ≥ similarity threshold then //indicate a jump to a node that has been traversed
+11. cur ← sim.getKey(); //the old node is set to the current node and perform the old node task
+12. GUIGraph.transferList.add(curTask, cur); //add jump information
+13. If cur.curTasks.size() is 0 and cur ≠ initial then
+14. cur.addTask(curNode, new BackEvent()); //add back action
+15. End If
+16. Else
+17. cur ← next; //generate new GUI nodes
+18. cur.curTasks.add(generateTask()); //generate the task list for the new node
+19. GUIGraph.Nodes.add(cur); //Add node information
+20. GUIGraph.transferList.add(curTask, cur); //add jump information
+21. End If
+22. End If
+23. End While
+# ALGORITHM 1: Heuristic depth-first traversal algorithm.
+
+appropriate data input is selected from the input library according to the prompt information of the input box.
+
+# 5. MITM Attack Test Module.
+
+Man-in-the-middle attack tests of an application that is running automatically requires identity spoofing between the test device and the server, intercepting network packets that communicate between the test device and the server and forwarding them. The middleman agent tools such as Fiddler, MITMMRoxy, and Burp Suite implement the above functions very well. We implement the attack tests based on the Burp Suite agent. The implementation details of the MITM Attack Test Module and the process of interacting with the traversal strategy are shown in Figure 3, which can effectively intercept, tamper with, and encapsulate the network requests of the applications. First, we install the Burp Suite client proxy software on the computer and then configure the static proxy IP of each Android phone to be the IP address of the computer where Burp Suite is located. The ports are incremented from 8080, and the listening address is set under the proxy function menu of the Burp Suite tool. The IP address and port settings in the tool should be the same as those in the test smartphone. Each test Android smartphone is connected with the computer through USB and interacts with SSLDetecter system through (Android Debug Bridge) ADB commands. The Android smartphones and the computer need to be in the same (local area network) LAN. At this time, the entire attack test environment is initially set up.
+
+# 5. Attack Test Environment Deployment.
+
+The man-in-the-middle attack test is implemented based on Burp Suite. It is one of the popular web application penetration test tools.
+
+# 5. Proxy the Network Traffic of the Application.
+
+This step is primarily viewed with the Proxy tool in the toolkit. Proxy is a Proxy server that intercepts HTTP/S. As a middleman.
+
+# Security and Communication Networks
+# “nternet
+# XortQwigger
+# VG8 %V(cer
+# Network Traffic Commands
+# XroxyA
+# XortAU’’U
+# qxpandedA8urpAQuite
+# XortQwigger
+# %V(cer
+# RecordAandAwirte
+# XortAU’’F VG8
+# Commands
+# [ileAsystem
+# ReadAandAmatch
+# Traverse
+# XortA7
+# Z“AtraversalAmodule
+# VG8
+# Commands
+# XortQwigger
+# %V(cer
+between the client and the server, you can intercept, view, and modify the raw data flow in both directions. The problem that the HTTPS connection cannot be grabbed may occur during the process of capturing the packet. We need to install the Burp Suite certificate PortSwigger CA.cer on the mobile phone and authorize it as a trusted credential. In order to verify whether the application has an SSL security vulnerability, it is necessary to determine whether it can resist the man-in-the-middle attack. So we need to grab HTTPS network requests from the target application.
+
+Our UI traversal strategy automatically drives the traversal of the target application to perform its functions after the target application is deployed to intercept and crawl HTTPS network requests. When the application does not perform certificate and hostname verification for the self-signed certificate, the contents of the HTTPS request will be seen in the “HTTP history” window of the Burp Suite tool. The agent can obtain the results returned from the server side too.

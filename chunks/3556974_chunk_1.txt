@@ -1,0 +1,98 @@
+# Check for Android Source Code Vulnerability Detection: A Systematic Literature Review
+# Authors
+JANAKA SENANAYAKE, Robert Gordon University, UK and University of Kelaniya, Sri Lanka
+HARSHA KALUTARAGE, Robert Gordon University, UK
+MHD OMAR AL-KADRI, Birmingham City University, UK
+ANDREI PETROVSKI, Robert Gordon University, UK
+LUCA PIRAS, Middlesex University, UK
+# Abstract
+The use of mobile devices is rising daily in this technological era. A continuous and increasing number of mobile applications are constantly offered on mobile marketplaces to fulfil the needs of smartphone users. Many Android applications do not address the security aspects appropriately. This is often due to a lack of automated mechanisms to identify, test, and fix source code vulnerabilities at the early stages of design and development. Therefore, the need to fix such issues at the initial stages rather than providing updates and patches to the published applications is widely recognized. Researchers have proposed several methods to improve the security of applications by detecting source code vulnerabilities and malicious codes. This Systematic Literature Review (SLR) focuses on Android application analysis and source code vulnerability detection methods and tools by critically evaluating 118 carefully selected technical studies published between 2016 and 2022. It highlights the advantages, disadvantages, applicability of the proposed techniques, and potential improvements of those studies. Both Machine Learning (ML)-based methods and conventional methods related to vulnerability detection are discussed while focusing more on ML-based methods, since many recent studies conducted experiments with ML. Therefore, this article aims to enable researchers to acquire in-depth knowledge in secure mobile application development while minimizing the vulnerabilities by applying ML methods. Furthermore, researchers can use the discussions and findings of this SLR to identify potential future research and development directions.
+
+# CCS Concepts
+• Security and privacy → Software security engineering; Software reverse engineering; Domain-specific security and privacy architectures; Malware and its mitigation; Vulnerability scanners; Mobile platform security; • Computing methodologies → Machine learning;
+# Additional Key Words and Phrases
+Source code vulnerability, vulnerability detection, software security, Android security, machine learning
+# Authors’ Addresses
+J. Senanayake, Robert Gordon University, Garthdee Road, Aberdeen, UK, AB10 7QB, and University of Kelaniya, Dalugama, Kelaniya, Western Province, Sri Lanka, 11600; email: j.senanayake@rgu.ac.uk, janakas@kln.ac.lk;
+H. Kalutarage and A. Petrovski, Robert Gordon University, Garthdee Road, Aberdeen, UK, AB10 7QB; emails: {h.kalutarage, a.petrovski}@rgu.ac.uk;
+Mhd O. Al-Kadri, Birmingham City University, Millennium Point, Curzon Street, Birmingham, UK, B4 7XG; email: omar.alkadri@bcu.ac.uk;
+L. Piras, Middlesex University, The Burroughs, London, UK, NW4 4BT; email: l.piras@mdx.ac.uk.
+
+# Copyright
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+© 2023 Association for Computing Machinery. 0360-0300/2023/01-ART187 $15 https://doi.org/10/3556974
+# Publication Information
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+Janaka Senanayake, Harsha Kalutarage, Mhd Omar Al-Kadri, Andrei Petrovski, and Luca Piras. 2023.
+
+Android Source Code Vulnerability Detection: A Systematic Literature Review. ACM Comput. Surv. 55, 9,
+Article 187 , 37 pages.
+
+https://doi.org/10/3556974
+# 1 INTRODUCTION
+With technological enhancements and an increase in the usage of mobile devices, a growing number of
+people depend on mobile phones for their daily activities, both for the personal and professional
+aspects of their lives. Statista forecast that, by 2023, there will be 4 billion smartphone users
+. 71% of them use Android as the Operating System (OS)  . Because of this
+worldwide popularity, many application developers are developing various Android mobile applications
+with rapid development life cycles. However, most of these applications are developed without
+integrating proper security mechanisms, increasing their vulnerabilities at the development stage.
+
+Since Google Play does not extensively validate apps to detect code vulnerabilities when publishing
+, users may experience various issues caused by the lack of security checks . Therefore, it
+is important to integrate appropriate Android source code vulnerability detection methods and tools
+when developing the apps.
+
+Studies such as References  have proposed several methods to detect
+vulnerabilities in source code, including some automated mechanisms to support the developers when
+designing and developing secured applications. An increasing number of these supporting methods,
+such as References , are based on machine learning and deep learning for automatic
+early detection of security issues and vulnerabilities, which can support the software engineers to
+improve software security. Studies in References  employ alternative techniques,
+to identify vulnerabilities. A thorough understanding of these existing methods is essential for
+developing Android applications by applying security best practices. Moreover, further research
+also can be conducted to enhance those methods. Therefore, researchers and the application
+development community can use this state-of-the-art SLR to fully understand the strengths and
+weaknesses of existing source code vulnerability detection methods and thus identify future research
+directions.
+
+As discussed in Section 2, several limitations, including not covering recent proposals, relatively
+narrow scopes, and lack of critical appraisals of suggested detection methods, have been identified
+in these existing literature reviews on Android vulnerability detection and prevention methods. The
+lack of a thorough analysis of ML or Deep Learning (DL)-based methods when detecting vulnerabilities
+was also a limitation of existing works. This SLR addresses these limitations by critically evaluating
+118 carefully selected technical studies while answering the formulated research questions.
+
+Therefore, this work is unique, which addresses the research gap in this area.
+
+# 1 Research Questions
+This systematic review aims to answer the following research questions:
+RQ1: What are the existing methods for source code and application analysis? Many research studies
+considered various source code analysis methods, including application reverse-engineering. Moreover,
+byte-code-based analysers are also used, since Android apps can be easily reverse-engineered to
+source code. The static analysis techniques were mainly used on a broad scale, while also applying
+dynamic and hybrid analysis techniques to analyse source code. These methods are discussed in
+Section 4.
+
+RQ2: What are existing Android source code vulnerability detection methods, and how to use them to
+prevent vulnerabilities?
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+# 1 Organization of the Review
+The SLR is structured as presented in Figure 1 to answer the formulated research questions in three main sections.
+
+The rest of this article is organised as follows: Background and related literature are discussed in Section 2, followed by a detailed description of the review methodology in Section 3. The experimental studies reviewed in this SLR are categorised into three main sections: application analysis, code vulnerability detection, supportive tools and repositories. As the initial step of vulnerability detection, ML methods and some conventional methods were applied in various studies. Among them, applying ML methods has been popular in recent years among the research community. Therefore, many studies applied various ML methods. In contrast, few studies applied conventional non-ML-based methods. Detecting vulnerabilities alone is not sufficient when boosting the security of Android source code. Ways to prevent security issues by integrating the detection techniques into software development environments should also be studied. These detection and prevention methods are discussed in Section 5.
+
+# RQ3: Which tools and repositories can be used to detect vulnerabilities in Android apps?
+Exploring tools, repositories, and datasets that can be used to analyse source code and detect vulnerabilities is also essential. Identifying their characteristics and usage is beneficial for conducting new research studies. Therefore, those facts are discussed in Section 6.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# J. Senanayake et al.
+
+detection, applications should be analysed, and three types of analysis techniques (static analysis, dynamic analysis, and hybrid analysis) are used. Studies related to this application analysis are reviewed in Section 4. Code vulnerability detection-related studies are reviewed in Section 5, which discusses the ML-based methods and conventional methods. It further discusses how the existing prevention techniques can be integrated with the identified detection methods. Section 6 reviews supportive tools and repositories that can be used in application analysis, vulnerability detection, and prevention. Section 7 discusses the threats to the validity of the review. Section 8 concludes the article.
+
+# 2 BACKGROUND AND RELATED LITERATURE REVIEWS
+This section discusses the background related to the security of Android applications and the vulnerabilities associated with them. It provides a high-level overview of the Android layered architecture, its security implications, Android application vulnerabilities, and potential mistakes made by users and developers that can lead to security and privacy issues. It also explains the ML process, since the article focuses more on ML-based vulnerability detection mechanisms. Then, it would be helpful for all the readers to understand the content easily. Furthermore, the existing literature reviews are also discussed in this section.

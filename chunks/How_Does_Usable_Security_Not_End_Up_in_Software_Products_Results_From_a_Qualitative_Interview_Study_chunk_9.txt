@@ -1,0 +1,98 @@
+# Develop Measures
+To support the adoption of usable security research results in the software industry, development teams need actionable measures. Researchers can support arguments for usable security in teams by developing measurable goals, actions, and interventions. Without those, blockers might be too challenging, as described by P19. We recommend measures to be lightweight in order to take the limited resources and economic pressures into account (see Section IV-G1) and remain in line with general security research ,.
+
+# VI. CONCLUSION
+In this work we provide novel insights into how professional software development organizations make usable security using 25 semi-structured interviews with software industry workers from different professions. Our results suggest a high impact of individual as well as contextual software development process factors on software products’ usable security, such as the commitment to usable security and knowledge of user-centered methods. Our study highlights the need for more awareness and a holistic understanding of usable security. Based on blockers and structures that contribute to usable security, we propose interventions for industry, such as deliberately strengthening the communication between security and usability experts. To successfully integrate usable security into software products, we recommend that researchers and practitioners take a holistic view on software development, also taking into account contextual factors.
+
+# APPENDIX A
+# PARTICIPANTS
+Table III gives an overview of our participants. We did not include sensitive information such as age and gender on a per-participant basis to protect our participants’ privacy. However, this data is reported in aggregated form in Table I. We purposely do not link contexts to individual interviews for participant and company privacy, as some participants were recruited from our professional network. Identifying product, company size, experience, etc. could help re-identify those who volunteered to participate in our study. We think this should not impact the paper: Our coding and interpretation included our contextual knowledge; thus, our results are informed by this link. For privacy reasons, we omit the link in Tables II and III. Consequently, when we quote participants where their context is relevant, we identify them with the context; whenever their personal experience is most relevant, we quote them with their participant ID.
+
+# APPENDIX B
+# REPLICATION PACKAGE
+To improve the reproducibility of our work and allow easy access for meta-research, we publish a replication package 
+# TABLE III
+# OVERVIEW OVER OUR PARTICIPANTS.
+
+1 ISO 3166-1 encoded.
+
+2 Interview with three participants, reported only main participant.
+
+containing the following documents: (1) The pre-questionnaire for demographic and quantitative questions; (2) The interview guide with the main questions and follow-up prompts for the semi-structured interviews; (3) The materials we used to contact and recruit participants; (4) The consent forms; (5) A table of the software used in this study; (6) The operationalized codebook with codes contributing to this paper. The replication package is available at https://doi.org/10/0089554.
+
+# APPENDIX C
+# PRE-QUESTIONNAIRE
+# Usability
+Q1. Which of the following statements best describes your usability experience?
+- © No experience with usability
+- © Little experience with usability
+- © Some experience with usability
+- © Considerable experience with usability
+- © Prefer not to answer
+Q1. Was usability part of your training or studies?
+- © Yes
+- © No
+- © Prefer not to answer
+- © Other (please specify):
+Q1. During your professional activity have you participated in any usability course or training?
+- © Yes
+- © No
+- © Prefer not to answer
+Q1. Which usability methods have you applied? [Free text field]
+Q1. Who do you think is responsible for the usability of a software product? [Free text field]
+# Security
+Q2. Which of the following statements best describes your security experience?
+- © No experience with security
+- © Little experience with security
+- © Some experience with security
+- © Considerable experience with security
+- © Prefer not to answer
+Q2. Was security part of your training or studies?
+- © Yes
+- © No
+- © Prefer not to answer
+- © Other (please specify):
+Q2. During your professional activity have you participated in any security course or training?
+- © Yes
+- © No
+- © Prefer not to answer
+Q2. Who do you think is responsible for the security of a software product? [Free text field]
+Q2. How many of your recent projects had security requirements? [Numerical field]
+# Experience
+Q3. How old are you? [Numerical field]
+Q3. What is your gender?
+- © Male
+- © Female
+- © Non-binary
+- © Prefer not to answer
+- © Other (please specify):
+# TABLE IV
+OUR FINAL CODEBOOK. (*) DENOTES A CONTAINER FOR SUB-CODES AND THEREFORE IS NOT USED DURING CODING.
+
+# Q3. What is the highest level of school you have completed or the highest degree you have received?
+- © Less than high school / GCSE or equivalent
+- © High school or equivalent / A level or equivalent
+- © Some college, currently enrolled in college, or two-year associate’s degree, completed part of a higher education course, or currently enrolled
+- © Vocational degree
+- © Bachelor’s degree
+- © Some graduate school, or currently enrolled in graduate school
+- © Master’s or professional degree
+- © Doctorate degree
+- © Other (please specify):
+# Q3. In which country do you live? [Free text field]
+# Q3. What is your current employment status?
+- © Employed full-time
+- © Employed part-time
+- © Prefer not to answer
+- © Other (please specify):
+# Q3. What is your current job title? [Free text field]
+# Q3. How many years have you been in the software industry?
+[Numerical field]
+# Q3. How many different products have you worked on in your professional career?
+[Numerical field]
+# APPENDIX D
+# INTERVIEW GUIDE
+We include only the English version which is identical in content with the German version. A version with follow-up questions can be found in the replication package (Appendix B).
+
+909
+Authorized licensed use limited to: IEEE Xplore. Downloaded on August 08, 2024 at 04:02:25 UTC from IEEE Xplore. Restrictions apply.

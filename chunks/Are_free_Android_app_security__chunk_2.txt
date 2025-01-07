@@ -1,0 +1,57 @@
+# Empirical Software Engineering (2020) 25:178–219
+representativeness of Ghera benchmarks along with our observations from the experiment. Section 4 describes the evaluation of the effectiveness of vulnerability detection tools for Android apps along with the 20 observations from the evaluation. Section 5 discusses prior evaluations of Android security analysis tools and how our evaluation relates to them. Section 6 provides information to access the automation scripts used to perform the evaluation and the artifacts generated in the evaluation. Section 7 mentions possible extensions to this effort. Section 8 summarizes our observations from this evaluation. Appendix A briefly catalogs the vulnerabilities captured in Ghera and considered in this evaluation.
+
+# 2 Ghera: A Repository of Vulnerability Benchmarks
+For this evaluation, we considered the Android app vulnerabilities cataloged in Ghera repository, a growing repository of benchmarks that captures known vulnerabilities in Android apps (Mitra and Ranganath 2017a). We created this repository in 2017 with the goal of cataloging vulnerabilities in Android apps as reported by prior work.
+
+Ghera contains two kinds of benchmarks: lean and fat. Lean benchmarks are stripped down apps that exhibit vulnerabilities and exploits with almost no other interesting behaviors and functionalities. Fat benchmarks are real-world apps that exhibit specific known vulnerabilities.
+
+At the time of this evaluation, the number of fat benchmarks in Ghera was low. So, we considered only lean benchmarks in this evaluation. In the rest of this paper, we will focus on lean benchmarks and refer to them as benchmarks.
+
+Each benchmark capturing a specific vulnerability X is composed of three apps (where applicable): a benign (vulnerable) app with vulnerability X,1 a malicious app capable of exploiting vulnerability X in the benign app, and a secure app without vulnerability X and, hence, not exploitable by the malicious app. Malicious apps are absent in benchmarks when malicious behavior occurs outside the Android environment, e.g., web app.
+
+Each benchmark is accompanied by instructions to demonstrate the captured vulnerability and the corresponding exploit by building and executing the associated apps. Consequently, the presence and absence of vulnerabilities and exploits in these benchmarks are verifiable.
+
+At the time of this evaluation, Ghera contained 42 benchmarks grouped into the following seven categories based on the nature of the APIs (including features of XML-based configuration) involved in the creation of captured vulnerabilities. (Category labels that are used later in the paper appear in square brackets.)
+1 We use the terms benign and vulnerable interchangeably.
+
+# Empirical Software Engineering (2020) 25:178–219
+# 7. Web category contains 9 vulnerabilities involving web API. [Web]
+Appendix A briefly catalogs these vulnerabilities and their canonical references.
+
+# 2 Why Use Ghera?
+Past efforts focused on the creation of benchmarks have considered criteria to ensure/justify the benchmarks are useful, e.g., database related benchmarks have considered relevance, scalability, portability, ease of use, ease of interpretation, functional coverage, and selectivity coverage ; web services related benchmarks have considered criteria such as repeatability, portability, representativeness, non-intrusiveness, and simplicity (Antunes and Vieira 2010).
+
+In a similar spirit, for evaluations of security analysis tools to be useful to tool users, tool developers, and researchers, we believe evaluations should be based on vulnerabilities (consequently, benchmarks) that are valid (i.e., will result in a weakness in an app), general (i.e., do not depend on uncommon constraints such as rooted device or admin access), exploitable (i.e., can be used to inflict harm), and current (i.e., occur in existing apps and can occur in new apps).
+
+The vulnerabilities captured in Ghera benchmarks have been previously reported in the literature or documented in Android documentation; hence, they are valid. These vulnerabilities can be verified by executing the benign and malicious apps in Ghera benchmarks on vanilla Android devices and emulators; hence, they are general and exploitable. These vulnerabilities are current as they are based on Android API levels 19 thru 25, which enable more than 90% of Android devices in the world and are targeted by both existing and new apps.
+
+Due to these characteristics and the salient characteristics of Ghera — tool and technique agnostic, authentic, feature specific, contextual (lean), version specific, duality and comprehensive — described by Mitra and Ranganath (2017a), Ghera is well-suited for this evaluation.
+
+# 3 Representativeness of Ghera Benchmarks
+For tools evaluations to be useful, along with the above requirements, the manifestation of a vulnerability considered in the evaluation should be representative of the manifestations of the vulnerability in real-world apps. In other words, the evaluation should consider vulnerabilities as they occur in real-world apps.
+
+A vulnerability can manifest or occur in different ways in apps due to various aspects such as producers and consumers of data, nature of data, APIs involved in handling and processing data, control/data flow paths connecting various code fragments involved in the vulnerability, and platform features involved in the vulnerability. As a simple example, consider a vulnerability that leads to information leak: sensitive data is written into an insecure location. This vulnerability can manifest in multiple ways. Specifically, at the least, each combination of different ways of writing data into a location (e.g., using different I/O APIs) and different insecure locations (e.g., insecure file, untrusted socket) can lead to a unique manifestation of the vulnerability.
+
+In terms of representativeness as described above and as desired in tool assessments (as mentioned in Section 1), there is no evidence that the benchmarks in Ghera capture vulnerabilities as they manifest or occur in real-world apps; hence, we needed to establish the representativeness of Ghera benchmarks.
+
+# 3 How to Measure Representativeness?
+Since Ghera benchmarks capture specific manifestations of known vulnerabilities, we wanted to identify these manifestations in real-world apps to establish the representativeness of the benchmarks. However, there was no definitive list of versions of apps that exhibit known vulnerabilities. So, we explored CVE , an open database of vulnerabilities discovered in real-world Android apps, to identify vulnerable versions of apps. We found that most CVE vulnerability reports failed to provide sufficient information about the validity, exploit-ability, and manifestation of vulnerabilities in the reported apps. Next, we considered the option of manually examining apps mentioned in CVE reports for vulnerabilities. This option was not viable because CVE vulnerability reports do not include copies of reported apps. Also, while app version information from CVE could be used to download apps for manual examination, only the latest version of apps are available from most Android app stores and app vendors.
+
+Finally, we decided to use usage information about Android APIs involved in manifestations of vulnerabilities as a proxy to establish the representativeness of Ghera benchmarks. The rationale for this decision is the likelihood of a vulnerability occurring in real-world apps is directly proportional to the number of real-world apps using the Android APIs involved in the vulnerability. So, as a weak yet general measure of representativeness, we identified Android APIs used in Ghera benchmarks and measured how often these APIs were used in real-world apps.
+
+# 3 Experiment
+# 3 Source of Real-World Apps
+We used AndroZoo as the source of real-world Android apps. AndroZoo is a growing collection of Android apps gathered from several sources including the official Google Play store . In May 2018, AndroZoo contained more than 5 million different APKs (app bundles).
+
+Every APK (app bundle) contains an XML-based manifest file and a DEX file that contains the code and data (i.e., resources, assets) corresponding to the app. By design, each Android app is self-contained. So, the DEX file contains all code that is necessary to execute the app but not provided by the underlying Android Framework or Runtime. Often, DEX files include code for Android support library.
+
+AndroZoo maintains a list of all of the gathered APKs. This list documents various features of APKs such as SHA256 hash of an APK (required to download the APK from AndroZoo), size of an APK, and the date (dex date) associated with the contained DEX file However, this list does not contain information about API levels (Android versions) that are targeted by the APKs; this information can be recovered from the APKs.
+
+# 3 App Sampling
+Each version of Android is associated with an API level, e.g., Android versions 5 and 5 are associated with API levels 21 and 22, respectively. Every Android app is associated with a minimum API level (version) of Android required to use the app and a target API level.
+
+2 dex date may not correspond to the release date of the app.
+
+184 Empirical Software Engineering (2020) 25:178–219
+(version) of Android that is ideal to use the app; this information is available in the app’s manifest file.

@@ -1,0 +1,65 @@
+# SURVEY METHODOLOGY
+# Methodology
+The methodology of retrieving Android malware obfuscation detection related articles is presented in this section. This study adopted Web-of-Science search engine to carry over the literature review using search terms with inclusions and exclusion criteria. The review process consists of four phases; first phase is identification, second phase is screening, third phase is eligibility, and fourth phase is analysis phase.
+
+# Identification
+The adopted Web-of-Science search engine covers hundred years of citation data containing many journals related to computer security, software development, and network security. Clarivate Analystics established this citation database with ranking citations measure (citation per paper). Since this study focused on Android malware obfuscation, we had selected ‘Android malware,’ ‘malware obfuscation’, and ‘malware evasion’ as our search terms. The search results in 511 research from journals and conferences’ proceeding database. The search results mainly records are from IEEE, journals and conferences distributions as per Table 2.
+
+The list of collected articles represent the Android malware obfuscation and detection frameworks. It included the three types of the malware analysis techniques static, dynamic and hybrid techniques in the last decade from 2011 to early 2021. Hence, we collected Android malware frameworks for the last decade and innovative contributions that appeared in high-ranked journals or conferences such as IEEE, ACM, and Springer.
+
+# Screening
+Since, this paper explored the last 10 years’ research to evaluate the Android detection frameworks against evasion techniques, we focused on experimental malware detection articles using static, dynamic and hybrid analysis techniques, excluding the unrelated articles. We excluded articles that are not Android specific malware detection such as IOS and Windows based operating system. In addition, we excluded all other languages and include only English language research to avoid translation overhead in future.
+
+# Eligibility
+As shown in Fig. 1, the review process presented four phases flow diagram, the identification collect the articles from web of science (WOS) database using above mentioned search terms, next, screening identified the criteria of article inclusion and exclusion. After removing the duplicates and excluded the non-related articles, we categorize Android malware detection by the analysis methodology static, dynamic, and
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Identification of studies via Web-of-Science databases
+# Records identified from Web-Of-Science Databases
+hybrid features. This paper decides to put metadata analysis out of this research scope. The screening phase resulted into 342 article from 511 collected in identification phase. However, we have examined 74 static analysis based frameworks. The number of dynamic based analysis frameworks are 35, the number of hybrid analysis frameworks is 26. Hence the total number of examined papers are 135 research paper that this study selected from top rank journals and conferences.
+
+# Data analysis
+We scrutinise Android malware detection academic and commercial frameworks while a large portion of the past work concentrated on commercial anti-malware solutions. This study examines different evasion techniques that hinder detecting malicious parts of applications and affect detection accuracy by reviewing state-of-the-art Android malware studies and issues limiting the detection of evasion techniques. It is worth noting that this work differs from related works that examine detection methods, as we go through evasion techniques that let malware evades detection methods.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Android applications and weaknesses
+In the section, we discussed the Android application architecture. Subsequently, we investigate the Android operating system (OS) weaknesses. This background highlights the seriousness of some drawbacks to rationalize the necessity of establishing this review and explain the essential terms to support the readers of this study.
+
+# Android application
+Android application, Android app, or APK refers to the Android application from now on and throughout this paper. APK is a compressed file; an unzipping program extracts its files and folders. This segment explains the APK components and their contents, as some terms are essential in this study. APK developers use development tools that occasionally require simple programming experience from young developers. The Android app runs on Dalvik or ART equivalent to Java Virtual Machine (JVM) in a desktop environment. The APK structure consists of many files and directories; the main file is Classes.dex Java bytecode; it includes the classes and is packed together in a single .dex file. The AndroidManifest.xml file contains deployment specifications and the required permissions from Android OS. Resources .arsc is compiled resources, and Res folder is un-compiled resources.
+
+The Android system must install the APK file so that the end-user can utilize the application’s functionalities. The Android system only accepts APK with a valid developer certificate, called developer identifier. Individual developers keep their certificate keys; there is no Central Authority (CA) server to maintain developers’ keys, and thus no chain of trust between app stores and developers.
+
+End-users need to run the installed applications, while other apps run as a service in the OS background. Therefore, the Android application’s main components are as follows:
+- a) Activities: The user interface that end-users interact with and that communicates with other activities using intents.
+
+- b) Services: Android application component runs as a background process and bonds or un-bonds with other Android system components.
+
+- c) Broadcast and Receivers Intents: send messages that all other applications or individual applications receive.
+
+- d) Content Providers: It is the intermediate unit to share data between applications.
+
+# Android weaknesses
+With some insight into the Android applications’ development design, we list the Android system’s weaknesses and definitions for the readers of this study. The following is a list of Android flaws and characteristics that malware authors and attackers abuse.
+
+- (a) Open Source: The advantage of Android source code’s openness helps developers’ communities enhance the OS and add more features. Therefore, the Android community improves Android OS daily. But, this contradicts with the security concerns when malware writers take this.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# advantage. It makes their job more straightforward than in closed source firmware, which commonly triggers new vulnerabilities and malware attacks.
+
+# (b) End-users Security Awareness:
+End-users understanding malware’s seriousness plays a vital role in early prevention and detection when using feedback and reviews. However, the end-users feedback system is insecure and easily polluted by fake comments (Rashidi, Fung & Tam, 2015). End-users click on malicious URL links in emails, web browsers, pop-ups, or Android application dialogues that download and install malicious applications. The end-users grant permissions to the apps without studying the apps’ actual requirements; they believe and follow fake advertisements of permissions greedy apps.
+
+# (c) Third-party Apps Market:
+Android lets end-users download applications from third-party markets and install such application offline by enabling installations from unknown sources in the phone settings menu. Several untrusted or well-verified application stores offer Android the third-party application, such as Amazon, GoApk, Slide ME, and other apps markets. In addition, there are four Chinese App markets Anzhi, Mumayi, Baidu, and eoe app third party markets, since Google Play restricted access to the Android Play Store for the Chinese population . End-users download mobile applications from any website to their mobiles devices, personal computers, or laptops via tools such as the ADB tool in Android SDK, which increases the probability of installing malicious apps (Sufatrio et al., 2015b; Tan, Chua & Thing, 2015).
+
+# (d) The Coarse Granularity of Android Permissions:
+The Android system controls the users’ application access using coarse granulated permissions, i.e., one permission that provides access to entire Internet protocols and all sites. There is no competent permission administration or sufficient permission documentation, leading to excess permissions (Fang, Han & Li, 2014).
+
+# (e) Developers’ Signatures:
+Android application developers have to sign their apps with their developer key before uploading the developed application to the market. There is no external party to authenticate developers’ signatures and thus no confidentiality or integrity (Holla & Katti, 2012). Hence, malware developers clone benign applications and sign the APK with their developer key after injecting malicious codes . Later, malware developers upload malicious APK to third-party application markets or share the infected applications directly with their victims.
+
+# (f) Application Version Update:
+Android applications usually enhance their functionalities in the form of version updates. The security frameworks analyze the application during installation, and the
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# update process downloads new services/features without security precautions or checks.

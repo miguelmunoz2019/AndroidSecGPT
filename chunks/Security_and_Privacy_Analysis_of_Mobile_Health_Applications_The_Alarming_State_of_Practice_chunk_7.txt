@@ -1,0 +1,18 @@
+# Michael Strigkos
+Michael Strigkos received the B.Sc. degree in information management from the Technological Educational Institute, Kavala, Greece, and the M.Sc. degree in digital communications and networks from the Department of Digital Systems, University of Piraeus, Greece. He is a Senior Web Developer. His current research interests include Web security.
+
+VOLUME 6, 2018
+# A. Papageorgiou et al.: Security and Privacy Analysis of Mobile Health Applications
+# EUGENIA POLITOU
+received the Diploma (BSE) degree in electrical and computer engineering and the M.Sc. degree in digital image processing and Internet databases from Democritus University of Thrace, Xanthi, Greece. She is currently pursuing the Ph.D. degree in informatics with the University of Piraeus, Greece. Her current research interests include human–computer interaction, mobile computing, privacy, and data protection. She has a great experience in research, security, analysis, and design under various national and European large-scale IT projects within the private and public sector.
+
+# AGUSTI SOLANAS (S’03–M’06–SM’14)
+received the M.Sc. degree (Hons.) in computer engineering from Rovira i Virgili University (URV) in 2004, the Diploma of Advanced Studies from the Technical University of Catalonia in 2005, and the Ph.D. degree from the Department of Telematics Engineering, Technical University of Catalonia in 2007. He is a Professor with the Department of Computer Engineering and Mathematics and the Head of the Smart Health research group, URV. His current research interests include smart health, health informatics, behavior analysis, multivariate analysis, privacy protection, and computer security. He serves as a Scientific Coordinator at APWG.EU.
+
+# EFTHIMIOS ALEPIS
+received the B.Sc. degree in informatics and the Ph.D. degree from the Department of Informatics, University of Piraeus, Greece, in 2002 and 2009, respectively. He has been an Assistant Professor with the Department of Informatics, University of Piraeus, since 2013. He has authored/co-authored over 60 scientific papers which have been published in international journals, book chapters, and international conferences. His current research interests include the areas of object-oriented programming, mobile software engineering, human–computer interaction, affective computing, user modeling, and educational software.
+
+# CONSTANTINOS PATSAKIS
+received the B.Sc. degree in mathematics from the University of Athens, the M.Sc. degree in information security from Royal Holloway, and the Ph.D. degree in security from the University of Piraeus. He is currently an Assistant Professor with the University of Piraeus. He has several publications in peer-reviewed international conferences and journals and participated in many national and European research and development projects. His main areas of research interests include cryptography, security, privacy, and data anonymisation. He was a Researcher at the UNESCO Chair in Data Privacy and the Trinity College.
+
+VOLUME 6, 2018 9403.

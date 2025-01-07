@@ -1,0 +1,47 @@
+# Peeking into Your App without Actually Seeing it:
+# UI State Inference and Novel Android Attacks
+Qi Alfred Chen, University of Michigan; Zhiyun Qian, NEC Laboratories America; Z. Morley Mao, University of Michigan
+https://www.usenix.org/conference/usenixsecurity14/technical-sessions/presentation/chen
+This paper is included in the Proceedings of the 23rd USENIX Security Symposium.
+
+August 20–22, 2014 • San Diego, CA
+ISBN 978-1-931971-15-7
+Open access to the Proceedings of the 23rd USENIX Security Symposium is sponsored by USENIX
+# Peeking into Your App without Actually Seeing It: UI State Inference and Novel Android Attacks
+# Qi Alfred Chen, Zhiyun Qian†, Z. Morley Mao
+# University of Michigan,†NEC Labs America, Inc.
+
+# alfchen@umich.edu, zhiyunq@nec-labs.com, zmao@umich.edu
+# Abstract
+The security of smartphone GUI frameworks remains an important yet under-scrutinized topic. In this paper, we report that on the Android system (and likely other OSes), a weaker form of GUI confidentiality can be breached in the form of UI state (not the pixels) by a background app without requiring any permissions. Our finding leads to a class of attacks which we name UI state inference attack. The underlying problem is that popular GUI frameworks by design can potentially reveal every UI state change through a newly-discovered public side channel — shared memory. In our evaluation, we show that for 6 out of 7 popular Android apps, the UI state inference accuracies are 80–90% for the first candidate UI states, and over 93% for the top 3 candidates.
+
+Even though the UI state does not reveal the exact pixels, we show that it can serve as a powerful building block to enable more serious attacks. To demonstrate this, we design and fully implement several new attacks based on the UI state inference attack, including hijacking the UI state to steal sensitive user input (e.g., login credentials) and obtain sensitive camera images shot by the user (e.g., personal check photos for banking apps). We also discuss non-trivial challenges in eliminating the identified side channel, and suggest more secure alternative system designs.
+
+# 1 Introduction
+The confidentiality and integrity of applications’ GUI content are well recognized to be critical in achieving end-to-end security [1–4]. For instance, in the desktop and browser environment, window/UI spoofing (e.g., fake password dialogs) breaks GUI integrity . On the Android platform, malware that takes screenshots breaches GUI confidentiality . Such security issues can typically lead to the direct compromise of the confidentiality of user input (e.g., keystrokes). However, a weaker form of confidentiality breach has not been thoroughly explored, namely the knowledge of the application UI state (e.g., knowing that the application is showing a login window) without knowing the exact pixels of the screen, especially in a smartphone environment.
+
+Surprisingly, in this paper we report that on the Android system (and likely on other OSes), such GUI confidentiality breach is indeed possible, leading to serious security consequences. Specifically, we show that UI state can be inferred without requiring any Android permissions. Here, UI state is defined as a mostly consistent user interface shown in the window level, reflecting a specific piece of program functionality. An example of a UI state is a login window, in which the text content may change but the overall layout and functionality remain the same. Thus, we call our attack UI state inference attack. In this attack, an attacker first builds a UI state machine based on UI state signatures constructed offline, and then infers UI states in real time from an unprivileged background app. In Android terminology, the UI state is known as Activity, so we also call it Activity inference attack in this paper.
+
+Although UI state knowledge does not directly reveal user input, due to a lack of direct access to the exact pixels or screenshots, we find that it can effectively serve as a building block and enable more serious attacks such as stealing sensitive user input. For example, based on the inferred UI states, we can further break the GUI integrity by carefully exploiting the designed functionality that allows UI preemption, which is commonly used by alarm or reminder apps on Android.
+
+The fundamental reason for such confidentiality breach is in the Android GUI framework design, where every UI state change can be unexpectedly observed through publicly accessible side channels. Specifically, the major enabling factor is a newly-discovered shared-memory side channel, which can be used to detect window events in the target application. This side channel exists because shared memory is commonly adopted by window managers to efficiently receive window changes or updates from running applications. For more details, please refer to §2 where we summarize the design and implementation of common window managers, and §3 where we describe how shared memory plays a critical role. In fact, this design is not specific to Android: nearly all popular OSes such as Mac OS X, iOS, and Windows also adopt this shared-memory mechanism for their win-
+dow managers. Thus, we believe that our attack on Android is likely to be generalizable to other platforms.
+
+Since the window manager property we exploit has no obvious vulnerabilities in either design or implementation, it is non-trivial to construct defense solutions. In §9, we discuss ways to eliminate the identified side channels, and also suggest more secure alternative system designs.
+
+Our discovered Activity inference attack enables a number of serious follow-up attacks including (1) Activity hijacking attack that can unnoticeably hijack the UI state to steal sensitive user input (e.g., login credentials), and (2) camera peeking attack that captures sensitive camera images shot by the user (e.g., personal check photos for banking apps). We have fully designed and implemented these attacks and strongly encourage readers to view several short video demos at https://sites.google.com/site/uistateinferenceattack/demos.
+
+Furthermore, we demonstrate other less severe but also interesting security consequences: (1) existing attacks [5, 7–10] can be enhanced in stealthiness and effectiveness by providing the target UI states; (2) user behavior can be inferred through tracking UI state changes. Previous work has demonstrated other interesting Android side-channel attacks, such as inferring the web pages a user visits  as well as the identity, location, and disease information of users . However, these attacks are mostly application-specific with limited scope. For instance, Memento  only applies to web browsers, and Zhou et al.  reported three side channels specific to three different apps. In contrast, the UI state concept in this paper applies generally to all Android apps, leading to not only a larger attack coverage but also many more serious attacks, such as the Activity hijacking attack which violates GUI integrity.
+
+# The contributions of this paper are as follows:
+- We formulate the general UI state inference attack that violates a weaker form of GUI confidentiality, aimed at exposing the running UI states of an application. It exploits the unexpected interaction between the design and implementation of the GUI framework (mainly the window manager) and a newly-discovered shared-memory side channel.
+
+- We design and implement the Android version of this attack and find an accuracy of 80–90% in determining the foreground Activity for 6 out of 7 popular apps. The inference itself does not require any permissions.
+
+- We develop several attack scenarios using the UI state inference technique and demonstrate that an attacker can steal sensitive user input and sensitive camera images shot by the user when using Android apps.
+
+For the rest of the paper, we first provide the attack background and overview in §2. The newly-discovered side channel and Activity transition detection are detailed in §3, and based on that, the Activity inference technique is described in §4. In §5, we evaluate this attack with popular apps, and §6, §7 and §8 show concrete follow-up attacks. We cover defense in §9, followed by related work in §10, before concluding in §11.
+
+# 2 Background and Overview
+# 2 Background: Window Manager
+Window manager is system software that interacts with applications to draw the final pixels from all application windows to the frame buffer, which is then displayed on screen. After evolving for decades, the most recent design is called compositing window manager, which is used virtually in all modern OSes. Unlike its predecessors, which allow individual applications to draw to the frame buffer directly, a compositing window manager requires applications to draw the window content to off-screen buffers first, and use a dedicated window compositor process to combine them into a final image, which is then drawn to the frame buffer.

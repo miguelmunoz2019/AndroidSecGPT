@@ -1,0 +1,85 @@
+# III. RESULTS AND ANALYSIS
+This section presents the results for each research question and consequently provides an overview of the secure software development process trends. A way to determine the relevance of security related aspects encountered in the context of software development can be through their frequency (i.e. the number of times that an aspect is reported in the analyzed documents).
+
+# A. RQ1: WHAT ARE THE MAIN TRENDS IN SECURE SOFTWARE DEVELOPMENT?
+The main trends in the development of Secure Software according to systematic mapping are classified on the
+VOLUME 9, 2021
+36855
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+First, the publications were classified based on the phases of secure software development. Likewise, according to the Software Engineering Body of Knowledge (SWEBOK) and CSSLP Certification, the phases of the construction of Secure Software correspond to the requirements, design, coding, and testing phase of secure software , . Figure 3 illustrates that 267 (42%) of 528 studies focus on the coding phase of secure software, being this the first topic of interest, followed by the design, requirements, and testing phases. These results are similar to a previous systematic mapping study on security in the software development life cycle carried out with publications between 1980 and 2015, where coding, design, and requirements reached 42%, 29%, and 19%, respectively.
+
+Second, the security principles were analyzed using the ISO/IEC/IEEE 12207-2017 standard and CSSLP Certification Program definitions – see Figure 4. The most frequently reported security principles are confidentiality, integrity, and availability. They were identified in 42 studies (8% of 528 articles) by reviewing the entire content of some articles.
+
+Third, the articles were classified based on the type of types of papers recommended in  and , (see Table 7). As it can be observed, the evaluation research type is reported more frequently (53% of all reviewed papers). This kind of research implements a technique in practice or studies a problem in practice . Only 23 papers reported systematic reviews and mappings.
+
+presents a closer view of the evaluation and validation research types, showing that a higher proportion corresponds to the case study research type followed by experiments.
+
+Fourth, the articles were also sorted out by the security application domains, resulting in 64 studies; the predominant domain was government – see Table 9. Some of the articles propose government frameworks for secure software development (e.g. Information technology services to the Brazilian Government, Malaysian public sector for in-house web application development, Chinese IT security standards, etc).
+
+Fifth, the type of software application was obtained from 209 articles that contained that information. Results are shown in Figure 5 where Web applications (33%) are the most referred since they are prey to constant attacks that are difficult to control. Also, large enterprise software presents a latent security concern because managing bulky assets, components, and a considerable amount of code is complex. Likewise, cyber-physical systems must be completely secure, since these are sensitive applications that integrate physical systems with software (e.g. systems that manage the operation of electrical networks). Similarly, emerging applications such as IoT applications are gradually becoming an attractive attack vector due to their limited security.
+
+Sixth, the studies were classified according to the type of software life cycle model. To do so, it was necessary to review the entire content of some articles. Figure 6 shows that the most referred were the agile methodologies being.
+
+36856
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# Confidentiality
+29%
+# Integrity
+21%
+# Availability
+21%
+# Authentication
+10%
+# Authorization
+8%
+# Traceability
+4%
+# Data encryption
+3%
+# Non-repudiation
+3%
+10        15        20        25        30        35
+Number of papers
+the Scrum framework and the dynamic software develop-
+ment those that stand out. It was also found that agile
+methodologies are not the preferred option for developing
+large-scale projects, security-critical software projects, and
+projects where requirements are known in advance. Waterfall
+methodologies are preferred in those types of projects.
+
+VOLUME 9, 2021
+36857
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# Other applications
+Number of papers
+Seventh, we looked for secure software development models among the articles. Table 10 illustrates the results obtained from reading 44 studies, where it can be observed that the Comprehensive Lightweight Application Security Process (OWASP - CLASP) and the Microsoft Security Development Lifecycle (SDL) are the most commonly referred. The models that do not appear in the studies despite their popularity are Security Apple Developer, Web Application Security Consortium (WASC), and SANS information security training. Apart from secure software development models, there are also organizations in the world that lead security issues such as Central Illinois Center of Excellence for Secure Software (CICESS), Illinois Central College (ICC), GDPR (General Data Protection Regulation), Malaysian Public Service Organization (MPS), Department of Defense (DoD), European Space Agency (ESA).
+
+Eighth, the contributions that the researchers propose in their studies appear in Table 11. Models, methodologies, and tools are the most generally reported. A model is a graphic or mathematical description of a system with its respective properties; a methodology is a particular set of procedures; and a tool is the implementation of a process.
+
+Ninth, we look at trends in the use of Artificial Intelligence techniques for secure software development. Figure 7 illustrates the result of 52 studies related to this issue. Machine learning techniques are undoubtedly trending in secure software development, among them the Bayesian network, Support Vector Machine (SVM), Long Short-Term Memory model (LSTM), K-Nearest Neighbor (KNN), Principal Component Analysis (PCA), Naive Bayes, and frequency-reverse document frequency TF-IDF.
+
+Finally, Figure 8 presents the classification of papers according to the problems identified by developers regarding.
+
+36858
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+10 15 20 25 30 35
+Number of papers
+# Need for assistance and training
+secure software development. As it can be seen, what developers require the most is assistance and training to develop secure software. This is understandable since the analyzed articles report that developers: lack of knowledge or skills to build these kind of applications, have the need for a security expert to guide them, and feel overloaded or have complex development activities to perform. Some proposals consider it essential to change the developer’s mindset to make security a priority in software development. In this respect, security training helps, but developers find it challenging to apply it into their programming tasks . It is important to consider that awareness of security issues is generated through several avenues, including company processes, standards, practices, and training, as well as the contextual factors that drive the focus on security.
+
+VOLUME 9, 2021
+36859
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# B. RQ2: WHAT ARE THE MOST PROMINENT ACTIVITIES, AND WHAT METHODS ARE PREVALENT IN SOFTWARE REQUIREMENTS SECURITY?
+Security requirements are divided into two categories. The first category includes software functions that implement security policies or that are required for security reasons. The second category is related to the probability that software security is threatened , . Therefore, it is necessary to consider security aspects from the early phases of development. The first phase should identify the software security requirements and lay the foundation with high-level requirement models to continue developing secure software in the next phases.
+
+In the secure software requirements phase, the sub-phases of elicitation, analysis, specification, and validation are carried out. Figure 9 and Table 7 shows the classification of 154 papers related to the requirement phase, being elicitation and analysis the sub-phases commonly referred. In the elicitation sub-phase, the sources of security requirements are identified based on the application’s goals, domain, and stakeholders. For its part, the analysis sub-phase classifies and identifies limits, and detects and resolves conflicts between requirements. Finally, the specification sub-phase writes the requirements in a formal document to be evaluated in the requirements validation sub-phase.
+
+36860
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+10 20 30 40
+Number of papers
+Case is more frequently highlighted, which is used to elicit security requirements and identify potential threats in the use cases. Other methods or techniques were identified with the same objective and similar tasks, but with different names and approaches to tackle security. Likewise, many of the techniques derive from Security Requirements Engineering, but there is an interest in applying methods based on machine learning and agile methodologies. Also, for the prioritization of security requirements, the Fuzzy - Analytic Hierarchy Process method is reported. In addition, to represent security requirements, UML diagram extensions are used in techniques such as UMLsec. Finally, it is not a matter of choosing the best technique but looking at how they can complement each other. For example, requirements for safety, and security, usability, and reliability.

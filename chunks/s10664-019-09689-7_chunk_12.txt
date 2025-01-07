@@ -1,0 +1,66 @@
+# Empirical Software Engineering (2019) 24:2056–2101
+conference on operating systems design and implementation, OSDI’10. USENIX Association, Berkeley, pp 393–407. http://dl.acm.org/citation.cfm?id=1924943
+Enck W, Ongtang M, McDaniel P (2009) On lightweight mobile phone application certification. In: Proceedings of the 16th ACM conference on computer and communications security, CCS ’09. ACM, New York, pp 235–245. https://doi.org/10/1653662
+Fahl S, Harbach M, Muders T, Baumgärtner L., Freisleben B, Smith M (2012) Why eve and mallory love android: an analysis of android ssl (in)security. In: Proceedings of the 2012 ACM conference on computer and communications security, CCS ’12. ACM, New York, pp 50–61. https://doi.org/10/2382196
+Fattori A, Tam K, Khan SJ, Cavallaro L, Reina A (2014) CopperDroid: On the Reconstruction of Android Malware Behaviors. Tech. rep. Royal Holloway University of London
+FIRST Organization (2019) Common vulnerability scoring system sig. https://www.first.org/cvss
+for Standardization IO (2011) Iso 27005 information security risk management
+Garcia J, Hammad M, Ghorbani N, Malek S (2017) Automatic generation of inter-component communication exploits for android applications. In: Proceedings of the 2017 11th joint meeting on foundations of software engineering, ESEC/FSE 2017. ACM, New York, pp 661–671. https://doi.org/10/3106237
+Gasior W, Yang L (2012) Exploring covert channel in android platform. In: 2012 international conference on cyber security, pp 173–177. https://doi.org/10/CyberSecurity
+Ghafari M, Gadient P, Nierstrasz O (2017) Security smells in android. In: 2017 IEEE 17th international working conference on source code analysis and manipulation (SCAM), pp 121–130. https://doi.org/10/SCAM
+Gilbert P, Chun BG, Cox LP, Jung J (2011) Vision: automated security validation of mobile apps at app markets. In: Proceedings of the second international workshop on mobile cloud computing and services, MCS ’11. ACM, New York, pp 21–26. https://doi.org/10/1999732
+Gorla A, Tavecchia I, Gross F, Zeller A (2014) Checking app behavior against app descriptions. In: ICSE’14, pp 1025–1035. https://doi.org/10/2568225
+Google (2016) Android security 2015 year in review. https://static.googleusercontent.com/media/source.android.com/en//security/reports/Google Android Security 2015 Report Final.pdf
+Google (2017a) Android security bulletins. https://source.android.com/security/bulletin/
+Google (2017b) Platform architecture. https://developer.android.com/guide/platform/index.html
+Graf J, Hecker MMM (2015) Jodroid: Adding android support to a static information flow control tool. In: Working conference on programming languages
+Grissom RJ, Kim JJ (2005) Effect sizes for research: a broad practical approach, 2nd edn. Lawrence Earlbaum Associates, New Jersey
+Hedges LV, Olkin I (1985) Statistical methods for Meta-Analysis. Academic Press, New York
+Herzig K, Zeller A (2013) The impact of tangled code changes. In: Proceedings of the 10th Working Conference on Mining Software Repositories, MSR ’13, San Francisco, pp 121–130
+Holm S (1979) A simple sequentially rejective Bonferroni test procedure. Scand J Stat 6:65–70
+Huang H, Zhu S, Chen K, Liu P (2015) From system services freezing to system server shutdown in android: All you need is a loop in an app. In: Proceedings of the 22nd ACM SIGSAC conference on computer and communications security, CCS ’15. ACM, New York, pp 1236–1247. https://doi.org/10/2813606
+Jimenez M, Papadakis M, Bissyandé TF, Klein J (2016) Profiling android vulnerabilities. In: 2016 IEEE International conference on software quality, reliability and security (QRS), pp 222–229. https://doi.org/10/QRS
+Kantola D, Chin E, He W, Wagner D (2012) Reducing attack surfaces for intra-application communication in android. In: Proceedings of the second ACM workshop on security and privacy in smartphones and mobile devices, SPSM ’12. ACM, New York, pp 69–80. https://doi.org/10/2381934
+Kim S, James Whitehead Jr E, Zhang Y (2008) Classifying software changes: clean or buggy? IEEE Trans Softw Eng 34(2):181–196
+Lal S, Sureka A (2012) Comparison of seven bug report types: a case-study of google chrome browser project. In: 2012 19th asia-pacific software engineering conference, vol 1, pp 517–526. https://doi.org/10/APSEC
+Lee S, Hwang S, Ryu S (2017) All about activity injection: Threats, semantics, and detection. In: Proceedings of the 32nd IEEE/ACM international conference on automated software engineering, ASE 2017. IEEE Press, Piscataway, pp 252–262. http://dl.acm.org/citation.cfm?id=3155562
+Li GK (2010) Computing inter-rater reliability and its variance in the presence of high agreement. Br J Math Stat Psychol 61(1):29–48. https://doi.org/10/000711006X126600
+# Empirical Software Engineering (2019) 24:2056–2101
+#{RSS}
+Novak E, Tang Y, Hao Z, Li Q, Zhang Y (2015) Physical media covert channels on smart mobile devices. In: Proceedings of the 2015 ACM international joint conference on pervasive and ubiquitous computing, UbiComp ’15. ACM, New York, pp 367–378. https://doi.org/10/2750858
+Park Y, Reeves DS (2013) Deriving common malware behavior through graph clustering. Comput Secur 39(PART B):419–430. https://doi.org/10/j.cose
+Ren C, Zhang Y, Xue H, Wei T, Liu P (2015) Towards discovering and understanding task hijacking in android. In: Proceedings of the 24th USENIX conference on security symposium, SEC’15. USENIX Association, Berkeley, pp 945–959. http://dl.acm.org/citation.cfm?id=2831143
+Rust (2013) https://www.rust-lang.org
+Sadeghi A, Bagheri H, Malek S (2015) Analysis of android inter-app security vulnerabilities using covert. In: ICSE’15, pp 725–728. http://dl.acm.org/citation.cfm?id=2819009
+Sadeghi A, Bagheri H, Garcia J, Malek S (2016) A taxonomy and qualitative comparison of program analysis techniques for security assessment of android software. IEEE Trans Softw Eng PP(99):1–1. https://doi.org/10/TSE
+Sadeghi A, Jabbarvand R, Malek S (2017) Patdroid: Permission-aware gui testing of android. In: Proceedings of the 2017 11th joint meeting on foundations of software engineering, ESEC/FSE 2017. ACM, New York, pp 220–232. https://doi.org/10/3106237
+# Empirical Software Engineering (2019) 24:2056–2101
+Sbˆırlea D, Burke MG, Guarnieri S, Pistoia M, Sarkar V (2013) Automatic detection of inter-application permission leaks in android applications. IBM J Res Dev 57(6):2:10–2:10. https://doi.org/10/JRD
+Sliwerski J, Zimmermann T, Zeller A (2005) When do changes induce fixes? In: Proceedings of the 2005 International Workshop on Mining Software Repositories
+Stefanko L (2015) Aggressive android ransomware spreading in the usa. http://www.welivesecurity.com/2015/09/10/aggressive-android-ransomware-spreading-in-the-usa/
+Sufatrio Tan DJJ, Chua TW, Thing VLL (2015) Securing android: a survey, taxonomy, and challenges. ACM Comput Surv 47(4):58:1–58:45. https://doi.org/10/2733306
+Thomas DR (2015a) The Lifetime of Android API Vulnerabilities: Case Study on the JavaScript-to-Java Interface (Transcript of Discussion). Springer International Publishing, Cham, pp 139–144. https://doi.org/10/978-3-319-26096-9
+Thomas DR, Beresford AR, Rice A (2015b) Security metrics for the android ecosystem. In: Proceedings of the 5th annual ACM CCS workshop on security and privacy in smartphones and mobile devices, SPSM ’15. ACM, New York, pp 87–98. https://doi.org/10/2808117
+Tufano M, Watson C, Bavota G, Di Penta M, White M, Poshyvanyk D (2018) An empirical investigation into learning bug-fixing patches in the wild via neural machine translation. In: Proceedings of the 33rd ACM/IEEE international conference on automated software engineering, ASE 2018. ACM, New York, pp 832–837. https://doi.org/10/3238147
+U.S. National Institute of Standards and Technology - NIST (2012) National vulnerability database. http://nvd.nist.gov
+U.S. National Institute of Standards and Technology - NIST (2012) Sp 800-30 guide for conducting risk assessments
+VisionMobile: Developer economics q1 2014 (2014) State of the developer nation. Tech. rep.
+
+Wang K, Zhang Y, Liu P (2016) Call me back!: Attacks on system server and system apps in android through synchronous callback. In: Proceedings of the 2016 ACM SIGSAC conference on computer and communications security, CCS ’16. ACM, New York, pp 92–103. https://doi.org/10/2976749
+Weichselbaum L, Neugschwandtner M, Lindorfer M, Fratantonio Y, Veen VVD, Platzer C (2012) ANDRUBIS: Android Malware Under The Magnifying Glass. Tech. rep., Vienna University of Technology. https://www.iseclab.org/papers/andrubis techreport.pdf
+wiki. L (2015) Android kernel features. http://elinux.org/Android Kernel Features
+Wikipedia (2017a) Android version history https://en.wikipedia.org/wiki/Android version history
+Wikipedia (2017b) Heartbleed https://en.wikipedia.org/wiki/Heartbleed
+Wikipedia (2017c) Stagefright https://en.wikipedia.org/wiki/Stagefright (bug)
+Wu L, Grace M, Zhou Y, Wu C, Jiang X (2013) The impact of vendor customizations on android security. In: Proceedings of the 2013 ACM SIGSAC conference on computer & communications security, CCS ’13. ACM, New York, pp 623–634. https://doi.org/10/2508859
+Xiao X, Tillman N, Fahndrich M, DeHalleux J, Moskal M (2012) User-aware privacy control via extended static-information-flow analysis. In: IEEE/ACM international conference on automated software engineering
+Xu M, Song C, Ji Y, Shih MW, Lu K, Zheng C, Duan R, Jang Y, Lee B, Qian C, Lee S, Kim T (2016) Toward engineering a secure android ecosystem: a survey of existing techniques. ACM Comput Surv 49(2):38:1–38:47. https://doi.org/10/2963145
+You W, Liang B, Shi W, Zhu S, Wang P, Xie S, Zhang X (2016) Reference hijacking: Patching, protecting and analyzing on unmodified and non-rooted android devices. In: Proceedings of the 38th international conference on software engineering, ICSE ’16. ACM, New York, pp 959–970. https://doi.org/10/2884781
+Zaman S, Adams B, Hassan AE (2011) Security versus performance bugs: a case study on firefox. In: Proceedings of the 8th working conference on mining software repositories, MSR’11. ACM, New York, pp 93–102. https://doi.org/10/1985441
+Zhou Y, Jiang X (2012) Android malware genome project. http://www.malgenomeproject.org/
+Zhou Y, Jiang X (2012) Dissecting android malware: characterization and evolution. In: 2012 IEEE Symposium on security and privacy, pp 95–109. https://doi.org/10/SP
+Zuo C, Wu J, Guo S (2015) Automatically detecting ssl error-handling vulnerabilities in hybrid mobile web apps. In: Proceedings of the 10th ACM symposium on information, computer and communications security, ASIA CCS ’15. ACM, New York, pp 591–596. https://doi.org/10/2714576
+# Empirical Software Engineering (2019) 24:2056–2101
+# 2099
+# Alejandro Mazuera-Rozo
+is a Ph.D. student in the Faculty of Informatics at the Università della Svizzera italiana (USI), Switzerland. He received his M.S. in Information Security from Universidad de los Andes in 2018, and his B.S. in Telematics Engineering from Universidad Icesi in 2015. His research interests include network and system security, information security, security of software systems, software quality and mobile development.

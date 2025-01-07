@@ -1,0 +1,54 @@
+Specifically, we identified the following additional research questions to help scope the problem of supporting developers:
+# RQ3
+What proportion of Android developers have access to security experts, and
+# RQ4
+To what extent do Android developers actually use assurance techniques?
+# 3. Calculation of Required Sample Size
+We used Fowler’s guidance , identifying the smallest subgroups for which we wanted data, using the pilot data to estimate the proportion of these, and making the sample size large enough to get significant data from these groups. The key subgroups were those developers working with security professionals, and those using assurance techniques; and we chose to get between 50 and 100 in each group to give typical sampling errors on data for each subgroup of between 4% and 15%. Based on the pilot data, therefore, we calculated a target sample size of 310, requiring us to send 55,000 invitations.
+
+# 3. Recruitment
+We invited only registered Google Play developers. From January to February 2019 we crawled the details’ pages of 3,608,673 (2,087,829 free and 1,520,844 paid) Android applications from those published in Google Play. For all apps, we stored their last update time, name, developer data and download counts.
+
+Overall, we identified 312,369 developer accounts that match the 100+ downloads and update requirements in Google Play. The number of apps published by a single developer account in that sample ranges from 1 to 3,302 with a median of 2. From these 312,369 developer accounts, we selected a random sample of 55,000, and sent a single invitation email to each to ask them kindly to support our research. Of the invited 55,000 participants, 605 started and 345 completed the survey. Ten of the invited developers reached out to us via email. None complained about being contacted; three asked to be removed from the mailing list; the remainder provided various reasons for not completing the survey, including two who noted the security questions and stated that their apps had no security aspects. 240 took the opportunity to leave their email address in the survey questionnaire for us to send them the results of this work.
+
+# 3. Filtering Invalid Results
+In psychological surveys, a common stratagem is to ask a question twice, once negated. One can then filter out meaningless responses (or use them to calculate a “self-consistency” score for the survey). Since our survey was asking facts rather than personality, we concluded that this would be contrived and irritating to the respondents. Instead we looked at response times, experimented to find a minimum time that a participant might be expected to take to complete the survey, and filtered out the few (10) surveys that had taken less than that minimum time to complete.
+
+# 3. Survey Statistical Analysis Plan
+This paper uses four forms of statistical analysis:
+1. Population analysis, to explore how well our sample corresponds to the larger population;
+2. Graphical analysis, to show the nature of the data;
+3. Confidence limits for proportions in the wider population based on proportions in the sample; and
+4. Correlation analysis, to identify relationships between different data items.
+
+We defined the statistics scores and outline analysis methods before collecting the main survey data, as required for research best practice . For analysis, we used Python statistical packages, including Pandas, Statsmodels, and Seaborn, in Jupyter Notebooks.
+
+Linear Analysis for RQ1: To address RQ1, we defined scores based on each respondent’s survey answers: some scores captured the “need for security and privacy” (the independent, ‘input’, variables); others the “security-enhancing activities and interactions in the development team” (the dependent, ‘output’, variables).
+
+scores. We estimated a Security Update Frequency as the product of the answers to two questions; this had an exponential (Poisson) distribution, so to make it linear  we used a transformation: log(𝑥& + 1) to create the Security Update Frequency Score. Appendix C provides more details.
+
+The calculation of the Expertise Support Score is based on an assumption that direct expert involvement is more effective than ‘security champions’; the Requirements Score assumes that, for example, occasionally using two techniques is as effective as regularly using one; and the Assurance Technique Score assumes that, say, considering four techniques is as effective as consistently using one. Though reasonable as an approach, none of these scores are linear or even provably ordinal ; we anticipated that inconsistencies in the scoring would add to the statistical variance but not obscure overall trends. See Section 5 for a post-hoc justification.
+
+In statistics, the usual relationship to look for is a linear one. In line with previous research in the field  we used the Pearson Correlation Coefficient (‘Pearson R’) calculation  to establish whether pairs of values had a significant linear relationship; this test is acceptable for Likert-style data.
+
+Given that the scores were not provably linear, we also investigated a more sophisticated modelling technique, creating Decision Tree models  for pairs of scores and using F-Tests  to compare each with the simpler Pearson R model. In this analysis we treated the Security Update Frequency score as a dependent variable (output); and the Requirements, Expertise Support, and Developer Knowledge scores as independent variables (inputs)4. The use of Assurance Techniques is likely to be affected by the latter three variables but may itself in turn affect the Security Update Frequency and other security outcomes; in the analysis, therefore, we treated the Assurance Technique score both as an independent and as a dependent variable.
+
+Since the analysis constituted multiple tests on the same data, we applied the Bonferroni correction , reducing the threshold for ‘significance’ accordingly to (5%)/5 = 1%. To validate the preconditions for the Pearson Correlation Coefficient test , we then constructed x-y plots of all the pairs of variables that showed significant correlation.
+
+# 4. Application Analysis Methodology
+In the second phase of the project, we downloaded and analyzed the apps corresponding to the survey responses. For analysis, we used a selection of state-of-the-art vulnerability scanners. Each one focuses on a different problem category and produces a relatively low number of false positives. We chose mature tools that are openly accessible to Android developers.
+
+# 4. Description of Analysis Tools
+The tools covered three key areas: SSL Security, Cryptographic API Misuse, and Privacy Leaks. We selected these areas based on previous work and because these cover a representative range from the possible security and privacy vulnerabilities faced by application developers.
+
+# SSL Security:
+A key concern in the secure treatment of information is the correct use of secure transport mechanisms (SSL, TLS) when connecting to remote systems. To capture this aspect, we used two techniques. First, we used Mallodroid  to inspect the correct use of certificate validation in the apps code. Second, we extracted any HTTPS URLs from the constant pools of the classes contained in the app using the OPAL framework  and checked the corresponding server configurations and certificates using the command-line tools curl and openssl.
+
+# Cryptographic API Misuse:
+Many apps use cryptographic measures to improve data security and privacy, and a key concern in the secure treatment of information is the handling of cryptographic primitives (e.g., for persistence). We run CogniCrypt  to capture this aspect. CogniCrypt uses static inter-procedural static program analysis to detect misuses of the Java Cryptography API. The detected problems range from improper configuration of algorithms (e.g., use of AES with ECB) to incorrect order of calls to the API. As it is formulated as a static program analysis, CogniCrypt makes conservative assumptions (over-approximations) on the control flow of the program, which may produce false positive reports.
+
+# Privacy Leaks:
+To find possibly harmful data flow that can lead to privacy leaks, we used FlowDroid . This tool is designed to find information flow in Android apps between defined information sources and information sinks. For example, the location APIs are considered as sources of private information, and the text message sending APIs as sinks. FlowDroid uses static inter-procedural data flow analysis to find evidence of directed information flow between these methods. We configured the tool with the default sources and sink for Android provided by the authors, which had been constructed by manual inspection of common vulnerabilities in Android apps. FlowDroid is not able to determine if the found information flow is to be considered an actual leak as it might also be intended to use the information in the particular context (e.g. for location-based services).
+
+Practical Approach: We downloaded the application binaries for at least one application by each of the survey respondents,
+4Pearson’s R does not distinguish dependent and independent variables, so this affects only our choice of scores to correlate with each other.

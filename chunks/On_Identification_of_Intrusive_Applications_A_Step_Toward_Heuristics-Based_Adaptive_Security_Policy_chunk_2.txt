@@ -1,0 +1,68 @@
+Rahman et al.’s research  similarly focuses on analyzing the source code, utilizing static code metrics such as lines of code and bad coding practices. SonarQube was employed for metric extraction, and risk scores were generated using the Androrisk tool. The primary objective of this study is to assist developers in identifying privacy and security risks during the early stages of application development. Notably, the application of this approach to help users avoid intrusive or vulnerable applications is constrained by SonarQube’s requirement for access to the application’s source code. While the research on intrusiveness or insider threat detection is extensive, we cannot cover all the details within the confines of this article. Therefore, we recommend referring to a comprehensive and recently published literature review on insider/intrusiveness detection for further information and in-depth analysis.
+
+In summary, our work brings forth novel contributions: (i) we adopt a cutting-edge scoring technique, demonstrated to outperform its counterparts in recent literature . (ii) We introduce the concept of live scoring. This approach assesses an app’s score based on declared permissions and actual usage over its lifespan on the device. (iii) We employ an altered growth rate formula to scrutinize changes in permissions usage across different app versions. (iv), we provide a detailed implementation, addressing intricate technical challenges.
+
+# III. TECHNICAL BACKGROUND, REQUIREMENTS & PROPOSED FEATURES
+In this section, we overview the basic concepts and quantitative metrics for calculating the intrusiveness of an application. These concepts are fundamental to our work and define conditions/notions on which the following proof of concept has been developed. We also briefly explain a few technical terms we use throughout the forthcoming sections.
+
+# A. TERMS AND DEFINITIONS
+Below are the terms and definitions that we will be referring to throughout the paper. To ensure a comprehensive understanding, each term is accompanied by an explanation of its significance and context within the framework:
+- Broadcast Receivers Actions; Receivers Actions; Actions: These terms are used interchangeably to refer to the set of actions assigned to ‘<intent-filters>‘ of broadcast receivers. This set of actions dictates how the app responds to incoming broadcast messages, influencing its behavior and functionality.
+
+- Permissions: This term refers to the complete set of permission strings requested by an Android application. Permissions dictate the level of access an app has to various system resources and user data.
+
+- Receiver Score; Receiver’s Privacy Score: The privacy score of an app is calculated based on the actions of its broadcast receivers. This score reflects the app’s potential privacy implications in terms of its interaction with broadcast messages.
+
+- Permissions Score; Permissions Privacy Score: This score represents the privacy implications of an app based on the permissions it requests. It evaluates the potential risks associated with granting the app access to certain system resources and user data.
+
+- Seed Data Set: This is the reference data set of Android applications used as a basis for evaluating and scoring new apps. It serves as a benchmark for comparison and analysis.
+
+- Suggestion(s) Set: This subset of the seed data set is specifically curated to improve app suggestions within a particular genre. It helps refine recommendations based on the characteristics and preferences of the target audience.
+
+- IRP (Individual Receiver/Permission Prevalence): IRP measures the prevalence of a specific broadcast receiver action / Permission within the sample set of Android applications. It provides insights into the frequency of usage of a particular action across different apps.
+
+- AORP (App Overall Receiver/Permission Prevalence): AORP aggregates the individual receiver prevalence scores to calculate the overall prevalence of broadcast receiver actions / Permissions for an app. This metric offers a comprehensive view of an app’s engagement with broadcast messages and its potential privacy implications.
+
+# B. THREAT EVALUATION METRIC
+To ascertain whether an application qualifies as intrusive, it undergoes evaluation based on specific mathematical criteria. One such metric, the App Overall Receiver/Permission Prevalence (AORP), proposed in the literature , serves to gauge abnormality and rank applications. AORP assesses abnormality by separately computing scores for permissions (AORPp) and receivers (AORPr), subsequently combining them to determine the final privacy score of an application. AORP is defined as follows:
+AORPfinal = (AORPr + AORPp) / 2
+Whereas, AORPr and AORPp can be defined as follows:
+AORPr = ([c · ∑IRP∈Appi lg (IRP)] − 1)
+AORPp = ([c · ∑IRP∈Appi lg (IRP · g(p))] − 1)
+Both formulas include a constant c and the IRP value. The IRP quantifies the relative impact or usage of permissions or broadcast receivers within the application data’s sample set.
+
+# F. Mohsen et al.: On Identification of Intrusive Applications
+The formula for calculating IRP is as follows:
+IRP = x
+total
+In this context, x denotes the count of applications of a particular genre utilizing a particular broadcast receiver action or permission, while total signifies the total number of applications in that genre. We intend not to alter the x and total counters when evaluating new applications but rather to update them solely upon changes to the seed dataset. Therefore, we slightly adjust the existing IRP formula to include the currently evaluated application as follows:
+IRP = x + 1
+total + 1
+To dissect the results of AORPr, we can examine the smaller components of the formula. The value of IRP always remains less than 1, implying that lg (IRP) is always less than or equal to 0. Consequently, the following term is consistently negative:
+∑c · lg (IRP) ≤ 0 H⇒ [c · lg (IRP) ≤ 0] − 1 ≤ −1 H⇒ AORPp ≤ 1
+Therefore, we observe that a score of 1 represents the highest possible score, indicating minimal intrusiveness of the application in terms of broadcast receivers or permissions use. A lower score closer to 0 signifies greater intrusiveness. A similar analysis can be applied to the permission score (AORPp).
+
+Where g(p) represents the user preference for a specific permission group, such as setting the PHONE permission group with a security level of 2, resulting in g(p) = 21. Analogously, we can demonstrate that the permissions’ score AORPp ∈ (0, 1], leading to AORPfinal ∈ (0, 1].
+
+# C. FUNCTIONAL REQUIREMENTS
+In this section, we delve into the core functional requirements essential for the successful development of our framework. These requirements serve as the foundation upon which our implementation details are built, guiding our efforts toward the realization of a robust and versatile solution.
+
+# 2) INSTALLED/UPDATED APPLICATIONS EVALUATION AND REMOVED APPLICATIONS DETECTION
+To accurately detect recently installed, updated, or removed applications, we plan to maintain a set of tuples formed during evaluations. These tuples will include installed apps and their respective last update times, structured as follows:
+apps = {(pkgName, time) | pkgName ∈ ([′a, . . .′ z]′ ′ ∪ [.′′])∗ ∧ time ∈ (0, +∞)}
+where packageName denotes the package name of an installed application and time represents the last time the application was updated. Let’s consider installed as a map that is structurally identical to apps, containing the currently queried application from the device. Therefore, we can define the detection procedure for all three types of applications as follows:
+updatedApps = { y | x ∈ apps, y ∈ installed, x.packageName = y.packageName, y.time > x.time } ∪ { y | y ∈ installed, ∀x ∈ apps H⇒ x.packageName̸ = y.packageName)}
+We aim to make several evaluation modes available at the user’s discretion to provide flexible and rigorous usability for our application:
+- All Applications Evaluation: The system does not activate this mode; rather, it can only be initiated by the end user.
+
+- Background Evaluation: The evaluation mode begins on login and is user-independent. It can only be terminated by force-stopping the application, and it evaluates newly installed/updated apps while removing evaluation information for deleted ones.
+
+- Re-evaluation: To re-evaluate a specific app in the list, select it and request re-evaluation; only the selected app will be evaluated.
+
+We rely on the Application Ranking for all evaluation scores, but we also provide two additional practical scores that adjust the formulas outlined in :
+- The Granted Permission Score (GPS) is utilized during evaluation and focuses solely on the granted permissions (GP). It’s important to note that while an app may request certain permissions, users need to grant them for the app to use them explicitly. GPS can be defined as follows:
+# 1) RECOMMENDATIONS AND EVALUATION
+The recommendation will consist of the highest-scored app from the suggestions set, ensuring it belongs to the same genre as the evaluated application. We will also provide the recommendation score and a Google Play link. This link will allow the user to access the dedicated Play Market page and consider our suggestion as a potential alternative to the installed program being evaluated.
+
+AORPGPS = [c · ∑x, total IRP −1lg (IRP · g(p))] − 1
+where total ∈ GP represents the total number of granted permissions, and IRP ∈ Appi represents the Individual Receiver Prevalence for the evaluated app.

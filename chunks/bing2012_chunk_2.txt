@@ -1,0 +1,28 @@
+It uses AndroidManifest.xml file to achieve software’s data security function. When the specified software services is called, the system first checks AndroidManifest.xml file in the software, namely the software master configuration file. Which contains a &lt;uses-permission&gt; label to declare operating authority:
+&lt;manifest&gt;
+&lt;uses-permission android:name="android.permission.READ_***" /&gt;
+&lt;uses-permission android:name="android.permission.RECEIVE_***" /&gt;
+&lt;uses-permission android:name="android.permission.SEND_***" /&gt;
+&lt;/manifest&gt;
+According to the permission declaration, system checks the relevant permission when software installation and calling. If the system will successfully execute when it own with the permission, otherwise it reject operation.
+
+# IV. ANDROID SECURITY PERFORMANCE IMPROVEMENT
+Although the Android security mechanisms has ensured through the system and data security mechanisms, but it does not mean that there is no android security risks. Current there is security risks exist and combined with today's mobile devices against attack, this paper has deeply researched on the android mobile devices based on Linux kernel attacks.
+
+To ensure system security requirements, it is necessary to implement detecting malicious software on mobile devices. The software has evaluated the running process. This framework relies on a lightweight agent and continuous samples various characteristics on the device. Using self-learning, adaptive method to analyze the collected data, and then infer the device's health status. Framework provides API extraction keyboard, touch screen, scheduling and memory and Linux kernel operating.
+
+Android devices have developed many applications. The SDK provides many tools to facilitate. These tools could be accessed according to the command line or Android Development Tools. As Android could straight call the tools Developing with Eclipse. So it needs the preferred method when it develops applications.
+
+When it selects to develop another IDE or a simple text editor and calls the tools on the command line or with scripts. As it will have to call command line tools manually on occasion, this is a less streamlined way to develop. At the same time it will have access to the same number of functions that it would have in Eclipse.
+
+As the Android system is based on the Linux kernel, so it there exists a lot of vulnerabilities like Linux, it has become the focus of the current target attacked by hackers. Because it exist loophole, hackers have developed a number of exploits to steal users' privacy, deductions and other malicious software. The malicious software can start malicious processes in the background through automatic network. It stole the privacy content of mobile telephones and directly threat user's security.
+
+# Intrusion Detection System Framework
+In order to further strengthen the Android system and underlying access control which belong to privileged user in critical Linux process. System adopts SELinux to avoid an attacker controlling the system process using high-privilege. When the system is running SELinux on Android. Experiments show that Android devices running on SELinux is feasible. The user can establish a customized security policy to improve the system security level.
+
+# V. CONCLUSIONS
+The Android’s goal is to establish a enormous installed base for developers to take advantage. One of the method it will accomplish this is according to different kinds of hardware running the same software environment. But it also recognizes that only developers know which kinds of devices their applications make sense on. It has built in tools to the SDK and set up policies and requirements to ensure that developers remain in control of their apps, today and in the future. With the information it just read, and the resources listed in the sidebar of this document, it can publish its application with the confidence that only users who can run it will see it.
+
+In this paper, it has analysis Android system's security mechanisms with widely used in mobile platforms. It has separately introduced its system architecture, security mechanism and safety problems. Through it has analysis Android security mechanisms and its components, it has set to the Android security, safety mechanism side, system security and data security. It has promoted system security to system permission. At the same time it analysis the Android security risks, it has deeply researched the attack based on Linux kernel. It has proposed security mechanisms based on SELinux policy theory to ensure system security on application program framework layer. Not only from the Linux kernel layer, it uses Android's security framework to ensure system security from the application layer intrusion, so it is essential to research and develop the method to protect the Android framework. This work will be the reference base to the Android further security analysis.
+
+583.

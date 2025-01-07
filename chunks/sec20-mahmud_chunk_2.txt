@@ -1,0 +1,65 @@
+Next, we reviewed the standard for requirements relating to mobile applications. We identified the following six relevant PCI DSS requirements:
+# Requirement 1 (Limit CHD storage and retention time):
+PCI DSS Section 3 states:
+Limit cardholder data storage and retention time to that which is required for business, legal, and/or regulatory purposes, as documented in your data retention policy. Purge unnecessarily stored data at least quarterly.
+
+Therefore, mobile applications should minimize the situations when the credit card number and other CHD values are written to persistent storage. Ideally, CHD is never written, but if it is, the applications need a method to remove it. CHD should also never be written to shared storage locations, e.g., SDcard in Android, as it may be read by other applications.
+
+1518 29th USENIX Security Symposium USENIX Association
+CHD = Card Holder Data; SAD = Sensitive Account Data
+# Requirement 2 (Restrict SAD storage):
+PCI DSS Section 3 states:
+Do not store sensitive authentication data after authorization (even if encrypted). If sensitive authentication data is received, render all data unrecoverable upon completion of the authorization process.
+
+Therefore, SAD values such as full track data (magnetic-stripe data or equivalent on a chip), card security codes (e.g., CAV2/CVC2/CVV2/CID), PINs and PIN blocks should never be written to persistent storage, even if it is encrypted or in a location only accessible to the application.
+
+The standard states that data sources such as incoming transaction data, logs, history files, trace files, database schemes, and database contents should not contain SAD. While we expect few mobile applications ask for full track data, subsets of SAD are relevant. Furthermore, mobile applications should be careful not to include SAD in debugging logs and crash dumps.
+
+# Requirement 3 (Mask PAN when displaying):
+PCI DSS Section 3 states:
+Mask PAN when displayed (the first six and last four digits are the maximum number of digits you may display), so that only authorized people with a legitimate business need can see more than the first six/last four digits of the PAN. This does not supersede stricter requirements that may be in place for displays of cardholder data, such as on a point-of-sale receipt.
+
+The standard warns that the display of the full PAN on computer screens, mobile UI, payment card receipts, faxes, or paper reports can aid unauthorized individuals in performing unwanted activities. Therefore, after the user enters the credit card number, the application should mask it before displaying (e.g., on a subsequent UI screen).
+
+# Requirement 4 (Protect PAN when Storing):
+PCI DSS Section 3 states:
+Render PAN unreadable anywhere it is stored – including on portable digital media, backup media, in logs, and data received from or stored by wireless networks. Technology solutions for this requirement may include strong one-way hash functions of the entire PAN, truncation, index tokens with securely stored pads, or strong cryptography.
+
+This requirement supplements Requirement 1 with restrictions specifically for the credit card number (PAN). If it is written at all, some sort of protection is required.
+
+# Requirement 5 (Use secure communication):
+PCI DSS Section 4 states:
+Use strong cryptography and security protocols to safeguard sensitive cardholder data during transmission over open, public networks (e.g. Internet, wireless technologies, cellular technologies, General Packet Radio Service [GPRS], satellite communications). Ensure wireless networks transmitting cardholder data or connected to the cardholder data environment use industry best practices to implement strong encryption for authentication and transmission.
+
+From the perspective of mobile applications, all network connections should use TLS/SSL. Furthermore, the application should not remove the server authentication checks, which prior work has identified is a common vulnerability in mobile applications.
+
+# Requirement 6 (Secure transmission of PAN through messaging technologies):
+PCI DSS Section 4 states:
+Never send unprotected PANs by end-user messaging technologies (for example, e-mail, instant messaging, SMS, chat, etc.).
+
+Again, specific additional restrictions are made for the credit card number (PAN). That is, mobile applications should not pass the PAN to APIs for sending SMS messages. Additionally, Android allows sharing data with other messaging applications using its Intent message-based inter-component communication (ICC). Such messages should be protected.
+
+USENIX Association 29th USENIX Security Symposium 1519
+# App Store Analysis
+# 3 Overview
+While many studies have investigated vulnerabilities in mobile applications, we are unaware of studies focused on credit card information. Such vulnerabilities represent PCI DSS violations and hence are of significant importance. However, programmatically investigating the relevant PCI DSS requirements is nontrivial, presenting the following key challenges.
+
+- Credit card information is often collected via text input. There is no clearly-defined API that identifies when the user enters a credit card number. These inputs must be identified and linked to control and data flow graphs.
+
+- The relevant PCI DSS requirements are context-sensitive. Simple data-flow analysis is insufficient. For example, some types of credit card information can be stored or transmitted if it is obfuscated.
+
+- The relevant PCI DSS requirements are imprecise. The requirements often refer to broad approaches to information protection such as rendering the PAN “unreadable.” There are many ways in which developers can achieve these goals.
+
+Cardpliance addresses these challenges using a collection of tailored static program analysis tests. Where possible, we leverage existing open source projects that embody knowledge gained from a decade of mobile application analysis. Specifically, we build upon UiRef  to infer the semantics of text input and Amandroid  (also called Argus-SAF) to perform static data flow analysis. Our analysis also leverages concepts from MalloDroid  to identify SSL vulnerabilities and StringDroid  for identifying the URL string used to make network connections. Combining these existing techniques to create specific PCI DSS checks requires careful construction and represents a unique contribution.
+
+The next phase is the Data Dependence Graph (DDG) extraction. A key feature of Amandroid is to produce graphs upon which different static analysis tasks can be performed. This approach encapsulates traditional static program analysis within the core Amandroid tool and allows users of Amandroid to focus on their goals as graph traversal algorithms. However, we found that the latest version of Amandroid did not include all of the program contexts that were needed for our PCI DSS tests. First, we use information from UiRef to annotate UI input widgets as being related to credit card information. Second, we enhance how Amandroid handles OnClickListener callbacks to correctly track data flows from UI input.
+
+The six PCI DSS tests capture the relevant requirements described in Section 2. Described in detail in Section 4, these tests consider the different uses of cardholder data (CHD) and sensitive account data (SAD) listed in Table 1. Each test defines sets of sources and sinks for Amandroid’s taint analysis; however, the tests require context beyond traditional taint analysis. First, Amandroid uses method signatures as sources and sinks, whereas Cardpliance only considers a subset of method calls that are parameterized with specific concrete values (e.g., UI widget references from UIRef). Second, three of the six tests are designed to not raise an alarm if all paths from a specific source to a specific sink invoke a method that makes the data flow acceptable (e.g., masking or obfuscating the credit card number). Therefore, Cardpliance includes additional traversal of the DDG.
+
+Finally, due to the imprecision of PCI DSS, several of the tests are inherently heuristic. In such cases, we erred on the side of being security conservative, preferring false positives over false negatives and invalidating the false positives through manual inspection. Therefore, Cardpliance serves as a tool to drastically reduce the effort of a manual auditor, providing key information necessary to make a certification determination. Section 5 describes our experiences manually reviewing flagged applications with the JEB decompiler. Note that we did not perform dynamic analysis of the flagged applications because many of them required social security numbers to register for accounts or for us to be in a physical location to test (e.g., road toll applications).
+
+# 4 Cardpliance
+Android application analysis is a well-studied problem. Open-source analysis tools such as FlowDroid , Amandroid , and DroidSafe  capture much of Android’s runtime complexity, including application lifecycles and callbacks from code executing system processes. We chose to build on top
+1520 29th USENIX Security Symposium USENIX Association
+# 4 DDG Extraction
+The Cardpliance tests are graph queries on Amandroid’s Data Dependence Graph (DDG). Amandroid performs flow- and context-sensitive static program analysis on .apk files. It analyzes each Android component (e.g., Activity component) separately and then combines the per-component analysis to handle inter-component communication (ICC). As such, program analysis timeouts are defined at the component level (as we discuss in Section 5, we use a timeout of 60 minutes).

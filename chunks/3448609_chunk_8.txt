@@ -1,0 +1,50 @@
+# The Android Platform Security Model
+# 19:19
+Another particular example for the interplay between DAC and MAC policies and changes based on lessons learned are the more recent restrictions to ioctl, /proc, and /sys since Android 7. As described more generally in Section 4, limiting access to such internal interfaces improves app compatibility between platform versions and supports easier internal refactoring.
+
+For these kernel interfaces, restricting access had another benefit toward user privacy: While few apps used these kernel interfaces for legitimate purposes that could not be fulfilled with existing Android APIs, they were also abused by other apps for side-channel attacks  on data not otherwise accessible through their lack of required Android permissions (e.g., network hardware MAC addresses). Restricting access to these interfaces to follow an allow- instead of block-list approach is therefore a logical development in line with the defense-in-depth principle.
+
+Rooting, as defined above, has the main aim of enabling certain apps and their processes to break out of this application sandbox in the sense of granting “root” user privileges , which override the DAC rules (but not automatically MAC policies, which led to extended rooting schemes with processes intentionally exempt from MAC restrictions). Malware may try to apply these rooting approaches through temporary or permanent exploits and therefore bypass the application sandbox.
+
+# 4 Sandboxing System Processes
+In addition to the application sandbox, Android launched with a limited set of UID sandboxes for system processes. Notably, Android’s architects recognized the inherent risk of processing untrusted media content and so isolated the media frameworks into UID AID_MEDIA, and this sandboxing has been strengthened from release to release with continuously more fine-grained isolation . Figure 1 gives an overview of specifically the sandboxing.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+and isolation improvements for the media server and codecs. Other processes that warranted UID isolation include the telephony stack, WiFi, and Bluetooth (cf. Table 2).
+
+# 4 Sandboxing the Kernel.
+
+Security hardening efforts in Android userspace have increasingly made the kernel a more attractive target for privilege escalation attacks . Hardware drivers provided by System on a Chip (SoC) vendors account for the vast majority of kernel vulnerabilities on Android . Reducing app/system access to these drivers was described above, but kernel-level drivers cannot be sandboxed within the kernel themselves, as Linux still is a monolithic kernel (vs. microkernel approaches). However, mitigation against exploiting weaknesses in all code running within kernel mode (including the core Linux kernel components and vendor drivers) was improved significantly over the various releases (cf. Table 3).
+
+# 4 Sandboxing below the Kernel.
+
+In addition to the kernel, the Trusted Computing Base (TCB) on Android devices starts with the boot loader (which is typically split into multiple stages) and implicitly includes other components below the kernel, such as the TEE, hardware drivers, and userspace components init, ueventd, and vold . It is clear that the sum of all these creates sufficient complexity that, given current state of the art, we have to assume bugs in some of them. For highly sensitive use cases, even the mitigations against kernel and
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+System process bugs described above may not provide sufficient assurance against potential vulnerabilities. Therefore, we explicitly consider the possibility of a kernel or other TCB component failure as part of the threat model for some select scenarios. Such failures explicitly include compromise, e.g., through directly attacking some kernel interfaces based on physical access in [T.P1], [T.P3], and [T.P4] or chaining together multiple bugs from user space code to reach kernel surfaces in [T.A7]; misconfiguration, e.g., with incorrect or overly permissive SELinux policies ; or bypass, e.g., by modifying the boot chain to boot a different kernel with deactivated security policies. To be clear, with a compromised kernel or other TCB parts, Android no longer meets the compatibility requirements and many of the security and privacy assurances for users and apps no longer hold. However, we can still defend against some threats even under this assumption:
+- Keymaster implements the Android keystore in TEE to guard cryptographic key storage and use in the case of a runtime kernel compromise . That is, even with a fully compromised kernel, an attacker cannot read key material stored in Keymaster. Apps can explicitly request keys to be stored in Keymaster, i.e., to be hardware-bound, to be only accessible after user authentication (which is tied to Gatekeeper/Weaver), and/or request attestation certificates to verify these key properties , allowing verification of compatibility in terms of rule © (compatibility).
+
+- Strongbox, specified starting with Android 9, implements the Android keystore in separate Tamper resistant hardware (TRH) for even better isolation. This mitigates [T.P2] and [T.P3] against strong adversaries, e.g., against cold boot memory attacks  or hardware bugs such as Spectre/Meltdown , Rowhammer , or Clkscrew  that allow privilege escalation even from kernel to TEE. From a hardware perspective, the main application processor will always have a significantly larger attack surface than dedicated secure co-processor. Adding a separate TRH affords another sandboxing layer of defense in depth.
+
+Note: This assumes that hardware itself is still trustworthy. Side-channel attacks such as Reference  are currently out of scope of this (software) platform security model, but influence some design decisions on the system level, e.g., to favor dedicated TRH over on-chip security partitioning.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+R. Mayrhofer et al.
+
+The Google Pixel 3 was the first device to support Strongbox with a dedicated TRH (Titan M ), and other OEM devices have since started to implement it (often using standard secure elements that have been available on Android devices for NFC payment and other use cases).
+
+Note that only storing and using keys in TEE or TRH does not completely solve the problem of making them unusable under the assumption of a kernel compromise: if an attacker gains access to the low-level interfaces for communicating directly with Keymaster or Strongbox, they can use it as an oracle for cryptographic operations that require the private key. This is the reason why keys can be authentication bound and/or require user presence verification, e.g., by pushing a hardware button that is detectable by the TRH to assure that keys are not used in the background without user consent.
+
+- Gatekeeper implements verification of user lock screen factors (PIN/password/pattern) in TEE and, upon successful authentication, communicates this to Keymaster for releasing access to authentication bound keys . Weaver implements the same functionality in TRH and communicates with Strongbox. Specified for Android 9 and initially implemented on the Google Pixel 2 and newer phones, we also add a property called Insider Attack Resistance (IAR): Without knowledge of the user’s lock screen factor, an upgrade to the Weaver/Strongbox code running in TRH will wipe the secrets used for on-device encryption . That is, even with access to internal code signing keys, existing data cannot be exfiltrated without the user’s cooperation.
+
+- Protected Confirmation, also introduced with Android 9 , partially mitigates [T.A4] and [T.A6]. In its current scope, apps can tie usage of a key stored in Keymaster or Strongbox to the user confirming (by pushing a physical button) that they have seen a message displayed on the screen. Upon confirmation, the app receives a hash of the displayed message, which can be used to remotely verify that a user has confirmed the message. By controlling the screen output through TEE when protected confirmation is requested by an app, even a full kernel compromise (without user cooperation) cannot lead to creating these signed confirmations.
+
+# 4 Encryption of Data at Rest
+A second element of enforcing the security model, particularly rules © (multi-party consent) and © (compatibility), is required when the main system kernel is not running or is bypassed (e.g., by reading directly from non-volatile storage).
+
+Full Disk Encryption (FDE) uses a credential protected key to encrypt the entire user data partition. FDE was introduced in Android 5, and while effective against [T.P2], it had a number of shortcomings. Core device functionality (such as emergency dialer, accessibility services, and alarms) were inaccessible until password entry. Multi-user support introduced in Android 6 still required the password of the primary user before disk access.
+
+These shortcomings were mitigated by File Based Encryption (FBE) introduced in Android 7. On devices with TEE or TRH, all keys are derived within these secure environments, entangling the user knowledge factor with hardware-bound random numbers that are inaccessible to the Android kernel and components above. FBE allows individual files to be tied to the credentials of different users, cryptographically protecting per-user data on shared devices [T.P4]. Devices with FBE also support a feature called Direct Boot, which enables access to emergency dialer, accessibility services, alarms, and receiving calls all before the user inputs their credentials.

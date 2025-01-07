@@ -1,0 +1,59 @@
+368 RISTI, N.º E19, 04/2019
+# RISTI - Revista Ibérica de Sistemas e Tecnologias de Informação
+# 3. Commercial transactions and interaction with other applications
+Using the exploration in section 3, it should be taken into account the information about the customer displayed by the application, and list the business transactions it allows to conduct. Also, it should be checked what information is needed or what process is to execute these transactions. For example, if the transactions can be executed only by accessing the application or if it is needed to confirm them with some additional code.
+
+# 4. Application signing
+Each application is signed with a certificate obtained by the application developer, to verify the origin of the application, it is necessary to verify the data contained in this certificate. Two tools are used to obtain this information: Jarsigner and OpenSSL.
+
+# 3. Static Analysis
+For this phase the application is installed on a virtual Android device. For each task that makes up the static analysis, the use of each of the tools necessary for the analysis is described in the following sections. In addition, there are recommendations that will help to perform each task. The task for static analysis are: Obtaining the source code, Permissions in the archive AndroidManifest.xml, Framework, Libraries, Views, Data entry, Code used for authentication, Online/Offline authentication, Additional information to the User/Password, Authentication methods, Blocking, Unique authentication, Two step authentication, and Automated static analysis.
+
+# 1. Obtaining the source code
+Once the application is installed on the Android virtual device, the Apk Extractor application is installed on it. Apk Extractor lists and extracts the application to be analyzed and obtains its .apk file. Clicking on the desired application extracts the .apk file and displays the path in which it was saved.
+
+Now that the .apk file has been obtained, the PeaZip tool is used to view the elements contained in this file. As shown in Figure 1, the .apk file is a zip file of everything needed to make the application work. These files are then extracted into a folder to make them available for analysis.
+
+RISTI, N.º E19, 04/2019 369
+# Security Analysis Protocol for Android-Based Mobile Applications
+Then, the code that composes the application is obtained using the Dex2Jar tool. To do this, execute the command d2j-dex2jar.bat from the directory of the dex2jar-2 folder, executing the following instruction, where the second part of the command is the path to the classes.dex file obtained in the previous step.
+
+&gt;d2j-dex2jar.bat C:\Users\josep\Desktop\classes.dex
+The resulting file is located in the tool folder, this file will be used later, so it is recommended to put it in the same folder where the .apk file was extracted.
+
+# 2. Permissions in the archive AndroidManifest.xml
+To make this point you work with the AndroidManifest file.xml that was obtained in step 3. However, this file needs to be processed by another tool before it can be read, AXMLPrinter2 is used for this. With the following command you get the readable file, the second part of the command indicates the name of the file where the result will be saved.
+
+&gt;java -jar AXMLPrinter2.jar AndroidManifest.xml &gt; AndroidManifest_decoded_.xml
+With the AndroidManifest file.xml already in a readable format, any text editor is used to read its contents. It is recommended to use the Sublime Text (Sublime Text, n. d.), tool as it allows a more comfortable reading of the file. The result is shown in Figure 2.
+
+&lt;uses-permission android:name="android.permission.CAMERA"&gt;
+&lt;uses-permission&gt;
+&lt;uses-permission android:name="android.permission.WRITE_SETTINES"&gt;
+&lt;uses-permission&gt;
+This file contains the permissions that the application requests at the time of its installation, these are found with the label &lt;uses-permission&gt;. These permissions should be listed to verify that they are the same as those the application requested when installing it. A detail of the most relevant permissions is shown in reference (Permissions Overview-Android Developers, n. d.).
+
+# 3. Framework
+This point aims to determine the framework in which the application was developed. The determination of this information is made according to the recommendations of the documents: (Quora, n. d.) or (Deitel University of London & Trinity College Dublin, 2012), where it is specified to navigate through the content of the decompressed .apk file, obtaining information about the framework used for the development of the application. In these documents it is recommended to search within the assets folder, if there is a www folder containing the name of packages such as those suggested in Owaps.org (n. d.), such as Apache Cordova (Apache Cordova, n. d.), Ionic (Ionic Framework, n. d.), etc. This information can also be found in the src folder.
+
+370 RISTI, N.º E19, 04/2019
+# RISTI - Revista Ibérica de Sistemas e Tecnologias de Informação
+# 4. External Libraries
+Each application uses libraries that provide certain functionalities, these libraries can introduce vulnerabilities into the application, so it is necessary to identify them. For this purpose, the following procedure is performed. Unzipping the .apk file finds the lib folder, this folder contains the libraries which are part of the application, for example, libraries that are not included in the Android SDK (Owaps.org, n. d.). For this, there is a folder for each processor architecture. Once identified the libraries which are part of the application, it can be used references such as: (NVD - Search and Statistics, n. d.), (CVE, n. d.), (Exploits Database, n. d.) o (US-CERT|United States Computer Emergency Readiness Team, n. d.) in order to look for known vulnerabilities in its database.
+
+# 5. Views
+From this point, it is necessary to mention that the code obtained through the previous procedure is not exactly the same as the original one that makes up the application, since a part of the code is lost during the process to create the .apk file . Now that it is acquired the application code and the data obtained during the information gathering phase, it can be defined whether the application processes the user data, as the case with native and hybrid applications; or whether it only has the necessary views to connect to the server, and that it performs the entire process, as the case with web applications (Owaps.org, n. d.). In the case of a native or hybrid application, when extracting the .apk file you will find the res folder, this folder contains the views of the application.
+
+# 6. Data entry
+JD-Gui is used for the analysis of the code, while Logcat is used for the analysis of the logs generated by the Android device at the time of using the application. This facilitates code analysis as logs can be displayed as the application is running, so that the code portions of each stage can be identified. For data entry, the application is run in parallel with Logcat. It is recommended that each time it is performed a step, such as entering a user name or password, enter the log number so that it can be displayed it later, and thus know which logs belong to which stage.
+
+For example, for this point the process of an electronic transfer is considered and the logs generated are. As shown in Figure 3, the logs generated show the Direct Transfer Confirmation Activity, and also the word requiresValidation which is later explored with the JD-Gui tool. To be able to successfully develop this point, it is necessary to collect the logs generated only by this particular process (for this example, an electronic transfer), and with that information search for the related code using the JD-Gui tool.
+
+Now that the information from one of the Activities has been obtained, the words obtained in the previous point are searched in the application’s .jar file, opened using the JD-Gui tool. As noted in Code 1, the phrase requiereValidation required has been found, obtained from the logs generated during the electronic transfer. Thanks to this it is found that the application performs validation of the data of the transferee, such as his name.
+
+RISTI, N.º E19, 04/2019 371
+# Security Analysis Protocol for Android-Based Mobile Applications
+84-26 21:15:29 -/ActivityManager(1838): START u8application/.Directtransferconfirmationactivity (has extras)
+{cMp-com.application from Vid 18863 on display 84-26 21:15:29 D{volley 3486):  Basicnetwork.logslonRequests: KTTP response for requesta<[ https: / {sbappaz application com/ application-mobile-services-Pfm/xxx exe7aa217e NORMAL 84-26 21:15:29 18> [lifetime-8884], [size-946], [rc-288], [retrycount-?]D{Response 3486) {"resultadovalidaDestino requierevalidacion true, "\'mensaje
+# 7. Code used for authentication:
+This section uses the information generated by the application and collected by Logcat to analyze the corresponding code. The authentication phase is the most important as the application must properly handle customer information so that sensitive information is not exposed. At this point it must be searched for the code corresponding to the logs generated in the .jar file. Logs are displayed using Logcat while the application is running on the Android virtual appliance. With this it can be identified the methods that are executed and also the keywords that will be searched later by JD-Gui.

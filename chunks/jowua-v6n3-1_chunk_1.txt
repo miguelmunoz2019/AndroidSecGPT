@@ -1,0 +1,82 @@
+# A Survey of Android Security Threats and Defenses
+# Bahman Rashidi∗ and Carol Fung
+# Virginia Commonwealth University, Richmond, Virginia, USA
+# {rashidib, cfung}@vcu.edu
+# Abstract
+With billions of people using smartphones and the exponential growth of smartphone apps, it is prohibitive for app marketplaces, such as Google App Store, to thoroughly verify if an app is legitimate or malicious. As a result, mobile users are left to decide for themselves whether an app is safe to use. Even worse, recent studies have shown that over 70% of apps in markets request to collect data irrelevant to the main functions of the apps, which could cause leaking of private information or inefficient use of mobile resources. It is worth mentioning that since resource management mechanism of mobile devices is different from PC machines, existing security solutions in PC malware area are not quite compatible with mobile devices. Therefore, academic researchers and commercial anti-malware companies have proposed many security mechanisms to address the security issues of the Android devices. Considering the mechanisms and techniques which are different in nature and used in proposed works, they can be classified into different categories. In this survey, we discuss the existing Android security threats and existing security enforcements solutions between 2010 − 2015 and try to classify works and review their functionalities. We review a few works of each class. The survey also reviews the strength and weak points of the solutions.
+
+Keywords: Android, Security, Privacy, Smartphone
+# 1 Introduction
+Since the first introduction in 2008, Android has gained a tremendous number of users over the last few years. Smartphones are the fastest growing technology market segment. According to Gartner , a technology research and advisory firm, 1 billion devices running on Google’s Android OS were shipped in 2014 alone, marking its 80 percent mobile market share. Attributing to this fast-pace increament is the proliferation of Android apps, which provides an ever-growing application ecosystem. Officially reported by Android Google Play Store, the number of apps in the store has reached over 1 million in early 2015, surpassing its major competitor Apple Apps Store . Mobile applications are essential to the smartphone experience. Mobile applications are getting increasingly sophisticated, robust, life-engaging, and privacy-intrusive. The market offers a wide variety of applications ranging from entertainment, productivity, health care, to online dating, home security, and business management . Users depend more and more on mobile devices and applications.
+
+As mobile applications are gaining increasing popularity among users, the privacy and security of smartphone users become a concern. Due to the large user base, smart devices are used to store sensitive personal information more frequently than laptops and desktops. As a consequence, a malicious third-party app can not only steal private information, such as the contact list, text messages, and location from its user, but can also cause financial loss of the users by making secretive premium-rate phone calls and text messages . At the same time, the rapid growth of the number of applications on Android markets makes it hard for app market places, such as Google App Store for example, to thoroughly verify if
+# Journal of Wireless Mobile Networks, Ubiquitous Computing, and Dependable Applications, volume: 6, number: 3, pp. 3-35
+∗Corresponding author: Department of Computer Science, Virginia Commonwealth University, Tel: +1-804-402-7575, Web: http://people.vcu.edu/˜rashidib/
+# Android Security Threats and Defenses
+Rashidi, Fung
+An app is legitimate or malicious. As a result, mobile users are left to decide for themselves whether an app is safe to use. In addition, unlike iOS, Android device owners do not have to root or "jailbreak" their devices to install apps from "unknown sources". This gives Android users broad capability to install pirated, corrupted or banned apps from Google Play simply by changing a systems setting. This provides further incentive for the users to install third-party applications, but exposes their privacy to significant security risks.
+
+The exponentially increasing number of Android applications, the unofficial apps developers, and the existing security vulnerabilities in Android OS encourage malware developers to take advantage of such vulnerable OS and apps and steal the private user information to inadvertently harms the apps markets and the developer reputation . Moreover, since Android OS is an open source platform, it allows the installation of third-party market apps, stirring up dozens of regional and international app-stores such as PandaApp  and GetJar . Android malware can gain control of device, steal private information from users, consume excessive battery, use telephony services to steal money from users’ bank accounts, and even turn the device into a botnet zombie.
+
+There are a large variety of Android vulnerabilities and they can occur in any layers of Android OS stack, such as application layer or framework layer. Vulnerabilities also appear in benign apps through the accidental inclusion of coding mistakes or design flaws. As we described before, the flawed Android OS provides a fertile ground for attackers. There are a variety of security issues on Android phones, such as unauthorized access from one app to the others (information leakage), permission escalation, repackaging apps to inject malicious code, colluding, and Denial of Service (DoS) attacks.
+
+Realizing these shortcomings in the current Android architecture, much efforts have been put towards addressing these problems . In addition to Android OS’s various security measures such as sandboxing and Android permission model, many security and privacy solutions were proposed to cope with the existing security Android OS vulnerabilities, including many resource management systems such as  and security solutions using different approaches and techniques . We will discuss the these techniques, approaches and tools in more details in section 3.
+
+This paper aims at complementing the former reviews by expanding the coverage of Android security issues, and malware growth. In this survey, we will cover the major proposed works in Android OS security and privacy, and most of the existing deployed techniques and tools. The rest of this paper is organized as follows:
+We first describe the Android OS and application and their architectures in Section 2 and then the Android security and its security issues in Section 3 and 4. After that, we explain all the existing security mechanism and proposed solutions in Section 5. We show the comparison results of the described solutions in section 6. Finally, conclusion in Section 7.
+
+# 2 Android OS and Applications Architecture
+In this section we describe the architecture of the Android OS and its applications. Android is being developed and maintained by Google and promoted by the Open Handset Alliance (OHA). Android OS is placed on top of the Linux kernel and it includes the middleware, libraries and APIs written in c language, and application software running on an application framework which includes Java-compatible libraries. Android’s source code is released by Google under open source licenses.
+
+# 2 Framework Architecture
+Android operating system is a stack of software components, which is roughly divided into five sections and four main layers as shown in the Figure 2. Android OS layers and components are explained as
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Applications
+# Native Android App
+# Third Party Apps
+# Application Framework
+- Activity Manager
+- Window Manager
+- Notification Manager
+- View System
+- Package Manager
+- Resource Manager
+- Content Provider
+# Libraries
+- SQLite
+- WebKit
+- OpenGL ES
+- Core Libraries
+- FreeType
+- Surface
+- Media Framework
+- Manager
+- Dalvik Virtual Machine
+- SSL
+- SQL
+- libc
+# Linux Kernel
+- Display Driver
+- WiFi Driver
+- Audio Drivers
+- Binder(IPC)Drivers
+- Power Management
+- Process Management
+- Memory Management
+# 2 Applications
+Application layer is located at the top of the Android software stack. These comprise both the pre-installed apps provided with a particular Android implementation and third-party apps developed by individuals (unofficial) app developers. Examples of such apps are Browser, Contacts Manager, and Email apps. More examples of such applications can be found from many official and unofficial app markets.
+
+• Application Framework: The application framework is a set of services that collectively form the environment in which Android applications run and are managed. Services are provided to applications in the form of Java classes. Application developers are allowed to make use of these services in their applications. Application framework includes the following major services:
+- Activity Manager
+- Content Providers
+- Resource Manager
+- Notifications Manager
+- View System
+• Activity Manager: Activity Manager manages and controls all aspects of the application lifecycle and activity stack. This service interacts with the overall activities running in the system.
+
+• Content Providers: Content providers manage access to a structured set of data. They encapsulate the data, and provide mechanisms for defining data security. Content providers are the
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# 2 Services
+A standard interface that connects data in one process with code running in another process. In other words, this service allows applications to publish and share data with other applications.

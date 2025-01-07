@@ -1,0 +1,54 @@
+One specific research gap of interest is the challenge posed by data storage costs in the context of using blockchain for mobile apps . While storage costs are a concern for mobile apps, research should address the overall cost-effectiveness of blockchain data storage solutions, considering transaction fees, data management expenses, and resource utilization on mobile devices, but addressing the research gap related to data storage in using blockchain for mobile app development goes beyond the monetary aspect.
+
+Sensors 2023, 23, 8749
+focuses on optimizing the storage mechanism to accommodate the exceptional challenges posed by mobile devices, which is our focus.
+
+The challenges related to blockchain-based data storage for mobile applications are multifaceted [ 102 –106 ]. Firstly, mobile devices have limited storage capacity compared to traditional servers, posing difficulties for storing and accessing blockchain data, particularly when dealing with large datasets. Scalability issues within public blockchain networks become increasingly critical as mobile apps interact with and generate more data on the blockchain. Data redundancy, while essential for security and decentralization, can lead to higher storage demands, making it less practical for resource-constrained mobile devices. Ensuring efficient data access and retrieval for seamless user experiences is challenging due to blockchain’s distributed nature and potential latency. Privacy concerns arise when storing sensitive data on public blockchains, necessitating research into privacy and confidentiality solutions. Establishing data pruning mechanisms and retention policies is crucial for managing blockchain data size effectively. Additionally, energy-intensive consensus mechanisms impact the energy efficiency of mobile devices in blockchain networks, necessitating eco-friendly alternatives. Ensuring cross-platform compatibility, real-time data access, integrating off-chain storage, and addressing regulatory and compliance issues further complicate the development of blockchain-based mobile apps.
+
+The adoption of blockchain for mobile app data storage security requires addressing these research gaps to build efficient, secure, and user-friendly solutions. By developing innovative approaches and finding solutions to these challenges, blockchain technology can offer valuable contributions to mobile app data storage and security, enhancing data integrity and privacy for a wide range of applications.
+
+# 4. Blockchain-Based Mobile Apps Framework
+# 4. Could Blockchain Technology Be a Solution?
+Blockchain is a secure and transparent data storage technology that employs a decentralized, distributed database ledger. It works via a network of computers that validate transactions and records them using cryptographic algorithms. Because there is no central authority, the blockchain is resistant to tampering and fraud [107 ]. It provides a secure method of data storage and access, making it an appealing solution for a lot of applications, including supply chain management (SCM), financial transactions, and data storage. Without the need for a central authority, blockchain enables multiple parties to agree on a shared digital history [ 108 ]. The data storage mechanism provided by blockchain technology can be an innovative secure solution [109–115].
+
+Implementing blockchain technology for Android data storage is not necessarily due to a problem with traditional Android data storage, but rather because blockchain technology provides certain advantages that traditional data storage systems do not. There are several reasons why the use of blockchain for data storage in Android applications should be considered :
+1. Decentralization and immutability: traditional Android data storage relies on centralized servers or cloud-based solutions. In contrast, blockchain offers a decentralized and distributed approach, where data is stored across multiple nodes in the network [ 117 ]. This decentralized nature ensures that data remains accessible even if some nodes fail, and it enhances data integrity and resilience against attacks. Two types of nodes are relevant here: full nodes and lightweight nodes [ 72 , 87]. When considering the integration of blockchain into mobile app development, the decision between full nodes and lightweight nodes revolves around optimizing resource efficiency and user experience. Full nodes, which form the core of blockchain networks, maintain the entire transaction history, validate transactions, and bolster security. However, they come with significant storage, computational, and bandwidth demands, rendering them impractical for mobile devices with limited resources. Conversely, lightweight nodes, engineered for efficiency and reduced resource consumption, store a minimal subset of blockchain data, synchronize swiftly, scale adeptly,
+Sensors 2023, 23, 8749
+and simplify user interactions. These attributes align lightweight nodes with the constraints and requisites of mobile app development. Consequently, for mobile apps seeking to harness blockchain technology, lightweight nodes stand out as the preferred choice. They ensure a smoother user experience, expedite synchronization, and enhance scalability, ultimately fostering broader blockchain adoption within the mobile app realm.
+
+# 2. Tamper-resistance
+Data stored on a blockchain is secured using cryptographic hashing and is resistant to tampering. Once data is recorded in a block, it becomes practically immutable, ensuring that historical records cannot be altered or deleted.
+
+# 3. Data trust and transparency
+Blockchain’s transparency and consensus mechanisms enable all participants to have visibility into the data and its history. This transparency enhances trust among users and stakeholders as they can independently verify the data.
+
+# 4. Auditing and accountability
+Blockchain provides a permanent and auditable record of data transactions, making it valuable for auditing and maintaining a transparent record of changes.
+
+# 5. Traceability
+All transactions on a blockchain are recorded sequentially and are available for verification by any user of the network. This traceability feature is especially useful in scenarios where maintaining a verifiable record of all transactions is required.
+
+# 6. Controlled access and ownership
+Blockchain allows for more sophisticated access control models, and users have full control and ownership of their data.
+
+# 7. Interoperability and data sharing
+Blockchain can facilitate data sharing and interoperability between different applications or platforms, enabling seamless integration of data from multiple sources.
+
+# 8. Use cases requiring consensus
+Certain Android applications may require consensus among multiple parties to validate and record data. Blockchain’s consensus mechanisms provide a way to achieve agreement on data validity without the need for a central authority.
+
+# 9. Smart contracts for automation
+Blockchain technology supports smart contracts, which are self-executing contracts with predefined conditions. This automation capability can streamline processes, reduce the need for intermediaries, and improve the overall efficiency of applications.
+
+# 10. Global accessibility
+Blockchain networks are accessible globally, making data available across borders without the need for intermediaries or regional restrictions. In many cases, the decision to use blockchain is driven by the requirement for decentralization, transparency, and tamper-resistant data storage, especially in scenarios where data integrity and trust are critical, such as supply chain management, medical records, financial transactions, and identity management.
+
+Blockchain can offer several advantages over traditional encryption techniques, even with the limited memory and storage capabilities of mobile devices. In some cases, combining both technologies can be beneficial. For example, one might use encryption to secure data before it is submitted to a blockchain, ensuring its confidentiality and integrity until it becomes part of the tamper-resistant ledger. This hybrid approach leverages the strengths of both technologies to provide a more robust overall solution. The decision to use blockchain, encryption, or a combination of both depends on factors such as security requirements, decentralization needs, performance considerations, and the specific use case of a given application or system. Tables 2–4 show a comparison between blockchain solutions and traditional solutions [21, 53, 72, 118–121], showing the new features that adopting blockchain technology can provide.
+
+# Sensors 2023, 23, 8749
+# Sensors 2023, 23, 8749
+Sensors 2023, 23, 8749
+Blockchain technology and traditional encryption techniques serve distinct purposes and offer unique benefits, making each more suitable for specific scenarios. Based on the comparison table, blockchain is a preferred choice when a decentralized system for multiple parties to participate without relying on a central authority is required, making it ideal for peer-to-peer interactions, decentralized marketplaces, and multi-party collaborations. It excels in scenarios where an immutable and tamper-resistant ledger is needed to maintain transparent and auditable records of transactions or data, ensuring historical data remains unchanged. Blockchain’s secure and transparent environment is well-suited for applications that require the automated execution of agreements based on predefined rules (smart contracts). Additionally, if a mobile app involves sensitive transactions, requires an immutable and transparent record of activities, or needs to handle cryptocurrencies, digital assets, token-based systems, or decentralized digital identities, blockchain proves to be a natural fit, enhancing authentication mechanisms within mobile apps.
+
+# 4. Proposed Framework Description
+A high-level model of the use of a blockchain-based system for Android data storage is suggested. We propose a six-layer framework called Blockchain-based Secure Android Data Storage (BSADS) that could help developers build a secure Android app with blockchain data storage capabilities (See Figure 2). These six layers are as follows: User Interface, Application Logic, Identity Management, Blockchain Interface, Blockchain Network and Data Storage. Each layer has a specific role and set of responsibilities within the application, and the success of each layer’s operation depends on the proper functioning of the other layers. By separating these responsibilities into different layers, the architecture becomes more modular and flexible, making it easier to manage, update, and scale the application.

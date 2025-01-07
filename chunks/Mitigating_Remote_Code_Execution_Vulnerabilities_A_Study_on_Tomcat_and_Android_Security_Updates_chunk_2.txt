@@ -1,0 +1,73 @@
+# Table I. Tomcat: Sample Set of RCE Vulnerability Patches/Updates that were Found and Studied
+# Android Data Collection
+Similar to Tomcat, for Android we reviewed the Security Bulletins page of the Android website https://source.android.com/security/bulletin. From here we selected a year and month from the dropdown on the left side of the webpage as shown in Fig. 3. Next, we searched for RCE updates (see Fig. 4) and clicked on the selected reference number which brought up the information page for that specific update. The information page for a sample RCE update is shown in Fig. 5. By selecting the “diff” link (highlighted in yellow in Fig. 5), a page containing the code that was added and/or changed to fix/mitigate the reported RCE vulnerability was displayed.
+
+Following the data collection process described above, we collected a total of fifty-one (51) RCE updates/patches (including both the systems, Tomcat and Android). We analyzed these patches to understand if there are certain frequently used patterns in these RCE updates/patches. The data analysis conducted using the above-mentioned 51 RCE updates/patches is presented in Section IV. B.
+
+Furthermore, in the year 2019, the count of reported RCE vulnerabilities (2277) was significantly higher than the count of next most reported vulnerability (1593 Cross-Site Scripting).
+
+# IV. Data Analysis and Results
+This section presents the results and findings obtained from analyzing the data collected during this study. This section is organized around the two research questions (RQs) that were described in Section III.A.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 10, 2024 at 05:51:31 UTC from IEEE Xplore. Restrictions apply.
+
+# Next, in order to find if there were similarities (i.e., patterns) between the coding changes that were made by the programmers in order to fix the RCE vulnerabilities, we converted pseudocode.
+
+After converting the code-changes (patches/updates) into pseudocode, we found that the code-changes (patches) could be classified into five (5) categories or patterns.
+
+# Remote Code Execution (RCE)
+# Denial of Service
+# Overflow
+# Cross-Site Scripting
+# SQL Injection
+The five types of code-changes or updates (identified as a result of our analysis of 51 RCE vulnerabilities) that can be used to fix or mitigate a majority of RCE vulnerabilities are described as follows:
+# RCE Update Type 1 – Check if the Packet Size is a Positive Integer
+For this update the programmer added an If Statement to check that the packet size was a positive integer (i.e., not negative or zero). That is, check if the source buffer contained enough bytes to copy the packet and check that the packet size does not exceed the destination buffer. The pseudocode for this type of update is shown in Table II.
+
+# TABLE II. RCE UPDATE TYPE 1
+Pseudocode for RCE Update Type 1
+if ((size <= 0) || ((read - sizeof(var1) - sizeof(var2)) < size) || (sizeof(msg) < size)) {
+return -1;
+}
+# RCE Update Type 2 – Checking for the Proper Variable Size
+Another common update made by the programmers was that they checked for the proper size. In this If statement, they check if the variable is greater than the max size. And if the variable is greater than the max size, then set the variable to the max size. The pseudocode for this type of update is shown in Table III.
+
+# TABLE III. RCE UPDATE TYPE 2
+Pseudocode for RCE Update Type 2
+if (result->num_val > MAX_ATTR_SIZE) {
+errorWriteLog;
+result->num_val = MAX_ATTR_SIZE;
+}
+# RCE Update Type 3 – Applying an Offset
+In many reported RCE vulnerabilities, it was found that the buffer is not properly calculated causing a memory overflow. To fix this, they adjusted the calculation by dividing the offset. The pseudocode for this type of update is shown in Table IV.
+
+# TABLE IV. RCE UPDATE TYPE 3
+Pseudocode for RCE Update Type 3
+display->buffer = buffer + (offset / FACTOR);
+# RCE Update Type 4 – Moving the If Statement to the Top
+In another commonly used patch/update for RCE vulnerabilities, the programmer moved the If Statement to the top. The intention is to run the fail-check before creating a new class and assigning the size. The pseudocode for this type of update is shown in Table V.
+
+# RCE Update Type 5 – If statement to prevent out of bounds in the function
+In another common patch/update, the programmer added an If statement to check validity of pSettings->noOfPatches to prevent out of bounds in the function, which can also cause the memory size to be negative.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 10, 2024 at 05:51:31 UTC from IEEE Xplore. Restrictions apply.
+
+The pseudocode for this type of update (i.e., Update Type 5) is shown in Table VI. As is evident from the above-mentioned five commonly used updates/patches, most of the code updates was to account for changes in size of boundaries and buffers. When the size was not properly accounted for, it caused errors in the application which in turn leads to a potential for bad actors to perpetrate a Remote Code Execution (RCE) attack.
+
+Overall, we believe that the five update types that we have identified can provide a good starting point for programmers when they are trying to fix/mitigate reported RCE vulnerabilities in their Java-based software systems. We anticipate that a list of commonly used updates/patches (such as the one presented in this study) can improve the efficiency of programmers when they are trying to determine the best way to fix vulnerable code in their software system.
+
+# V. THREATS TO VALIDITY
+In this section, we describe the major threats to the validity of the results found in this study.
+
+One major validity threat is to the generalizability of our results. This is because we have studied RCE vulnerabilities and their respective updates/patches in a limited number of systems (two systems, Tomcat and Android). Owing to this, even though we have been able to locate some viable fixes (i.e., updates/patches) for RCE, they may not resolve each and every RCE vulnerability. Through our study we saw that many instances of RCE vulnerabilities can be mitigated by fixing buffering and boundary issues. At this time, our research is limited to Tomcat and Android, and thus there are likely other instances of RCE vulnerabilities and their respective updates/patches that we have not come across in our research.
+
+Another limitation arises from the unavailability of public vulnerability datasets for software projects. Most software projects do not make their vulnerabilities and related fixes public (with a few exceptions such as Android and Tomcat). The scarcity of vulnerable dataset makes any vulnerability related research challenging.
+
+The authors also note that our findings do not guarantee prevention against an RCE attack from a malicious actor (i.e., attacker). Our goal is simply to provide a readily usable list of updates/patches that can be potentially employed for fixing RCE vulnerabilities. The final decision about using the most appropriate update/patch has to be made by the programmer by conducting a thorough evaluation of the vulnerability they are trying to fix.
+
+# VI. DISCUSSION ON IMPLICATION OF RESULTS
+In this section we provide a brief discussion about the implications of our findings on programming practices that lead to injection of RCE vulnerabilities. Although, our main goal in this study was to identify what kind of code-changes (i.e., updates/patches) are commonly used to fix RCE vulnerabilities, our data analysis also highlighted some weaknesses or issues in coding practices (when the software systems are being developed). The paragraphs below provide a discussion related to such bad coding/programming practices that lead to injection of RCE vulnerabilities when the software is being developed.
+
+Overall, we found that the vulnerability landscape for remote code execution (RCE) needs to be approached with a persistent and analytical approach. We must not only rely on advisories but also correlate the weakness types and attack vectors that are associated with each vulnerability type. Having such insight is meaningful in making informed decisions as well as prioritize each vulnerability based on their risk factor. Although not every RCE instance will have the same weakness type, we learned that some weakness types still correlate with the root causes that were found for the associated vulnerability. Our research was able to successfully identify a root cause (size of boundaries and buffers) that frequently leads to injection of RCE vulnerabilities.
+
+Our research has shown that the opportunity for RCE vulnerabilities can be reduced by simply ensuring that buffers and boundaries are developed with proper sizing. With this in mind, developers can develop more efficient code and avoid at least some of the ongoing RCE attacks being deployed by hackers worldwide. This research has also highlighted that some cognitive issues such as carelessness or inattention when coding can lead to vulnerability injection. We intend to integrate existing research  on human cognition and human error in our future research on vulnerability prevention and vulnerability mitigation. Section VII further highlights our future research directions.

@@ -1,0 +1,53 @@
+# Mitigating Remote Code Execution Vulnerabilities: A Study on Tomcat and Android Security Updates
+Stephen Bier1, Brian Fajardo, Obinna Ezeadum3, German Guzman, Kazi Zakia Sultana5, Vaibhav Anu62
+Department of Computer Science, Montclair State University, Montclair, New Jersey, USA
+{biers11, fajardob1, ezeadumo1, guzmang34, sultanak2, anuv6}@montclair.edu
+# Abstract
+The security of web-applications has become increasingly important in recent years as their popularity has grown exponentially. More and more web-based enterprise applications deal with sensitive personal and private information, which, if compromised, can not only lead to system downtime, but can also cause mean millions of dollars in damages to the organization. It is critical to protect web-applications from the constant onslaught of hacker attacks. Remote Code Execution (RCE) attacks are one of the most prominent security threats for software systems, especially Java-based systems. In the current study, we have studied the security update reports for RCE vulnerabilities published by two Java-based projects: Apache Tomcat and Android. We analyzed and categorized the code-fixes (i.e., patches/updates) that were applied to mitigate/fix fifty-one (51) RCE vulnerabilities in the two above-mentioned Java projects. Our analysis showed that a significant majority of the RCE vulnerabilities found in Java projects can be mitigated with just five (5) types/categories of code-fixes. Overall, our goal was to study RCE vulnerabilities in an effort to provide programmers with a handy list of code-fixes, thus making it easier for them to effectively mitigate known RCE vulnerabilities in their own Java-based applications.
+
+# Keywords
+software security, software engineering, vulnerabilities, remote code execution, open source software
+# I. INTRODUCTION
+Software security bugs, also known as vulnerabilities, continue to be an important and potentially the most expensive issue affecting all aspects of our cyber society. There has been significant research effort toward preventing vulnerabilities from occurring in the first place, as well as toward automatically discovering vulnerabilities, but so far these results remain fairly limited. Remote Code Execution (RCE) has been recognized as one of the most harmful threats for web applications. Although RCE is a special kind of cross-site scripting attack, RCE attacks have some variants including requiring state consideration of both server and client, both string and non-string manipulation of client inputs, and involving multiple requests to more than one server-side scripts. Static analysis tools can be potentially used for detecting vulnerabilities. Static code analysis tools locate vulnerabilities within source code using data flow analysis or taint analysis techniques. As RCE attacks mostly depend on path conditions and involve both string and non-string operations, most static analysis tools fail to detect RCE attacks as they follow context free grammar and model only string operations. As a result, the false positive rates are high. Remote Code Execution is considered as a special kind of Cross Site Scripting (XSS) attacks. Like XSS and SQL injection attacks, RCE occurs when invalid client-side inputs are processed.
+
+# II. RELATED WORK
+In this section, we highlight some existing works that focused on remote code execution (RCE) vulnerability analysis and detection.
+
+are undesirably converted to scripts and executed . Although researchers have already put significant efforts on identifying and mitigating XSS and SQL injections vulnerabilities , RCE vulnerability got very little attention due to its unique characteristics . Zheng et al.  proposed a path and context sensitive inter procedural static analysis to detect RCE vulnerabilities in PHP scripts. They devised a novel algorithm featuring both string and non-string behavior of a program and successfully could detect RCE vulnerabilities in PHP scripts with less false positive rates . In another study , the authors assessed the multi-variant code execution technique to prevent the execution of malicious code. The idea of multi-variant code execution is detecting any malicious attempt during run-time. While running two or more slightly different variants of the same program in lockstep on a multiprocessor, the variants are monitored and any divergence from the regular behavior raises an alarm indicating the possible anomaly. The trade-off between security and performance is the major limitation of this approach . Hannes et al.  studied expert opinions on how three variable (i) non-executable memory, (ii) access and (iii) exploits for High or Medium vulnerabilities as defined by the Common Vulnerability Scoring System contribute to the successful remote code execution attacks. Both access and the severity of the exploited vulnerability were perceived as important by the experts; non-executable memory was not seen as relevant to RCE according to the study . In , the authors presented a case study on RCE vulnerability and analyzed different types of RCE and their impact on applications. Another paper  proposed a new mechanism for trusted code remote execution. The method creates a trusted platform integrating the identity authentication, platform authentication and behavior authentication based on trusted computing technology, remote attestation and trusted behavior for remote code execution . There are some other research studies on remote code execution which focused on remote code execution vulnerabilities in specific domains or platforms.
+
+Overall, there is a shortage of research on modeling of discovered security vulnerabilities to capture how and why an implementation fails to achieve the desired level of security. This paper analyzes some real vulnerable code and their fixes so that programmers can be aware of those frequently happened programming mistakes and are aware of their possible mitigation techniques.
+
+More specifically, we focused on Java-based applications and identified common code changes/fixes that are used to mitigate RCE vulnerabilities (which has not been investigated in earlier research). Most of the previous studies either devised techniques to prevent RCE or detect RCE during runtime. Those studies lack in highlighting some common programming practices that are used by developers to fix RCE vulnerabilities. In our study, we present RCE updates/fixes so that developers can be guided during the maintenance phase and can ensure future software releases are secure.
+
+# III. METHODOLOGY
+This section describes the Research Questions (RQs) and the data collection process for this study.
+
+# A. Research Questions
+The following research questions were formulated to guide the data collection for this study:
+- RQ1: Do software systems suffer from Remote Code Execution (RCE) vulnerabilities more frequently when compared to the other types of security vulnerabilities?
+- RQ2: What types of patches (i.e., code-fixes) are usually added to mitigate the known RCE vulnerabilities in Java-based software systems?
+# B. Data Collection
+The following paragraphs describe the data that we collected to answer the two research questions (RQs).
+
+To answer RQ1, we collected the vulnerability-counts for the last 5 years (2015 to 2019) for the most common types of vulnerabilities (RCE, Denial of Service, Overflow, XSS, SQL injection) reported to a vulnerability datasource called CVE Details (https://www.cvedetails.com/).
+
+With respect to RQ2, we focused specifically on collecting information about Remote Code Execution (RCE) vulnerabilities reported in Java-based software projects. Furthermore, we wanted to collect information about how programmers fix the RCE vulnerabilities reported in their Java-based software systems. Many open-source software projects publish security update reports on their project websites (for example, the security reports for Apache Tomcat are publicly available and can be found here: http://tomcat.apache.org/security.html).
+
+We identified two such open-source Java-based software projects: Apache Tomcat (mentioned above) and Android (https://source.android.com/security/bulletin). An overview of the steps taken to collect the code-fixes (i.e., patched) applied to fix RCE vulnerabilities reported in each of the two systems is provided below:
+1. Apache Tomcat Data Collection
+To gather the data from Tomcat, we first went to the Tomcat’s Security Reports page: http://tomcat.apache.org/security.html. This page displays a list of the known security vulnerabilities for each version of Tomcat as illustrated in Fig. 1. Tomcat Release 3.x was selected and all the Remote Code Execution (RCE) updates within this release were identified and reviewed. This was the most time and effort intensive step of our data collection process. Please note that our goal was to collect information regarding what kind of updates (i.e., patches or code-fixes) are applied by the programmers to known RCE vulnerabilities.
+
+Fig. Tomcat: Security Updates
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 10,2024 at 05:51:31 UTC from IEEE Xplore. Restrictions apply.
+
+# Revision 1809921
+# Android Security Bulletins
+# 2020 Bulletins
+# 2019 Bulletins
+# Changed paths
+# September
+Fig. Android: Security Update Reports (Listed by Year)
+Fig. Tomcat: Security Update Details for a Sample RCE Vulnerability found in Tomcat
+The most severe vulnerability in this section could enable remote code execution using specially crafted file.
+
+Therefore, for each RCE update found during our search, the revision number was selected as presented in the information page for that particular revision. Fig. 2 contains the information page for Revision 1809921. As can be seen in Fig. 2, each revision page contains a “path changed” link which in turn contains the line(s) of code that were added and/or removed to fix/mitigate the reported RCE vulnerability.

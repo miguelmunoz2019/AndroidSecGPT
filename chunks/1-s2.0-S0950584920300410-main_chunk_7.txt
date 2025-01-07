@@ -1,0 +1,54 @@
+# 7. Threats to conclusion validity
+To corroborate the practical usefulness of our study findings, we discussed how the empirical results on the contrasts between benign apps and malware in their behavioral differences can be used for sustainable malware detection. Such benefits of our results, however, are limited to the behavioral characteristics we actually considered in this study. Thus, for malicious behaviors that are not relevant to any of our characterization metrics, our results would not be directly applicable for detection purposes. For instance, a ransomware working on SD cards would not be detected by solely using the app features we studied since its maliciousness is not exhibited through execution-structural differences from benign apps. Similarly, our recommendations and lessons learned from the empirical results for the optimizations/prioritizations of app analyses are also limited to those that are relevant to the app characteristics addressed in our longitudinal study.
+
+# 8. Related work
+Concerning the comparison between benign apps and malware in Android and their characteristics or behaviors, our study presented in this paper is not the first. Nevertheless, our study clearly distinguished itself from prior peer work in multiple ways, including the nature of study, study scope, and study perspectives; and it contributes to the understanding of applications in Android in a distinct manner hence complements existing studies in this domain. In this section, we elaborate how this paper is situated in the relevant literature, while highlighting the key differences between current similar studies and ours.
+
+# 8. Nature of study
+Previous characterization studies of Android apps mostly focused on static characteristics of apps in terms of metrics extracted from the apps’ code. For example, in , 1100 popular apps were studied to understand their use and misuse of private information of mobile phones and users through reverse engineering. For another example, in  the authors studied code reuse in Android apps in varied ways, including reusing individual classes (e.g., through inheritance) and framework-wise reuse. A follow-up study further investigated how code obfuscation and the use of third-party libraries can affect the results of code reuse studies for Android apps . None of these studies examined the evolution of apps, though, compared to our study featuring a longitudinal and evolutionary lens into app characterization.
+
+A few earlier studies did characterize the evolution of Android apps. The study in  focused on the evolution of Android in terms of the permissions provided by the Android platform and their use by apps and third-party libraries. In , the authors studied the updates of APIs during the Android SDK evolution as well as API usage evolution in dependent apps, and discovered update rate of Android APIs and lags in apps’ according update of their use of those updated APIs thus characterized the API stability in the Android ecosystem. The study in  looked into the versioning, source size, and third-party library usage of 20 sample apps to understand the differences between Android apps and traditional software applications. Researchers have also studied the evolution of apps in terms of the presence of anti-patterns , by looking into a few thousands of versions of a hundred of sample apps. Yet these studies are still static in nature, compared to our characterization being purely dynamic—instead of looking at static artifacts (e.g., code, manifest files, etc.) of apps, we solely focus on examining the run-time executions of apps.
+
+# 8. Study scope
+A few dynamic characterization studies exist, which concern the installation and activation methods of malware only  or execution structure of benign apps only . Other examples include the dynamic study  that profiles apps in terms of their inter-component communications (ICC) and network traffic. CopperDroid  was used for characterizing system calls in apps, and the toolkit in  serves both static and dynamic characterizations. Other recent studies  are also related to ours but they focused exclusively on malware only. In contrast to the prior work studying either benign apps or malware only, our study looks into both benign and malicious apps and, more importantly, examines the differences between these two groups and implications of these differences. Our own latest empirical work on characterizing Android apps, with a focus on compatibility issues , is also limited to benign apps.
+
+# 8. Study perspectives
+The prior studies of different scope and nature from ours as discussed above also did not study the execution structure at code level and from a programming perspective (e.g., the callback mechanism, interactions among code layers, etc.) as we do in this paper.
+
+The study in  characterized 50 or more releases of 235 different apps in terms of their static (sensitive data leaks and permission uses) and dynamic (network traffic) traits. Similarly, Ren et al. studied how 512 unique Android apps (each with on average 15 versions) evolved over eight years in terms of their leakage of personal identifiable information (PII) . Another study took a close look into the use of dangerous permissions in multiple snapshots of Google Play store within a year  to examine how permission uses evolved. Unlike these prior studies which focus on a few particular and external behavioral traits of apps (e.g., permission uses, network traffic, PII leaks), our study looked into the internal structure of app executions from a programming point of view with respect to the underlying dynamics within apps that may be exhibited as a large variety of external behavioral traits.
+
+Also, a focus of our study is to reveal the security relevance of evolutionary traits (e.g., execution structure as we studied in this work) by separately looking at the characteristics of benign apps versus those of malware and contrasting them with respect to the characteristics. In comparison, previous peer studies tended to mostly conflate benign apps and malware in their study benchmark suites, without differentiating malware and benign apps. The characterization of evaluation datasets in  reveals the evolutionary characteristics of both malware and benign apps also, but it instead focuses exclusively on API calls in apps and is static.
+
+# 8. Summary
+Compared to peer prior work, our study (1) characterizes the run-time behaviors of apps, (2) examining both benign and malicious apps, both separately and comparatively, (3) in terms of code-level execution structures and from programming perspectives, while (4) applying a long-span (eight-year), evolutionary lens at a relatively larger scale and with a broader scope. These distinctions clearly differentiate this paper from the current relevant literature. Also, with the unique combination of study nature, scope, and perspectives as discussed above, our study complements to the existing body of work on characterizing user applications in Android.
+
+# 9. Conclusion
+We presented a longitudinal study of Android apps that characterizes the behavioral evolution of benign apps versus malware in terms of
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+execution structures. By monitoring the method calls and ICC Intents of 30 apps developed throughout the past eight years, we measured the actually observed behaviors of these apps to compare the dynamic traits and evolutionary patterns between the two groups. Our study revealed a number of previously unknown behaviors shared by both groups, as well as those that drastically differentiate malware from benign apps consistently over time. Our findings offer novel insights to enhancing future app testing and sustainable security analysis techniques.
+
+# Declaration of Competing Interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+# CRediT authorship contribution statement
+Haipeng Cai: Conceptualization, Methodology, Software, Data curation, Investigation, Writing - original draft, Writing - review & editing.
+
+Xiaoqin Fu: Software, Data curation, Validation, Writing - review & editing.
+
+Abdelwahab Hamou-Lhadj: Investigation, Writing - review & editing.
+
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+1. A. Machiry, R. Tahiliani, M. Naik, Dynodroid: an input generation system for Android apps, in: Proceedings of Joint European Software Engineering Conference and ACM International Symposium on the Foundations of Software Engineering, 2013, pp. 224–234.
+
+2. K. Mao, M. Harman, Y. Jia, Sapienz: multi-objective automated testing for Android applications, in: Proceedings of ACM International Symposium on Software Testing and Analysis, 2016, pp. 94–105.
+
+3. P. Patel, G. Srinivasan, S. Rahaman, I. Neamtiu, On the effectiveness of random testing for Android: or how I learned to stop worrying and love the monkey, in: Proceedings of the 13th International Workshop on Automation of Software Test, ACM, 2018, pp. 34–37.
+
+4. M. Mohammed, H. Cai, N. Meng, WIP: an empirical comparison between Monkey testing and human testing, in: ACM SIGPLAN/SIGBED International Conference on Languages, Compilers, and Tools for Embedded Systems (LCTES), 2019, pp. 188–192.
+
+5. virustotal.com, VirusTotal, 2017. https://www.virustotal.com/
+6. R.E. Walpole, R.H. Myers, S.L. Myers, K.E. Ye, Probability and Statistics for Engineers and Scientists, Prentice Hall, 2011.
+
+7. N. Cliff, Ordinal Methods for Behavioral Data Analysis, Psychology Press, 1996.

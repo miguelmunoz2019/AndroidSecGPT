@@ -1,0 +1,60 @@
+# B. EVALUATION METRICS
+The proposed Android malware impact prediction research problem is a class-imbalance problem due to the fact that the size of low impact malicious samples (Low_Mal) is significantly larger than that of high impact malicious samples (High_Mal). Thus to comprehensively validate the effectiveness of our proposed solution, in this work, we employ the next 7 performance metrics:
+- TP: the size of low impact Android malicious samples being correctly predicted as low impact malware.
+
+- TN: the size of high impact Android malicious data being correctly predicted as high impact malware.
+
+- FP: the size of low impact Android malicious samples being incorrectly predicted as high impact malware.
+
+- FN: the size of high impact Android malicious data being incorrectly predicted as low impact malware.
+
+- Precision: as shown by Equation 7, the size of correctly identified high impact malware over the size of correctly identified high impact malicious samples and incorrectly identified high impact malicious samples.
+
+P = TP/(TP + FP) (7)
+- Recall: as defined in Equation 8, the size of correctly identified high impact malicious samples divided by the size of correctly identified high impact malicious samples and incorrectly identified low impact malicious samples.
+
+R = TP/(TP + FN) (8)
+- F1-score: F1-score is a combination of TN, TP, FN and FP. It can reflect the prediction effectiveness of the classifiers in a more comprehensive way. Equation 9 provides the formula for the computation of F1-score.
+
+F1 = 2 P + RP × R (9)
+# C. REPRESENT THE LOW AND HIGH IMPACT MALICIOUS SAMPLES USING ANDROIDMANIFEST.XML BASED FEATURES
+In this part, we address our first research question, we perform the impact prediction task based on information from AndroidManifest.xml files. Both low impact malware (Low_Mal) samples and high impact samples (High_Mal) are characterized using AndroidManifest.xml based features.
+
+To investigate the discriminative ability of AndroidManifest.xml based features, we visualize the malware data using t-SNE (t-Distributed Stochastic Neighbor Embedding) algorithm . t-SNE is a popular algorithm for reducing dimensions that is suited for high dimensional data visualization.
+
+8 https://www.tensorflow.org/
+9 https://keras.io/
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+The size of the malware, especially the high impact malware is too few for training robust Deep Neural Networks. In order to measure the contributions of different individual features in separating low impact and high impact malware, based on the SVM malware impact prediction model (each weight is assigned to a certain feature), we list the most top 10 features in the descending order according to the absolute values of the weight scores (denoted as ||w||) in Table 8. From Table 8, among the top 10 features, 5 features are permission involved and 3 features are intent filters involved. We conclude that the intent filters and requested permissions involved features have better discriminative power in separating low impact and high impact malicious samples. In addition, the common sensitive and suspicious features all appear in the top 10 feature list, e.g., the SMS related permissions, reboot related permissions or camera related permissions.
+
+# D. REPRESENT THE LOW AND HIGH IMPACT MALICIOUS SAMPLES EMPLOYING THE INFORMATION PARSED FROM DISASSEMBLED CLASSES.DEX CODE
+In this part, to answer the third research question, we represent the Android malicious samples using features decoded from the disassembled classes.dex codes, and then we vectorize the malicious samples for the following impact prediction task. Fig. 7 shows the visualization result of the training malware dataset, and Fig. 8 is the visualization result for the
+66312 VOLUME 7, 2019
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+Testing malware samples. There is a clear boundary between low impact and high impact malicious samples. Therefore, the disassembled classes.dex involved features can also discriminate the low and high impact Android malicious samples with satisfactory performance.
+
+We represent all the malware samples D with features from disassembled classes.dex code, then we perform the malware impact prediction task. Table 9 and Table 10 show the malware impact prediction results of SVM and Deep Neural Network. Compared with the performance using Android-Manifest.xml based features, we find that the prediction performance is slightly worse but also satisfactory. Besides, the performance of SVM is better than that of Deep Neural Network due to the data size limitation.
+
+# E. PREDICT THE IMPACT OF NEWLY IDENTIFIED ANDROID MALWARE IN THE WILD
+As we know, Android malware evolve over time due to many factors, e.g., the employment of obfuscation or encryption techniques. Meanwhile, the properties of both low and high impact malware will also change over time. Thus the impact prediction accuracy might significantly decrease if we ignore such evolution of newly Android malware in the wild. Therefore it is essential to take into account such evolution of impact characteristics while validating the effectiveness of our proposed solution. In this section, our goal is to address the third research question: Is it possible to accurately and automatically make the impact prediction for those newly identified malware in the wild?
+In order to investigate this research question, we simulate the malware evolution scenario by training the impact prediction models with ‘older’ malware samples (the low impact and high impact malicious samples were all detected between 2011 to 2015), while testing the model with ‘newer’ samples (these malware were detected in 2016 and 2017). In the experiments, the number of ‘older’ training low impact and high impact malicious samples is 15912 and 3409, respectively, and the ‘newer’ testing dataset includes 4537 low impact malicious samples and 928 high impact malicious samples.
+
+In this work, we define a new evaluation metric prediction power to evaluate the contributions of different semantic feature subsets (e.g., requested permissions f_rp, filtered intents f_fi or suspicious API calls f_sa...) in malware impact prediction. Since the collected Android malware impact dataset is class-imbalanced, to make a comprehensive evaluation, we selected F1-score rather than accuracy or precision as the evaluation metric of prediction power. The higher prediction F1-score is, the corresponding feature subset is considered to have greater prediction power. Different feature subsets are individually employed to represent the malware samples for the following impact prediction. The prediction power of each feature set is shown in Fig.
+
+Firstly, among all the semantic feature set extracted from AndroidManifest.xml files, application components set f_ac, requested permissions set f_rp and filtered intents set f_fi have the optimal prediction power for low impact malware samples (Low_Mal) as well as high impact malware samples (High_Mal), while hardware components feature set f_hc has the worst prediction power, particularly for those high impact malicious samples (High_Mal). In addition, for feature sets extracted from disassembled classes.dex codes, the prediction power of suspicious API calls feature set f_sa and Used permissions feature set f_up are superior to that of network addresses set f_na and critical API calls set f_ca. In conclusion, in the task of Android malicious samples impact prediction, features decoded from Android-Manifest.xml files have more strong prediction power than features parsed from disassembled classes.dex codes.
+
+Shows the impact prediction performance of SVM and Deep Neural Network using features from
+VOLUME 7, 2019
+# J. Qiu et al.: Predicting the Impact of Android Malicious Samples via Machine Learning
+The comparison results of every feature type’s prediction power.
+
+The malware impact prediction results of SVM using features from both disassembled binary classes.dex codes and AndroidManifest.xml files to represent malware samples.
+
+The malware impact prediction results of deep neural network using features from both disassembled binary classes.dex codes and AndroidManifest.xml files to represent malware samples.
+
+Both disassembled binary classes.dex codes and AndroidManifest.xml. Aggregating more features should produce better prediction performance. SVM also performs better than Deep Neural Network in the impact prediction of those newly identified Android malware. However, employing more features also implies it cost more expensive resources (e.g., time consumption, memory consumption) in reverse engineering.
+
+In reality, the security practitioner should balance the tradeoff between accuracy and efficiency.
+
+# V. CONCLUSIONS AND FUTURE DIRECTIONS
+Android malware cause great security and privacy damage to our society. Despite huge research efforts, with the tremendous growth in Android malware applications, detecting the malware or classifying malware into specific families has no longer sufficient for security risk management. In this work, we raise a novel research problem: Is it possible to accurately and automatically make the impact prediction for the newly identified Android malicious samples? We attempt to design a light-weight solution to address this research question. Firstly, we construct a new Android malware dataset with low impact or high impact ground truth. Then, we perform feature engineering to parse semantic features to represent the malware samples. Thirdly, we build up the SVM and Deep Neural Network models to predict the impact of Android malicious samples. In the end, the empirical experiments validate the effectiveness of our proposed solution in the Android malware impact prediction.

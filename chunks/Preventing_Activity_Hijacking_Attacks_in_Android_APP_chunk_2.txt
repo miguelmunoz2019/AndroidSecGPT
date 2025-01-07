@@ -1,0 +1,38 @@
+Activity Hijacking Attacks can be separated into three components. The first component is ActivityDetector, which detects and collects the popup activity information. The second component is the TextViewFinder, which detects the activity layout and determines whether the popup activity has a password input type field. The third component is the Activity Hijacking Attacks Service of the main controller components, which controls the alert system. Fig. 10 shows the Activity Hijacking Attacks system architecture. If the ActivityDetector or TextViewFinder acknowledge that an event appears, a message is sent to the Activity Hijacking Attacks Service to determine whether the popup activity is malicious.
+
+The ActivityDetector is designed to detect popup activity from the system perspective. Under the Activity Hijacking Attacks framework, the Android system maintains a history stack that is patched with ActivityStack.java to catch activities. Every time an activity starts, it is recorded in the startActivityMayWait() function. The top of the history stack still shows the original activity, which the user is still interacting with. As the new activity is still in preparation, it has not yet appeared at the top of the history stack.
+
+ActivityStack.java is patched in Activity Hijacking Attacks codes to obtain the original foreground activity package name, status, and ActivityInfo. Similarly, ActivityStack.java acquires the package name, status, and ActivityInfo of the new activity. If the above two package names are not equal, the two activities are not from the same application, and are sending different ActivityInfo. These data are sent to the Activity Hijacking Attacks Service.
+
+The Activity Hijacking Attacks Service is the core of our proposed scheme. The AMS will complete all tasks belonging to the activity, and then send the WindowManager to draw the layout of the activity. Hence, the ActivityDetector and TextViewFinder are not going to catch the event at the same time. To coordinate the two components, the Activity Hijacking Attacks Service is used as a system service in Android. System services can run persistently, allowing ActivityDetector and TextViewFinder to pass information and useful data to the Activity Hijacking Attacks Service.
+
+In the Activity Hijacking Attacks Service, the activity’s package name and the ActivityInfo passed from the ActivityDetector are stored as member variables until the TextViewFinder sends the password input type information. After receiving information from these components, the Activity Hijacking Attacks Service examines the original foreground activity package name and the new activity package name. If they are not the same, the two activities are from different applications. Otherwise, these two activities are from the same application, in which case we clear all objects passed from the ActivityDetector and return the system to the original workflow. When the Activity Hijacking Attacks Service receives the TextViewFinder’s information, it examines whether the new activity has the password input type. If so, the Activity Hijacking Attacks Service sends a message to the user alerting them to the situation. Fig. 3 illustrates the flowchart of the Activity Hijacking Attacks Service.
+
+# 2019 IEEE Eurasia Conference on Biomedical Engineering, Healthcare and Sustainability (IEEE ECBIOS 2019)
+# Activity Detector and TextView Finder
+Kthe uebom ativily [rol the ancthct package! tthe activaty comaul KLy password Input Type?
+Fcn #nudow
+# Experimental Results
+Using the device emulator of the AOSP, we conducted the following evaluation. The test environment is summarized in Table 2.
+
+In this paper, we have described an Activity Hijacking Attacks scheme that prevents users from being tricked into typing their account name and password into TextView fields in forged login activities. The app examines the ActivityManager and WindowManager workflows, and uses the Android View System to identify the layout of the forged activity. Finally, the proposed event-driven solution in Activity Hijacking Attacks alerts users to the possibility that some popup activity is malicious. Activity Hijacking Attacks operates in the Android framework layer to catch the execution flow and layout of suspicious activities. The proposed scheme can successfully alert users to and prevent such attacks. Activity Hijacking Attacks protects end users from the malicious hijacking of foreground activities. It not only defends against attacks, but also has a negligible performance overhead.
+
+# Conclusions
+1. I.D. Corporation. Worldwide Quarterly Mobile Phone Tracker [Online]. Available: http://www.idc.com/getdoc.jsp?containerId=prUS25450615
+2. E. Owusu, J. Han, S. Das, A. Perrig, and J. Zhang, “ACCessory: password inference using accelerometers on smartphones,” in Proceedings of the Twelfth Workshop on Mobile Computing Systems & Applications, 2012, p. 9.
+
+3. C.C. Lin, H. Li, X.y. Zhou, and X. Wang, “Screenmilker: How to Milk Your Android Screen for Secrets,” in 21st Annual Network and Distributed System Security Symposium (NDSS), San Diego, California, USA, 2014.
+
+4. L. Cai and H. Chen, “TouchLogger: Inferring Keystrokes on Touch Screen from Smartphone Motion,” in Proceedings of the 6th USENIX conference on Hot topics in security, HotSec’11, USENIX Association, Berkeley, CA, USA, 2011, pp. 9-9.
+
+5. S. Schulte. TWSL2011-008: Focus Stealing Vulnerability in Android [Online]. Available: https://www.trustwave.com/Resources/SpiderLabs-Blog/TWSL2011-008--Focus-Stealing-Vulnerability-in-Android/
+6. L. Lu, Z. Li, Z. Wu, W. Lee, and G. Jiang, “Chex: statically vetting android apps for component hijacking vulnerabilities,” in Proceedings of the 2012 ACM conference on Computer and communications security, 2012, pp. 229-240.
+
+7. Q. A. Chen, Z. Qian, and Z. M. Mao, “Peeking into your app without actually seeing it: Ui state inference and novel android attacks,” in 23rd USENIX Security Symposium (USENIX Security 14), 2014, pp. 1037-1052.
+
+8. AnTuTu Benchmark [Online]. Available: http://www.antutu.com/index.shtml
+9. E. Chin, A. P. Felt, K. Greenwood, and D. Wagner, “Analyzing inter-application communication in Android,” in Proceedings of the 9th international conference on Mobile systems, applications, and services, 2011, pp. 239-252.
+
+10. M. Zhang and H. Yin, “AppSealer: Automatic Generation of Vulnerability-Specific Patches for Preventing Component Hijacking Attacks in Android Applications,” in Proceedings of the 21th Annual Network and Distributed System Security Symposium (NDSS 2014), 2014.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:19:11 UTC from IEEE Xplore. Restrictions apply. ISBN: 978-1-7281-0763-9173.

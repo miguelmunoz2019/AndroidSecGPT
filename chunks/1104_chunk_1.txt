@@ -1,0 +1,66 @@
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+# Singapore, March 7-11, 2021
+# A Vulnerability Assessment on the Parental Control Mobile Applications’ Security: Status based on the OWASP Security Requirements
+Eric B. Blancaflor, Gerardine Anne J. Anson, Angela Mae V. Encinas, Kiel Cedrick T. Huplo, Mark Anthony V. Marin, Stephany Lhaime G. Zamora
+School of Information Technology, Mapúa University, Makati City, Philippines
+ebblancaflor@mapua.edu.ph, gajanson@mymail.mapua.edu.ph, amvencinas@mymail.mapua.edu.ph, kcthuplo@mymail.mapua.edu.ph, mavmarin@mymail.mapua.edu.ph, slgzamora@mymail.mapua.edu.ph
+# Abstract
+Parental control software and hardware are the most common solution for regulating their children’s online activities. Consequently, while this may ease their worries about internet use regulation, it also introduces grave security and privacy threats. This study was able to analyze the underlying vulnerabilities present in commonly used parental control mobile applications by parents and propose recommendations from the identified vulnerabilities. This quantitative research case study used a vulnerability assessment method utilizing the Quixxi Security tool to yield a descriptive analysis of the results. FamilyTime, FamilyLink, and OurPact are the identified commonly used parental control application, and they have ten vulnerabilities common with each other.
+
+# Keywords
+Cybersecurity, Vulnerability Assessment, Parental Mobile Application, OWASP, MASVS
+# 1. Introduction
+Minors are constantly being exposed to different dangers with navigating the internet unsupervised, they use the internet as their means to express themselves completely unaware that the mobile applications that they are using are leaving them vulnerable to attackers. Due to the children’s exposure to the Internet, there is a higher possibility that they would encounter brutality, corrupt practices, or exploitation (Council of Europe [CoE], n.d). Ellis (2020) listed the best free parental control software applications there is in the market that promotes child safety when browsing the internet, which also allows their parents to not worry about them encountering inappropriate content. According to published research on children protection on the internet by Denić et. al (2017), ten percent of its respondents, who are parents, used software to control their children’s access to web-addresses. As much as these applications can protect the children’s safety, it is also riddled with vulnerabilities that fail to secure the private information of its users that would be used to manipulate as well as steal user data by the attackers.
+
+The Open Web Application Security Project or OWASP (2020) provided information to developers regarding common coding are being used to identify potential vulnerabilities and suggested procedures on how to secure code by application security experts. Olekss (2020) stated that codes are written by high-skilled developers also have a bug wherein some software has been reported to have fifteen to fifty bugs per one thousand lines of code. Insecure data storage, a common issue, is found in 76 percent of mobile applications. This kind of issue puts sensitive and confidential data, such as financial information and personal data, at risk. An article published by Positive Technologies (2019) presented that thirty-eight percent (38%) of existing mobile applications for iOS users are at high-risk vulnerabilities and forty-three percent (43%) for Android users. With the use of malware, eighty-nine percent (89%) of vulnerabilities can be exploited when users install a mobile application with the ignorance of security implications.
+
+© IEOM Society International 6463
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+Singapore, March 7-11, 2021
+# 1 Objectives
+This study was able to assess the vulnerabilities of the parental control mobile application security status based on the OWASP security requirements. Specifically, this study was able to:
+1. determine the three most frequently used parental control application;
+2. scan vulnerabilities of each of the most used parental control application with the use of the Quixxi Security tool; and
+3. identify which vulnerabilities are common between the three parental control applications.
+
+# 1 Scope and Limitation
+The research mainly focused on performing a vulnerability assessment on the top three most used parental monitoring tools based on the OWASP security requirements. The parental control tools are the top three most used mobile applications that parents are using based on the gathered survey. The vulnerability assessment was done with the utilization of the Quixxi Security tool.
+
+The result of the vulnerability assessment is limited to identifying the total scanned and detected vulnerabilities, the severity level of threats, and assessment status. It is also restricted in determining the general security issues, exploits information, and common weakness types of the vulnerabilities detected.
+
+# 2. Literature Review
+# 2 Parental Control Tools
+A study by Saravid et.al (2018) describes parental control tools as applications or software implemented in operating systems of different devices that restrict the abuse of some software like games and other unnecessary or inappropriate websites that are not for children. By using parental control, parents could encourage decent behavior and avoid such bad behaviors that the children can adapt.
+
+# 2 The OWASP’s Mobile Application Security Verification Standard (MASVS)
+The Open Web Application Security Project® or OWASP (2020) is a nonprofit organization that aims to establish foundations of security of software. They are one of the sources of developers, security analysts, and technologists to secure the web through tools and resources, community and networking, and education and training.
+
+OWASP established the Mobile Application Security Verification Standard or the OWASP-MASVS (2016). This is a set of security requirements for mobile apps. It is usually used in application development, mobile application penetration testing, procurement, etc. The MASVS is based and a parallel project under the OWASP Mobile Security Testing Guide. The following are the security requirements under the MASVS:
+- V1. Architecture, Design, and Threat Modeling Requirements: This requirement list pertains to the architecture and design of the application.
+
+- V2. Data Storage and Privacy Requirements: This requirement list pertains to user data protection, especially, sensitive data such as user credentials.
+
+- V3. Cryptography Requirements: This requirement list intends to implement cryptographic standards to further protect stored data.
+
+- V4. Authentication and Session Management Requirements: This requirement list is for the security of users logging into remote services.
+
+- V5. Network Communication Requirements: This guarantees the integrity and confidentiality of information exchange between apps and services within a network or over the Internet.
+
+- V6. Platform Interaction Requirements: The usage of standard APIs and secure components is the main focus of this requirement list.
+
+- V7. Code Quality and Build Setting Requirements: This requirement list focuses on secure coding practices in application development.
+
+- V8. Resilience Requirements: This requirement list focuses on threat modeling and assessment of the effectiveness of the protection of the application against obfuscations. This is the security requirement to avert reverse-engineering attacks.
+
+# Proceedings of the 11th Annual International Conference on Industrial Engineering and Operations Management
+Singapore, March 7-11, 2021
+# 2 Common Vulnerabilities and Exposures (CVE)
+The Common Vulnerabilities and Exposure or CVE (2016) is a system that provides a list of computer and information security vulnerabilities and exposures that aims to provide common names for publicly known problems. CVE reports can come from a vendor or any user that can discover a security flaw from a computer or open-source software. A CVE entry includes the CVE ID which provides a brief description of the security vulnerability or exposure, and references, which can include links to vulnerability reports and advisories.
+
+# 2 Common Weakness Enumeration (CWE)
+Common Weakness Enumeration or CWE (2020) is a collection of software and hardware weakness or vulnerabilities which is a community developed. The CWE’s can be described and discussed in hardware and software in a common language by developers, also, it can analyze and check for weaknesses present in hardware and software products. It can also help developers prevent vulnerabilities of software and hardware before their deployment. The CWE List consists of weak types of both software and hardware which can also be downloaded and viewed entirely.
+
+# 2 Quixxi Vulnerability Scanning Tool
+The Quixxi (2020) security tool is a useful scanning tool that can provide a detailed analysis of a mobile application. The main purpose of Quixxi is to enable organizations to develop, secure, operate, and sustain applications that can be trusted. It can detect critical risks and descriptively explain detected vulnerabilities. What makes Quixxi excellent is that it is automated in terms of scanning and generating reports. Quixxi performs a static analysis of mobile applications, an APK (Android Package), or an IPA (iOS App Store Package) format.
+
+Quixxi is an OWASP-inspired vulnerability scanner. It analyzes the security areas and requirements based on the OWASP Mobile Security Project guidelines, which were previously discussed in the OWASP’s Mobile Application Security Verification Standard (MASVS). In this part of the study, the recently conducted research will be presented as well as its relevance to this research.

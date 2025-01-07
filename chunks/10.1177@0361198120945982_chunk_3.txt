@@ -1,0 +1,59 @@
+# Recommendations and Suggested Policies
+Many existing general security best practices and policies are effective in the area of transportation security. This section provides recommendations for agencies seeking to improve cybersecurity in their organization. These rec- ommendations are included based on the research team’s evaluation of the current state of cybersecurity in public transportation in Florida.
+
+# Vulnerability Disclosure Policies
+Agencies seeking to deploy mobile fare payment and other mobile applications should discuss how discovered vulnerabilities will be addressed with their vendors, ide- ally before any contract is signed. Agencies should ask about the timeline for patching discovered vulnerabilities and the vendor’s responsibilities if a breach were to occur (e.g., if the agency or passengers will be notified if a vul- nerability in the vendor’s system is discovered or if the agency will be charged for fixing the vulnerability).
+
+While there does not appear to be a general-purpose federal law that covers data breaches (only ‘‘financial institutions’’ are covered by the Gramm-Leach-Bliley Act [GLBA]), other states have laws similar to the Florida Information Protection Act of 2014 (26, 27). Agencies and their vendors should be familiar with state laws that cover data breaches. By providing expeditious notifica- tion of all affected parties in its vulnerability disclosure program, an agency may be more prepared to meet this requirement. Rapid notification of relevant vendors and other agencies may also reduce exploitation of the vulner- ability. A federal law could provide a national baseline that would give both the public and private sector a mini- mum set of thresholds to follow. Ideally, vendors and agencies would alert the public if the vulnerability might have been exploited.
+
+# Recommendations for Vulnerability Disclosure Programs
+When attempting to report the mobile fare payment vulnerabil- ity described in this paper, the research team was unable to find an appropriate contact for the agency or the ven- dor. After reporting the vulnerability, the research team reviewed several Florida transit agency websites and were unable to find publicly available contacts for any.
+
+# Dennis et al
+transit agency in the state of Florida. As transit agencies continue to employ new technologies such as mobile fare payment, the number of discovered vulnerabilities is expected to increase. By providing a clear vulnerability disclosure policy, vulnerabilities may be patched more quickly and communication between agencies, researchers, and vendors can be improved.
+
+A common challenge for successful vulnerability disclosure is the lack of experience for both the vendors and security researchers with regard to accepting or providing vulnerability reports (28, pp. 7–8). Smaller organizations, such as transit agencies, may be unprepared to accept vulnerability reports and, because of the sensitive nature of vulnerabilities, inexperienced researchers may be overly aggressive when discussing a timeline with an agency. Providing a clear vulnerability policy will provide a smoother experience for both the agency employees and security researchers.
+
+Providing a prominent location for the vulnerability policy, such as the agency website, will allow vulnerability researchers and vendors to easily discover the policy, especially if the page can be found using a search engine. This prominent location should have a single point of contact listed and should ideally specify what information should be included in the report.
+
+The point of contact could be an online form instead of an email or other form of communication. This will allow agencies more control over the information that is submitted along with the report. Agencies have deployed similar online forms for safety reporting (29). These online forms can be programmed to provide other advantages, such as forwarding alerts to all relevant personnel (29).
+
+# Florida Rule 14-90 Policy Review
+As part of the Florida DOT-sponsored Enhancing Security in Public Transportation project (30), the research team held monthly working group meetings aimed at increasing communication between security researchers and transit professionals. During a working group meeting held on December 12, 2018, the state of Florida safety and security regulatory infrastructure for bus transit systems, Florida Rule 14-90, was discussed. Currently, Rule 14-90 does not specifically address cybersecurity. The participants discussed potential cybersecurity-related additions to Security Program Plans (SPP) for Rule 14-90. Following this meeting, the research team provided Florida DOT with the following suggested language for disclosure policies. This addition would require Florida agencies to include the following system activities in Section 3 of their SPP:
+- A public cybersecurity vulnerability disclosure policy that includes:
+- a. a single, public point of contact at the bus transit system for disclosure of vulnerability reports.
+
+- b. expeditious notification of any and all potentially affected or in-danger parties, including users of the system.
+
+- c. practical and timely steps to mitigate and recover from known vulnerabilities.
+
+- d. a location for prominent public display of the policy (e.g., on the agency’s website).
+
+- e. compliance with the Florida Information Protection Act of 2014 (25).
+
+- Contractual templates used by the bus transit system to engage contractors and vendors that require these entities to comply with the bus transit system public cybersecurity vulnerability disclosure policy described in Section (3) (l). Contractors and vendors shall report all known vulnerabilities to the bus transit system in a timely manner and shall describe in the contract practical and timely steps to mitigate and recover from known vulnerabilities without additional charge to the bus transit system (e.g., as part of a maintenance agreement).
+
+# Other Cybersecurity Policies
+For agencies seeking to deploy in-house solutions, their developers should be sure to follow industry best practices. Care should be taken when handling user input and authenticating users. Organizations such as the Open Web Application Security Project (OWASP) (31) provide training and informational resources for developers looking to develop new applications securely. Agencies should also conduct internal security reviews for their in-house applications.
+
+Agencies should also review their cybersecurity processes and training. Management should provide resources to train employees to be wary of potential threats, such as phishing emails. In addition, employees should be provided a process for reporting suspected vulnerabilities or suspicious events and encouraged to report anything they observe.
+
+When available, agencies should employ authentication and encryption with their operational technologies. Requiring authentication and encrypting communications may prevent attacks from less sophisticated attackers. Default passwords for technologies are commonly available on the Internet, and attackers may cause significant damage simply by gaining access to a system. This is especially true for isolated technologies, such as traffic cabinets or roadside signs, where an attacker may easily access the device. For example, attackers can purchase physical keys to traffic cabinets online. An example
+# Transportation Research Record 00(0)
+Policy may require technicians to use unique passwords for deployed technologies and disable any unnecessary applications/protocols such as Telnet that are not used in operations.
+
+In the event of an attack, an agency that deploys proper logging technologies may be able to determine the source of the attack and prevent future attacks from the same vulnerability. Agencies should also maintain backups of systems to help recover from events. Responding to and recovering from a breach is often costly. If the source of the attack is not discovered, the costs may increase further as a result of repeated attacks.
+
+# Declaration of Conflicting Interests
+The author(s) declared no potential conflicts of interest with respect to the research, authorship, and/or publication of this article.
+
+# Funding
+The author(s) disclosed receipt of the following financial support for the research, authorship, and/or publication of this article: This paper is part of the project ‘‘BDV25-977-51 Enhancing Cybersecurity in Public Transportation’’ funded by the Florida Department of Transportation and the National Center for Transit Research.
+
+# Conclusion
+Mobile fare payment apps are a critical nexus between customer and agency financial information and therefore critical to agency operations. This paper introduced a new form of attack on mobile fare payment applications and described a vulnerability susceptible to this attack discovered in a Florida mobile fare payment application. Because of the system architecture in which multiple transit and parking fare payment applications by the same vendor share the same server, this vulnerability may have affected customers in as many as 40 cities across the United States, an estimated 1,554,000 users. Lessons learned from the vulnerability disclosure process followed by the research team as well as recommendations for public agencies seeking to improve the security of these types of applications have been discussed.
+
+Given the increasing number of mobile fare payment applications and the agencies’ desire to provide more functionality to increase passenger numbers, as well as vendors pushing to implement payment solutions across multiple modes of transportation for ‘‘Mobility as a Service (MaaS),’’ cybersecurity issues such as the ones discussed in this paper will only become more prevalent in the future.
+
+# Author Contributions
+The authors confirm contribution to the paper as follows: study conception and design: S. Barbeau, J. Ligatti; data collection: K. Dennis, M. Alibayev; analysis and interpretation of results: K. Dennis, M. Alibayev, S. Barbeau, J. Ligatti; draft manuscript preparation: K. Dennis. All authors reviewed the results and approved the final version of the manuscript.

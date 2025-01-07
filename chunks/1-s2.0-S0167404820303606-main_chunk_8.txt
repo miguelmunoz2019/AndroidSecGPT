@@ -1,0 +1,61 @@
+Qu Z, Alam S, Chen Y, Zhou X, Hong W, Riley R. Dydroid: measuring dynamic code loading and its security implications in android applications. In: 47th Annual IEEE/IFIP International Conference on Dependable Systems and Networks (DSN); 2017. p. 415–26.
+
+Rashidi B, Fung CJ. A survey of Android security threats and defenses. J. Wirel. Mob. Networks Ubiquitous Comput. Dependable Appl. 2015;6(3):3–35.
+
+Rasthofer S, Asrar I, Huber S, Bodden E. How current android malware seeks to evade automated code analysis. In: IFIP International Conference on Information Security Theory and Practice; 2015. p. 187–202.
+
+Rastogi V, Chen Y, Enck W. AppsPlayground: automatic security analysis of smartphone applications. In: Proceedings of the third ACM conference on Data and application security and privacy; 2013. p. 209–20.
+
+Ravitch T, Creswick ER, Tomb A, Foltzer A, Elliott T, Casburn L. Multi-app security analysis with fuse: Statically detecting android app collusion. In: Proceedings of the 4th Program Protection and Reverse Engineering Workshop; 2014. p. 1–10.
+
+Rocha BP, Conti M, Etalle S, Crispo B. Hybrid static-runtime information flow and declassification enforcement. IEEE Trans. Inf. Forensics Secur. 2013;8(8):1294–305.
+
+Rountev A, Yan D. Static reference analysis for GUI objects in Android software. In: Proceedings of Annual IEEE/ACM International Symposium on Code Generation and Optimization; 2014. p. 143–53.
+
+Ryan S, Corizzo R, Kiringa I, Japkowicz N. Deep learning versus conventional learning in data streams with concept drifts. In: 2019 18th IEEE International Conference On Machine Learning And Applications (ICMLA); 2019. p. 1306–13.
+
+Sadeghi A, Bagheri H, Garcia J, Malek S. A taxonomy and qualitative comparison of program analysis techniques for security assessment of android software. IEEE Trans. Softw. Eng. 2016;43(6):492–530.
+
+Safi G, Shahbazian A, Halfond WG, Medvidovic N. Detecting event anomalies in event-based systems. In: Proceedings of the 2015 10th Joint Meeting on Foundations of Software Engineering; 2015. p. 25–37.
+
+Sbîrlea D, Burke MG, Guarnieri S, Pistoia M, Sarkar V. Automatic detection of inter-application permission leaks in Android applications. IBM J. Res. Dev. 2013;57(6):10–11.
+
+Schütte J, Titze D, De Fuentes JM. Appcaulk: data leak prevention by injecting targeted taint tracking into android apps. In: 13th International Conference on Trust, Security and Privacy in Computing and Communications; 2014. p. 370–9.
+
+Schütte J, Fedler R, Titze D. Condroid: Targeted dynamic analysis of android applications. In: 29th International Conference on Advanced Information Networking and Applications; 2015. p. 571–8.
+
+Schoepe D, Balliu M, Piessens F, Sabelfeld A. Let’s face it: faceted values for taint tracking. In: European Symposium on Research in Computer Security; 2016. p. 561–80.
+
+Sexton J, Chudnov A, Naumann DA. Spartan Jester: end-to-end information flow control for hybrid Android applications. In: IEEE Security and Privacy Workshops (SPW); 2017. p. 157–62.
+
+Shankar VG, Somani G, Gaur MS, Laxmi V, Conti M. AndroTaint: an efficient android malware detection framework using dynamic taint analysis. In: ISEA Asia Security and Privacy (ISEASP); 2017. p. 1–13.
+
+Sharif A, Nauman M. Function identification in Android binaries with deep learning. In: 2019 Seventh International Symposium on Computing and Networking (CANDAR); 2019. p. 92–101.
+
+Sharmeen S, Huda S, Abawajy J, Hassan MM. An adaptive framework against android privilege escalation threats using deep learning and semi-supervised approaches. Appl. Soft Comput. 2020;89.
+
+Shen F, Vishnubhotla N, Todarka C, Arora M, Dhandapani B, Lehner EJ, Ko SY, Ziarek L. Information flows as a permission mechanism. In: Proceedings of the 29th ACM/IEEE International Conference on Automated Software Engineering; 2014. p. 515–26.
+
+Shrivastava G, Kumar P, Gupta D, Rodrigues JJ. Privacy issues of android application permissions: a literature review. Trans. Emerg. Telecommun. Technol. 2019:e3773.
+
+Shuai S, Guowei D, Tao G, Tianchang Y, Chenjie S. Modelling analysis and auto-detection of cryptographic misuse in android applications. In: 2014 IEEE 12th International Conference on Dependable, Autonomic and Secure Computing; 2014. p. 75–80.
+
+Song H, Lin D, Zhu S, Wang W, Zhang S. ADS-SA: system for automatically detecting sensitive path of Android applications based on static analysis. In: International Conference on Smart City and Informatization; 2019. p. 309–22.
+
+Sounthiraraj D, Sahs J, Greenwood G, Lin Z, Khan L. Smv-hunter: large scale, automated detection of SSL/TLS man-in-the-middle vulnerabilities in android apps. Proceedings of the 21st Annual Network and Distributed System Security Symposium (NDSS’14), 2014.
+
+Sourav, S., Khulbe, D. and Kapoor, N., 2019. Deep learning based android malware detection framework. arXiv preprint arXiv:1912.
+
+Spreitzenbarth M, Schreck T, Echtler F, Arp D, Hoffmann J. Mobile-Sandbox: combining static and dynamic analysis with machine-learning techniques. Int. J. Inf. Secur. 2015;14(2):141–53.
+
+Statcounter GlobalStats, Mobile operating system market share worldwide, 2020, Available from: https://gs.statcounter.com/os-market-share/mobile/worldwide
+Suárez-Tangil G, Dash SK, García-Teodoro P, Camacho J, Cavallaro L. Anomaly-based exploratory analysis and detection of exploits in android mediaserver. IET Inf. Secur. 2018;12(5):404–13.
+
+Suarez-Tangil G, Tapiador JE, Peris-Lopez P, Ribagorda A. Evolution, detection and analysis of malware for smart devices. IEEE Commun. Surv. Tutor. 2013;16(2):961–87.
+
+Sun X, Zhongyang Y, Xin Z, Mao B, Xie L. Detecting code reuse in android applications using component-based control flow graph. In: IFIP International Information Security Conference; 2014. p. 142–55.
+
+# Author Information
+Shivi Garg received her M.Tech in Information Security branch from Delhi Technological University, India in 2014. She has been a Ph.D. scholar at Indira Gandhi Delhi Technical University for Women, India since August 2016. Her research interests include Information Security, Android Malware, Machine Learning.
+
+Niyati Baliyan received her Ph.D. in Computer Science and Engineering from Indian Institute of Technology, Roorkee, India in 2016. She has been an Assistant Professor at Department of IT, IGDTUW, since March, 2018. Her research interests include Semantic Web, Knowledge Engineering and Data analytics..

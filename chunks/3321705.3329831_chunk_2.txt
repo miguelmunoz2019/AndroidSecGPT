@@ -1,0 +1,66 @@
+# 4. Implications of Analysis Results
+Furthermore, we discuss four implications of our analysis results. Besides quantitatively pointing out the seriousness of Android system vulnerabilities and the necessity of adopting them into future threat models, our results can help system developers avoid making similar mistakes in the same module and guide program analysis techniques for automatic vulnerability detection.
+
+# 5. ANDROID SECURITY BULLETIN PROGRAM
+Android Security Bulletin program (https://source.android.com/security/bulletin/) started in August 2015 and is updated monthly. Figure 1 shows a sample page  of its website. It lists all vulnerabilities that were fixed and made public in a calendar month. As shown on the right-hand side of Figure 1, it first gives an outline of the vulnerabilities in different modules, such as the service manager, the lock setting service, and the media server. For each module, it further lists the detailed vulnerability information, including CVE, the Android vulnerability ID (AID), the vulnerability severity, and the updated Android versions. In particular, the URL of AID actually points to the webpage of the corresponding patch code, and we call such URL “the patch URL.”
+# 6. METHODOLOGY
+Our goal is to conduct a systematic study of Android system vulnerabilities by comprehensively analyzing all vulnerabilities on the Android Security Bulletin program from its initiation in August 2015 to our analysis launched in June 2018. To minimize manual
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+# Bulletin
+# Bulletin
+# Vulnerability
+# Analyzers
+# Websites
+# Crawler
+# Metadata DB
+# Identifying Vulnerable Modules
+# Cleaner
+# Cleaned
+# Database
+# Extracting and Counting Diff Code
+# Results
+# Patch code
+# Patch
+# Patch code
+# Websites
+# Crawlers
+# Database
+# Clustering Patch Code Patterns
+One vulnerability record in the metadata DB
+Two corresponding records in the patch code DB
+One or more code fragments in each JSON block
+Analysis as in previous work , we propose the first analysis framework that can automatically crawl, parse, clean, and analyze Android bulletin reports and their publicly available patches. With such a framework, manual efforts are required only for configuring the analysis and interpreting the results (e.g., abstracting patterns from automatically generated clusters). It can also easily adapt to larger datasets in the future with evolving analysis results.
+
+# Overview
+- Bulletin crawler is responsible for crawling the basic information of every vulnerability on Android Bulletin website. The information crawled includes CVE (Common Vulnerability Entry) id, vulnerability type, vulnerability severity, and several other meta information. One important meta information is the URLs of each vulnerability’s patch code, which will be further used by the patch crawler. All this information is parsed directly from the bulletin website’s HTML files and saved into a vulnerability metadata database.
+
+- Patch crawler takes patch URLs as input to crawl the patch code websites and then builds a patch code database. Since there are several types of patch code websites for Android bulletin vulnerabilities, we build all corresponding patch crawlers. The HTML parsing here is more complicated than that in the bulletin crawler, because extracting diff code of patches into organized structures is difficult; see details in §3.
+
+- Cleaner is designed for cleaning the raw database, especially the text information in the vulnerability metadata. This is because Android bulletin reports are still manually created and thus could come with disorganized text. For example, the “EoP” vulnerability type could be represented as “elevation-of-privilege-vulnerability”, “elevation_of_privilege”, and even “eopv”. Moreover, although the majority of patch URLs are correct, a few of them are outdated (e.g., “commit/?id=” instead of “patch/?id=”), or contain unescaped characters (e.g., “%2F”) and redundant characters (e.g., redundant “/” in “la//”). Cleaner cleans all this misconfigured information in a one-time manner.
+
+- Analyzers take the cleaned database as input and output analysis results. Besides the vulnerability metadata analysis, we have designed three analyzers (as shown in Figure 2) to support vulnerable module analysis, patch code complexity analysis, and patch code pattern analysis. We will illustrate them in subsequent subsections.
+
+# Challenges
+Since we are the first to study Android system vulnerabilities in an automatic fashion, there are some unique challenges. Notably, our three analyzers face the challenges on effectively pinpointing vulnerability modules (§3), robustly measuring patch code complexity (§3), and automatically clustering vulnerability patterns (§3), respectively. Before explaining these challenges in detail and our methods of overcoming them, we first show in §3 how we store all the text and code information of each Android vulnerability in an organized and searchable structure.
+
+# 3 Designing a Hierarchical Database Structure
+The first challenge is in representing vulnerabilities’ text and code information in a way that analysts can directly make SQL queries to retrieve the desired vulnerability information without writing additional scripts. This is challenging because we notice that 1) an
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+Android vulnerability might be associated with several patches; 2) one patch may include several affected code files; 3) one code file may contain multiple patched code fragments; and 4) one code fragment usually covers several code lines.
+
+We propose to build a hierarchical database structure and use a carefully designed nested JSON  format to represent patched code in a hierarchical way. Figure 3 shows the high-level picture of our hierarchical database structure using a specific vulnerability example (CVE-2016-3900). We first use a database table to record all the metadata of this vulnerability, as mentioned earlier in the bulletin crawler component. Since CVE-2016-3900 involves two patches, we then save the information of both patches in the patch code database and point them to the corresponding row id (1586 in this example) in the metadata database. Finally, we design a nested JSON format to represent all diff code of each patch. In this way, we use only one database field (“DiffCode” in Figure 3) to cover the patch code and avoid having to dynamically extend the database. In each JSON, we use code name as the JSON key and use nested arrays to record each code and their code fragments. Figure 3 shows the two JSON examples of CVE-2016-3900, one with one code file and the other with two. Here all the three pieces list only one code fragment each, but it is possible that multiple fragments occur in a single patch code.
+
+With this hierarchical database structure, we are able to compose complex search of the vulnerability database directly in SQL queries. Listing 1 demonstrates one query example that counts the median number of code fragments in each patched code file. We use SQLite’s JSON1 extension  to handle nested JSON. For example, in Listing 1, we use the json_each() API to decompose each “DiffCode” field into a key-value row, where the key refers to the code file name and the value is a nested array of code fragments. We thus can use the key field to exclude assembly code files and use json_array_length(value) to further count code fragments. In this way, we can obtain the vulnerability search results (e.g., the median number of per-file code fragments is 2) without writing dedicated scripts.
+
+# Listing 1: A SQL query example of searching the database.
+
+select median ( json_array_length ( value ))
+from PatchTable , json_each ( PatchTable . DiffCode )
+where PatchTable . DiffCode like ' {%} '
+and key not like '%. s ';
+# 3 Identifying Vulnerable Modules
+Classifying vulnerabilities by different Android modules can shed light on the system modules that are most susceptible and thus require more security attention. Therefore, we include a dedicated analyzer in our analysis framework to identify vulnerable Android modules. However, it is challenging because there is no clear module information in CVE reports. As a result, previous work  employed two manpower to manually inspect the 660 Android vulnerabilities in their dataset.
+
+We propose a lightweight technique that leverages two useful features of Android Bulletin reports to locate the affected modules of given vulnerabilities. The first is the patch code paths for those with publicly available patches, which could imply the module information. However, the full code paths are often too detailed, e.g., platform/system/bt/bta/dm/bta_dm_act.cc in CVE-2018-9355. Fortunately, we found that the Android Security team has embedded the high-level module path information in patch URLs. For example, the patch URL of CVE-2018-9355 is https://android.googlesource.com/platform/system/bt/+/99a263, in which we can extract the path platform/system/bt (meaning the Bluetooth stack according to the patch code website ) as the affected module.

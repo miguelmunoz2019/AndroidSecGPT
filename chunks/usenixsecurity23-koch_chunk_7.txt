@@ -1,0 +1,49 @@
+When comparing the usage of CMPs with previously reported web usage, we can see a similarly small popularity. Matte et al.  report a TCF-compliant cookie banner on 6% of crawled Tranco top 1000 sites for different TLDs. They report a high variability between TLDs, ranging from 18% on .uk to 0% on .mt. Nouwens et al.  detected the usage of a CMP on 6% of crawled UK Top 10k domains but reference a no longer accessible survey from 2019 that places CMP usage at around 20%. They also name possible methodological issues that indicate that Nouwens et al. numbers are more accurate concerning actual usage. A newer survey from the same source places the CMP usage across the top 10k US sites at at least 33% as of Q1 2022 . If we assume the academic numbers to be the correct ones, the small popularity of around 6% is mirrored in the mobile space with only 4% actively using a TCF-compatible CMP and our static analysis indicating that 5% include a CMP from our curated list.
+
+However, even in the few detected usages of the TCF, we detected questionable usage. On average, consent was stored for 262 vendors, which is, even assuming a proper consent dialog, questionable under the GDPR as consent needs to be informed. We seriously question the possibility to properly inform a user about that many vendors.
+
+# 8 More Data Transmission Before than After Consent
+During our traffic collection, we detected 120976 requests before any interaction took place, and only 6653 and 839 after accepting or rejecting consent, respectively. Overall 14% of
+Requests were analyzed by our endpoint parser. We detected that 75 and 5 apps started sending pseudonymous data in either group, compared to 1285 in our initial traffic observation before any interaction. Based on the difference in magnitude of requests as well as in amount of identifiers sent, it is safe to assume that most personal data is leaked before any dialog has been processed and agreed to by the user. This has clear implications for privacy-conscious users as they cannot trust an app to ask for permission prior to data collection; thus, each starting of an app bears a risk of leaking personal information. Furthermore, users cannot expect that they will have a choice free from incentives towards sharing their data if they are presented with a privacy consent dialog and are forced to consciously and carefully interact with privacy consent dialogs to prevent being nudged towards a decision. This demonstrates a clear disregard for consent and user privacy concerning contacting trackers or transmitting personal information. Our results are in line with recent previous work on Android , Android compared to iOS , and iOS . Based on this repeated demonstration of data leakage by different research groups, it must be considered a fact for the time. The GDPR did not have the intended effect for users of mobile apps and action has to be taken to improve privacy for them.
+
+# 8 The Questionable State of Consent Dialogs
+Only a small percentage of apps (22%) displayed any form of consent dialog, and even fewer offered the user an actual dialog with at least a button (11%) suggesting some form of active choice for the user. Combining this with the high transmission of personal information (Figure 2) and the amount of requests going to our limited set of endpoint trackers already demonstrates that the requirement to inquire active consent or any consent at all is widely ignored.
+
+The state of consent inquiry becomes even worse when looking at the design choices made in the detected proper dialogs. For both Android and iOS, the dialogs that deployed Dark Patterns to nudge a user towards consent were at 98% and 99%, respectively. This highlights a clear disregard for user choices independent of the operating system.
+
+Another aspect visible from our UpSet diagram (Figure 1) is that Dark Patterns in privacy consent dialogs are not restricted to low or high ranking apps but are present throughout. The diagram includes a violin plot, i.e., a visualization of density and range, displaying the app ranks contained in the sets described by the intersections below. Those violin plots, bearing intersections with a small cardinality, span the whole range or close to the whole range of app ranks considered with the median being close to the center of the range. It is possible that top 100 apps are not sufficiently different; a difference becomes visible when analyzing even higher ranks. However, Nguyen et al. performed a long-tail app analysis and found that there is no real difference between high profile apps and long tail apps when it comes to transmitting personal information prior to any consent . It stands to reason that this disregard for privacy transfers to privacy consent dialogs.
+
+Previous work on consent dialog was primarily focused on web consent dialogs. In 2019 Eijk et al.  found a consent dialog or notice on 40% of analyzed websites (1500 websites), and Sanchez-Rola et al.  on 50% (2000 websites). A year later, Mehrnezhad et al.  report observing a consent dialog on 91% of websites (116 websites). Even though the web data sets are individually smaller than our mobile data set, they indicate a high prevalence of dialogs which is mirrored in our subjective observations when browsing the web. This is in contrast to our mobile observations, where we only detected dialogs in 22% of all apps.
+
+When comparing privacy consent dialogs on the web with the mobile ecosystem we detected an accept but no reject button in 40% of all dialogs, whereas Mehrnezhad et al.  reported only 35% of all analyzed websites having such a dialog. Nouwens et al.  report finding a reject all button on only 12% of websites, though this criterion is strictly stronger than ours.
+
+# 9 Conclusion
+In this paper, we presented a tool chain for both Android and iOS to download apps, run, and analyze their traffic, as well as consent dialogs. Furthermore, our tool chain is able to interact with displayed consent dialogs. We used this tool chain to analyze the traffic transmission behavior in the context of the presented consent dialogs. Out of 4779 apps, we detected a consent violation in 43%. Furthermore, we observed that 94% of requests already occur before any interaction with a consent dialog happened, leading us to the conclusion that consent dialogs amount to little more than window dressing and are not respected.
+
+In order to assess our findings in a broader context, we compared the results of our study with similar measurements made on the web. To our surprise, we were able to show that mobile applications are even less privacy-respecting than websites. Our low number of privacy consent dialogs conforming to our minimal design requirements paints a clear picture of the app developers’ blatant disregard for the user’s wishes towards their privacy.
+
+# 10 Acknowledgements
+This research was funded by the European Union’s Horizon 2020 research and innovation program under grant agreement No 101019206 and the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany’s Excellence Strategy - EXC 2092 CASA - 390781972.
+
+USENIX Association 32nd USENIX Security Symposium 5479
+#_ftn2. accessed: 2022-05-7.
+
+5. Alexander Lex, Nils Gehlenborg, Hendrik Strobelt, Romain Vuillemot, and Hanspeter Pfister. Upset: Visualization of intersecting sets. 2014.
+
+6. C’elestin Matte, Nataliia Bielova, and Cristiana Santos. Do cookie banners respect my choice? : Measuring legal compliance of banners from iab europe’s transparency and consent framework. 2020.
+
+7. Célestin Matte, Cristiana Santos, and Nataliia Bielova. Purposes in iab europe’s tcf: Which legal basis and how are they used by advertisers? In Privacy Technologies and Policy, 2020.
+
+8. Maryam Mehrnezhad. A cross-platform evaluation of privacy notices and tracking practices. In 2020 IEEE European Symposium on Security and Privacy Workshops (EuroS PW), 2020.
+
+9. Alexios Mylonas, Marianthi Theoharidou, and Dimitris Gritzalis. Assessing privacy risks in android: A user-centric approach. In Risk Assessment and Risk-Driven Testing, 2014.
+
+10. Trung Tin Nguyen, Michael Backes, Ninja Marnau, and Ben Stock. Share first, ask later (or never?) studying violations of gdpr’s explicit consent in android apps. In 30th USENIX Security Symposium (USENIX Security 21), 2021.
+
+11. Trung Tin Nguyen, Michael Backes, and Ben Stock. Freely given consent? studying consent notice of third-party tracking and its violations of gdpr in android apps. In Proceedings of the 2022 ACM SIGSAC Conference on Computer and Communications Security, 2022.
+
+12. Midas Nouwens, Ilaria Liccardi, Michael Veale, David R. Karger, and Lalana Kagal. Dark patterns after the gdpr: Scraping consent pop-ups and demonstrating their influence. 2020.
+
+13. Jingjing Ren, Martina Lindorfer, Daniel Dubois, Ashwin Rao, David Choffnes, and Narseo Vallina-Rodriguez. Bug fixes, improvements,... and privacy leaks–a longitudinal study of pii leaks across android app versions. In Proc. of the Network and Distributed System Security Symposium (NDSS), 2018.
+
+14. Irwin Reyes, Primal Wijesekera, Joel Reardon, Amit Elazari Bar On, Abbas Razaghpanah, Narseo Vallina-Rodriguez, and Serge Egelman. "won’t somebody think of the children?" examining coppa compliance at scale. In Proceedings on Privacy Enhancing Technologies Symposium (PoPETS 2018), 2018.

@@ -1,0 +1,55 @@
+# Obfuscation-Resilient Code Recognition in Android Apps
+# Johannes Feichtner
+# Graz University of Technology
+# Secure Information Technology Center – Austria (A-SIT)
+# ABSTRACT
+Many Android developers take advantage of third-party libraries and code snippets from public sources to add functionality to apps. Besides making development more productive, external code can also be harmful, introduce vulnerabilities, or raise critical privacy issues that threaten the security of sensitive user data and amplify an app’s attack surface. Reliably recognizing such code fragments in Android applications is challenging due to the widespread use of obfuscation techniques and a variety of ways, how developers can express semantically similar program statements.
+
+We propose a code recognition technique that is resilient against common code transformations and that excels in identifying code fragments and libraries in Android applications. Our method relies on obfuscation-resilient features from the Abstract Syntax Tree of methods and uses them in combination with invariant attributes from method signatures to derive well-characterizing fingerprints. To identify similar code, we elaborate an effective scoring metric that reliably compares fingerprints at method, class, and package level. We investigate how well our solution tackles obfuscated, shrunken, and optimized code by applying our technique to real-world applications. We thoroughly evaluate our solution and demonstrate its practical ability to fingerprint and recognize code with high precision and recall.
+
+# CCS CONCEPTS
+• Security and privacy → Mobile and wireless security.
+
+# KEYWORDS
+Android, Abstract Syntax Tree, Fingerprinting, Library Detection, Code Similarity, Code Recognition, Obfuscation
+# ACM Reference Format:
+Johannes Feichtner and Christof Rabensteiner. 2019. Obfuscation-Resilient Code Recognition in Android Apps. In Proceedings of the 14th International Conference on Availability, Reliability and Security (ARES 2019) (ARES ’19), August 26–29, 2019, Canterbury, United Kingdom. ACM, New York, NY, USA, 10 pages. https://doi.org/10/3339252
+# 1 INTRODUCTION
+Nowadays, most Android applications are bundled with third-party libraries that potentially include vulnerable or outdated code [ 13 ]. The Apache Cordova library, e.g., was affected by a vulnerability that enabled an attacker to interfere with an application’s behavior by sending malicious intents1. Providing the building blocks for a majority of cross-platform applications, this flaw immediately put the security of all of them at risk. Apart from introducing vulnerabilities, multiple studies  have demonstrated that code from external sources can also leak private information, exploit their privileges, or forward sensitive data to unauthorized parties.
+
+Although Android libraries undoubtedly exhibit questionable security practices, insecure code snippets can also be located within app-specific code. If developers copy ready-to-use code snippets, e.g., from programming discussion platforms like Stack Overflow, they unknowingly might also introduce weaknesses. In 2017, a study  has revealed that 15% of 1 million inspected Android apps included security-related code snippets from Stack Overflow, whereas 97% of them contained security problems.
+
+Since the use of third-party libraries and the integration of code snippets from external sources have evolved to common practices in app development, it is of utmost importance to find vulnerable code fragments. Despite significant research efforts to dissect apps and uncover such threats, reliable identification of insecure program parts remains challenging. Currently, code recognition in Android applications mostly targets third-party libraries and involves either whitelisting or a similarity-based strategy. In the former case, a precompiled whitelist of directories or package names is used as a reference to individual libraries. However, whitelists are usually gathered manually  and have to be maintained to stay up-to-date. Considering the constant intervention and the fact that it is practically infeasible to cover all libraries, this approach does not scale and is only suited for analysis scenarios without obfuscation.
+
+The second approach consists in identifying libraries without prior knowledge [ 10 , 25 , 38 ]. Therefore, apps are decompiled and split into sets of potential library candidates. A similarity metric or hash-based comparison then measures the difference to candidates extracted from other apps. If the score exceeds a predefined threshold, candidates are considered to be the same libraries.
+
+Although research has demonstrated the practical feasibility to identify code, existing work still leaves room for improvement:
+1. Current approaches for code recognition in Android apps focus on detecting individual libraries by name and version. They require large amounts of ground truth for training and do not work effectively if the reference codebase is small or a priori incomplete. Pinpointing specific code snippets instead of full libraries is, thus, infeasible.
+
+2. State-of-the-art methods strongly depend on Java package names, preserved directory hierarchies, and unaltered method signatures. However, package structures and names can be different in multiple versions of the same library. Also, during compilation, code can mutate as it undergoes automated.
+
+1https://cordova.apache.org/announcements/2015/05/26/android-402.html
+# ARES ’19, August 26–29, 2019, Canterbury, United Kingdom
+# Johannes Feichtner and Christof Rabensteiner
+performance-related code optimizations, such as method inlining, duplicate code merging, and removal of unused method parameters. Focusing too much on such auxiliary information can, thus, give a false sense of a good classifier that is only reliable if trained libraries and tested apps exhibit the required attributes and do not apply optimizations.
+
+(3) Android applications commonly apply code transformation techniques, including obfuscation, identifier renaming, and shrinking not only to optimize code but also to harden against various forms of abuse, such as tampering, reverse engineering, and intellectual property theft. While existing classification approaches might yield useful results despite such modifications, the recognition rate with real-world apps could significantly be improved if techniques were resilient to common types of obfuscation and code mangling.
+
+In this paper, we address shortcomings of existing approaches and introduce a solution that is able to recognize arbitrary code fragments in Android apps, even if code transformation techniques, like shrinking or obfuscation, are applied. We overcome the aforementioned limitations by extracting and processing features from the Abstract Syntax Tree (AST) of methods. Our approach does not rely on identifiers of packages, classes, and methods and uses them only as supplementary information. Instead of a hash-based comparison, we measure the similarity of methods using vectorized fingerprints we derive from the AST of methods and transformation-invariant representations of method signatures. To compare code segments, we design a scoring metric that accurately determines inclusion within other code parts and can express the similarity of classes and packages based on an aggregation of fingerprints.
+
+Compared to previous research, our solution excels in reliably recognizing code fragments, even if a very high degree of code obfuscation is applied and if the majority of originally trained code is no longer present, e.g., due to code merging or inlining. Our approach is scalable and succeeds in accurately matching individual small code snippets as well as entire libraries. Aimed at conditions that can be found with real-world apps, our solution is suited for arbitrary tasks that involve code recognition in Android apps.
+
+# Contributions
+Our key contributions are as follows:
+- We present a framework to reliably recognize arbitrary code fragments in Android apps2. Our solution can overcome various limitations present in existing research and represents an effective method to identify used libraries, recognize specific code snippets, or find semantically similar candidates.
+
+- We study features in code that are invariant to widely used code transformation techniques and propose a novel feature matching process that is resilient to code mangling, identifier renaming, shrinking, and optimizations, such as inlining, code merging, or removal of unused method parameters.
+
+- We evaluate the quality of our algorithm by testing it with a set of open-source libraries. We compile all libraries multiple times with different forms of code transformations enabled and assess the impact on classification. Moreover, we ensure the soundness of our solution by thoroughly comparing the expressiveness of chosen features and threshold values for matching confidence and package particularity.
+
+2The framework is available at: https://github.com/kstudent/astli
+# Outline
+In Section 2, we discuss related work. Section 3 introduces our approach for code recognition and highlights our selection of code features to overcome obfuscation. Subsequently, in Section 4 we present our algorithms for fingerprinting and matching. We evaluate our solution in Section 5 and conclude in Section 6.
+
+# 2 RELATED WORK
+Existing work addresses code recognition in Android apps mostly in the context of third-party library detection. In the following, we point out differences to our solution and also present related research on code clone detection and obfuscation analysis.

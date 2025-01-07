@@ -1,0 +1,71 @@
+We then study the vulnerable modules across different layers and obtain the following observations. First, the media-related modules are the high-risk modules from the Native Libraries layer down to the Linux Kernel, including the media framework (code in the frameworks/av ), the media libraries (e.g., libstagefright and libmpeg2), the media components in the hardware abstract layer (e.g., hardware/qcom/media ), and the sound and video.
+
+# Session 4A: Mobile Security
+AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+# Native Libraries
+23% Android
+# Hardware Abstract Layer (HAL)
+Media: 20
+Telephony: 1
+# Linux Kernel
+# 4 Analysis of Patch Code Complexity
+In this subsection, we study the complexity of patch code by measuring the number of code changes required to fix each vulnerability. We use all the 1,349 patches (from 1,158 unique vulnerabilities) for analysis and draw the CDF (cumulative distribution function) plots of their patch code complexity.
+
+We first analyze the number of code files needs to be patched for each vulnerability. Figure 6 shows the CDF plot of the number of patched code files per vulnerability. We can see that over 60% Android vulnerabilities require a code change in only one file, and this percentage goes up to over 80% if we count the vulnerabilities with no more than two files changed. This suggests that most of the Android vulnerabilities are quite dedicated and involve minimal code files to be patched. However, there are also a few vulnerabilities requiring an exceptional number of files changed, which are due to either system library updates or fixing common root causes in different files. For example, CVE-2014-9675 upgrades the FreeType library from 2 to 2, and thus adjusts a total of 112 files.
+
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+# 1
+CDFeach automatically generated cluster. Moreover, most of the pat-
+0
+0
+0
+0
+0
+10 20 30 40 50
+# Lines of Code Change
+largest number of code files patched among all vulnerabilities. In another instance, CVE-2017-13177 adds the push-pop instructions in around 60 different ARM Neon 32-bit functions.
+
+We further study at the granularity of code lines and draw the CDF of the number of code lines changed per vulnerability in Figure 7. We find that half of the vulnerabilities can be fixed in fewer than 10 lines of code, with the median being nine. Moreover, a third of the vulnerabilities are patchable with no more than five lines, and around one fifth require no more than two lines of changes. In particular, 110 out of 1,158 vulnerabilities can be patched with only one line code change. All these indicate that many Android vulnerabilities are likely implementation bugs.
+
+# Key Takeaway:
+A significant portion of the Android vulnerabilities involves non-complex patch fixes, with 60% requiring only one file change and with 50% fixable in fewer than 10 lines of code. This indicates that many Android issues are likely implementation bugs.
+
+# 4 Analysis of Patch Code Patterns
+In this subsection, we first give a statistical overview of our clustering results to demonstrate their good quality. We then describe and analyze clustered patch code patterns in detail.
+
+By running our clustering algorithm over a set of 940 short code fragments, we obtain 83 initial clusters, out of which we can quickly filter out 50 small-size clusters as they contain only fewer than 10 code fragments each and actually do not exhibit evident security-oriented patterns. The remaining 33 clusters contain code fragments ranging from 10 to 56 fragments each, with an average of 21 fragments. We found that these clusters are in good quality, with only five clusters not exhibiting clear patterns. In other words, 84% (28/33) clusters are associated with certain patterns, with 19 clusters for security-oriented patterns and 9 clusters for non-security-related patterns (e.g., declaring variables and using #ifdef). Out of the 19 security-oriented clusters, we obtain a total of 16 patterns with the majority corresponding to distinct ones.
+
+We now explain all the 16 patterns in details. We first analyze six new patterns one by one, and then introduce two more Android-specific patterns and eight traditional patterns.
+
+# P1 (new): Kernel address leakage due to %p.
+
+This vulnerability originates from a type of security bugs exposed recently in the Linux kernel (Kernel 4 and earlier), where printing kernel addresses to user space using %p can leak sensitive information about kernel memory layout. Timely mitigation is to replace %p with %pK to print only Zeros as address (see code example C5 in Table 4). One year later in late 2017, a fundamental fix  was released by printing only hashed addresses via %p. With the pattern %p --> %pK, we identify a total of 28 such vulnerabilities in our entire patch code dataset of 1,158 distinct vulnerabilities.
+
+# P2 (new): Mis-retrieving Android service by reference.
+
+This vulnerability is quite specific to Android, where system processes need to retrieve various Android system services, e.g., camera service as shown in code C4. Android system developers previously obtained these services by reference (i.e., sp<>&); however, such service pointers can be cleared out by another thread or system Binder death callback. Therefore, a safe way is to retrieve these services by value (i.e., sp<>). In our patch code dataset, 10 vulnerabilities suffered from this issue.
+
+# P3 (new): Inconsistent Android Parcelable serialization.
+
+This vulnerability is also specific to Android, where structured data sharing across different processes requires serializing and deserializing custom Parcelable objects. Inconsistency happens if data types in writeToParcel() and readFromParcel() are not symmetric, and an adversary could exploit such inconsistency to elevate privileges. For example, in code C1, a long integer was written but a normal integer was read. Other data types, e.g., byte and string, could also be misused. Moreover, different control-flow branches could make it easier for developers to make mistakes, and therefore we also see fixes like adding writeInt() in the else branch. Seven inconsistent serialization bugs were identified.
+
+# P9 (new): Incomplete C++ destruction.
+
+This type of vulnerabilities appears in some Android media encoders, where the C++ destruction is not fully finished and some memory buffers could still be controlled by attackers. To make the destruction more focused and clearer, a standalone onReset() is added to destruct all relevant member variables.
+
+# P12 (new): Missing certain parameter, causing logic flaws.
+
+Mitigating this type of vulnerabilities requires adding certain parameters and their handling logic. For example, in code C7 (CVE-2015-3865), a new parameter called zygote was added. Code was also added to check for this parameter to enable debugging only for apps forked from zygote. Detailed logic flaws in this vulnerability pattern could be different, but they all relate to the missing of certain parameters and the corresponding handling logic.
+
+# P14 (new): Forgetting to set certain variable const/transient.
+
+The last new pattern is about the use of const and transient.
+
+# Session 4A: Mobile Security
+# AsiaCCS ’19, July 9–12, 2019, Auckland, New Zealand
+Type qualifiers, where marking a variable const or transient can prevent it from being modified or initialized, respectively. For example, in CVE-2015-8967, const is needed to stop the system-call table being modified. In CVE-2015-3837, transient is used to hide the OpenSSLX509Certificate context variable and prevents it from participating in the serialization process.
+
+P4 & P7: Two more Android-specific patterns. Besides P2 and P3, pattern P4 and P7 are also Android specific. P4 is a common vulnerability pattern in Android apps which also appears in system apps. It mistakenly exports sensitive Android components to other (potentially malicious) apps. On the other hand, P7 is about missing permission or UID (i.e., app user ID) checking, and this pattern appears in 26 vulnerabilities of our dataset, demonstrating its pervasiveness. A prior work, Kratos , was designed for this problem, but it can detect only inconsistent permission checking and only at framework layer.
+
+P5 & P8 & P13 & P15: Overflow-related patterns. Now we present some traditional patterns. Hundreds of vulnerabilities in our dataset are covered by overflow-related patterns, as in pattern P5, P8, P13, and P15. The first three are about buffer or stack overflow, while P15 is on integer overflow. Most of buffer overflows are due to missing appropriate bounds checking, which could either miss or mis-set a check condition in the IF statements (see code C9 in pattern P5) or forget to handle a certain error branch (i.e., pattern P13). In the case of pattern P8, the buffer itself needs to be enlarged. Regarding integer overflow, the root cause is that inappropriate integer types are used and the fix is to replace a smaller integer type (e.g., uint8_t) with a larger one (e.g., uint32_t).

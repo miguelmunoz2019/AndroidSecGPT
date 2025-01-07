@@ -1,0 +1,60 @@
+This paper extends our previous analyses  by expanding the empirical knowledge on the practices performed by mobile developers with respect to the update of third-party libraries. Specifically:
+1. we substantially expand the dataset, by conducting our analyses on an additional set of 2461 real-world mobile apps. Thus, overall, our empirical study features a total of 2752 applications;
+2. we investigate the technical lag between library updates made available by providers and actual adoption by developers, with the aim of assessing the time usually required by mobile developers to change the version of a library being used;
+3. we complement our software repository mining study with a survey study involving 73 experienced mobile developers that aims at shedding lights on the motivations behind the practices actually applied and confirm/reject the observations of the quantitative analyses. The second study has the objective of “triangulating”  the results of the software repository mining study with an analysis of the.
+
+1In this paper we refer to version change to indicate every type of change performed by developers of a mobile app in the usage of a third-party library, i.e., a version change can be an upgrade toward a newer version of a library or downgrade toward a lower one.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+human perspective that can help explaining the reasons behind the results of the first study.
+
+The specific goals of our study consist of characterizing (i) if and when mobile developers update third-party libraries, with the aim of deeper understanding the phenomenon of change propagation in the context of mobile applications; (ii) which categories of libraries developers are more prone to update, so that our results can be used to inform researchers and tool vendors on how to prioritize third-party library updates; (iii) which policies developers apply when new libraries updates are available, with the goal of informing researchers and tool vendors on the possible moments in which developers may be more interested in updating their libraries and would like to have automatic support; and (iv) what are the perceived (dis)advantages of updating third-party library, so that producers can understand which are the current limitations that should be avoided to make third-party libraries more used and useful for developers.
+
+Our analyses reveal that most of the mobile apps suffer from technical lag and it constantly increases over time. Moreover, we find that avoiding the propagation of bugs and making the app compatible with new Android releases are the main reasons why developers update their libraries.
+
+# Replication Package
+Besides the contributions reported above, we provide a comprehensive replication package containing the raw data and scripts used to carry out the empirical study.
+
+# Structure of the Paper
+The paper is organized as follows. Section 2 describes the design of the empirical study, while Section 3 reports and discusses the obtained results. Section 4 analyzes the threats that could affect the validity of the results of the study. Section 5 overviews the related literature on third-party libraries usage in traditional and mobile applications, and their effects, while Section 6 concludes the paper.
+
+# 2 Empirical Study Design
+The goal of the empirical study is to analyze (i) whether and when mobile developers update the version of third-party libraries in their apps, (ii) which categories of libraries developers are more prone to update, (iii) which policies developers apply when new libraries updates are available, and (iv) what are the perceived (dis)advantages of updating third-party library. These objectives have the aim of understanding the phenomenon of change propagation in the context of mobile applications, inform researchers and tool vendors on how to prioritize third-party library updates as well as the moments in which developers may want to have more automated support, and which are the current limitations that should be avoided to make third-party libraries more used and useful for developers.
+
+# 2 Research Questions
+Our study revolves around three main research questions. The first aims at understanding if and when developers update third-party libraries of mobile apps. To better study this perspective, we designed two sub-research questions that capture it under different angles:
+# Empirical Software Engineering (2020) 25:2341–2377
+# RQ 1 – When do mobile developers update third-party libraries?
+# RQ 1
+Do mobile developers update third-party libraries?
+# RQ 1
+How does the technical lag of mobile apps vary over time?
+RQ 1 represents a preliminary analysis aimed at assessing the extent to which third-party libraries are updated by mobile developers. In RQ1, instead, we performed an analysis on the technical lag observable in mobile apps, namely what is the general delay in the adoption of third-party libraries.
+
+Once we had assessed when developers update the version of the used libraries, we focused on how they actually do it. Specifically, we considered three main aspects:
+# RQ 2 – How do mobile developers update third-party libraries?
+# RQ 2
+What types of third-party library uses are more prone to be updated?
+# RQ 2
+What types of third-party library uses are generally not updated?
+# RQ 2
+What types of update patterns developers follow when updating the third-party libraries?
+In RQ 2 and RQ 2 we conducted a fine-grained exploration into the types of libraries whose uses are more likely updated, aiming at understanding how developers work and at classifying what categories (e.g., security) developers are more and less sensitive to update, and what are the possible reasons behind their behavior. Moreover, in RQ 2 we were interested in observing and possibly delineating a trend in the developers’ reactions when an update of a library is available, with the goal of understanding whether they steadily update the libraries, or if the updates are rarely performed. In the context of the paper, we define and refer to these trends as “update patterns”.
+
+# RQ 3 – Why do mobile developers update third-party libraries?
+# RQ 3
+Do developers frequently make use of third-party libraries when developing mobile apps?
+# RQ 3
+What is the mobile developer’s perspective on third-party library updates?
+First, with RQ3 we investigated whether developers make use of third-party libraries and why, independently from the update activities. We entered more in detail with RQ 3, where we asked to describe the reasons why they perform update actions, i.e., upgrades or downgrades.
+
+# 2 Context Selection
+The context of the study consists of mobile apps, needed to address RQ1 and RQ2, and developers of those apps, who were surveyed to answer RQ3.
+
+# Empirical Software Engineering (2020) 25:2341–2377
+# Mobile Apps
+Our study focused on a total of 2752 open-source mobile apps, which were collected as follows. First, we considered the entire change history of 291 Android apps from the F-DROID repository, 1 which is a catalog of Free and Open Source mobile apps. Even if F-DROID contained a total 1181 at the time of the analysis, only 291 satisfied the requirements of our mining process for the input apps: (i) make use of third-party libraries, and (ii) have dependencies that are still available. More details on the app filtering procedure are given in Section 2. However, dataset size respects the requirement for generalization that we computed using STATSENGINE, 2 a tool that takes into consideration categories and size of the apps and is able to find an appropriate sample size to allow the generalization of the results on the set of apps composing F-DROID.
+
+While this dataset contains a reasonable number of apps, it may contain toy apps and/or applications that are not available in the GOOGLE PLAY store . For this reason, we decided to augment the initial dataset with additional real-world apps. To this aim, we exploited a publicly available dataset of mobile apps, named ANDROID TIME MACHINE, previously built by Geiger et al. (2018); overall, it contains 8431 open-source Android apps whose information has been extracted by combining different data sources with the aim of building a dataset only composed of real apps. For each app, the dataset provides: (i) metadata of GITHUB projects, (ii) full commit and code history, and (iii) metadata from the GOOGLE PLAY store.
+
+We selected 2461 of these 8431 apps because of the above mentioned requirements of our data mining process. It is worth noting that the selected apps belong to different categories and have different scope and size. A detailed report of the characteristics of the apps used in this study is available in the online appendix . All the selected projects provide their source code in a public repository on GITHUB and use GRADLE as build system. As for the libraries, they are all publicly available on different repositories, e.g., MAVEN, JCENTER, BINTRAY.

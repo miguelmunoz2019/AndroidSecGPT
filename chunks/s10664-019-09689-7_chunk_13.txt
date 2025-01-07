@@ -1,0 +1,14 @@
+# Jairo Bautista-Mora
+is pursuing a M.S in Software Engineering at Universidad de Los Andes. He received his B.S in Systems and Computing Engineering from Universidad de Los Andes in 2018. His research interests include software architecture, task automatization for software development, and application of data mining and machine learning techniques to increase the value of web and mobile applications.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Authors
+# Mario Linares-Vásquez
+Mario Linares-Vásquez is an Assistant Professor at Universidad de los Andes in Colombia. He received his Ph.D. degree in Computer Science from the College of William and Mary in 2016. He received his B.S. in Systems Engineering from Universidad Nacional de Colombia in 2005, and his M.S. in Systems Engineering and Computing from Universidad Nacional de Colombia in 2009. He is leading the software design lab at Uniandes. His research interests include software evolution and maintenance, software architecture, mining software repositories, application of data mining and machine learning techniques to support software engineering tasks, and mobile development. He received three ACM SIGSOFT Distinguished Paper awards at ESEC-FSE 2015, ICPC 2016, and ASE 2017.
+
+# Sandra Rueda
+Sandra Rueda is an Assistant professor at Universidad de los Andes. Bogotá, Colombia. She holds an M.S. degree from Universidad de los Andes and a Ph.D. from The Pennsylvania State University, Pennsylvania. Her research interests include security of software systems, access control, policy analysis, and policy generation.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Gabriele Bavota
+Gabriele Bavota is an Assistant Professor at the Università della Svizzera italiana (USI), Switzerland. He received the PhD degree in computer science from the University of Salerno, Italy, in 2013. His research interests include software maintenance, empirical software engineering, and mining software repository. He is the author of over 90 papers appeared in international journals, conferences and workshops. He received four ACM SIGSOFT Distinguished Paper awards at ASE 2013, ESEC-FSE 2015, ICSE 2015, and ASE 2017, the best paper award at SCAM 2012, and three distinguished reviewer awards at WCRE 2012, SANER 2015, and MSR 2015. He served as a Program Co-Chair for ICPC’16, SCAM’16, and SANER’17. He also serves and has served as organizing and program committee member of international conferences in the field of software engineering, such as ICSE, FSE, ASE, ICSME, MSR, SANER, ICPC, SCAM, and others..

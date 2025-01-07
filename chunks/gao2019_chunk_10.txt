@@ -1,0 +1,99 @@
+48. P. Faruki et al., “Android security: A survey of issues, malware penetration, and defenses,” IEEE Commun. Surveys Tuts., vol. 17, no. 2, pp. 998–1022, Secondquarter 2015.
+
+49. D. J. J. Tan et al., “Securing Android: A survey, taxonomy, and challenges,” ACM Comput. Surveys, vol. 47, no. 4, pp. 58:1–58:45, 2015.
+
+50. W. Martin, F. Sarro, Y. Jia, Y. Zhang, and M. Harman, “A survey of app store analysis for software engineering,” IEEE Trans. Softw. Eng., vol. 43, no. 9, pp. 817–847, Sep. 2017.
+
+51. A. Sadeghi, H. Bagheri, J. Garcia, and S. Malek, “A taxonomy and qualitative comparison of program analysis techniques for security assessment of Android software,” IEEE Trans. Softw. Eng., vol. 43, no. 6, pp. 492–530, Jun. 2017.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+1.  Z. Durumeric et al., “The matter of heartbleed,” in Proc. Conf. Internet Meas. Conf., 2014, pp. 475–488.
+
+2.  J. Drake, “Stagefright: Scary code in the heart of android,” in Proc. BlackHat USA, 2015.
+
+3.  M. Burgess, “Millions of Android devices vulnerable to new stagefright exploit,” Aug. 20, 2017. [Online]. Available: http://www.wired.co.uk/article/stagefright-android-real-world-hack
+4.  L. Xue, Y. Zhou, T. Chen, X. Luo, and G. Gu, “Malton: Towards on-device non-invasive mobile malware analysis for art,” in Proc. 26th USENIX Conf. Secur. Symp., Berkeley, CA, USA, 2017, pp. 289–306.
+
+5.  J. Williams and A. Dabirsiaghi, “The unfortunate reality of insecure libraries,” Aspect Security Inc., Columbia, MD, USA, pp. 1–26, 2012.
+
+6.  T. Watanabe et al., “Understanding the origins of mobile app vulnerabilities: A large-scale measurement study of free and paid apps,” in Proc. 14th Int. Conf. Mining Softw. Repositories, 2017, pp. 14–24.
+
+7.  S. Varrette, P. Bouvry, H. Cartiaux, and F. Georgatos, “Management of an academic HPC cluster: The UL experience,” in Proc. IEEE Intl. Conf. High Perform. Comput. Simul., Bologna, Italy, Jul. 2014, pp. 959–967.
+
+8.  H. Cai and B. G. Ryder, “Understanding Android application programming and security: A dynamic study,” in Proc. IEEE Int. Conf. Softw. Maintenance Evolution, 2017, pp. 364–375.
+
+9.  L. Qiu, Y. Wang, and J. Rubin, “Analyzing the analyzers: Flow-Droid/IccTA, AmanDroid, and DroidSafe,” in Proc. 27th ACM SIGSOFT Int. Symp. Softw. Testing Anal., New York, NY, USA, 2018, pp. 176–186.
+
+10.  F. Ibrar, H. Saleem, S. Castle, and M. Z. Malik, “A study of static analysis tools to detect vulnerabilities of branchless banking applications in developing countries,” in Proc. 9th Int. Conf. Inf. Commun. Technol. Develop., New York, NY, USA, 2017, pp. 30-1–30-5.
+
+11.  W. Enck et al., “TaintDroid: An information-flow tracking system for realtime privacy monitoring on smartphones,” in Proc. USENIX Secur. Symp., 2010, pp. 393–407.
+
+12.  W. Enck, D. Octeau, P. D. McDaniel, and S. Chaudhuri, “A study of Android application security,” in Proc. USENIX Secur. Symp., 2011, vol. 2, p. 21.
+
+13.  R. Lemos, “Your apps could be leaking private info,” MIT Technol. Rev., Aug. 21, 2017. [Online]. Available: https://www.technologyreview.com/s/420062/your-apps-could-be-leaking-private-info/
+14.  L. Li, T. F. Bissyandé, J. Klein, and Y. Le Traon, “An investigation into the use of common libraries in Android apps,” in Proc. 23rd IEEE Int. Conf. Softw. Anal., Evolution, Reeng., 2016, pp. 403–414.
+
+15.  W. S. Cleveland and S. J. Devlin, “Locally weighted regression: An approach to regression analysis by local fitting,” J. Amer. Stat. Assoc., vol. 83, no. 403, pp. 596–610, 1988.
+
+16.  K. Hamandi, A. Chehab, I. H. Elhajj, and A. Kayssi, “Android SMS malware: Vulnerability and mitigation,” in Proc. 27th Int. Conf. Adv. Inf. Netw. Appl. Workshops, Mar. 2013, pp. 1004–1009.
+
+17.  M. Hurier, K. Allix, T. Bissyandé, J. Klein, and Y. Le Traon, “On the lack of consensus in anti-virus decisions: Metrics and insights on building ground truths of Android malware,” in Proc. 13th Conf. Detection Intrusions Malware Vulnerability Assessment, 2016, pp. 142–162.
+
+18.  A. Kantchelian et al., “Better malware ground truth: Techniques for weighting anti-virus vendor labels,” in ACM Workshop Artif. Intell. Secur., 2015, pp. 45–56.
+
+19.  M. Hurier et al., “Euphony: Harmonious unification of cacophonous anti-virus vendor labels for Android malware,” in Proc. IEEE 14th Int. Conf. Mining Softw. Repositories, 2017, pp. 425–435.
+
+20.  A. Bauser and C. Hebeisen, “Igexin advertising network put user privacy at risk,” Aug. 2017. [Online]. Available: https://blog.lookout.com/igexin-malicious-sdk
+21.  D. Wu and R. K. C. Chang, “Analyzing Android browser apps for file://vulnerabilities,” in Proc. Int. Conf. Inf. Secur. 2014, pp. 345–363.
+
+22.  E. Chin and D. Wagner, “Bifocals: Analyzing webview vulnerabilities in Android applications,” in Proc. Int. Workshop Inf. Secur. Appl., 2013, pp. 138–159.
+
+23.  R. Hay, O. Tripp, and M. Pistoia, “Dynamic detection of inter-application communication vulnerabilities in Android,” in Proc. Int. Symp. Softw. Testing Anal., 2015, pp. 118–128.
+
+24.  V. Rastogi, Y. Chen, and W. Enck, “Appsplayground: Automatic security analysis of smartphone applications,” in Proc. 3rd ACM Conf. Data Appl. Secur. Privacy, 2013, pp. 209–220.
+
+25.  G. Sarwar, O. Mehani, R. Boreli, and M. A. Kaafar, “On the effectiveness of dynamic taint analysis for protecting against private information leaks on Android-based devices,” in Proc. Int. Conf. Secur. Cryptography, 2013, pp. 461–468.
+
+26.  J. Schütte, R. Fedler, and D. Titze, “Condroid: Targeted dynamic analysis of Android applications,” in Proc. IEEE 29th Int. Conf. Adv. Inf. Netw. Appl., 2015, pp. 571–578.
+
+27.  I. V. Krsul, “Software vulnerability analysis,” Ph. D. dissertation, Purdue Univ., West Lafayette, IN, USA, 1998.
+
+28.  C. Cowan, F. Wagle, C. Pu, S. Beattie, and J. Walpole, “Buffer overflows: Attacks and defenses for the vulnerability of the decade,” in Proc. IEEE DARPA Inf. Survivability Conf. Expo., 2000, vol. 2, pp. 119–129.
+
+29.  C. DOrazio and K.-K. R. Choo, “A generic process to identify vulnerabilities and design weaknesses in iOS healthcare apps,” in Proc. 48th Hawaii Int. Conf. Syst. Sci., 2015, pp. 5175–5184.
+
+30.  V. B. Livshits and M. S. Lam, “Finding security vulnerabilities in java applications with static analysis,” in Proc. USENIX Secur. Symp., 2005, vol. 14, p. 18.
+
+31.  B. Schwarz et al., “Model checking an entire linux distribution for security violations,” in Proc. IEEE 21st Annu. Comput. Secur. Appl. Conf., 2005, pp. 1–10.
+
+32.  C. Zuo, Q. Zhao, and Z. Lin, “AUTHSCOPE: Towards automatic discovery of vulnerable authorizations in online services,” in Proc. ACM SIGSAC Conf. Comput. Commun. Secur., New York, NY, USA, 2017, pp. 799–813.
+
+33.  S. Jain, D. S. Tomar, and D. R. Sahu, “Detection of javascript vulnerability at client agent,” Int. J. Sci. Technol. Res., vol. 1, no. 7, pp. 36–41, 2012.
+
+34.  A. Kieyzun, P. J Guo, K. Jayaraman, and M. D. Ernst, “Automatic creation of SQL injection and cross-site scripting attacks,” in Proc. IEEE 31st Int. Conf. Softw. Eng., 2009, pp. 199–209.
+
+35.  L. K. Shar and H. B. K. Tan, “Mining input sanitization patterns for predicting SQL injection and cross site scripting vulnerabilities,” in Proc. IEEE 34th Int. Conf. Softw. Eng., 2012, pp. 1293–1296.
+
+36.  F. Yu, M. Alkhalaf, and T. Bultan, “Patching vulnerabilities with sanitization synthesis,” in Proc. ACM 33rd Int. Conf. Softw. Eng., 2011, pp. 251–260.
+
+37.  M. Zhang and H. Yin, “AppSealer: Automatic generation of vulnerability-specific patches for preventing component hijacking attacks in Android applications,” in Proc. Netw. Distrib. Syst. Secur. Symp., 2014, pp. 45–61.
+
+38.  H. Bagheri, E. Kang, S. Malek, and D. Jackson, “A formal approach for detection of security flaws in the android permission system,” Formal Aspects Comput., vol. 30, pp. 525–544, 2016.
+
+39.  H. Huang, S. Zhu, K. Chen, and P. Liu, “From system services freezing to system server shutdown in Android: All you need is a loop in an app,” in Proc. 22nd ACM SIGSAC Conf. Comput. Commun. Secur., 2015, pp. 1236–1247.
+
+40.  K. Wang, Y. Zhang, and P. Liu, “Call me back!: Attacks on system server and system apps in Android through synchronous callback,” in Proc. ACM SIGSAC Conf. Comput. Commun. Secur., 2016, pp. 92–103.
+
+41.  C. Cao, N. Gao, P. Liu, and J. Xiang, “Towards analyzing the input validation vulnerabilities associated with Android system services,” in Proc. 31st Annu. Comput. Secur. Appl. Conf., 2015, pp. 361–370.
+
+42.  M. Jimenez, M. Papadakis, T. F. Bissyandé, and J. Klein, “Profiling Android vulnerabilities,” in Proc. IEEE Int. Conf. Softw. Quality, Rel. Secur., 2016, pp. 222–229.
+
+43.  M. Linares-Vásquez, G. Bavota, and C. Escobar-Velásquez, “An empirical study on Android-related vulnerabilities,” in Proc. IEEE 14th Int. Conf. Mining Softw. Repositories, 2017, pp. 2–13.
+
+44.  D. R Thomas, A. R. Beresford, and A. Rice, “Security metrics for the Android ecosystem,” in Proc. 5th Annu. ACM CCS Workshop Secur. Privacy Smartphones Mobile Devices, 2015, pp. 87–98.
+
+45.  J. Mitra and V.-P. Ranganath, “Ghera: A repository of Android app vulnerability benchmarks,” in Proc. 13th Int. Conf. Predictive Models Data Analytics Softw. Eng., Toronto, Canada, 2017, pp. 43–52.
+
+46.  E. J. Barry, C. F. Kemerer, and S. A. Slaughter, “On the uniformity of software evolution patterns,” in Proc. IEEE 25th Int. Conf. Softw. Eng., 2003, pp. 106–113.

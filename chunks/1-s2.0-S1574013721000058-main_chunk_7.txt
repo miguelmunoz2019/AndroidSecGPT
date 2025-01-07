@@ -1,0 +1,64 @@
+1 const - string v1 , " \ub6e8\ud801\ub2bb "
+2 invoke - virtual {v0}, Lcom/ dexprotector /ha;->gbeab(
+Ljava/lang/ Object ;) Ljava/lang/ Object ;
+3 invoke - static {v2}, Lcom/ dexprotector /ha;->oodab(
+Ljava/lang/ Object ;) Ljava/lang/ Object ;
+Listing 20: Smali code with encrypted string variable and API hiding.
+
+Java reflection. Reflection is a popular feature in Java programming language to evade static analysis, as it allows object interaction at runtime. Reflection is popular among developers to obfuscate sensitive library and API calls . It transfers execution flow to the desired code segment implicitly, thus evading static analysis techniques. Code listing 21 and 22 illustrate usage of reflection for code obfuscation.
+
+Native code obfuscation. Android comprises the Android Native Development Kit (NDK), which allows developers to execute their C and C++ code (called as native code). Native code is popular amongst developer [105–107]. Analysis methods available for byte code are ineffective against native code, thus making them favorite for malicious payloads [105,108–110]. To make it more difficult for analysts, native code obfuscation exists. Obfuscator-LLVM, is a popular native code obfuscator for ARM and x86 architecture . It offers (a) Instruction substitution; (b) Control Flow Flattening and (c) Junk code addition at native code level.
+
+Library hiding. Applications rely on system and third party libraries for features and interactions. Libraries are cornerstone of Android ecosystem, as they provide functionality to developers such as advertisement, authentication and social networking. An application thus can be classified as malicious based on its library usage. Various approaches for library detection exists [112–120] in literature. These detection methods are challenged by code obfuscation methods as they mostly rely on nomenclature based matching of package or classes . Library class and package renaming approaches are used for library hiding. Another approach followed by some developers is to recreate custom versions of library by merging, splitting or changing existing libraries.
+
+# 3. Preventive techniques
+Preventive techniques comprise of methods which prevent or make difficult to analyze an application. Scanning engines, application hosting platforms employ dynamic analysis methods for malware analysis and detection. Below we discuss a broad range of prevention techniques used both by malwares and benignwares to detect and evade analysis environment. Benignwares such as banking applications use them for primary objective to keep user’s authentication and transaction information confidential and intact. Prevention techniques prime objective to detect analysis environment is based on identifying static properties of environment, runtime sensor information of Android and other emulator related properties.
+
+# 3. Anti tampering
+Attackers are always trying to reverse popular applications to inject malicious code. An attacker using the tampered application can get inside smartphone to access, manipulate and exchange user data . Anti tampering popular as Integrity Checking uses methods to ensure that application code and resources are not altered by a third party. Basic anti tampering is to check for integrity or digest at startup. A digest mismatch with the developer’s certificate suggests a tampered application . A distributed approach of code integrity checking using checkers is introduced in . Fig. 13 illustrates multiple checkers responsible for integrity check of code segments are planted at different locations of an application.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+1 PackageManager pacman = context . getPackageManager ();
+2 List appInfoList = pacman . getInstalledApplications (
+PackageManager . GET_META_DATA );
+3
+4 for( ApplicationInfo appInfo : appInfoLst ) {
+5    if( appInfo . packageName .equals ( " de.robv. android.
+
+xposed . installer " ))
+6
+7    if( appInfo . packageName .equals ( " com. saurik . substrate
+" ))
+8 }
+Listing 23: Anti Hooking: Code snippet to identify presence of hooking frameworks
+# 3. Anti hooking
+Application interaction with Android OS and other application is a probable attack surface. With application code intact, API calls can be hooked to insert functionality at runtime [11,125–127]. Hooking allows an attacker or analyst to alter method arguments, method return or even a complete method. Hooking detection is considered difficult as hooks are generally placed from higher privilege levels. Anti hooking comprises of the mechanisms for detection of hooking framework (e.g. Cydia Substrate , Frida and Xposed  framework) in memory. Current anti hooking solutions rely on fingerprints of hooking frameworks for their detection . Code listing 23 illustrates the identification of Xpose and Cydia Substrate frameworks using package name artifact. Jose Lopes in  uses file path and stack trace (strace) artifacts to detect popular Xposed and Cydia Substrate frameworks.
+
+# 3. Anti debugging
+Debuggers were primarily designed for developers to find bugs in their applications, and are also used by reverse engineers to perform dynamic analysis of an application. Debuggers operate by setting up interrupts at a particular instruction in an application. Obfuscation methods successful against static analysis approaches can be countered by debugging. Two kinds of debuggers can be attached to Android: Native code debugger and JDWP(Java Debug Wire Protocol) debugger . An application developer or malware author detect and evade debugger by anti debugging techniques. A debugger if detected, the anti debugger can invoke crashes, custom action, data corruption or warning signal to a remote server. Anti debugging checks for unique artifacts of the environment to detect and identify the presence of a debugger.
+
+Artifacts here include debugger flag and kernel system calls related to debugging. Listing 24 is code snippet to detect presence of debugging environment using FLAG_DEBUGGABLE attribute in AndroidManifest.xml.
+
+1 public static boolean checkDebuggable ( Context context
+){
+2 return ( context . getApplicationInfo ().flags &
+ApplicationInfo . FLAG_DEBUGGABLE ) != 0;
+3 }
+Listing 24: Anti Debugging: Code snippet to identify presence of debugger packages
+Anti debugging methods [131–133] targeting Native code debugger are: (a) Execution timing mismatch if code is executed in debugger; (b) Interrupt signal for an application will be diverted to debugger thus enabling detection; and (c) Application code integrity check as insertion of breakpoint shall alter the hash value of the code.
+
+Anti debugging methods [131–133] targeting JDWP debugger are: (a) debuggerConnected and debuggerActive member variables in DVMGlobals datastructure is 1 in Dalvik VM instance of application for an attached debugger; and (b) The count member of BreakpointSet structure in Dalvik VM instance represents number of breakpoints set can detect presence of breakpoints.
+
+# 3. Anti emulation
+Due to large scale development and evolution of malware, security researchers are using automated dynamic analysis techniques for detection [127,134–139]. Analysts performing dynamic analysis, executes an application in a virtual environment, an emulator or a sandbox as it allows them to monitor and inspect application’s state. Several emulators and sandbox detection mechanisms are employed by applications to exhibit different behavior on detecting an emulation or virtual environment [11,126,127, 140–144]. Anti emulation is based on the principle that creating a complete and real system emulator is very difficult. Anti emulation methods are developed by observing and detecting differences between application interaction with a real and virtual system. Anti emulation artifacts or fingerprints thus may be differences due to system hardware or software state values or application execution differences.
+
+They are categorized into static heuristics and dynamic heuristics . Static heuristic techniques are based on the static properties which are initialized to default values in an emulation environment. Whereas dynamic heuristic techniques are based on the information provided during runtime. Table 2 illustrates a compiled list of artifacts employed by applications to detect the presence of emulation environment.
+
+# 3. Device binding
+Banking applications requires to work only on the installed device with which the account has been bound. This requirement of application services binded to the device is known as device
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Static heuristics
+# Dynamic
+Device binding act as a physical second factor authentication . Device binding fingerprints the device which are matched during app initialization. Device fingerprinting requires to be unique such as device IMEI number and Android Device ID.

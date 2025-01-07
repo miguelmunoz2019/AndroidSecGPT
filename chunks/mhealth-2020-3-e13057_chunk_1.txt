@@ -1,0 +1,59 @@
+# Standards for Mobile Health–Related Apps: Systematic Review and Development of a Guide
+# Pere Llorens-Vernet, MSc; Jordi Miró, PhD
+Unit for the Study and Treatment of Pain-ALGOS, Department of Psychology, Universitat Rovira i Virgili, Tarragona, Spain
+# Corresponding Author:
+Jordi Miró, PhD
+Unit for the Study and Treatment of Pain-ALGOS
+Department of Psychology
+Universitat Rovira i Virgili
+Carretera de Valls, s/n
+Tarragona, 43007
+Spain
+Phone: 34 977558179
+Email: jordi.miro@urv.cat
+# Abstract
+# Background:
+In recent years, the considerable increase in the number of mobile health (mHealth) apps has made health care more accessible and affordable for all. However, the exponential growth in mHealth solutions has occurred with almost no control or regulation of any kind. Despite some recent initiatives, there is still no specific regulation procedure, accreditation system, or standards to help the development of the apps, mitigate risks, or guarantee quality.
+
+# Objective:
+The main aim of this study was to propose a set of criteria for mHealth-related apps on the basis of what is available from published studies, guidelines, and standards in the various areas that are related to health app development.
+
+# Methods:
+We used three sources of information to identify the most important criteria. First, we conducted a systematic review of all the studies published on pain-related apps. Second, we searched for health app recommendations on the websites of professional organizations. Third, we looked for standards governing the development of software for medical devices on the specialized websites of regulatory organizations. Then, we grouped and subsumed the criteria we had identified on the basis of their shared characteristics. Finally, the comprehensibility and perceived importance of the resulting criteria were evaluated for face validity with a group of 18 stakeholders.
+
+# Results:
+We identified a total of 503 criteria from all sources, which, after close analysis, were grouped into eight different categories, including 36 important criteria for health apps. The resulting categories were usability, privacy, security, appropriateness and suitability, transparency and content, safety, technical support and updates, and technology. The results of the preliminary analysis showed that the criteria were mostly understood by the group of stakeholders. In addition, they perceived all of them as important.
+
+# Conclusions:
+This set of criteria can help health care providers, developers, patients, and other stakeholders to guide the development of mHealth-related apps and, potentially, to measure the quality of an mHealth app.
+
+(JMIR Mhealth Uhealth 2020;8(3):e13057) doi: 10/13057
+# KEYWORDS
+mHealth; mobile apps; review; medical device; standards
+# Introduction
+# Background
+Public health care systems worldwide are facing major challenges (eg, a shortage of resources and a steady increase in demand), which can make them increasingly unsustainable . It is in this environment that what is known as mobile health (mHealth) is proving to be of key importance . In the last few years, mHealth has undergone considerable development because of its potential to make health care more accessible and affordable for all [2,5-7].
+
+However, mHealth solutions have grown exponentially with almost no control or regulation of any kind. In fact, very few of the health apps available have undergone a thorough
+https://mhealth.jmir.org/2020/3/e13057
+JMIR Mhealth Uhealth 2020 | vol. 8 | iss. 3 | e13057 | p. 1
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+validation process, and this causes a lack of confidence among health professionals . For example, a recent review of the mobile apps available for chronic pain—which is one of the most prevalent health problems, with an enormous economic cost to individuals, families, and society —highlighted that of the 283 apps available at the time, just a handful had undergone usability and validity tests . This situation has been identified as preventing the field from improving and advancing.
+
+In this so-called strategic field, progress depends not only on what each research group is doing but also on developing general standards and improving certification procedures . There are some local and international initiatives to help in this process. For example, Catalonia approved a strategic action plan to support the development of mHealth (ie, The Mobility Master Plan: mHealth solutions ), which includes AppSalut , an accreditation system and guide  created to certify the quality of health– and social-related apps. At the international level, the European Commission published a Green Paper on mHealth  and launched a public consultation to identify potential barriers to and problems in the development of mHealth. Despite these initiatives, there is still no specific regulation procedure, accreditation system, or standards to help the development of apps, mitigate risks, and guarantee quality.
+
+Therefore, the certification process is weighed down by the lack of clear standards to guide users through the different stages of the process. This is a problem not only for the safety of end users (ie, patients and health care professionals) but also for professional developers. Clearly, having a set of common criteria would be instrumental in helping the field to make progress in a consensual way and overcome potential risks for all stakeholders. There has been one recent attempt to develop a rating scale for mobile apps that could be used to help overcome this problem. Stoyanov et al  developed a scale (Mobile App Rating Scale [MARS]) to classify and rate the quality of mHealth apps. This scale was on the basis of a review of the papers published between 2000 and 2013, which contained explicit app-related quality rating criteria. However, this scale was created from a very narrow perspective for assessing already developed apps. That is to say, although the authors used information from studies on existing mobile apps, they failed to include information from other relevant sources that had been used, which would have increased the reliability and validity of their work (eg, standards governing the development of software for health or medical devices). Therefore, this scale does not seem to be suited for use by all stakeholders. Some more recent attempts to provide alternatives to assess mHealth apps also share some of these weaknesses (eg, developed for one specific group of stakeholders and using one specific source of information).
+
+# Objectives
+The general aim of this study, then, is to go beyond what is already available and provide a standard for mHealth-related apps by studying the published studies, guidelines, and standards available in the field of health app development. In particular, we want to identify a set of criteria that are used, and which of these are strategic, so that they can be recommended and integrated into a general standard (ie, a guide) that can help the field move forward on solid grounds.
+
+# Methods
+# Procedure
+We used three strategies to identify criteria. First, we conducted a systematic review of all the studies published on pain-related apps. Second, we searched the websites of professional organizations. Finally, we analyzed the standards governing the development of software for medical devices. Although these regulations are not specific for health apps, they can provide information of interest and complement the information collected.
+
+# Information From the Systematic Review
+For the systematic review, to address an otherwise unmanageable amount of information, we limited our search to mobile apps related to pain, one of the most prevalent health problems causing millions of visits to health care professionals. In so doing, we followed the Preferred Reporting Items for Systematic Reviews and Meta-Analysis guidelines  and searched the following databases: Web of Science, Scopus, PubMed, and ScienceDirect. We used the search terms (pain OR *ache) AND (smartphone* OR mobile) AND (app OR apps), and also hand searched the reference lists from relevant articles. Only peer-reviewed articles published in English or Spanish between 2008 (the release date of the first apps stores ) and December 2017 were included.
+
+# Information on Websites From Professional Organizations
+The second strategy consisted of searching websites from professional organizations that had guidelines and recommendations for health apps. We decided to focus our search on those regions where the mHealth market is most significant and, therefore, where these regulations are most likely to be found. According to a forecast of revenues of the world mHealth market , in 2017, the main mHealth markets by regions were Europe, North America, and Asia–Pacific, representing 30%, 28%, and 30% of the world market, respectively. In addition, the 15 most attractive countries for digital health solutions in 2017 were located in the regions mentioned above . Therefore, we limited our search to those three areas. Again, and to make the search feasible, we limited our analysis to those countries that are the main markets in each region. In Europe, we included the United Kingdom and Spain as they had the same importance in terms of mHealth markets; in North America, the United States; and in Asia–Pacific, Australia.

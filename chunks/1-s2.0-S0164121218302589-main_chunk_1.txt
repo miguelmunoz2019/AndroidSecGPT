@@ -1,0 +1,58 @@
+# The Journal of Systems and Software 149 (2019) 83–100
+# Contents lists available at ScienceDirect
+# SOFTWARE SYSTEMS
+# The Journal of Systems and Software
+# ELSEVIER
+# journal homepage: www.elsevier.com/locate/jss
+# DelDroid: An automated approach for determination and enforcement of least-privilege architecture in android
+Mahmoud Hammada,b,∗, Hamid Bagheric, Sam Malekb
+a Department of Software Engineering, Jordan University of Science and Technology, Jordan
+b Department of Informatics, University of California, Irvine, United States
+c Department of Computer Science and Engineering, University of Nebraska-Lincoln, United States
+# a r t i c l e i n f o
+Article history:
+Received 1 October 2017
+Revised 20 November 2018
+Accepted 26 November 2018
+Available online 26 November 2018
+# Keywords:
+Android security
+Software architecture
+Multiple-Domain-Matrix (MDM)
+# a b s t r a c t
+Android is widely used for the development and deployment of autonomous and smart systems, including software targeted for IoT and mobile devices. Security of such systems is an increasingly important concern. Android relies on a permission model to secure the system’s resources and apps. In Android, since the permissions are granted at the granularity of apps, and all components in an app inherit those permissions, an app’s components are over-privileged, i.e., components are granted more privileges than they actually need. Systematic violation of least-privilege principle in Android is the root cause of many security vulnerabilities. To mitigate this issue, we have developed DelDroid, an automated system for determination of least privilege architecture in Android and its enforcement at runtime. A key contribution of DelDroid is the ability to limit the privileges granted to apps without modifying them. DelDroid utilizes static analysis techniques to extract the exact privileges each component needs. A Multiple-Domain Matrix representation of the system’s architecture is then used to automatically analyze the security posture of the system and derive its least-privilege architecture. Our experiments on hundreds of real-world apps corroborate DelDroid’s ability in effectively establishing the least-privilege architecture and its benefits in alleviating the security threats.
+
+© 2018 Elsevier Inc. All rights reserved.
+
+# 1. Introduction
+Android is widely used for the development and deployment of autonomous and smart software systems, including software intended for execution on a variety of mobile devices, as well as software targeted for Internet of Things (IoT) settings, such as smart homes. Security of such systems is an increasingly important concern. Permissions form the foundation of security in Android. Android relies on a permission-based model for controlling the resources that each app is allowed to access. Permissions are often granted to an app at the discretion of end user, who makes a decision based on its perceived trustworthiness and expected functionality.
+
+Android’s permission-based access control model, however, has shown to be ineffective in protecting system resources and apps from security attacks. All components of an Android app inherit the permissions granted to the app, regardless of whether they need those permissions or not. As a result, a malicious component inside an app, such as a third-party library, can leverage privileges meant for other components for nefarious purposes . Moreover, by default, a component in Android has significant leeway in terms of the components it can communicate with, both within and outside of its parent app. The over-privileged nature of components in Android is the root cause of various security attacks . These kinds of attacks cannot be prevented by the platform at the moment, as they do not violate the security mechanisms supplied by Android.
+
+Prior research efforts have proposed various solutions to help address certain instances of component-level attacks. Some of the proposed solutions have focused on isolating specific type of component-level threats, caused by for example advertisement  or JNI libraries (Sun and Tan, 2014); such approaches are narrowly targeted, and thus, inappropriate for applying comprehensively to other types of component-level threats. Others have proposed component-level permission assignment for third-party components in an app , yet they are incapable of controlling communications among components. They also often require application modification or developer intervention, significantly hindering their adoption in practice.
+
+∗ Corresponding author.
+
+E-mail addresses: hammadm@uci.edu (M. Hammad), bagheri@unl.edu (H. Bagheri), malek@uci.edu (S. Malek).
+
+https://doi.org/10/j.jss
+0164-1212/© 2018 Elsevier Inc. All rights reserved.
+
+# 84
+# M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+To systematically thwart these threats, we have developed DelDroid1, a fully automated system for determination of least-privilege architecture (LP architecture) in Android and its enforcement at runtime. An LP architecture is one in which the components are only granted the privileges that they require for providing their functionality . An LP architecture, thus, reduces the risk of an Android system being compromised by limiting its attack surface. In addition, when a component is compromised, the impact is localized within the scope of that component. A smaller attack surface also facilitates both manual and automated means of inspecting the system’s security attributes.
+
+Establishing the least privilege architecture is quite challenging as it demands mediation of all conceivable channels through which a component may interact with components within and outside its parent app, as well as the underlying system resources. DelDroid leverages static program analysis to automatically identify the architectural elements comprising an Android system, as well as the inter-component communication and resource-access privileges each component needs to provide its functionality. It then uses a Multiple-Domain Matrix (MDM) (Lindemann and Maurer, 2007) to represent and derive the LP architecture for the system. MDM provides an elegant, yet compact, representation of all relationships between principal elements, such as components and permissions, in a system. DelDroid further allows a security expert to modify the architecture as needed to establish the proper privileges for each component. Finally, DelDroid enforces automatically obtained or expert-supplied LP architecture at runtime, thus ensuring components are not able to obtain more privileges than that prescribed by the architecture.
+
+By providing an efficient least-privilege determination process associated with a thorough enforcement system, DelDroid allows users to focus their analysis efforts on a very narrowed set of interactions in the architecture. This is especially valuable, since at the scale of a single device, the state-of-the-art inter-component communication analysis tools produce an enormous number of potential links between message-passing locations and possible message targets, making manual analysis required to confirm any potential threat rather tedious and error-prone.
+
+DelDroid can be used to limit the levels of access available to an app and its components without modification of their implementation logic, thus allowing our approach to be applied to all existing Android apps. Our evaluation of DelDroid using hundreds of real-world apps corroborates its ability in significantly reducing the attack surface of Android systems and thwarting security attacks that would have succeeded otherwise.
+
+This paper describes several new non-trivial extensions to the preliminary version of our work described in : (1) We incorporate new security analysis rules in DelDroid to detect a broader range of inter-component communication (ICC) attacks. In addition to the privilege escalation analysis, DelDroid is now capable of analyzing the recovered architecture for potential Intent spoofing and unauthorized Intent receipt attacks . (2) We enrich our representation of architecture in MDM to show the type of communication between various components of an Android system. DelDroid uses the additional information to analyze the system architecture for new security vulnerabilities. (3) We improve our algorithm for generating Event-Condition-Action (ECA) rules that collectively capture the determined least-privilege architecture, in turn reducing the size of rules that need to be stored in an Android device and monitored at runtime. (4) We report on new experiments to assess, among other things, the newly added security analysis capabilities. On top of these technical contributions, the paper provides an in-depth description of the determination and enforcement of least-privilege architecture in Android and a revamped discussion of this work in the context of related research.
+
+To summarize, this paper makes the following contributions:
+- Automated derivation of LP architecture: We develop a novel mechanism, called DelDroid, to automatically identify the LP architecture for an Android system. The run-time architecture captured in an MDM further helps users and security experts better understand and maintain the security posture of the entire system.
+
+- Dynamic enforcement: We show how to exploit the LP architecture to safeguard the system against security attacks by enforcing it at runtime without modifying the current apps.
+
+- Experiments: We present results from experiments run on hundreds of real-world apps, corroborating DelDroid’s ability in (1) effectively reducing the attack surface of Android systems through the establishment of an LP architecture, and (2) efficiently detecting and preventing various security attacks through analyzing the established LP architecture and its dynamic enforcement.

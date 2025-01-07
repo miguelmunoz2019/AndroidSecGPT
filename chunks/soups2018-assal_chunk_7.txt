@@ -1,0 +1,52 @@
+1. Identify security requirements. Identify security requirements for your application during the initial planning stages. The security of the application throughout its different stages should be evaluated based on its compliance with security requirements.
+
+2. Design for security. Aim for simple designs because the likelihood of implementation errors increases with design complexity. Architect and design your software to implement security policies and comply with security principles such as: secure defaults, default deny, fail safe, and the principle of least privilege.
+
+3. Perform threat modelling. Use threat modelling to analyze potential threats to your application. The result of threat modelling should inform security practices in the different SDLC stages, e.g., for creating test plans.
+
+4. Perform secure implementation. Adopt secure coding standards for the programming language you use, e.g., validate input and sanitize data sent to other systems, and avoid using unsafe or deprecated functions.
+
+5. Use approved tools and analyze third-party tools’ security. Only use approved tools, APIs, and frameworks or those evaluated for security and effectiveness.
+
+6. Include security in testing. Integrate security testing in functional test plans to reduce redundancy.
+
+7. Perform code analysis. Leverage automated tools such as SATs to detect vulnerabilities like buffer overflows and improper user input validation.
+
+8. Perform code review for security. Include security in code reviews and look for common programming errors that can lead to security vulnerabilities.
+
+9. Perform post-development testing. Identify security issues further by using a combination of methods, e.g., dynamic analysis, penetration testing, or hiring external security reviewers to bring in a new perspective.
+
+10. Apply defense in depth. Build security in all stages of the SDLC, so that if a vulnerability is missed in one stage, there is a chance to eliminate it through practices implemented in the remaining stages.
+
+# B11 Recognize that defense is a shared responsibility.
+
+Address software security as a collective responsibility of all SDLC entities, e.g., developers, testers, and designers.
+
+# B12 Apply security to all applications.
+
+Secure low risk applications and high risk ones. The suggested effort spent on security can be derived from assessing the value of assets and the risks, however, security should not be ignored in even the lowest risk applications.
+
+# 6. INTERPRETATION OF RESULTS
+In this section, we compare security practices from our study to best practices, present factors influencing those practices, and discuss future research directions. We comment on teams’ practices as described by their developers (our participants), recognizing that we have only one perspective per team. Compliance (or lack thereof) to all best practices is not proof of a secure (or insecure) SDLC. However, this list of widely agreed upon best practices allows us to make preliminary deduction on the software security status quo.
+
+Another violation of B4. Moreover, despite their reliance on frameworks, participants report that security is not factored in their teams’ framework choices (violating B5). We found non-compliance with best practices in other development stages as well. For example, some teams do not include security in their functional testing plans, violating B6, and some teams do not perform code analysis, violating B7. Ignoring code analysis is a missed opportunity for automatic code quality analysis and detection of common programming errors . Participants who said their teams use security code analysis tools, do so to focus subsequent development stages on the more unusual security issues. Others do not review their code for security (violating B8); rather code review is mainly functionality-focused. In some cases, participants said that reviewers do not have the expertise to conduct security reviews, in others they may be overloaded with tasks, and sometimes code review plans simply do not include security.
+
+# 6 Current practices versus best practices
+Our analysis showed different approaches to security and varying degrees of compliance with best practices. The best practice with most compliance is B9; almost all participants reported that their team performs security post-development testing (to varying degrees). Contrarily, most do not apply defense in depth (B10); the security adopters do not consistently integrate security throughout the SDLC and the security inattentive group relies mainly on specific stages to verify security (e.g., post-development testing). In addition, security is generally not a part of the company culture for the security inattentive group and they commonly delegate a specific person or team to be solely responsible for security. This leads to adhoc processes and violates B11: recognize that defense is a shared responsibility. Moreover, the security inattentive group violate B12 by ignoring security in applications considered low-risk without evidence that they performed proper risk analysis.
+
+Deviations from best practices are apparent even from the design stage. The majority of participants indicate that their teams do not address security during design, contradicting B1–B3. Some developers may even deliberately violate the Design for security best practice (B2) to achieve their business goals and avoid extra work. On the other hand, the two participants who discussed formal consideration of security in design claim the advantages of having more informed development processes, identifying all relevant threats and vulnerabilities, and not getting distracted by irrelevant ones.
+
+The implementation stage is particularly interesting; it shows the contradictions between the security adopters and the security inattentive. Participants from both groups perform secure implementation (B4), yet this only applied to three security inattentive participants. For most of the security inattentive group, security is not a priority and developers take security for granted, assuming that frameworks will handle security. While frameworks have security benefits , each has its own secure usage recommendations (e.g., ), often buried in their documentations, and it is unclear if developers follow them. In fact, our study suggests that developers misuse frameworks by circumventing correct usage to more easily achieve their functional goals.
+
+# 6 Factors affecting security practices
+Through close inspection of our results and being immersed in participants’ reported experiences, we recognized factors that appear to shape their practices and that may not be adequately considered by best practices. We present each factor and its conflict with best practices, if applicable.
+
+Division of labour. Best practices conflict with some of our teams’ division of labour styles. Participants explained that some teams violate the Apply defense in depth (B10) best practice because applying security in each SDLC stage conflicts with their team members’ roles and responsibilities. In some teams, developers are responsible for the functional aspect (i.e., implementation and functional testing) and testers handle security testing. These teams are also violating B6, because integrating security in functional testing plans would conflict with the developers’ assigned tasks. Complying with these best practices likely means they need to change the team’s structure and re-distribute the assigned responsibilities. Teams may be reluctant to make such changes  that may conflict with their software development methodologies , especially since security is not their primary objective.
+
+Security knowledge. We found that the expectation of security knowledge (or lack thereof) directly affects the degree of security integration in developers’ tasks. When security knowledge was expected, participants said that developers were assigned security tasks (e.g., performing security testing). On the other hand, we found that developers’ (expected) lack of security knowledge resulted in lax security practices (Security is not considered in the design stage, Security is not a priority during implementation, Developers do not test for security, and Security is not considered during code review). While these violate best practices (e.g., B1, B4 B6, B8), it is unrealistic to rely on developers to perform security tasks while lacking the expertise. From teams’ perspective, they are relieving developers from the security burden. This may be a reasonable approach, loosely following recommendations of taking the developer out of the security loop when possible . Another obvious, yet complicated, answer would be to educate developers . However, companies may lack the resources to offer security training, and there is evidence that developers remain focused mainly.
+
+USENIX Association Fourteenth Symposium on Usable Privacy and Security 291
+on their primary functional task and not security.
+
+# Company culture
+Another influential factor indicated by participants is the teams’ cognizance of security and whether it is part of the company culture. In teams where security was reportedly advocated, developers spoke of security as a shared responsibility (conforming with B11). In instances where security was dismissed, participants said that developers did not consider security, and even those with security knowledge were reluctant to apply it. For successful adoption of security, initiatives should emerge from upper management and security should be rooted in the company’s policies and culture. Developers are more likely to follow security practices if mandated by their company and its policies . Integrating and rewarding security in the company culture can significantly motivate security practices , compared to instances where security is being viewed as something that only “heroes” do if there is time.

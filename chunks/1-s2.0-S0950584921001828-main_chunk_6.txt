@@ -1,0 +1,40 @@
+Percentage (%) of value theme occurrences.
+
+*Denotes top three most prevalent themes of each category in each project.
+
+For system value themes, Table 7 shows that in Signal, the top three most prevalent themes were usability, efficiency, and correctness. The top three most prevalent system value themes in K-9 were similar with the themes in Signal, except for energy preservation which was more prevalent than correctness. Longevity theme was not found in K-9. Focus also had similar prevalent system value themes with the other two projects except for accessibility which was more prevalent after usability and efficiency. Unlike the other two projects, the theme of portability was not found in Focus.
+
+Besides privacy, Fig. 8 shows that pleasure was also present substantially higher in Signal than in K-9 and Focus. We realised that users of Signal caused this as they demanded the application to be enjoyable to use. We observed many requests related to the app’s look and feel (e.g., themes and colours) and support for individual’s expressions (e.g., multimedia and emojis). For instance, Signal’s user suggested having the functionality to colour incoming messages based on its authors for the following reason: ‘‘People love to customize their stuff, and many are [quite] emotional regarding colors".
+
+Sense of belonging was only discovered in Signal. We found that all the discussions about this value came from the messaging functionality, especially group messaging, where it became personal to users. For example, a user expressed his/her dissatisfaction, ‘‘I’m just dismayed at the effort I put into pushing my whole family & all my friends to use it [Signal] & now I can’t keep it working".
+
+Similar to sense of belonging, some themes were also not discovered in K-9 (e.g., longevity) and Focus (e.g., dignity, portability, and secrecy). However, the presence of these themes was low (below 2%) in the other projects. The other remaining themes’ presence was not substantially different (less than 2% difference) across the three projects.
+
+# 4. Human values across projects
+The presence of seven values from Schwartz’s refined model based on the mapping of the human value themes are shown in Table 8. In
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+In this section, we did not consider our working mapping between system value themes and human values in Table 6. Self-direction - Action is prevalent in both Signal and Focus. We found that the discussions in issues of Signal and Focus were mainly about privacy and the freedom-related functionalities provided in both applications. Meanwhile, the most prevalent value present in K-9 is Security - Personal. This is in line with the focus of K-9 as a secure mail client application.
+
+The presence of other values in Signal is relatively high (more than 1%). Meanwhile, the values that present more than 1% of K-9 issues are Security - Personal, Self-direction - Action, and Universalism - Concern. In Focus, values that present in more than 1% of the issues are Self-direction - Action, Universalism - Concern, Security - Personal, and Conformity - Rules. The value of Face was not found in Focus. We found this is because Focus is somewhat more general and personal (e.g., not used to communicate with other people).
+
+# RQ2 Summary:
+Our analysis shows that almost one-third of the studied issues in Signal, K-9, and Focus apps include discussions where value themes can be found. The common prevalent human value themes across projects are privacy and freedom, while the common prevalent system value themes are usability and efficiency. However, the value themes of privacy, pleasure, and sense of belonging, were not evenly present across these apps, which can likely be attributed to the apps’ values statement and functionalities. Based on the mapping of human value themes to a human value model, we found Self-direction - Action and Security - Personal as the most prevalent values in the three applications.
+
+# 5. Discussion
+# 5. Human values are present in issue discussions
+The presence of values in design artefacts has been theorised in general. Our results contribute empirical evidence that human values are indeed found in software development repositories and, in particular, which values can be found in issue discussions. Our pilot study identified two distinctive perspectives of value themes from issue discussions: contributor-to-contributor and app-to-user (see Section 3). Our study focused on the app-to-user perspective by analysing project contributors’ concerns and opinions as found in issue discussions. This perspective has allowed us some insights into how and to what extent project contributors concern about human values while developing software applications. Using this approach, we discovered 20 value themes.
+
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+and formulated their descriptions based on a qualitative analysis of 5,615 posts from three projects. We found that the examples we found in issue discussions for the themes are similar to the concept of value instantiation . Value instantiation is defined as ‘‘the representation of values in specific situations, issues, or behaviours’’ . In our case, discussions in issues provide a representation of human values in software engineering contexts.
+
+Among 20 value themes that we found, ten of them could be mapped into seven out of 19 values from Schwartz’s refined model. The other ten themes are technical such that mapping these themes to human values require an extra step of inference. Our attempt to mapping the system value themes to human values is presented in Table 6. These findings confirm the much earlier opinion that technological artefacts could contain human values . Specifically, these findings are in line with previous works [16–24] that discovered values in software development artefacts. These results indicate that other artefacts, such as source codes, information about commits, README files, etc., might be potential places to find and discuss human values. We argue that further research is needed to explore such software artefacts to understand the extent to human values may appear in these artefacts. Future research should also investigate the difficulty level of identifying human values in each software artefact.
+
+# 5. The prevalence of human values in software engineering
+The refined Schwartz’s model , as the refinement of the most widely used model in social sciences , includes 19 values. In this study, only seven of those 19 values are found in our case study’s issue discussions (Table 8). This result is in line with the previous work  which discovered that 60% of Schwartz’s value items (35 out of 58 value items) were not found in software engineering publications. This could mean some values are still under-represented in both research and practice, and thus further research is needed. For example, further research can investigate the reasons behind this under-representation (e.g., software practitioners are unfamiliar with these values). Another line of research can be conducted to investigate how to support those values in software engineering, e.g., provide a contextualised software engineering definition for these under-represented values.
+
+# 5. Human values definitions for software engineering
+To the best of our knowledge, there are no human value models developed exclusively for software engineering. Notable work in Human–Computer Interaction (HCI) field called Value Sensitive Design (VSD) defines a subset of values that have ethical imports  could be somehow transferred into SE. However, social sciences’ definition of human values are much broader by including ‘what an individual, group or wider society believe to be important’ , such as public image or achievement.

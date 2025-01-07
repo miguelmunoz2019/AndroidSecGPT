@@ -1,0 +1,61 @@
+# Teaching Android Mobile Security
+Jean-François Lalande
+Valérie Viet Triem Tong
+Pierre Graux
+Guillaume Hiet
+jean-francois.lalande@inria.fr
+CentraleSupélec, Inria, Univ Rennes, CNRS, IRISA
+Rennes, France
+Wojciech Mazurczyk
+Institute of Telecommunications
+Warsaw University of Technology
+Warsaw, Poland
+wmazurczyk@tele.pw.edu.pl
+Habiba Chaoui
+National School of Applied Sciences, Ibn Tofail University
+Kenitra, Morocco
+habiba.chaoui@uit.ac.ma
+Pascal Berthomé
+INSA Centre Val de Loire, LIFO
+Bourges, France
+pascal.berthome@insa-cvl.fr
+# ABSTRACT
+At present, computer science studies generally offer courses addressing mobile development and they use mobile technologies for illustrating theoretical concepts such as operating system, design patterns, and compilation because Android and iOS use a large variety of technologies for developing applications. Teaching courses on security is also becoming an important concern for academics, and the use of mobile platforms (such as Android) as supporting material is becoming a reasonable option. In this paper, we intend to bridge a gap in the literature by reversing this paradigm: Android is not only an opportunity to learn security concepts but requires strong pedagogical efforts for covering all the aspects of mobile security. Thus, we propose teaching Android mobile security through a two-dimensional approach. The first dimension addresses the cognitive process of the Bloom taxonomy, and the second dimension addresses the technical layers of the architecture of the Android operating system. We describe a set of comprehensive security laboratory courses covering various concepts, ranging from the application development perspective to a deep investigation of the Android Open Source Project and its interaction with the Linux kernel. We evaluated this approach, and our results verify that the designed security labs impart the required knowledge to the students.
+
+# KEYWORDS
+teaching, mobile, security
+# ACM Reference Format:
+Jean-François Lalande, Valérie Viet Triem Tong, Pierre Graux, Guillaume Hiet, Wojciech Mazurczyk, Habiba Chaoui, and Pascal Berthomé. 2019. Teaching Android Mobile Security. In Proceedings of the 50th ACM Technical Symposium on Computer Science Education (SIGCSE ’19), February 27-March 2, 2019, Minneapolis, MN, USA. ACM, New York, NY, USA, 7 pages. https://doi.org/10/3287324
+# 1 INTRODUCTION
+At present, Android programming is an integral part of most undergraduate studies in computer science. It was introduced as a complete knowledge area in 2013 (platform-based development) in the Curriculum Guidelines for Undergraduate Degree Programs in Computer Science . The same year, security aspects were also introduced as a new knowledge area named “Information Assurance and Security.” The Android platform can be used for a variety of learning purposes concerning operating system, wireless communications, advanced design pattern, etc. Skills in mobile programming are of significance as even web services generally develop a companion application that the user can install on a smartphone.
+
+When addressing the security aspects of mobile computing, it is challenging to discuss concepts without referring to their implementation. Security concepts such as access control, authentication, or cryptography can still be presented as an independent course. However, the manner in which attackers attempt to bypass the implemented security countermeasures of modern smartphones should be presented with complete knowledge of the Android’s internal aspects.
+
+In this paper, we propose a set of labs intended to teach about threats and the security internals of Android applications and operating system. The approach is original in that it follows a progression based on the Bloom taxonomy  and works on the security aspects of the complete software stack of Android. We propose a variety of activities that enhance students’ skills from those for developing simple applications to those for more complex activities such as analyzing vulnerable applications under attack or reversing packers. Additionally, the labs cover the different internal components of Android, which aids students to gain knowledge.
+
+This work has received a French government support granted to the COMIN Labs excellence laboratory and managed by the National Research Agency in the "Investing for the Future" program under reference ANR-10-LABX-07-01.
+
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than ACM must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+© 2019 Association for Computing Machinery. ACM ISBN 978-1-4503-5890-3/19/02. . . $15
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA
+of the internal classes of the Android runtime, the execution and compilation of Android applications, and the link with the operating system. These two dimensions—the student cognitive process and the coverage of the different levels of the Android software stack—aid students to better analyze mobile security problems.
+
+The paper is organized as follows: Section 2 summarizes the state of the art in the learning of Android development and security. Section 3 presents our approach, and Section 4 provides the technical details of each lab. Section 5 summarizes the feedback we have collected. Section 6 concludes the paper.
+
+# 2 RELATED WORK
+Application Development and Operating Systems with Android. It is apparent that a pre-requisite for teaching mobile security is fluency in the underlying programming language and the main concepts of application development. For example, Tigrek et al.  propose a minimal course for first year engineering students to discover Android programming. Among the presented principles, "How Without Why" (program based on tutorials) combined with "Just Enough Java" (learn the essential Java patterns) are effective for learning to develop an application, although is not sufficient for understanding the security impact of a selected implementation . In Bloom’s revised taxonomy of educational objectives , these two pieces of procedural knowledge are used to distinguish between “knowledge of subject-specific skills” and “knowledge of criteria for determining when to use appropriate procedures”. Additionally, we consider that in the structure of the cognitive process (remember, understand, apply, analyze, evaluate, and create) the three last cognitive processes require a deep understanding of the internal aspects of mobile application and the underlying operating system.
+
+The Android framework can also be used as supporting material to teach more general software engineering  or operating system  concepts. Notwithstanding whether these works are effective for a better understanding of the concepts, most of the presented material does not describe the Android system with adequate details to aid the investigation of the security aspects of mobile devices.
+
+Mobile Security. A few studies use Android as a platform for experimenting with general security notions, e.g., filtering traffic in firewalls  or countering Denial of Service attacks . However, they do not address the specificities of mobile systems and applications.
+
+A few previous works  have described the particularities of teaching security aspects of mobile applications and platforms. Nevertheless, in most cases, only foundational aspects that are relevant for Android developers are covered.
+
+The approach of Guo et al.  is one of the works closest to our proposal. They have designed a labware of seven modules, which illustrates the concepts of mobile security and privacy. The learning approach is based on two main concepts. First, the course uses an attack/defense lab, where the students are required to implement attacks prior to implementing the corresponding protection mechanisms. Such an approach aids the students to better comprehend the security issue and to implement more effective protections. Secondly, the provided material (slide, tutorials) and the content of the labs can be used directly on real smartphones, enhancing the confidence of the students in their skills. Each lab intends to develop skills of protection against one type of threat. The fundamentals of Android security are introduced in different labs, such as those on the use of permissions or cryptographic API. Advanced threats and prevention mechanisms, such as buffer overflows or obfuscation, are discussed in a lab entitled “Secure Mobile App Development,” which was under development at the time of the article writing.
+
+In our opinion, these works lack progression in the Bloom taxonomy and do not cover the different levels of the Android software stack. The next section develops this concept before the description of the labs in Section 4.
+
+# 3 LEARNING MOBILE SECURITY
+A deeper understanding of all the security components of Android requires comprehension of the whole stack of technologies that is used by the Android Open Source Project (AOSP) . Describing security APIs from the developer’s perspective can be a starting point for discovering features such as account management, permissions, and cryptographic primitives. Nevertheless, most of the security features are provided by the operating system, and explaining them requires sufficient knowledge of operating systems, runtime environments, and networks. Examples of such features are the installation process of applications, storage of credentials, role of SELinux, and update process of the operating system.

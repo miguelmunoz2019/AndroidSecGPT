@@ -1,0 +1,87 @@
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+P. Bhat and K. Dutta
+1. Byoungyoung Lee, Long Lu, Tielei Wang, Taesoo Kim, and Wenke Lee. 2014. From zygote to morula: Fortifying weakened ASLR on Android. In Proceedings of the 2014 IEEE Symposium on Security and Privacy (SP’14). IEEE Computer Society, Washington, DC, 424–439. Retrieved from https://doi.org/10/SP.
+
+2. Jake Edge. 2013. Kernel address space layout randomization. KSLR. Retrieved from https://lwn.net/Articles/569635/.
+
+3. Sami Tolvanen. 2017. Hardening the kernel in Android oreo. Android Developers Blog. Retrieved from https://android-developers.googleblog.com/2017/08/hardening-kernel-in-android-oreo.html.
+
+4. Yeongjin Jang, Sangho Lee, and Taesoo Kim. 2016. Breaking kernel address space layout randomization with Intel TSX. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (CCS’16). ACM, New York, NY, 380–392. DOI:http://dx.doi.org/10/2976749
+5. Kaer Morhe. 2017. PaX/grsecurity –> KSPP –> AOSP kernel: Linux kernel mitigation checklist(WIP). Hardened GNU/Linux. Retrieved from https://github.com/hardenedlinux/grsecurity-101-tutorials/blob/master/kernel_mitigation.md.
+
+6. Yong Wang. 2018. KSMA: Breaking Android kernel isolation and Rooting with ARM MMU features. KSMA. Retrieved from https://www.blackhat.com/docs/asia-18/asia-18-WANG-KSMA-Breaking-Android-kernel-isolation-and-Rooting-with-ARM-MMU-features.pdf.
+
+7. Nilo Redini, Aravind Machiry, Dipanjan Das, Yanick Fratantonio, Antonio Bianchi, Eric Gustafson, Yan Shoshitaishvili, Christopher Kruegel, and Giovanni Vigna. 2017. BootStomp: On the security of bootloaders in mobile devices. In Proceedings of the 26th USENIX Security Symposium (USENIX Security’17). USENIX Association, Vancouver, BC, 781–798. https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/redini
+8. Android Developer Blog. Android Security Bulletin, July 2016. Retrieved from https://source.android.com/security/bulletin/2016-07-01.
+
+9. Swati Khandelwal. 2015. Mobile bootloaders from top manufacturers found vulnerable to persistent threats. Black Hat USA 2015. Retrieved from https://thehackernews.com/2017/09/hacking-android-bootloader-unlock.html.
+
+10. Don Marshall. 2018. Driver security checklist. Microsoft. Retrieved from https://docs.microsoft.com/en-us/windows-hardware/drivers/driversecurity/driver-security-checklist.
+
+11. Android Developers Blog. Security updates and resources. 2018. Retrieved from https://source.android.com/security/overview/updates-resources.
+
+12. NDAY-2017-0105: Elevation of privilege vulnerability in MSM thermal driver. 2017. Retrieved from https://blog.zimperium.com/nday-2017-0105-elevation-of-privilege-vulnerability-in-msm-thermal-driver/.
+
+13. Android Developer Blog. Android Security Bulletin, July 2018. Retrieved from https://source.android.com/security/bulletin/2018-07-01.
+
+14. Di Shen. 2015. Exploiting trustzone on Android. Black Hat USA 2015. Retrieved from https://www.blackhat.com/docs/us-15/materials/us-15-Shen-Attacking-Your-Trusted-Core-Exploiting-Trustzone-On-Android-wp.pdf.
+
+15. Dan Goodin. 2017. Android devices can be fatally hacked by malicious Wi-Fi networks Broadcom chips allow rogue Wi-Fi signals to execute code of attacker’s choosing. Ars Technica. Retrieved from https://arstechnica.com/information-technology/2017/04/wide-range-of-android-phones-vulnerable-to-device-hijacks-over-wi-fi/.
+
+16. Mathy Vanhoef and Frank Piessens. 2017. Key reinstallation attacks: Forcing nonce reuse in WPA2. In Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security (CCS’17). ACM, New York, NY, 1313–1328. DOI:http://dx.doi.org/10/3133956
+17. Hacking. Popular tools for brute-force attacks. 2017. Retrieved from http://resources.infosecinstitute.com/popular-tools-for-brute-force-attacks/.
+
+18. P. Teufl, A. Fitzek, D. Hein, A. Marsalek, A. Oprisnik, and T. Zefferer. 2014. Android encryption systems. In Proceedings of the 2014 International Conference on Privacy and Security in Mobile Systems (PRISMS’14). 1–8.
+
+19. Iain Thomson. 2017. Invisible man’ malware runs keylogger on your Android banking apps. Retrieved from https://www.theregister.co.uk/2017/08/02/banking_android_malware_in_uk.
+
+20. Giuseppe Petracca, Yuqiong Sun, Ahmad Atamli, and Trent Jaeger. 2016. AuDroid: Preventing attacks on audio channels in mobile devices. CoRR abs/1604 (2016). arxiv:1604
+21. Norm Hardy. 1988. The confused deputy: (or why capabilities might have been invented). SIGOPS Oper. Syst. Rev. 22, 4 (Oct. 1988), 36–38. http://dl.acm.org/citation.cfm?id=54289
+22. Android Developers Blog. Testing your app’s accessibility. 2017. Retrieved from https://developer.android.com/training/accessibility/testing.html.
+
+23. Zhi Xu and Sencun Zhu. 2015. SemaDroid: A privacy-aware sensor management framework for smartphones. In Proceedings of the 5th ACM Conference on Data and Application Security and Privacy (CODASPY’15). ACM, New York, NY, 61–72.
+
+24. Ahmed Al-Haiqi, Mahamod Ismail, and Rosdiadee Nordin. 2014. A new sensors-based covert channel on Android. The Scientific World Journal 2014 (2014).
+
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+# A Survey on Various Threats and Current State of Security in Android Platform
+#SchlegelZZIKW11
+4. F. Roesner, T. Kohno, A. Moshchuk, B. Parno, H. J. Wang, and C. Cowan. 2012. User-driven access control: Rethinking permission granting in modern operating systems. In Proceedings of the 2012 IEEE Symposium on Security and Privacy. 224–238.
+
+5. Android Developers Blog. System and kernel security. 2017.
+
+6. Pooja Singh, Pankaj Tiwari, and Santosh Singh. 2016. Analysis of malicious behavior of Android apps. Proc. Comput. Sci. 79 (2016), 215–220. DOI:http://dx.doi.org/10/j.procs
+7. Android Developers Blog. Manifest.permission. 2017.
+
+8. Adrienne Porter Felt, Elizabeth Ha, Serge Egelman, Ariel Haney, Erika Chin, and David Wagner. 2012. Android permissions: User attention, comprehension, and behavior. In Proceedings of the Eighth Symposium on Usable Privacy and Security (SOUPS’12). ACM, New York, NY, Article 3, 14 pages. DOI:http://dx.doi.org/10/2335356
+9. Mu Zhang and Heng Yin. 2016. Android Application Security— Semantics and Context-Aware Approach. Springer. DOI:http://dx.doi.org/10/978-3-319-47812-8
+10. Y. Fratantonio, C. Qian, S. P. Chung, and W. Lee. 2017. Cloak and dagger: From two permissions to complete control of the UI Feedback loop. In Proceedings of the 2017 IEEE Symposium on Security and Privacy (SP’17). 1041–1057.
+
+11. Vasant Tendulkar and William Enck. 2014. An application package configuration approach to mitigating Android SSL vulnerabilities. CoRR abs/1410 (2014). arxiv:1410 http://arxiv.org/abs/1410
+12. Xuetao Wei and Michael Wolf. 2017. A survey on HTTPS implementation by Android apps: Issues and counter-measures. Appl. Comput. Inf. 13, 2 (2017), 101–117. Retrieved from http://www.sciencedirect.com/science/article/pii/S2210832716300722.
+
+13. The legion of the bouncy castle. 2017. Tau Ceti Co-operative Ltd.
+
+14. Tobias Thierer. 2017. Android O to drop insecure TLS version fallback in HttpsURLConnection. Android Developers Blog. Retrieved from https://android-developers.googleblog.com/2017/04/android-o-to-drop-insecure-tls-version.html.
+
+15. D. Cooper, S. Santesson, S. Farrell Trinity, S. Boeyen, R. Housley, and W. Polk. 2008. Internet X Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile. Network Working Group. Retrieved from https://tools.ietf.org/html/rfc5280.
+
+16. A. Malpani S. Galperin M. Myers, R. Ankney and C. Adams. 1999. X Internet Public Key Infrastructure Online Certificate Status Protocol—OCSP. Network Working Group. Retrieved from https://tools.ietf.org/html/rfc2560.
+
+17. Martin Georgiev, Subodh Iyengar, Suman Jana, Rishita Anubhai, Dan Boneh, and Vitaly Shmatikov. 2012. The most dangerous code in the world: Validating SSL certificates in non-browser software. In Proceedings of the 2012 ACM Conference on Computer and Communications Security (CCS’12). ACM, New York, NY, 38–49. DOI:http://dx.doi.org/10/2382196
+18. Android Developer Blog. Security with HTTPS and SSL. 2017.
+
+19. Lucian Constantin. 2017. Google pushed developers to fix security flaws in 275,000 Android apps. IDG News Service. Retrieved from http://www.pcworld.com/article/3159972/security/google-pushed-developers-to-fix-security-flaws-in-275000-android-apps.html.
+
+20. Android Developer Blog. App security improvement program. 2017.
+
+21. Mohammad Nauman, Sohail Khan, and Xinwen Zhang. 2010. Apex: Extending Android permission model and enforcement with user-defined runtime constraints. In Proceedings of the 5th ACM Symposium on Information, Computer and Communications Security (ASIACCS’10). ACM, New York, NY, 328–332. DOI:http://dx.doi.org/10/1755688
+22. Shashi Shekhar, Michael Dietz, and Dan S. Wallach. 2012. AdSplit: Separating smartphone advertising from applications. CoRR abs/1202 (2012). arxiv:1202 http://arxiv.org/abs/1202
+23. Paul Pearce, Adrienne Porter Felt, Gabriel Nunez, and David Wagner. 2012. AdDroid: Privilege separation for applications and advertisers in Android. In Proceedings of the 7th ACM Symposium on Information, Computer and Communications Security (ASIACCS’12). ACM, New York, NY, 71–72. DOI:http://dx.doi.org/10/2414456
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019.
+
+# A Survey on Various Threats and Current State of Security in Android Platform
+Received March 2018; revised October 2018; accepted November 2018
+ACM Computing Surveys, Vol. 52, No. 1, Article 21. Publication date: February 2019..

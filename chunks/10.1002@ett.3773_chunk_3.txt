@@ -1,0 +1,79 @@
+- After that, we combine results obtained from both the tests as a list of publications to survey. Finally, future research is discussed.
+
+# Research questions
+RQ1. How to characterize the significant hazard levels for permissions while considering the recurrence of an event in malicious and typical applications?
+An overall diagram of systematic literature review
+# SHRIVASTAVA ET AL.
+
+# 9 of 17
+Few Android consents have been formally given by Google. To characterize, a risk level is an important part of the Android permission. The risk level depends on the event of permission in the malware and programming sets. To recognize malicious activities, the hazard level should be considered to be.
+
+# RQ2. How can one profile Android applications by utilizing dangers provided by consents on resources?
+Android incorporates the likelihood to gather consents as indicated by assets to get to and to specific destinations. To capture messages being received by the client or to send messages for the benefit of the client the permission that enables the messages to the client. This gathering also contains permissions, which can be utilized to profit without their immediate association. In any case, amid the establishment, it is just the gathering, which is shown to the client, which implies that the client awards consents, for example, READ_SMS and others that are obscure.
+
+# RQ3. How machine learning and Android profiles help in malware detection?
+Machine learning–based frameworks using Android profiles help in designing Android tests that categorize the rules as typical or malicious.
+
+# RQ4. How will security be concerned?
+Two security concerns have been featured during investigation. We begin with some broad measurements and continue for possible smaller parts. Additionally, security issues have been portrayed in detail along with possible solutions.
+
+# 6 Search strategy
+We have used search keywords and data sets as search strategy for finding the relevant publications.
+
+# 1) Search keywords
+The keywords associated with analysis activities, key aspects of permission analysis, and key aspects of static and dynamic analysis are the search terms as listed in Table 4, which are used in our review.
+
+# 2) Search data sets
+Data search depends on storehouses and, furthermore, is supplemented by check beside top venues in security. For finding the significant productions, repository search is proposed and the best scene check is utilized just as an extra checking process.
+
+# 3) Repository search
+Science Direct, Springer Link, IEEE Xplore Digital Library Web of Knowledge, Wiley Online Library, ACM Digital Library, Taylor and Francis, and Inderscience are the well-known electronic repositories to find the data sets of publications in the first attempt. Since now and again repository, search engine forces a point of confinement to measure of hunt result meta-information that one can download. The pursuit string is taken into consideration and emphasizing the point when we gather all pertinent meta-information of distributions. Science Direct permits to gather data on the first thousand things from its query items. Tragically, through applying our predefined search string, we get more than 10 000 outcomes on this repository.
+
+# 6 Top venue
+We take into account all applications to ensure the repository search items considered in this paper. We have taken the main 27 venues for the SLR where 19 venues are from the software engineering and computer applications while the other eight venues are from the security and privacy field. Table 5 demonstrates these venues. The papers are taken from the IEEE Xplore, ACM, and Elsevier. In reality, the venues are not concentrated on permission analysis of the Android.
+
+The top 27 venues containing both conference proceedings and journals in SE/CA and S&P fields
+Security and privacy (S&P)
+The papers are collected from the years 2007 to 2019. The H-index mentioned in Table 5 is characterized by Google Scholar.
+
+# 7 EXCLUSION CRITERIA
+The enquiry terms given above is extensive enough to collect a near about papers that matched title. At some point, this broadness might output improper results. For our SLR, we utilize the avoidance criteria.
+
+- To start, we sift through non-English composed journals as English is the typical language used by the analysts, and most of the logical works are covered by it.
+
+- Secondly, our focus is on broad works with detailed productions. In this manner, we reject short papers with fewer than seven pages in LNCS single column. The making of these papers is a regular process and these need to update to the previous papers.
+
+- In the third step, the copied papers are identified. The papers are checked firstly by looking at the sequence of the authors, writing skill, and paper titles. The similarity ratio of the suspected papers is checked. At this point, when copied data is affirmed, we sift through the less broad publication.
+
+- In the fourth step, we incorporate “mobile” term for gathering most papers; the gathered lot papers include about “portable systems administration” or iOS or Windows stages. We avoid this kind of non-Android papers. In this way, a portion of the gathered papers are rejected that helps in manually evaluating and collecting the outstanding papers.
+
+- In the fifth step, we rapidly go through the rest of the papers and only accept those that are related to Android, however, does not hold permission analyzing procedures. For instance, publications of static analysis of Android apps are barred.
+
+SHRIVASTAVA ET AL.
+
+• We avoid manuscripts that statically describe Android OS rather than Android apps as our focus is to review works related to permission analysis of Android apps. For example, we have expelled EdgeMiner84 and PSCout, 52 these paper are related to Android structure.
+
+• We reject manuscripts that do not explain the app program code. For example, papers that perform a static investigation on the meta-information of applications are barred Such non–peer-reviewed papers are frequently redistributed in a gathering and likely to be incorporated into our inquiry set with an alternate title. For example, the specialized paper on IccTA86 has showed up in collected papers.
+
+• We additionally exclude papers that use the announcement groupings or grep API names from the source/application code. For instance, we avoid Juxtapp,87 a clone identification approach, from thought since it just takes opcode groupings for its permission analysis.
+
+# 8 EXTRACTION OF DATA
+Material papers must be isolated from each paper once the papers have been assembled in order to produce a logical classification of the information. The material papers are isolated to cover up the investigation questions recorded beforehand. This technique helps to gather each paper's assessment and give an outline of data separated from the major publishers.
+
+# Directed problems:
+Methodologies are additionally ordered on the directed issues. Cases of issues incorporate protection spillage, permission administration, energy enhancement, and so on.
+
+# Fundamental techniques:
+This measurement concentrates on the key systems embraced by analyzed essential productions. The central strategies in this work incorporate methods like program analysis that take care of issues through various means like WALA or Soot.
+
+# Features of permission analysis:
+This measurement incorporates permission analysis of relevant highlights. It is utilized to confirm whether it is path sensitive, alias-aware, static-aware context-sensitive, flow-sensitive, implicit flow-aware, field-sensitive, object-sensitive for an essential product.
+
+# Android characteristics:
+This measurement incorporates such attributes that are firmly identified with Android, for example, IAC (Inter-App Communication), ICC, and framework.
+
+# Evaluation strategies:
+This measurement concentrates on the assessment techniques for required distributions and used to response to the inquiry of how their methodologies are assessed. Finally, this measurement will check whether their methodologies are assessed over in artificial apps and real-world apps.
+
+# 9 FUTURE RESEARCH DISCUSSION
+Android malware analysis is slanting the correct way. Various antivirus products and essential solutions do give insurance opposed to the majority of malware; yet, techniques, for example, bytecode marks, are frail opposed to the developing contemporary malware. We, in this way, propose the accompanying areas for future research.

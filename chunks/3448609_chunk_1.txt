@@ -1,0 +1,63 @@
+# The Android Platform Security Model
+RENÉ MAYRHOFER, Google and Johannes Kepler University Linz, Austria
+JEFFREY VANDER STOEP, CHAD BRUBAKER, and NICK KRALEVICH, Google, USA
+Android is the most widely deployed end-user focused operating system. With its growing set of use cases encompassing communication, navigation, media consumption, entertainment, finance, health, and access to sensors, actuators, cameras, or microphones, its underlying security model needs to address a host of practical threats in a wide variety of scenarios while being useful to non-security experts. The model needs to strike a difficult balance between security, privacy, and usability for end users, assurances for app developers, and system performance under tight hardware constraints. While many of the underlying design principles have implicitly informed the overall system architecture, access control mechanisms, and mitigation techniques, the Android security model has previously not been formally published. This article aims to both document the abstract model and discuss its implications. Based on a definition of the threat model and Android ecosystem context in which it operates, we analyze how the different security measures in past and current Android implementations work together to mitigate these threats. There are some special cases in applying the security model, and we discuss such deliberate deviations from the abstract model.
+
+CCS Concepts: • Security and privacy → Software and application security; Domain-specific security and privacy architectures; Operating systems security; • Human-centered computing → Ubiquitous and mobile devices;
+Additional Key Words and Phrases: Android, security, operating system, informal model
+ACM Reference format: René Mayrhofer, Jeffrey Vander Stoep, Chad Brubaker, and Nick Kralevich. 2021. The Android Platform Security Model. ACM Trans. Priv. Secur. 24, 3, Article 19 , 35 pages. https://doi.org/10/3448609
+# 1 INTRODUCTION
+Android is, at the time of this writing, the most widely deployed end-user operating system. With more than 2 billion monthly active devices  and a general trend toward mobile use of Internet services, Android is now the most common interface for global users to interact with digital services. Across different form factors (including, e.g., phones, tablets, wearables, TV, Internet-of-Things, automobiles, and more special-use categories) there is a vast—and still growing—range of use cases from communication, media consumption, and entertainment to finance, health, and physical sensors/actuators. Many of these applications are increasingly security and privacy critical, and Android as an OS needs to provide sufficient and appropriate assurances to users as well as developers.
+
+Last updated in December 2020 based on Android 11 as released. Manuscript versions for other Android releases available as https://arxiv.org/abs/1904 arXiv:1904.
+
+Authors’ addresses: R. Mayrhofer, Google and Johannes Kepler University Linz, Austria; email: rmayrhofer@google.com; J. V. Stoep, C. Brubaker, and N. Kralevich, Google, USA; emails: {jeffv, cbrubaker, nnk}@google.com.
+
+This work is licensed under a Creative Commons Attribution-NoDerivs International 4 License.
+
+© 2021 Copyright held by the owner/author(s). 2471-2566/2021/04-ART19 https://doi.org/10/3448609
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# 19:2
+# R. Mayrhofer et al.
+
+To balance the different (and sometimes conflicting) needs and wishes of users, application developers, content producers, service providers, and employers, Android is fundamentally based on a multi-party consent1 model: An action should only happen if all involved parties consent to it. If any party does not consent, then the safe-by-default choice is for that action to be blocked. This is different to the security models that more traditional operating systems implement, which are focused on user access control and do not explicitly consider other stakeholders.
+
+While the multi-party model has implicitly informed architecture and design of the Android platform from the beginning, it has been refined and extended based on experience gathered from past releases. This article aims to both document the Android security model and determine its implications in the context of ecosystem constraints and historical developments. Specifically, we make the following contributions:
+1. We motivate and for the first time define the Android security model based on security principles and the wider context in which Android operates. Note that the core multi-party consent model described and analyzed in this article has been implicitly informing Android security mechanisms since the earliest versions, and we therefore systematize knowledge that has, in parts, existed before, but that was not formally published so far.
+
+2. We define the threat model and how the security model addresses it and discuss implications as well as necessary special case handling.
+
+3. We explain how Android Open Source Project (AOSP), the reference implementation of the Android platform, enforces the security model based on multiple interacting security measures on different layers.
+
+4. We identify currently open gaps and potential for future improvement of this implementation.
+
+Android as a platform. This article focuses on security and privacy measures in the Android platform itself, i.e., code running on user devices that is part of AOSP. Within the scope of this article, we define the platform as the set of AOSP components that together form an Android system passing the Compatibility Test Suite (CTS). While some parts of the platform may be customized or proprietary for different vendors, AOSP provides reference implementations for nearly all components, including the, e.g., Linux kernel,2 Trusty as an ARM Trusted Execution Environment (TEE)3, or libavb for boot loader side verified boot5. Note that Google Mobile Services (GMS),4 that are sufficient to run a fully functional Android system on reference development hardware, including Google Play Services (also referred to as GmsCore), Google Play Store, Google Search, Chrome, and other standard apps are sometimes considered part of the platform, as they provide dependencies for common services such as location estimation or cloud push messaging. Android devices that are certified to support GMS are publicly listed While replacements for these components exist (including an independent, minimal open source version called microG7), they may not be complete or behave differently. Concerning the security model described in this article, we do not consider GMS to be part of the platform, as they are also subject to the security policy defined and enforced by AOSP components.
+
+1 Throughout the article, the term “consent” is used to refer to various technical methods of declaring or enforcing a party’s intent, rather than the legal requirement or standard found in many privacy legal regimes around the world.
+
+2 https://android.googlesource.com/kernel/common/.
+
+3 https://android.googlesource.com/trusty/vendor/google/aosp/.
+
+4 https://android.googlesource.com/platform/external/avb/.
+
+5 https://source.android.com/setup/build/devices.
+
+6 https://storage.googleapis.com/play_public/supported_devices.html.
+
+7 https://github.com/microg/android_packages_apps_GmsCore/wiki.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+In terms of higher-level security measures, there are services complementary to those implemented in AOSP in the form of Google Play Protect scanning applications submitted to Google Play and on-device (Verify Apps or Safe Browsing as opt-in services) as well as Google Play policy and other legal frameworks. These are out of scope of the current article, but are covered by related work . However, we explicitly point out one policy change in Google Play with potentially significant positive effects for security: Play now requires that new apps and app updates target a recent Android API level, which will allow Android to deprecate and remove APIs known to be abused or that have had security issues in the past.
+
+# Structure
+In the following, we will first introduce the ecosystem context and threat analysis that are the basis of the Android security model (Section 2). Then, we define the central security model (Section 3) and its implementation in the form of OS architecture and enforcement mechanisms on different OS layers (Section 4). Note that all implementation specific sections refer to Android 11 at the time of its initial release unless mentioned otherwise (cf. Reference  for relevant changes in Android 10 and Reference  for changes in Android 9). We will refer to earlier Android version numbers instead of their code names: 4–4 (Jelly Bean), 4 (KitKat), 5.x (Lollipop), 6.x (Marshmallow), 7.x (Nougat), 8.x (Oreo), and 9.x (Pie). All tables are based on an analysis of security relevant changes to the whole AOSP code base between Android releases 4.x and 11 (inclusive), spanning about 10 years of code evolution. Finally, we discuss special cases (Section 5) and related work in terms of other security models (Section 6).
+
+# 2 ANDROID BACKGROUND
+Before introducing the security model, we explain the context in which it needs to operate, both in terms of ecosystem requirements and the resulting threat model.
+
+# 2 Ecosystem Context
+Some of the design decisions need to be put in context of the larger ecosystem, which does not exist in isolation. A successful ecosystem is one where all parties benefit when it grows, but also requires a minimum level of mutual trust. This implies that a platform must create safe-by-default environments where the main parties (end user, application developer, operating system) can define mutually beneficial terms of engagement. If these parties cannot come to an agreement, then the most trust building operation is to disallow the action (default-deny). The Android platform security model introduced below is based on this notion.

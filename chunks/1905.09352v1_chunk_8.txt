@@ -1,0 +1,91 @@
+Further, there are still a considerable number of consumers who use Android devices that do not receive security updates anymore. By taking our analysis and results in Section 5 into account, many CVEs are common among different versions including versions that have reached EOL. As a result, out-of-date versions are vulnerable as they do not receive security patch updates. Hence, we believe that in order to have a more secure Android ecosystem, the EOL policy should
+take the consumers more directly into account. Our propo-
+sition is that the EOL date should be related to the market share of an Android version. For example, if the market share of an Android version (e.g., 4 or 4.x) drops below a certain threshold, then an EOL date can be announced and notifications should be sent to the users. The other advantage of our proposed policy is that when a market share of an Android version is lower than a threshold, it might not be beneficial (in terms of cost-benefit analysis) for rational attackers to exploit a vulnerability.
+
+# 7 Limitations
+In the following, we discuss limitations of our work. The first security bulletin was published in August 2015 by Google while Android was commercialized in 2008. As a result, our analysis and investigation are limited to the last four years (version 4 and above) and cannot be extended to 2008-2015. However, we believe that our study and analysis are representative of the current practices of Android and can lead to better policy design in this ecosystem.
+
+Another limitation of our work is that we have asymmetric information for different CVEs. For example, for some CVEs in Android security bulletins, we have a reference link which gives some information about the commit date, etc. But, for other CVEs, there are no such references. Another example is the reported date. Only a limited number of CVEs have this attribute. As a result, our analysis for these attributes works with a reduced sample size of those CVEs that have that information.
+
+The SZZ algorithm has its own limitations as well. First, the algorithm only considers code deletions when it tries to find the first commit that might cause a particular vulnera- bility. However, there are other commits that only have code additions and analyzing code additions needs static code analysis to find the cause of vulnerabilities. Furthermore, the SZZ algorithm also checks the files that might not cause a vulnera- bility. Log files and build files are examples of them. Since there might be lots of different types of files to exclude, we did not do anything further in this case and leave a more nuanced analysis to future work.
+
+The algorithm also proposes to draw information from the issue tracker  such as bug creation date. However, while there is an Android issue tracker , we were not able to identify relevant information about patched vulnerabili- ties. Therefore, it is very likely that these bugs are internally tracked.
+
+information from both Android security bulletins and the CVEDetails website for August 2015 to January 2019.
+
+First, we investigated the overall trend of the patched vulner- abilities by analyzing the number of vulnerabilities per year for each severity level. Second, we analyzed the distribution of the root causes of patched vulnerabilities by studying their common weakness enumerations (CWE). Third, we studied the duration of support for different AOSP versions. Fourth, we calculated the time gap between the fix-commit and the published date of vulnerabilities that originate from Linux and Qualcomm. Fifth, we examined the sequences of the public disclosure, the patch release, and the last commit dates of the patched vulnerabilities. Last, but not least, we analyzed the maximum and minimum vulnerability lifetimes.
+
+For example, our findings demonstrate that the most common root cause of patched vulnerabilities is CWE 119: Failure to Constrain Operations within the Bounds of a Memory Buffer. Further, we showed that the length of security support varies for different AOSP versions. In addition, there are versions that are affected by Android-related vulnerabilities but not updated due to Google’s patch policy, which leaves users unprotected after an Android version has reached EOL status.
+
+We hope that our research contributes to a better under- standing of the security practices in the Android ecosystem, and helps to develop better policies for security management in the future.
+
+Acknowledgments: We thank the anonymous reviewers for their constructive comments and feedback. We further want to thank Ikra Gizem Yildiz and Ece Kubilay for their feedback. This work was supported by the German Institute for Trust and Safety on the Internet (DIVSI).
+
+# 8 Conclusion
+Our paper provides, what we believe to be the most detailed and comprehensive study on patched Android vulnerabilities. We have collected 2,470 vulnerabilities with their detailed
+#severity. Accessed: 02/02/2019.
+
+6. Android stack layers. https://source.android.com/setup. Accessed: 01/19/2019.
+
+7. Android stagefright media player. https://quandarypeak.com/2013/08/androids-stagefright-media-player-architecture/a. Accessed: 01/30/2019.
+
+8. Beautifulsoup. https://www.pythonforbeginners.com/beautifulsoup/beautifulsoup-4-python. Accessed: 01/23/2019.
+
+9. Code Aurora. https://www.codeaurora.org. Accessed: 02/17/2019.
+
+10. Code Aurora. https://source.codeaurora.org/quic/la/kernel/msm-3/commit/?id%3D9be5b16de622c2426408425e3df29e945cd21d37&sa=D&usg=AFQjCNHuM63XOo5Y0C7bMJQIIedBHSDKjw. Accessed: 02/17/2019.
+
+11. CVE-2016-5131 git repository. https://android.googlesource.com/platform/external/libxml2/+/?0eff71008becb7f2c2b4509708da4b79985948bb. Accessed: 01/27/2019.
+
+12. CVE-2018-9440 first git repository. https://android.googlesource.com/platform/frameworks/av/+/?2870acaa4c58cf59758a74b6390615a421f14268. Accessed: 01/27/2019.
+
+13. CVE-2018-9440 second git repository. https://android.googlesource.com/platform/frameworks/av/+/?8033f4a227e03f97a0f1d9975dc24bcb4ca61f74. Accessed: 01/27/2019.
+
+14. CVE details. https://www.cvedetails.com. Accessed: 01/23/2019.
+
+15. CVE Mitre. https://cve.mitre.org/. Accessed: 02/03/2019.
+
+16. CWE. https://cwe.mitre.org/about/. Accessed: 01/28/2019.
+
+17. CWE hierarchy. https://nvd.nist.gov/vuln/categories/cwe-layout#. Accessed: 01/27/2019.
+
+18. Git annotate. https://git-scm.com/docs/git-annotate. Accessed: 03/02/2019.
+
+19. Git diff. https://git-scm.com/docs/git-diff. Accessed: 03/02/2019.
+
+20. Google kernel git. https://android.googlesource.com/kernel/. Accessed: 01/30/2019.
+
+21. HAL. https://source.android.com/devices/architecture/hal. Accessed: 01/29/2019.
+
+22. HAL & HIDL package and interfaces. https://source.android.com/devices/architecture/hidl/interfacesl. Accessed: 01/29/2019.
+
+23. HIDL. https://source.android.com/devices/architecture/hidl. Accessed: 01/29/2019.
+
+24. Json. https://en.wikipedia.org/wiki/JSON. Accessed: 01/23/2019.
+
+25. LG security bulletin. https://lgsecurity.lge.com/security_updates.html. Accessed: 02/17/2019.
+
+26. Linux patchwork. https://patchwork.kernel.org. Accessed: 02/17/2019.
+
+27. Mobile Android Version Market Share Worldwide. http://gs.statcounter.com/android-version-market-share/mobile-tablet/worldwide. Accessed: 02/10/2019.
+
+28. Mongodb. https://www.mongodb.com/what-is-mongodb. Accessed: 01/23/2019.
+
+29. National Vulnerability Database. https://nvd.nist.gov/. Accessed: 02/03/2019.
+
+30. Nexus Device Update. https://support.google.com/nexus/answer/4457705?hl=en. Accessed: 02/09/2019.
+
+31. NVD severity rankings. https://nvd.nist.gov/vuln-metrics/cvss. Accessed: 02/02/2019.
+
+# Android Stack Layers
+Android stack layers are software components for a wide array of devices with different form factors. It helps understanding where a software component is located. Figure 13 represents all of its five main stack layers and one additional component . In this section, we investigate the role of Android stack layers in vulnerabilities.
+
+APPLICATIONSFRAMEWORKHALKERNELUMUI
+It is crucial to examine that which Android stack layer is affected by which vulnerability. Thus, one can see which layers are more vulnerable. However, to the best of our knowledge, none of the publicly available platforms provide explicit information about affected layers for Android-related vulnerabilities. Thus, a further analysis is essential to determine them. Note that patched vulnerabilities have references in our dataset. They contain links that navigate to the code repositories such as Qualcomm Code Aurora, AOSP Git repository and Linux Patchwork. In this classification, we only investigate AOSP Git repositories. For instance, CVE-2016-5131, published in June 2017, has one reference link that navigates to the AOSP Git repository . In AOSP Git repository, the followings are published: the branch, the commit id, the changed files, the author, the commit message and commit logs..
+
+The references can be more than one as well. For instance, CVE-2018-9440 is published in September 2018 and has two different references . Although they have the same branch which is frameworks/av, they have different commit IDs. Besides, one of the references has one additional changed file than the other one which is media/libstagefright/httplive/M3UParser.h . Moreover, the branches can also be different among the references that belong to the same patched vulnerability. For instance, CVE-2017-0831 is published in November 2017 and has two different references . The first reference has the branch frameworks/base while the other one has the branch packages/apps/Settings. Given this, the changed files can differ from each other as
+well.
+
+Another issue we notice is that there might be patched vulnerabilities that do not have any references. According to the information that is published on each Android security bulletin, these patched vulnerabilities are marked with the sign of asterisk * since their references are not publicly available.
+
+For our classification method, only a branch name itself is not enough to find which layer is affected by a vulnerability. The reason is that there might be directories on the branch that might point to the different stack layers. For this reason, we also need to check the changed files’ directories to achieve more accurate classification. Since the changed files have their own directories, we combine the branch path with the changed file patch to get full path.

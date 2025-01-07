@@ -1,0 +1,69 @@
+Note that, these applications offer a single access control mechanism, the encoded data may either be public (plain text) or private (ciphertext), thus they do not support QR codes that have an encrypted part and a plaintext at the same time. Moreover, none of the applications support digital signature.
+
+# 3. Popular Applications
+In this section, we explore the most popular QR code scanner applications that have been downloaded by more than 1 million users (see Figure 1). Note that, popular apps may be included in the other groups, for example Norton Snap  and KasperSky  are included in the URL security group, as well as in the Popular applications group (see Table 1).
+
+a Pin number (4 digits).
+
+The ZXing library  (“zebra crossing”) is a Java source image processing library that is compatible with several 1D and 2D barcodes and used with various popular applications such as: ZXing Barcode Scanner , Barcode Scanner Pro (10M downloads) , and Barcode Scanner  (5M downloads).
+
+Information 2020, 11, 217
+ZXing Barcode Scanner  is one of the most popular downloaded applications, with more than 100 million users. It employs , shows the barcode format and offers extra information about embedded links such as: title and redirections.
+
+Other applications that have nearly the same functionalities, and are able to read 1D and 2D barcodes are QR & Barcode Scanner by  that recorded more than 50M downloads. Moreover, free QR Scanners Bar Code Scanner & QR Code Reader  recorded 10M downloads. Private version of , recorded more than 5 M downloads.
+
+Note that, being popular is not enough to be usable and secure. So we have investigated the popular applications also from security perspective.  belong to URL and popular groups, while  belong to popular and Save-Privacy groups.  belongs to Crypto and Popular, and  belongs to three groups, i.e., URL, Popular and Save-Privacy. Moreover, we have also evaluated all tested apps from privacy perspectives (see Tables 4 and 5).
+
+# 3. Save-Privacy Applications
+Using a barcode reader application involves asking for user permissions, a list of allowed services and resources that the app can use, e.g., contacts, media files, camera or microphone. Granting these permissions allows the app to facilitate the barcode usage, e.g., saving a phone number directly without copy and paste. However, giving permissions can be extremely dangerous, especially from a privacy perspective, as an attacker may access private data and may run an information leakage attack. The problem of correctly configuring systems so to protect the user privacy is a very challenging task in general and has been widely studied also in other contexts, e.g., to correctly configure TLS/SSL connections in mobile applications , or to configure products and systems in the software industry . In this section, we will illustrate the available apps that adopt balanced permissions that meet the privacy requirements. In the context of QR codes, we need standard architectural choices for developers to build privacy-friendly applications, with minimal permissions include accessing the camera (to scan the barcode), and the network (if there is a need to check URLs).
+
+TeaCapps Scanner  are examples of apps that support checking QR code online contents, alongside with less permissions (camera and Internet). QR Scanner (Privacy Friendly) , Tokoware , Krow QR Code Reader , and Habib Khlifi QR Code Reader  are all QR code readers that only ask camera permission. If users are interested in privacy, these are the suitable application. They are safe and fully compatible with Android devices.
+
+Tokoware , Lightning QR code Scanner  require access to the camera and to the network. Thus, all these applications are suitable for users who aim at protecting their privacy.
+
+Some other apps in Table 4 such as:  also ask for Wifi permission that should not violate the user privacy.
+
+# 3. Weak Applications
+In this section, we present apps that try to deceive the users by claiming strong security-privacy features, without providing any real protection. These apps employ misleading terms such as data encryption and decryption, while they do not provide real cryptographic mechanisms (False encryption) and refer to these terms to indicate data encoding and decoding in QR codes such as: [ 102 ,103 ,109 ]. Here it is important to mention that data encoding means representing data in QR code modules, where any QR code scanner can retrieve (decode) the contents directly without any specific key (see part (a) in Figure 2). On the other hand, data encryption means transforming data (plaintext) into an encrypted message (ciphertext), that only authorized users who have secret key can decrypt (see part (b) in Figure 2).
+
+Information 2020, 11, 217 12 of 23
+# Encode
+Data Plain Text
+Encrypt
+Data Plain Text
+Data Cipher Text
+(b)
+Moreover, some apps’ descriptions indicate security and privacy features, while testing them shows that they do not really provide the claimed features such as . Other apps claim they are privacy-friendly but ask for potential permissions that can be used in information leakage attacks, such as: [29,31,35,42,46–48,50,54–57,59–62,65–68,70,74,76,84,88–90,93–98,100,113]. More details will be given in the next section.
+
+# 4. Permissions and Privacy Evaluation
+Reviews on barcode applications generally show dissatisfaction when applications require unneeded permissions. As an example, we cite a user review of  application. A user wrote: “Why do you now need access to my location, photos, media and files? It worked perfectly in the past without these permissions and I see no reason to have them”. This comment shows how limiting permissions can be an important feature.
+
+For this reason, we have decided to evaluate all the tested barcode reader applications in terms of granted permissions. Table 5 shows the requested permissions for all our 100 tested applications excluding the apps that we already analyzed in Table 4. These permissions include getting access to:
+- Device & app history (DevHis): read sensitive log data;
+- Contacts (Cont): read contacts;
+- Location (Loc): approximate location (network-based) and precise location (GPS and network-based);
+- Phone (Phn): directly call phone numbers;
+- Photos/media/files (Files): read, modify or delete the contents of USB storage;
+- Storage (Stg): read, modify or delete the content of USB storage;
+- Device ID & call info (DevInf): read phone status and identity;
+# Information 2020, 11, 217
+# 5. Secure and Usable Barcode Reader Applications
+In this section we first discuss possible design recommendation to develop secure and usable barcode reader applications, and we then present BarSec Droid, a new application that follows this guidelines and has good user feedbacks.
+
+# 5. Design Recommendation
+Based on our assessment for the existing 100 barcode scanners, on limits and drawbacks previously mentioned, and based on suggestions proposed in other works  we recommend the following guidelines to develop secure, usable, and privacy-friendly barcode reader applications:
+- Barcode type: Support several barcode types, that can be used in various contexts;
+- Barcode format: Display the barcode format, in order to avoid wrong barcode type decoding;
+- URL checking: Check URLs inside barcodes to detect malicious ones;
+- Warnings: Use security warnings such as browser warnings against suspicious URLs;
+- Digital signature: Apply digital signature services, to authenticate the barcode generator, guarantee data integrity and non-repudiation;
+- Encrypted content: Adopt encrypted contents, to achieve confidentiality and access control;
+- Limit permissions: Request least-privilege permissions, and prevent accessing private files to guarantee user privacy. Limit permissions to camera access (to scan the barcode image), and to Internet (to check URLs);
+- Simple interface: Provide default basic functionalities with simple interface, so that non-expert users can easily use the app;
+- Prevent code execution: Prevent the execution of any encoded codes or commands in user devices;
+- Supporting material: Provide manuals and resources for users to learn how to use secure reader applications.
+
+# 5. The BarSec Droid Application
+According to the recommendations presented in Section 5, we have developed two applications: the BarSec desktop application and the BarSec Droid Android application (Available at: https://apkpure.com/it/barsec-droid/barcode_security.heider.bsr). These applications adopt symmetric and asymmetric cryptographic mechanisms to generate and read secure and usable barcodes, and make use of the ZXing library . Figure 3 presents the BarSec Droid Android application.
+
+The barcode generator is available only in the BarSec desktop application, and generates barcodes using the JSON structure, as proposed in . It offers various security features that include: barcodes authentication, data integrity, access control, and confidentiality. It provides usability warning messages based on the usability guide presented in  and can be used for both generating and reading QR codes.

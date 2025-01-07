@@ -1,0 +1,57 @@
+# Hey Google, What Exactly Do Your Security Patches Tell Us?
+# A Large-Scale Empirical Study on Android Patched Vulnerabilities
+Sadegh Farhang ∗
+Pennsylvania State University
+smf5604@psu.edu
+Mehmet Bahadir Kirdan ∗
+Technical University of Munich
+bahadir.kirdan@tum.de
+Aron Laszka
+University of Houston
+alaszka@uh.edu
+Jens Grossklaks
+Technical University of Munich
+jens.grossklags@in.tum.de
+# Abstract
+Android has the largest market share among smartphone platforms worldwide with more than one billion active devices. Like other platforms, security patches play a pivotal role in keeping Android devices safe from the exploitation of known vulnerabilities. Previous research efforts have documented many attacks, vulnerabilities, and defenses in the Android ecosystem. However, no previous work has studied Android vulnerabilities and their implications on consumers, public vulnerability disclosure, and the Android ecosystem together.
+
+In this paper, we perform a comprehensive study of 2,470 patched Android vulnerabilities that we collect from different data sources such as Android security bulletins, CVEDetails, Qualcomm Code Aurora, AOSP Git repository, and Linux Patchwork. In our data analysis, we focus on determining the affected layers, OS versions, severity levels, and common weakness enumerations (CWE) associated with the patched vulnerabilities. Further, we assess the timeline of each vulnerability, including discovery and patch dates.
+
+We find that (i) even though the number of patched vulnerabilities changes considerably from month to month, the relative number of patched vulnerabilities for each severity level remains stable over time, (ii) there is a significant delay in patching vulnerabilities that originate from the Linux community or concern Qualcomm components, even though Linux and Qualcomm provide and release their own patches earlier, (iii) different AOSP versions receive security updates for different periods of time, (iv) for 94% of patched Android vulnerabilities, the date of disclosure in public datasets is not before the patch release date, (v) there exist some inconsistencies among public vulnerability data sources, e.g., some CVE IDs are listed in Android Security bulletins with detailed information, but in CVEDetails they are listed as unknown, (vi) many patched vulnerabilities for newer Android versions likely also affect older versions that do not receive security patches due to end-of-life.
+
+In this paper, we perform the most comprehensive analysis of Android vulnerabilities, to the best of our knowledge. We create a dataset containing 2,470 patched vulnerabilities with...
+
+# 1 Introduction
+Modern mobile phones have become an integral part of our lives. They are the central information hub for many users, harboring deeply personal information, and are also the conduit for many economically relevant transactions, such as mobile banking or healthcare. As a result, the focus of cybercriminals and other attackers has also shifted towards this context. Thus, it is essential to keep smartphones secure with particular emphasis given to central key functions such as the operating system (OS), like Android and iOS.
+
+In our work, we focus on Android, the mobile operating system developed by Google and released under open-source licenses as the Android Open Source Project (AOSP). The first commercial Android device was launched in September 2008, and Android now has the largest market share among smartphone platforms worldwide with more than one billion active devices.
+
+Similar to other software vendors, Google provides (monthly) security bulletins, which contain the details of patched vulnerabilities affecting multitudes of Android devices. Google has been publishing its Android security bulletins starting from August 2015 to the present . Similar to Google Android security bulletins, some other vendors initiated their own security bulletins. For instance, Samsung and LG started to publish security bulletins in October 2015 and in May 2016, respectively.
+
+There has been extensive work to find vulnerabilities in the Android ecosystem, such as , in addition to enhancing its security, e.g., . Despite these efforts, we observe an increase in the number of attacks and vulnerabilities. In 2016, the total number of publicly disclosed vulnerabilities for all platforms (i.e., all vendors and product versions) reached 6,447. However, the number increased to 14,714 in 2017 and maintained this upward trend in 2018 by reaching 16,555.
+
+∗Sadegh Farhang and Mehmet Bahadir Kirdan equally contributed to this work.
+
+their detailed information by scraping multiple data sources, e.g., Android security bulletins, CVEDetails, Google Gits. This dataset enables us to perform multiple analyses to better understand security in the Android ecosystem. In the following, we summarize our findings.
+
+- We document the expected behavior that Google does not provide updates for all affected OS versions due to end-of-life (EOL), which is the point in time at which a company ceases to create any further updates (including patches) for a given OS version. However, many patched vulnerabilities are likely common among different OS versions. Therefore, OS versions that reached their EOL are vulnerable to many vulnerabilities, which are patched for newer versions. This practice puts consumers of outdated operating systems at risk.
+
+- We find that different OS versions receive security updates for different periods of time. For example, the difference in introduction dates of versions 4 and 4 is about 8 months; however, version 4 stopped receiving updates 22 months before version 4 reached EOL. This difference in duration of receiving security support differentiates among its consumers. Consumers who update their OS are rewarded by receiving security support for a longer period of time.
+
+- Some Android vulnerabilities originate from other resources, e.g., Qualcomm and Linux. We observe a significant delay from the Android security team to provide patches for these vulnerabilities, while Qualcomm and Linux provide and release their own patches earlier. The average delays for Qualcomm and Linux are 307 and 324 days, respectively.
+
+- We study the patch release dates, fix-commit dates, and public repository disclosure dates for patched vulnerabilities. We find that for the majority, i.e., 94%, the patch release date occurs before or in the same month as the public disclosure date, which can be considered a prudent, secure practice. We discuss whether disclosure that predates fixing and patching places consumers at risk.
+
+- We determine the time difference between the introduction of the first line of code associated with a vulnerability and the publication time of a security bulletin, which is called maximum vulnerability lifetime. We find that the average maximum vulnerability lifetime is about 1350 days, which provides an understanding of how good the state of the art security tools are in terms of detecting and fixing Android vulnerabilities.
+
+- Even though the monthly number of patched vulnerabilities for each severity level1 changes considerably, we find that the relative number of patched vulnerabilities for each severity level has a similar distribution mean each year.
+
+- We observe some inconsistencies between Android security bulletins and CVEDetails. Some CVE IDs are listed in Android Security bulletins with detailed information, while in CVEDetails those CVEs often remain unknown.
+
+The remainder of this paper is organized as follows. In Section 2, we discuss related work. In Section 3, we pose our research questions. We describe our data collection methodology and our dataset in Section 4, which is followed by the presentation of our results in Section 5. We discuss our findings in Section 6 and limitations in Section 7. We offer concluding remarks in Section 8.
+
+# 2 Related Work
+Mobile devices contain lots of sensitive and private information. As a result, security should be an integral part of the Android ecosystem. Significant research efforts have been spent on investigating attack techniques on Android, finding vulnerabilities, and designing a more secure infrastructure in Android . Similar to other platforms, within the Android ecosystem security patches are developed and issued in a regular fashion to maintain device security. Contrary to previous works, we follow a different approach to investigate the overall practices related to vulnerability disclosure and security patching in the Android ecosystem by gathering and analyzing Android security bulletins. While the previous research on Android-related vulnerabilities and their implications is sparse , software updates, as well as Android security, have been investigated from different perspectives.
+
+# 2 Android-Related Vulnerabilities
+Most closely related to our work, Linares-Vásquez et al.  conducted an empirical study based on the collection of 660 Android-related vulnerabilities mined from Android security bulletins, CVEDetails and XML feeds provided by NVD. They investigated three issues. First, they studied the CWE hierarchies and the types of vulnerabilities affecting Android. Second, they studied the Android layers affected by vulnerabilities. Third, they investigated the time intervals between the introduction date of the vulnerability and its fix date. Note that they mined the patched vulnerabilities up to November 2016. On the contrary, we collect 2,470 patched vulnerabilities in Android from August 2015 up to January 2019, which is more comprehensive. Moreover, our study not only covers all of their analysis with a more comprehensive dataset, but also studies new issues. These new investigations include, but are not limited to, the duration of security support for different.

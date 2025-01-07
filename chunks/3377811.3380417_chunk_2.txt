@@ -1,0 +1,52 @@
+# In summary, we make the following contributions:
+- To collect weaknesses in banking apps and complement the capability of existing tools in data-related weakness detection, we developed an automated security risk assessment system (Ausera), to efficiently identify security weaknesses in banking apps, outperforming 4 state-of-the-art industrial and open-source tools.
+
+- To our knowledge, we conducted the first large-scale empirical study on 2,157 security weaknesses collected from 693 banking apps, the largest dataset taken into study to date. We attempt to investigate the ecosystem of global banking apps in terms of data-related weaknesses from four different aspects, such as global distribution analysis and evolution of multiple versions.
+
+- We report the identified weaknesses to banks and provide simple-but-concrete fixing recommendations. To date, 21 banks have acknowledged our results, and 52 reported weaknesses have been patched by the corresponding banks. Some of them have actively collaborated with us to improve the security of their apps.
+
+# 2 TOOL EVALUATION
+In this section, we propose an automated weakness detection tool (named Ausera), guided by our constructed security weakness baseline in order to collect security weaknesses in banking apps. We also evaluate its effectiveness compared with the state-of-the-practice.
+
+# An Empirical Assessment of Security Risks of Global Android Banking Apps
+# ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+tools to observe the current status of detection ability towards data-related weaknesses in banking apps. We then introduce the data collection process of banking apps and security weaknesses in these apps as the basis to conduct a large-scale analysis. Before proposing Ausera, we first revisit the state-of-the-art available tools or online services for weakness detection.
+
+AndroBugs , QARK , and MobSF  are all open-source tools for detecting vulnerabilities in general Android apps. Specifically, AndroBugs is a framework to find potential vulnerabilities in Android apps by pattern-matching, and it also records some meta data in the database such as permissions used in the current app. QARK is designed to look for vulnerabilities related to Android apps, either in source code or packaged APKs. MobSF is a pen-testing framework, which is able to detect app vulnerabilities, and the results can be displayed on webpages. Apart from the open-source detection tools, Qihoo360 is a popular security company in China, which maintains an app scan engine, named appscan . It is a free online application for security risk scanning service.
+
+However, the current off-the-shelf services and tools have the following limitations in banking specific weakness collection according to our investigation: (1) They usually use syntax-based scanning, thus cannot verify the actual data flow, which would incur a large number of false positives that are not related to sensitive data leakage. (2) They usually aim to detect weaknesses in general apps, not specific to banking apps. Thus the patterns they use to detect weakness are difficult to detect data-related weaknesses in banking apps. The detection ability of the state-of-the-art weakness detection tools are demonstrated in Section 2. Considering the aforementioned situations, to complement the capability of existing tools in data-related weakness detection, we propose a tool, Ausera, for automating the detection and collection of sensitive-date related weaknesses specific to banking apps.
+
+# 2 Ausera
+In order to collect a data-related weakness dataset specific to banking apps, we first propose a taxonomy of sensitive data-related security weaknesses in banking apps. Guided by the baseline, Ausera is proposed to identify weaknesses in banking apps.
+
+# 2 Taxonomy of Security Weaknesses within Banking Apps
+We propose and integrate security weaknesses of mobile banking apps from prior research , best industrial practice guidelines and reports (e.g., OWASP , Google Android Documentation , and AppKnox security reports ), NowSecure reports , and security weakness and vulnerability databases (e.g., CWE , CVE ). We take an in-depth look at the weaknesses w.r.t. sensitive data, since the biggest threat to banking apps comes from manipulation of digital assets and routine financial activities. As shown in Table 1, sensitive data may be exposed to attackers through various ways as follows:
+- Input Harvest, confidential inputs and user relevant sensitive data (e.g., transaction details) can be harvested via UI screenshot by malicious apps on rooted devices, or even adb-enabled devices without root access.
+
+- Data Storage, an adversary is able to obtain data stored in local storage (e.g., shared preference, webview.db) on rooted devices or external storage (e.g., SD Card), and also from the output of the Android logging system without root access.
+
+- Data Transmission, sensitive data transmission via SMS can be easily intercepted by malware observing the outbox of Android SMS service. Moreover, data leakage via inter-component communication (ICC) is another potential threat, allowing third parties to obtain data from banking apps by making implicit intent calls, or dynamic registration of a broadcast Receiver.
+
+- Communication Infrastructure, MITM attack can obtain sensitive data through sniffing network traffic between client and server, thereby sending fake data to either party. This kind of attack is generally achieved due to improper authentication protocols, insecure cryptography, lack of certificate verification, etc.
+
+Our baseline contains data-related weaknesses of multiple categories and builds a solid foundation for analyzing weaknesses in banking apps.
+
+# 2 Methodology of Ausera
+To collect a large dataset of security weaknesses, Ausera takes as input each banking app, guided by the weakness baseline, and ultimately outputs security weaknesses of the app. Figure 2 shows the overview of Ausera, including three phases: (1) Sensitive data tagging, which identifies sensitive data in banking apps, including user inputs and the data.
+
+# Financial services of banking apps
+from server displayed on the UI pages, and then attaches semantics to the sensitive data-related variables in .xml/.java files according to our constructed sensitive keyword database. (2) Function identification, which identifies the functions related to data leakage such as preference storage, SMS transmission, and determines the behavior of a piece of code based on API invocations (or their call sequence patterns). (3) Weakness detection, which performs taint analysis based on the tagged sensitive data and functions to check the existence of weaknesses in the proposed baseline.
+
+• Sensitive data tagging. Since we are concerned about the sensitive data in banking apps that may incur security risks, we manually extract typical data-related keywords in banking apps.
+
+(2) Sensitive data tagging. Based on the keyword database, we can identify the sensitive data-related variables in the code and attach semantics to them. Specifically, we first extract variables related to two kinds of components: EditText for user input and TextView for data display. For each component, as shown in Figure 4, there may be several variables declaring different aspects of the component such as the component ID, component hint, and component text. Therefore, we extract all the variables related to each component, and then tag the variable as sensitive if it matches with any keyword in the keyword database. Note that, the semantic tagging method in previous work  relies on the component relation in layouts, which may lose some user inputs. As a result, sensitive data is tagged with its semantics in the format 〈variable, keyword〉.
+
+1 www.sites.google.com/view/ausera/
+Parword Pass rord <TextView android:text=“@string/Passowrd”/><br/>
+<EditText android:id=“@+id/pwd” android:hint=“Password”/>UI layout code
+textPwd = (EditText) findViewById(R.id.pwd);<br/>
+String password = textPwd.getText().toString();<br/>
+Java code
+For the example described in the introduction, the sensitive data is tagged as 〈edit_PIN, pin〉, 〈edit_firstName, firstname〉, 〈edit_lastName, lastname〉, 〈edit_addr, addr〉, so the app in the example is confirmed to send sensitive data out via SMS.
+
+• Function identification. The sensitive data extracted above are defined as sources, and be far apart from the access of unauthorized users. We use our newly-defined sinks (i.e., specific-APIs) to identify function code that is associated with weaknesses for banking services. However, as discussed in Section 2, these sensitive data may be divulged during the storage or transmission process. To achieve confidentiality, the sensitive data should not flow into a code point where unauthorized users can access via local storage, external storage, logging output, SMS, and component transition in Table 1 (a.k.a., sinks of sensitive data). It is worth mentioning that the sinks here are different from the sinks defined in SuSi . SuSi’s sinks are all potential method calls with 12 categories that leak sources out of mobile devices, while our newly-defined sinks are leaking sensitive data through specific leakage channels (e.g., shared preferences, logging output, and SMS). According to the leakage channels, we manually define 106 vulnerable sinks  in total that are likely to be exploited in banking apps.

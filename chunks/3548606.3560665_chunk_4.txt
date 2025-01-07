@@ -1,0 +1,53 @@
+# 4 Interacting with UI elements
+Prior to interacting with UI elements, we wait for 10 seconds to allow the target app to load. Then we find and fill all the fillable UI elements of the app UI (running in the foreground). If an app (e.g., a secure wallet app) prompts for the number pad, e.g., for a custom security PIN, we key in the digit 9 for 10 times, which we later search in the collected network traces and files (any fixed numeric sequence can be used).
+
+Identifying duplicate UI element visits. To prevent duplicate visits to a UI element, we assign a unique ID to each element. The ID is the concatenation of the element’s view attributes, and a window-hash, defined as SHA256 of the dumpsys window | grep applicationId command. The element attributes (of the view) that we leverage are: element ID, clickable, enabled. We order the element attributes prior to concatenating with windows-hash. Since the unique ID is composed by preserving the order of element interactions, we prevent duplicate visits to UI elements and UI paths.
+
+Identifying pop-up advertisements. Prior to interacting with an app window, we check if it contains a pop-up advertisement; if so, the back button is triggered to traverse to the previous app window. We currently consider ads served by the two most common (pop-up) ad platforms as we empirically observed in the top-100 Androidrank apps: Google AdMob  for non-gaming apps and Unity Ad Units  for gaming apps. We detect AdMob pop-up.
+
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# Sajjad Pourali, Nayanamana Samarasinghe, & Mohammad Mannan
+ads using the com.google.android.gms.ads.AdActivity activity, and Unity pop-up ads using com.unity3d.ads.adunit.AdUnitActivity and com.unity3d.services.ads.adunit.AdUnitActivity activities. The support for other ad management SDKs can be easily added.
+
+# Identifying Google in-app purchases
+In-app purchase features can negatively affect the analysis by deviating the UI interactor to deal with third-party components, instead of the app itself. To address this issue, we use dumpsys activity to detect the Google Play in-app billing (in-app purchase) activities. We identified the activities that belong to the Google’s in-app purchase windows Therefore, we trigger the back button to go to the previous window, if we encounter a Google in-app billing window.
+
+# Google sign-in authentication
+If the google keyword appears in the clickable UI elements, it usually indicates the app’s support for Google sign-in; we also check for relevant activities We then use the email address registered with the device to authenticate. The UI interactor also grants access for sign-in activities and relevant permissions by clicking the confirm button (if prompted).
+
+# Terminating UI interaction
+To prevent the exhaustion of system resources, ThirdEye interacts with an app until one of the following conditions is met: (i) the number of interaction attempts with UI elements reaches 100; (ii) no new elements are found; (iii) the app cannot be opened even after 5 consecutive attempts; (iv) the duration of the interactions reaches 5 minutes.
+
+# Google Play Store integration
+We use Google Play as the default app market. The target app’s installation window is opened by using the Android Intent-filter, market://details?id=PKGNAME. Then the UI interactor (see Sec. 3) installs the app from Google Play, by clicking the Install button (if available). We check every 10 seconds for the presence of an open button, to confirm that the app is successfully installed; after 200 seconds, the installation is skipped. To deal with common app installation prompts (e.g., agreeing to install, consenting to permissions, providing credit card information), we handle various UI elements with labels including: try again, retry, accept, update, skip, accept, no thanks, continue, and ok.
+
+# Instrumentation
+We describe the following instrumentation methods used in ThirdEye. We complement the use of Frida to comprehensively collect the instrumented data.
+
+# Network and file instrumentations
+We use tcpdump to collect non-HTTP traffic, and mitmproxy to capture HTTP/HTTPS traffic. We use the global proxy settings of Android devices to forward the HTTP/HTTPS traffic to an mitmproxy server running on the test desktop. As some apps ignore the proxy setting, we hook (via Frida) the remote TCP connections with port 443 that bypass the global proxy, and forward the traffic to our desktop mitmproxy. For files, we hook open, remove, rename, read and write Bionic library functions, which are used for shared storage operations. These functions cover file operations used in both Android SDK and NDK. We store read and write buffers, and process them later.
+
+# Rule-based API hooking
+We implement a rule-based hooking module using Androguard and Frida. This module provides the ability to define selection criteria and actions on API methods in DEX files to choose and trigger dynamic actions (e.g., logging or changing parameters) by accepting callback functions. We use Androguard to select methods based on defined criteria and Frida to perform the defined action. Androguard is used to fetch all the declared API methods in the DEX files that use EncodedMethod (an Androguard Object), which contains the method name, parameters, return type, class name, Dalvik bytecode (of the method). Since Androguard works with Dalvik method definition syntax, and Frida uses Java method definition syntax, our module maps Androguard results to Java format. Then we create a hooking script for Frida, based on the defined callback functions that would be executed by Frida when called. We primarily use this module to evade root detection and to log non-SDK encryption/decryption methods; however, it is generic enough to be reused for other purposes.
+
+# Cryptographic instrumentation
+To collect cryptographic parameters, we log the input parameters, return value, execution timestamp and object ID of each method. For this purpose, we hook init() (for the parameters such as the key, IV, algorithm, and operation type), and doFinal() and update() (for plaintext and ciphertext) Android SDK cryptographic API methods from javax.crypto.Cipher. To relate these API calls in sequence, we use their object IDs and execution timestamp. Note that besides decrypt functions, we can also collect necessary plaintext items only from encrypt functions—i.e., we log the inputs before they are encrypted, and thus we are unaffected by apps’ not invoking decrypt functions.
+
+Android SDK cryptographic APIs cover both single-part and multi-part encryption/decryption. Multi-part operations are usually used when the data is not contiguous in memory, e.g., large files, socket streams. To defragment multi-part blocks, we trace back update() and doFinal() functions based on their object hashcode and calling timestamp, until a javax.crypto.Cipher object initialization or a cryptographic parameter modification occurs.
+
+We also look for non-SDK cryptographic APIs in apps. We leverage our rule based logger to find all methods with encrypt and decrypt in their method names, which at least accept one argument in byte or string types, and return the byte or string type. After identifying the specific APIs methods, we automate the creation of corresponding Frida API method hooks, and log their arguments and return values. In addition, we observe the logged arguments to detect potential cryptographic keys by looking for arguments that are of 128, 192, or 256 bits in length, which come with other arguments that have any length except 128, 192, or 256 bits.
+
+We identify nested encryption/decryption by recursively checking ciphertext for the corresponding plaintext in the collected instrumented data. For each level of nested encryption, we create a new encryption entity with corresponding parameters. If the nested plaintext is compressed, we also consider its decompressed value.
+
+# Android ID, PII and device Info
+We manually run getprop, ifconfig and dumpsys commands (using ADB) to extract all available persistent PII and device information in JSON format except for three identifiers, which are not persistent — i.e., Android ID, Advertising ID and Dummy0 Address that are automatically extracted during app interaction by calling getAdvertisingIdInfo API, Settings.Secure#ANDROID_ID API and ifconfig command (with ADB).
+
+# Hidden in Plain Sight: Exploring Encrypted Channels in Android Apps
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+respectively. Note that apps installed on devices using Android 8 and above get a unique Android ID value for each app, which is composed of the app sign-in key, device user ID and device name. The non-persistent data is individually stored for each analyzed app, allowing us to perform multi-device analysis by choosing the appropriate PII items collected during our inspection.
+
+# 4 Inspection
+We categorize the collected network communication and file operations of each app: HTTP, HTTPS, non-HTTP, file. Then we store the details of the instrumented data (i.e., destination, direction to/from the device, headers of HTTP/HTTPS traffic and content) in separate lists maintained for each category. Before storing the information in the lists, we use python-magic  to identify and decompress the compressed data (if any). We then search PII data on these lists.
+
+# Non-HTTP communication
+To extract non-HTTP communication, we remove system traffic from the captured pcap file, then we parse it using dpkt , to determine if the corresponding TCP/UDP packets are non-HTTP. The application layer protocols for non-HTTP traffic do not include TLS or HTTP/S.

@@ -1,0 +1,45 @@
+1 https://developer.github.com/v3/
+2 https://github.com/cdwijayarathna/emailCrawler
+3 https://www.seleniumhq.org/
+# 58
+# Computers & Security 80 (2019) 54–73
+Sign up form required participants to enter their name and email address, which were required to send study material to them. However, such personally identifiable information of the participants were removed from the final data set which we used for the analysis. We conducted 4 usability studies parallelly and recruited participants to all 4 studies together. We sent 13000 invitations to Java developers and 347 developers signed up by completing the sign up form. Some emails we sent were bounced and 7 developers requested to be removed from our list, a request we honored. Furthermore, few developers replied back to us saying that they are unable to participate in the study. Once people signed up, we filtered out those who did not have any software development experience since our target sample for the study was software developers. Furthermore, we filtered out participants with no experience in using Java (Since we invited contributors of repositories that used Java as the main language, there can be some contributors who had only contributed to them with one of the other used languages such as HTML, CSS, etc.) because if a participant faces issues with programming language while completing the task, we may not be able to clearly identify usability issues of the API they encountered. Then we divided participants who signed up into four studies we conducted based on their demographics. We selected 70 programmers for the JSSE API study and sent study material to them. Total of 12 participants completed the study. However, we had to remove 1 participant as they had not followed guidelines properly (The particular participant had not recorded their screen at the initial learning stage, but referred to resources they read in their think-aloud data while completing the task. We omit their response from final data as we could not get the complete information about their experience with the API). From the rest of the programmers, 7 informed us that they are unable to complete the experiment in the time period we expected to collect results. Rest of the programmers did not respond to our email that we sent them the study material with, and therefore, we considered them as dropouts. We did not send them any reminders, because in our initial email we informed them that if they do not respond to any of our emails, we will not email them again. We did this because we cared about not spamming people.
+
+Participants spent an average of 57 min (Median: 47 minutes, sd=33) doing the programming task. Quickest participant to complete the task completed it in 5 min while slowest participant spent 104 min for the programming task. Participants who used JSSE API for the first time spent an average of 65 min (Median: 59 min, sd=31) while participants who had previous experience working with JSSE API spent an average of 48 min (Median: 35 min, sd=36) working on the programming task.
+
+# 4. Study procedure
+Before conducting the main study, we requested 3 participants, who are known to the first author and not related to the study, to complete the task by following the guidelines to verify whether guidelines are clear and convey the expected meaning. They also answered the cognitive dimensions questionnaire proposed by Wijayarathna et al. (2017a) after completing the task. We did minor modifications to task guidelines and the questionnaire based on their results.
+
+# 4. Data analysis
+We used the modified task guidelines for the main study (Available in Appendix B). Once each participant signed up by completing the sign up form and consented to participate in the study, we sent them details of the programming task to do, code artefacts and resources (keystore and truststore files) to use. Participants completed the task remotely on their own.
+
+- Questionnaire answers
+- Videos with screen recordings and think aloud results
+# c o m p u t e r s & s e c u r i t y 8 0 ( 2 0 1 9 ) 5 4 – 7 3 59
+These two types of data were analyzed separately to identify usability issues of JSSE API that each participant experienced.
+
+The analysis was done manually by two analysts independently. We used manual analysis since our data set was small . Questionnaire answers were analyzed prior to analyzing videos. Cognitive dimensions questionnaire  contains open ended questions as well as close ended questions. Analysts evaluated and qualitatively analyzed questionnaire responses to identify usability issues encountered by each participant. Analysis was done inductively where analysts went through each participant’s response, one question at a time, and noted issues of the API that the participant had mentioned. Cognitive Dimensions Framework  was used as a guidance in this process. Analysts mapped specific components (quotes) of the responses with the issues they identified.
+
+After analyzing questionnaire answers, recordings were analyzed to identify the usability issues that each participant encountered. For identifying usability issues from the screen recording data, programmer’s experience was evaluated by tracking resources used by the participant, events where the participant showed surprise, events where participant had to make difficult choices, context switches, misconceptions, difficulties faced, mistakes made, requested features and time taken for tasks. Special attention was given to decisions made by participants that caused to reduce the security of programmes they developed. It took around 2–3 times the length of the video to analyze each video.
+
+Once both analysts came up with a set of issues identified from questionnaire responses and screen recordings, the agreement of the issues were calculated using Cohen’s Kappa coefficient . Cohen’s kappa calculation for inter coder agreement was 0. Two coders resolved conflicting issues they identified through discussion.
+
+# 5. Study results
+# 5. Usability issues
+From the study, we could identify a total of 59 usability issues that exist in JSSE API. Questionnaire responses revealed a total of 51 issues while video recording analysis revealed 24 issues of the API.
+
+Each participant had reported an average of approximately 14 usability issues. However, if we consider the participants who used JSSE API for the first time in the study, they reported approximately 15 usability issues in average, while participants who had previous experience with the API had reported approximately 12 issues in average.
+
+Out of 59 issues we observed, 30 issues were experienced by only 1 participant. From this point onwards, we are only presenting issues that were experienced by at least 2 participants as we believe those issues are more impactful than the rest. In next sub sections, we extensively discuss each cognitive dimension  of JSSE API with the comments made by participants and what we observed.
+
+For the ease of the presentation, we labeled participants with labels P1, P2,..., P11. They will be referred with this label from here onward. Statements made by participants that are presented in this section were not corrected for any grammatical errors and are presented as those were stated.
+
+# 5. Abstraction level of JSSE API
+Abstraction level describes “The minimum and maximum levels of abstraction exposed by the API, and the minimum and maximum levels usable by a targeted developer” . Table 3 shows issues related to the abstraction level we discuss in this section and participants who experienced each issue.
+
+P2 and P9 in their answers to the questionnaire reported that JSSE API contains too many classes. P9 reported that “There are lot of factories and stuff, I wish I could rather just specify the basic information (key file path and password) and get a socket pair right away”. Furthermore, P9 suggested that “They could get away with some of the intermediary classes. Just create the keystore and new socket. Less hastle to deal with”.
+
+P9, P10 and P11 mentioned in their questionnaire responses that the API’s abstraction level is too low. P9 further elaborated saying “They [classes] could have been simpler”. P11 said in their questionnaire response that “Lot is to be implemented by hand using the API”. We could also observe this in P11’s screen recording. P11 struggled while using SSLEngine.wrap() and SSLEngine.unwrap() methods because those methods require input parameters to be in the ByteBuffer format. Programmer had to convert input fields to ByteBuffers where they had to spend a significant time for that. If that conversion was embedded in to the wrap and unwrap functions and provided with a more higher level interface for the programmer, they would have found it easier to use. We observed a similar situation in P6’s screen recording while setting up server keystore and client truststore using KeyManageFactory and TrustManagerFactory classes. It would have been easier to
+# 60
+# Computers & Security 80 (2019) 54–73
+Q - Observed in the questionnaire response. V - Observed in the screen recording.

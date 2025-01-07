@@ -1,0 +1,90 @@
+Firstly, we recommend the use of Chrome Custom Tabs and SFSafariViewController for their good performance in our tests presented in this paper except for T8. The implementation guides are CCT  and SF . Comparing to building one’s own IABI, CCT/SF are easy to incorporate with little effort while achieving outstanding security design and optimized loading speed. However, CCT and SF also have their limitations. CCT failed to provide an extra prompt to alert users when entering passwords on the web page. And they can only provide some basic customization options while developers may need deeper customization to fit in with their apps. In some region, Chrome (and therefore CCT) is not available, e.g., in the mainland China market.
+
+# On the Usability (In)Security of In-App Browsing Interfaces in Mobile Apps
+# 1. Before Opening the URL:
+In the chatting, posting, email UI and other possible UI that display the clickable URL, IABIs:
+- a) SHOULD display the complete URL and corresponding indicators of URL schemes. It would be GOOD that the indicator be more intuitive and eye-catching than title and favicon.
+
+- b) SHOULD NOT display any extra pre-loading information (e.g., favicon and title), unless that URL can be trusted.
+
+# 2. On Page Displaying.
+
+After the user taps the URL, developers could adopt the following five principles to better avoid the potential usability security issues on page displaying:
+- a) SHOULD display the full URL in the address bar to show the page origin. Developers can get the URL of the current page through WebView.getURL() or the arguments in the event handlers of WebViewClient (e.g., onPageFinished, shown in Listing 1).
+
+- b) SHOULD display the HTTP and HTTPS indicators, which are intuitive for users to identify insecure web pages, potentially in conjunction with the scheme text in the URL.
+
+- c) SHOULD NOT directly open URLs with certificate errors. Show a prompt, like a dialog box or a special page, which informs end users about SSL errors.
+
+- d) SHOULD handle the lock emoji in the title with extra care by:
+- i) Replacing it with the text to avoid misinterpreting as the HTTPS indicator; or
+- ii) Disallowing emoji; or
+- iii) Avoiding displaying the title.
+
+- e) SHOULD handle the long subdomain name with extra care by:
+- i) Providing scrolling capability for end users to read the complete domain name; or
+- ii) Prioritizing the display of domain name over subdomain name.
+
+# 3. On Page Navigating.
+
+When the user tries to enter the password or other sensitive information in a web page, IABIs:
+- a) SHOULD show an additional warning regardless of HTTPS or HTTP pages. Case 2 in Figure 9 is a good example.
+
+# Listing 1: Display the URL and indicators.
+
+public void onPageFinished(WebView view, String url) {
+// Display url on the title bar.
+
+addressBar.setText(url);
+// obtain the scheme
+String scheme = URL(url).getProtocol();
+if (scheme.equals("https")) {
+// Display the HTTPS indicator
+} else {
+// Display the insecure indicator
+}
+}
+# Listing 2: Display a prompt when entering passwords.
+
+webView.loadUrl("javascript:(function() { " +
+"var objs = document.getElementsByTagName(\"input\"); " +
+"for (var i = 0; i < objs.length; i++) { " +
+"var type = objs[i].getAttribute(\"type\"); " +
+"if (type == \"password\") { " +
+"objs[i].onfocus = function() { " +
+"PROMPT_TO_ENTERING_PASSWORD " +
+"}; " +
+"} " +
+"} " +
+"})()");
+# 7. DISCUSSION
+In this section, we discuss threats to the validity of our study and limitations. Specifically, the major threats are that we did not conduct a user study to evaluate IABIs and our ratings are subjective assessments solely based on designs of the apps’ user interfaces and corresponding logic. Additionally, we discuss our limitations on the lack of a large dataset, automatic testing, and evaluation of the IABI design principles.
+
+User study. The usability problems mentioned in this paper are not verified in a study with end users, resulting in the lack of direct confirmation of our findings. For example, in T6, we did not test whether an end user is actually misled by the fake lock emoji in the title, even though an expert analysis on the app’s user interface.
+
+# RAID ’21, October 6–8, 2021, San Sebastian, Spain
+# Zicheng Zhang, Daoyuan Wu, Lixiang Li, and Debin Gao
+confirmation of our findings. For example, in T6, we did not test whether an end user is actually misled by the fake lock emoji in the title, even though an expert analysis on the app’s user interface strongly suggests the possibility. A possible extension of this work is to design an IABI app practicing GOOD IABI principles and compare end user reactions with those from popular apps tested in this paper.
+
+# Ratings
+Our evaluations, in particular, the setting of various ratings, are based on previous work [9–11] and World Wide Web (W3C) guidelines on mobile browsers . We believe that some of these settings are subjective assessments and do not advocate the uniqueness of such settings.
+
+# Dataset
+We conducted tests only on a relatively small dataset with 25 mobile apps. However, these apps are all the most popular ones containing IABIs and are used in daily life. Therefore, we believe that they capture IABIs’ representative behaviors experienced by end users. It is worth noting that we do not consider the apps that do not have IABIs, such as Whatsapp and Signal, because they jump to default browsers when opening a web page.
+
+# Towards automatic testing
+Our manual testing limits the scalability of this paper. Here we explain briefly why an automatic testing is non-trivial with either dynamic or static approaches. Unlike existing work on generic dynamic analysis of mobile apps, our analysis of IABI behavior requires triggering specific behavior of mobile apps. This typically mandates signing up an account with each app and triggering the processing of specific URLs, which is, to say the least, non-trivial. For example, we cannot find a unified (dynamic) way of precisely locating the (all) chat UI of each app.
+
+Static analysis also encounters specific challenges, e.g., locating the HTTP and HTTPS indicators, which typically do not present themselves as layout files but images. Therefore, it is non-trivial to perform backward tracing to find the relationship between these indicators and the web pages.
+
+# Evaluating design principles
+The principles in Section 6 present lessons learned from our systematic analysis of the 25 high-profile apps, but they have not been tested in real-world app development or end-product user studies. We hope that our study can bring attention to the community and promote more research on the principles and guidelines for IABIs development.
+
+# 8 RELATED WORK
+In this section, we review some closely related works on the security indicators in regular mobile browsers, the general mobile WebView and TLS security.
+
+# Security Indicators in Mobile Browsers
+Amrutkar et al.  first measured the adequacy of critical security indicators in mobile browsers. They found that mobile browser’s UI designs failed to meet many security guidelines. Luo et al.  revealed a number of UI vulnerabilities among mobile browsers, which attackers can use to better social engineer users and collect sensitive information. Wu et al.  evaluated the usability of mobile browsers’ address bars for security guarantees. Different from these studies on standalone mobile browser apps, our study is the first one targeting security indicators in in-app browsing interfaces (IABIs). Moreover, we show that the problems become worse when it comes to IABIs, as many developers only care about the main functionality of the app without putting too much effort into the design of browsing interfaces.
+
+# Mobile WebView Security
+Android WebView had been vulnerable to various attacks. Luo et al. performed the first study on the attacks of WebView , followed by the file-based cross-zone scripting attack  and access control problem by Georgiev et al. . Wu and Chang  further studied the WebView vulnerabilities on the iOS platform. There are also many techniques to prevent private data from leaking through JavaScript, for example, BavelView , Spartan Jester , and HybriDroid . Most of the past research focused on the interaction between Java and JavaScript but not on the usability security of the in-app browsing interfaces. For example, Li et al.  proposed attacks that utilize browsing interfaces for cross-app navigation from another WebView. Similarly, Yang et al.  found that iframe can navigate the WebView to untrusted web pages.

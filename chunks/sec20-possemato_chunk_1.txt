@@ -1,0 +1,46 @@
+# Towards HTTPS Everywhere on Android: We Are Not There Yet
+Andrea Possemato, EURECOM / IDEMIA; Yanick Fratantonio, EURECOM
+https://www.usenix.org/conference/usenixsecurity20/presentation/possemato
+This paper is included in the Proceedings of the 29th USENIX Security Symposium.
+
+August 12–14, 2020
+978-1-939133-17-5
+Open access to the Proceedings of the 29th USENIX Security Symposium is sponsored by USENIX.
+
+# Towards HTTPS Everywhere on Android: We Are Not There Yet
+# Andrea Possemato
+# IDEMIA and EURECOM
+# Abstract
+Nowadays, virtually all mobile apps rely on communicating with a network backend. Given the sensitive nature of the data exchanged between apps and their backends, securing these network communications is of growing importance. In recent years, Google has developed a number of security mechanisms for Android apps, ranging from multiple KeyStores to the recent introduction of the new Network Security Policy, an XML-based configuration file that allows apps to define their network security posture.
+
+In this paper, we perform the first comprehensive study on these new network defense mechanisms. In particular, we present them in detail, we discuss the attacks they are defending from, and the relevant threat models. We then discuss the first large-scale analysis on this aspect. During June and July 2019, we crawled 125,419 applications and we found how only 16,332 apps adopt this new security feature. We then focus on these apps, and we uncover how developers adopt weak and potentially vulnerable network security configurations. We note that, in November 2019, Google then made the default policy stricter, which would help the adoption. We thus opted to re-crawl the same dataset (from April to June 2020) and we repeated the experiments: while more apps do adopt this new security mechanism, a significant portion of them still do not take fully advantage of it (e.g., by allowing usage of insecure protocols).
+
+We then set out to explore the root cause of these weaknesses (i.e., the why). Our analysis showed that app developers often copy-paste vulnerable policies from popular developer websites (e.g., StackOverflow). We also found that several popular ad libraries require apps to weaken their security policy, the key problem lying in the vast complexity of the ad ecosystem. As a last contribution, we propose a new extension of the Network Security Policy, so to allow app developers to embed problematic ad libraries without the need to weaken the security of their entire app.
+
+# 1 Introduction
+Nowadays, users rely on smartphones for a variety of security-sensitive tasks, ranging from mobile payments to private communications. Virtually all non-trivial mobile apps rely on communication with a network backend. Given the sensitive nature of the data exchanged between the app and the backend, developers strive to protect the network communication by using encryption, so that network attackers cannot eavesdrop (or modify) the communication content. However, several works have shown how properly securing network connections is still a daunting challenge for app developers.
+
+Within the context of Android, in recent years, Google has introduced several new network security features to tackle these problems. For example, starting from Android 4.x, Android started to display alert information to the user if a “custom” certificate was added to the set of trusted CAs. Later versions of Android started supporting two different repositories for CAs: the System KeyStore, which contains the “default” set of trusted CAs; and the User KeyStore, which contains custom CAs “manually” added by the user. This separation allows Google to make apps trust only the system CAs by default. From Android 6, Google started to push towards “HTTPS everywhere” even further. It first introduced a new app attribute (that could be specified in the app’s manifest) to specify whether cleartext (HTTP) connections should be allowed or blocked. It then extended these settings by introducing the Network Security Policy (NSP, in short): this mechanism allows a developer to specify complex policies (with an XML configuration file) affecting the network security of her app.
+
+Motivated by these recent changes and by their potential security impact on the ecosystem, in this paper we present the first comprehensive study on these new defense mechanisms. We first discuss in detail these new features, the attacks that are mitigated by the NSP, and the relevant threat models. We then highlight several security pitfalls: since the policy allows the developer to define very complex configurations, they are prone to misconfigurations. We identified several patterns for which policies may provide a false sense of security, while, in fact, they are not useful.
+
+Guided by these insights, we then present the first analysis of the adoption of the Network Security Policy on the Android ecosystem. This analysis, performed over 125,419 Android apps crawled during June and July 2019, aims at characterizing how developers are using these new features and whether they are affected by misconfigurations. The results are concerning. We found that only 16,332 apps are defining a NSP and that more than 97% of them define a NSP to allow cleartext protocols. Since starting from November 2019 Google changed some important default values related to NSP (and especially related to cleartext), we repeated the experiments over a fresh crawl of the same dataset (performed from April to June 2020): Our results show that while more apps do adopt this new security
+mechanism, a significant portion of them still do not take fully advantage of it (e.g., by allowing usage of insecure protocols). We then set out to explore why apps adopt such permissive policies. We found that many of these policies are simply copy-pasted from popular developer websites (e.g., StackOverflow). Upon closer inspection, we also found how many of the weak policies could be “caused” by embedding advertisement libraries. In particular, we found that the documentation of several prominent ad libraries requires app developers to adapt their policy and make it very permissive, for example by allowing the usage of cleartext within the entire application. While the NSP format provides a mechanism to indicate a domain name-specific policy, we found that the complex ad ecosystem and the many actors that are part of it make it currently impossible to adopt safer security policies. Thus, as another contribution of this paper, we designed and implemented an extension of the current Network Security Policy, which allows developers to specify policies at the “app package” granularity level. We then show how this proposal enables app developers to embed ad libraries without the need of weakening the policy of the core app, how it is fully backward compatible, and how it can thus act as a drop-in replacement of the current version.
+
+# In summary, this paper makes the following contributions:
+- We perform the first comprehensive study on the newly introduced Android network security mechanisms, identifying strengths and common pitfalls.
+
+- We perform the first large-scale analysis on the adoption of the Network Security Policy on the Android ecosystem, using a dataset of 125,419 apps. Our study found that a significant portion of apps using the NSP are still allowing cleartext.
+
+- We investigate the root causes leading to weak policies, and we found that several popular ad libraries and the complex advertisement ecosystem encourage unsafe practices.
+
+- We propose a drop-in extension to the current Network Security Policy format that allows developers to comply with the needs of third-party libraries without weakening the security of the entire application.
+
+In the spirit of open science, we release all the source code developed for this paper and the relevant datasets.
+
+# 2 Network Communication Insecurity
+This section explores the different threats that an application might be exposed to due to insecure network communications. For each of the issues, we also discuss the relevant threat models.
+
+# 2 HTTP
+An application using a cleartext protocol to exchange data with a remote server allows an attacker to mount so-called Man-In-The-Middle (MITM) attack, through which it is possible to eavesdrop (or even modify) the network traffic at will. This, in turn, can lead to the compromisation of the user’s private information or of the application itself . The actual severity of this threat changes depending on the nature of the data exchanged by the application and the network backend. In other words, this HTTP scenario can be exploited by an attacker within the following threat model:
+Threat Model 1. An attacker on the same WiFi network (or on the network path) of the victim can eavesdrop and arbitrarily modify apps’ unencrypted connections and data at will.

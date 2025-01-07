@@ -1,0 +1,63 @@
+In three cases, the team passed data to a library that failed to handle it properly (P=3, V=3). For example, MD-27 used an access-control library that takes rules as input and returns whether there exists a chain of delegations leading to the content owner. However, the library cannot detect loops in the delegation chain. If a loop in the rules exists, the library enters an infinite loop and the server becomes completely unresponsive. (We chose to categorize this as a Conceptual Error vulnerability instead of a Mistake because the teams violate the library developers’ assumption as opposed to making a mistake in their code.)
+1 self . db = self . sql . connect ( filename , timeout =30)
+2 self . db . execute ( ’ pragma key =" ’ + token + ’"; ’)
+3 self . db . execute ( ’ PRAGMA kdf_iter = ’
+4      + str ( Utils . KDF_ITER ) + ’; ’)
+5 self . db . execute ( ’ PRAGMA cipher_use_MAC = OFF ; ’)
+6 ...
+
+Listing 2: SL-22 disabled automatic MAC in SQLCipher library.
+
+Finally, one team simply disabled protections provided transparently by the library (P=1, V=1). Team SL-22 used the SQLCipher library to implement their log as an SQL database. The library provides encryption and integrity checks in the background, abstracting these requirements from the developer. Listing 2 shows the code they used to initialize the database. Unfortunately, on line 5, they explicitly disabled the automatic MAC.
+
+# 4 Mistake
+Finally, some teams attempted to implement the solution correctly, but made a mistake that led to a vulnerability. The mistake type is composed of five sub-types. Some teams did not properly handle errors putting the program into an observably bad state (causing it to be hung or crash). This included not having sufficient checks to avoid a hung state, e.g., infinite loop while checking the delegation chain in the MD problem, not catching a runtime error causing the program to crash (P=5, V=9), or allowing a pointer with a null value to be written to, causing a program crash and potential exploitation (P=1, V=1).
+
+1 def checkReplay ( nonce , timestamp ): delta
+2         # First we check for tiemstamp
+3         dateTimeStamp = datetime . strptime ( timestamp ,
+4             ’%Y -%m -% d %H :% M :% S .% f ’)
+5         deltaTime = datetime . utcnow () - dateTimeStamp
+6         if deltaTime . seconds > MAX_DELAY :
+7                raise Exception (" ERROR : Expired nonce ")
+8         # The we check if it is in the table
+9         global bank
+10         if ( nonce in bank . nonceData ):
+11                raise Exception (" ERROR : Reinyected package ")
+Listing 3: SC-80 forgot to save the nonce.
+
+Other mistakes led to logically incorrect execution behaviors. This included mistakes related to the control flow logic (P=5, V=10) or skipping steps in the algorithm entirely. Listing 3 shows an example of SC-80 forgetting a necessary step in the algorithm. On line 10, they check to see if the nonce was seen in the list of previous nonces (bank.nonceData) and raise an exception indicating a replay attack. Unfortunately, they never add the new nonce into bank.nonceData, so the check on line 10 always returns true.
+
+# 5 Analysis of Vulnerabilities
+This section considers the prevalence (RQ1) of each vulnerability type as reported in Table 2 along with the attacker control (RQ2), and exploitability (RQ3) of introduced types.
+
+Overall, we found that simple implementation mistakes (Mistake) were far less prevalent than vulnerabilities related to more fundamental lack of security knowledge (No Implementation, Misunderstanding). Mistakes were almost always exploited by at least one other team during the Break It phase, but higher-level errors were exploited less often. Teams that were careful to minimize the footprint of security-critical code were less likely to introduce mistakes.
+
+# 5 Prevalence
+To understand the observed frequencies of different types and sub-types, we performed planned pairwise comparisons among them. In particular, we use a Chi-squared test—appropriate for categorical data —to compare the number of projects containing vulnerabilities of one type against the projects with another, assessing the effect size (φ) and significance (p-value) of the difference. We similarly compare sub-types of the same type. Because we are doing multiple comparisons, we adjust the results using a Benjamini-Hochberg (BH) correction . We calculate the effect size as the measure of association of the two variables tested (φ) [22, 282-283]. As a rule of thumb, φ ≥ 0 represents a small effect, ≥ 0 a medium effect, and ≥ 0 a large effect . A p-value less than 0 after correction is considered significant.
+
+Teams often did not understand security concepts. We found that both types of vulnerabilities relating to a lack of security knowledge—No Implementation (φ = 0, p < 0) and Misunderstanding (φ = 0, p < 0)—were significantly more likely (roughly medium effect size) to be introduced than vulnerabilities caused by programming Mistakes. We observed no significant difference between No Implementation and Misunderstanding (φ = 0, p = 0). These results indicate that efforts to address conceptual gaps should
+# Log
+*Significant effect – Base case (Log Estimate defined as 1)
+Pseudo R2 measures for this model were 0 (McFadden) and 0 (Nagelkerke).
+
+Unintuitive security requirements are commonly skipped. Of the No Implementation vulnerabilities, we found that the Unintuitive sub-type was much more common than its All Intuitive (φ = 0, p &lt; 0) or Some Intuitive (φ = 0, p &lt; 0) counterparts. The two more intuitive sub-types did not significantly differ (φ = 0, p = 0). This indicates that developers do attempt to provide security — at least when incentivized to do so — but struggle to consider all the unintuitive ways an adversary could attack a system. Therefore, they regularly leave out some necessary controls.
+
+Teams often used the right security primitives, but did not know how to use them correctly. Among the Misunderstanding vulnerabilities, we found that the Conceptual Error sub-type was significantly more likely to occur than Bad Choice (φ = 0, p = ). This indicates that if developers know what security controls to implement, they are often able to identify (or are guided to) the correct primitives to use. However, they do not always conform to the assumptions of “normal use” made by the library developers.
+
+Complexity breeds Mistakes. We found that complexity within both the problem itself and also the approach taken by the team has a significant effect on the number of Mistakes introduced. This trend was uncovered by a poisson regression (appropriate for count data) [15, 67-106] we performed for issues in the Mistakes type.
+
+Similar logic demonstrates that teams were only 0× as likely to make a mistake in the SL problem compared to the SC baseline. The SL problem was on the other side of the complexity spectrum, only requiring the team to parse command-line input and read and write securely from disk.
+
+Similarly, not implementing the secure components multiple times (Minimal Trusted Code) was associated with an 0× decrease in Mistakes, suggesting that violating the “Economy of Mechanism” principle  by adding unnecessary complexity leads to Mistakes. As an example of this effect, MD-74 reimplemented their access control checks four times throughout the project. Unfortunately, when they realized the implementation was incorrect in one place, they did not update the other three.
+
+Mistakes are more common in popular languages. Teams that used more popular languages are expected to have a 1× increase in Mistakes for every one unit increase in popularity over the mean Popularity (p = 0). This means, for example, a language 5 points more popular than average would be associated with a 1× increase in Mistakes. One possible explanation is that this variable proxies for experience, as many participants who used less popular languages also knew more languages and were more experienced.
+
+Finally, while the LoC were found to have a significant effect on the number of Mistakes introduced, the estimate is so close to one as to be almost negligible.
+
+No significant effect observed for developer experience or security training. Across all vulnerability types, we did not observe any difference in vulnerabilities introduced between MOOC and non-MOOC participants or participants with more development experience. While this does not guarantee a lack of effect, it is likely that increased development experience and security training have, at most, a small impact.
+
+# 5 Exploit Difficulty and Attacker control
+To answer RQ2 and RQ3, we consider how the different vulnerability types differ from each other in difficulty to exploit, as well as in the degree of attacker control they allow. We distinguish three metrics of difficulty: our qualitative assessment of the difficulty of finding the vulnerability (Discovery Difficulty); our qualitative assessment of the difficulty of exploiting the vulnerability (Exploit Difficulty); and whether.
+
+The mean Popularity score was 91. Therefore, C—whose Popularity score of 92 was nearest to the mean—can be considered representative of the language of average popularity.

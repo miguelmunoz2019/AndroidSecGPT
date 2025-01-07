@@ -1,0 +1,45 @@
+- Native Libraries: provide low level functionalities and computational intensive services required by the Android Framework and the Runtime, such as the Bionic libc library, the WebKit browser engine, OpenGL, SSL, and the Media Framework. The libraries are written in C/C++.
+
+- Hardware Abstraction Layer (HAL): it is the bridge between the high level representations of the hardware used in the libraries, and low level representations used by the kernel. It is a set of interfaces for hardware-specific software that needs to be implemented by OEMs and hardware manufacturers. Components in the HAL are written in C/C++.
+
+- Linux Kernel: it provides the Android OS with core OS systems infrastructure, a security model, networking, and memory and process management, among others. Android uses a modified version of Linux tailored to mobile devices; this tailored version
+Empirical Software Engineering (2019) 24:2056–2101 2063
+includes changes/enhancements such as the Android Binder, Logger, ashmem, power management, wakelocks, and mechanisms for memory management (e.g., Android Low Memory Killer). More details of the Android-specific contributions added to the Linux kernel are described in (wiki. 2015).
+
+A few previous studies focused on the analysis of specific components of the Android OS and their security issues. Bagheri et al. (In Press) analyzed the vulnerabilities of the permission system in the OS; Cao et al. (2015) analyzed input validation mechanisms in the services/managers of the Android Framework; Huang et al. (2015) found four vulnerabilities (a.k.a., Android Stroke Vulnerabilities) in two services of the Android Framework (i.e., Activity and Window Manager) that can be used for DoS attacks and for inducing OS soft-rebooting; Wang et al. (2016) also analyzed the Android Framework layer and found six unknown vulnerabilities in three of its services (i.e., Activity Manager, Location Manager, Mount Service), and two apps from the Applications layer (i.e., SystemUI and Phone).
+
+Closer to our study are the previous works aimed at analyzing security vulnerabilities by following a mining-based approach. Some of those studies are Android-specific (Thomas 2015a, b; Jimenez et al. 2016; Linares-Vásquez et al. 2017) while others are more general in the sense that they aim at characterizing security bugs (Zaman et al. 2011; Lal and Sureka 2012).
+
+Thomas et al. (2015b) mined the OS updates installed on 20k+ Android devices to measure the delivery time of security updates for eleven vulnerabilities, and to establish a scoring model of insecure devices; the results suggest that, on average, 87% of the devices are exposed to at least one of the analyzed vulnerabilities. Thomas (2015a) investigated the Cve-2012-6636 (2017) vulnerability on the JavaScript-to-Java interface of the WebView API; 102k+ APKs were statically analyzed to measure the number of apps in which the vulnerability could be exploited. In addition, the lifetime of the vulnerability was analyzed using an approach similar to Thomas et al. (2015b).
+
+Jimenez et al. (2016) analyzed 42 vulnerabilities from the CVE database (MITRE 2017r) to identify the issues, involved components, complexity of the patches, and complexity of the code methods/functions involved in the vulnerability.
+
+Finally, Linares-Vásquez et al. (2017) analyzed a larger set (660) of Android OS vulnerabilities (mined from CVE) to analyze their survivability, the subsystems and components of the Android OS involved in the vulnerabilities, and defined a taxonomy of security issues based on the Common Weakness Enumeration (CWE) hierarchy of vulnerabilities (MITRE 2017p). As explained in Section 1, this paper extends the work in Linares-Vásquez et al. (2017).
+
+# 3 Study Design
+The goal of the study is to investigate security vulnerabilities reported over the past 10 years in the Android OS (i.e., 2008 - 2017). The purpose is to (i) define a taxonomy highlighting the types of Android-related vulnerabilities, their evolution over time, the most common fixes applied by developers, and the Android OS subsystems more exposed to security issues; (ii) investigate what the most frequent attributes from the CVSS vectors are; and (iii) investigate the survivability of vulnerabilities in Android.
+
+The context consists of 1,235 vulnerabilities mined from CVE Details (MITRE 2017r; 2017q), the NVD database (NIST 2017), and the official vulnerability bulletins released by
+# Empirical Software Engineering (2019) 24:2056–2101
+Google. All the data used in the study are available in our online appendix (Mazuera-Rozo et al. 2017).
+
+# This study addresses the following research questions:
+# RQ1: Which types of security vulnerabilities affect the Android OS?
+This research question aims at identifying the types (e.g., inadequate encryption strength) of Android-related vulnerabilities reported over the past ten years. Note that with “Android-related” we refer to both vulnerabilities directly affecting code components belonging to the Android OS, i.e., the components of the Android software stack developed by Google, as well as those components in the OS authored by third-party contributors (e.g., hardware drivers, apps shipped with the devices) threatening the security of Android devices. In RQ 1 we also report the evolution of the types of security vulnerabilities over six-month periods through the whole history of the Android OS, in particular the time period between 2008 and August 2017 (the last month in which we collected the data). This analysis will provide indications useful to understand whether the security of the Android OS is improving over time and what the major issues are nowadays.
+
+# RQ2: What are the most common CVSS vectors that describe the Android OS vulnerabilities?
+This research question aims at studying the characteristics of the CVSS vectors describing the vulnerabilities and will serve to further characterize the security issues affecting the Android OS.
+
+# RQ3: Which are the Android subsystems more affected by security vulnerabilities?
+The third research question sheds light on the Android subsystems more frequently affected by security vulnerabilities. Note that in this case our focus will be on the architecture of the Android OS, while less emphasis will be given to vulnerabilities affecting third-party components. Indeed, our goal is to point out to developers (both apps developers as well as contributors of the Android OS) which are the riskier services, APIs, apps, etc. in the OS. This information can be used to better focus verification & validation activities as well as to develop better Android-specific tools for vulnerability detection and secure coding.
+
+# RQ4: How long does it take to fix security vulnerabilities in Android?
+This research question studies the survivability of the security vulnerabilities subject of our study. In particular, we assess the number of days between the vulnerability introduction and its fixing. RQ 4’s findings could help in assessing the usefulness of effective vulnerability detection tools able to immediately catch an introduced vulnerability (i.e., a long survivability of the vulnerabilities would indicate the urge for such tools).
+
+# 3 Data Extraction
+The context of the study consists of 1,235 vulnerabilities mined from the official Android Security Bulletins , the CVE details portal (MITRE 2017r) and the NVD database (U.S. National Institute of Standards and Technology - NIST 2012a). Every month Google releases a security bulletin that describes the most recent discovered and fixed vulnerabilities that have been reported in the NVD. For some of the vulnerabilities links to the patches are also provided. Since the first bulletin was published in August 2015, not all the vulnerabilities relevant for our study are covered in the Android bulletins. For this reason, we also mined the CVE details portal, a mirror of the NVD database providing pre-defined tags for searching purpose. For example, the link https://www.cvedetails.com/product/19997/Google-Android.html lists vulnerabilities related to the Android OS. Some of the vulnerabilities relevant for our study are categorized in CVE details under different.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+tags, such as “Linux kernel”. This is why mining only the CVE details portal is not sufficient, and we combined the list of CVE ids extracted from the Android bulletins with those categorized in CVE details under the “Google-Android” tag.
+
+To collect this information, we built a Java web-based scraper. The scraper firstly mined all the security bulletins published by Google looking for their CVE ids. Then, it extracted the details of each vulnerability by using its CVE id to get the corresponding data from the CVE details portal and the NVD web site.

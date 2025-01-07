@@ -1,0 +1,65 @@
+- Resource Manager: This service provides access to non-code embedded resources such as strings, color settings and user interface layouts from apps. This service makes it possible to maintain apps’ resources independently.
+
+- Notifications Manager: Notifications Manager allows applications to display alerts and notifications to the user. With this service, apps can notify the user of events that happen in the background.
+
+- View System: This service is an extensible set of views used to create application user interfaces.
+
+# 2 Android Runtime
+This section describes a key component called Dalvik Virtual Machine (DVM), which is a Java Virtual Machine (JVM) specially designed and optimized for Android. Dalvik VM takes advantage of Linux core features such as multi-threading, multitasking execution environment and memory management, which is intrinsic in the Java language. Dalvik VM gives power to apps to run as a process directly on the Linux kernel and within its own VM (sandboxed). Since Dalvik is using JVM, it provides users with a set of libraries and APIs to develop Android apps predominantly using Java programming language. The standard Java development environment includes a vast array of classes that are contained in the core Java runtime libraries.
+
+# 2 Libraries
+The Android’s native libraries were developed on top of the Linux kernel. This layer enables the device to handle different types of data. It provides different libraries useful for the well-functioning of Android operating system. These libraries are written in C or C++ language and were developed for a particular hardware. Examples of some important native libraries include the open-source Web browser engine WebKit used to display HTML content, the well-known library libc, SQLite database engine used for data storage purposes, OpenGL used to render 2D or 3D graphics content to the screen, Media framework used to provide different media codecs, and SSL libraries for Internet security.
+
+# 2 Kernel
+The Linux kernel is the fundamental layer of the entire system. This layer is customized specially for the embedded environment consisting of limited resources. The whole Android OS is built on top of the Linux kernel with some further architectural changes made by Google. This section also acts as an abstraction layer between the hardware and other software layers. Linux kernel provides the basic system functionality such as process management, memory management and device management. Linux kernel also provides an array of device drivers which make the task easier while interfacing the Android with peripheral devices.
+
+# 2 Application Structure
+Android applications which extend the functionality of devices are written primarily in the Java programming language. In this subsection, we explain Android app package structure and its main four components.
+
+# Android Security Threats and Defenses
+# 2 Android .apk package
+An Android application contains several files and folders packed as a package with .apk extension used to distribute and install application software and middleware onto Google’s Android operating system. Figure 2 depicts the structure of an Android application package. Some particular components in application files play an important role. For example, META-INF directory includes MANIFEST.MF, which contains a cryptographic signature and makes the entire contents of the distribution package validated. The lib directory contains the compiled code, which is specific to a software layer of a processor and assets is a directory containing applications assets, which can be retrieved by AssetManager. The AndroidManifest.xml is a key file within application structure, which is an additional Android manifest file, describing the name, version, access rights, and referenced library files for the application.
+
+# 2 App Components
+There are four different types of app components . Each component serves a distinct purpose and has a distinct lifecycle that defines how the component is created and destroyed. Figure 3 shows the Android app components and related interactions.
+
+- Activities: Activity is an individual user interface screen in an Android Application. Android activity is where visual elements called Views (also known as widgets) can be placed and user can perform various actions by interacting with it.
+
+- Services: Service is the Android way of keeping an operation going on in the background. Services are used to perform the processing parts of your application in the background. Services are typically used for processes that take a significant period of time such as playing music, downloading data or uploading photos.
+
+- Content Provider: A content provider is a component for managing a data set. Content providers in Android provides a flexible way to make data available across applications. A simple example of content provider is the Contacts Manager app. You can get contacts in multiple applications such as your SMS application, Dialer application, etc.
+
+- Broadcasting: Broadcast receivers is one of Android application components that is used to receive messages that are broadcasted by the Android system or other Android applications. Examples of broadcasts initiated by the system are battery low, network state changed, phone starts and photo captured from camera.
+
+# 3 Android Security Mechanisms
+Android is a modern mobile platform that was designed to be open source and free. Android applications make use of advanced hardware and software, as well as local and served data, exposed through the platform to bring innovation and value to consumers. To protect that value, the platform must offer an application environment that ensures the security of users, data, applications, the device, and the network. Securing an open platform requires a robust security architecture and rigorous security programs. In this section we discuss mechanisms that Android uses to make the application environment secure.
+
+# 3 Android Permission Framework
+A basic Android application has no permissions associated with it by default to get access to the resources. Before installing an application, the current version of Android OS displays all required permissions by the application. The requested permissions is to enforce restrictions on the resources of the
+# Android Security Threats and Defenses
+# Rashidi, Fung
+# Assets
+# Intent
+devices such as Internet connections, SMS, Storage, and Camera, etc. After reviewing these permissions, the user can choose to accept or refuse them, installing the application only if they accept . There are four classes of permissions: Normal, Dangerous, Signature and SignatureOrSystem. In this subsection, we explain all types of Android permissions.
+
+# Normal
+A lower-risk permission that gives requesting applications access to isolated application-level features, with minimal risk to other applications, the system, or the user.
+
+# Dangerous
+A higher-risk permission that would give a requesting application access to private user data or control over the device that can negatively impact the user.
+
+# Signature
+A permission that the system grants only if the requesting application is signed with the same certificate as the application that declared the permission.
+
+# SignatureOrSystem
+A permission that the system grants only to applications that are in the Android system image or that are signed with the same certificate as the application that declared the permission.
+
+# 3 Application Sandboxing
+Application sandboxing, also called application containerization, is an approach to software development and Mobile Application Management (MAM) that limits the environments in which certain code can execute. Android applications run in a sandbox, an isolated area of the system that does not have access to the rest of the system’s resources, unless access permissions are explicitly granted by the user when the application is installed. In order to protect the application’s data from unauthorized access, Android kernel implements the Linux Discretionary Access Control (DAC) to manage and protect the device’s resources to be misused. Each app process is protected with an assigned unique ID (UID) within an isolated sandbox.
+
+# 3 Inter-Component Communication (ICC)
+Although each application executes within a dedicated sandbox, Android allows applications to communicate with each other through a well-defined Inter-Component Communication (ICC) mechanism or Binder. Android middleware mediates the ICC between application’s components. The Binder or ICC takes care of migrating the execution of a request from the requester to the target process transparently to the applications. Applications can call the components or services of other applications as service.
+
+# Android Security Threats and Defenses
+# 4 Android Security Issues and Threats
+Android security is built upon a permission-based mechanism which regulates the access of third-party Android applications to critical resources on an Android device. Such permission-based mechanism is widely criticized for its coarse-grained control of application permissions and the inefficient permission management, by developers, marketers, and end-users. For example, users can either accept all permission requests from an app to install it, or not to install the app. This type of permission management is proved to be undesirable for the devices security. In this section, we discuss the main security issues of the Android, which leads to user information leakage and puts the user’s privacy in jeopardy.

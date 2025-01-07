@@ -1,0 +1,26 @@
+[DOC File, 438 KB - Multimedia Appendix 1]
+# JMIR MHEALTH AND UHEALTH
+# Llorens-Vernet & Miró
+1. Brown W, Yen PY, Rojas M, Schnall R. Assessment of the Health IT Usability Evaluation Model (Health-ITUEM) for evaluating mobile health (mHealth) technology. J Biomed Inform 2013 Dec;46(6):1080-1087 [FREE Full text] [doi: 10/j.jbi] [Medline: 23973872]
+2. Gaziel-Yablowitz M, Schwartz DG. A review and assessment framework for mobile-based emergency intervention apps. ACM Comput Surv 2018;51(1):1-32. [doi: 10/3145846]
+3. Moher D, Liberati A, Tetzlaff J, Altman DG, PRISMA Group. Preferred reporting items for systematic reviews and meta-analyses: the PRISMA statement. PLoS Med 2009 Jul 21;6(7):e1000097 [FREE Full text] [doi: 10/journal.pmed] [Medline: 19621072]
+4. Wikipedia. Mobile app URL: https://en.wikipedia.org/wiki/Mobile_app [accessed 2018-11-12] [WebCite Cache ID 73sLCDxl2]
+5. Statista. Global Mobile Health Market in 2017, by Region URL: https://www.statista.com/statistics/218852/global-mobile-health-market-share-forecast-by-region/ [accessed 2018-11-12] [WebCite Cache ID 73sLFZA7t]
+6. Research2Guidance. mHealth Economics 2017 – Current Status and Future Trends in Mobile Health URL: https://research2guidance.com/product/mhealth-economics-2017-current-status-and-future-trends-in-mobile-health/ [accessed 2020-01-17] [WebCite Cache ID 73sK8Aedl]
+7. Salazar A, de Sola H, Failde I, Moral-Munoz JA. Measuring the quality of mobile apps for the management of pain: systematic search and evaluation using the mobile app rating scale. JMIR Mhealth Uhealth 2018 Oct 25;6(10):e10718 [FREE Full text] [doi: 10/10718] [Medline: 30361196]
+8. Buijink AW, Visser BJ, Marshall L. Medical apps for smartphones: lack of evidence undermines quality and safety. Evid Based Med 2013 Jun;18(3):90-92. [doi: 10/eb-2012-100885] [Medline: 22923708]
+9. Larson RS. A path to better-quality mHealth apps. JMIR Mhealth Uhealth 2018 Jul 30;6(7):e10414 [FREE Full text] [doi: 10/10414] [Medline: 30061091]
+10. Jonassaint CR, Rao N, Sciuto A, Switzer GE, de Castro L, Kato GJ, et al. Abstract animations for the communication and assessment of pain in adults: cross-sectional feasibility study. J Med Internet Res 2018 Aug 3;20(8):e10056 [FREE Full text] [doi: 10/10056] [Medline: 30076127]
+# Abbreviations
+EU: European Union
+MARS: Mobile App Rating Scale
+mHealth: mobile health
+Edited by G Eysenbach; submitted 07; peer-reviewed by H de Sola, N West, HT Yang, A Salazar, D Schwartz, S Wali, S Zheng; comments to author 14; revised version received 06; accepted 23; published 03
+Please cite as:
+Llorens-Vernet P, Miró J Standards for Mobile Health–Related Apps: Systematic Review and Development of a Guide JMIR Mhealth Uhealth 2020;8(3):e13057
+URL: https://mhealth.jmir.org/2020/3/e13057
+doi: 10/13057
+PMID: 32130169
+©Pere Llorens-Vernet, Jordi Miró. Originally published in JMIR mHealth and uHealth (http://mhealth.jmir.org), 03. This is an open-access article distributed under the terms of the Creative Commons Attribution License (https://creativecommons.org/licenses/by/4/), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work, first published in JMIR mHealth and uHealth, is properly cited. The complete bibliographic information, a link to the original publication on http://mhealth.jmir.org, as well as this copyright and license information must be included.
+
+https://mhealth.jmir.org/2020/3/e13057 JMIR Mhealth Uhealth 2020 | vol. 8 | iss. 3 | e13057 | p. 9 (page number not for citation purposes).

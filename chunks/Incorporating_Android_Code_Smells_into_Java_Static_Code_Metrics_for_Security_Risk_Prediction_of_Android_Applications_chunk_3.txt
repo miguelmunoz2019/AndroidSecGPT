@@ -1,0 +1,50 @@
+As described in Section II-B, we used the elbow method to determine the number of clusters 3,680 Android applications belonging to. We calculated the SSE values of K ranging from 1 to 9, and found that when K ranged from 1 to 3, the change of the SSE was the greatest, which means 3 is an optimal number for clustering these applications. Hence we set k as 3 and used k-means to divide 3,680 applications into 3 clusters. We assigned three risk labels to these three clusters, i.e., low risk (L), medium risk (M) and high risk (H). The centroids of three clusters were 0, 50 and 92, respectively. The numbers of Android applications with low risk, medium risk, and high risk were 1209, 2118, and 353, respectively.
+
+# B. Evaluation Metrics and Settings
+We used four metrics namely accuracy, precision, recall and F1 score to evaluate the effectiveness of different classifiers. They are defined as follows.
+
+- Accuracy is an intuitive performance metric that is defined as the ratio of samples correctly classified by the classifier over the total number of samples. The formula is as follows:
+A(M) = T N + F P + F N + T P / T N + T P
+- Precision is defined as the number of true positives (TP) over the number of true positives plus the number of false positives (FP). The formula is as follows:
+P(M) = T P / (T P + F P)
+- Recall is defined as the number of true positives (TP) over the number of true positives plus the number of false negatives (FN). The formula is as follows:
+R(M) = T P / (T P + F N)
+- F1 score can be interpreted as a harmonic mean of precision and recall. The formula is as follows:
+F1 = 2T P / (2T P + F P + F N)
+In the above formulas, FN (False Negative) represents the number of samples which are actually positive samples but are judged as negative samples. FP (False Positive) represents the number of samples which are actually negative samples but are judged as positive samples. TN (True Negative) represents the number of samples which are in fact negative sample and are also judged as negative samples. TP (True Positive) represents the number of samples that are in fact positive samples and are also judged as positive samples. For the multi-classification problem in this paper, while calculating the above-mentioned four evaluation metrics, each risk level is treated as "positive" alone, and all other risk levels are considered as "negative".
+
+In this paper, we also use ROC (Receiver Operating Characteristic) to evaluate the performance of the classifier. ROC is a good measurement to reveal the accuracy of a classifier23. In ROC space, the x-axis corresponds to the FPR (False Positive Rate) and the y-axis corresponds to the TPR (True Positive Rate). ROC depicts a trade-off between TP (True Positive) and FP (False Positive). TPR and FPR are defined as follows.
+
+- True Positive Rate (TPR) represents the proportion of positive cases that are correctly identified. Its calculation is the same as the way to compute recall in formula (4).
+
+- False Positive Rate (FPR) represents the proportion of negative cases incorrectly identified as positive cases. The formula is as follows:
+F P R = F P / (F P + T N)
+# TABLE III
+# SPEARMAN’S CORRELATION AND CORRELATION LEVEL
+In order to minimize the randomness of experimental results, we repeated 10-fold cross-validation 10 times. During each 10-fold cross-validation process, we randomly partition the data into 10 folds, with 9 folds as the training data and 1 fold as the testing data. After repeating the process 10 times, we aggregate the results and take their average results as the final results to evaluate the performance of the prediction model. All experiments are conducted on an Ubuntu 64-bit system with 32 GB RAM and 2 GHz Intel Xeon CPU.
+
+# C. Research Questions
+In this paper, we mainly try to answer the following three research questions.
+
+- RQ1: Are there any correlations among the Java static code metrics and Android code smells?
+- RQ2: How effective our approach is in predicting the risk level of Android applications?
+- RQ3: Which features are more important in predicting the security risk level of Android applications?
+RQ1 aims to understand whether there is an interactive relationship between Java static code metrics and Android code smells. RQ2 aims to investigate how helpful the proposed metrics are at risk level prediction. To better answer this research question, we tested several typical machine learning methods. RQ3 aims to check whether all metrics especially those Android code smells share the same importance for risk prediction. By knowing this could help developers better avoid some bad development practice.
+
+# IV. RESULTS AND ANALYSIS
+# A. Results for RQ1
+We used Spearman’s Rank Correlation Coefficient to explore the correlation between hybrid metrics (i.e., Java static code metrics and Android code smells in the paper) . We chose Spearman correlation since it has no strict requirement for data conditions, and it can be used to study both variables regardless of their overall distribution and sample size. Table III presents the correlation coefficients and their corresponding correlation levels according to.
+
+As related to Android code smells, we can find that from Figure 3, the coefficients between the Android code smells range from 0 to 0, which shows none to small correlation. Further, the correlation coefficients between Java metrics and Android code smells are around 0, which means that the correlation between them is moderate. The none-to-small correlation among Android code smells and the moderate correlation between Android code smells and Java static code metrics makes us believe that, by adding Android code smells into Java static code metrics would lead to a better performance in predicting the security risk levels of android applications.
+
+Answer to RQ1: Most Android code smells are independent with each other; the correlations between Android code smells and Java static code metrics are moderate, and some Java static code metrics are highly correlated with some other Java static code metrics.
+
+# B. Results for RQ2
+To answer RQ2, we constructed a series of prediction models by applying nine machine learning algorithms (as
+mentioned in Section II), to a data set with 3,680 Android applications.
+
+The original risk level distribution of 3,680 Android applications is 1209 for L (Low-risk level), 2118 for M (Medium-risk level), and 353 for H (High-risk level). After balancing three classes of risk levels with SMOTEENN, the numbers of applications that belong to L, M, H are 1131, 609, and 1766 respectively. For each application, we applied z-score standardization and PCA algorithm to process its features (i.e., Java static code metrics and Android code smells). After using z-score standardization, the standard deviation and corresponding mean of each feature are 1 and 0, respectively. To better understand the effects of Android code smells and Java static code metrics in predicting the security risk level of Android applications, we attempted to test each machine learning algorithm on three data sets with different instance features, i.e., only Android code smells, only Java static code metrics, and their combination. All instance features were preprocessed by using PCA during each model’s building. Finally, after applying PCA, the original 15 Android code smells were reduced to 10 features, original 21 Java static code metrics were reduced to 12 features, and the 36 hybrid metrics (Java static code metrics plus Android code smells) were reduced to 20 dimensions, respectively.
+
+After the above-mentioned preprocessing steps, we applied relevant machine learning methods to build prediction models. To obtain the performance of each prediction model, we used the functions precision score(), recall score() and f1 score() in Sklearn library to calculate precision, recall and F1 score respectively, with setting function parameter average= ”weighted”. Table IV shows the evaluation results.
+
+According to Table IV, we can find that those machine learning methods based on Java code metrics and Android code smells have similar performance in terms of precision, recall, F1-score, and accuracy. This means that Android code smells are as important as Java code metrics for predicting risk levels. Furthermore, as shown in Table IV, all machine learning methods except Naive Bayes achieved the best performance by combining Java static code metrics and Android code smells. Among them, the average values of precision, recall F1-score, and accuracy are 0, 0, 0, and 0 respectively. This indicates that Java code metrics and Android code smells are complementary to each other in predicting risk levels of Android applications.

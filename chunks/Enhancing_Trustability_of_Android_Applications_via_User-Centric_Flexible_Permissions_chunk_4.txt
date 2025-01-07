@@ -1,0 +1,50 @@
+# IEEE TRANSACTIONS ON SOFTWARE ENGINEERING, VOL. 47, NO. 10, OCTOBER 2021
+# 4 IMPLEMENTATION AND USED TECHNOLOGIES
+AFP makes use of a number of different techniques and technologies. Static analysis techniques are used to verify APK packages uploaded by developers on the AFP Server. Specifically, static analysis is utilized to verify that developers accessed sensitive resources only through the methods provided by the AFP Library (otherwise we cannot guarantee that the preferences set by users in permissions configurations will be fulfilled). In order to do so, AFP utilizes an intra-procedure analysis to detect Android API invocations within each method of the app’s code. Our prototype implementation adopts the list of sensitive Android APIs provided by Rasthofer et al., who also provide a methodology to obtain an up-to-date list. For the implementation of this analysis, we rely on the static analysis framework Soot, coupled with Dexpler to disassemble APK packages and transform Android’s Dalvik bytecode into a format suitable for analysis.
+
+The integrity of the AFP Library implementation is also checked by the AFP Server through a checksum-based integrity verification mechanism. This permits to avoid the possibility that malicious developers could tamper with the library, thus circumventing the need of obtaining authorization against the permissions configuration.
+
+Communication between the AFP App and any AFP-compliant app is enabled by Android’s Intents. An Intent is a special kind of object used to enable inter-app communication. In AFP, explicit Intents are leveraged to both redirect the end user to the AFP App and return the configured fine-grained permissions configuration once it has been personalized.
+
+Changes to the permission system introduce the risk of app instability, as apps may not expect to have their permission requests denied. When denying permissions leads to crashes, users are likely to become more permissive to improve app stability, thus counteracting the whole reasoning behind feature- and level-based permissions. With this concern in mind, in our implementation, we make use of “mocking”: in the event of a denied permission our system supplies apps with well-formed but non-sensitive data. For example, if the end user allows only city-level geolocation, when the app calls the Android location manager, the AFP Library intercepts that call and returns the geographical center of the city where the user is, instead of her precise location. This enables apps to continue functioning usefully unless access to the protected resource is critical for its correct behavior.
+
+To perform the automatic extraction of the Android components composing the mobile app (step 2 in Fig. 1) we first decode the input APK using apktool. The Android manifest file is then analyzed via a simple XML parser we developed in Java. The analyzer of the Java bytecode is implemented by using the Apache Commons Byte Code Engineering Library.
+
+The tool that allows developers to specify feature-components mappings (step 3) has been implemented as a web-based tool, built upon the Flask web framework.
+
+3. This aspect is inspired by the Mockdroid approach by Beresford et al.
+
+4. http://ibotpeaches.github.io/Apktool/
+5. http://commons.apache.org/proper/commons-bcel/
+6. http://flask.pocoo.org
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:26:33 UTC from IEEE Xplore. Restrictions apply.
+
+# SCOCCIA ET AL.: ENHANCING TRUSTABILITY OF ANDROID APPLICATIONS VIA USER-CENTRIC FLEXIBLE PERMISSIONS
+The AFP Instrumenter is implemented by using several tools. The tool apktool is used for decomposing the APK and producing a Classes.dex file containing the app bytecode. Then, the dex2jar tool is used to obtain a conventional jar file that, subsequently unpacked via the zip shell command, permits to obtain the .class files constituting the app. Rewriting of the .class files is done by our Java implementation of Algorithm 1, leveraging the Apache Commons Byte Code Engineering Library. Instrumented .class files are then repackaged back to a .dex archive via the Android SDK dx tool, and the APK archive is reassembled using again apktool. At the end, the resulting package is signed using jarsigner. The whole end-to-end process is tied together by a Python script.
+
+# 5 EVALUATION
+In this section, we report the four independent experiments we performed to evaluate the AFP approach. For the purposes of the experiment 2, 3 and 4, we focused on the three Android APIs that are among the ones considered the most sensible by end users while at the same time widely used by apps on the Google Play market: Camera, LocationManager, and MediaRecorder. To allow easy replication and verification of the experiments, we provide a complete replication package including: the source code of all the components of the AFP approach, the source code of the measuring tools we implemented for carrying on the experiments, the raw data we obtained from the experiments, and all the scripts for analysing the experiments’ results.
+
+# 5 Experiment 1: Performance of the AFP Instrumenter
+Design. The goal of this experiment is to assess the performance of the AFP Instrumenter, the module of the AFP server that performs the app static analysis and instrumentation. We chose the AFP Instrumenter as the object of our experiment since it is the most complex component in our AFP Server, and its malfunctioning or low performance in terms of execution time may negatively impact the adoption of the whole approach by developers, who will not be willing to spend (relatively) long time for the result of the app instrumentation phase.
+
+Results. Fig. 7 shows the execution times of each step of the AFP Instrumenter pipeline. Each step takes an average of less than 10 seconds, with the only exception of the dx tool (18 seconds in average), mainly because of its heavy I/O operations and performed optimizations. When considering the total execution time of the whole pipeline, we can observe that our AFP Instrumenter takes an average of 41 seconds to complete, with a minimum of 4 seconds and a maximum of 143 seconds.
+
+Discussion. We consider the results as satisfactory. On average, developers have to wait less than a minute for obtaining the AFP-enabled app from the AFP Server, and less than 3 minutes in the worst case of our experiment. Since the AFP Instrumenter is executed only once for each app, the waiting time for developers due to app instrumentation is reasonable. Hence:
+The performance of the AFP Instrumenter is satisfactory, requiring on average less than a minute.
+
+7. http://github.com/pxb1988/dex2jar
+8. http://wing-linux.sourceforge.net/guide/developing/tools
+9. http://docs.oracle.com/javase/tutorial/deployment/jar/signing.html
+10. https://github.com/gianlucascoccia/d1f8de71bcdc39d1f4827c04a952a0c29/dx/src/com/android/dx/androidflexiblepermissions
+11. https://android.googlesource.com/platform/dalvik/+/a9ac3a9
+# IEEE TRANSACTIONS ON SOFTWARE ENGINEERING, VOL. 47, NO. 10, OCTOBER 2021
+# 5 Experiment 2: Performance of AFP-Enabled Apps
+Design. The goal of this experiment is to assess the performance of the AFP-enabled apps at runtime (i.e., app X in Fig. 1). The main rationale behind this experiment is to assess how the application of our AFP approach may actually impact the performance of instrumented apps, thus potentially impacting the overall user experience.
+
+For this experiment, we selected 7 mobile apps from a publicly available dataset composed of 2,443 open-source Android apps that are freely distributed in the Google Play store and whose source code is hosted on GitHub ; these two conditions permitted us to have a dataset with apps designed and developed as real projects with real users, and to easily check that instrumented apps behave as the original ones (we did this by a combination of source code inspection and the addition of logging instructions in key parts of the app). Among the 2,443 apps, we randomly selected the 7 apps (see Table 1) among those requesting at least one of the permissions considered for our experiments (i.e., geolocation, camera and microphone access).
+
+**Selected Apps for Study 2**
+We executed the experiment by performing the following steps for each app: (i) we defined one or two (depending on the complexity of the app, see Table 1) common usage scenarios that start from the main activity and end with the complete stop of the app; (ii) we executed each usage scenario, while measuring the CPU load and memory consumption of the process of the app; (iii) we created a feature-component mappings using the AFP Web application; (iv) we instrumented the app via the AFP Instrumenter by using the mapping defined in the previous step; (v) we executed and measured again each usage scenario on the instrumented version of the app.
+
+Threats to Validity. A possible threat to validity of our experiment is represented by the selection of only free apps as subjects. Although this choice was driven by budgetary constraints, free apps are representative as they represent 75 percent of all Google Play Store apps and are downloaded more often  than paid apps.

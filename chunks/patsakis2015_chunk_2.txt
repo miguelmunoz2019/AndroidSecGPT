@@ -1,0 +1,73 @@
+The above setup mimics two real-world attack scenarios: In the first scenario, a network administrator might try to gather as much information as possible about the users in his network. Note that, as it is shown in our findings, there is no need for the network administrator to request his users to install a certificate in order to attack them, as many applications are using unencrypted traffic or leave important information in the header so the administrator only needs to watch regular network traffic. In principle, beyond the malicious network administrator, anyone who can perform traffic sniffing can execute these attacks.
+
+The second scenario involves a malicious user with cyber-stalking intentions. The attacker wants to find probable victims and their whereabouts. To this end, he/she intercepts the packages that are sent and received from the applications and he uses them to extract further fine-grained information. Figure 1 illustrates our setup and where we expect our adversary to be logically located.
+
+To capture the data from the studied apps we have used Fiddler4 as the debugging proxy and we have installed its certificate in a smartphone. All the experiments were conducted using an iPhone 4 with iOS 7. However, as it is going to be discussed, the operating system does not have any relevance to the vulnerabilities that we have found. The vulnerabilities that we discuss in this work are mainly due to the exchanged traffic between the apps and web servers that host the services and, in fact, the apps per se have not been analysed.
+
+4 http://www.telerik.com/fiddler.
+
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+# 4 The Findings
+We have analysed 18 mobile dating and chatting applications to study whether they send sensitive HTTP traffic, include the current location of users, send the actual distance to other users, use static links, etc. An overview of our findings is depicted in Fig. 2 and in what follows we briefly describe the specific details/vulnerabilities of each studied application.
+
+# ChatOn:
+ChatOn uses HTTPS for all its traffic. However, many details could be leaked through the URL of the API. For instance, an eavesdropper can easily find many information about the user’s phone, namely, model, operating system version, IMEI, IMSI, telephone number, user ID and app version. The app sends the telephone numbers of all user’s contacts to Samsung, and the received packets contain additional information like contacts’ birthday. The RESTful API that is used exposes users actions and the profiles that they visit.
+
+# Grindr:
+Grindr uses HTTPS for most of its communications, but photographs are sent by using static links over HTTP. The API that is called from the mobile app might allow eavesdroppers to extract the actual user location and his/her application ID from the sniffed URL. Additionally, the URL discloses the user’s activity and his/her device OS. Moreover, exchanged packets contain the distance only for users that consented and the application might display the relative user distance. However, the messages contain the actual users’ location.
+
+# Hornet:
+Hornet encrypts its traffic using HTTPS, but sends the distance with 10 m accuracy. Photos are static links sent over HTTP. The API calls allow an adversary to deduce user activity, e.g. chatting, browsing profiles, etc. simply by capturing the URLs that users request.
+
+# I-Am:
+Apart from the authentication which is executed over HTTPS, the rest of the traffic of I-Am goes over HTTP, hence, allowing an adversary to have full access to user private data. Images are sent over HTTP and as static links. Regarding spatial data, the actual user location is sent in the URL without any encryption or obfuscation, and the exact distance to other users is sent in the packet along with their birthday.
+
+# LOVOO:
+All traffic of LOVOO is sent over HTTPS, with the exception of photos, which are sent over HTTP. It is interesting to notice that links are dynamic and expire. The actual distance between users is sent with a rounding of 100 m, along with their relative (x, y) coordinates. Thus, an adversary could recover the actual locations. Also, the API calls expose in the URLs that are requested the user location, his/her preferences and his/her overall activity.
+
+# MeetMe:
+MeetMe uses mixed HTTP/HTTPS traffic. The user location and his/her preferences are visible in the URL. The actual location of the user is included in the packet if other users are nearby, otherwise their distance is given in Km. Photos are shared over HTTP, and user commands can be seen in the URL.
+
+# 156 C. Patsakis et al.
+
+# MoMo:
+While MoMo uses HTTPS to exchange messages with the server, it does not hide users’ location. More precisely, the packets that are received from the app contain fine-grained distance information from other users. In addition, URLs contain the visited profiles as well as the current user ID and photos are sent over HTTP by using static links.
+
+# Plenty of Fish:
+It uses HTTP but all messages are encrypted, which most likely means that the app contains a local key to decrypt the contents. On the bad side, photos are sent over HTTP as static links.
+
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+# SayHi
+It uses Facebook for its authentication and then sends everything in clear text. Packets include the fine-grained location of other users and their activity can be seen in the requested URLs. An eavesdropper could also intercept user conversations. Photos are sent over HTTP using static links.
+
+# Singles Around Me
+It sends the exact location of other users in the packet. Photos are sent over HTTP with some of them being dynamic links and others being static. However, the received packet contains an additional field: users’ emails. In principle, a user needs to ask for the permission of other users to access their email, but this is always sent in the packet. This app significantly exposes users because URLs contain the IDs that a user has been watching. Hence, revealing his/her preferences and activity.
+
+# SKOUT
+SKOUT uses HTTPS only for its authentication but the rest of the traffic is sent over HTTP. It sends the exact distance to other users in the packets and then obfuscates it in the frontend of the app. The API of SKOUT exposes the user activity because it shows whether the user is typing a message, visiting a profile, etc. Since traffic is sent over HTTP, chat messages are unencrypted.
+
+# Tagged
+All traffic is sent over HTTP, so all messages can be intercepted and the API exposes user’s activity and preferences. Photos are sent over HTTP as static links.
+
+# Tango
+Tango transmits over HTTP and all messages can be intercepted. The API exposes user’s activity as well as his/her phone number and preferences. Photos are sent over HTTP as static links and the messages contain the real location of other users.
+
+# Tinder
+Tinder uses HTTPS traffic to deter eavesdroppers but the messages contain the Facebook ID of the users. Hence, an adversary can access even more data. Packets do not contain the actual location but the distance to other users, which can be further tuned to recover their actual locations. Photos are sent over HTTP as static links.
+
+# Tingle
+Tingle does not use location data of other users in the received packets. However, messages contain other important information. Like Singles Around Me, it includes other users’ emails and, additionally, it has a device tag indicating, for example, that the user has switched the device. Moreover, Tingle displays the actual location of the user in the URL, allowing an eavesdropper to identify him/her. The URL used by the API contains users’ queries, hence, exposing their preferences. Finally, photos are sent over HTTP as static links.
+
+# Waplog
+Waplog transmits over HTTP. While it does not send the location, it exposes emails of other users. Photos are sent over HTTP as static links. In addition, the API exposes information about the user’s device in the URL, the session key and the user’s hashed password.
+
+C. Patsakis et al.
+
+# WeChat
+WeChat uses HTTP for all its traffic and sends all information in an encrypted file. In our experiments, we didn’t notice any handshake between the application and the API to generate a cryptographic key. Therefore, we may safely deduce that the application is installed with a static hard-coded key, same for each user that can be derived by reverse engineering the application. Therefore, one could use the key to fully manipulate the data of all users.
+
+# Zoosk
+Zoosk uses HTTPS for its traffic. The requested URLs expose the phone model and its OS as well as the user activity. Finally, photos are sent as static links over HTTPS.
+
+# 5 Discussion
+After analysing the above mobile dating and chatting applications we have observed several trends that are next discussed.

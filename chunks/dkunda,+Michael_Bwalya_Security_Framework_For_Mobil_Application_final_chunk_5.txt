@@ -1,0 +1,19 @@
+# Bar Chart
+This study designed a system that allows the users who are meter readers to transfer (upload readings) data between a smart phone and server database in a secure manner without facing the problem of data attack. Data being uploaded to the server is encrypted before it is transferred and decrypted once it reaches the server side; the whole idea behind this is to secure the data while being transmitted across networks, therefore, any access to the data that is unsanctioned will be rendered useless since every bit of information being transmitted is scrambled. As indicated by , the best technique for safeguarding the data that is being transferred is to apply encryption on data before the transmission and uploading process to ensure that the data remains protected against any authorized access at all times. This study further demonstrates that the usage of cryptographic techniques increases the security levels of encrypted mobile information.
+
+# VII. Discussion
+The main focus of this study was to develop a security framework for mobile application systems that is able to encrypt data transferred from the mobile phone to a server using AES encryption method. Several solutions that have been developed were presented, in trying to find solutions to the most important challenges of security and privacy of data being exchanged between mobile applications and servers. In view of this, a summary of our findings were presented from the carried out literature review, this further powered the relevance of this research into finding a solution that could work in most mobile application systems where there is data exchange between mobile apps and servers across communication channels.
+
+# VIII. Conclusion
+This research presented the challenges of security and privacy of data being exchanged between mobile applications and servers. Security of data is very important for applications where sensitive data is going through communication channels. This research employed the use of an established cryptographic algorithm in the development of a security framework for mobile application systems to protect data being transmitted, as this would improve a high degree of privacy and security of data. Advanced Encryption Standard (AES) was used. According to , this technique uses a number of replacements, ordering and transformation. Because of the strength that it has, AES was favored. Unlike 3DES and RSA, AES encryption was applied on four fields namely: Account number, image path, meter number and phone number.
+
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+seen from the experimental results that data in these fields was in an unreadable format (ciphertext) indicating a successful encryption. The framework employed the use of AES cryptography which has a complex encryption process and has proven to be the best encryption method. The simulation results between 3DES and AES concluded that in terms of completing time, AES is faster. By applying this encryption technique, this study made sure that the security goals of data Confidentiality, Integrity and Availability (CIA) were met.
+
+# Future Work
+As a future work, the security framework will further be tested on different mobile platforms. Hybrid cryptographic algorithms will be utilized to efficiently secure the data and information which is transmitted through systems. Several simulations will be carried out to assess and mitigate the vulnerabilities that are exploited by attackers on different mobile platforms such as stealing users’ confidential information without their consent.
+
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+43.

@@ -1,0 +1,16 @@
+# VI. CONCLUSIONS AND FUTURE WORK
+Android smart phones are becoming very popular among the different smart phone platforms and this is expected to increase in popularity . Despite its popularity momentum, its open source software and programmable framework behavior make it vulnerable to virus attacks . In this paper, we present a reputation based security model for android applications. The paper takes into consideration the fact that Smart phones are memory, battery and speed constrained and hence exploiting the cloud to do the reputation index computation of a given application. By referring to the calculated matrix of reputation built by a given application, the model will notify users on the potential risk of the application before installation. Applications can be classified as highly risky, medium risk, less risk and genuine all based on reputation they have built in the cloud.
+
+The experimental results show that some application need to be regarded as highly risky and therefore warn users not to install them until they improve their reputation by passing the threshold set by the reputation based security model proposed in this paper.
+
+#startService(android.content.Intent), Accessed on May 13, 2012.
+
+8. http://developer.android.com/reference/android/content/Context.html#bindService(android.content.Intent, android.content.ServiceConnection, int), Accessed on May 13, 2012.
+
+9. http://developer.android.com/guide/topics/manifest/manifest-intro.html, Accessed on May 13, 2012.
+
+10. H. Bing. Analysis and Research of Systems Security Based on Android, In Proceedings of 2012 Fifth International Conference on Intelligent Computation Technology and Automation (ICICTA), Zhangjiajie, Hunan, January 12-14, 2012.
+
+11. B. Berger, M. Bunke, and K. Sohr, An Android Security Case Study with Bauhaus, In the proceedings of 2011 18th Working Conference on Reverse Engineering (WCRE), Limerick, October 17-20.
+
+12. NIMO: Nordic Interaction and Mobility Research Platform, http://www.nimoproject.org. Accessed on May 8, 2012..

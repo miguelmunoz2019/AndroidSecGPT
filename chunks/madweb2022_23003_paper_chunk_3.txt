@@ -1,0 +1,79 @@
+# Issue #1: Self-XSS attacks against Chromium browsers are possible if URIs are pasted from IME keyboards
+IME keyboards are widely pre-installed by major manufacturers, including Google and Samsung: the Gboard IME keyboard has over 1 billion installs according to Google Play . The issue can be utilized for session hijacking (e.g., stealing session cookies) or general JavaScript code execution in the browser (e.g., to submit forms on behalf of the user without consent and knowledge). In the affected browsers, JavaScript code can access the current session data, including the document components, because the scheme inherits the currently loaded origin. The browser’s SOP can be circumvented by configuring the adversary’s back-end servers to accept requests from any origin using CORS.
+
+# e) Disclosure:
+We reported this issue to Opera, and, because it affects all Chromium browsers, subsequently also to the Chromium team. Both vendors confirmed the issue.
+
+07 774 35962
+javascript:alerti xss: #documentdomz google_com
+javascriptalert( Xss:"ocumentdomain) IRAADES Stan in
+iavascriot-alert 155=cument-domaini
+javascript:al '55: edocumentdomain
+Google
+An example of self-XSS against Google Chrome with an IME keyboard: pasting a JavaScript URI from the keyboard bypasses sanitisation, thus, navigating to the URI causes the JavaScript code to run.
+
+The Opera issue can be tracked via CVE-2020-6159, while the Chromium issue in the patching process. While certain practices from Table I could be used for mitigation (e.g., “Search query” or “Null origin”), Chromium intends to repair the issue while maintaining support for typing JavaScript URIs. This is made difficult because IME keyboards do not provide APIs for listening to clipboard events. Thus, we propose a solution that meets the above criteria in Section IV.
+
+# B. Impersonation of website origins using the data scheme
+Data URIs allow to render data included in the URI string in the web browser. As a consequence, data URIs have been used in the past to display “fake” origins in browsers as described in Section II. We thus opted to study this problem in the context of our set of mobile browsers. As evident from Table I, only FireFox and FireFox focus lack support for data URIs.
+
+While all browsers restrict top-level navigation for data URIs, we noticed an issue in the behaviour of the address bar in the Samsung browser: it displays the last characters of data URI, which truncates the data scheme and most of the actual data from lengthy URIs. As a consequence, we found that it is possible to craft a data URI that renders a web page that seems to be hosted on a legitimate origin, e.g., a fake login phishing page. As can be seen in Figure 4 (right), such a custom data URI renders a form that appears to be hosted on a legitimate domain (fakebook.com in our example) and served via HTTPS. We tested the crafted data URI on two different Samsung devices with different display resolutions, Samsung A75 and Samsung S20 Ultra, and confirmed that the URI produces the same result regardless of the screen size. In contrast, all other browsers in our set correctly displayed the beginning of the URI, including the data scheme, as can be seen for Chrome in Figure 4 (left).
+
+# Issue #2: Displaying only the end of a Data URI in the Samsung browser address bar allows an adversary to fake the origin of the rendered data.
+
+# 02-15
+734 35902
+data text/html (script src-'h            https://facebaok com?login_page aspx?id
+Fakebook.com
+Please enter your username and password
+UsernaMe                                    Username
+pnesword                                    Passirurd
+Login                                       Login
+Forget your password
+Forgel Your password
+Google Chrome                            Samsung Internet
+# a) Threat model:
+Two threat models can be considered for this issue. First, since chromium browsers support opening a data URI via new tab option, an adversary can set up a phishing data URI link asking the user to open it with new tab if it is not working resulting of origin spoofing as illustrated in figure 5. Alternatively, the same threat model as for the JavaScript scheme (Section III-A) can be considered. Namely that a victim is ticked into copying a data URI and pasting it into their browser. Our considered browsers do not apply any trimming for data URI, so in this case pasting via the context menu or an IME keyboard leads to identical results. Similar to the JavaScript scheme, the adversary can prepend the URI of a legitimate origin to the crafted data URI to display the target website’s logo, as seen in Figure 2.
+
+19-44                                       1626                        7. 56402
+github,io                 https: //facebook com?login page
+Fakebook com
+Congrtuation!! !
+prizell
+YomWon                            Please enter your username and password
+To clalm pleast loginTucebouk Vu [nClink        Usernane
+neot
+Password
+If the Iink does not work please open IC in new" window or cOpy it and past it.
+
+Login
+data;text/html,
+# Conditions
+Table II. DIFFERENT CASES OF FILE URI RESTRICTIONS IN SAMSUNG BROWSER. CASE I: USER DENIES STORAGE PERMISSION; CASE II: USER GRANTS STORAGE PERMISSION; CASE III: USER DENIES STORAGE PERMISSION AND DISABLES FURTHER PROMPTS.
+
+storage permission, an access to the internal storage will bypass the check and proceed with the access (case III).
+
+b) Root cause analysis: Still, it remains unclear how the Samsung browser is—even though it theoretically allows the access—is able to gain access to the internal storage without holding the actual permission. Finding the root cause proved to be challenging because many Android components are involved. It was however clear that the issue is caused by the interplay of Samsung-specific modifications, as the problem did not occur with other browsers (and because the Samsung browser only runs on Samsung devices). We therefore examined the involved components step-by-step.
+
+c) System-level analysis: At the Android system level, we identified two possible mechanisms that could cause the observed permission system bypass:
+- Privileged permissions: Android can give read/write access to specific apps via so-called allowlists.
+
+- Signature-based permissions: Apps signed with the vendor key are granted system signature permissions.
+
+We analysed Samsung’s allowlist and did not find any rule granting Samsung browser storage permission. This eliminates the first option. Further, we found that the Samsung browser is not a system app and installed on the data partition. We repacked and self-signed the app with a debug key. This invalidates any signature permission that might be granted by Android to the app. We found that the issue is still present in the self-signed browser, thus excluding the possibility of signature-based permissions as root cause.
+
+d) App-level analysis: As we excluded a system-level root cause, we began to consider possibilities that certain characteristics in the app cause the behaviour. First, we determined whether the issue is related to Chromium: We patched other Chromium browsers and eliminated the storage permission request. We however found that (as expected) access is denied.
+
+We thus a statically analysed the Samsung browser app to find any components that access the internal storage, both within the app and through external components, e.g., third-party apps, services or SDKs. Because the code base of the Samsung browser is large (278 MB after decompression), we concentrated on the file scheme handling and any involved app components (activities, services, content providers and broadcast receivers). From this analysis, we found that file URIs are handled as follows:
+1. The requested URI is retrieved from the address bar.
+
+2. It is sanitised against the allowed schemes.
+
+3. The URI is passed to Terrace browser engine to further process and issue the request.
+
+e) Inside the Terrace browser engine: Terrace is the browser engine used by Samsung. It is a native C library (compiled for ARM) with a large code base of 70 MB for 64-bit and 50 MB for 32-bit processors. We found that Terrace is based on Blink, which is a rendering engine part of the Chromium project . Unfortunately, the size of the Terrace code base and the lack of debug symbols makes a full static analysis infeasible. Nevertheless, we noticed several interesting strings related to the file scheme. At this stage, we decided to switch to dynamic analysis. We used Frida  to intercept and override potentially interesting methods within the browser engine. Frida’s interception abilities allowed us to inspect parameters and return values of relevant functions calls.
+
+The setup does not require rooting the device, as we noticed that the Samsung browser relies on Samsung Knox. Rooting the device would remove the Knox modules, possibly causing misbehaviour or crashes of the browser.
+
+We identified and intercepted the Java method responsible for loading URIs method and witnessed how file URIs are forwarded to the Terrace engine. To overcome Terrace’s lack of debug symbols, rather than inspecting potentially relevant Terrace functions, we hooked native file access operations like read() and open() syscalls. When accessing the internal storage using the file scheme, we indeed observed Terrace invoking open() and opendir() to open files and directories, respectively. At this stage, we confirmed that the Samsung
+browser, as a single process, has access to the internal storage and is not reliant on app components or external applications.

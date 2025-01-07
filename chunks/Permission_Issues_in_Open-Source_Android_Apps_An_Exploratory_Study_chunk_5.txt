@@ -1,0 +1,73 @@
+The most common types of PRIs occurring in Android apps are of types O and U. This indicates that even if issues and their consequences are well-known and have been studied in-depth by the academic community, that they are still a common occurrence, even in apps developed for the newer versions of Android. As a consequence, advise developers to pay more attention to these PRI types and also advocate for the adoption of permission analysis tools during app development, as discussed in Section V-A. In addition, we suggest organizations and project maintainers to be cognizant of PRIs.
+
+The results discussed above demonstrate that even regular contributors need to be cognizant of PRIs. This strengthens the case for adopting permission analysis tools during app development. Moreover, since MC issues tend to persist a long time once introduced, extra attention should be paid by developers and organizations to both ensure that they are not introduced, but to also regularly check their apps for these types of issues.
+
+of over- and under-permission issues during activities that author who made the commit to the repository. Due to our empirical examination of existing repositories, it would have been impossible to examine code ownership in our study.
+
+# RQ4.
+
+The frequencies of PRI fixes across project newcomers and regular contributors tend to follow the same trends as the ones related to the introduction of PRIs (see Section V-C), but with one main difference: project newcomers fixed fewer PRIs in total, specially for over-permissioning issues. We may expect this observation since we can speculate that PRIs are non-trivial issues and are managed (and fixed) by developers who are more familiar with the internals of the app being developed. The obtained results confirm the intuition that since PRIs are non-trivial issues in an Android they tend to be fixed by developers who are not newcomers in the project.
+
+Newcomers and regular contributors are exhibiting a statistically-significant difference of the number of issues fixed per commit, but with a negligible effect size. This means that, despite the fact that regular contributors tend to fix more PRIs per commit, such a difference is extremely small. It is interesting to mention that a recent study on code smells in Android apps  further confirmed that developers with few contributions, like newcomers, do not forcibly introduce more or remove less code smells. Overall, those observations lead us to conjecture that PRIs (and generic code smells as emerged in the work by Habchi et al. ) in open-source Android projects are managed by contributors belonging to different groups and that developers’ experience does not seem to be a good predictor of the introduction or fixing of PRIs/code smells in the source code of the app. As future work, we will perform a more in-depth analysis in order to better characterize this phenomenon, e.g., by investigating on the specific activities performed by developers when introducing/fixing PRIs, interviewing developers to better understand the context in which PRIs are introduced and fixed, and to assess if integrating the automated detection of PRIs in the development workflow (e.g., in a continuous-integration pipeline) may help in having less PRIs in today’s Android apps.
+
+# VII. THREATS TO VALIDITY
+Although our research led to several interesting results, there are several threats to validity.
+
+# Internal Validity
+In this study we rely upon the M-Perm and P-Lint tools. While these tools have been published in peer-reviewed venues, they are both still reasonably new. Like with all static analysis tools, they are not perfect, and tool imperfections have the capability to skew research results. In particular, obfuscated code is known to be particularly challenging for tools of this kind . As described in Section IV-B, we validated both tools on a set of benchmark applications, thus making us reasonably confident about their accuracy. In order to foster independent checks and verification, all evaluation data is available in the replication package  of this study.
+
+We examined ‘commit ownership’ and not ‘code ownership’ in our study. While ‘code ownership’ is a general term used to describe whether one person is primarily responsible for a software component , commit ownership is merely the act of making a commit.
+
+# VIII. RELATED WORK
+Previous works have analyzed Android permissions from a variety of perspectives. Stowaway  combines callback
+# IX. CONCLUSIONS AND FUTURE WORK
+The results of the study provide evidence-based insights for better understanding and managing permission-related issues in Android apps. Specifically: (i) permission-related issues is a frequent phenomenon in Android apps, with a strong prevalence of over-and under-permissions; (ii) the majority of permission-related issues are fixed in a span of a few days, even though in many cases some issues can plague the app for an extended period of time (i.e., years) before being fixed; (iii) regular contributors introduce and fix a considerably larger number of PRIs along the lifetime of Android apps, but this phenomenon is related to the fact that regular contributors commit more code changes.
+
+Future work will investigate if PRIs accumulate-diminish over the lifetime of an app, potentially revealing interesting patterns about their evolution. We will also perform a more in-depth study to understand what developers do when they introduce or fix PRIs; this study will involve a qualitative analysis of (i) the changes performed in the PRI introducing/fixing commits, (ii) their corresponding commit messages, and (iii) the discussions around their related pull requests.
+
+Our work benefits both developers and researchers to better understand permission-related issues. For researchers, this paper creates the foundation for future work in the area of permissions-related issues. For developers, this work provides insight on how teams can better plan development activities.
+
+247
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 13, 2024 at 04:27:22 UTC from IEEE Xplore. Restrictions apply.
+
+#normal-dangerous.
+
+4. Osara: Open source android repository analyzer. https://github.com/MobileEvolution/oSARA/.
+
+5. Permissions best practices. https://developer.android.com/training/permissions/best-practices.html.
+
+6. Requesting permissions at run time. https://developer.android.com/training/permissions/requesting.html.
+
+7. How long does it take to build a mobile app? http://www.kinvey.com/how-long-to-build-an-app-infographic, 2017.
+
+8. Permissions Overview – Android developer guidelines. https://developer.android.com/guide/topics/permissions/, 2018. [Online; accessed 16-May-2019].
+
+9. A. Agresti and M. Kateri. Categorical data analysis. Springer, 2011.
+
+10. K. Allix, T. F. Bissyandé, J. Klein, and Y. Le Traon. Androzoo: Collecting millions of android apps for the research community. In Mining Software Repositories (MSR), 2016 IEEE/ACM 13th Working Conference on, pages 468–471. IEEE, 2016.
+
+11. K. W. Y. Au, Y. F. Zhou, Z. Huang, and D. Lie. Pscout: Analyzing the android permission specification. In Proceedings of the 2012 ACM Conference on Computer and Communications Security, CCS ’12, pages 217–228, New York, NY, USA, 2012.
+
+12. D. Barrera, J. Clark, D. McCarney, and P. C. van Oorschot. Understanding and improving app installation security mechanisms through empirical analysis of android. In Proceedings of the Second ACM Workshop on Security and Privacy in Smartphones and Mobile Devices, SPSM ’12, pages 81–92, New York, NY, USA, 2012. ACM.
+
+13. C. Bird, N. Nagappan, B. Murphy, H. Gall, and P. Devanbu. Don’t touch my code!: Examining the effects of ownership on software quality. In Proceedings of the 19th ACM SIGSOFT Symposium and the 13th European Conference on Foundations of Software Engineering, ESEC/FSE ’11, pages 4–14, New York, NY, USA, 2011. ACM.
+
+14. M. Boussaa, W. Kessentini, M. Kessentini, S. Bechikh, and S. B. Chikha. Competitive coevolutionary code-smells detection. In International Symposium on Search Based Software Engineering, pages 50–65. Springer, 2013.
+
+15. P. Calciati and A. Gorla. How do apps evolve in their permission requests?: A preliminary study. In Proceedings of the 14th International Conference on Mining Software Repositories, MSR ’17, pages 37–41. IEEE Press, 2017.
+
+16. P. Chester, C. Jones, M. W. Mkaouer, and D. E. Krutz. M-perm: A lightweight detector for android permission gaps. In 2017 IEEE/ACM 4th International Conference on Mobile Software Engineering and Systems (MOBILESoft), pages 217–218, 2017.
+
+17. E. Chin, A. P. Felt, K. Greenwood, and D. Wagner. Analyzing inter-application communication in android. In Proceedings of the 9th International Conference on Mobile Systems, Applications, and Services, MobiSys ’11, pages 239–252, New York, NY, USA, 2011. ACM.
+
+18. W. J. Conover and W. J. Conover. Practical nonparametric statistics. 1980.
+
+19. W. W. Daniel et al. Applied nonparametric statistics. Houghton Mifflin, 1978.
+
+20. C. Dennis, D. E. Krutz, and M. W. Mkaouer. P-lint: A permission smell detector for android applications. In 2017 IEEE/ACM 4th International Conference on Mobile Software Engineering and Systems (MOBILESoft), pages 219–220, May 2017.
+
+21. S. Egelman, A. P. Felt, and D. Wagner. Choice architecture and smartphone privacy: There’s a price for that. In Workshop on the Economics of Information Security (WEIS), 2012.
+
+22. P. Faruki, A. Bharmal, V. Laxmi, V. Ganmoor, M. S. Gaur, M. Conti, and M. Rajarajan. Android security: a survey of issues, malware penetration, and defenses. IEEE communications surveys & tutorials, 17(2):998–1022, 2015.
+
+23. A. P. Felt, E. Chin, S. Hanna, D. Song, and D. Wagner. Android permissions demystified. In Proceedings of the 18th ACM Conference on Computer and Communications Security, CCS ’11, pages 627–638, New York, NY, USA, 2011. ACM.

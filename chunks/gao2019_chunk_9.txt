@@ -1,0 +1,97 @@
+# 3) Software Evolution:
+The software engineering literature includes a large body of work on software maintenance and evolution –. We focus our discussion on recent Android-related work. In one of the latest work, Coppola et al. have investigated the fragility in Android GUI testing by utilizing 21 metrics to measure the adoption tools and their evolution . Differently, our work is more focused on Android app vulnerability analysis. Calciati and Gorla  have leveraged the AndroZoo dataset to investigate the evolution of permission requests by Android apps. Taylor and Martinovic  also investigated how permission usage by apps, as well as security and privacy issues, have changed over a two-year period. Our work scales their approach with a larger set of apps, spanning a larger timeline, and considering entire lineages instead of only a pair of app versions. Evolution of the Android OS code has also been investigated. McDonnell et al. have empirically studied the stability of Android APIs , while Li et al. focused on the evolution of inaccessible Android APIs . Thanks to the lineage dataset that we have collected, further studies can be performed to check the alignment between OS API evolution and API usage evolution in app code.
+
+# VI. CONCLUSION
+Evolution studies are important for assessing software development process and measure the impact of different practices. However, such studies, to be meaningful, must scale to the size of the artifact. For Android apps, this was so far a challenge due to the lack of significant records on market apps. Our work first addressed these challenges by reconstructing 28 564 lineages.
+
+# IEEE TRANSACTIONS ON RELIABILITY
+1. D. Octeau, D. Luchaup, M. Dering, S. Jha, and P. McDaniel, “Composite constant propagation: Application to Android inter-component communication analysis,” in Proc. IEEE 37th Int. Conf. Softw. Eng., vol. 1, 2015, pp. 77–88.
+
+2. C. Qian, X. Luo, Y. Le, and G. Gu, “Vulhunter: Toward discovering vulnerabilities in Android applications,” IEEE Micro, vol. 35, no. 1, pp. 44–53, Jan. 2015.
+
+3. M. Backes, S. Bugiel, and E. Derr, “Reliable third-party library detection in Android and its security applications,” in Proc. ACM SIGSAC Conf. Comput. Commun. Secur., 2016, pp. 356–367.
+
+4. D. Kantola, E. Chin, W. He, and D. Wagner, “Reducing attack surfaces for intra-application communication in Android,” in Proc. 2nd ACM Workshop Secur. Privacy Smartphones Mobile Devices, 2012, pp. 69–80.
+
+5. M. Xu et al., “Toward engineering a secure Android ecosystem: A survey of existing techniques,” ACM Comput. Surveys, vol. 49, no. 2, pp. 38:1–38:47, 2016.
+
+6. W. You et al., “Reference hijacking: Patching, protecting and analyzing on unmodified and non-rooted Android devices,” in Proc. 38th Int. Conf. Softw. Eng., 2016, pp. 959–970.
+
+7. L. Xue, X. Luo, L. Yu, S. Wang, and D. Wu, “Adaptive unpacking of Android apps,” in Proc. IEEE 39th Int. Conf. Softw. Eng., Piscataway, NJ, USA, 2017, pp. 358–369.
+
+8. Y. Zhang, X. Luo, and H. Yin, “Dexhunter: Toward extracting hidden code from packed Android applications,” in Computer Security—ESORICS 2015, G. Pernul, P. Y. A. Ryan, and E. Weippl, Eds. Cham, Switzerland: Springer, 2015, pp. 293–311.
+
+9. B. Bichsel, V. Raychev, P. Tsankov, and M. Vechev, “Statistical deobfuscation of Android applications,” in Proc. ACM SIGSAC Conf. Comput. Commun. Secur., New York, NY, USA, 2016, pp. 343–355.
+
+10. P. Calciati and A. Gorla, “How do apps evolve in their permission requests? A preliminary study,” in Proc. IEEE 14th Int. Conf. Mining Softw. Repositories, 2017, pp. 37–41.
+
+11. L. Li, T. F. Bissyandé, Y. L. Traon, and J. Klein, “Accessing inaccessible android APIs: An empirical study,” in Proc. 32nd Int. Conf. Softw. Maintenance Evolution, 2016, pp. 411–422.
+
+12. V. F. Taylor and I. Martinovic, “To update or not to update: Insights from a two-year study of Android app evolution,” in Proc. ACM Asia Conf. Comput. Commun. Secur., 2017, pp. 45–57.
+
+13. K. Allix, T. F. Bissyandé, J. Klein, and Y. L. Traon, “Androzoo: Collecting millions of Android apps for the research community,” in Proc. 13th Int. Conf. Mining Softw. Repositories, Austin, TX, USA, May 2016, pp. 468–471.
+
+14. AndroZoo. [Online]. Available: http://androzoo.uni.lu, Accessed on: 2017.
+
+15. F. Camilo, A. Meneely, and M. Nagappan, “Do bugs foreshadow vulnerabilities? A study of the chromium project,” in Proc. IEEE/ACM 12th Work. Conf. Mining Softw. Repositories/, 2015, pp. 269–279.
+
+16. V. Avdiienko et al., “Mining apps for abnormal usage of sensitive data,” in Proc. IEEE 37th Int. Conf. Softw. Eng.—Vol. 1, 2015, pp. 426–436.
+
+17. J. Burket, L. Flynn, W. Klieber, J. Lim, and W. Snavely, “Making DidFail succeed: Enhancing the CERT static taint analyzer for android app sets,” Mar. 2015, doi: 10/R1/6575201.v1.
+
+18. FlowDroid. [Online]. Available: https://blogs.uni-paderborn.de/sse/tools/flowdroid/, Accessed on: 2017.
+
+19. Y.-C. Lin, “Androbugs framework: An android application security vulnerability scanner,” in Proc. Blackhat Eur., 2015.
+
+20. AndroBugs. [Online]. Available: https://github.com/AndroBugs/AndroBugs_Framework, Accessed on: 2017.
+
+21. AndroBugs, “Hall of fame.” [Online]. Available: https://www.androbugs.com/#hof, Accessed on: 2017.
+
+22. M. Neugschwandtner, M. Lindorfer, and C. Platzer, “A view to a kill: Webview exploitation,” in Proc. USENIX Workshop Large-Scale Exploits Emergent Threats, 2013, p. 7.
+
+23. Y. Cifuentes, L. Beltrán, and L. Ramírez, “Analysis of security vulnerabilities for mobile health applications,” in Proc. 7th Int. Conf. Mobile Comput. Netw., 2015, pp. 1067–1072.
+
+24. M. Sabt and J. Traoré, “Breaking into the keystore: A practical forgery attack against Android keystore,” in Proc. Eur. Symp. Res. Comput. Secur., 2016, pp. 531–548.
+
+25. D. R. Thomas, A. R. Beresford, T. Coudray, T. Sutcliffe, and A. Taylor, “The lifetime of Android API vulnerabilities: Case study on the javascript-to-java interface,” in Cambridge Int. Workshop Secur. Protocols, 2015, pp. 126–138.
+
+26. T. Luo, H. Hao, W. Du, Y. Wang, and H. Yin, “Attacks on webview in the Android system,” in Proc. ACM Annu. Comput. Secur. Appl. Conf., 2011, pp. 343–352.
+
+27. R. Hay, “Android collapses into fragments,” in IBM Security Systems, 2013. [Online]. Available: https://securityintelligence.com/wp-content/uploads/2013/12/android-collapses-into-fragments.pdf, Accessed on: 2017.
+
+28. A. Cozzette, “Intent spoofing on Android,” Aug. 20, 2017. [Online]. Available: http://blog.palominolabs.com/2013/05/13/android-security/index.html
+29. S. Arzt, S. Rasthofer, and E. Bodden, “The soot-based toolchain for analyzing Android apps,” in Proc. IEEE 4th Int. Conf. Mobile Softw. Eng. Syst., 2017, pp. 13–24.
+
+30. J. Bau, E. Bursztein, D. Gupta, and J. Mitchell, “State-of-the-art: Automated black-box web application vulnerability testing,” in Proc. IEEE Secur. Privacy, Symp., 2010, pp. 332–345.
+
+31. M. Bland, “Finding more than one worm in the apple,” Commun. ACM, vol. 57, no. 7, pp. 58–64, 2014.
+
+32. M. Georgiev, S. Iyengar, S. Jana, R. Anubhai, D. Boneh, and V. Shmatikov, “The most dangerous code in the world: Validating SSL certificates in non-browser software,” in Proc. ACM Conf. Comput. Commun. Secur., 2012, pp. 38–49.
+
+33. C. Meyer and J. Schwenk, “SoK: Lessons learned from SSL/TLS attacks,” in Proc. Int. Workshop Inf. Secur. Appl., 2013, pp. 189–209.
+
+34. S. Yilek, E. Rescorla, H. Shacham, B. Enright, and S. Savage, “When private keys are public: Results from the 2008 Debian openSSL vulnerability,” in Proc. 9th ACM SIGCOMM Conf. Internet Meas. Conf., 2009, pp. 15–27.
+
+35. C. Zuo, J. Wu, and S. Guo, “Automatically detecting SSL error-handling vulnerabilities in hybrid mobile web apps,” in Proc. 10th ACM Symp. Inf., Comput. Commun. Secur., New York, NY, USA, 2015, pp. 591–596.
+
+36. OWASP. “Mobile top 10 2014-m2: Insecure data storage,” Aug. 20, 2017. [Online]. Available: https://www.owasp.org/index.php/Mobile_Top_10_2014-M2
+37. A. Cozzette et al., “Improving the security of Android inter-component communication,” in Proc. IFIP/IEEE Int. Symp. Integr. Netw. Manage., 2013, pp. 808–811.
+
+38. D. Sbîrlea, M. G. Burke, S. Guarnieri, M. Pistoia, and V. Sarkar, “Automatic detection of inter-application permission leaks in Android applications,” IBM J. Res. Develop., vol. 57, no. 6, pp. 10:1–10:12, 2013.
+
+39. W. Enck, M. Ongtang, and P. McDaniel, “On lightweight mobile phone application certification,” in Proc. 16th ACM Conf. Comput. Commun. Secur., 2009, pp. 235–245.
+
+40. C. Gibler, J. Crussell, J. Erickson, and H. Chen, “Androidleaks: Automatically detecting potential privacy leaks in Android applications on a large scale,” Trust, vol. 12, pp. 291–307, 2012.
+
+41. H. T. Ly, Tan C. Nguyen, and V.-H. Pham, “eDSDroid: A hybrid approach for information leak detection in Android,” in Proc. Int. Conf. Inf. Sci. Appl., 2017, pp. 290–297.
+
+42. S. Yovine and G. Winniczuk, “Checkdroid: A tool for automated detection of bad practices in Android applications using taint analysis,” in Proc. IEEE 4th Int. Conf. Mobile Softw. Eng. Syst., 2017, pp. 175–176.
+
+43. Google, “App id.” Jul. 16, 2017. [Online]. Available: https://developer.android.com/studio/build/application-id.html
+44. L. Li et al., “Understanding Android app piggybacking: A systematic study of malicious code grafting,” IEEE Trans. Inf. Forensics Secur., vol. 12, no. 6, pp. 1269–1284, Jun. 2017.
+
+45. Y. Zhou and X. Jiang, “Dissecting Android malware: Characterization and evolution,” in Proc. IEEE Symp. Secur. Privacy, 2012, pp. 95–109.
+
+46. L. Li, T. Bissyand, and J. Klein, “Moonlightbox: Mining Android API histories for uncovering release-time inconsistencies,” in Proc. IEEE 29th Int. Symp. Softw. Rel. Eng., Oct. 2018, pp. 212–223.
+
+47. K. Tam, A. Feizollah, N. B. Anuar, R. Salleh, and L. Cavallaro, “The evolution of Android malware and Android analysis techniques,” ACM Comput. Surveys, vol. 49, no. 4, pp. 76:1–76:41, 2017.

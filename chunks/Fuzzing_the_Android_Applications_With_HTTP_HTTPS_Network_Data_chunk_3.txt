@@ -1,0 +1,107 @@
+# 3) REPEATABILITY OF FUZZING
+An Android application only processes one response for one request. Repeatedly sending the same response packet (carrying different mutated data) to the application cannot repeatedly trigger its processing code for the data. This is not conducive to the repetitiveness of fuzzing. In the research process, we found that for response data used for content display:
+1. The same application had the same parsing code for the same type of data (e.g., the application uses the same image parsing library to process various image data contained in response data).
+
+2. The application would receive numerous response data of the same type during the same test.
+
+1) and 2) means that during the execution of an application, there are multiple response packets belonging to different request data (e.g., different response data with different image data are received by the application when operated.
+
+# IV. EVALUATION
+# A. EXPERIMENT SETUP
+Based on the proposed method, we implemented a fuzzing framework AAHF (standing for Android App HTTP/HTTPS Fuzzing) and performed experiments to verify its effect. The experiments were conducted on a Google Nexus5 mobile phone with operating system version 4 (It is worth noting that the method we proposed is for Android applications, not limited to the specific version of the Android operating system.) and a 64-bit win10 computer. The test samples are 10 widely used Android applications. The fuzzing algorithm of AAHF is shown in Fig.
+
+As shown in Algorithm 1, AAHF first checks whether the app has applied for network permissions, then replays the previously recorded script and initializes the app. AAHF starts the fuzzing and monitors whether the app page is replaced with the content of our test samples to determine if there is an HTML content replacement problem. After the test, through the log information recorded, we statistic the crash and ANR information. With the network data recorded during the test, we check whether there are response data from the replaced URL to check whether there is an URL hijacking problem.
+
+# B. EVALUATION RESULT
+The purpose of the experiment is to verify the validity of AAHF, that is, to be able to discover the security problems caused by unexpected network communication data. In this paper, applications’ security problems are classified as follows.
+
+1. Crash, apps crash and exit.
+
+2. ANR (Application Not Responding), apps fail to respond to users’ actions, and the Android system would display a popup window to prompt users to kill the process or wait for it.
+
+3. Redirected access, apps visit the redirected URL in response data without checking.
+
+4. HTML content replacement, apps display the HTML content contained in response data without verification.
+
+# X. Huang et al.: Fuzzing the Android Applications With HTTP/HTTPS Network Data
+# Response Data
+Contains 302 Status Line 2XX/3XX Content-Length
+Replace the Location field For each content-type, perform corresponding fuzzing 1XX/4xX/SXX
+Mutated response data Finish
+The experimental results indicated that AAHF can effectively find the above problems in each app during 1-3 hours’ testing. The results are shown in Table 3.
+
+# 1) ANR
+As can be seen from Table 3, AAHF found ANR in 9 of the 10 apps. A total of 33 activities with ANR problems were discovered. The error log information and ratios are shown in Table 4.
+
+As can be seen from Table 4, AAHF discovered two kinds of ANR.
+
+1. There is no window for the application.
+
+2. There is a window but the waiting queue of input events is not empty.
+
+Next, we analyzed the two cases.
+
+AAHF automatically operates applications using Monkey. The first case is caused by Monkey’s fast operations. When switching between two pages, one page is being initialized, the other page has been “stacked” (i.e., loses focus). At this point, clicking the back button quickly will cause the application to become unresponsive. This is triggered by the ANR monitoring strategy of the Android system and will not appear when the application is executed normally. The second case has the following possible reasons.
+
+1. AAHF performs some operations on the current page created by the application, and this operation will keep waiting until getting some specific response data from the server. If some other actions are performed during waiting, the application will become unresponsive.
+
+59956
+VOLUME 7, 2019
+# X. Huang et al.: Fuzzing the Android Applications With HTTP/HTTPS Network Data
+# Algorithm
+# AAHF fuzzing algorithm
+Input: Testing_App list; able
+Output: Test_results list
+function FUZZING(Testing_App, able)
+D able - a boolean value controls whether to start the test or not.
+
+if able then
+n < len(Testing_App) = 1
+for i = 1 to n do
+CHECKAPP(Testing_App[i])
+Test_results = MUTATION(Testing_App[i])
+end for
+end if
+return Test_results
+end function
+function MUTATION(App)
+A. Use Monkey to operate App:
+B. Capture and Mutate App's network data according to fuzzing strategies.
+
+C. Send the mutated data to App.
+
+D. Detect and capture App's log information
+end function
+return App's log information and network data
+function CHECKAPP(App)
+if App applies for network permissions then
+Install it on the phone.
+
+Playback pre-recorded Apps initialization script:
+end if
+end function
+Synchronous network request operations may cause thread blocking, and it will cause the application to be unresponsive if the blocking in the main thread lasts for more than 5 seconds. Although Android 4 and later system prohibit synchronous network request operation in the main thread, if the main thread needs to wait for the execution results of network operations in the child thread, and the child thread is blocked, the main thread will be blocked too, which also may trigger ANR.
+
+VOLUME 7, 2019
+# X. Huang et al.: Fuzzing the Android Applications With HTTP/HTTPS Network Data
+(ANR indicates the number of activities that have ANR in the app. Downloads indicates the number of downloads of the app in a well-known app market such as Google, 360.)
+Since the JSON data is different from the one under normal conditions, an error is reported: It is time to parse the INT but actually parse the OBJECT. The exception does not cause the application to crash, merely makes the return value of the getFLPContents() method to be null.
+
+For example, in the application com.amazon.mShop.android.shopping, ‘‘ModesActivity’’ calls the method ‘‘setupViewPager’’ in the subclass ‘‘FailureLandingPagePresenter’’, which does not check whether the return value is empty when calling the method ModesConfigProvider.getInstance (VSearchApp.getInstance().getContext()).getFLPContents(), thereby causing a null pointer exception. The reversed analysis code is shown in Fig. ‘‘ModesActivity’’ has been waiting for the processing result of ‘‘setupViewPager’’, therefore, the program is blocked, and the ANR error message appears after 5 seconds, as shown in Table 7.
+
+Attackers may achieve the purpose of Denial-of-service attack on an application with such security threats, by sending a small number of erroneous response packets when the application being executed to a specific stage. Developers are advised to avoid such ANR by the following means. After receiving the server-side error response data multiple times, the application can directly determine and prompt users for network failure or server problems, instead of waiting for correct response data.
+
+# 2) JSON DATA INTERACTION
+As can be seen from Table 3, a total of 25 Java layer’s crashes and 25 Native layer’s crashes of 10 apps were found. After preliminary analysis, it is determined that of the crashes in the Java layer are caused by wrong JSON data.
+
+59958 VOLUME 7, 2019
+# X. Huang et al.: Fuzzing the Android Applications With HTTP/HTTPS Network Data
+private void setup ViewPagerO {
+&nbsp;&nbsp;&nbsp;&nbsp;this mContent = ArraysasList(ModesConfigProvidergetInstance(VSearchApp getInstanceO getContextO) getFLPContentsO);
+&nbsp;&nbsp;&nbsp;&nbsp;this setRecyclerItemsO;
+&nbsp;&nbsp;&nbsp;&nbsp;this setRecyclerLabelsForFirstPageO;
+&nbsp;&nbsp;&nbsp;&nbsp;this setRecycler ViewPropertiesO;
+}
+(java.lang.IndexOutOfBoundsException, java.lang.Null-PointerException, java.lang.IllegalStateException, java.lang.NumberFormat Exception and java.lang.IllegalArgumentException).
+
+As the main test object of AAHF, JSON data occupy a large proportion in the whole test cases. If an app does not have a sophisticated checksum mechanism for JSON data, AAHF will trigger many crashes in a short period of time, such as com.gotokeep.keep and com.handsgo.jiakao.android. Fortunately, most of the current applications use popular third-party libraries (gson, etc.) to implement the processing of JSON data. These libraries are more sophisticated in handling common anomalous data (e.g., data with the wrong format), and errors caused by these data will be caught and not cause apps’ crashes. In this case, if the mutated JSON data still cause a crash, it means that the mutated data have affected the execution flow of the application or triggered a security vulnerability in the third-party library, which is pretty harmful. The comparison of error log information for the two cases (an app’s crash in Table 8 and a third-party library’s crash in Table 9) is shown as follows.

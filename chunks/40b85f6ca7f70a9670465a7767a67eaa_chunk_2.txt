@@ -1,0 +1,71 @@
+# Empirical Software Engineering
+Content providers manage access to a repository of persistent data that could be used internally or shared between apps. The OS and its apps, as well as components within the same or across multiple apps, communicate with each other via ICC APIs. These APIs take an intent object as a parameter. An intent is either explicit or implicit. In an explicit intent, the source component declares to which target component (i.e., Class or ComponentName instances) the intent is sent, whereas in an implicit intent, the source component only specifies a general action to be performed (i.e., represented by a text string), and the target component that will receive the intent is determined at runtime. Intents can optionally carry additional data also called bundles. Components declare their ability to receive implicit intents using “intent filters”, which allow developers to specify the kinds of actions a component supports. If an intent matches any intent filter, it can be delivered to that component.
+
+# 2 ICC Threats
+ICC not only significantly contributes to the development of collaborative apps, but it also poses a common attack surface. The ICC-related attacks that threaten Android apps are:
+- Denial of Service: Unchecked exceptions that are not caught will usually cause an app to crash. The risk is that a malicious app may exploit such programming errors, and perform an inter-process denial-of-service attack to drive the victim app into an unavailable state.
+
+- Intent Spoofing: In this scenario a malicious app sends forged intents to mislead a receiver app that would otherwise not expect intents from that app.
+
+- Intent Hijacking: This threat is similar to a man-in-the-middle attack where a malicious app, registered to receive intents, intercepts implicit intents before they reach the intended recipient, and without the knowledge of the intent’s sender and receiver.
+
+Two major consequences of ICC attacks are as follows:
+- Privilege Escalation: The security model in Android does not by default prevent an app with fewer permissions (low privilege) from accessing components of another app with more permissions (high privilege). Therefore, a caller can escalate its permissions via other apps, and indirectly perform unauthorized actions through the callee.
+
+- Data Leak: A data leak occurs when private data leaves an app and is disclosed to an unauthorized recipient.
+
+# 3 ICC Security Code Smells
+In this section we present the guidelines we followed to derive the security code smells from previous research. Finally, we explain each security smell in detail.
+
+# 3 Literature Review
+Although Android security is a fairly new field, it is very active, and researchers in this area have published a large number of articles in the past few years. In order to answer the first research question (RQ1), and to draw a comprehensive picture of recent ICC smells and their corresponding vulnerabilities, our study builds on two pillars, i.e., a literature review and a benchmark inspection.
+
+# Empirical Software Engineering
+We were essentially interested in any paper that matches our scope, i.e., explaining an ICC-related issue, and any countermeasures that involve ICC communication in Android.
+
+For our analysis we considered multiple online repositories, such as IEEE Xplore and the ACM Digital Library, as well as the Google Scholar search engine. In each repository we formulated a search query comprising Android, ICC, IPC and any other security-related keywords such as security, privacy, vulnerability, attack, exploit, breach, leak, threat, risk, compromise, malicious, adversary, defence, or protect. In addition to increase our potential coverage on Android security, we also collected all related publications in recent editions of well-known software engineering venues like the International Conference on Software Engineering (ICSE). This search led initially to 358 publications.
+
+In order to retrieve only relevant information that lies within our scope, i.e., Android application level ICC security, we first read the title and abstract, and if the paper was relevant we continued reading other parts.
+
+This process led to the inclusion of 47 papers in our study. We recursively checked both citations and cited papers until no new related papers were found. This added six new relevant papers in our list that in the end contained 53 relevant papers for an in-depth study, out a total of 430 papers. During the whole process, which was undertaken by two authors of this paper, we resolved any disagreement by discussions. The list of included papers in this study is available on the GitHub page of the project and Ghera4 benchmarks for our evaluation, both built with a focus on ICC. We relied on their technical implementation, or description where possible, to extract the desired information, i.e., issues under test, symptoms, and vulnerabilities. The inspection of these two benchmarks served two different purposes: on the one hand we wanted to ensure there are no smells that we might have missed to include in our list. On the other hand, we wanted to rely on some ground truth while explaining and examining the vulnerability capabilities of the smells.
+
+# 3 List of Smells
+We have identified twelve ICC security code smells that are listed in Table 1. For each smell we report the security issue at stake, the potential security consequences for users, the symptom in the code (i.e., the code smell), the detection strategy that has been implemented by our tool for identifying the code smell, any limitations of the detection strategy, and a recommended mitigation strategy of the issue, principally for developers.
+
+We mined this information from numerous publications and benchmark suites, but only few of these resources provided detailed information about a given security issue. Therefore we put in a great manual effort to provide a comprehensive description for each smell, while consulting other resources such as the official Android documentation and external experts. For instance, authors who focused on vulnerability detection generally neglected the aspect of mitigation. This is very problematic, since it is very common for ICC-related issues to share strong similarities with only subtle differences, e.g., regular directed inter-app communication and broadcasts both rely on intents. Furthermore, manifold vulnerability terms that are used in the literature insufficiently reflect the symptoms as they do not name.
+
+2 https://github.com/pgadient/AndroidLintSecurityChecks
+3 https://github.com/secure-software-engineering/DroidBench
+4 https://bitbucket.org/secure-it-i/android-app-vulnerability-benchmarks
+# Empirical Software Engineering
+The involved component, e.g., “Confused Deputy” instead of “Unauthorized Intent”. Better naming conventions would greatly ease the understanding of security vulnerabilities.
+
+# SM01: Persisted Dynamic Permission
+Android provides access to protected resources through a Uniform Resource Identifier (URI) to be granted at runtime.
+
+Issue: Such dynamic access is intended to be temporary, but if the developer forgets to revoke a permission, the access grant becomes more durable than intended. Consequently, the recipient of the granted access obtains long-term access to potentially sensitive data.
+
+Symptom: Context.grantUriPermission() is present in the code without a corresponding Context.revokeUriPermission() call.
+
+Detection: We report the smell when we detect a permission being dynamically granted without any revocations in the app.
+
+Limitation: Our implementation does not match a specific grant permission to its corresponding revocation. We may therefore fail to detect a missing revocation if another revocation is present somewhere in the code.
+
+Mitigation: Developers have to ensure that granted permissions are revoked when they are no longer needed. They can also attach sensitive data to the intent instead of providing its URI.
+
+# SM02: Custom Scheme Channel
+A custom scheme allows a developer to register an app for custom URIs, e.g., URIs beginning with myapp://, throughout the operating system once the app is installed. For example, the app could register an activity to respond to the URI via an intent filter in the manifest. Therefore, users can access the associated activity by opening specific hyperlinks in a wide set of apps.
+
+Issue: Any app is potentially able to register and handle any custom schemes used by other apps. Consequently, malicious apps could access URIs containing access tokens or credentials, without any prospect for the caller to identify these leaks.
+
+Symptom: If an app provides custom schemes, then a scheme handler exists in the manifest file or in the Android code. If the app calls a custom scheme, there exists an intent containing a URI referring to a custom scheme.
+
+Detection: The android:scheme attribute exists in the intent-filter node of the manifest file, or IntentFilter.addDataScheme() exists in the source code.
+
+Limitation: We only check the symptoms related to receiving custom schemes.
+
+Mitigation: Never send sensitive data, e.g., access tokens via such URIs. Instead of custom schemes, use system schemes that offer restrictions on the intended recipients.
+
+# Empirical Software Engineering
+# SM03: Incorrect Protection Level
+The Android OS could maintain a verified list of apps and the schemes that are matched when there is such a call.

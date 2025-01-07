@@ -1,0 +1,64 @@
+# Research Methodology
+This chapter is devoted to a discussion of methodological aspects including simulation approaches that were adopted and implemented in the study. Computer simulation involves running the executable simulation model and carrying out several experiments by changing the parameters. The resultant data can then be likened with both theoretical and empirical investigations. This is the primary phase in creating new study understandings that will help advance current concepts and finally create fresh ones . According to , the drive of simulation is to well comprehend an exciting occurrence, such as the technology dispersion process, in order to foresee variables of interest. In the same vein,  indicated that simulation permits modelers and owners of problems to gain better insights of difficult systems as it allows them to evaluate the problems from different scopes. Additionally, the author in  stated that simulation aids to attain a comprehensive picture of the actual problem and there is more precision in the problem representation and result.
+
+Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019) 36
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Model Building
+This involves constructing the simulation model. There are several existing software programs that can be used to support exact simulation approaches. This research used Progress Telerik Fiddler tool for running the simulations. Tested in order to provide answers to the research questions and also to test the model's sensitivity to alterations in parameters. The screenshot below shows the results obtained from Progress Telerik Fiddler after running the unencrypted and encrypted algorithms in the mobile application.
+
+# Model Verification
+Verification is basically the debugging of the system to ensure that the model being built is working correctly. This is achieved by performing the simulation and testing whether the model is working correctly. Any errors encountered during the simulation should be corrected. Developing a usable simulation model is an iterative process which involves a number of versions of a model to be developed prior to attaining a complete model.
+
+In efforts trying to verify the model, several different tests were carried out both on the program to be used on the Android side (Java code) and the one to be used on the server side (C# code). The same meter number was used and encrypted in both programs which gave the same ciphertext and plaintext, indicating that both programs were suitable for the simulation. This is highlighted in figure 5 and 6 below.
+
+# Encrypting and Decrypting Meter No 1144 with the correct Key
+Press any key to exit
+# Run the Simulation
+According to , simulations can be contemplated as a virtual experiment in which a sequence of experiments can be run under diverse settings that can be varied as required. In addition to that,  identified five elements to these kinds of experiments: the initial conditions being, the structure of time, outcome size, the total iterations made and any disparity in model parameters. Variation permits different norms to be.
+
+The results shown in figure 7 and 8 above represent a sample of information obtained after running the simulation on an unencrypted and encrypted mobile application.
+
+# Model Validation
+Validation of any simulation model is a crucial task. Model validation is defined as the confirmation that a computerized model within its domain meets a satisfactory range of accuracy consistent with the planned use of the model. The process of instituting whether the simulation model’s output has met the required model’s intended cause over the domain of the model’s planned applicability is called validation. Validation testing and evaluation process are carried out here. Since simulation is utilized in model validation, any lacks found may be due to what was developed in any of the stages that involved when developing the simulation model including developing the system’s theories.
+
+In order to validate our model, the following setup was built in which Fiddler was installed on a Windows machine to act as.
+
+Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+Man-in-the Middle to capture traffic and intercept data being transferred from mobile application. The mobile app was installed on an Android phone.
+
+# Step by step procedure is given below:
+1. Install fiddler on the windows machine and connect that machine to DSL modem.
+
+2. Connect the Android phone with an installed application to the same DSL modem.
+
+3. Configure the proxy settings on the Android Phone with network settings on the windows machine.
+
+4. Start fiddler on windows machine. Now all traffic of the android phone is routed through windows machine.
+
+5. Launch the mobile application from the android phone to upload meter readings and communicate with the server. The application included both the encrypted and decrypted version.
+
+6. Traffic was captured on windows machine and analyzed.
+
+# VI. Results
+This Section presents the results that were generated from the simulation. Figure 10 shows the results obtained from fiddler after capturing and uploading readings using the unencrypted mobile application. It can be seen that all the data in the fields is in plain text and readable.
+
+On the other hand, Figure 11 clearly shows the results obtained when the readings are captured and uploaded using the encrypted mobile application. AES encryption has been applied on four fields namely: Account number, image path, meter number and phone number. It can be seen that data in these fields is in an unreadable format (ciphertext). Figure 12 shows the result of AES encryption when applied on user passwords in SQL database.
+
+It is always very vital to have insights regarding performance, strength and weakness of the algorithms in order to apply an appropriate cryptography algorithm to an application. In trying to choose an appropriate cryptographic algorithm, a number of different tests were carried out using a C# program to compare 3DES and AES in terms of encryption time and decryption time. The two algorithms were applied in C# using Visual Studio IDE. The text files used as input were of sizes 50kb, 1mb, 5mb and 10mb. Same input files were used throughout the experiment for all algorithms in order to properly compare. Same mode which is ECB was used for all algorithms.
+
+The following observations were made from the captured traffic:
+1. All the meter reading details were showing when the unencrypted mobile application was installed on the application and used to upload readings.
+
+2. All the data in the fields (account number, image path, meter number and phone number) that have been encrypted using AES were in an unreadable format (ciphertext).
+
+# Validation Test
+According to , validation itself is viewed as a process and an evidence for “building the right model”. As for , validation is explained as a confirmation of conclusions drawn from simulations by independent observations. This is based on the use of empirical facts and logic. Additionally,  stated that how much to test or when to stop testing depends on how much confidence is needed with respect to the project objectives and requirements. The testing should continue until
+Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+These have been shown using line chart and bar chart respectively, these shows the time taken by AES and 3DES to encrypt and decrypt different text file sizes. The results obtained clearly shows that AES takes less encryption and decryption time on larger file sizes when compared to 3DES.
+
+# Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Bwalya M. & Chembe C./ Zambia (ICT) Journal, Volume 3 (Issue 2) © (2019)
+# Line Chart
+AES is firmly resistant to a lot of attacks. Based on the experimental result generated, it was concluded that AES algorithm takes less encryption and decryption time than 3DES. In 3DES the encryption process is prolonged than in AES, because same encryption process is repeated three times in 3DES . A target file size of about 5 mb was being uploaded, hence the choice for using AES which is faster than 3DES on larger files. With RSA the encryption and decryption time is very high. Since RSA is an asymmetric key algorithm, it uses one way function which is not easy to invert using prime numbers. The use of modular exponentiation and other computations makes RSA slow compared to symmetric key algorithms. It is in this regard that AES was preferred.

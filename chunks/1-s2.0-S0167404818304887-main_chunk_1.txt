@@ -1,0 +1,51 @@
+# Why Johnny can’t develop a secure application? A usability analysis of Java Secure Socket Extension API
+Chamila Wijayarathnaa, *, Nalin Asanka Gamagedara Arachchilage
+a School of Engineering and Information Technology, University of New South Wales, Canberra, Australia
+b University of New South Wales, Canberra, Australia
+# Article information
+Article history:
+- Received 7 May 2018
+- Revised 19 September 2018
+- Accepted 21 September 2018
+- Available online 29 September 2018
+# Keywords
+Security APIs, Transport Layer Security, Programmer experience, API usability, Java Secure Socket Extension
+Lack of usability of security Application Programming Interfaces (APIs) is one of the main reasons for mistakes that programmers make that result in security vulnerabilities in software applications they develop. Especially, APIs that provide Transport Layer Security (TLS) related functionalities are sometimes too complex for programmers to learn and use. Therefore, applications are often diagnosed with vulnerable TLS implementations due to mistakes made by programmers. In this work, we evaluated the usability of Java Secure Socket Extension (JSSE) API to identify usability issues in it that persuade programmers to make mistakes while developing applications that would result in security vulnerabilities. We conducted a study with 11 programmers where each of them spent around 2 hours and attempted to develop a secure programming solution using JSSE API. From data we collected, we identified 59 usability issues that exist in JSSE API. Then we divided those usability issues into 15 cognitive dimensions and analyzed how those issues affected the experience of participant programmers. Results of our study provided useful insights about how TLS APIs and similar security APIs should be designed, developed and improved to provide a better experience for programmers who use them.
+
+© 2018 Elsevier Ltd. All rights reserved.
+
+# 1. Introduction
+Nowadays, almost all aspects of our lives are associated with the use of internet and information technology. Banking, entertainment, shopping and social networking are only a few things that people do everyday with the use of internet and information technology. Not only in people’s day to day life, most organizations, ranging from small businesses to governments, use internet to carry out various operations. Most of the online activities that are carried out using the internet involve storing or transferring sensitive data of users and organizations, which represents a key target to hackers.
+
+Despite the continuous evolution of security technologies, it appears that hackers are still capable of identifying security vulnerabilities of software applications to make their attacks successful. Vulnerabilities get introduced to applications because programmers are making mistakes while developing those applications (Fahl et al., 2012; 2013; Georgiev et al., 2012). Lack of usability in security Application Programming Interfaces (APIs) that programmers use to develop applications is one of the main factors behind mistakes that programmers make, which result in security vulnerabilities (Fahl et al., 2012; 2013; Georgiev et al., 2012; Wurster and van Oorschot, 2009). For example, less usable encryption APIs can cause program-
+* Corresponding author. E-mail addresses: z5122098@student.unsw.edu.au (C. Wijayarathna), nalin.asanka@adfa.edu.au (N.A.G. Arachchilage).
+
+https://doi.org/10/j.cose
+0167-4048/© 2018 Elsevier Ltd. All rights reserved.
+
+# Computers & Security 80 (2019) 54–73
+mers to make mistakes while using them, which can result in insecure password storages that let attackers to steal user passwords.
+
+Usability issues in Secure Sockets Layer (SSL) and Transport Layer Security (TLS) related security APIs have been identified as a major cause for security vulnerabilities that exist in applications which use those APIs (Fahl et al., 2012; 2013; Georgiev et al., 2012). When APIs are not usable, programmers find it difficult to learn and understand those APIs, and hence they use APIs erroneously. To improve the usability of APIs, it is important to understand what programmers expect from APIs and why API implementations have failed to meet programmer expectations. In this work, by observing programmers who use Java Secure Socket Extension (JSSE) API (JSSE reference guide, 2017b), which is the standard implementation of TLS for Java platform and one of the most commonly used TLS APIs for Java, we attempt to identify usability issues that exist in JSSE API and how those issues affect programmers who use the API. We use JSSE API for this study since it is one of the most popular and widely used APIs that provide TLS related functionalities for Java applications . The findings of this research would help in improving the usability of JSSE API as well as other APIs that provide TLS functionalities.
+
+Following is the research question that we are trying to answer in this work:
+- What are the usability issues that exist in JSSE API and how can those issues affect programmer experience and security of applications they develop?
+To answer this research question, we conducted a qualitative experimental study with 11 participants where each participant spent about 2 hours for the study. In this experiment, we used cognitive dimensions questionnaire based methodology (Blackwell and Green, 2000; Clarke, 2004; Wijayarathna et al., 2017a) and think aloud method  to identify usability issues of the JSSE API that participants experienced. From the data we gathered, we identified useful insights about usability issues exist in JSSE API. We believe the knowledge obtained in this study will help to develop more usable security APIs in the future and will guide developers to improve the usability of existing security APIs. OpenSSL (OpenSSL, 2016), JSSE (JSSE reference guide, 2017b), CryptoAPI , NSS (NSS, 2017), yaSSL (yaSSL, 2017), GnuTLS (GnuTLS, 2017) and Bouncycastle  are some of the popular APIs that provide SSL/TLS related functionalities. JSSE is one such API which provides numerous interfaces that Java applications can use to establish TLS connections and transfer data securely.
+
+# 2. TLS protocol and JSSE API
+SSL and its successor TLS are cryptographic protocols that were introduced to protect network communications from eavesdropping and tampering (Freier et al., 2011; JSSE reference guide, 2017b). To establish a secure connection, the two parties that are involved in the communication must agree.
+
+# 3. Related work
+The trade-off between usability of APIs and security of applications that make use of those APIs is a long discussed topic.
+
+# Computers & Security 80 (2019) 54–73
+(Acar et al., 2017a; Myers and Stylos, 2016; Wurster and van Oorschot, 2009). Less usability of APIs, especially of security APIs, has been identified as one of the main reasons behind security vulnerabilities exist in applications that make use of those APIs (Acar et al., 2017a; Fahl et al., 2012; 2013; Georgiev et al., 2012).
+
+Most programmers who are involved in the software development process are not security experts (Wurster and van Oorschot, 2009). Furthermore, programmers believe that programmes they develop are not security critical even when those are (Wurster and van Oorschot, 2009). This makes programmers less concerned about the security of applications they develop, which eventually results in those programmers developing vulnerable applications. Wurster and van Oorschot (2009) suggest two potential solutions for this problem, which are:
+- Educating programmers about security
+- Improving usability of programming tools and security APIs
+However, they argue that educating all programmers is not practically achievable and therefore, most feasible solution is improving the usability of tools and APIs (Wurster and van Oorschot, 2009).
+
+Many researchers discuss the importance of the usability of security APIs for developing secure software. Mindermann (2016) argues that security of an application will be far better if the libraries used to develop that application are more usable. He stresses the importance of applying usability research for security APIs to deliver more usable security APIs. Acar et al. (2017a) also highlight the importance of the usability of security APIs by pointing the fact that programmers who make use of security APIs are not experts of security.
+
+Previous research has examined how lack of usability in SSL/TLS related APIs has resulted in introducing security vulnerabilities to applications that make use of them. Georgiev et al. (2012) identified that many security critical applications such as Amazon EC2 Java library, Amazon’s and Paypal’s merchant SDKs, osCommerce, ZenCart and UberCart do not implement SSL/TLS correctly and therefore, vulnerable to attacks such as the Man-In-The-Middle (MITM) attack. They identified the bad design and the lack of usability in APIs that implement SSL/TLS such as JSSE, OpenSSL and GnuTLS as one of the root causes for these vulnerabilities. By examining 13500 popular free Android applications, Fahl et al. (2012) identified that 1074 (8%) of those applications contained incorrect SSL/TLS code that makes the application vulnerable to MITM attacks. They also blamed less usable SSL/TLS APIs as the reason for these vulnerabilities. In a different study, Fahl et al. (2013) examined 1009 iOS applications and identified that 9% of them are vulnerable to MITM attacks and leaked sensitive information. They also claimed that root cause for this is not only the carelessness of the programmers, but also limitations and usability issues in SSL/TLS APIs.

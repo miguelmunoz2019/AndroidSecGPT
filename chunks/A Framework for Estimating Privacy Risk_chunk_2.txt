@@ -1,0 +1,82 @@
+# 1. Examples of privacy policies mapping to ITAP dataset
+XML File. To access the personal data in users’ Android mobile devices, the permission system will convey users to grant corresponding data access permissions for each mobile app. Actually, these data access permissions may enter some sensitive resources in mobile users’ personal data, such as their locations or contact lists. Table 2 shows some example of permissions. We can see that these listed permissions contain potential security risks. For example, an App, which requests READ CALENDAR permission, may access users’ personal calendar which could make users like businesspersons feel uncomfortable due to leaking their schedules.
+
+In this work, we construct a program in which we manually map each Android permission to identity assets in UT CID ITAP dataset. This program takes Android manifest file as input and generate a set of identity assets that this app collects.
+
+# 2. Mapping example of permissions
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+Therefore, we can define a dataset of identity assets for app S as
+IDS = SetBoW (S) ∪ SetXM L(S)
+# 2 Estimating Risk Scores for Identity Assets
+Generally speaking, the risk score should reflect the security level of an identity asset. The higher the score is, the more dangerous when the identity asset is exposed. Dangerous here means the danger of monetary loss one could have encountered when the identity asset of this person is exposed. Recall that ITAP associates monetary values to identity assets.
+
+We have two approaches to calculate the risk score of identity assets. Among those properties, we first choose risk and value for measuring the risk score of each identity asset.
+
+# Basic Measurement.
+
+Given N identity assets in UT CID ITAP dataset, each identity asset Ai is labeled with a monetary value V (A) and a prior probability P (Ai) of it getting exposed on its own. We define the expected loss of an identity asset Ai as
+Exp(Ai) = P (Ai) · V (A)i
+such that 1 ≤ i ≤ N.
+
+# Dynamic Measurement
+We have another way for calculating expected loss. Instead of using only intrinsic values of identity assets in UT CID ITAP dataset, we leverage two more parameters which we introduced in previous work  to refine risk and value of identity assets.
+
+We first provide a high level introduction to our UT CID Identity Ecosystem [6–8,18,21,24]. The UT CID Identity Ecosystem developed at the Center for Identity at the University of Texas at Austin is a tool that models identity relationships, analyzes identity thefts and breaches, and answers several questions about identity management. It takes UT CID ITAP dataset as input and transforms them into identity assets and relationships, and performs Bayesian network-based inference to calculate the posterior effects on each attribute. We represent UT CID Identity Ecosystem as a graph G(V, E) consisting of N identity assets A1, ..., AN and a set of directed edges as a tuple eij = &lt;i, j&gt; where Ai is the originating node and Aj is the target node such that 1 ≤ i, j ≤ N. Each edge eij represents a possible path by which Aj can be breached given that Ai is breached.
+
+The first parameter we reuse from our previous work is called Accessibility. In the calculation of a respective identity asset’s accessibility, we analyzed its ancestors (in the UT CID Identity Ecosystem graph) to assess the probability and likelihood of discovering this node from other nodes. These “discovery” probabilities on edges in the UT CID Identity Ecosystem graph are calculated using UT CID ITAP dataset representing how criminals discovered identity assets using a respective identity asset. Low values of accessibility indicate that it is more difficult to discover to this attribute from others. An identity asset with low accessibility is harder to breach or discover (discoverability). Since accessibility is the change in risk of exposure, we can calculate new risk of an identity asset Ai as P′(Ai) = P(Ai) + AC(Ai) (5) where AC(Ai) denotes the accessibility of Ai.
+
+The second parameter we obtain from our previous work is called Post Effect. For a target identity asset, we analyze its descendants in the UT CID Identity Ecosystem graph. If an identity asset is breached, the post effect measure gages how much the respective identity asset would influence others. The low value of post effect of an attribute indicates that the damage or loss one would encounter is smaller after this identity asset is accessed by fraudsters. Since post effect is also the monetary value, we can calculate new value of an identity asset Ai as V′(Ai) = V(Ai) + PE(Ai) (6) where PE(Ai) denotes the post effect of Ai.
+
+Hence, for dynamic measurement, we define expected loss of identity asset Ai as Exp(Ai) = P′(A) · V′(Ai) (7) Since the range of the expected loss in UT CID ITAP dataset is from 0 to , which is quite wide, in order to rank each identity asset based on expected
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+loss, we apply natural logarithm on each identity asset’s expected loss which can be shown as ln(Exp(Ai)). As we mentioned at the beginning of this section, the higher the score is, the more dangerous when the identity asset is exposed. To achieve this goal, we find the maximum value of expected loss after applying natural logarithm and use it to calculate the risk score of each identity asset. Thus, we define the risk score of an identity asset Ai as
+scorerisk(Ai) = ln(Exp(A))i
+where Max denotes the maximum value of expected loss after applying natural logarithm. Hence, the risk score becomes a value that is normalized between 0 and 1.
+
+# 2 Ranking for Mobile Apps
+Then, we can compute risk scores of mobile apps with risk scores of identity assets. Given an app S that collects N identity assets, by our data collection approach, we can derive an identity asset dataset IDS = {x}i=1:N. For all of the i members of app S, we can estimate the total risk score of the collected dataset:
+P rivacys = Total∑scorerisk(A) 1N i
+where Total denotes the sum of risk score of the entire UT CID ITAP dataset. Thus, the privacy risk score becomes a value that is also normalized between 0 and 1.
+
+Therefore, we can also calculate the privacy risk score of one’s mobile devices by adding up privacy risk scores of apps that one’s device have installed.
+
+# 3 Experimental Results
+In this section, we empirically evaluate our app privacy ranking approaches with real-world Android apps.
+
+# 3 Experimental Apps
+In order to perform data collection analysis on manifest XML files, we target Android apps that are open-source. We found 100 Android apps that have privacy policies on Google Play and the source code of each of them is available on GitHub. Most of them are still actively maintained. Figure 1 illustrates some statistics of the application dataset. It shows the number of Apps and the average number of requested permissions by each App in different categories. In this figure, we can observe that Apps in categories “Communication”, “Business” and “Travel & Local” request more permissions and that we have more Apps in categories “Tools” and “Productivity” in this dataset.
+
+# 224 K. C. Chang et al.
+
+# Average Number of Permissions
+Permission
+App
+1
+2
+3
+4
+5
+6
+7
+Number of Apps
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+# Distribution of ITAP dataset
+# A Framework for Estimating Privacy Risk Scores of Mobile Apps
+# 3 Evaluation of App Privacy Risk Scores
+Here, we evaluate the effectiveness of estimating App risk scores and compare our methodologies with previous work.
+
+# General Results
+# 226 K. C. Chang et al.
+
+dangerous in the ITAP dataset) according to both approaches is “Social Security Number”.
+
+Like what we did in Fig. 1, we also analyze risk score with different App categories. Figure 4 shows the average score of different categories of basic and dynamic measurements. From Fig. 1 we know that category of “Communication”, “Business” and “Travel & Local” request more permissions and these categories also have the highest average scores in Fig. 4. Also, category of “Weather” and “Food & Drink” do not request many permissions but are still in the higher tier of average score. On the other hand, in Fig. 5, it shows the correlation between risk score of apps and number of permissions they request. Even though not dramatically, according to the regression lines, when the number of permissions increases, the value of privacy risk score slightly increase as well.

@@ -1,0 +1,50 @@
+The study  discussed a dynamic analysis approach that used NB, K-Star, RF, DT, and Simple
+Logistic ML models to detect vulnerabilities and malicious applications. Features were extracted
+while executing the APKs in an emulator. Simple Logistic performed well with 0 precision
+and 0 recall in this model. However, some applications crashed when running in an emulator
+due to their dynamic behaviour. The used dataset requires fine-tuning to increase accuracy, since
+some shared permissions exist between malicious and benign applications, which might get
+incorrectly classified.
+
+A dynamic analysis technique was used in Reference , and it discussed a code vulnerability
+detection mechanism by applying DL. It compared CNN, LSTM, CNN-LSTM and identified that
+CNN-LSTM has a detection accuracy of 83%. It has been identified that Deep Neural Networks
+(DNN) also can predict vulnerable source code. To classify the vulnerable classes with high pre-
+cision, recall, and accuracy, the model proposed in Reference  can be used. This model was
+evaluated using Android apps written in Java. N-gram analysis and statistical feature selection to
+construct feature vector were performed in this model. Another study in Reference  discussed
+an ML-based vulnerability detection rules extraction method with dynamic analysis. The J48 ML
+algorithm performed with 96% accuracy compared with another 32 supervised ML algorithms con-
+sidered in this study. A context-aware intrusion detection system was proposed in 6th Sense ,
+and it used NB, Markov chain, and Logistic Model Tree (LMT) to detect vulnerabilities. This
+study observed changes in sensor-related data in the mobile device by integrating dynamic analy-
+sis methods. The model still requires some fine-tuning to the followed dynamic analysis approach
+to widen vulnerability detection:
+The dynamic analysis-based method proposed in Reference  detect anomalies of system
+calls with ML by considering type, sequence, and frequency. It can detect Android security.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+J. Senanayake et al.
+
+vulnerabilities by identifying benign and malicious apps. Further, this work has created system call time-series datasets used in vulnerable and regular applications. The Zygote process of Android, which handles the forking of new processes, was used together with Android Debug Bridge (ADB) to trace every new activity and its processes. Dynamic Register Broadcast Receiver, Electronic Code Book (ECB) block cypher, fragment injection, weak permissions, and privilege escalation were the common vulnerabilities in the selected application dataset. Finally, a consolidated dataset was created after transforming unstructured time-series data. It was used to perform the machine learning operations while computing precision, recall, and F-Score using kNN, LSTM, and the Genetic Algorithm LSTM. All three ML algorithms performed well with over 85% F-Score, while Genetic Algorithm LSTM performed slightly better than the others. Currently, this model can detect only nine vulnerabilities. Therefore, more vulnerabilities should be considered and verified by keeping the same level of accuracy by enhancing the model in subsequent studies.
+
+# 5 Machine Learning with Hybrid Analysis
+The use of hybrid analysis with ML methods is also widespread, since the detection approach can be enhanced with both static and dynamic features. The study conducted in Reference  proposed an ML-based vulnerability detection mechanism, using hybrid analysis techniques and studied Android Intent mechanisms, along with the composition of Intents. Further, Android-Intent-related security detection was discussed by applying several ML algorithms such as DT, ID3, C4, NB, and AB. One hundred fifty applications were collected to test the model with Android Intent mechanism security vulnerabilities and another 150 applications without them and performed the training and testing. The average accuracy was 77% of the proposed model. Limitations such as fewer samples and low performance were identified as points to be further improved.
+
+The study in Reference  proposed a parallel-classifier scheme for Android vulnerability detection. This study explained the possibilities of using distinctive parallel classifiers to detect zero-day malware and highly elusive vulnerabilities in Android with an accuracy of 98%. It has also identified some issues in static and dynamic analysis approaches such as inefficiency, code obfuscation, and similarity score issue of signature-based detection. This model extracts static features such as permissions, API calls, version, services, used libraries, broadcast receivers while extracting dynamic features such as system calls, network calls of the mobile applications. It proposed the best combination of most efficient ML algorithms, such as SVM, Pruning Rule-based Classification Tree (PART), MLP, and Ripple Down Rule Learner (RIDOR). While employing parallel classifiers, this method also considered upgrading the precision and recall when detecting malware or vulnerabilities. Based on the results of the initial part of the research, it was identified that the MLP performed better than the other classifiers with a 96% detection rate. The next part of the study was conducted using a composite model where the results from the initial part are executed in parallel to estimate the efficiency of the cumulative approach. Average probabilities, Product of probabilities, Maximum probabilities, and Majority vote, were considered ensemble techniques. As per the final results, MaxProb was the best parallel classifier. It is better to consider and create more parallel classifiers to increase the model’s accuracy while employing deep learning techniques.
+
+Models such as Reference  studied the possibilities of employing ML algorithms with both static analysis and dynamic analysis to analyse the source code in a hybrid manner. Identifying malware and benign applications was the main focus of this by considering their vulnerabilities. After extracting from APK files using Androguard  tool, it converted Manifest data to a JSON file in static analysis approach. Then datasets from Kaggle  and MalGenome  were used to train the ML models such as LR, SVM, and kNN. Finally, another JSON file was prepared and identified the code vulnerabilities. After that, the APKs were dynamically analysed by executing them to find the vulnerabilities.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+The model described in Reference  used a hybrid analysis mechanism to identify malware and vulnerabilities using ML models. This model had an accuracy of 80% in the static analysis approach and 60% accuracy in the dynamic analysis approach. According to the findings, combining both of these methods will increase detection accuracy. However, it is better to provide a methodical approach to prove the increase in accuracy when using the hybrid analysis. Another model in Reference  used a hybrid analysis mechanism to detect vulnerabilities and malware. It has proposed a Tree-Augmented Naive Bayesian Network (TAN)-based mechanism for this using features such as permissions, system and API calls. The output relationships were modelled as a TAN, and it used datasets such as AZ , Drebin , Android Malware Dataset (AMD) , and GitHub . The model performed well with an accuracy of 97%. The main limitation of the study is considering only two features. It could be expanded with more features and train the dataset to get a more reliable outcome. The possibility of combining into one model rather than training separately can also be checked.
+
+Though there are several proposed ML/DL-based methods, many of them lack the code vulnerability detection capability at the app development time. A summary of some useful ML/DL-based models used in Android code vulnerability detection is compared in Table 3. It summarises the methodology, analysis technique, used ML/DL methods or framework, used tools and dataset, and the overall model’s accuracy.
+
+# 5 Conventional Methods
+Conventional methods, including heuristic-based methods, formal methods, and other non-ML-based methods, also can be applied to detect code vulnerabilities with analysis techniques. These studies are discussed in this section.
+
+# 5 Conventional Methods with Static Analysis
+Several studies have used static analysis with conventional methods to detect code vulnerabilities. A formal model to detect security issues in Android permission protocol in Alloy (a language based on first-order relational logic) was introduced in Reference  that automatically analysed and identified potential flows in the protocol with static analysis techniques. It identified three types of vulnerabilities in the protocol: URI permission vulnerability, improper delegation vulnerability, and custom permission vulnerability. This model can also cater to the dynamic permission process and identifies that widely used permission is signature-based. It has been identified that out of four content types in Android, the receiver has the highest frequency. An experimental study was also conducted to confirm the relationship between potential flaws and security vulnerability. It also assessed the scalability of the formal analysis approach. It is possible to apply this model to other mobile operating systems by conducting fewer configurations. By fine-tuning, the model can overcome the limitation of detecting a few vulnerabilities.

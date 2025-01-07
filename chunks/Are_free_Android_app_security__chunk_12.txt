@@ -1,0 +1,55 @@
+enforcePermission method can be used to check if the given permission is allowed for the given PID and UID pair. Like in Y2, improper use of this method along with getCallingPID and getCallingUID can leak privilege.
+
+# A Web
+Web APIs allow Android apps to interact with web servers both with and without SSL/TLS, display web content through WebView widget, and control navigation between web pages via WebViewClient class.
+
+Apps connecting to remote servers via HTTP (as opposed to HTTPS) are susceptible to information theft via Man-in-the-Middle (MitM) attacks (Tendulkar and Enck 2014).
+
+Apps can employ HostnameVerifier interface to perform custom checks on hostname when using SSL/TLS for secure communication. If these checks are incorrect, apps can end up connecting to malicious servers and be targets of malicious actions (Tendulkar and Enck 2014).
+
+In secure communication, apps employ TrustManager interface to check the validity and trustworthiness of presented certificates. Like in W1, if these checks are incorrect, apps can end up trusting certificates from malicious servers and be targets of malicious actions (Tendulkar and Enck 2014).
+
+Intents can be embedded in URIs. Apps that do not handle such intents safely (e.g., check intended app) can leak information.
+
+Web pages can access information local to the device (e.g., GPS location). Apps that allow such access without explicit user permission can leak information.
+
+When WebView is used to display web content, JavaScript code executed as part of the web content is executed with the permissions of the host app. Without proper checks, malicious JavaScript code can get access to the app’s resources, e.g. private files (Chin and Wagner 2013).
+
+# Empirical Software Engineering (2020) 25:178–219
+W7 When loading content over a secure connection via WebView, host app is notified of SSL errors via WebViewClient. Apps ignoring such errors can enable MitM attacks (Tendulkar and Enck 2014).
+
+W8 When a web resource (e.g., CSS file) is loaded in WebView, the load request can be validated in shouldInterceptRequest method of WebViewClient. Apps failing to validate such requests can allow loading of malicious content (Chin and Wagner 2013).
+
+W9 When a web page is loaded into WebView, the load request can be validated in shouldOverrideUrlLoading method of WebViewClient. Apps failing to validate such requests can allow loading of malicious content (Chin and Wagner 2013).
+
+# Empirical Software Engineering (2020) 25:178–219
+#getCallingPid(), Accessed: 01-Jun-2018
+Google Inc (2018b) Android developer documentation - Content Provider. https://developer.android.com/reference/android/content/ContentProvider.html#call(java.lang.String,%20java.lang.String,%20android.os.Bundle), Accessed: 07-Mar-2018
+Google Inc (2018c) Android Security Tips. https://developer.android.com/training/articles/security-tips, Accessed: 01-Jun-2017
+Gordon MI, Kim D, Perkins J, Gilham L, Nguyen N, Rinard M (2015) Information-flow analysis of Android applications in DroidSafe. In: Proceedings of the 22nd Annual Network and Distributed System Security Symposium (NDSS’15). https://github.com/MIT-PAC/droidsafe-src, Accessed: 21-Apr-2018
+Gray J (1992) Benchmark Handbook: For Database and Transaction Processing Systems. Morgan Kaufmann Publishers Inc., San Mateo
+Green M, Smith M (2016) Developers are not the enemy!: The need for usable security apis. IEEE Secur Priv 14(5):40–46
+IBM (2018) IBM App Scan. https://www.ibm.com/us-en/marketplace/ibm-appscan-source, Accessed: 01-June-2018
+Jia YJ, Chen QA, Lin Y, Kong C, Mao ZM (2017) Open doors for bob and mallory: Open port usage in android apps and security implications. In: EuroS & P. IEEE, pp 190–203
+Keen T (2016) Joint Advanced Application Defect Assessment for Android Application (JAADAS). https://github.com/flankerhqd/JAADAS, Accessed: 21-Nov-2017
+# Empirical Software Engineering (2020) 25:178–219
+# Empirical Software Engineering (2020) 25:178–219
+Wang T (2014a) CVE-2014-8507: SQL Injection vulnerability. https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-8507, Accessed: 29-May-2018
+Wang T (2014b) CVE-2014-8609: Android Settings application privilege leakage vulnerability. https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-8609, Accessed: 29-May-2018
+Wei F, Roy S, Robby OX (2014) Amandroid: A precise and general inter-component data flow analysis framework for security vetting of android apps. In: Proceedings of the 2014 ACM SIGSAC Conference on Computer and Communications Security. ACM, pp 1329–1341. http://pag.arguslab.org/argus-saf, Accessed: 05-May-2018
+Wei F (2017) ICC-Bench. https://github.com/fgwei/ICC-Bench, Accessed: 12-Sep-2018
+Wei F, Roy S, Ou X (2018) Robby Amandroid: A precise and general inter-component data flow analysis framework for security vetting of android apps. ACM Trans Privacy Secur 21(3):14:1–14:32
+Xu R, Saïdi H, Anderson R (2012) Aurasium: Practical policy enforcement for android applications. In: Proceedings of the 21st USENIX Conference on Security Symposium. USENIX, pp 27–27, https://github.com/xurubin/aurasium, Accessed: 01-June-2018
+Yu D (2014) CVE-2014-1566: Leak information to SD card. https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2014-1566, Accessed: 29-May-2018
+Zhauniarovich Y, Ahmad M, Gadyatskaya O, Crispo B, Massacci F (2015) Stadyna: Addressing the problem of dynamic code updates in the security analysis of android applications. In: Proceedings of the 5th ACM Conference on Data and Application Security and Privacy. ACM, pp 37–48. https://github.com/zyrikby/StaDynA, Accessed: 11-Jun-2018
+Zhou Y, Jiang X (2012) Dissecting android malware: Characterization and evolution. In: Proceedings of the 2012 IEEE Symposium on Security and Privacy. IEEE Computer Society, pp 95–109
+Publisher’s note: Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+Venkatesh-Prasad Ranganath was an Assistant Professor in the Department of Computer Science at Kansas State University, U.S.A. Before being a professor, he was a researcher at Microsoft Research (India) and a software engineer at Agitar Software and Wipro Global R&D. He received his Ph.D. and M.S. in Computer Science from Kansas State University. He has worked on program analysis/verification, model driven development, pattern mining, HPC, and security.
+
+# Empirical Software Engineering (2020) 25:178–219
+Joydeep Mitra is a Ph.D. student at Kansas State University, U.S.A. He is interested in exploring ways to build secure and robust software systems. He is currently focussed on Android application (app) security. In this context, his work involves developing benchmarks and measures to empirically evaluate solutions related to Android app security along with developing design methodologies that aid in building secure Android apps.
+
+Reproduced with permission of copyright owner.
+
+Further reproduction prohibited without permission..

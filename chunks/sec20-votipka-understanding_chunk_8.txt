@@ -1,0 +1,31 @@
+Minimal Trusted Code was measured by checking whether the security-relevant functionality was implemented in multiple locations. Projects passed if they created a single function for each security requirement (e.g., encryption, access control checks, etc.) and called it throughout. The alternative—copying and pasting code wherever security functionality was needed—is likely to lead to mistakes if each code segment is not updated whenever changes are necessary.
+
+used support visualization of control-flow and variable scope (Whitespace), and whether comments were included to summarize relevant details (Comments). Additionally, we identified whether projects followed secure development best practices [12, pg. 32-36], specifically Economy of Mechanism and Minimal Trusted Code.
+
+# C Regression Analysis
+For each vulnerability type subclass, we performed a poisson regression [15, 67-106] to understand whether the team’s characteristics or their programming decisions influenced the vulnerabilities introduced. In this appendix, we provide an extended analysis discussion, focusing on the full set of covariates in each initial model, our model selection process, and the results omitted from the main paper due to their lack.
+
+USENIX Association 29th USENIX Security Symposium 125
+# C Initial Covariates
+As a baseline, all initial regression models included factors for the language used (Type Safety and Popularity), team characteristics (development experience and security education), and the associated problem. These base covariates were used to understand the effect of a team’s intrinsic characteristics, their development environment, and the problem specification. The Type Safety variable identified whether each project was statically typed (e.g., Java or Go, but not C or C++), dynamically typed (e.g., Python, Ruby), or C/C++ (Type Safety).
+
+For Misunderstanding regressions, the Bad Choice regression only included the baseline covariates and the Conceptual Error regression added the library type (Library Type). The project’s Library Type was one of three categories based on the libraries used (Library Type): no library used (None), a standard language library (e.g., PyCrypto for Python) (Language), or a non-standard library (3rd Party).
+
+The No Implementation regressions only included the baseline covariates. Additionally, since the Some Intuitive vulnerabilities only occurred in the MD problem, we did not include problem as a covariate in the Some Intuitive regression.
+
+In addition to the baseline covariates, the Mistake regression added the Minimal Trusted Code and Economy of Mechanism variables, whether the team used test cases during the build phase, and the project’s number of lines of code. These additional covariates were chosen as we expect smaller, simpler, and more rigorously tested code to include less mistakes.
+
+# C Model Selection
+We calculated the Bayseian Information Criterion (BIC)—a standard metric for model fit —for all possible combinations of the initial factors. To determine the optimal model and avoid overfitting, we selected the minimum BIC model.
+
+As our study is semi-controlled, there are a large number of covariates which must be accounted for in each regression. Therefore, our regressions were only able to identify large effects . Note, for this reason, we also did not include any interaction variables. Including interaction variables would have reduced the power of each model significantly and precluded finding even very large effects. Further, due to the sparse nature of our data (e.g., many languages and libraries were used, in many cases only by one team), some covariates could only be included in an aggregated form, limiting the analysis specificity. Future work should consider these interactions and more detailed questions.
+
+# C Results
+Tables 6–10 provide the results of each regression not included in the main text.
+
+*Significant effect – Base case (Estimate=1, by definition)
+*Significant effect – Base case (Estimate=1, by definition)
+*Significant effect – Base case (Estimate=1, by definition)
+*Significant effect – Base case (Estimate=1, by definition)
+*Significant effect – Base case (Estimate=1, by definition)
+126 29th USENIX Security Symposium USENIX Association.

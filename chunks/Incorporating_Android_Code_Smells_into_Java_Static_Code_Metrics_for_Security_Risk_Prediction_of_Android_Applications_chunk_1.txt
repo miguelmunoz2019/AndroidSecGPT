@@ -1,0 +1,55 @@
+# 2020 IEEE 20th International Conference on Software Quality, Reliability and Security (QRS)
+# Incorporating Android Code Smells into Java Static Code Metrics for Security Risk Prediction of Android Applications
+# Ai Gong1, Yi Zhong1,4, Weiqin Zou2,3, Yangyang Shi1, Chunrong Fang1
+1State Key Laboratory for Novel Software Technology, Nanjing University, China
+2College of Computer Science and Technology, Nanjing University of Aeronautics and Astronautics, China
+3Key Laboratory of Safety-Critical Software (NUAA), Ministry of Industry and Information Technology, China
+4College of Mobile Telecommunications Chongqing University of Posts and Telecom, China
+Email: fangchunrong@nju.edu.cn
+# Abstract
+With the wide-spread use of Android applications in people’s daily life, it becomes more and more important to timely identify the security problems of these applications. To enrich existing studies in guarding the security and privacy of Android applications, we attempted to predict the security risk levels of Android applications. Specifically, we proposed an approach that incorporated Android code smells into traditional Java code metrics to predict how secure an Android application is. With an evaluation of our technique on 3,680 Android applications, we found that: (1) Android code smells could help improve the performance of security risk prediction of Android applications; (2) By building a Random Forest model based on Android code smells and Java code metrics, we could achieve an Area Under Curve (AUC) of 0; (3) Android code smells such as member ignoring method (MIM) and leaking inner class (LIC) have a relatively-large influence on Android security risk prediction, to which developers should pay more attention during their application development.
+
+Index Terms—Android code smells, Java code metrics, Android security
+# I. INTRODUCTION
+Over the past decade, we have seen a tremendous rise in mobile applications. These applications are widely used in almost every aspect of people’s daily life, from gaming, studying, to shopping, working, etc. One fatal problem related to such great popularity of mobile applications is that, once a mobile application has security problems, it may make a large number of users’ life suffering. Based on our knowledge, however, it is not rare that mobile applications are of potential security problems. As stated by a report from Qihoo1 (the biggest Internet Security Company in China), 99% of 18,000 Android mainstream applications are at risk of threats, with an average of 38 threats per application. Thus, it is significant to timely predict/identify and resolve security problems related to mobile applications.
+
+Researchers have done much work to help solve problems related to application permission , application security , , system security , malware detection , , user privacy , , and malicious attack , etc. Our study also focuses on the topic of application security. In the area of application security, many studies have been done on guarding the security and privacy of Android applications , , . In this paper, we mainly aim to predict the security risk levels of Android applications, to help developers assess and understand how secure their Android applications are.
+
+To build a prediction model with good performance, finding useful predictors or features is full of importance. Previous studies mainly utilized Java static code metrics to predict security risks of Android applications, as these applications were primarily developed in Object-oriented (OO) programming languages such as Java or Objective-C. Android-related metrics that reflect Android-specific features, however, are rarely used to help facilitate the performance of security prediction models.
+
+Unlike traditional Java applications, Android applications have their characteristics. They are developed in different programming paradigms, using different libraries and always running under limited resources. For example, GUIs on Android are declared via XML, and Android applications have no particular main methods (Android entry points are handled by event-handlers). For another instance, many APIs are specifically designed for implementing some mobile features (including Contacts, Power Management, Graphics, etc.). Related to these Android-specific features, Reimann et al.  summarised a set of peculiarly bad programming practices of Android developers (e.g., a non-static inner class holds a reference to an outer class), namely Android-specific smells in this paper. These Android-specific smells threatened the security, data integrity, and source code quality of mobile apps , . Inspired by existing findings of Android-specific code smells, we decided to explore the effect of Android code smells in predicting the security risks of Android applications.
+
+Specifically, we proposed to integrate Android code smells into existing Java code metrics to aid security risk prediction for Android applications. We first investigated the correlation between Java code metrics and Android code smells. We found that most Android code smells were independent with each.
+
+1 Ai Gong and Yi Zhong contributed equally to this work.
+
+https://research.cn/2015/reportlist.html?list=1
+other, and they had a moderate correlation with Java code metrics. Then, we built a list of security risk prediction models by applying various popular machine learning methods to those Android code smells together with Java code metrics. A dataset with 3,680 real-world Android applications from Github was constructed to evaluate our models. The results showed that Android code smells could improve security risk prediction; and the learning method Random Forest (RF)  could outperform other learning methods by achieving the best Area Under Curve (AUC) of 0. Last, we investigated the importance of each Android code smell in helping predict the security risks of Android applications; and highlighted several Android-specific code smells to which developers should pay more attention during their Android application development.
+
+# 1. Introduction
+Our major contributions are as follows:
+- We are the first to consider incorporating Android-specific code smells into Java code metrics for security risk prediction of Android applications.
+
+- We compared various prediction models built by applying different learning methods to these Android code smells and Java code metrics; As a result, we find that Random Forest could obtain the best prediction results, with an AUC of 0.
+
+- We studied the importance of individual Android code smells in predicting the security risks of Android applications. The results provided a guide for developers in solving security problems related to Android code smells.
+
+This paper is organized as follows. Section 2 presents our approach. Section 3 depicts the experiments. Section 4 presents results and analysis. Section 5 introduces related work, and Section 6 concludes our work.
+
+# II. METHODOLOGY
+As shown in Figure 1, we adopt a three-step approach to build a security risk level prediction model. First, we extract Java static code metrics and Android code smells from Android applications. Then we calculate a security risk level for each application with manual help. Last, we apply main-stream machine learning algorithms to Android applications (with extracted code metrics and smells as features and security risk levels as class labels) to build a prediction model. The details are as follows.
+
+# A. Code Metrics Extraction
+This subsection mainly describes the process of extracting code metrics in our work, including Java static code metrics and Android code smells.
+
+# 1) Java Static Code Metrics:
+Existing studies have found that some Java static code metrics like bad coding practices, duplications, and OOP (Object Oriented Programming) attributes are promising in predicting the security risk of Android applications , . We also use those metrics used in the previous studies ,  to help predict the security risk of Android applications. There are a total of 21 Java static code metrics used in our study (details in Table I). These metrics are retrieved from each Android application with the help of a tool called SonarQube2 (SonarQube is an open-source tool for continuous analysis and code quality evaluation. It can detect duplicated code, potential bugs, code style problems, and other issues of a project.)
+**TABLE I JAVA STATIC CODE METRICS**
+# 2) Android Code Smells:
+As mentioned in Section I, Android code smells may threaten non-functional attributes of Android applications and may help improve the effectiveness of Android security and risk prediction . In this paper, we particularly studied the effect of 15 Android code smells (presented in Table II) in predicting the security risk of Android applications. These Android-specific code smells are retrieved by using aDoctor , a lightweight code smells detection tool with an average precision of 98% and an average recall of 98%.
+
+# B. Risk Levels Calculation
+Before we build a machine learning model, we should first construct a dataset with knowing each instance’s features and labels. Section II-A has described the way to get features for each instance (i.e., an Android application). In this section, we would detailedly introduce how to decide the class label (i.e., the security risk level) for each instance. Our labeling process includes two parts. First, we would try to obtain an initial risk score; then we use this score to get the final security risk level (Figure 2 describes the details).
+
+# 1) Calculating Risk Scores:
+In this part, we first used Androrisk3 to obtain an initial risk analysis of an application; then we manually checked and adjusted (when necessary) the analysis results to obtain the final risk score for the Android application. Androguard is an open-source tool. We can use it to extract some information from Android applications.

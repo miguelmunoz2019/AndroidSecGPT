@@ -1,0 +1,35 @@
+# 29
+Baozheng Liu, Chao Zhang, Guang Gong, Yishun Zeng, Haifeng Ruan, and Jianwei Zhuge. FANS: Fuzzing android native system services via automated interface analysis. In 29th USENIX Security Symposium (USENIX Security 20), pages 307–323. USENIX Association, August 2020.
+
+# 30
+Christopher D. Brant and Tuba Yavuz. A study on the testing of android security patches. In 2022 IEEE Conference on Communications and Network Security (CNS), pages 217–225, 2022.
+
+# 31
+Ziang Ma, Haoyu Wang, Yao Guo, and Xiangqun Chen. Libradar: Fast and accurate detection of third-party libraries in android apps. In 2016 IEEE/ACM 38th International Conference on Software Engineering Companion (ICSE-C), pages 653–656, 2016.
+
+# 32
+Menghao Li, Wei Wang, Pei Wang, Shuai Wang, Dinghao Wu, Jian Liu, Rui Xue, and Wei Huo. Libd: Scalable and precise third-party library detection in android markets. In 2017 IEEE/ACM 39th International Conference on Software Engineering (ICSE), pages 335–346, 2017.
+
+# 33
+Vitor Monte Afonso, Paulo Lício de Geus, Antonio Bianchi, Yanick Fratantonio, Christopher Krügel, Giovanni Vigna, Adam Doupé, and Mario Polino. Going native: Using a large-scale analysis of android apps to create a practical native-code sandboxing policy. In Network and Distributed System Security Symposium, 2016.
+
+# 34
+Mengtao Sun and Gang Tan. Nativeguard: Protecting android applications from third-party native libraries. WiSec ’14, page 165–176, New York, NY, USA, 2014. Association for Computing Machinery.
+
+# 35
+Yajin Zhou, Kunal Patel, Lei Wu, Zhi Wang, and Xuxian Jiang. Hybrid user-level sandboxing of third-party android apps. ASIA CCS ’15, page 19–30, New York, NY, USA, 2015. Association for Computing Machinery.
+
+# 36
+Lei Xue, Chenxiong Qian, Hao Zhou, Xiapu Luo, Yajin Zhou, Yuru Shao, and Alvin T.S. Chan. Ndroid: Toward tracking information flows across multiple android contexts. IEEE Transactions on Information Forensics and Security, 14(3):814–828, 2019.
+
+# 37
+Shahid Alam, Zhengyang Qu, Ryan D. Riley, Yan Chen, and Vaibhav Rastogi. Droidnative: Semantic-based detection of android native code malware. CoRR, abs/1602, 2016.
+
+# 38
+Annamalai Narayanan, Lihui Chen, and Chee Keong Chan. Addetect: Automated detection of android ad libraries using semantic analysis. In 2014 IEEE Ninth International Conference on Intelligent Sensors, Sensor Networks and Information Processing (ISSNIP), pages 1–6, 2014.
+
+# 39
+Nusrat Zahan, Elizabeth Lin, Mahzabin Tamanna, William Enck, and Laurie Williams. Software bills of materials are required. are we there yet? IEEE Security & Privacy, 21(2):82–88, 2023.
+
+# Risk Algorithm Native Code Vulnerabilities Android
+25.

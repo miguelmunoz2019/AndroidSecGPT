@@ -1,0 +1,58 @@
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+Overall, researchers have argued for more developer-centric security experiences, e.g., by providing developers with practical security experience in using code analysis tools , facilitating security education in-context of developers’ IDEs , focusing security training on addressing weaknesses in developers’ security knowledge , and facilitating interaction between developers and security experts.
+
+Existing research focuses on helping developers improve their code security by reducing their cognitive load. However, several research gaps remain in addressing the human aspects of software security, such as factors that motivate developers to value and address security. In this paper, we take a human-centric approach to explore developers’ software security strategies and motivation. In addition, we investigate different characteristics that may influence security processes, such as the development methodology, company size, and whether the development team employs TDD.
+
+# 3 METHODOLOGY
+We conducted an IRB-approved anonymous online survey with professional software developers using Qualtrics.
+
+# Survey Design
+The survey included different types of questions, e.g., multiple choice, Likert-scale, and short answer questions. The survey had two main sections, grouping questions by topic to minimize the cognitive load on participants and allow them to consider the topic more deeply . The first section covered demographic information and investigated participants’ general work motivation through the established 18-item Work Extrinsic and Intrinsic Motivation Scale (WEIMS) . The second section focused on software security, specifically participants’ efforts towards security, their strategies for handling security, and their opinions about their teams and experiences with security issues, as well as software security motivations and deterrents. In addition, we asked participants to describe what it means to them “to include security into the development process” to capture their original understanding of software security. However, to ensure that participants have a baseline understanding of software security, we then provided a brief explanation of software security and how it differs from security functions. Survey questions were informed by our previous qualitative research . More details about the questions and format are available in Section 5, along with the corresponding results.
+
+# Testing the Survey Tool
+We followed Dillman’s recommended three-stage process  to pre-test the survey. First, the survey was reviewed by colleagues and experts in the field to uncover potential misunderstandings or unexpected outcomes. Next, we discussed the survey’s clarity and motivation with developers. Finally, we performed pilot-testing with 11 developers to identify any flaws in the survey and to determine whether it is of appropriate length.
+
+# Participant Recruitment
+Recruiting developers is one of the challenges of this type of research . To reach a wide range of developers, we recruited through two methods. (1) Through Qualtrics’  paid service; we paid Qualtrics $32 USD per participant for recruitment and data collection. Participants received the equivalent of $6 in gifts (e.g., SkyMiles, gift cards). (2) Through announcing the survey to our professional and industry contacts; participants received a $10 Amazon gift card as compensation.
+
+# Data Quality
+We took multiple precautions to ensure data quality. We provided participants with a description of software security to avoid confusion and differences in interpretation. Participants were prevented from progressing with the survey until they showed understanding of our description of software security. We discarded responses with less than seven minutes for survey completion time, and responses with invalid data, e.g., gibberish in the open-ended question or conflicting responses.
+
+# Participant Demographics
+Through the different channels, we recruited a total of 140 participants, and discarded 17 for quality issues. The data reported herein is from the remaining 123 valid responses. Average survey completion time was 24 minutes (Md = 17). Participant demographics are available in Table 1. Participants are currently working in development in Canada (n = 63, 51%) or the US (n = 60, 49%). They employ different development methodologies and develop a wide range of applications. The average company age where participants work is 41 years (Md = 20). Our dataset includes a good range of established companies: 25th and 75th percentile is 15 and 50 years, respectively.
+
+# 4 SURVEY ANALYSIS
+All the results presented in this paper represent participants’ self-reported behaviours and attitudes. Data analysis for the open-ended question followed an inductive approach. The first author performed open coding, and both authors regularly discussed emerging themes and common patterns in the data. Quantitative data analysis used SPSS Statistics. All statistical tests assumed p <  as a significant level, unless Bonferroni-correction was applied.
+
+All survey questions were optional, thus missing values may exist. These are ignored from the analysis, in which cases we indicate the actual number of data points (participants) when reporting the results.
+
+# Factor Analysis
+We used factor analysis to analyze participants’ security strategies, motivators, and deterrents. Principal axis factor analysis enabled us to group closely related information, thus, reducing the set of variables into a smaller set (factors), while retaining the majority of the original information.
+
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+Within and between subjects statistical tests on strategies, motivations, and deterrents all used the resultant factors. As recommended, we retained variables with absolute factor loadings greater than 0 . For all factor analyses, we used the Kaiser Meyer-Olkin (KMO) measure  to verify the sampling adequacy.
+
+# 5 RESULTS
+# Developers’ Work Motivation
+To explore participants general work motivation, we generated the Work Self-Determination Index (W-SDI)  from the WEIMS. A positive W-SDI indicates a self-determined motivation profile, whereas a negative score indicates non-self determination . Results indicate that our participants do not lack motivation with respect to performing their job; the vast majority (89%) exhibited self-determined motivation profiles (W-SDI > 0).
+
+sw isn’t interesting target we have security procedures security is important
+0 20 40 60 80 100 % of participants strongly disagree disagree agree strongly agree
+consequences of malicious attacks, and prevent unauthorized access or use of their software or the data it handles. Participants also explained that security should be considered from the earliest stages and throughout the development process. For example, one participant described software security as, “To think about security from the earliest planning phases as possible [...] and continue to focus on security implications throughout the remainder of the development process.” In addition, some participants indicated that security defences should be proactive, and that developers should “think secure from the beginning” and adopt an attacker-mindset. For example, a participant said, “rather than asking how will we achieve ‘this’, you ask how will someone exploit ‘this’. [...] when your processes are done in a proper, security conscious way, as much of the potential harm as possible should be mitigated.” Participants also discussed various methods to ensure software security, such as internal and external audits, security testing, automated checks, code analysis and reviews, thinking about security when writing code, and incorporating security in design. Some participants also discussed the importance of following best practices, using tools and programming languages approved by their organizations, and receiving support from security experts in their organizations.
+
+# Behaviours and Attitudes
+Participants indicated on a 4-point Likert scale (1:strongly disagree to 4: strongly agree) their agreement with statements about their teams. As shown in Figure 1, participants generally indicated that their teams believe in the importance of software security and that they have specific procedures in place to address it, even though they mostly do not think that their applications are interesting targets for attackers. All participants, except one, who reported security is not important for their teams also indicated that their software is not an interesting target for attackers.
+
+# Developers’ Mental Models of Software Security
+65% of participants had a reasonable understanding of software security. Most participants discussed that software security aims to minimize vulnerabilities, minimize the negative.
+
+# Experiencing Security Issues
+On 5-point Likert scales, participants indicated their satisfaction with their teams’ security processes and the likelihood that their software has vulnerabilities. Figure 2 shows that
+Paper 289 Page 4
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+In general, participants are satisfied with their team’s handling of software security. However, despite their satisfaction, participants believed that software developed by their team likely contains security issues (Figure 3).
+
+Participants were asked to report whether their software has ever experienced a security issue. More than a third of participants reported at least one security issue. Vulnerable shipped code was most frequently reported (24%) out of the three potential security issues in the survey. Fourteen percent of participants indicated that vulnerabilities were discovered before their software was shipped, and 11% reported their software experienced a security breach. We note that these numbers are not mutually exclusive; some participants (11%) reported multiple security issues.

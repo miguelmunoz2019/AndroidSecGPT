@@ -1,0 +1,125 @@
+# 3. Ripple down rule learner
+RIDOR is a separate-and-conquer rule classifier. It first generates a default rule and finds exceptions with the least error rate. It then finds the best exception for each exception iteratively. This approach is known as incremental reduced error pruning. The exceptions are common rules that predict classes other than the default.
+
+# 4. Proposed methodology
+Various steps involved in the methodology are elaborated as follows:
+# 18
+S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# Android
+# APK
+# Static Analysis
+- Decompile APK
+- Disassemble APK
+- Extract Features
+# Dynamic Analysis
+- Run APK
+- Trace System Calls
+- Generate Log File
+# Vector Space Generation
+- Select Features
+# New App feature vector
+- MLP
+- SVM
+- Ensemble Technique
+Suspicious
+Yes
+Individual classifier result
+The data source of Android APKs.
+
+# 4. Input preprocessing
+A dataset of ∼85,000 Android applications (benign and malicious) was used from benchmarked datasets as shown in Table 3. With the help of the Apktool, we decompiled the input of APKs. Post de-compilation, we obtained the components of APKs as an outcome in a separate folder as shown in Fig. 3. A further detailed description of the dataset and pseudo codes can be found in.
+
+# 4. Feature extraction
+For feature extraction, we extracted the static and dynamic features from the collected dataset.
+
+# 4. Static analysis
+Android applications are in the form of an Android package, or APK archive. The APK archive includes the manifest, gradle, resources, and other folders. To extract the features that interest us, we first need to reverse engineer the APK files, which we accomplished using the Apktool. We then designed our own custom Python script to parse the decompiled folders.
+
+# 4. Static analysis
+and extracted the required permissions, libraries, API calls, version, and broadcast receivers from AndroidManifest.xml and Apktool.yml files. There is a total of 135 Android permissions. A binary feature vector is constructed from the extracted features. We denote this feature vector as F = (f1, f2, …, f3), where
+fi = {1, if the ith permission is present; 0, otherwise
+The following steps describe the process used for feature extraction as shown in Fig. 5:
+- Reverse engineer the Android applications using the Apktool
+- Extract permissions and other requested features from the AndroidManifest.xml and Apktool.yml files using Python script
+- Generate a binary feature vector, as shown in Eq. (1)
+- Finally, create a feature vector dataset for all the APKs in the dataset and store it in .csv file format as shown in Table 1
+The binary sequence 1 denotes that the permission is present while binary sequence 0 denotes that the permission is absent. Further, another variable G is introduced where G ∈ {malicious, benign} and indicates 1 for benign application and −1 for a malicious application.
+
+For example, the benign and malicious vectors from an APK are represented by Eqs. (1) and (2) respectively. Here, FαβBenign and FαβMalicious denote benign and malicious vectors, where α and β denote row and column respectively:
+FαβBenign =
+⎛0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0⎞
+⎜0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎝0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎠
+(1)
+FαβMalicious =
+⎛0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0⎞
+⎜0 0 0 0 0 0 0 0 0 0 −1 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎜0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎟
+⎝0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0⎠
+(2)
+# 4. Dynamic analysis
+An android application communicates with the OS using system calls, which we extract using dynamic analysis. Dynamic features like battery charging status, temperature of battery (while charging), memory, network traffic, CPU, SMS, etc., are extracted as shown in Table 4.
+
+For dynamic analysis, we used the in-built emulator in Android studio and connect it with the ADB shell (a command line tool). It generates n number of random events (UI interactions) like clicks, touches, etc., and sends it to the system or an application that captures the system calls. We record system calls using a monitoring tool Strace.
+
+Given an Android application, the following steps describe the process that we use to extract dynamic features as shown in Fig. 6:
+- Create an emulator instance by opening the AVD manager and run it
+- Check whether the ADB is working or not
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# Extracted dynamic features.
+
+# Open AVD
+Run 'adb devices' cmd
+Install the Android APK using 'adb install APK_Name.apk' cmd
+Connect it with ADB Shell
+Enter the emulator shell
+Listing the name of the emulator ID which is running using 'adb -s emulator-5646 shell' command at the terminal
+To record system calls use cmd strace ~P &lt;Processid&gt; -c-0 &lt;path in emulator&gt;Filename CSV
+Launch the application & check the process ID using the cmd 'ps'
+# Dynamic Feature Extraction
+Let S = (s1, s2, …, sn) be the set of all possible system calls available in the Android OS. Then element j in system call feature vector contains the count for the number of occurrences of system calls s. The parameter ξ is an n-length sequence that denotes the frequency of system call captured in a log file for each application.
+
+Let ξ = (m1, m2, …, mn), where mi ∈ S is ith observed system call in the log file. Feature vector obtained above is then passed to the next phase of feature extraction. Here, every attribute in the feature vector denotes the frequency of occurrence of system calls in the strace log. Using this sequence ξ, feature vector y = [y1, y2, …, y|s|] is defined, where yi is the frequency of system call si ∈ ξ.
+
+We define a permission vector as a variable G, where G ∈ {malicious, benign} indicates 1 for benign applications, and −1 for the malicious applications. The feature vector for system calls is obtained for benign and malicious application as per Eqs. (3) and (4) respectively.
+
+# Feature Vector for Benign Applications
+Fαβ Benign =
+⎛0      0        0      0       2500      0     0     1    0         0    0     1500      0     0      0     0     1      0     32⎞
+⎜0      0        0      150     36      0     0     0    0         110    0     1        0     0      0     753   0     0     0     0⎟
+⎜0      0        0      0       0       0     0     0    0         0      0     0        0     0      0     0     1     0     0⎟
+⎝0      0        0      55      0       1     0     0    0         0      0     0        0     87      0     0     0     1     0⎠
+⎛0      0        0      0       1       0     0     0    65        0      0     425      0     0      0     0     1      0     0⎞
+⎝0      0        0      0       0       0     0     0    0         0      0     0        0     0      0     0     1      0     0⎠
+# Feature Vector for Malicious Applications
+Fαβ Malicious =
+⎛0           0       0       0      500      0       0     1    0        0     0     1500      0     0        0     0    1       0    32⎞
+⎜0 ⎜0          0
+⎜150     86
+⎜0       0
+⎜0      0
+⎜110      0
+⎜−1      0
+⎜0     0
+⎜0    653
+⎜0        0
+⎜0     0
+⎜0     0
+⎜0     0
+⎜1         0
+⎜0     1
+⎜0        0
+⎜0     0
+⎜0    90
+⎜0       0
+⎜0    56⎟
+⎝0           0       0       55     0        0       0     0    0        0     0     0         0     887      0     0    0       1    0   ⎠
+⎝2238       0       0       0      1        0       0     0    65       0     0     425       0     0        0     0    1       0    −1⎠
+# S. Garg and N. Baliyan / Computers and Electrical Engineering 77 (2019) 12–26
+# 4. Model training
+In this phase, the pre-processed matrix obtained in the Section 4 and 4 of our proposed methodology is divided into two datasets, namely Training dataset and Testing dataset. The Training dataset is modeled using the ML algorithms described in Section 3. Thereafter, the Testing dataset is used to do a test run using the feature vectors from trained models to classify APKs and to capture their respective performance metrics.

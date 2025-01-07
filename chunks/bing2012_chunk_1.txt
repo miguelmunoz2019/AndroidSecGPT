@@ -1,0 +1,58 @@
+# 2012 Fifth International Conference on Intelligent Computation Technology and Automation
+# Analysis and Research of System Security Based on Android
+Han Bing
+North China University of Technology, Beijing, 100144, China
+jluhan_bin@163.com
+# Abstract
+Android is a smart mobile terminal operating platform core on Linux. But due to its open-source software and programmable framework character, it leads the Android system vulnerable to get virus attacks. This paper has deeply researched from the Linux system security mechanism, Android-specific security mechanisms and other protection mechanisms. And on this basis, Android devices have achieved closely guarded on normal state. So that attackers can not use the kernel module or core library to get highest access permission and be attacked. Meanwhile, to further strengthen the security of Android devices, it enables them to properly handle the high-risk threat. This paper also strengthened intrusion detection system (HIDS) based on the host in order to detect malicious software and strengthen the Android system-level access control.
+
+Keywords-Android, System Security, Abnormity Detection
+# I. INTRODUCTION
+Android is a software stack for mobile devices that includes an operating system, middleware and key applications. The Android SDK provides the tools and APIs necessary to begin developing applications on the Android platform using the Java programming language.
+
+Android is planned to run on many different types of devices. For developers, the range and number of devices means a huge potential audience: the more devices that run Android applications, the more users who can access the application. In exchange, however, it also means that applications will have to cope with that same variety of hardware.
+
+Android platform is based on Linux technology and composed of operating system, user interface and application components. It allows developer freedom to access and modify the source code. It is the free mobile terminal platform with open applications, application program facilitate equality, no boundaries between and rapid application development and other advantages. Its issuance breaks the monopoly status of the Microsoft Windows Mobile operating system and Nokia's Symbian operating system in the smart mobile telephone platform, while the advantages of its platform also greatly enriched the variety of handheld device software functions. It becomes the intelligent terminal market leader.
+
+Android platform is a set of software package for mobile devices, it includes an operating system, middleware and key applications. Android uses the most innovative characteristic. It allows anyone to develop their own applications and freely distribute them. But when open provides various conveniences for developers and users, it also increases the safety misery.
+
+Due to the lack of application development and issuance of effective control, the user is likely to download and install malicious software written by hackers. This will result in some or all of the features in the mobile telephone not working properly. So it deeply studies Android's security mechanisms, it can effectively enhance the protection ability and great significance.
+
+# II. ANDROID PLATFORM ARCHITECTURE
+Android has built-in tools and support which make it easy for applications to do that, while at the same time letting the system maintain control of what types of devices an application is available to. With a bit of forethought and some minor changes in the application's manifest file, it can ensure that users whose devices can’t run the application will never see it in the Android Market, and will not get in trouble by downloading it. This explains how it can control which devices have access to its applications, and how to prepare its applications to make sure they reach the right audience.
+
+Android provides an open development platform and offers developers the capability to build greatly rich and innovative applications. Developers are free to be superior to device hardware, access location information, run background services, set alarms, add information to the status bar, and so on.
+
+Developers have full access to the same framework. The core applications use APIs. The application architecture is designed to simplify the reuse of components; any application can publish its abilities and any other application may then make use of those abilities. This same mechanism permits components to be replaced by the user.
+
+From top to bottom, the Android platform is composed of the Linux kernel, system libraries, Android runtime, application framework and so on five parts. It is shown in Figure 1 of the following:
+# A. Linux Kernel
+Android relies on Linux 2 version. It provides core system services: security, memory management, process management, network group, driven model. The core part is equivalent to an abstract level between the hardware layer and other software in the systems.
+
+# B. Library and Android Runtime
+Android includes a set of C/C++ libraries. Various components of the Android system are used now. These functions are exposed to developers through the Android application framework. Android's core libraries provide most.
+
+978-0-7695-4637-7/12 $26 © 2012 IEEE
+DOI 10/ICICTA
+# Application Framework
+Upper core application program of Android system is reply on frame arrangement API development, application architecture can simplify component reuse mechanism. Any application can publish its own features. These functions can be used to any other application (of course, it is restricted from the framework constraints safety standards); and the same to reuse mechanism, the framework supports component replacement.
+
+# Applications
+Android applications are written in Java programming language. The Android SDK tools compile the code—along with any data and resource files—into an Android package, an archive file with an .apk suffix. All the code in a single .apk file is considered to be one application and is the file that Android-powered devices use to install the application.
+
+The Android platform default includes a set of core applications. It includes home, browser, communication services, contacts and other applications. These applications are written by the Java programming language. It can provides developers a reference. As the Android platform applications equality, developers can write their own applications to replace the default applications provided by Android.
+
+# III. ANDROID SYSTEM SECURITY
+The core design idea of Android security architecture is as the following. In the default settings, all applications do not have permission for other applications, systems or users greater impact on the operation. This includes read and write user privacy data (contacts or e-mail), read and write other applications files, access the network or block devices and so on.
+
+Android's security mechanism is mainly reflected in two aspects: Android system security and data security. Android system security is referred to the protection of smart terminal itself to operating system. It can prevent unauthorized user external access and authorized service permission. It includes users' behaviour detection, operating authority and other measures. The data security is referred to ensure the integrity and legitimacy of stored data, it requires the system can properly transmit data, the authorization process successfully read data.
+
+# A. Android system security protection
+Android system safety inherited the design of Linux in the design ideology, Android provided security, memory management, process management, network management, drive model and other core service in the kernel. The kernel part is actually a abstract level between hardware abstraction layer and other software group. In practice operation, each Android application runs in its own process. Android system applications are run in some low-level function such as threads and low memory management; Android itself is a separate operating and permission system. In the operating system, each application runs with a unique system identity (Linux user ID and group ID). Each parts of the system were also using their own independent identification mode. The most security functions of the system are provided by the permission mechanism. Permission can be restricted to particular specific process operations, and can also restrict URL permission to access specific data segment.
+
+# B. Android Data Security Protection
+Android is a operating system with privilege-separated. Each application runs with a distinct system identity in android. Parts of the system are also separated into distinct identities. So Linux separates applications from one another and the system.
+
+Additional finer-grained security features are provided by a "permission" mechanism that enforces restrictions on the specific operations that a particular process can perform, and per-URI permissions for granting ad-hoc access to specific pieces of data.
+
+Data security mainly relies on software signature mechanism. Android and applications are both needed sign. When it releases, at first it need generate a public key and private key through development/tools/make_key. The tools provided by Android, the main role of signature is to modify program limited to the same source. The system has two main ways to detect. If the program is upgrade install, it needs check whether the signature certificate of old and new program are consistent. If it is not the same, it will failed install. To application permission for the protected level of signature or signature or system, it will check the certificate of permission requester and permission of declarer is the same.

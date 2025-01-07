@@ -1,0 +1,45 @@
+Pavlou, P. A., Liang, H., & Xue, Y. (2007). Understanding and mitigating uncertainty in online exchange relationships: A principal–agent perspective. MIS Quarterly, 31(1), 105–136. https://doi.org/10/25148783.
+
+Podsakoff, P. M., MacKenzie, S. B., Lee, J.-Y., & Podsakoff, N. P. (2003). Common method biases in behavioral research: A critical review of the literature and recommended remedies. Journal of Applied Psychology, 88(5), 879–903. https://doi.org/10/0021-9010.
+
+Robertson, J. (2012). Android apps collect too much user data, researcher says. Technology: Security. Retrieved from The Sydney Morning Herald https://www.smh.com.au/technology/android-apps-collect-too-much-user-data-researcher-says-20121102-28oie.html.
+
+Selya, A. S., Rose, J. S., Dierker, L. C., Hedeker, D., & Mermelstein, R. J. (2012). A practical guide to calculating Cohen’s f2, a measure of local effect size, from PROC MIXED. Frontiers in Psychology, 3(111), 1–6. https://doi.org/10/fpsyg.
+
+Smith, H. J., Dinev, T., & Xu, H. (2011). Information privacy research: An interdisciplinary review. MIS Quarterly, 35(4), 989–1015. https://doi.org/10/41409970.
+
+Smith, H. J., Milberg, S. J., & Burke, S. J. (1996). Information privacy: Measuring individuals’ concerns about organizational practices. MIS Quarterly, 20(2), 167–196. https://doi.org/10/249477.
+
+Solove, D. J. (2006). A taxonomy of privacy. University of Pennsylvania Law Review, 154(3), 477–560. https://doi.org/10/40041279.
+
+Stewart, K. A., & Segars, A. H. (2002). An empirical examination of the concern for information privacy instrument. Information Systems Research, 13(1), 36–49. https://doi.org/10/isre.
+
+Sutanto, J., Palme, E., Tan, C.-H., & Phang, C. W. (2013). Addressing the personalization–Privacy paradox: An empirical assessment from a field experiment on smartphone users. MIS Quarterly, 37(4), 1141–1164. https://doi.org/10/misq/2013/37.
+
+Thatcher, J. B., & Perrewé, P. L. (2002). An empirical examination of individual traits as antecedents to computer anxiety and computer self-efficacy. MIS Quarterly, 26(4), 381–396. https://doi.org/10/4132314.
+
+Vitak, J., Liao, Y., Kumar, P., Zimmer, M., & Kritikos, K. (2018). Privacy attitudes and data valuation among fitness tracker users. In G. Chowdhury, J. McLeod, V. Gillet, & P. Willet (Vol. Eds.), Transforming digital worlds: Vol. 10766, (pp. 229–239). Cham, Switzerland: Springer. https://doi.org/10/978-3-319-78105-1_27.
+
+Wang, T., Duong, T. D., & Chen, C. C. (2016). Intention to disclose personal information via mobile applications: A privacy calculus perspective. International Journal of Information Management, 36(4), 531–542. https://doi.org/10/j.ijinfomgt.
+
+Wang, Y., & Herrando, C. (2019). Does privacy assurance on social commerce sites matter to millennials? International Journal of Information Management, 44, 164–177. https://doi.org/10/j.ijinfomgt.
+
+Wottrich, V. M., van Reijmersdal, E. A., & Smit, E. G. (2018). The privacy trade-off for mobile app downloads: The roles of app value, intrusiveness, and privacy concerns. Decision Support Systems, 106, 44–52. https://doi.org/10/j.dss.
+
+Xu, H. (2007). The effects of self-construal and perceived control on privacy concerns. Paper Presented at the International Conference on Information Systems.
+
+Xu, H., Dinev, T., Smith, H. J., & Hart, P. (2008). Examining the formation of individual’s privacy concerns: Toward an integrative view. Paper Presented at the International Conference on Information Systems.
+
+Xu, H., Gupta, S., Rosson, M. B., & Carroll, J. M. (2012). Measuring mobile users’ concerns for information privacy. Paper Presented at the International Conference on Information Systems.
+
+Xu, H., Teo, H.-H., Tan, B. C. Y., & Agarwal, R. (2009). The role of push-pull technology in privacy calculus: The case of location-based services. Journal of Management Information Systems, 26(3), 135–173. https://doi.org/10/MIS0742-1222260305.
+
+Xu, H., Teo, H.-H., Tan, B. C. Y., & Agarwal, R. (2012). Effects of individual self-protection, industry self-regulation, and government regulation on privacy concerns: A study of location-based services. Information Systems Research, 23(4), 1342–1363. https://doi.org/10/isre.
+
+Yin, D., Bond, S. D., & Zhang, H. (2014). Anxious or angry? Effects of discrete emotions on the perceived helpfulness of online reviews. MIS Quarterly, 38(2), 539–560. https://doi.org/10/misq/2014/38.
+
+Zhang, D., Adipat, B., & Mowafi, Y. (2009). User-centered context-aware mobile applications―The next generation of personal mobile computing. Communications of the Association for Information Systems, 24(3), 27–46. https://doi.org/10/1cais.
+
+Zlatolas, L. N., Welzer, T., Heričko, M., & Hölbl, M. (2015). Privacy antecedents for SNS self-disclosure: The case of Facebook. Computers in Human Behavior, 45, 158–167. https://doi.org/10/j.chb.
+
+272.

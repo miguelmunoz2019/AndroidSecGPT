@@ -1,0 +1,61 @@
+We establishes an online APP analysis platform Janus, which has collected millions of Android APPs. In advance of analyzing Android APPs, Janus needs to identify and thereby eliminates integrated TPLs with the purpose of raising the accuracy of detection. PanGuard is a part of Janus which is responsible for identifying TPLs. TPL identification can vastly reduce storage on Janus since we only need to reserve a copy of the meta-data of a TPL for now. Since Janus has integrated an online interactive analysis environment Akana . This program analysis tool is computationally intensive and storage consuming. Fortunately, PanGuard has drastically reduced the pressure of storage and computation. In addition, by filtering out TPLs identified by PanGuard, our product Janus has worked more efficiently and effectively in malware detection and vulnerability analysis.
+
+In summary, our contributions are listed as follows:
+- We present an edge-assistant TPL detection architecture. Edge nodes in this architecture are responsible for TPL detection and cloud in this architecture is mainly responsible for TPL signature generation. On top of the edge computing architecture, our work is scalable to real time TPL detection for the unprecedentedly Android APP.
+
+- We conduct a systematical and thorough study of factors that disturb the TPL detection, including obfuscation, shrinkage, and optimization. Especially for the optimization factor, which has never been mentioned by previous work. Our study discloses that 23% of TPLs have leveraged these factors. Among these TPLs, about one third of them cannot be detected by previous work for they are processed by optimization. These results can help to improve TPL detection algorithms.
+
+- We propose an accurate and scalable approach to detect TPLs which is adapted to mutation introduced by ProGuard. (e.g., obfuscation, shrinkage, and optimization). In addition, we develop an automated tool, PanGuard, to analyze the TPLs in APPs in our data set. The experimental results show that PanGuard can find over 10 vulnerable TPLs.
+
+# 2. Background of third-party library detection
+Third-party library (TPL) detection is to detect third party libraries employed by Android APPs. The current detection methodology can mainly be classified into four categories: string-based, token-based, tree-based, and semantics-based (Jiang et al., 2007; Roy and Cordy, 2007; Roy et al., 2009). However, they are computationally insufficient when an APP is processed by ProGuard. To ease the presentation, we introduce the following definitions.
+
+# Definition 2 (Original TPL)
+An off-the-shelf TPL used by an APP, which has not been processed by ProGuard with any modification. In this case, the embedded TPL remains the same as the off-the-shelf TPL.
+
+# Definition 2 (Obfuscated TPL)
+An off-the-shelf TPL used by an APP, which is processed by ProGuard using only obfuscation. In this case, the TPL in the APP is also obfuscated by ProGuard.
+
+# Definition 2 (Shrunk TPL)
+An off-the-shelf TPL used by an APP, which is processed by ProGuard using only shrinkage. In this case, the TPL in the APP is also shrunk by ProGuard.
+
+# Definition 2 (Optimized TPL)
+An off-the-shelf TPL used by an APP, which is processed by ProGuard using only optimization. In this case, the TPL in the APP is also optimized by ProGuard.
+
+# Definition 2 (Package Stem)
+“Package Stem” is part of a fully qualified name , which is presented as a namespace. Class files in the “Package Stem” covers the most part of a TPL, which means that the “Package Stem” is short enough to encapsulate most of the class files in a TPL. Meanwhile, the namespace can be extended to detect another version of a TPL and the features associated with “Package Stem” are useful in detection, which means that the “Package Stem” should be long enough to avoid conflicts.
+
+# Definition 2 (Package Dependency Graph (PkgDG))
+Package Dependency Graph, abbreviated to PkgDG, shows dependency between packages, fields, and methods that contribute to the graph.
+
+# 2. A Study of ProGuard
+ProGuard is an officially recommended tool for developers to shrink their APPs in practice . Apart from shrinkage, ProGuard can also perform other functions–optimization, obfuscation, and verification to Android projects. The prevalent usage of ProGuard introduces challenges to TPL detection.
+
+# 2. The Obfuscation of ProGuard
+The obfuscation of ProGuard renames the classes, fields, and methods by using short and meaningless names, and it is prevailing in the Android APP development. Previously, Duet  claims that over 80% of TPLs in 100,000 Google Play APPs are indeed used without any modification. Our evaluation verified this data in Section 4.
+
+# 2. The shrinkage of ProGuard
+Since a TPL provides functional interface, of which a subset is available to developers, the shrinkage of ProGuard will tremendously reduce the storage space of an APP (see break-downs of shrunk TPL by ProGuard in Table 1). The shrinkage of ProGuard mainly relies on detecting and removing unused classes, fields, methods, and attributes. In this scenario, the corpus built for original or obfuscated TPLs cannot be used to detect shrunk TPL directly. Much research uses subgraph isomorphism  and intersection detection  to identify shrunk TPLs.
+
+# 260
+# Listing 1 – Original code for sending a simple mail through “Apache Commons Email”.
+
+# 2. The Optimization of ProGuard
+To date, the released version of ProGuard ranges from 1 to 5, with 47 versions in total. Since version 3, ProGuard has provided a function to optimize an APP at the level within and across methods. Specifically, ProGuard uses techniques, such as control flow analysis, data flow analysis, partial evaluation, static single assignment, global value numbering, and liveness analysis to optimize APPs. To our knowledge, no previous work has examined the optimization problem in TPL detection, which we detail as follows.
+
+In the optimization step, ProGuard analyzes and optimizes the bytecode of methods. The latest version, ProGuard 5, provides 17 types of optimizations, including modifier changing, constant propagation, inlining, peephole optimizations, etc. The most prominent peephole optimization contains over 200 peephole optimizations, say pre-concatenating two concrete strings.
+
+The optimization introduces complexity for TPL identification. For example, user space may intrude the TPL code through constant propagation (caller → callee); TPL code may intrude the user space by inlining (callee → caller). To take a controlled study of the optimization problem, we turn off the obfuscation option of ProGuard. Listing 1 and 2 are two examples that show code in TPL is inlined to user space by optimization of ProGuard. We conclude that optimization generally obscures the boundary between user space and TPL.
+
+The optimization introduces more complexity if different versions of ProGuard are used for APPs. To continue with the aforementioned inlining, in ProGuard 3, the first appearance of inlining declares simple methods of getters and setters. However, in ProGuard 5, the inlining supports inlined constant fields, method parameters, return values, or inline methods that are short or only called once. TPL optimization by various versions of ProGuard turns out different outcomes. Furthermore, different optimization adopts different search algorithms (caller → callee / callee → caller), for which ProGuard optimizes APPs randomly. In this case, different TPLs can be issued by the same version of ProGuard.
+
+In order to clarify the optimization problem, we take a systematic study of the effect of optimization of the current prevalent TPLs, by released versions of ProGuard updated from 3 to version 5. Table 3 shows how optimization distorts commonly-used features and defeats most practices of state-of-the-art TPL detection. Specifically, we find that the “final” method is the most prevalent and prominent signature for ProGuard optimization after an insight study of the his-
+# Listing 2 – ProGuard Inlining code from “Apache Commons Email” to user space.
+
+# Computers & Security 80 (2019) 257–272
+1 Data issued from a modification of ProGuard 5. To perform this task, we prefer using the TPL’s officially-recommended configuration for ProGuard. 2 Each sample is fully functional. For example, “Apache Ftp” uses upload and download function. 3 When using ProGuard, we only use code shrinkage, which means the result derives from only one iteration. 4 By observation, intersection detection analysis does not work for most of the TPL shrunk by ProGuard.
+
+1 LibScout  use profile matching to get the candidate similar TPLs, which is likely to accommodate to shrunk TPL detection. But statistical data in Table 1 shows that about 53% classes in TPLs are left by shrinking of ProGuard. Moreover, for each left class, lots of methods in the class are removed which will distort the profile of the class. All these make it’s algorithm does not work on shrunk TPL detection.
+
+# The Use of ProGuard
+In this subsection, we attempt to show that customizing the use of ProGuard will complicate the TPL detection. The actual workflow of ProGuard is shown in Fig. 1. For ProGuard, shrinkage, optimization, and obfuscation are default options for processing class files . Along the workflow pipeline, the number of iteration of shrinkage and optimization is controlled by “-optimizationpasses” option. If this argument is specified, ProGuard keeps optimizing or shrinking an APP until the loop-bound is reached or no optimization can be applied to the class file.

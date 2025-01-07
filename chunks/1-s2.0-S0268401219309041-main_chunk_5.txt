@@ -1,0 +1,71 @@
+# 5. Analyses and results
+# 5. Preliminary data analysis
+First, we separately examined the content validity, construct validity, and reliability of the constructs based on prior recommendations for each sample (Straub, Boudreau, & Gefen, 2004). Tables 2 and 3 show the means and standard deviations, and the reliability, validity, and correlation results for the constructs. By adopting previously validated instruments, we assured content validity. In addition, Tables 2 and 3 show that Cronbach’s alpha, as well as the composite reliability, for all four constructs are above 0, which supports the reliability of the constructs (Hair, Anderson, Tatham, & Black, 2013). For construct validity, we assessed the convergent and discriminant validity. The loadings of the construct items are above 0 (Table A1) and the values of the average variance extracted (AVE) are above 0, supporting convergent validity . Tables 2 and 3 show the square roots of all AVEs exceed all correlations among the constructs and the results of the principal component analysis show no cross-loadings above 0 (Table B1), indicating the discriminant validity of the constructs (Fornell & Larcker, 1981).
+
+Next, we conducted Harmon’s one-factor test to examine common method variance (Gefen, Straub, & Boudreau, 2000; Hair et al., 2013). All 12 items were loaded on a single factor. The results show that the single factor explains 43 % (for the more sensitive sample) and 40 % (for the less sensitive sample) of the total variance, suggesting that there is no common method bias in the samples.
+
+# 5. Measurement model
+The measurement model meets the recommended fit indices (Fornell & Larcker, 1981; Gefen et al., 2000; Hair et al., 2013; Hu & Bentler, 1999). For the more sensitive sample, the fit indices are as follows: comparative fit index (CFI) = 0; Tucker-Lewis index (TLI) = 0; root mean squared error of approximation (RMSEA) = 0; standardized root mean squared residual (SRMR) = 0; χ2/degree of freedom = 2 (d.f. = 63; p < 0); N = 559. For the less sensitive sample, the fit indices are as follows: CFI = 0; TLI = 0; RMSEA = 0; SRMR = 0; χ2/degree of freedom = 1 (d.f. = 62; p < 0); N = 487. CFI and TLI should be above 0; SRMR and RMSEA should be under 0. All of the indices meet the recommended thresholds and are satisfactory.
+
+# 5. Structural model
+To test the proposed model, we used covariance-based structural equation modeling (CB-SEM), with the maximum likelihood method, in Sata 15. Fig. 2 presents the results of the final structural model. As there are continuous and categorical moderating variables in our model, we used different approaches to estimate the moderating effects. First, we used Lin et al.’s (2010) technique, known as double mean-centering, to estimate the moderating effects of privacy awareness, as this is a continuous variable (Cortina, Chen, & Dunlap, 2001; Lin, Wen, Marsh, & Lin, 2010). Correspondingly, we mean-centered all the items associated with perceived privacy risk, perceived effectiveness of privacy policies, and perceived privacy awareness. Then, we created interactions of the observed variables through the matched pair product indicator strategy (Marsh, Wen, & Hau, 2004), by matching items two-by-two and multiplying them (i.e., multiplying each matched PA item in the respective PPE and PR items). Three new items for each interaction construct were generated. Finally, we mean-centered the three generated items and used the results as indicators of the three latent constructs for the interactions. The matched pair strategy provides similar results to the all pair strategy, in which nine items are generated through three by three multiplications, but the matched pair approach enables simplicity and better fit indices (Foldnes & Hagtvet, 2014; Marsh et al., 2004). Second, to test the moderating effects of information sensitivity as the categorical variable, we compared the beta-coefficient of the model in each sample using a z-test to examine if the path coefficients were significantly different.
+
+# A. Balapour, et al.
+
+# International Journal of Information Management 52 (2020) 102063
+# Respondent demographics.
+
+# More sensitive information app users: Descriptives, Reliabilities, Average Variance Extracted, and Correlations.
+
+S.D. = Standard deviation; CR = Composite Reliability; α = Chronbach’s Alpha; PA = Privacy Awareness; PR = Privacy Risk; PPE = Perceived Effectiveness of Privacy Policy; PS = Perceived Security.
+
+** p < 0.
+
+* p < 0. The diagonal represents the square root of the AVE.
+
+# Less sensitive information app users: Descriptives, Reliabilities, Average Variance Extracted, and Correlations.
+
+S.D. = Standard deviation; CR = Composite Reliability; α = Chronbach’s Alpha; PA = Privacy Awareness; PR = Privacy Risk; PPE = Perceived Effectiveness of Privacy Policy; PS = Perceived Security.
+
+** p < 0.
+
+* p < 0. The diagonal represents the square root of the AVE.
+
+information sample) suggest that the perceived privacy risk negatively affects the perceived security of mobile apps (β 1 = -0; β 2 = -0, p < 0), supporting H1. The results suggest that the perceived effectiveness of privacy policies positively affects the perceived security of mobile apps (β1 = 0; β 2 = 0, p < 0) and negatively affects the perceived privacy risk (β 1 = -0; β 2 = -0, p < 0), which supports H2 and H3.
+
+The results show that perceived privacy awareness moderates the effect of perceived privacy risk on the perceived security of mobile apps for both groups of app users (β 1 = -0; β2 = -0, p < 0). So, H4a is supported. However, the results did not show the moderating effect of privacy awareness on the relationship between the perceived effectiveness of privacy policies and the perceived security of mobile apps across both samples (β 1 = -0, p = 0; β 2 = -0, p = 0). So, H4b is not supported. Fig. 3 exhibits the interaction effect between privacy awareness and privacy risk, which shows that when the perceived privacy risk is high, a higher privacy awareness causes the user to have a lower level of perceived security. Findings suggest that age negatively influences the perceived security of more sensitive information apps (β 1 = -0, p < 0). However, results did not show such an effect for less sensitive apps (β 2 = -0, p = 0). The results demonstrate that gender plays a reverse role for each group of app users, which means gender was positively associated with perceived security for sensitive app users (β 1 = 0, p < 0). In contrast, gender was negatively associated with perceived security for less sensitive app users (β 2 = −0, p < 0).
+
+Lastly, this study tested the moderating effect of information sensitivity by comparing the beta-coefficient of the estimated models.
+
+The influence of gender is interpreted this way: (1) for more sensitive app users, one unit change in gender (from male = 0 to female = 1) accounts for +0 unit change in the perceived security; (2) for less sensitive app users one unit change in gender (from male = 0 to female = 1) accounts for - 0 unit change in the perceived security. Further explanation is provided in the discussion section.
+
+# A. Balapour, et al.
+
+# International Journal of Information Management 52 (2020) 102063
+# Model 1: More sensitive
+# Model 2: Less sensitive
+"p < 0; **p < 0; N= 559
+# Results of analysis.
+
+# Covariates:
+# Fit Indices:
+N = Sample size.
+
+PPE = Perceived Effectiveness of privacy policy; PR = Perceived privacy risk; PS = Perceived security.
+
+Note: The coefficient comparison was done using a z-test to see whether the type of mobile app (more sensitive vs. less sensitive) affects the strength of relationships.
+
+* p < 0.
+
+** p < 0.
+
+*** p < 0.
+
+# More sensitive information
+# Less sensitive information
+Privacy Awareness
+Low Privacy Risk    High Privacy Risk
+High Privacy Awareness
+(model 1 versus model 2). As Table 4 shows, the results do not indicate any moderating effects of app type on the relationship between perceived risk and perceived security (z = 1, d.f. = 1044, p = 0), or between the perceived effectiveness of privacy policies and perceived security (z = 0, d.f. = 1044, p = 0). Therefore, H5a and H5b are not supported. However, the type of apps being used affects the strength of the relationship between the perceived effectiveness of privacy policies and perceived risk, such that the relationship is stronger when an app collects and transmits more sensitive information (z = 7, d.f. = 1044, p < 0). Hence, H5c is supported. A surprising finding regarding information sensitivity is its effect on the relationship between gender and perceived security. Results showed that the effect of gender on perceived security is stronger for users of more sensitive information apps (z = -5, d.f. = 1044, p < 0).
+
+# A. Balapour, et al.

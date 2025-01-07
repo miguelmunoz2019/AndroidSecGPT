@@ -1,0 +1,65 @@
+# An Empirical Assessment of Security Risks of Global Android Banking Apps
+Sen Chen1, Lingling Fan1, Guozhu Meng2,3, Ting Su, Yang Liu1,8, Lihua Xu4, Minhui Xue5, Yinxing Xue6
+1Nanyang Technological University, Singapore
+2SKLOIS, Institute of Information Engineering, Chinese Academy of Sciences, China
+3School of Cyber Security, University of Chinese Academy of Sciences, China
+4ETH Zurich, Switzerland
+5The University of Adelaide, Australia
+6University of Science and Technology of China, China
+7New York University Shanghai, China
+8Zhejiang Sci-Tech University, China
+chensen@ntu.edu.sg
+# ABSTRACT
+Mobile banking apps, belonging to the most security-critical app category, render massive and dynamic transactions susceptible to security risks. Given huge potential financial loss caused by vulnerabilities, existing research lacks a comprehensive empirical study on the security risks of global banking apps to provide useful insights and improve the security of banking apps.
+
+Since data-related weaknesses in banking apps are critical and may directly cause serious financial loss, this paper first revisits the state-of-the-art available tools and finds that they have limited capability in identifying data-related security weaknesses of banking apps. To complement the capability of existing tools in data-related weakness detection, we propose a three-phase automated security risk assessment system, named Ausera, which leverages static program analysis techniques and sensitive keyword identification. By leveraging Ausera, we collect 2,157 weaknesses in 693 real-world banking apps across 83 countries, which we use as a basis to conduct a comprehensive empirical study from different aspects, such as global distribution and weakness evolution during version updates.
+
+We find that apps owned by subsidiary banks are always less secure than or equivalent to those owned by parent banks. In addition, we also track the patching of weaknesses and receive much positive feedback from banking entities so as to improve the security of banking apps in practice. We further find that weaknesses derived from outdated versions of banking apps or third-party libraries are highly prone to being exploited by attackers. To date, we highlight that 21 banks have confirmed the weaknesses we reported (including 126 weaknesses in total). We also exchange insights with 7 banks, such as HSBC in UK and OCBC in Singapore, via in-person or online meetings to help them improve their apps.
+
+We hope that the insights developed in this paper will inform the communities about the gaps among multiple stakeholders, including banks, academic researchers, and third-party security companies.
+
+# CCS CONCEPTS
+• Security and privacy → Software and application security;
+# KEYWORDS
+Mobile Banking Apps, Vulnerability, Weakness, Empirical Study
+# ACM Reference Format:
+Sen Chen, Lingling Fan, Guozhu Meng, Ting Su, Minhui Xue, Yinxing Xue, Yang Liu, Lihua Xu. 2020. An Empirical Assessment of Security Risks of Global Android Banking Apps. In 42nd International Conference on Software Engineering (ICSE ’20), May 23–29, 2020, Seoul, Republic of Korea. ACM, New York, NY, USA, 13 pages. https://doi.org/10/3377811
+# 1 INTRODUCTION
+Banking apps belong to the most security-critical and data-sensitive app category. Cashless mobile payment has significantly fragmented the traditional financial services, beginning with the first ATM and culminating in e-banking. Users often misconceive that banking apps provide secure transactions and an easy-to-use interface, by assuming all communications are done between local banking apps and remote bank servers securely (e.g., over HTTPS). Unfortunately, this assumption does not always hold.
+
+After examining many real-world banking apps, we find new types of weaknesses that are hard to be detected by existing industrial and open-source tools, e.g., QiHoo360, AndroBugs, MobSF, and QARK. For example, in a popular banking app from Google Play, the user will be asked to register with her personal information, including first name, last name, password, and address. After the user clicks the “register” button, the app sends an SMS attached with the sensitive data (in plain text) to authenticate that user, but the data is stored in the SMS outbox unexpectedly. If an attacker registers a content observer to the SMS outbox on the mobile device with READ_SMS permission, the user’s sensitive data can be easily intercepted by the attacker.
+
+Indeed, many other real-world banking-specific weaknesses and attacks have been witnessed globally. Nowadays, banking apps pose new challenges, such as flaws and vulnerabilities that cause huge financial loss.
+
+To understand the weaknesses exhibited in banking apps and help to improve the security of these apps, several studies have been done manually on a small-scale banking apps. The conclusions drawn from manual analysis may be more likely to be biased and cannot represent the security status of the entire.
+
+# ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+# S. Chen, L. Fan, G. Meng, T. Su, M. Xue, Y. Xue, Y. Liu, and L. Xu
+# HSBC
+# RQ2: Overall Security Status
+# RQ1: Tool evaluation
+# ✓ Fixing Recommendation
+# citib
+# citikank
+# ank
+- AndroBugs
+- MobSF
+- QARK
+- Qihoo360
+# AUSREA
+# ✓ Lessons Learned
+# 693 banking apps
+# RQ3: Global Distribution Analysis
+# ✓ Useful Findings
+# RQ4: Multiple Version Analysis
+# ✓ Gap Unveiling
+# RQ5: Weakness Fixing Analysis
+banking ecosystem. Apart from manual analysis on only a small-scale apps, state-of-the-art assessment approaches also pose several other limitations: (1) current studies lack a baseline of sensitive data-related security weaknesses specific to the core functionality of banking apps to ensure an overall assessment of these apps; (2) the current off-the-shelf services (e.g., Qihoo360 ) and open-source tools (e.g., AndroBugs ) use syntax-based scanning to perform a security check during app development, which would incur a large number of false positives (e.g., non-sensitive data printed in the log file). Besides, these tools focus on generic categories of apps, not specific to banking apps. Even when the weaknesses, such as cryptographic misuses  and inappropriate SSL/TLS implementations , have been reported for years, it still appears unknown why so many security weaknesses in banking apps are not yet patched . Overall, the existing work cannot represent the security status of the entire banking ecosystem, and the state-of-the-art tools are ineffective in collecting a large number of weaknesses to conduct further in-depth analysis.
+
+To explore the entire mobile banking ecosystem and help to ensure the user’s financial security, this paper takes a large number of banking apps as subjects to conduct a comprehensive empirical study on the data-related weaknesses in global Android banking apps. As shown in Figure 1, our study contains three main steps: (1) we first collect 693 banking apps across 83 countries from various markets, to our knowledge, this is the largest banking app dataset taken into study to date; (2) to collect the weaknesses exhibited in banking apps and complement the capability of existing tools in data-related weakness detection, we first summarize a weakness baseline and propose an automated security risk assessment system (Ausera). Ausera combines static program analysis techniques and sensitive keyword identification, to identify such weaknesses (cf. Section 2). (3) By applying Ausera, we collected 2,157 security weaknesses in the 693 banking apps, and further conduct a comprehensive empirical study (cf. Section 3) to investigate the ecosystem of banking apps in terms of security weaknesses, aiming to answer the following research questions:
+- RQ1: What is the current status of existing tools towards collecting reliable data-related weaknesses in banking apps compared with Ausera?
+- RQ2: What is the overall security status of banking apps in terms of data-related weaknesses?
+- RQ3: What is the weakness status of banking apps globally w.r.t. economies and regulations?
+- RQ4: How are weaknesses introduced during app evolution and fragmentation?
+- RQ5: What is the gap between academic researchers and banks in understanding and fixing weaknesses?
+Through an in-depth analysis of the weaknesses, we find that (1) banking apps across different regions exhibit various types of security status, mainly due to different economy status (e.g., small village banks) and financial regulations (e.g., GDPR ). Banking apps in Europe and North America have few security weaknesses, with only 0 weakness of data leakage per app. Asia is most flooded with security weaknesses, averaging out to 6 weaknesses per app. Banking apps from Africa have comparatively moderate security status with 4 weaknesses per app, primarily because of its high demand for cashless payment services. (2) Weaknesses of apps vary across different markets by countries and bring fragmentation problems among different versions of the same banking apps. Apps owned by subsidiary banks are always less secure than or equivalent to those owned by parent banks. This observation is evidenced by the South Korean version of the Citibank app and the Chinese version of the HSBC app. (3) Apart from the lessons learned from our study, we also track the weakness fixing process based on our reported weaknesses and set up 9 in-person or online meetings with 7 banks. These meetings help the communities understand the gaps between different parties, including banks, academic researchers, and third-party security companies.

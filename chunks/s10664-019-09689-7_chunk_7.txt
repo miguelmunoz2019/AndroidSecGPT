@@ -1,0 +1,64 @@
+The CVE-2015-3871 vulnerability was fixed in the commit c5707788 by adding an extra clause to an existing condition that validates the maximum size of a buffer:
+The case of CVE-2015-3864 is very similar. The patch with id 6fe85f7 shows that the vulnerability was fixed by adding a bound check for the chunk size:
+Another remarkable example represents the second largest category, Business logic and rules. The vulnerability identified by CVE-2015-3844 and fixed in commit e3cde78 is described as follows:
+The getProcessRecordLocked method in services/core/java/com/android/server/am/ActivityManagerService.java in ActivityManager in Android before 5 LMY48I allows attackers to trigger incorrect process loading via a crafted application, as demonstrated by interfering with use of the Settings application.
+
+As discussed by the Android Security team,10 the method ActivityManagerService.getProcessRecordLocked() may load a system UID application into the wrong process.
+
+References:
+1. https://tinyurl.com/y777kx6s
+2. https://tinyurl.com/yblfv22p
+3. https://tinyurl.com/yaehg5b2
+# Empirical Software Engineering (2019) 24:2056–2101
+This method does not properly verify that an application’s process name matches the corresponding package name and in some cases, this can allow ActivityManager to load the wrong process for certain tasks. The patch required to fix this issue prevents the system uid component from running in an app process:
+# Practices
+Most of the patches belong to the Proper initialization values for variables subcategory, e.g., the CVE-2016-2499 vulnerability described as follows:
+AudioSource.cpp in libstagefright in mediaserver in Android 4.x before 4, 5.x before 5, 5.x before 5, and 6.x before 2016-06-01 does not initialize certain data, which allows attackers to obtain sensitive information via a crafted application.
+
+In order to prevent information leakage, several variables were initialized inside the media/libstagefright/AudioSource.cpp file as it can be appreciated in commit dd3546711 and directly in the snippet below:
+11 https://tinyurl.com/ya8rbl7n
+Empirical Software Engineering (2019) 24:2056–2101 2077
+Concerning the Resources handling category, we found an interesting case of Resource status and cleanup subcategory: CVE-2017-0726 is described in CVE details as a denial of service vulnerability in the Android media framework, and it was fixed in commit 899528512 preventing a potential memory leak by deallocating memory as shown below:
+Finally, with respect to the Android-related category, CVE-2017-0423 is an example of the Permissions subcategory. The vulnerability is described as follows:
+An elevation of privilege vulnerability in Bluetooth could enable a proximate attacker to manage access to documents on the device. This issue is rated as Moderate because it first requires exploitation of a separate vulnerability in the Bluetooth stack. This vulnerability was fixed in commit 4c1f39e13 removing the MANAGE DOCUMENTS permission from the AndroidManifest.xml file as it was not needed.
+
+# 4 RQ 2 : What are the Most Common CVSS Vectors that Describe the Android OS Vulnerabilities?
+To answer this question, we first analyzed the frequency of the values for the base group features of the CVSS vectors. Figure 8 shows the base group attributes and corresponding values for the 1,235 analyzed vulnerabilities. In particular, the top part of Fig. 8 shows their severity level and access complexity (i.e., how difficult it is to exploit the vulnerability). The first thing that leaps to the eyes is that the severity of the vulnerabilities is generally high (68% of cases), while it is not so difficult to exploit them (only 17% of vulnerabilities).
+
+12 https://tinyurl.com/ychpav57
+13 https://tinyurl.com/y6v7me9z
+# Empirical Software Engineering (2019) 24:2056–2101
+have a high access complexity which means that specialized access conditions are required). The high severity of the vulnerabilities is also confirmed by their confidentiality, integrity, and availability impact (bottom part of Fig. 8), classified in most of cases as “complete” indicating, for example, the possibility to make completely unavailable the computational resources of the affected device (availability impact: complete).
+
+In the set of 1,235 analyzed vulnerabilities, we found 49 different CVSS 2 vectors summarizing all characteristics of the vulnerabilities The top-5 CVSS vectors are reported in Table 2, represent 69% of the 1,235 vulnerabilities, and for four out of the five vectors, the Android Kernel is the most impacted layer (see Fig. 10b). The distribution of vulnerabilities for each of the 49 vector types is reported in Fig. 9. The distribution is extremely skewed, with an average of 25 vulnerabilities per vector type, and a median of 2. The upper bound (i.e., the most frequent CVSS vector) includes 399 vulnerabilities and corresponds to the vector AV:N/AC:M/Au:N/C:C/I:C/A:C (Fig. 10).
+
+Note that in the top-5 vectors the value for the Access Vector attribute is “Network” (AV:N), and the Authentication value is “None” (Au:N); this means that at least 69% of the Android OS vulnerabilities are remotely exploitable and authentication is not required.
+
+For the base group attributes in CVSS 2, there are 729 possible combinations of attribute values. Therefore, the 1,235 analyzed vulnerabilities cover 6% (49 out of 729) of all the CVSS 2 vectors for the base group attributes.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# 2079
+The table lists the values for the Access Vector (AV), Access Complexity (AC), Authentication (Au), Confidentiality Impact (C), Integrity Impact (I), and Availability Impact (A) attributes
+To exploit the vulnerabilities. In most of the vectors (Top-1, Top-2, and Top-4) the confidentiality, integrity and availability of the system are completely compromised (C:C/I:C/A:C); this means that in at least 53% of the vulnerabilities (663 out of 1,235) there is total disclosure of the system files, total compromise of the system integrity (i.e., the attacker is able to modify any file (NIST 2015)), and there can be a total shutdown of the affected resource (or the complete system).
+
+# Top 1: AV:N/AC:M/Au:N/C:C/I:C/A:C
+This vector represents 399 instances; in 80 cases we assigned “unclear” as vulnerability type. In the remaining cases, 45% are in the following categories: permissions, privileges, and access control (77); weaknesses that affect the memory (71); and improper check or handling of exceptional conditions (35). A case related to this vector is the vulnerability CVE-2017-0331 that belongs to the permissions, privileges, and access control category and affects the video driver in the Kernel:
+An elevation of privilege vulnerability in the NVIDIA video driver could enable a local malicious application to execute arbitrary code within the context of the kernel. The most affected Android OS layer is the Kernel with 212 instances, where the most impacted subsystem is the video driver (26). The second most affected layer is Native Libraries with 131 instances, 104 of which belong to the Stagefright (media framework) subsystem.
+
+# Top 2: AV:N/AC:H/Au:N/C:C/I:C/A:C
+150 instances were identified with this vector, and more than 50% of them belong to the category permissions, privileges, and access control (79). Again, the most affected layer is the Kernel (94%), with the most impacted subsystem being the Wi-Fi driver (34). The vulnerabilities in this vector are the most complicated to exploit because they require specialized access conditions (AC:H), e.g., suspicious or atypical user actions, or usage of social engineering; however, when exploited, the vulnerabilities with this vector have complete impact on confidentiality, integrity, and availability of the system (C:C/I:C/A:C).
+
+The red diamond represents the mean, and the green line is the median.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+Top CVSS 2 vectors and their distributions in terms of a vulnerability categories, and b Android OS layers
+# Top 3: AV:N/AC:M/Au:N/C:P/I:N/A:N
+More than 50% of the instances are in the following categories: data handling (22); weaknesses that affect the memory (21); permissions, privileges, and access control (12); and improper input validation (12). The vulnerabilities with this vector neither impact the integrity nor the availability of the system (I:N/A:N) and the information disclosure is partial without having control over the obtained information (C:P).
+
+With respect to the Android OS layers, 59 out of these 128 vulnerabilities are related to the kernel, being thus the most affected layer, followed by Native Libraries with 23 vulnerabilities, where 20 of these concern the Stagefright (media framework) subsystem. An example of vulnerability with this vector is CVE-2017-0397:
+An information disclosure vulnerability in id3/ID3.cpp in libstagefright in Mediaserver could enable a local malicious application to access data outside of its permission levels.
+
+Developers fixed this vulnerability in commit 7a3246b, identifying that: several points in stagefrights mp3 album art code used strlen() to parse user-supplied strings that may be unterminated, resulting in reading beyond the end of a buffer.
+
+# Top 4: AV:N/AC:L/Au:N/C:C/I:C/A:C
+This vector is related to 114 vulnerabilities; 43% of these instances are grouped in the following categories: weaknesses that affect the memory (31); and data handling (19). In this case the two most affected layers are Native Libraries (59) and Application (24), and the most affected subsystems are Stagefright.

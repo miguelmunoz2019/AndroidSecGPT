@@ -1,0 +1,63 @@
+More recently, Pauck et al. (2018) conducted an empirical study to check if Android static taint analysis tools keep their promises. Their evaluation uses DroidBench, ICCBench , and DIALDroidBench  as inputs to tools. Since the authenticity of
+208                                                               Empirical Software Engineering (2020) 25:178–219
+The apps in these benchmark suites was unknown, they developed a tool to help them confirm the presence/absence of vulnerabilities in the apps and used it to create 211 authentic benchmarks. Likewise, they created 26 authentic benchmarks based on the real-world apps from DIALDroiBench. Finally, they empirically evaluated the effectiveness and scalability of 6 static taint analysis tools using these 237 benchmarks. While their evaluation is very similar to our evaluation in terms of the goals — understand the effectiveness of tools, there are non-trivial differences in the approaches and findings. First, unlike their evaluation, our evaluation used Ghera benchmarks which are demonstrably authentic and did not require extra effort to ensure authenticity as part of the evaluation. Further, while their evaluation is subject to bias and incompleteness due to manual identification of vulnerable information flows, our evaluation does not suffer from such aspects due to the intrinsic characteristics of Ghera benchmarks, e.g., tool/technique agnostic, authentic Second, while they evaluated six security analysis tools, we evaluated 14 vulnerability detection tools (21 variations in total; see Table 5) (including 3 tools evaluated by Pauck et al.). Further, while they evaluated only academic tools, we evaluated academic tools and non-academic tools. Third, while their evaluation focused on tools based on static taint analysis, our evaluation was agnostic to the techniques underlying the tools. Their evaluation was limited to ICC related vulnerabilities while our evaluation covered vulnerabilities related to ICC and other features of the Android platform, e.g., crypto, storage, web. Fourth, while their evaluation used more than 200 synthetic apps and 26 real-world apps, our evaluation used only 84 synthetic apps (i.e., 42 vulnerable apps and 42 secure apps). However, since each benchmark in Ghera embodies a unique vulnerability, our evaluation is based on 42 unique vulnerabilities. In contrast, their evaluation is not based on unique vulnerabilities as not every DroidBench benchmark embodies a unique vulnerability e.g., privacy leak due to constant index based array access vs. privacy leak due to calculated index based array access. Finally, their findings are more favorable than our findings; even when limited to ICC related vulnerabilities. Given the above differences in evaluations, the differences in findings are not surprising.
+
+Given all of the above differences between these two evaluations that pursued very similar goals, we strongly urge researchers to consider these differences and associated experimental aspects while designing similar evaluations in the future. Also, we believe a closer examination of existing empirical evaluations in software engineering is necessary to determine the pros and cons of the experimental setup used in these evaluations and identify the basic requirements of the experimental setup to create comparable and reproducible evaluations.
+
+Zhou and Jiang (2012) conducted a systematic study of the installation, activation, and payloads of 1260 malware samples collected from August 2010 thru 2011. They characterized the behavior and evolution of malware. In contrast, our evaluation is focused on the ability of tools to detect vulnerabilities.
+
+# 6 Evaluation Artifacts
+Ghera benchmarks used in the evaluations described in this manuscript are available at https://bitbucket.org/secure-it-i/android-app-vulnerability-benchmarks/src/RekhaEval-3.
+
+17Refer to Sections 2 and 3 of the work by Mitra and Ranganath (2017a) for a detailed description of characteristics of Ghera.
+
+Empirical Software Engineering (2020) 25:178–219 209
+The code and input data used in the evaluation of representativeness of Ghera benchmarks are available in a publicly accessible repository: https://bitbucket.org/secure-it-i/evaluate-representativeness/src/rekha-may2018-3. The repository also contains the output data from the evaluation and the instructions to repeat the evaluation.
+
+A copy of specific versions of offline tools used in tools evaluation along with tool output from the evaluation are available in a publicly accessible repository: https://bitbucket.org/secure-it-i/may2018. Specifically, vulevals and secevals folders in the repository contain artifacts from the evaluation of vulnerability detection tools using benign apps and secure apps from Ghera, respectively. The repository also contains scripts used to automate the evaluation along with the instructions to repeat the evaluation.
+
+To provide a high-level overview of the findings from tools evaluation, we have created a simple online dashboard of the findings at https://secure-it-i.bitbucket.io/rekha/dashboard.html. The findings on the dashboard are linked to the artifacts produced by each tool in the evaluation. We hope the dashboard will help app developers identify security tools that are well suited to check their apps for vulnerabilities and tool developers assess how well their tools fare against both known (regression) and new vulnerabilities and exploits. We plan to update the dashboard with results from future iterations of this evaluation.
+
+# 7 Future Work
+Here are a few ways to extend this effort to help the Android developer community.
+
+1. Evaluate paid security analysis tools by partnering with tool vendors, e.g., AppRay (App-Ray 2015), IBM AppScan (IBM 2018), Klocwork (Rogue Wave Software 2017).
+
+2. Evaluate freely available Android security analysis tools that were considered but not evaluated in this tools evaluation, e.g., ConDroid , Sparta , StaDyna.
+
+3. Explore different modes/configurations of evaluated tools (e.g., Amandroid) and evaluate their impact on the effectiveness of tools.
+
+4. Extend tools evaluation to consider new lean and fat benchmarks added to Ghera repository. (Currently, Ghera contains 60 lean benchmarks: 19 new lean benchmarks and one deprecated lean benchmark.)
+# 8 Summary
+When we started this evaluation, we expected many Android app security analysis tools to detect many of the known vulnerabilities. The reasons for our expectation was 1) there has been an explosion of efforts in recent years to develop security analysis tools and techniques for Android apps and 2) almost all of the considered vulnerabilities were discovered and reported before most of the evaluated tools were last developed/updated.
+
+Contrary to our expectation, the evaluation suggests that most of the tools and techniques can independently detect only a small number of considered vulnerabilities. Even pooling all tools together, several vulnerabilities still remained undetected. Also, we made several interesting observations such as tools using shallow analysis perform better than tools using deep analysis.
+
+These observations suggest if current and new security analysis tools and techniques are to help secure Android apps, then they need to be more effective in detecting vulnerabilities;
+# Empirical Software Engineering (2020) 25:178–219
+# Percentage of apps using an API
+APIs in decreasing order of API use percentage in API level 25 specific sample
+specifically, starting with known vulnerabilities as a large portion of real-world apps use APIs associated with these vulnerabilities. A two-step approach to achieve this is 1) build and maintain an open, free, and public corpus of known Android app vulnerabilities in a verifiable and demonstrable form and 2) use the corpus to continuously and rigorously evaluate the effectiveness of Android app security analysis tools and techniques.
+
+# Appendix: A Catalog of Considered Vulnerabilities
+In this catalog, we briefly describe the 42 vulnerabilities captured in Ghera (along with their canonical references) that were used in this evaluation. Few vulnerabilities have generic references as they were discovered by Ghera authors while reading the security guidelines available as part of Android documentation . Please refer the work by Mitra and Ranganath (2017a) for details about the repository and the initial set of vulnerabilities.
+
+# A Crypto
+Crypto APIs enable Android apps to encrypt and decrypt information and manage cryptographic keys.
+
+# Empirical Software Engineering (2020) 25:178–219
+# 211
+# C1
+The result of encrypting a message twice using Block Cipher algorithm in ECB mode is the message itself. So, apps using Block Cipher algorithm in ECB mode (explicitly or due to default on Android platform) can leak information.
+
+# C2
+Encryption using Block Cipher algorithm in CBC mode with a constant Initialization Vector (IV) can be broken by recovering the constant IV using plain text attack. So, apps using such encryption can leak information.
+
+# C3
+Password-based encryption (PBE) uses a salt to generate a password-based encryption key. If the salt is constant, the encryption key can be recovered with knowledge about the password. Hence, apps using PBE with constant salt can leak information.
+
+# C4
+Cipher APIs rely on unique keys to encrypt information. If such keys are embedded in the app’s code, then attackers can recover such keys from the app’s code. Hence, such apps are susceptible to both information leak and data injection.
+
+# A Inter Component Communication (ICC)
+Android apps are composed of four basic kinds of components: 1) Activity components display user interfaces, 2) Service components perform background operations, 3) Broadcast Receiver components receive event notifications and act on those notifications, and 4) Content Provider components manage app data. Communication between components in an app and in different apps (e.g., to perform specific actions, share information) is facilitated via exchange of Intents. Components specify their ability to process specific kinds of intents by using intent-filters.

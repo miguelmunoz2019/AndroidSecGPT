@@ -1,0 +1,56 @@
+- Recognizing the specific APIs in the framework. Different game engines provide different APIs for IAP and other functionalities. We have to identify the corresponding APIs for the taint source (i.e., the payment receipt definition APIs), taint sinks (e.g., networking APIs, receipt validation APIs), and taint propagations (e.g., string or JSON data manipulation APIs). However, not all of the symbols are available as in Unity, and how to recognize them will be non-trivial.
+
+Handling other platforms. Certainly, the identified vulnerabilities not only exist in Android games but also iOS games. To confirm that, we have downloaded two iOS games: Game A with MD5 86D4E0E5C9DB42253A26D48A3ADCB4E1 and Game B with MD5 A2CE43BF4E99D429ADDBB169E24928BA from Table 3, through AppleJam . By analyzing these two games we found that they are consistent with the corresponding Android version and vulnerable to payment-bypassing attack.
+
+# 7 Ethics and Responsible Disclosure
+We did take ethics seriously when conducting this study. First, when confirming FPs and FNs of the vulnerabilities (§6), we did launch playing without paying attack and we chose to “purchase” the cheapest product in the tested games for proof-of-concept. However, in order not to cause any damages to the developers, we then did a real purchase in a separate transaction for the tested games. Therefore, from developer’s perspective, there is no financial loss and they even gained income because of our test. Second, we shared our findings with Unity. We also learned from Unity that they have acquired a startup company recently to particularly focus on alleviating the developers’ efforts of server side verification. Finally, we disclosed our identified vulnerabilities, with detailed explanation (including the root cause, game detail) to all the vulnerable games through the email they left on the Google Play.
+
+In total, we contacted 5,494 game developers who developed these 8,954 vulnerable games (note that some developers developed multiple vulnerable games). Many of the developers have acknowledged our findings. More specifically, some developers promised to patch the vulnerability as soon as possible; some replies indicate that the team will investigate the reported issue; some developers asked for articles where they can find more detailed information about this attack. Also, one developer mentioned that they have already switched to remote-verification in a later version of the tested version; one developer stated that he/she cannot update the game anymore due to that the source code having been lost; one developer shared with us that there is a game hacking tool named Lucky Patcher  that can actually be used to attack no-verification games.
+
+# 8 Related Work
+Payment security. Wang et al.  studied the shopping websites that allow users to use 3rd-party payment services, and discovered that several websites (e.g., Buy.com and JR.com) allow a malicious customer to purchase products with low price or even for free due to the logic flaw in the payment integration, which also exists in many e-commerce applications . When moving to mobile payment, many of the old problems such as authentication and malware threats still exist , but the directly integration of payment via app store also introduces new threats. For instance, Reynaud et al.  and Lai et al.  found a vulnerability which can lead to payment bypassing in mobile apps with in-app purchasing. Also, Mulliner et al.  designed a framework to protect the apps from automatic in-app billing attacks. In addition, Yang et al.  found several flaws in 3rd-party payment SDKs in mobile apps, rather than the Unity SDKs focused by our work with novel native binary analysis. There are also efforts to study the security of the mobile payment protocols   including the video-on-demand subscription services.
+
+USENIX Association 31st USENIX Security Symposium 3107
+# Game security
+There has been an arms race between game cheating and anti-cheating . Particularly, in the desktop online games, numerous efforts have been made to fight for game bots by exploiting inconsistencies , similarities , and human observational proofs . There are also efforts to defeat secret revealing in game states such as exploring private set intersection protocols as in OpenConflict to protect game maps , and also Intel SGX to defeat wallhacks as in BlackMirror . In the mobile games, Tian et al.  studied the existing attacks such as modification of memory and network traffic in the mobile game cheating, and also provided a reference framework for the game defense. This study has particularly mentioned the untrusted client attack, and our work provides concrete evidences for such attacks and their potential impact.
+
+# Binary analysis
+Binary analysis is a powerful technique for vulnerability identification. Over the past decades, a large body of research has been carried out of either improving the binary analysis itself or applying binary analysis for vulnerability discovery, as summarized by Shoshitaishvili et al. . Built with foundation techniques including program slicing , data flow analysis  (or taint analysis ), PAYMENTSCOPE complements existing work by exploring the direction of mobile game binary analysis and focusing on detecting the in-game purchasing bypassing vulnerabilities.
+
+# Conclusion
+We have presented PAYMENTSCOPE, a static binary analysis tool built on top of Ghidra to automatically identify vulnerable in-app purchasing implementations in mobile games binaries developed by the Unity SDK. The key idea is to model the vulnerability detection problem using a payment-aware data flow analysis, and leverage the metadata inside Unity game for the binary analysis. We have implemented PAYMENTSCOPE and tested with 39,121 games. Surprisingly, our tool has identified 8,233 games that do not verify the validity of payment transactions and 721 games that simply verify the transactions locally. Such a high rate of vulnerability shows how prevalent the insecure programming practice (by misplacing the trust) is for in-app purchasing. Finally, to really make in-game purchasing secure, we believe SDK providers should provide APIs to ease the server side payment verification.
+
+#//apple_ref/doc/uid/TP40010573-CH1-SW9, (Accessed on 2/13/2022).
+
+12. “Rest resource: purchases.subscriptions,” https://developers.google.com/android-publisher/api-ref/rest/v3/purchases.subscriptions, (Accessed on 2/12/2022).
+
+13. “Setting up a publisher account,” https://developer.android.com/google/play/licensing/setting-up#account, (Accessed on 2/13/2022).
+
+14. “The future of scripting in Unity,” https://blogs.unity3d.com/2014/05/20/the-future-of-scripting-in-unity/.
+
+15. “The ultimate mobile in-app purchases guide,” https://instabug.com/blog/mobile-in-app-purchases/, (Accessed on 2/12/2022).
+
+16. “Unity real-time development platform | 3d, 2d vr & ar engine,” https://unity.com/.
+
+17. “Using in-app purchases,” https://docs.unrealengine.com/en-US/SharingAndReleasing/Mobile/InAppPurchases/index.html, (Accessed on 2/12/2022).
+
+18. “Video game market revenue worldwide in 2021,” https://www.statista.com/statistics/292751/mobile-gaming-revenue-worldwide-device/, (Accessed on 2/12/2022).
+
+19. “Multiple APK support | Android Developers,” Dec 2019, [Online; accessed 18. Feb. 2022]. [Online]. Available: https://developer.android.com/google/play/publishing/multiple-apks.
+
+20. “Lucky Patcher Official Website By ChelpuS - Lucky Patcher,” Jan 2021, [Online; accessed 18. Feb. 2022]. [Online]. Available: https://www.luckypatchers.com.
+
+21. K. Allix, T. F. Bissyandé, J. Klein, and Y. Le Traon, “Androzoo: Collecting millions of android apps for the research community,” in Proceedings of the 13th International Conference on Mining Software Repositories, ser. MSR ’16. New York, NY, USA: ACM, 2016, pp. 468–471. [Online]. Available: http://doi.acm.org/10/2901739.
+
+22. E. Bauman and Z. Lin, “A case for protecting computer games with sgx,” in Proceedings of the 1st Workshop on System Software for Trusted Execution (SysTEX’16), Trento, Italy, December 2016.
+
+# A Measuring the Popularity of Game Engines
+Today, there are many mobile game engines, such as Unity, Unreal Engine and Cocos2D. However, it is unclear how popular mobile game engines really are among the mobile games. To answer this question, we have thus performed a measurement study with 293,019 mobile games crawled from Google Play.
+
+Our key insight is that the shared objects in the games that developed with the same engine should have the same names. For instance, the games developed with Unity should have shared objects libmain.so; the games developed with Unreal Engine should have shared objects libUE4.so.
+
+As such, we first unpacked each game and collected its shared objects. For each shared object name, we count the number of games that contains it. Then we focus on the shared objects that appeared in more than 1,000 games as presented in the first column of Table 6. However, for many shared objects, it is hard to tell which game engines they belong to based on their names. So we performed a manual investigation to find out such information with two strategies.
+
+- Reverse engineering of popular game engine based on the available games (bottom-up). For each popular game engine, we downloaded 5 games that have developed with it. Through reverse engineering, we find out the names of shared objects they should have in the released games. In addition, by looking at the strings or the exported method names of the shared objects, we find clues about the game engine such as the engine name.
+
+- Search engine, such as Google (top-down). A game engine typically has a forum, while developers discussing bugs, they may post logs (may contain shared object names). And the search engine will collect such information. So searching the shared object name may lead us to the forum. And eventually help us identify the game engine.

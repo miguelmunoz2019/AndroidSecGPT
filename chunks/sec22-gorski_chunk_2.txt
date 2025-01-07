@@ -1,0 +1,53 @@
+FRED seeks to semi-automatically identify such file-based confused deputy vulnerabilities within Android’s system services. Fully-automated identification of such vulnerabilities requires modeling the semantics of all safety checks that occur on the path to file access. Doing so generically is not tractable. Instead FRED seeks to reduce the search space from the over 6,000 RPC entry points (Android 10) to the smaller set of RPC entry points that access security-sensitive files, which we term candidate RPC entry points.
+
+# Definition 1 (Candidate RPC entry points)
+Let E be the set of all methods handling binder interfaces registered as system services with Android’s Service Manager. Let CFGe be the inter-procedural control flow graph of e ∈ E. We note that CFGe stops when it encounters a call to another e′ ∈ E. The set of candidate RPC entry points Ec ⊆ E contains all e such that CFGe accesses (e.g., opens) a security-sensitive file.
+
+We note that the access of a security-sensitive file may be a primary function of the RPC entry points, or it may be ancillary to performing a primary functionality (e.g., reading configuration). Differentiating primary function from ancillary function requires modeling the semantics of the RPC entry point’s functionality, and heuristics to do so may miss vulnerabilities. Therefore, we do not explicitly attempt to differentiate it via program analysis. Furthermore, manual inspection is ultimately required to determine if a candidate RPC entry point contains an improper file re-delegation.
+
+# Definition 2 (Improper file re-delegation)
+Let e ∈ Ec be a candidate RPC entry point. Let f be a security-sensitive file (or directory) accessed by e. Let c be a caller of e, where c does not have privilege to access f. Then e has an improper file re-delegation if c can violate the secrecy or integrity of f.
+
+We note that whether or not the secrecy or integrity of f is violated is contextual to the semantics of the service functionality. An RPC entry point may safely allow a caller to read or modify a part of a file related to the caller. The violation may also be subjective with respect to the purpose.
+
+# 3 Overview
+FRED seeks to semi-automatically identify improper file re-delegation by Android’s system services by automating the discovery of candidate RPC entry points and then using manual inspection to determine if the secrecy or integrity of files is violated. Conceptually, FRED operates by (1) traversing the call graph from RPC entry points to methods that access files (e.g., java.io.FileInputStream), and then (2) performing a backwards data flow analysis from the file path arguments to determine their values from either constant strings or RPC arguments. It then compares the access control policy for those files with the access control policy of the RPC entry point. Performing this static program analysis requires overcoming the following research challenges.
+
+- Android system developers use a variety of file access method APIs. The backwards data flow analysis to determine file paths starts at the code instruction that invokes a file access method. If this invocation is within a generic wrapper API, the data flow analysis will not be specific to the RPC entry point.
+
+- File paths are built from many parts, which are not always available to the analysis. Paths are frequently constructed using a variety of system environment variables, as well as path and string builder APIs. When the analysis cannot identify constant values for all parts, it should be as precise as possible to match concrete file paths.
+
+- Java-based services call native methods through JNI. RPC entry points registered as system services call 387 unique JNI methods in Android 10. Files paths and calls to file access methods may only exist within native code, requiring the analysis to span both the Java and C/C++ portions of services.
+
+# Step 1 - Identify File Access Methods
+Knowledge of the specific methods used to access files provides more precise mapping of RPC entry points to file paths. For example, attempting to perform a backwards data flow analysis from a generic Java API file method may significantly over-approximate file paths when that Java API file method is called indirectly via a generic Android API file methods. We use a combination of manual review, program analysis, and manual refinement to identify four types of file methods: libc file methods, JNI file methods, Java API file methods, and Android API file methods. While not fully automated, the manual steps are largely one-time efforts and require minimal effort to transition to a new Android version (e.g., transitioning from Android 9 to Android 10 took less than 5 hours).
+
+# Step 2 - Identify Accessed Sensitive Files
+For each RPC entry point, FRED identifies the set of security-sensitive files that it accesses. This step begins by walking the call graph from the RPC entry point to all of the file methods identified in Step 1. FRED then performs a backwards inter-procedural data flow analysis from the file methods to identify file paths that flow to it. FRED analyzes the Java and native code portions of the RPC entry point separately using Soot  and
+USENIX Association 31st USENIX Security Symposium 1527
+# Extract
+# System
+# RPC Policy
+# Re-Delegation
+# Candidate RPC
+# Manual Inspection
+# 1
+Identify File Methods (Manual Refinement)
+Call Graph: RPC → File
+Data Flow:
+File Patterns
+Sensitive Files
+Improper File Accessed by RPCs
+Concrete Files
+Real Device
+Sensitive File Filter
+File Policy
+angr , respectively, and then identifies which JNI methods are called by the RPC entry point. For Java code, where string construction is more intricate, FRED derives an intermediate representation that describes the string construction. This intermediate representation is then converted into regular expressions for file paths. For native code, where string construction is based on variants of strcpy, FRED simply derives the full file paths. Finally, these regular expressions and file paths are matched to a list of security-sensitive files from a real device. For the purposes of this paper, we consider a file to be security sensitive if the UID or GID is system or the GID corresponds to a GID mapped to an Android permission.
+
+Note that our approach primarily identifies when files are opened. It does not attempt to differentiate read and write access. First, read and write operations are typically methods invoked on objects returned from the open call. Tracking these objects can be imprecise and cause FRED to miss file accesses. Second, the read and write methods of file access wrappers are unknown and require additional manual effort to identify. Given that we found the number of candidate RPC entry points for file open was manageable (see Section 5), and manual inspection is needed anyway (Step 4), there was no need to build this additional analysis.
+
+# Step 3 - Re-Delegation Analysis
+Candidate RPC entry points provide indirect file access in ways that may or may not be safe. First, FRED determines if and how each RPC entry point can be called by a third-party application using information and techniques developed for ACMiner  and ARF . ACMiner uses Soot to statically identify inconsistent access control checks between similar RPC entry points, and ARF builds on ACMiner to identify re-delegation between RPC entry points. FRED uses ACMiner’s mapping of RPC entry points to permissions as input. It also adopts several of ARF’s heuristics to determine if the RPC entry point can only be accessed by system services (e.g., UID checks as the first conditional). Finally, for each RPC entry point accessible to third-party applications, FRED combines (a) permission requirements with (b) the Unix permissions for the security sensitive files accessed by the RPC entry point (Step 2). It produces the set of candidate RPC entry points.
+
+# Step 4 - Manual Inspection
+Since it is not practical to capture all of the ways in which an RPC entry point may allow safe access to sensitive files, FRED relies on manual inspection to identify improper file-redelegation. Since the total number of candidate RPC entry points is relatively small for Android 10, an expert can review how each RPC entry point uses sensitive files. We also identified several heuristics to further reduce this list, incorporating them into Step 3. Finally, the manual inspection should also consult SELinux policy to determine if (a) the service can access the given file and (b) a third-party application can invoke the service. In our study, these additional SELinux checks were simple to confirm manually and no discovered vulnerabilities were limited by SELinux policy. Future versions of FRED could incorporate SELinux policy checks into the pipeline.

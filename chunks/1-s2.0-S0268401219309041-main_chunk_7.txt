@@ -1,0 +1,90 @@
+The results of this study show that privacy awareness moderates the effect of perceived privacy risk on the perceived security of mobile apps. Investing time and money into elevating users’ awareness through different methods (such as privacy policies) would always help in preventing security incidents and unwanted privacy disclosures. There are benefits for companies in raising users’ awareness, such as contributing to the creation of a safer and more secure business economy, which is beneficial to both businesses and customers. The results have shown that there is a significant difference in the effect of privacy policies on privacy risk in more sensitive and less sensitive contexts. This shows that, if the privacy policies for more sensitive mobile apps (i.e., mobile banking apps) address the security strategies and preventive measures in place, users perceive fewer risks, compared to less sensitive mobile apps. App developers should provide more information about data collection and protective measures in more sensitive apps, because this affects user perceptions of privacy risks.
+
+# 6. Limitations
+The results of this study should be viewed in light of its limitations. First, although the findings generally support the hypotheses, this study did not extend the model to include the outcomes of perceived security that could be translated into variables, such as intention to use. We encourage future researchers to go beyond the proposed model by integrating other privacy (e.g., privacy control and privacy experiences; Smith et al., 2011; Xu et al., 2011) and security-related variables (e.g., perceived threat severity and perceived threat vulnerability; Bélanger, Collignon, Enget, & Negangard, 2017), and even extend the model by involving other outcome variables deemed suitable.
+
+Both samples collected for this study were limited to one method – a questionnaire survey. Even though the use of two groups increased the generalizability of the findings, existing method studies emphasize triangulation and the use of multiple methods (Orlikowski & Baroudi, 1991). Survey data has potential issues, such as common method bias and high measurement errors (Podsakoff, MacKenzie, Lee, & Podsakoff, 2003; Straub et al., 2004). We addressed the common method bias, but there are other data sources (i.e., archival data) that are less prone to such issues and biases. This study did not have access to such sources, but we encourage future researchers to look for other sources, such as log data, to better predict the security behavior of app users.
+
+# 7. Conclusion
+This paper addressed the following research question: do privacy perceptions impact users’ perceptions of mobile apps’ security? Unlike the prior literature, which only tested the effect of privacy on security or vice versa, this study examined the effect of privacy antecedents on users’ security perceptions. More specifically, this paper examined whether privacy risk and the effectiveness of privacy policies, two antecedents of privacy concerns, affect the perceived security of mobile apps. The empirical results of this study suggest that the antecedents of privacy directly affect users’ perceptions of security. Both boundary rule formation and boundary coordination and turbulence affect users’ perceptions of security. The results show that privacy awareness moderates the effect of perceived privacy risk on perceived security. This study found that the effectiveness of privacy policies (boundary coordination and turbulence) affects privacy risk (boundary rule formation). Thus, this paper has provided some initial insights into the effects of the antecedents of privacy concerns on the perceived security of mobile apps. We hope that this paper can motivate future investigations into the complex effects of privacy on security, while testing whether the antecedents of these constructs affect each other.
+
+# Appendix A
+# Table A1 Measurements.
+
+Note: For the second survey, we changed mobile banking applications to Evernote.
+
+* Dropped.
+
+# A. Balapour, et al.
+
+# International Journal of Information Management 52 (2020) 102063
+# Appendix B
+# Table B1
+# Principal Component Analysis.
+
+# Loadings and cross-loadings.
+
+PPE = Perceived effectiveness of privacy policy; PR = Perceived privacy risk; PA = Perceived privacy awareness; PS = Perceived security of mobile app.
+
+# A. Balapour, et al.
+
+# International Journal of Information Management 52 (2020) 102063
+Jia, R., Steelman, Z. R., & Reich, B. H. (2017). Using mechanical turk data in IS research: Risks, rewards, and recommendations. CAIS, 41, 14.
+
+Johnson, V. L., Kiser, A., Washington, R., & Torres, R. (2018). Limitations to the rapid adoption of M-payment services: Understanding the impact of privacy risk on M-payment services. Computers in Human Behavior, 79, 111–122. https://doi.org/10/j.chb.
+
+Johnston, A. C., & Warkentin, M. (2010). Fear appeals and information security behaviors: An empirical study. MIS Quarterly, 34(3), 549–566. https://doi.org/10/25750691.
+
+Keith, M. J., Babb, J. S., Lowry, P. B., Furner, C. P., & Abdullat, A. (2015). The role of mobile‐computing self‐efficacy in consumer information disclosure. Information Systems Journal, 25(6), 637–667. https://doi.org/10/isj.
+
+Keith, M. J., Babb, J., Furner, C., Abdullat, A., & Lowry, P. B. (2016). Limited information and quick decisions: Consumer privacy calculus for mobile applications. AIS Transactions on Human-Computer Interaction, 8(3), 88–130. https://doi.org/10/1thci.
+
+Keith, M. J., Thompson, S. C., Hale, J., Lowry, P. B., & Greer, C. (2013). Information disclosure on mobile devices: Re-examining privacy calculus with actual user behavior. International Journal of Human-computer Studies, 71(12), 1163–1173. https://doi.org/10/j.ijhcs.
+
+Kim, D. J. (2008). Self-perception-Based versus transference-based trust determinants in computer-mediated transactions: A cross-cultural comparison study. Journal of Management Information Systems, 24(4), 13–45. https://doi.org/10/mis0742-1222240401.
+
+Kim, D. J., Steinfield, C., & Lai, Y. (2008). Revisiting the role of web assurance seals in business-to-consumer electronic commerce. Decision Support Systems, 44(4), 1000–1015. https://doi.org/10/j.dss.
+
+King, N. J., & Jessen, P. W. (2010). Profiling the mobile customer – Privacy concerns when behavioural advertisers target mobile phones – Part I. Computer Law & Security Report, 26(5), 455–478. https://doi.org/10/j.clsr.
+
+Kumar, A. (2016). Risk of mobile threats and privacy concerns grow. June 3 Retrieved from CSO online.
+
+Levenson, H. (2016). 7 common reasons users are abandoning your app. August 2 Retrieved from Web Analytics World.
+
+Li, H., Sarathy, R., & Xu, H. (2011). The role of affect and cognition on online consumers’ decision to disclose personal information to unfamiliar online vendors. Decision Support Systems, 51(3), 434–445. https://doi.org/10/j.dss.
+
+Lin, G., Wen, Z., Marsh, H. W., & Lin, H. (2010). Structural equation models of latent interactions: Clarification of orthogonalizing and double-mean-centering strategies. Structural Equation Modeling, 17(3), 374–391. https://doi.org/10/10705511.
+
+Lin, Y., Huang, C., Wright, M., & Kambourakis, G. (2014). Mobile application security. Computer, 47(6), 21–23. https://doi.org/10/MC.
+
+Liu, Z., & Wang, X. (2018). How to regulate individuals’ privacy boundaries on social network sites: A cross-cultural comparison. Information & Management, 55(8), 1005–1023. https://doi.org/10/j.im.
+
+Lowry, P. B., Cao, J., & Everard, A. (2011). Privacy concerns versus desire for interpersonal awareness in driving the use of self-disclosure technologies: The case of instant messaging in two cultures. Journal of Management Information Systems, 27(4), 163–200. https://doi.org/10/mis0742-1222270406.
+
+Luo, X., Li, H., Zhang, J., & Shim, J. P. (2010). Examining multi-dimensional trust and multi-faceted risk in initial acceptance of emerging technologies: An empirical study of mobile banking services. Decision Support Systems, 49(2), 222–234. https://doi.org/10/j.dss.
+
+Malhotra, N. K., Kim, S. S., & Agarwal, J. (2004). Internet users’ information privacy concerns (IUIPC): The construct, the scale, and a causal model. Information Systems Research, 15(4), 336–355. https://doi.org/10/isre.
+
+Marsh, H. W., Wen, Z., & Hau, K. T. (2004). Structural equation models of latent interactions: Evaluation of alternative estimation strategies and indicator construction. Psychological Methods, 9(3), 275–300. https://doi.org/10/1082-989x.
+
+Mobile Ecosystem Forum (2016). MEF global consumer trust report 2016 Retrieved from https://mobileecosystemforum.com/programmes/consumer-trust/global-consumer-trust-report-2016/.
+
+Nikkhah, H. R., & Sabherwal, R. (2017a). A privacy-security model of mobile cloud computing applications. Proceedings of International Conference on Information Systems, 2017a. Retrieved from https://aisel.aisnet.org/icis2017/Security/Presentations/17/.
+
+Nikkhah, H. R., & Sabherwal, R. (2017b). Mobile cloud-computing applications: A privacy cost-benefit model. Proceedings of Americas Conference on Information Systems. Retrieved from https://aisel.aisnet.org/amcis2017/InformationSystems/Nikkhah.
+
+Nikkhah, H. R., Balapour, A., & Sabherwal, R. (2018). Mobile applications security: Role of privacy. Proceedings of Americas Conference on Information Systems, 2018. Retrieved from https://aisel.aisnet.org/amcis2018/Security/Presentations/18/.
+
+Nikkhah, H. R., Grover, V., & Sabherwal, R. (2018). Why do users continue to use mobile cloud computing applications? A security-privacy investigation. In: Proceedings of the 13th Pre-ICIS Workshop on Information Security and Privacy. Retrieved from https://www.albany.edu/wisp/papers/WISP2018_paper_30.pdf.
+
+Norberg, P. A., Horne, D. R., & Horne, D. A. (2007). The privacy paradox: Personal information disclosure intentions versus behaviors. The Journal of Consumer Affairs, 41(1), 100–126. https://doi.org/10/j-6606.x.
+
+Okazaki, S., Li, H., & Hirose, M. (2009). Consumer privacy concerns and preference for degree of regulatory control. Journal of Advertising, 38(4), 63–77.
+
+Ooi, K., & Tan, G. W. (2016). Mobile technology acceptance model: An investigation using mobile users to explore smartphone credit card. Expert Systems with Applications, 59, 33–46. https://doi.org/10/j.eswa.
+
+Orlikowski, W. J., & Baroudi, J. J. (1991). Studying information technology in organizations: Research approaches and assumptions. Information Systems Research, 2(1), 1–28. https://doi.org/10/isre.
+
+Osatuyi, B., Passerini, K., Ravarini, A., & Grandhi, S. A. (2018). Fool me once, shame on you … then, I learn.” An examination of information disclosure in social networking sites. Computers in Human Behavior, 83, 73–86. https://doi.org/10/j.chb.
+
+Pagliery, J. (2015). Hackers are draining bank accounts via the Starbucks app. May 14 Retrieved from CNN Business.

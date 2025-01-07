@@ -1,0 +1,69 @@
+# 4) TLS indicator: Content and Indicator Proximity
+Content MUST NOT be displayed in a manner that confuses hosted content or browser indicators. In this paper, we conduct T6 and T7 to test whether the lock emoji in the titles and long sub-domain names could confuse the users. According to this guideline, the IABIs should not allow lock emoji to mimic the HTTPS indicators or allow the long sub-domain name to mislead users, which are the GOOD ratings of T6 and T7. We define NEUTRAL as displaying both the security indicators and the lock emoji (T6). In T7, NEUTRAL is not displaying the domain name (though it is a BAD design in T2), and a BAD design refers to those ignoring this principle and allowing the two items to mislead users. The results of our analysis into T2 ∼ T7 are presented in Section 4.
+
+# 3 Analyzing Risks on Page Navigating
+When a user navigates a web page in an app’s IABI, it is dangerous to input the username and password information in a login form because IABIs are more vulnerable to phishing attacks than standalone browsers . Therefore, well-designed IABIs should give specific and extra warnings to remind users of the risk of inputting passwords during navigating a login page. Moreover, they should cover not only insecure HTTP login pages but also HTTPS login pages with valid but illegitimate certificates. That is because an attacker can forge a phishing page with the title of a popular page (e.g., alibaba.com) by simply using a CA-issued (valid) certificate on a similar domain (e.g., alibababa.com) and thus meet the TLS requirement.
+
+Based on this consideration, we test whether IABIs would show a specific or extra warning during navigation of a login page as compared with their normal behaviors on a non-login page (T8). We conduct this test using URL8 and URL10, which are example HTTP and HTTPS login pages, respectively. Note that for Facebook and FB Messenger, we use our university’s HTTP login page since URL10 is already the Facebook login page. For each IABI, we navigate to the two login pages, input a username and a password, and check whether the IABI shows a specific warning on our operation.
+
+Specifically, we assign a GOOD rating if the subject IABI provides specific warnings for both HTTP and HTTPS login pages. In contrast, we give the NEUTRAL and BAD ratings if the subject IABI displays a warning for at least one login page or has no such warning for both pages, respectively. We show the test results of T8 in Section 4.
+
+# 4 CROSS-PLATFORM ANALYSIS RESULTS
+We begin this section with an overview of the test apps used in our analysis (Section 4). Section 4, 4, and 4 cover our analysis results on IABIs handling of URLs before web page opening, during web page opening, and during web page navigation, respectively.
+
+# 4 Test Apps and Overall Analysis Results
+# On the Usability (In)Security of In-App Browsing Interfaces in Mobile Apps
+# 4 Usability Risks before Page Opening
+As discussed in Section 3, this part of the analysis concerns how the URL is displayed before end users opens it.
+
+# 4 T1: Displayed URLs before page opening
+# GOOD
+The most common way (accounts for roughly 50% of our subject apps) is displaying the complete URL; see Case 1 in Figure 3. We consider this a GOOD practice as end users can see the full URL without being misled by maliciously crafted favicons or titles (see the BAD cases later).
+
+# NEUTRAL
+Some apps may display additional information of the corresponding web page (see Case 2, 3, and 4 in Figure 3; we confirm that they show the complete URL even if the URLs contain sub-domains and additional paths) including title, domain, favicon, and even some page content. Although such additional information might help in a legitimate URL, it could be also misleading in other cases. For example, a fake lock favicon is displayed in the case of LINE in Figure 3. That said, apps in this category also display the complete URL for inspection by end users; we therefore consider the practice of displaying the complete URL together with additional (potentially misleading) information as NEUTRAL.
+
+# BAD
+This category refers to apps that do not display the complete URL (including cases with missing HTTP/HTTPS scheme). For example, Snapchat (Case 5) only displays the title, favicon, and domain name (and see the lock-looking favicon). It presents an example in which end users are given no information about the actual security of the URL. Twitter and Quora (Case 6 and 7) have the scheme of the URL stripped off with only the domain name left. Weibo (Case 8) displays an identical label for every URL, which is also BAD in failing to provide adequate information of the URL.
+
+# Takeaway in §4
+About 30% of the subject apps do NOT display the complete URL, failing to provide the necessary security indicators. Most of them omit the scheme (HTTP or HTTPS), while two apps completely hide the URL content. Another 30% of the apps, despite outputting the full URL, display additional favicon or title information, which potentially enables attackers to maliciously craft a fake favicon/title to mislead end users.
+
+# 4 Usability Risks on Page Displaying
+As discussed in Section 3, this part of the analysis focuses on the title and address bar developers typically add to enhance the user interface of the app. We first examine the display of URL when...
+
+# RAID ’21, October 6–8, 2021, San Sebastian, Spain
+# Zicheng Zhang, Daoyuan Wu, Lixiang Li, and Debin Gao
+Column “CCT/SF”: whether the subject app uses Chrome Custom Tabs (Android) or SFSafariViewController (iOS) to implement IABI.
+
+Column “Own IABI”: whether the subject app uses its own implementation of IABI. Note that an app could present both CCT/SF and Own IABI behavior (when the phone has and does not have Chrome/Safari installed, respectively). Since Safari is installed by default on iOS, the app’s “own IABI” status is unknown when it already has SF implementation.
+
+Row “CCT/SF”: analysis results when using CCT/SF to implement IABI. Note that all subject apps will present the same behavior when using CCT/SF.
+
+Cell format: &lt;analysis result on Android&gt; | &lt;analysis result on iOS&gt;
+Symbols: ✔= Good or Yes; H= Neutral; ✗= Bad or No; ‘*’ = Unknown; ‘-’ = Same as CCT/SF; ‘(o)’ = Using (o)wn IABI if no Chrome; ‘(t)’ = CCT without (t)itle.
+
+# 4 T2: Displayed URLs during page opening.
+
+The importance of proper display of URLs here is similar to that in T1, with three notable differences. First, T2 focuses on the display of URL only and leaves the analysis of scheme indicators to T3∼T5. Second, web page redirection places an additional demand on the display of URLs while pages are being opened. Third, a preview of the page no longer adds any usability or functionality since the actual page is now opened. Results on representative apps are shown in Figure 4.
+
+Chrome Custom Tabs and SFSafariViewController. We first take a look at how full-fledged browsers handle URL displays. Both Chrome Custom Tabs and SFSafariViewController (SF) always display the domain name in their address bars, which is considered a GOOD design. Customization of CCT allows showing or hiding the title (using API setShowTitle(true)); see Case 1 and 2 in Figure 4. 10 of the 25 subject apps use CCT while 9 of them use SF.
+
+We now turn our attention to IABI with each application’s own design and implementation without using CCT/SF. Note that not all subject apps choose to provide their own IABI implementation; see column “Own IABI” in Table 2. Similar to what we did with T1, we categorize these implementations into buckets of GOOD, NEUTRAL, and BAD, and present our findings on the Android.
+
+# On the Usability (In)Security of In-App Browsing Interfaces in Mobile Apps
+‘(Own)’ refers to the app’s own IABI, similarly hereinafter.
+
+platform first followed by a comparison with corresponding iOS apps.
+
+# GOOD.
+
+We consider it a GOOD design provided that either complete URL or its domain is displayed. A total of 8 Android apps satisfy this requirement (e.g., Case 3 in Figure 4) out of 18 subject apps2 that provide their own IABI implementations.
+
+# BAD.
+
+The other 10 subject apps only display the title of the web page without the URL (or domain name), e.g., 163Mail (Case 5), or even no title/address bar at all, e.g., Baidu, which is a BAD design for the same reasons discussed in T1. An interesting observation is that 9 out of these 10 subject apps are from China.
+
+# Page redirection.
+
+Web page redirection is common, and IABIs shall always display information of the URL of the final landing page being opened. Our evaluation shows that all the subject apps pass this test, should they use WebView.getUrl() to directly retrieve the URL or use the arguments of a set of hook functions within WebViewClient (onPageStarted() and onPageFinished()).

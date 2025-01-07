@@ -1,0 +1,74 @@
+To avoid misconfigurations, developers must clearly understand the XML Schema of app manifest files, i.e., the correct structure and constraints governing elements and attributes in a manifest file. In general, an XML Schema describes three classes of requirements , violating any of which causes misconfiguration: (1) Manifest vocabulary and structure, describing what the valid elements and attributes are and where exactly they can be placed. (2) Occurrence constraints dictating how many times an element or an attribute can appear. (3) Valid attribute values and their data types. Misconfigurations resulting from violating these requirements can be classified based on their root causes into the following categories:
+- Misplaced elements and attributes, which can be caused by (1) an element exceeding the upper bound of an occurrence (e.g., can only appear once but appeared multiple times), or (2) an element placed in an unexpected parent (e.g., if <action> element has an invalid parent <receiver>), or (3) an attribute declared inside a wrong element (e.g., android:permission in Figure 1).
+
+- Absent elements and attributes, which occurs when a required element or attribute is missing, i.e., violating its lower bound occurrence constraint.
+
+# Detecting and Measuring Misconfigured Manifests in Android Apps
+CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+&lt;xs:element name="intent-filter"&gt;
+&lt;xs:complexType mixed="true"&gt;
+&lt;xs:sequence&gt;
+&lt;xs:element ref="action" minOccurs="1" /&gt;
+&lt;xs:element ref="category" /&gt;
+&lt;xs:element ref="data" /&gt;
+&lt;/xs:sequence&gt;
+&lt;xs:attribute name="autoVerify" type="xs:string"/&gt;
+...
+
+&lt;/xs:complexType&gt;
+&lt;/xs:element&gt;
+&lt;xs:element name="action"&gt;
+&lt;xs:complexType mixed="true"&gt;
+&lt;xs:sequence&gt;
+&lt;/xs:sequence&gt;
+&lt;xs:attribute name="name" type="xs:string"/&gt;
+...
+
+&lt;/xs:complexType&gt;
+&lt;/xs:element&gt;
+- Unexpected elements and attributes, which can be caused by an element or attribute that does not appear in the valid manifest vocabulary, e.g., an undefined &lt;foo&gt; element or a misspelled element in the app manifest file.
+
+- Wrong attribute values, which can be caused by an attribute value that does not satisfy the required data types or allowed data values for the attribute, e.g., value true or false is misspelled for a Boolean type.
+
+Note that a misplaced element or attribute could also be categorized as absent. For instance, if &lt;action&gt; is misplaced inside &lt;data&gt;, which is required by &lt;intent-filter&gt;, it is identified as missing under &lt;intent-filter&gt; and misplaced under &lt;data&gt;.
+
+# 2 Approaches for Validating Manifest Files
+App manifest files must be validated to ensure their correctness. In fact, Google provides a number of tools for this purpose. In particular, at development time, Android Studio checks the manifest XML tree for the absence of some critical elements and attributes . During the publishing phase, Google Play checks the app manifest file and applies filters on special compatibility elements (e.g., &lt;compatible-screen&gt;) to decide which devices are compatible with an app . At installation time, the Android PackageParser parses the app manifest file in the APK, checks for required elements, and configures the app runtime accordingly.
+
+A systematic and well-known approach to validate a manifest XML file is through the use of a corresponding XML Schema file that defines the constraints on the structure and content of the XML file. However, by checking the source code of AOSP , we did not find any XML Schema for app manifest files. Instead we found that AOSP uses hand-rolled code to validate manifest files . We found that while AOSP validates all manifest attribute values and their data types , it uses ad-hoc constraints to validate the manifest structure itself (e.g., only checking for occurrence of certain elements and attributes). These hardcoded checks result in incomplete coverage since hand-rolling a complete XML validator that can capture all possible cases of misoccurrences is an exhaustive and error-prone task. As a result, many apps end up on the market with critical misconfigurations, as shown in Figure 1.
+
+Therefore, to systematically validate app manifest files, we need to construct the XML Schema for Android app manifests and then perform the validation using the schema file. In particular, we need to know both the structure and occurrence constraints of elements and attributes of an Android manifest file, where the structure refers to the specific child and parent elements at each particular position of the XML tree and their corresponding attributes, and occurrence constraints refer to the upper and lower bounds of the occurrences of a child element in the tree, i.e., whether it is optional or required and how many times it can appear under the same parent.
+
+After obtaining the structures and occurrence constraints of XML elements and attributes, various XML Schema languages, such as Document Type Definition (DTD) , Relax-NG , Schematron , and XML Schema Definition (XSD) , can be used to develop a specification using these structures and constraints to validate XML files. XSD is the most popular one among these schema languages since it is also written in XML, offers a strong set of specification facilities, and is widely supported by XML parsing packages for many programming languages . XSD supports various features that can be used to directly describe the correct structure and constraints of Android manifest elements and attributes: it can declare valid child elements and attributes of each element, minimum and maximum occurrence of elements, and whether an attribute is required or optional, and so on. An example of an XSD file is shown in Figure 2. All the tag names in XSD files begin with common prefix xs: since they all belong to the XML Schema (XS) namespace. Manifest elements such as &lt;intent-filter&gt; are declared one-by-one using &lt;xs:element&gt;. It can be noticed that an element is an &lt;xs:complexType&gt; if it contains both child elements and attributes. Child elements are then specified inside &lt;xs:sequence&gt; as &lt;xs:element&gt; references, and their number of occurrences are specified using the minOccur and maxOccur attributes. Similarly, valid attributes are specified in &lt;xs:attribute&gt; schema elements. For a full treatment of XSD, we refer interested readers to XSD definition.
+
+# 3 OVERVIEW
+The goal of this study is to understand the prevalence, history and security impact of the misconfiguration of Android manifest files. As such, we need to first generate the validation schema for the manifest files. To do so, an intuitive approach is to extract manifest constraints by analyzing the documentation as it is the official guide used by app developers to develop manifest files. Unfortunately, this is still non-trivial, requiring overcoming multiple key challenges as discussed in the following.
+
+# 3 Challenges
+C1: Identifying Manifest-Related Documentation Pages. To automatically extract constraints from the documentation, the first challenge is to identify the documentation pages relevant to app manifest files. Currently, there are over 1,000 HTML pages in the latest version of the Android documentation, and they specify constraints not only related to developing Android apps and configuring manifest files, but also to other XML files such as the Android resource XML file, which share the similar structure as the manifest documentation. As such, we need to avoid capturing descriptions.
+
+# §4 Structured Sections
+# §4 Positional Constraints
+# Positional Constraints
+# Scheme Generator
+# Manifest Schema (XSD)
+# §4 Validation Results
+# Android Documentation
+# Document Collector
+# Free-form Descriptions
+# Entity Recognizer
+# Candidate Constraints
+# Constraint Filter
+# App ManifestFile
+# Quantitative Constraint Extractor
+in every documentation page; otherwise, a large amount of constraints irrelevant to manifest file configuration may be erroneously extracted.
+
+# C2: Handling Ambiguity and Incompleteness in Manifest Descriptions.
+
+It is challenging for an automated system to deal with ambiguities in the descriptions of manifest elements and attributes since they are written in free-form text. Compared with prior NLP-based document mining techniques (e.g., ), we need to perform more complex tasks because we need to not only identify manifest entities referred to in a sentence and determine their relationships (parent or child), applicable positional and quantitative constraints (see §2), but also translate them to valid XSD.
+
+Fortunately, we find that sentences discussing manifest elements and attributes have common structures. First, sentences describing how to configure manifest entities are mostly imperative sentences that use modal verbs, whereas descriptions specifying maximal occurrences use numerical words to emphasize that an element is unique (e.g., ‘there is only one...’). Second, we find that the subjects and objects of complete sentences refer to the parent and child elements respectively. For example, in sentence ‘An <intent-filter> element must contain one or more <action> elements’, <action> is the current element and <intent-filter> is its parent. Although in some contexts, the parent element may be omitted for brevity (e.g., ‘The name must be specified’), the overall structure of subject–verb–object (SVO) remains.
+
+# C3: Performing Context-Aware and Domain-Guided Parsing.
+
+Since sentences in the documentation may omit parent elements for brevity, there may be relevant manifest constraints not captured by the above two sentence structures. In addition, specifications irrelevant to manifest constraints may be mistakenly identified as manifest constraints when they use sentences with SVO structure. Therefore, we need to carefully filter out irrelevant sentences by reasoning about the context in which a sentence occurs and also using the domain-knowledge extracted to guide the filtering.

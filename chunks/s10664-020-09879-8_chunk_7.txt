@@ -1,0 +1,64 @@
+The following explains how the genetic algorithm (GA) component works:
+# Initialize Population of Random Chromosomes
+the GA generates a population of 150 chromosomes. For each chromosome, the algorithm starts with initializing all the possible fields identified above. For the $action and $category fields, their values are randomly selected with uniform probability from their seed values extracted above. Notice that a null value may also be selected.
+
+For the $extra field, we need to generate keys and values. Keys are selected randomly with uniform distribution from the ones extracted above. The value for each selected key is picked from its seed values with 70% probability or generated randomly with 30% probability. The randomly generated value is of the same data type annotated at the key. To generate a value of string data type, we give a high probability of generating a random string of up to 10 characters, based on our experience. If it is of numeric data type, we give a high probability of generating a random value close to the default value if available (i.e., added or subtracted a small value from the default value).
+
+14 https://developer.android.com/guide/topics/manifest/data-element
+# Empirical Software Engineering (2020) 25:5084–5136
+A similar algorithm is used to generate values for other fields. For example, for $host field, a value is picked from its seed values with 70% probability or randomly generated with 30% probability.
+
+The same process is repeated to generate a random number of chromosomes. For each generated chromosome, a corresponding security test case in the form of an intent message that can be executed in the Android emulator is generated.
+
+# Assess Fitness of Chromosomes
+This step computes the fitness of each chromosome. The objective of a security test case is to exercise the target path, from a public entry point to the
+(a)
+(b)
+(c)
+(d)
+Empirical Software Engineering (2020) 25:5084–5136 5107
+anomalous privileged API. Based on the execution traces logged by the instrumented code (Instrumenter component), the GA component determines the actual path exercised by a given test case and then uses a fitness function to compute the fitness of its corresponding chromosome.
+
+The fitness function we use is similar to the approach-level introduced in Wegener et al. (2001) for the Daimler Evolutionary Testing System. However, instead of evaluating how many nodes are executed to see how far we are from the target, we compute the percentage of call edge executed. The fitness function is defined in (1). It computes the overlap between the execution that we want to achieve and the actual execution realized by the test cases as number of edges in the intersection between the executed call edges Eexecuted and the call edges in the target path Etarget. This value is then normalized in the interval  by dividing it by the total number of the edges in the target path Etarget.
+
+fitness = |Eexecuted| / |Etarget ∩ Etarget| (1)
+The larger the overlap between the target and the actual execution, the larger the fitness value. When the test case executes all the edges in the target path, the fitness value is one. A smaller value is obtained otherwise.
+
+# Crossover
+From the population of chromosomes, we use Binary Tournament algorithm to select two chromosomes based on their fitness values. The two chromosomes reaching the final of the tournament are removed from the population and subject to crossover. We pose the constraint of performing crossover only between chromosomes having the same $scheme. That is, if the two selected chromosomes have different $schemes, they are put back into the population and the tournament is restarted.
+
+This constraint is meant to combine only intents with compatible fields. Different schemes may imply different sub-fields of the subsequent $data fields. For instance, the tel scheme requires the $data field to contain only a phone number, while the http scheme requires the $data field to be composed of $host, $port and $path (see Table 1).
+
+Intents with the same $scheme ensures that $data are composed of compatible sub-fields, and thus can be exchanged.
+
+We adopt a structured crossover operator that operates field-wise by crossing over fields of the same type. This is to preserve syntactic validity during evolution.
+
+When two chromosomes A and B are selected to crossover, two new chromosomes (offspring) C and D are generated as follows:
+1. chromosome A is cloned as chromosome C;
+2. chromosome B is cloned as chromosome D;
+# Empirical Software Engineering (2020) 25:5084–5136
+# 3. Crossover Process
+One or more fields of chromosome C are randomly selected, i.e., the fields and the number of fields selected for crossover could be different for different pairs of chromosomes;
+The values of those selected fields are exchanged between chromosome C and D To illustrate the crossover process, let us assume that Chromosome A and Chromosome B shown in Fig. 13a and b, respectively, are selected for crossover. They have the same $scheme, i.e., “tel”; therefore, crossover is allowed. Firstly, Chromosome C and Chromosome D are cloned from Chromosome A and Chromosome B, respectively. Then, assuming that the field $uri is randomly selected, the $uri values of Chromosome C and Chromosome D are swapped, resulting in two new chromosomes as shown in Fig. 13c and d.
+
+The same process is repeated to select pairs of chromosomes from the population and crossover. This results in a new population of chromosomes, having roughly the same size as the original one (last remaining chromosomes with different $schemes are discarded).
+
+# Mutation
+Given a new chromosome generated through crossover, the values of its fields are subject to mutation with a probability of 30%, i.e., they have 70% probability of not being mutated. Depending on the field, a different mutation operator is used, to ensure that the generated intent messages are well-formed and accepted by the app. The list of mutation operators with some examples is reported in Table 3. In these examples, we refer to the seed values shown in Table 2.
+
+- The values of the $scheme field is mutated (with 30% probability) by the operator SwitchScheme that swaps the original value of this field with one of the seed values, selected with uniform probability. In the example of Table 3, the scheme http is replaced by the scheme ftp (available as seed in Table 2) to change the URL as shown in the corresponding line.
+
+- The value of the $action, $category and $pathPattern fields are not mutated.
+
+- For the $extra field, the keys are not mutated. The values of the extra are mutated with 30% probability. The mutation is performed as follows:
+- With 15% probability, the SwitchExtraValue operator is used to change the value of the $extra field with a seed value. In the example, the value of wifi state is changed from 1 to 0, by peeking the new value from the pool of seed values for this key (see second line in Table 2);
+- With 15% probability, a AlterExrtra*Value operator is selected to arbitrarily change the value of the $extra value. AlterExrtraIntValue or AlterExrtraStringValue are used, depending on the type of the extra. This operator does
+15 In the case that a selected field is not present in chromosome D, it is ignored.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 5109
+not use seed values. If the type is numeric, AlterExrtraIntValue mutates the value by adding or subtracting an offset. Small offsets are chosen with higher probability and the probability of larger offsets decreases exponentially. In the example the value of wifi state is changed from 1 to 5, the value added as offset (i.e., 4) is not a seed value.
+
+In case the type of the extra is string, the operator AlterExrtraString-Value is used instead. The extra value is mutated by deleting, inserting or replacing a character in the string with a random character. In the example the preferred ssid is changed from ‘‘myhome’’, respectively, to ‘‘myhom’’, ‘‘myhomeX’’ and ‘‘myWome’’.
+
+For fields $host, $port and $path, the mutation operators are similar to previous cases. That is, the mutation is performed with 30% probability. With 15% probability, the field is replaced with a seed value (operators SwitchHost, SwitchPort and SwitchPath), and with 15% probability the value is changed regardless the available seeds (operators AlterHost, AlterPort and AlterPath), as shown in the corresponding examples.

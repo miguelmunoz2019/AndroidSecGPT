@@ -1,0 +1,53 @@
+# A Framework to Secure the Development and Auditing of SSL Pinning in Mobile Applications: The Case of Android Devices
+Francisco José Ramírez-López 1, Ángel Jesús Varela-Vaca 2, Jorge Ropero 1, Joaquín Luque 1 and Alejandro Carrasco 1,*
+1 Departamento de Tecnología Electrónica, Universidad de Sevilla, 41012 Sevilla, Spain; framirez4@us.es (F.J.R.-L.); jropero@us.es (J.R.); jluque@us.es (J.L.)
+2 Departamento de Lenguajes y Sistemas Informáticos, Universidad de Sevilla, 41012 Sevilla, Spain; ajvarela@us.es
+* Correspondence: acarrasco@us.es
+Received: 23 September 2019; Accepted: 20 November 2019; Published: 21 November 2019
+# Abstract
+The use of mobile devices has undergone rapid growth in recent years. However, on some occasions, security has been neglected when developing applications. SSL/TLS has been used for years to secure communications although it is not a vulnerability-free protocol. One of the most common vulnerabilities is SSL pinning bypassing. This paper first describes some security controls to help protect against SSL pinning bypassing. Subsequently, some existing methods for bypassing are presented and two new methods are defined. We performed some experiments to check the use of security controls in widely used applications, and applied SSL pinning bypassing methods. Finally, we created an applicability framework, relating the implemented security controls and the methods that are applicable. This framework provides a guideline for pentesters and app developers.
+
+# Keywords
+SSL pinning; security; mobile applications; Android; auditing; vulnerabilities; OWASP
+# 1. Introduction
+Nowadays, the use of mobile devices is constantly increasing to do the same operations that used to be done using web services less than a decade ago . However, it is necessary to provide the same security solutions in both environments since both operations are equally critical. SSL/TLS (Secure Socket Layer/Transport Layer Security) technology has been widely used as the basis to secure many aspects of the Internet, such as securing HTTP protocol.
+
+In 2018, 1 billion smartphones were sold . Thus, the rapid growth in the number of smartphones has led to an increase in security threats related to them . Day by day, we read cases of users who have been scammed through the use of mobile applications . For example, users may download some modified version of an application (hereinafter, app) that is not controlled by the owner. In some cases, access to sensitive information by other users of the app has also been detected. This is because many of the controls that have been applied in the web environment have not been considered in the mobile environment. Moreover, several mobile apps do not even implement SSL/TLS validations . Even when using SSL/TLS, apps may have vulnerabilities, especially to Man-in-the-middle (MiTM) attacks . Other attacks, such as replay attack, eavesdropping, and session hijacking, are also common . Security controls such as SSL pinning are desirable  but always optional. SSL pinning, also known as certificate pinning or SSL/TLS validations, allows clients to have greater confidence that the certificate used by a server is not compromised . Nevertheless, it is also possible to circumvent SSL/TLS validations . Thus, SSL pinning can be skipped.
+
+Entropy 2019, 21, 1136; doi:10/e21121136 www.mdpi.com/journal/entropy
+# Entropy 2019, 21, 1136
+# 1. Introduction
+Trying to consider the particularities of mobile apps, the OWASP (Open Web Application Security Project) Mobile Application Security Verification Standard (MASVS) is an attempt to standardise these requirements using verification levels that fit different threat scenarios . One of the most important challenges in mobile app security is to protect data flows over insecure communication channels . Insecure communications include poor handshaking, incorrect SSL versions, weak negotiation or clear text communication of Personally Identifiable Information (PII) . In this paper, we explain how an app can be fortified considering some security controls, shielding some aspects to avoid attacks.
+
+This paper first analyses the vulnerabilities of SSL/TLS implementations and the necessity of SSL pinning techniques. Then, we propose a set of security controls that can prevent an app from suffering SSL pinning bypassing. Afterwards, we selected a set of popular Android apps to check if the latter bypassing methods, described in  are still valid. We also propose two new bypassing methods, and we have applied them to the app set. Finally, we have defined a framework for the applicability of bypassing methods depending on the security controls that have been applied by the app developers.
+
+The rest of the paper is structured as follows. Section 2 deals with the background of this paper. Concepts such as the OWASP Mobile Testing Guide, the SSL/TLS protocol, the SSL pinning technique and the problem of bypassing of SSL pinning are introduced. Section 3 presents a set of security controls to protect apps against bypassing methods. In Section 4, we evaluate our approach by providing experiments. The obtained results are analysed in Section 5. Finally, the paper is summarised, and the conclusions and future work are presented in Section 6.
+
+# 2. Background
+This section presents some fundamental concepts to set the context of this paper. First, the OWASP Mobile Testing Guide for mobile applications is introduced, justifying its use as a security model for web applications. Secondly, the operation of SSL/TLS is briefly described. SSL/TLS has been used for years to add an extra layer of security. Finally, some SSL/TLS vulnerabilities are introduced, so that we justify the need of this research.
+
+# 2. OWASP Mobile
+OWASP is the worldwide organisation responsible for generating a standard for security in web apps . This way, we can find several sources of information and methodologies in the OWASP documentation. The best-known methodology is the so-called Top 10, where the most frequent vulnerabilities are shown. OWASP group develop Top 10 security risks for web, mobile and IoT software . Based on our experience, we choose OWASP Top 10 Mobile as our starting point.
+
+As shown, improper platform usage is considered the most relevant security risk. This category covers the security control that is part of the mobile operating system. However, insecure communication
+# Entropy 2019, 21, 1136
+ranks #3 in OWASP Top 10, thus it is also quite an important topic to be considered. SSL pinning is included in this category.
+
+Although there are some other methodologies or lists of controls where apps may be reviewed, we focus on the Mobile Application Security Verification Standard (MASVS), which is defined in the OWASP Testing Guide. The OWASP Mobile Testing Guide was recently published in its first version . In this guide, security controls are defined and can be reviewed according to different categories. Every control is described. It is also shown how it can be tested. Finally, the guide sometimes offers a solution to the problem described by the control. However, the solution must be adapted to the system or the client that is audited.
+
+Within the OWASP controls, several control layers must be considered. The utilisation of these layers depends on the app. There are three existing layers, called verification levels: L1, standard security; L2, defense-in-depth; and R, resiliency against reverse engineering and tampering.
+
+All the controls are grouped into categories. Within each category, different security controls must be applied. We focus on category V5, network communication requirements. To secure network communication, we should follow the recommendations shown in Table 2.
+
+To achieve level L1 requirements, Controls 5–5 must be secured, while Controls 5 and 5 refer to level L2. However, accomplishing the requirements of Control 5 implies accomplishing the three previous controls. Thus, securing Control 5 implies achieving L1 requirements. In practice, we can identify this control with SSL pinning.
+
+# 2. SSL and SSL Pinning
+Secure Socket Layer (SSL)  protocol and Transport Layer Security (TLS)  protocol are widely used to provide confidentiality, authentication, and integrity in data communications. SSL/TLS provides three main security services: confidentiality, by encrypting data; message integrity, by using a message authentication code (MAC); and authentication, through digital signatures.
+
+SSL/TLS allows the authentication of both parties, server authentication with an unauthenticated client, and total anonymity. The authentication of client and server may be carried out through digital signatures. Nowadays, digital signatures are mostly based on certificates (i.e., X standard) or
+# Entropy 2019, 21, 1136
+shared keys. In the case of using certificates, they always have to be verified to ensure proper signing by a trusted Certificate Authority (CA). On the other hand, these protocols also provide anonymous authentication by using Diffie–Hellman for key exchange from SSLv3, TLSv1 and later versions.
+
+SSL/TSL protocol is based on a handshake sequence whose main features  are used by client and server, as follows: (1) Negotiate the cipher suite to be used during data transfer, and exchange random numbers (master key); (2) Establish and share a session ID between client and server; (3) Authenticate the server to the client; and (4) Authenticate the client to the server.
+
+Several providers are widely used such as JSSE (Java Security Socket Extension) , OpenSSL , LibreSSL , or GnuTLS . There is even specific hardware with built-in SSL/TLS solutions, such as in iOS devices.

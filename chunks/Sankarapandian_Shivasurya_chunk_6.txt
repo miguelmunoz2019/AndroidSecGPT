@@ -1,0 +1,89 @@
+# Chapter 6
+# Conclusions
+In our thesis, we have built a generic and extendable security testing tool that can help security engineers and developers to automate security testing and help in finding exploitable vulnerabilities at scale. We have demonstrated the security tool with common security vulnerabilities on real-life projects. We hope that this would encourage more security researchers and engineers to adopt, extend and contribute to build a payload and vulnerability corpus that may help to detect exploitable vulnerabilities. Our work was heavily influenced by the creating developer tools for finding reproducible security bugs and day-to-day life of security engineers time to verify the security vulnerabilitys in larger organizations putting the entire stack in risk.
+
+# 6 Future Work
+- Adding more payloads and vulnerability categories to help Mobile Application developers, security engineers in testing.
+
+- Building Android Studio plugin for developers to automate security testing in few clicks without leaving the development environment.
+
+- Adding support for other programming language excluding Java and Kotlin which includes React native and hybrid mobile apps which is getting popular over time.
+
+- Building a corpus of pre-defined security test-cases and common vulnerabilities with payloads that may help in finding and scanning source code for Android studio projects.
+
+# Appendix A
+# APPENDICES
+# A Our Tools, Artifacts, Results
+Links to our code, tools & and results are as follows:
+- GitHub link to DEVAA Project
+- TestCase Driver Android Application
+- Nextcloud Android Source
+- IRCCloud Android Source
+- CodeQL Reference Example
+# A Figures
+38
+# Source Code
+# SCA Analyzer
+# Patterns and Payloads
+# Test Case Executor
+# Project List
+# Figure A: Screenshot of Web App during Static Code Analysis
+# 1
+let HtmlEncodedXSS = require("./HtmlEncodedXSS");
+class IRCCloudXSSTestCase extends HtmlEncodedXSS {
+constructor(name) {
+super();
+this.xssPayload =
+[
+"https://picsum.photos/500",
+"https:/jbdaksndf.com/dskjhbakjhsfh",
+];
+this.domain = [
+"https://zoho.com/",
+"twitter.com"
+]
+this.eventbasedXSS();
+}
+eventbasedXSS() {
+this.addPayloads(this.xssPayload, "com.irccloud.android",
+"com.irccloud.android.activity.ImageViewerActivity",
+this.domain);
+this.executePayloads();
+this.clearActivity();
+this.clear();
+this.assertTrue("/data/data/com.irccloud.android
+/app_webview/Cookies", "zoho.com");
+}
+}
+var IRCCloudXSSTestCase1 = new IRCCloudXSSTestCase();
+Figure A: Example Security Testcase for IRCCloud Android App - Cross-site scripting vulnerability
+# Example Security Testcase for VLC Android App - ContentProvider vulnerability
+let FileProviderRunner = require("./FileProvider");
+class VLCFileProviderTestCase extends FileProviderRunner {
+constructor(name) {
+super();
+this.VLCPayloads = [
+"content://org.videolan.vlc.thumbprovider/data
+/data/org.videolan.vlc/databases/vlc_database",
+];
+this.directoryTraversalTestCase1();
+this.sandboxBypassTestCase2();
+}
+directoryTraversalTestCase1() {
+this.clear();
+this.addPayloads(this.VLCPayloads);
+this.executePayloads();
+this.assertTrue("exfiltrated-shared-pref-mei.xml");
+this.clear();
+this.removeTemporaryFiles();
+}
+sandboxBypassTestCase2() {
+this.clear();
+this.addPayloads(this.VLCPayloads); // sets the payload
+this.executePayloads(); // executes the payload
+this.assertTrue("exfiltrated.sqlite");
+this.clear(); // teardown testcase suite
+this.removeTemporaryFiles();
+}
+}
+var VLCFileProviderTestCase1 = new VLCFileProviderTestCase();.

@@ -1,0 +1,50 @@
+Note on the platform as a party: Depending on how the involved stakeholders (parties for consent) and enforcing mechanisms are designated, either an inherent or an apparent asymmetry of power to consent may arise:
+- (a) If the Android “platform” is seen as a single entity (composed of hardware, firmware, OS kernel, system services, libraries, and app runtime), then it may be considered omniscient in the sense of having access to and effectively controlling all data and processes on the system. Under this point of view, the conflict of interest between being one party of consent and simultaneously being the enforcing agent gives the platform overreaching power over all other parties.
+
+9 The Google Play app store now explicitly supports key rotation through Play Signing but does not yet support key rotation with multiple developer-held keys. The Android platform itself is prepared for arbitrarily complex key rotation strategies.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+(b) If Android as a platform is considered in depth, then it consists of many different components. These can be seen as individual representatives of the platform for a particular interaction involving multi-party consent, while other components act as enforcing mechanism for that consent. In other words, the Android platform is structured in such a way as to minimize trust in itself and contain multiple mechanisms of isolating components from each other to enforce each other’s limitations (cf. Section 4). One example is playing media files: Even when called by an app, a media codec cannot directly access the underlying resources if the user has not granted this through the media server, because MAC policies in the Linux kernel do not allow such bypass (cf. Section 4). Another example is storage of cryptographic keys, which is isolated even from the Linux kernel itself and enforced through hardware separation (cf. Section 4). While this idealized model of platform parties requiring consent for their actions is the abstract goal of the security model we describe, in practice there still are individual components that sustain the asymmetry between the parties. Each new version of Android continues to further strengthen the boundaries of platform components among each other, as described in more detail below.
+
+Within the scope of this article, we take the second perspective when it comes to notions of consent involving the platform itself, i.e., considering the platform to be multiple parties whose consent is being enforced by independent mechanisms (mostly the Linux kernel isolating platform components from each other, but also including out-of-kernel components in a trusted execution environment). However, when talking about the whole system implementing our Android security model, in favor of simpler expression we will generally refer to the platform as the combination of all (AOSP) components that together act as an enforcing mechanism for other parties, as defined in the introduction.
+
+Lessons learned over the evolution of the Android platform are clearly visible through the introduction of new security mitigations and tightening of existing controls, as summarized in Tables 1 to 4 and too extensive to describe here. Other examples include use of strings, namespaces, links, and so on, provided by apps with the potential to misguide or outright deceive users into providing consent against their wishes. The platform not only manages consent for its own components, but mediates user and developer consent responses, and therefore has to adapt to changes in the ecosystem.
+
+# 4 User(s)
+Achieving meaningful user consent is by far the most difficult and nuanced challenge in determining meaningful consent. Some of the guiding principles have always been core to Android, while others were refined based on experiences during the 10 years of development so far:
+- Avoid over-prompting. Over-prompting the user leads to prompt fatigue and blindness (cf. Reference ). Prompting the user with a yes/no prompt for every action does not lead to meaningful consent as users become blind to the prompts due to their regularity.
+
+- Prompt in a way that is understandable. Users are assumed not to be experts or understand nuanced security questions (cf. Reference ). Prompts and disclosures must be phrased in a way that a non-technical user can understand the effects of their decision.
+
+- Prefer pickers and transactional consent over wide granularity. When possible, we limit access to specific items instead of the entire set. For example, the Contacts Picker allows the user to select a specific contact to share with the application instead of using the Contacts permission. These both limit the data exposed as well as present the choice to the user in a clear and intuitive way.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+R. Mayrhofer et al.
+
+- The OS must not offload a difficult problem onto the user. Android regularly takes an opinionated stance on what behaviors are too risky to be allowed and may avoid adding functionality that may be useful to a power user but dangerous to an average user.
+
+- Provide users a way to undo previously made decisions. Users can make mistakes. Even the most security and privacy-savvy users may simply press the wrong button from time to time, which is even more likely when they are being tired or distracted. To mitigate against such mistakes or the user simply changing their mind, it should be easy for the user to undo a previous decision whenever possible. This may vary from denying previously granted permissions to removing an app from the device entirely.
+
+Additionally, it is critical to ensure that the user who is consenting is the legitimate user of the device and not another person with physical access to the device ([T.P2]–[T.P4]), which directly relies on the next component in the form of the Android lockscreen. Implementing model rule ©1 (multi-party consent) is cross-cutting on all system layers.
+
+For devices that do not have direct, regular user interaction (embedded IoT devices, shared devices in the infrastructure such as TVs, etc.), user consent may be given slightly differently depending on the specific form factor. A smart phone may often act as a UI proxy to configure consent/policy for other embedded devices. For the remainder of this article but without loss of generality, we primarily assume smart phone/tablet type form factors with direct user interaction.
+
+As with developer consent, lessons learned for user consent over the development of the ecosystem will require changes over time. The biggest changes for user consent were the introduction of runtime permissions with Android 6 and non-binary, context dependent permissions with Android 10 (cf. Section 4), another example are restrictions to accessibility service APIs (which require user consent but were abused) as well as clipboard access and background activity starting in Android 10 (cf. Table 1).
+
+# 4 Authentication
+Authentication is a gatekeeper function for ensuring that a system interacts with its owner or legitimate user. On mobile devices the primary means of authentication is via the lockscreen. Note that a lockscreen is an obvious tradeoff between security and usability: On the one hand, users unlock phones for short (10–250 s) interactions about 50 times per day on average and even up to 200 times in exceptional cases , and the lockscreen is obviously an immediate hindrance to frictionless interaction with a device . On the other hand, devices without a lockscreen are immediately open to being abused by unauthorized users ([T.P2]–[T.P4]), and the OS cannot reliably enforce user consent without authentication.
+
+In their current form, lockscreens on mobile devices largely enforce a binary model—either the whole phone is accessible, or the majority of functions (especially all security or privacy sensitive ones) are locked. Neither long, semi-random alphanumeric passwords (which would be highly secure but not usable for mobile devices) nor swipe-only lockscreens (usable, but not offering any security) are advisable. Therefore, it is critically important for the lockscreen to strike a reasonable balance between security and usability, as it enables further authentication on higher levels.
+
+# 4 Tiered Lockscreen Authentication
+Toward this end, recent Android releases use a tiered authentication model where a secure knowledge-factor based authentication mechanism can be backed by convenience modalities that are functionally constrained based on the level of security they provide. The added convenience afforded by such a model helps drive lockscreen adoption and allows more users to benefit both from the immediate security benefits of a lockscreen and from features such as file-based encryption that rely on the presence of an underlying user-supplied.
+
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+R. Mayrhofer et al.

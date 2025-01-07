@@ -1,0 +1,50 @@
+Upon further investigating the feedback, we discovered that 13% libraries in our dataset have hidden security related problems as the problems reside in the transitive dependencies of those libraries, and are not shown to the developers. We believe, this is a new and important finding because if this problem is not solved, many app developers would continue using insecure libraries without being aware of it. This is detrimental for the security of the Android ecosystem as end users of such apps will eventually be exposed to a variety of attacks. Therefore, we subsequently developed a solution to tackle this problem by analyzing and alerting developers of libraries that have (hidden) transitive dependencies with security problems. Further, our study results show that having tool support on the compatibility of the updates really helps developers more willing to keep their project’s dependencies up-to-date.
+
+Lastly, we further evaluated developers’ Up2Dep experience in an online survey where 23 developers shared with us their opinion. Up2Dep received a SUS score  of 76, which indicates that Up2Dep was considered good by developers in terms of usability.
+
+# In summary, we make the following tangible contributions:
+- We significantly extended LibScout’s original library dataset (by the factor of 7x, totaling 1,878 libraries with their complete version history) and analyze those libraries (37,402 library versions) to discover cryptographic API misuse. To support future research, we make both Up2Dep and this dataset publicly available.
+
+- We built an Android Studio extension called Up2Dep to warn developers about vulnerable library versions including both publicly disclosed vulnerabilities and cryptographic API misuse. Up2Dep helps developers upgrade their project’s dependencies, taking into account the library API compatibility.
+
+- We evaluated the technical feasibility of Up2Dep with Android developers (N=56) in-the-wild and gather anonymized usage information with our telemetric features. Our results show that Up2Dep has helped developers in fixing their project dependencies (n=108) and in avoiding dependencies with security problems (n=8). The majority (80%) of suggested fixes (from developer’s feedback) worked and developers found them useful, while only four instances of the proposed fixes did not work as developers expected.
+
+- We discovered that 13% of the libraries (233 out of 1,725) have hidden security problems by including (insecure) dependencies which is normally not visible to developers. We have subsequently developed a solution to tackle this problem.
+
+- Our results show that developers indeed are in favor of such support and are willing to use it in their projects. Thus, this work makes a call for action to include such an IDE-provided support for app developers to avoid insecure code dependencies already during app development and for the research community to further investigate how library updatability can be further improved (e.g., detecting non-code, breaking changes between library versions).
+
+# 2 RELATED WORK
+We discuss related works on studying the security of third-party libraries and on tool support for developers in creating more secure apps.
+
+# Security of third-party libraries:
+Sonatype reported that almost 2 billion software components were downloaded per year that contain at least one security vulnerability, and that outdated
+1
+# Up2Dep: Android Tool Support to Fix Insecure Code Dependencies
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+Software components had a three times higher rate of security issues . In the Web world, Lauinger et al.  showed that 37% of 133k analyzed websites include at least one library with a known vulnerability, and that it takes years for web developers to upgrade the included dependencies to the latest version. On the other hand, regarding Android applications, Stevens et al.  investigated the user privacy in Android advertisement libraries and found that among 13 investigated ad libraries, several of them are over-privileged. Looking further into Android apps, Backes et al.  proposed the LibScout tool to detect third-party library code in Android apps, and found that 70% of the included libraries in their dataset are outdated. They also found that it took developers on average almost one year to migrate the app to the latest library version.
+
+Muslukhov et al.  proposed BinSight, a static program analyzer that was capable of identifying source attribution in Android applications. The authors revealed that for 90% of the apps that contain cryptographic API misuses, at least one violation originated from third party inclusions. Watanabe et al.  also found that 70% and 50% of vulnerabilities of free and paid apps, respectively, stemmed from software libraries, particularly from third-party libraries.
+
+# Tool support for software developers
+Prior work has proposed different approaches and tools to support developers in building more secure Android apps. Among them, many developed tools to find vulnerabilities in applications after they have been released . This means that developers were only aware of such security mistakes at the end of or after their development cycle. Other tools  provided developers support while they were writing code. Krüger et al.  developed Cognicrypt to support developers in securely using crypto APIs. Rahaman et al.  proposed a set of analysis algorithms and a static analysis tool namely CryptoGuard for detecting cryptographic and SSL/TLS API misuses to help developers analyze large Java projects. Specifically targeting Android applications, Nguyen et al.  proposed FixDroid to provide developers with feedback regarding common vulnerabilities while developers write code. Focusing on supporting Android developers in writing more privacy-friendly apps, Li et al.  proposed Coconut, an Android Studio plugin that engages developers to think about privacy during app development and to provide real-time feedback on potential privacy issues. Further, Android Studio, Google’s official IDE to develop Android apps, includes Lint tool  to check for outdated third-party libraries. Lint, however, only informs developers about whether or not a newer version of the library is available.
+
+None of the above solutions supports developers in keeping their project dependencies up-to-date while taking into account the effort to update the dependencies, the compatibility of the update, or the potential security vulnerabilities of the different dependencies’ versions. While being the Google-provided tool for Android developers, also Android Studio has not considered all these aspects to help developers in keeping their project dependencies up-to-date, and especially to avoid insecure library versions.
+
+# UP2DEP DESIGN
+In this paper, we propose Up2Dep, an Android Studio extension that facilitates the task of keeping Android project dependencies up-to-date, and help developers avoid insecure library versions. We focus on the Android Studio IDE as this is the tool officially supported by Google and a previous survey  has shown that most Android developers use it to develop apps. We abstain from performing automatic (updates) patching in the background because this is too much control over developer’s source code. Further, it is not possible (with absolute reliability) to guarantee that the patching is free of unintended side effects. Additionally, developers should be informed and in control of the changes on their projects.
+
+Up2Dep analyzes the developer’s code and provides developers information about the compatibility of the dependency’s update. In case an update to the latest version is incompatible, developers are provided with two options: either they can update to the latest compatible version without having to adjust their app’s code; or they can update to the latest version and Up2Dep provides them with information about which library APIs have changed and recommends changes to their existing app code. Additionally, Up2Dep leverages information about publicly disclosed vulnerabilities of libraries and detected cryptographic misuse in Android third-party libraries to warn developers against using insecure versions of dependencies.
+
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+# Duc Cuong Nguyen, Erik Derr, Michael Backes, and Sven Bugiel
+Dependency Inspector and Usages Analyzer to compare them against the pre-analysis results to gather the following information:
+- Are there newer versions of the included library?
+- To which extent can the included library be upgraded, e.g, is there any incompatibility, where is the incompatibility, how can the app code be adjusted?
+- Does the included library contain any security vulnerabilities, and does the developer’s code happen to use this potentially insecure code?
+We will now describe each component of Up2Dep in details.
+
+# 3 Analysis Tools
+As mentioned above, Up2Dep collects information about third-party libraries using existing analysis tools.
+
+# 3 LibScout
+We provide developers information about the API of third-party libraries that they include in their apps. In particular, we notify developers if they can upgrade a library to the latest version or if the newer version would be API-incompatible with the existing app code. Hence, we need to analyze the library history to find out if any of the used library APIs have changed in newer versions of the library. When such changes occur, we provide developers with further information on how they can adapt their existing code so that it will be compatible to the newer version of the library. To this end, we leverage the open-source tool LibScout to produce API information for each library version in our dataset.

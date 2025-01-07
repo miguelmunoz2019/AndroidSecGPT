@@ -1,0 +1,59 @@
+In Europe, these practices may be in violation of GDPR. In a recent landmark ruling, the French data regulator, CNIL, levied a 50 million Euro fine for a breach of GDPR’s transparency requirements, underscoring informed consent requirements concerning data collection for personalized ads . This ruling also suggests that—in the context of GDPR’s consent and transparency provisions—permission requests serve a key function of both informing users of data collection practices and as a mechanism for providing informed consent.
+
+Our analysis brings to light novel permission circumvention methods in actual use by otherwise legitimate Android apps. These circumventions enable the collection of information either without asking for consent or after the user has explicitly refused to provide consent, likely undermining users’ expectations and potentially violating key privacy and data protection requirements on a state, federal, and even global level. By uncovering these practices and making our data public, we hope to provide sufficient data and tools for regulators to bring enforcement actions, industry to identify and fix problems before releasing apps, and allow consumers to make informed decisions about the apps that they use.
+
+# 7 Limitations and Future Work
+During the course of performing this research, we made certain design decisions that may impact the comprehensiveness and generalizability of this work. That is, all of the findings in this paper represent lower bounds on the number of covert and side channels that may exist in the wild.
+
+Our study considers a subset of the permissions labeled by Google as dangerous: those that control access to user identifiers and geolocation information. According to Android’s documentation, this is indeed the most concerning and privacy intrusive set of permissions. However, there may be
+5 https://search.appcensus.io/
+USENIX Association 28th USENIX Security Symposium 615
+other permissions that, while not labeled as dangerous, can still give access to sensitive user data. One example is the BLUETOOTH permission; it allows apps to discover nearby Bluetooth-enabled devices, which may be useful for consumer profiling, as well as physical and cross-device tracking. Additionally, we did not examine all of the dangerous permissions, specifically data guarded by content providers, such as address book contacts and SMS messages.
+
+Our methods rely on observations of network transmissions that suggest the existence of such channels, rather than searching for them directly through static analysis. Because many apps and third-party libraries use obfuscation techniques to disguise their transmissions, there may be transmissions that our instrumentation does not flag as containing permission-protected information. Additionally, there may be channels that are exploited, but during our testing the apps did not transmit the accessed personal data. Furthermore, apps could be exposing channels, but never abuse them during our tests. Even though we would not report such behavior, this is still an unexpected breach of Android’s security model.
+
+Many popular apps also use certificate pinning , which results in them rejecting the custom certificate used by our man-in-the-middle proxy; our system then allows apps to continue without interference. Certificate pinning is reasonable behaviour from a security standpoint; it is possible, however, that it is being used to thwart attempts to analyse and study the network traffic of a user’s mobile phone.
+
+Our dynamic analysis uses the Android Exerciser Monkey as a UI fuzzer to generate random UI events to interact with the apps. While in our prior work we found that the Monkey explored similar code branches as a human for 60% of the apps tested , it is likely that it still fails to explore some code branches that may exploit covert and side channels. For example, the Monkey fails to interact with apps that require users to interact with login screens or, more generally, require specific inputs to proceed. Such apps are consequently not as comprehensively tested as apps amenable to automated exploration. Future work should compare our approaches to more sophisticated tools for automated exploration, such as Moran et al.’s Crashscope , which generates inputs to an app designed to trigger crash events.
+
+Ultimately, these limitations only result in the possibility that there are side and covert channels that we have not yet discovered (i.e., false negatives). It has no impact on the validity of the channels that we did uncover (i.e., there are no false positives) and improvements on our methodology can only result in the discovery of more of these channels.
+
+Moving forward, there has to be a collective effort coming from all stakeholders to prevent apps from circumventing the permissions system. Google, to their credit, have announced that they are addressing many of the issues that we reported to them . However, these fixes will only be available to users able to upgrade to Android Q—those with the means to own a newer smartphone. This, of course, positions privacy as a luxury good, which is in conflict with Google’s public pronouncements . Instead, they should treat privacy vulnerabilities with the same seriousness that they treat security vulnerabilities and issue hotfixes to all supported Android versions.
+
+Regulators and platform providers need better tools to monitor app behaviour and hold app developers accountable by ensuring apps comply with applicable laws, namely by protecting users’ privacy and respecting their data collection choices. Society should support more mechanisms, technical and other, that empower users’ informed decision-making with greater transparency into what apps are doing on their devices. To this end, we have made the list of all apps that exploit or contain code to exploit the side and covert channels we discovered available online.
+
+#device-identifiers. Accessed: June 1, 2019.
+
+6. Google, Inc. Wi-Fi Scanning Overview. https://developer.android.com/guide/topics/connectivity/wifi-scan#wifi-scan-permissions. Accessed: June 1, 2019.
+
+7. Google, Inc. Distribution dashboard. https://developer.android.com/about/dashboards, May 7 2019. Accessed: June 1, 2019.
+
+8. Google Play. Usage of Google Advertising ID. https://play.google.com/about/monetization-ads/ads/ad-id/, 2019. Accessed: February 12, 2019.
+
+9. M. I. Gordon, D. Kim, J. H. Perkins, L. Gilham, N. Nguyen, and M. C. Rinard. Information flow analysis of android applications in droidsafe. In NDSS, volume 15, page 110, 2015.
+
+10. C. Han, I. Reyes, A. Elazari Bar On, J. Reardon, Á. Feal, S. Egelman, and N. Vallina-Rodriguez. Do You Get What You Pay For? Comparing The Privacy Behaviors of Free vs. Paid Apps. In Workshop on Technology and Consumer Protection, ConPro ’19, 2019.
+
+11. Y. Huang, F. Yu, C. Hang, C. Tsai, D. Lee, and S. Kuo. Securing web application code by static analysis and runtime protection. In Proceedings of the 13th international conference on World Wide Web, pages 40–52. ACM, 2004.
+
+12. Jeremi M. Gosney. Nvidia GTX 1080 Hashcat Benchmarks. https://gist.github.com/epixoip/6ee29d5d626bd8dfe671a2d8f188b77b, 2016. Accessed: June 1, 2019.
+
+13. J. Kim, Y. Yoon, K. Yi, J. Shin, and SWRD Center. Scandal: Static analyzer for detecting privacy leaks in android applications. MoST, 12, 2012.
+
+14. P. Kocher, J. Jaffe, and B. Jun. Differential power analysis. In Annual International Cryptology Conference, pages 388–397. Springer, 1999.
+
+15. Butler W Lampson. A note on the confinement problem. Communications of the ACM, 16(10):613–615, 1973.
+
+16. A. Le, J. Varmarken, S. Langhoff, A. Shuba, M. Gjoka, and A. Markopoulou. AntMonitor: A System for Monitoring from Mobile Devices. In Workshop on Crowdsourcing and Crowdsharing of Big (Internet) Data, pages 15–20, 2015.
+
+17. I. Leontiadis, C. Efstratiou, M. Picone, and C. Mascolo. Don’t kill my ads! Balancing Privacy in an Ad-Supported Mobile Application Market. In Proc. of ACM HotMobile, page 2, 2012.
+
+18. M. Lindorfer, M. Neugschwandtner, L. Weichselbaum, Y. Fratantonio, V. van der Veen, and C. Platzer. Andrubis - 1,000,000 Apps Later: A View on Current Android Malware Behaviors. In badgers, pages 3–17, 2014.
+
+19. M. Liu, H. Wang, Y. Guo, and J. Hong. Identifying and Analyzing the Privacy of Apps for Kids. In Proc. of ACM HotMobile, 2016.
+
+20. D. Maiorca, D. Ariu, I. Corona, M. Aresu, and G. Giacinto. Stealth attacks: An extended insight into the obfuscation effects on android malware. Computers & Security, 51:16–31, 2015.
+
+21. C. Marforio, H. Ritzdorf, A. Francillon, and S. Capkun. Analysis of the communication between colluding applications on modern smartphones. In Proceedings of the 28th Annual Computer Security Applications Conference, pages 51–60. ACM, 2012.
+
+22. E. McReynolds, S. Hubbard, T. Lau, A. Saraf, M. Cakmak, and F. Roesner. Toys That Listen: A Study of Parents, Children, and Internet-Connected Toys. In Proc. of ACM CHI, 2017..

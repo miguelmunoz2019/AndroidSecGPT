@@ -1,0 +1,88 @@
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+Asim S. Yuksel
+Suleyman Demirel University/Computer Engineering Department, Isparta, 32260, Turkey
+Email: asimyuksel@sdu.edu.tr
+Abdul H. Zaim
+Istanbul Commerce University/Computer Engineering Department, Istanbul, 34378, Turkey
+Email: azaim@ticaret.edu.tr
+Muhammed A. Aydin
+Istanbul University/Computer Engineering Department, Istanbul, 34320, Turkey
+Email: aydinali@istanbul.edu.tr
+# Abstract
+The increasing popularity of smart devices have led users to complete all of their daily work with these devices. Users are now able to shop online, share information with the applications that they install on their smart devices. Installed applications gain access to various sensitive information, such as the user's contact list, phone number, location. However, there is no control mechanism in place that can check whether these applications are safe to install. Therefore, applications are installed according to the users‘ decisions, without any limitations or warnings. As a result, users become the target of malicious applications, and the personal security and privacy are compromised. In this study, we investigate the security solutions that aim to protect the privacy and security of Android users. We reveal the shortcomings of mobile security solutions and shed light on the research community. Additionally, we present the taxonomy of Android-based mobile security solutions.
+
+# Index Terms
+Mobile Security, Mobile Privacy, Mobile Application Security, Android Operating System, Android Security Architecture.
+
+# I. INTRODUCTION
+There is a large number of operating systems that are used for mobile devices. Through use of these operating systems, Android continuously increases its popularity and market share. According to the information that Google provided in September 2012, 500 million Android devices have been activated . In addition, the open-source nature of the Android platform, the ease of application development and the submission process with the application store have made this platform more attractive. However, security risks and threats have increased and continue to increase more so than for other mobile platforms, such as Apple's iOS. Anyone who wants to develop Android-based mobile applications is able to submit his/her application to Google's application store without any problems. The applications that are developed can compromise personal security, privacy and user experience by misusing sensitive information, such as photos, the contact list, e-mails, documents, SMS, calling services, the battery and the camera. This misuse of sensitive information is the most important and indispensable problem that affects these users and mobile devices. When we examine the literature, we see that there are many related studies that aim to provide solutions regarding user privacy and security that can make the Android operating system more secure. These studies expose privacy and security problems and provide solutions to these problems. A few of these studies depend on the Android permission model, and a few depend on rebuilding applications. Solutions that depend on rebuilding applications step down to the byte-code level and make changes to the behavior of applications according to specific/predefined rules. Although these provide certain levels of security and privacy, they are not user-friendly/focused because they are not submitted to provide a service to mobile device owners. The main goal of our study is to investigate the Android security mechanism and proposed security solutions for Android between the years 2008 and 2013 after Android was released as an open-source platform in November 2008. Additionally, we discuss the strengths and weaknesses of these proposed solutions. The selected papers were chosen from various security-related journals, workshops, technical reports and conferences that include Android-related research papers. We believe that this work will shed light for the research community who will research this subject and provide a basis for the future development of mobile security solutions. Our main contribution is the novel taxonomy of Android-based mobile security solutions that covers a tremendous number of research studies on this topic. The primary goal of creating this taxonomy is to organize mobile security solutions that can be used to help researchers understand the problems that affect the security of mobile devices and take better countermeasures. The remainder of this paper is organized as follows: In section 2, we
+Copyright © 2014 MECS
+I.J. Computer Network and Information Security, 2014, 12, 9-20
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+describe the Android operating system, its history, architecture and security models that emphasize application security and permissions. Section 3 presents our novel taxonomy of mobile security. In section 4, we summarize our findings and suggest future work. Finally, in section 5 we conclude our paper.
+
+# II. ANDROID OPERATING SYSTEM
+As the number of Android-based mobile devices increases, more data are used by these devices. Due to the enormous amount of personal data on these devices, they pose a threat and present an inviting environment within which cyber criminals can attack. To be able to defend against attacks and develop solutions, Android developers, companies, and researchers must fully understand the platform components, the platform's architecture and the operation principles of the Android platform.
+
+# A. Android History
+Android is an open-source, Linux-based operating system that was developed under the leadership of the Open Handset Alliance (OHA) and Google. The platform was previously developed by Android Inc., which was a Silicon Valley-based company. In 2005, Google acquired this company, and the Android operating system became a growing, developing platform. After 3 years of development, the first Android-based mobile device was available for sale in November 2008. Table 1 shows the milestones of the Android platform.
+
+and 2014. As it is seen from the table, Android has increased its market share by 5% while Apple‘s iOS has decreased its market share by 1%.
+
+# B. Android Architecture
+To develop a security analysis, security software products or security services, it is necessary to have a good understanding of the Android architecture. In this section, we mention the details of the Android architecture and its layers. Fig shows all of the layers of this architecture.
+
+Two years after the announcement of the first Android-based mobile device, Android was the second biggest platform, with a 26% market share and 65 million users. Today, in 2014, it has become the largest platform, with a 52% market share, over 100 million users in the USA, and a 79% market share worldwide , . In the following, Table 2 shows the market share of the Android platform in the USA in August 2014 and Table 3 shows the market share worldwide in the second quarter of 2013.
+
+Android architecture is comprised of 5 basic layers, and each layer has different program groups. The following list provides these layers :
+- Application Layer
+- Application Framework Layer
+- Library Layer
+- Runtime Layer
+- Linux Layer
+Copyright © 2014 MECS I.J. Computer Network and Information Security, 2014, 12, 9-20
+# A Comprehensive Analysis of Android Security and Proposed Solutions
+# 1) Linux Layer
+This layer resides at the bottom of the architecture. Although developers and users do not have a direct communication with this layer, it is the heart of the whole system. It provides the following functions in the Android system:
+- Abstraction for hardware
+- Memory Management
+- Security
+- Power management
+- Hardware drivers
+- Support for shared libraries
+- Network connection
+- A Binder framework for inter-process communication
+# 2) Library Layer
+This layer resides on top of the Linux kernel layer and includes several libraries. These libraries provide functionalities that can handle various data. For instance, the Media Framework is responsible for the management of how different types of videos or audio will be played. The following list provides other open-source libraries that are included in this layer:
+- Surface Manager: Responsible for the management of windows on the screen.
+
+- SGL: Graphic library that provides 2D functionality.
+
+- OpenGL/ES: Graphic library that provides 3D functionality.
+
+- Media Framework: Responsible for audio, video playback, recording, photo display, etc.
+
+- Freetype: Library that manages fonts.
+
+- Webkit: Browser engine.
+
+- Libc: System C library.
+
+- SqlLite: Serverless SQL database.
+
+- Open SSL: Security library.
+
+# 3) Runtime Layer
+This layer is located at the same level as the Library layer. It contains a Dalvik Virtual Machine (DVM) and Java libraries for users that are used in the development of applications. The virtual machine requires the applications to run on Android devices. It is register-based and optimized for low memory requirements. It runs on the application codes that are converted from Java class files to DVM compatible DEX files.
+
+# 4) Application Framework Layer
+This layer is where the developed applications directly communicate. The applications manage the basic functionalities, such as phone resource management, sound management, and call management. The management applications include the following:
+- Activity Manager: Responsible for the activity life cycle of applications.
+
+- Content Provider: Responsible for data exchange between applications.
+
+- Telephony Manager: Responsible for all of the voice calls.
+
+- Location Manager: Responsible for location management by using GPS coordinates and cell towers.
+
+- Resource Manager: Responsible for the management of resources that are used by applications.

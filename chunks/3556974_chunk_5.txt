@@ -1,0 +1,58 @@
+Five feature extraction techniques were identified for the dynamic analysis in Reference , and they were network traffic analysis, code instrumentation, system call analysis, system resources analysis, and user interaction analysis. Network-related features, process-related features, usage-related details, and component interactions were extracted using those five methods. Under the network-related features, uniform resource locators, internet protocols, network protocols, network certificates, and network traffic were considered while considering non-encrypted data, Java classes, intents, and system call for process-related features. Usage-related features such as processor, memory, battery, network, and process reports were also considered. Additionally, buttons, icons, actions, and events were considered for user interaction analysis features.
+
+Authors in Reference  used dynamic analysis techniques to identify Android vulnerabilities. It contained three modules: network traces collection, network feature extraction, and network feature detection. Network activities of running apps were periodically recorded and monitored in the traces collection module. Feature extraction module extracted network features used in applications such as origin-destination-based features, domain-name system-based features, transmission control protocol-based features, and hypertext transfer protocol-based features and performed the vulnerability detection process.
+
+# 4 Hybrid Analysis
+The hybrid analysis uses both static and dynamic features to analyse a given application. The study in Reference  used static features, including permissions and intents and dynamic features, including IPs, emails, and URLs, to extract various information related to applications. The APKTool  was used to decompile the APK as the initial step. After extracting the data, it used disassembled dex files to create the feature vector for further analysis. The APK files were executed in an emulator to extract the behaviours of the dynamic features.
+
+The model proposed in Reference  used a hybrid analysis to identify Android security vulnerabilities. It can analyse metadata and data flow using static analysis and API hooks and executable scripts using dynamic analysis. The static analysis technique of this work was able to identify eight vulnerable categories: unrestricted component, insecure JavaScript in WebView, sensitive data processed in plaintext, privacy leak by log, dynamically loading a file, insecure password, intent exposure, and Structured Query Language (SQL) inject. The dynamic analysis technique was able to identify the unverified inputs vulnerability category. However, it may fail if the app uses specific security measures such as signature verification. Hence, false-positive results can be expected sometimes. Nevertheless, the overall analysis can perform within 93 seconds on average with approximately 95% accuracy. Issues in SSL/TLS are also essential to identify, and they can be analysed using hybrid analysis. The DCDroid framework in Reference  used hybrid analysis techniques to identify them, and the study found that 360 out of 2,213 applications contained security issues related to SSL certificates/TLS.
+
+# 5 CODE VULNERABILITY DETECTION
+Mobile applications can be misused to breach the security mechanisms  due to the source code vulnerabilities. However, developing applications with zero defects or vulnerabilities is impossible but can be achieved to a certain extent, and vulnerabilities of the source code must be detected.
+
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# J. Senanayake et al.
+
+to accomplish that. Several methods including machine learning, deep learning, heuristic-based methods, and formal methods can be applied to detect source code vulnerabilities with the use of static analysis, dynamic analysis, and hybrid analysis.
+
+# 5 Machine Learning Methods
+ML and DL methods such as NB, LR, DT, RF, GB, LSTM, RNN, and MLP were applied in the studies related to vulnerability detection. To train such ML or DL methods, features should be identified in the Android application by following a suitable analysis technique: static, dynamic, or hybrid.
+
+# 5 Machine Learning with Static Analysis
+ML methods can be applied with static analysis techniques when detecting code vulnerabilities if the source code is formulated into a generalised form. Abstract Syntax Tree (AST) is a popular way of generalising the code . The rate of false alarms on vulnerabilities depends on the accuracy of formulating the AST and its generalisation mechanism, in addition to the quality of features, selected dataset, and trained algorithms. Studies such as Reference  proved the possibility of employing ML and DL-based methods on a generalised architecture of source code such as AST to detect Android code vulnerabilities. Therefore, improvements to feature generation methods like AST building are identified as a research gap in this area to employ ML techniques to the problem.
+
+Some studies applied static analysis techniques in various ways with ML methods to detect malicious code and vulnerabilities. The WaffleDetector  is a static analysis approach to detect malicious code and vulnerabilities in Android applications by using sensitive permissions, program features, and API calls. Extreme Learning Machine (ELM) was used in this for further analysis. In Reference , vulnerability detection and patching framework was proposed named as Vulvet. This framework used static analysis approaches to detect vulnerabilities in Android applications along with a multi-tier multi-pronged analysis technique. Further, this framework proposed an automated patch generation process for vulnerabilities. Augmented control-flow analysis and Android-specific component validation approaches were also proposed to avoid false positives. The Vulvet framework used some features in the Soot framework, such as data-flow analysis, call-graph analysis, intermediate code scanning, taint analysis, parameter analysis, API analysis, and return value analysis. It used vulnerability resolution, control-flow instrumentation, methods/parameters reconstruction, secure method call augmentation, manifest modification, and code elimination. This model can detect vulnerabilities with 95% precision and 0 F-Measure on 3,700 apps from the benchmark and other Android market places. It has also been identified that 10% of evaluated apps were vulnerable to various exploits. Though this is a comprehensive model, there are some limitations, such as not analysing and patching vulnerabilities in native code, not supporting Java reflecting and dynamic code loading, and marking all the files read from external storage as malicious, that need to be overcome with further studies.
+
+Analysing data flow is also important to detect malicious code and applications. The study in Reference  proposed a mining method for topic-specific data flow signatures to characterise malicious Android apps. It identified that the topic-specific data flow signatures are much better than the overall data flow signatures to characterise malicious and vulnerable apps. Descriptions and sensitive data flow patterns were obtained from 3,691 benign and 1,612 malicious apps for analysis. Once the features were extracted, a topic model was built using adaptive Latent Dirichlet Allocation (LDA) with Genetic Algorithms (GA). An optimal number of topics was determined with GA. After that, a topic-specific data flow signature was generated by computing the information gain ratio of each piece of data flow information. Then the information gain ratio of the piece of data flow information was generated, and it was used to characterise the apps. Though this study considered a high number of apps, their representative is not considered, which might
+ACM Computing Surveys, Vol. 55, No. 9, Article 187. Publication date: January 2023.
+
+# Android Source Code Vulnerability Detection: A Systematic Literature Review
+decrease the process accuracy. That limitation could be overcome by analysing more representa-
+tive apps and ensuring the sample sizes of each topic.
+
+Source code can be retrieved from the APK file or Portable Executable (PE) file to perform
+the static analysis. In Reference , an automated method to classify malicious codes and secure
+codes using PE structure. It used static analysis with RF, GB, DT, and CNN models and achieved
+98% detection accuracy. The model built in Reference  was able to predict software code
+vulnerabilities before the release of the application. The code was represented using an AST to
+analyse it, and ML models were applied. It used Python, C, and C++ source codes taken from well-
+known datasets such as NIST , SAMATE , SATE IV Juliet Test Suites , and Draper
+VDISC  for the training purpose. One main drawback of this approach was the inability to
+locate the specific place of the vulnerable code segment.
+
+The developed mechanism in Reference  classifies the C language functions into vulnera-
+ble or non-vulnerable using ML methods. The first step was to prepare the AST. After that, data
+pre-processing, feature extraction, feature selection, and classification tasks were performed by ap-
+plying ML algorithms. This study used National Vulnerability Dataset (NVD)  to collect
+code blocks written in C language and their known vulnerabilities. Another automated vulnerabil-
+ity detection system was proposed in Reference , which uses C and C++ source codes. It used
+ML with deep feature representation learning and compared the findings with Bag of Words, RF,
+RNN, and CNN. It used existing datasets and the Drapper dataset , compiled using GitHub
+ and Drebin  repositories, which contain open source functions and carefully selected
+labels. Though these studies  considered Python C or C++ codes, with methodi-
+cally proven the possibilities of using these proposed approaches, to detect code vulnerabilities in
+Android source code written in Java, should be further studied by proving methodically.
+
+# 5 Machine Learning with Dynamic Analysis
+Dynamic analysis techniques also can be applied to generated features to train ML models to detect vulnerabilities at the execution time.

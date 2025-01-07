@@ -1,0 +1,126 @@
+# Penetrability
+• What were the details of the API you had to understand in order to be able to use the API successfully in completing the task?
+• How much of those details (you mentioned in question 1) were exposed in the API (including its documentation)?
+• How easy was it to see or find the details of the API while you were using it? Why?
+• What are the details about the API that were difficult to see or find?
+• Did the API (including its documentation) provide enough information about the security relevant specifics related to the task you completed? What security specific information was missing or you had to find by referring to external sources?
+# API elaboration
+• Were you able to use the API exactly ‘as-is’ or did you have to create new objects by deriving from classes in the API?
+– I could use the API exactly as it is
+– I had to create new objects by deriving from classes in the API
+• To what extent you could extend the API to meet your needs?
+• How would you describe your experiences regarding extending the API? Was it just right, was there not enough opportunity to extend the API or were you forced to extend it against your will?
+– There was not enough opportunity to extend the API
+– I was forced to extend it against my will
+– It was just as I expected it to be
+# API viscosity
+• When you need to make changes to code that you have written using the API, how easy was it to make the change? Why?
+• Are there particular changes that were more difficult or especially difficult to make in your code? Which ones?
+# Domain correspondence
+• How closely related were the classes and methods exposed by the API to the conceptual objects that you thought about manipulating when using the API? Why? (For example, if an API for file I/O exposes a File class, does that map well to your understanding of a file?)
+• When using the API, was it easy to map from ideas in your head to API code? Why?
+# Hard to misuse
+• Did you find yourself using this API in ways that are unusual, or ways that the implementers might not have intended?
+– Yes
+– No
+– May be
+• Did the API give any help to identify that you used the API incorrectly? If there were any similar incidents, please explain.
+
+• Did the API itself give proper error messages in case of exceptions and errors, or did you have to handle them at your programme level? If you had to handle them at your level, please mention the scenario/s.
+
+# End user protection
+• Do you think the security of the end user of the application you developed, depends on how you completed the task? Or does it depend only on the security API you used?
+– The security of the programme solely depends on the way I implemented it
+– The security of the programme depends on the way I implemented it as well as on the security API
+– The security of the programme solely depends on the API used
+• If you think security of the end user depends on how you completed the task, in which ways does it depend?
+# Computers & Security 80 (2019) 54–73
+# Testability
+- Did you test the security of your application after completing the task?
+- Yes
+- No
+- If you answered no for question 1, can you explain why you didn’t test the security of the application you developed?
+- Did the API provide any guidance on how to test the security of the application you developed?
+- Yes
+- No
+- Not sure
+# Appendix F. Exceptions encountered by participants and their reactions
+# Reaction of the participant
+- Stopped both server instances and moved ahead.
+
+- Go through the code and changed the client to comment to “localhost”.
+
+- Go to JSSE reference guide and read section “sample code illustrating a secure socket connection between a client and a server”.
+
+- Search Google “javax.net.ssl.SSLHandshakeException: no cipher suites in common” and visit first result. Add client.startHandshake() method invocation to the client.
+
+- Go to JSSE reference guide and read section “Running SSLSocketClientWithClientAuth”.
+
+- Check sample codes to see what is the error they have made.
+
+- Add client.startHandshake() method invocation to the client.
+
+- Revisit StackOverflow post where the participant identified details about keystores and truststores.
+
+- Opened Keystore.java file where the exception was thrown and looked at the line where the exception was thrown. Then search for the correct keystore password in task guidelines file.
+
+- Commented the code that load truststore.jks and executed the code. From this P2 identified that truststore password they used were incorrect.
+
+- Added resource files to a resources folder inside the project. Searched the received exception in Google.
+
+- Participant read stacktrace of the exception and then search Google about the exception.
+
+- Participant tried using the absolute path of the truststore. Searched the client side exception in Google and identified the cause for the error.
+
+- “What is going on?”, Participant read stacktrace, “So I am probably loading the keystore wrong”, Search in Google “Keystore tempered with or password is incorrect”.
+
+# Computers & Security
+# Computers & Security 80 (2019) 54–73
+#JSSEC-GUID-93DEEE16-0B70-40E5-BBE7-55C3FD432345. Accessed: 2018-08-03; 2017a.
+
+JSSE reference guide. https://docs.oracle.com/javase/8/docs/technotes/guides/security/jsse/JSSERefGuide.html; 2017b. Accessed: 2018-08-03.
+
+Lombard M, Snyder-Duch J, Bracken CC. Content analysis in mass communication: assessment and reporting of intercoder reliability. Hum Commun Res 2002;28(4):587–604.
+
+McLellan SG, Roesler AW, Tempest JT, Spinuzzi CI. Building more usable apis. IEEE Softw 1998;15(3):78–86.
+
+Meyer C, Somorovsky J, Weiss E, Schwenk J, Schinzel S, Tews E. Revisiting ssl/tls implementations: new bleichenbacher side channels and attacks. In: Proceedings of the USENIX security symposium; 2014. p. 733–48.
+
+Mindermann K. Are easily usable security libraries possible and how should experts work together to create them?. In: Proceedings of the 9th international workshop on cooperative and human aspects of software engineering. ACM; 2016. p. 62–3.
+
+Myers BA, Stylos J. Improving API usability. Commun ACM 2016;59(6):62–9.
+
+Naiakshina A, Danilova A, Tiefenau C, Herzog M, Dechand S, Smith M. Why do developers get password storage wrong?: A qualitative usability study. In: Proceedings of the 2017 ACM SIGSAC conference on computer and communications security. ACM; 2017. p. 311–28.
+
+Network Security Services. https://developer.mozilla.org/en-US/docs/Mozilla/Projects/NSS. Accessed: 2017-11-11.; 2017.
+
+OpenSSL. https://www.openssl.org/. Accessed: 2017-11-11.; 2016.
+
+Piccioni M, Furia CA, Meyer B. An empirical study of api usability. In: Proceedings of the ACM/IEEE international symposium on empirical software engineering and measurement. IEEE; 2013. p. 5–14.
+
+Stransky C, Acar Y, Nguyen DC, Wermke D, Redmiles EM, Kim D, Backes M, Garfinkel S, Mazurek ML, Fahl S. Lessons learned from using an online platform to conduct large-scale, online controlled security experiments with software developers. Proceedings of the 10th USENIX workshop on cyber security experimentation and test (CSET’17). USENIX association, 2017.
+
+The GnuTLS transport layer security library. http://www.gnutls.org/ Accessed: 2017-11-11; 2017.
+
+The legion of the Bouncycastle. https://www.bouncycastle.org/index.html. Accessed: 2017-11-11; 2017.
+
+Ukrop M., Matyas V. Why Johnny the developer can’t work with public key certificates: an experimental study of OpenSSL usability; Springer International Publishing.
+
+van Someren MW, Barnard YF, Sandberg JAC. The Think Aloud Method: A Practical Guide to Modelling Cognitive Processes. San Diego, CA: Academic Press; 1994.
+
+Virzi RA. Refining the test phase of usability evaluation: how many subjects is enough? Hum Fact 1992;34(4):457–68.
+
+Welsh E. Dealing with data: using nvivo in the qualitative data analysis process. Proceedings of the forum qualitative sozialforschung/forum: qualitative social research, 2002.
+
+Wijayarathna C, Arachchilage NAG. Why johnny can’t store passwords securely?: A usability evaluation of bouncycastle password hashing. In: Proceedings of the 22nd international conference on evaluation and assessment in software engineering. New York, NY, USA: ACM; 2018. p. 205–10. doi:10/3210459.
+
+Wijayarathna C, Arachchilage NAG, Slay J. A generic cognitive dimensions questionnaire to evaluate the usability of security APIS. In: Proceedings of the international conference on human aspects of information security, privacy, and trust. Springer; 2017a. p. 160–73.
+
+Wijayarathna C, Arachchilage NAG, Slay J. Using cognitive dimensions questionnaire to evaluate the usability of security APIS. Proceedings of the 28th annual meeting of the psychology of programming interest group, 2017b.
+
+Wurster G, van Oorschot PC. The developer is the enemy. In: Proceedings of the 2008 new security paradigms workshop. ACM; 2009. p. 89–97.
+
+yaSSL embedded ssl library. https://www.wolfssl.com/products/yassl/. Accessed: 2017-11-11; 2017.
+
+# Author Information
+Chamila Wijayarathna is a Ph.D. candidate in computer science at School of Engineering and Information Technology, University of New South Wales Canberra, Australia. His Ph.D. thesis is titled as “Developing a Systematic Approach to Evaluate the Usability of Security APIs”. His research interests include usability of security APIs, human aspects of software engineering and programmer psychology. Chamila received a B.Sc. (Hons) in Computer Science and Engineering from University of Moratuwa, Sri Lanka.

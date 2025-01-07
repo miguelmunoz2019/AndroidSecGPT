@@ -1,0 +1,51 @@
+# Task 3: Seeking help on a confusing API
+Research has shown that copy pasting solutions from StackOverflow does not benefit security . Moreover, in a secure coding experiment, it was shown that between four groups only allowed to use either official API documentation, app development book, web searches, or StackOverflow, it was the group who only used StackOverflow that produced the least secure solutions. In contrast, the group only allowed to use official API documentation produced the most secure solutions . Thus, to prioritize security, participants should first read the API’s documentation, and only as a last resort go to StackOverflow to copy-paste an example—and not just trust any example.
+
+# Task 4: Seeking testers
+Research on app testing and release has shown that ‘just’ releasing apps is fraught with issues . Using dedicated user groups for testing helps to ensure that usability and security do not oppose each other . Thus, app testing via a user group prioritizes a comprehensive testing approach while just publishing the app without any testing de-prioritizes security.
+
+# Task 5: Selecting an advertisement SDK
+There has been a steady increase in the number of permissions used by ad libraries . Research has stressed the need to carefully assess the permissions requested by Android advertisement libraries before incorporating them  to avoid accidentally including malicious libraries. Thus, to prioritize security, participants should rank analyzing the required permissions of the ad library highly (vice versa, a higher ranking for including ad libraries at random, or including as many as possible, de-prioritizes security).
+
+# Task 6: Building a software license agreement
+Research has shown that prohibiting reverse engineering and benchmarking promotes discovery and sharing of vulnerabilities in black hat communities, while denying this to white hat communities . Thus, to prioritize security, prohibitions on reverse engineering and/or benchmarking should not be included.
+
+We trialed an initial study among five professionals with a background in computer science and/or programming. Their feedback was used to verify the estimated time needed to complete the survey (30±5 minutes) and remove any potential misunderstandings in the phrasing and unintentional connotations of demonstrative pictures of developers. The final version of the study was trialed with the same five professionals, after which no further remarks on its structure were found. Before conducting the study, we obtained IRB approval. No personally identifying information was collected in the study itself.
+
+# 3 Participants
+We used social networks and public mailing lists to approach app developers, regardless of platform (e.g., Android, iOS). In particular, we solicited participation in the study via relevant professional groups on LinkedIn and Facebook by searching for the terms ‘mobile software’ or ‘app’ and ‘developer’, as well as ‘iOS’ and ‘Android’. After identifying and joining several relevant groups we snowballed for more potential sources of participants by looking at linked groups.
+
+Since our goal was to study the rationale used by app developers across the entirety of app development, we implemented a strict exclusion criterion of any developers who had not actually released/published at least one app on an app store (e.g., Google Play, Apple App Store). While this significantly reduced the potential population, it was necessary in order to establish a realistic picture of developers who can be expected to have had to deal with the different dimensions of app development.
+
+# 3 Materials and procedure
+The tasks given to the participants, see Fig. 2, reflect the activities that developers typically undertake  (cf. Fig. 1). Each task was followed by an open question eliciting the rationale of their solution. The tasks were presented as part of an online questionnaire that also included background questions: 24 professional and 4 basic demographics (age, gender, nationality, education level). We neither mentioned the security focus of the study nor elicited (self-reported) security experience in the study. This would likely create demand characteristics and, therefore, exaggerate pro-security answers (relative to real-world decisions). Moreover, self-reported security experience would be difficult to interpret in a way that compares objectively across participants as, for example, simply measuring acquaintance with OWASP Top 10 lists does not mean participants have also meaningfully engaged with such knowledge. The study was open for four months, from March to June 2018. We posted reminders in social media groups after two weeks to attempt to elicit additional responses. All raw data of Study I is available online at the online appendix.
+
+# 3 Data analysis
+Pre-processing. In total, we received 47 complete responses. Before analysis, we manually detected any suspicious entries, discarding three responses based on repetition of nonsensical texts as answers to all open questions. This led to a final set of 44 usable responses.
+
+Task analysis. To assess whether a task’s solution indicated a potential security attitude (RQ1) we used the options as per Fig. 2:
+- Task 1 should have at least “static code analyzer with security checking rules” selected.
+
+- Task 2 should have “security concern” selected.
+
+- Task 3 should have “read the API’s official documentation” sorted as 1st or 2nd choice, while “Go to a specific online resource like StackOverflow to ask for help and use a working example” should be sorted as 4th or 5th choice.
+
+- Task 4 should have “send it to a user group for testing” sorted as 1st or 2nd choice, while “publish it right away and rely on user feedback for testing” should be sorted as 4th or 5th choice.
+
+# ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+# van der Linden, et al.
+
+# 4 STUDY I – FINDINGS
+# 4 Demographics – Who is the archetypal app developer?
+The range of mobile developers we found in Study I is in line with existing research  and may effectively be stereotyped as young independent men with at least a college degree, building apps to improve their skills and know-how and have fun, while being heavily reliant on knowledge from community websites like StackOverflow.
+
+Demographics. Participants were predominantly male (89%), some female (9%) and one other (2%). Geographically, they are distributed primarily across North America (32%), Europe (39%), and the Middle East (27%), with one participant from Asia (2%). The majority were young, with some published app developers even being under age, < 18 (5%), 18–24 (18%), 25–34 (41%), 35–44 (23%), 45–54 (11%), 55–64 (2%). Most finished a tertiary education, with highest completed education being vocational training (9%), bachelor (55%), master (20%), doctoral (9%).
+
+The professional context. Most developers in the study are fairly junior, having released (or been involved in) one to five apps (68%), six to ten (25%), and only a few with 11+ (7%). The biggest sub-group was solo developers (36%), followed by part of micro-enterprises with fewer than 10 people (23%), and finally SMEs (20%) and large enterprises (20%). Similarly, development team size tended toward smaller teams: solo developers (39%), two to five people (39%), teams of six to nine people (11%), 10+ people (11%). Even with most participants having finished a tertiary qualification, the majority professed to be self-taught for app development (80%), many also noting contributions from their education (59%), and a much smaller group mentioning training at work (20%).
+
+The development focus. Participants developed mostly for Android (77%), with iOS (55%), and several others including Windows Phone (7%). There is a fairly even split between those who develop exclusively for one platform (57%), and those who develop for multiple platforms (43%). Of those developing for multiple platforms, 42% released simultaneously for all platforms (typically Android and iOS). Most developed to improve their skills and know-how (68%), to have fun (66%), or for intellectual stimulation (55%). Somewhat less-represented motivations include no apps with similar functionality existing yet (41%), financial gain (39%), and finally, building their reputation within the app developer community (34%).
+
+# 4 Task results – Do solutions indicate a prioritization of security?
+Roughly half of the participants provided a solution prioritizing security for tasks 1, 2, 5, and 6 (respectively 50%, 48%, 52%, and 52%), although those doing so with explicit security rationales were far fewer. Tasks 3 and 4, in which participants had to reason about (the need for) social interaction with, and reliance upon others (i.e., asking them to test or overcome a coding challenge), showed fewer solutions prioritizing security (23% and 14%). In other words: participants rarely offered a security rationale for tasks not involving code, regardless of whether their solution prioritized security.
+
+Secure rationales are asymmetrical (differing from chance, p<0) except for task 2 where the distribution does not differ from chance. Binomial test found that the proportion of secure rationalization differs significantly for all non-coding tasks when compared to coding tasks (p<0), suggesting that secure rationalizations are less likely to appear for non-coding tasks. Binomial tests showed that tasks 3 and 4 differ significantly from chance levels (p<0, p<0, two tailed) whereas for task 1, 2, 5, and 6 these frequencies of prioritization do not differ from a distribution that would arise by chance (p>0).

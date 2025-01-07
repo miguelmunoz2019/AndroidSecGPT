@@ -1,0 +1,42 @@
+# Dennis et al
+Proc., 8th International Conference on Advances in Mobile Computing and Multimedia, SBA Research, Vienna, 2010, pp. 430–435.
+
+1. Conger, K. Rare Malware Targeting Uber’s Android App Uncovered. Gizmodo, 2018. https://gizmodo.com/rare-malware-targeting-ubers-android-app-uncovered-1821753862.
+
+2. Wang, G., B. Wang, T. Wang, A. Nika, H. Zheng, and B. Y. Zhao. Ghost Riders: Sybil Attacks on Crowdsourced Mobile Mapping Services. IEEE/ACM Transactions on Networking, Vol. 26, No. 3, 2018, pp. 1123–1136.
+
+3. Brown, D. Could Uber, Lyft Drivers Trick the Apps to Increase Surge Pricing? Experts say ‘Probably’. USA Today, 2019. https://www.usatoday.com/story/tech/2019/05/15/uber-lyft-drivers-can-probably-manipulate-apps-charge-you-more/3678461002/. Accessed July 30, 2019.
+
+4. MyJTA Mobile Application. MyJTA. http://myjta.com/. Accessed April 23, 2019.
+
+5. Fiddler. Telerik Fiddler. https://www.telerik.com/fiddler. Accessed April 23, 2019.
+
+6. Android Studio Download Page. Android Studio. https://developer.android.com/studio/. Accessed April 23, 2019.
+
+7. APKTool Docs. iBotPeaches, APKTool. https://ibotpeaches.github.io/Apktool/.
+
+8. Sensor Tower Homepage. Sensor Tower. https://sensortower.com/. Accessed July 31, 2019.
+
+9. Passport Parking Mobile Application. Passport Parking. https://ppprk.com/park/. Accessed April 23, 2019.
+
+10. Countermeasures Assessment and Security Experts LLC, and Western Management and Consulting LLC. NCHRP Web-Only Document 221/TCRP Web-Only Document 67: Protection of Transportation: Protection of Transportation Infrastructure from Cyber Attacks: A Primer. Transportation Research Board of the National Academies, Washington, D.C., 2016.
+
+11. How Google Handles Security Vulnerabilities. Application Security, Google. https://www.google.com/about/appsecurity/. Accessed June 24, 2019.
+
+12. Cisco Security Threat and Vulnerability Intelligence. Vendor Vulnerability Reporting and Disclosure Policy, 2014.
+
+13. Chapter 501 Section 171 - 2014 Florida Statutes. The Florida Senate. https://www.flsenate.gov/Laws/Statutes/2014/501. Accessed June 24, 2019.
+
+14. McDaniel, P., and K. Lipscomb. Data Breach Laws on the Books in Every State; Federal Data Breach Law Hangs in the Balance. Security Privacy Bytes, 2018. https://www.securityprivacybytes.com/2018/04/data-breach-laws-on-the-books-in-every-state-federal-data-breach-law-hangs-in-the-balance/. Accessed July 30, 2019.
+
+15. Hennessy, J. J., C. T. Howell, J. L. Rathburn, S. M. Millendorf, A. K. Tantleff, and S. D. Goldstick. State Data Breach Notification Laws. Foley, 2019. https://www.foley.com/en/insights/publications/2019/01/state-data-breach-notification-laws. Accessed July 31, 2019.
+
+16. van der Meulen, N., S. Gunashekar, S. Soesanto, and E. A. Jo. Good Practice Guide on Vulnerability Disclosure: From Challenges to Recommendations. Enisa, 2015. https://www.enisa.europa.eu/publications/vulnerability-disclosure.
+
+17. Staes, L., and J. Godfrey. TCRP Research Report 218 Pre-Publiction Draft: Characteristics and Elements of Non-Punitive Safety Reporting Systems for Public Transportation. Transportation Research Board of the National Academies, Washington, D.C., 2020.
+
+18. National Center for Transit Research. Enhancing Cybersecurity in Public Transportation. https://www.nctr.usf.edu/2018/02/enhancing-cybersecurity-in-public-transportation-scope/. Accessed June 2, 2018.
+
+19. OWASP Overview. Owasp. https://www.owasp.org/index.php/Main_Page. Accessed July 31, 2018.
+
+The opinions, findings, and conclusions expressed in this publication are those of the author(s) and not necessarily those of the Florida Department of Transportation or the U.S. Department of Transportation..

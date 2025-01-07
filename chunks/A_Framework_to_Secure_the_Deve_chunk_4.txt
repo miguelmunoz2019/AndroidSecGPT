@@ -1,0 +1,76 @@
+Once the daemon server is running on the device, this fact enables the access to the physical memory of the device. This way, we are able to make the appropriate changes in memory to circumvent SSL Pinning measures. It is necessary to indicate which part of the app code must be dynamically modified in memory. To do that, a script must run on the server. In the following, we describe the steps of a script which modifies dynamically in the memory the code. Thus, the target app must be executed on the mobile together with the script to modify its code dynamically. There are several scripts (https://codeshare.frida.re/@pcipolloni/universal-android-ssl-pinning-bypass-with-frida/) that may be used. In our case, the script loads our certificate, creates a KeyStore containing our certificate and generates a TrustManager that trusts the certificate inside our KeyStore. When the app initialises its SSLContext, the parameter TrustManager in the SSLContext.init() method is swapped with the one we had created before.
+
+# 4.
+
+It must be checked that there are not any restrictions that prevent the SSL handshake of the connection. If so, the connection is established. Finally, it must be confirmed that the target app works properly and SSL pinning was disabled. Figure 7 shows an example of how the execution of the Twitter app is intercepted by Frida.
+
+See what's happening in the world right now:
+Create account
+# 4. Method 7: Dynamic Debugging of the App in Non-Rooted Devices
+To perform this method, it is not necessary to use a rooted mobile. Steps 1–3 are performed considering that there is no point in rooting the device, as root detection countermeasure is implemented. Hence, it is necessary to skip this countermeasure to disable SSL Pinning. With this aim, the server daemon used in Method 6 must be embedded inside the application. The process is described below:
+1. The target app code must be decompiled. For instance, apktool may be used.
+
+2. A daemon must be embedded inside the target app. In our case, the daemon is Frida gadget. The function of the daemon is similar to Step 1 in Method 6.
+
+1. To put in the Frida gadget, an internet permission must be added to the Android manifest. Thereafter, Frida is able to open a socket.
+
+2. The file containing Frida libraries must be included to the app’s library folder.
+
+3. The onCreate method in the main activity of the target app must be modified to force the daemon to be run when the target app starts.
+
+3. The modified app must be re-installed, launched, and its functioning must be checked.
+
+4. From here, Steps 2–4 of Method 6 are executed.
+
+In summary, Figure 8 shows a diagram describing the functioning of Methods 6 and 7.
+
+# 4. Experiment Design
+To evaluate our proposal, an experiment was designed. Our experiment is an adaptation of D’Orazio and Choo’s study  presented in Table 3. However, their study neither includes the analysis of security controls nor uses the Android version of the apps. The experiment consists of two phases: (1) checking whether the app includes SSL pinning and contains any security controls (see Section 3); and (2) checking the seven methods presented in the two previous sections. The first phase of our experiment is another novel contribution, while the second phase introduces two new bypassing methods.
+
+To carry out the first phase of the experiment and to check Methods 1–5, apktool , d2j-apk-sign , logcat  and SSL Unpinning  were used. These tools enable changing the certificates and debug the apps.
+
+To perform the new proposal methods, we used Frida toolkit . Frida is a framework designed for developers, security researchers and people who work in reverse engineer apps. It enables the hooking of processes to modify the code in a dynamic way. This allows injecting scripts written in JavaScript to perform certain operations in the app. We used Frida as a server to interact with the apps. To explore app executions, Objection was used. Objection  is a toolkit that enables the exploration of mobile devices at runtime. Objection toolkit was used to explore the execution of the apps.
+
+The set of apps we used are the Android version of the apps used in D’Orazio and Choo’s study. These apps are ten widely used applications in different fields. Nevertheless, two of the apps (i.e., ANZ GoMoney and CopyApp) were substituted by two similar or more updated ones, Outlook and Instagram. We decided to change those two apps as they are not available in an Android version or their use in our region has been restricted.
+
+# 5. Analysis of Results
+In the next subsection, we present and analyse the results obtained for the experiments previously described. First, we checked which security controls were implemented by the apps. Next, we tried to bypass SSL pinning using the seven methods introduced above. Finally, we built a framework of applicability, relating the implemented security controls and the methods that are applicable.
+
+# 5. SSL Pinning and Security Controls
+In Table 4, we show the results of checking if the apps contain SSL pinning mechanisms. Moreover, we also checked whether the apps contain the security controls described in Section 3.
+
+By analysing the results, the most outstanding facts are: (1) all apps implement SSL pinning mechanism; (2) six of the ten apps implement root detection and tamper detection mechanisms (in fact, they are the same ones); and (3) half the apps implement debug detection or obfuscation security controls. From the security point of view, we can consider Bank of America, NAB Bank app and...
+
+# 5. SSL Pinning Bypassing Methods
+By comparing the results for the old methods with the results in Table 5, there are very interesting facts to remark. The results for the iOS version of apps for Methods 1–3 remain equal. All apps were bypassed in the iOS versions using Methods 4 and 5. Nevertheless, only NAB Bank app, Bank of America and WhatsApp Android versions are not bypassed with Method 5. Those apps, together with Facebook and Instagram are not bypassed by Method 4.
+
+Looking at the results for the new proposed methods, we can see how most of the apps that were vulnerable to the old methods are also bypassed with the new ones. There are other apps where the new methods fail to bypass SSL pinning, such as in the case of the Bank of America, NAB Bank app, Facebook, Instagram and WhatsApp.
+
+In summary, we checked SSL bypassing with the five old methods, and we introduced two new bypassing methods.
+
+# 5. Framework of Applicability
+Based on the results shown in Table 5 and after analysing the experiments, we conclude that the framework of applicability is a key contribution of our research. This framework intends to help developers and auditors correctly develop and check secure communications, being a useful complement for the OWASP guidelines. Our framework helps simplifying the process of development and auditing Android mobile apps.
+
+The framework of applicability is presented in Table 6. Each table cell indicates which SSL pinning methods are applicable depending on the implemented security control. Likewise, this table represents the impossibility of performing the SSL Pinning bypassing methods indicated by the *⇀ symbol when ↽* the security controls in the first column are implemented. In the following, we explain in detail each entry of the table from the point of view of security controls:
+- Root detection disables Methods 3 and 6 when it is implemented. This fact occurs as the device needs to be rooted in some of the steps taken in the application of the methods.
+
+- Anti-tampering security control disables the application of Methods 2, 5 and 7. This fact occurs as it is necessary to modify statically the app code to bypass the SSL pinning checks. This step
+Entropy 2019, 21, 1136
+requires to recompile the app and sign it. However, as we do not have access to the original certificate of the app, it is detected by the anti-tampering control.
+
+- Anti-debugging security control stops Methods 3, 4, 6 and 7. As previously mentioned, a device in debug mode is detected, so the execution of the pinning is stopped since this measure stops step-by-step execution of the app code.
+
+- Code obfuscation avoids Method 5 since obfuscation prevents the search of the functions that check the SSL Pinning.
+
+On the other hand, we can read the table from point of view of the methods:
+- Method 2 can be tackled using the anti-tampering security control.
+
+- Method 3 can be stopped using root detection or anti-debugging controls.
+
+- Method 4 can be prevented with the anti-debugging control.
+
+- Method 5 can be stopped with the utilisation of anti-tampering or code obfuscation.
+
+- Method 6 can be held with the root detection and anti debugging security controls.
+
+- Method 7 can be denied with the anti-tampering and anti debugging controls.

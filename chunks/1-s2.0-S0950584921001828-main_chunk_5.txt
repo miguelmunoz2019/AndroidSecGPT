@@ -1,0 +1,48 @@
+The following two themes, freedom and independence, similarly could be mapped into Self-direction - Action, but they are somewhat different. Freedom is about providing options for users. The following post, ‘people are being forced to register with TextSecure [Signal] Message Server based in the USA’, demonstrated the lack of options becomes a threat to freedom. On the other hand, independence emphasises not being influenced or dependent on any third parties. As an example, we found a contributor of K-9 dislike the idea to add a third-party spam filtering because ‘it is reliant on additional apps and resources’. The value theme of Wealth could be mapped to Power - Resources. It relates to the monetary cost needed to use an application. For instance, a user
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+# Human value themes discovered in issue discussions.
+
+Description
+- Follow rules, regulations, guidelines, or standard practices during the application development
+- Promote enjoyment and satisfaction while using the application
+- Maintain the honour and respect for users
+- Facilitate different origins, languages, cultures, and level of knowledge in the application
+- Connection and interaction between users
+- Options for user preferences
+- Little or no reliance on any third parties in the use of an application
+- Monetary costs of using the application
+- Protection of personal information
+- Protection against threats and attacks from foreign entities
+*Mapping result of the value theme to Schwartz’s refined theory of basic values.
+
+# System value themes discovered in issue discussions.
+
+was found complained about the way K-9 fetching email could result in ‘‘heavy on my data bill’’. The last theme in this category, privacy, could be mapped into Self-direction - Action. Privacy, which is about protecting personal information, also becomes the centre of attention in software development lately. For example, K-9’s contributors discussed the possibility of supporting network proxy to enhance users’ privacy. Security concerns with protecting users against threats or attacks from foreign entities. This security description is more technical and slightly more narrow than a similar concept in Schwartz’s theory. The theory defines security as ‘‘avoiding danger and feeling cared about’’ (i.e., personal security) and ‘‘social order and government stability’’ (i.e., societal security) . In this case, we believed that the security theme that we found was more suitable to be mapped to Security - Personal.
+
+Based on the mapping of these human value themes into Schwartz’s refined model  in Table 4, we discovered seven out of 19 values. Two of those seven values, namely Security - Personal and Self-direction - Action, corresponded to more than one discovered theme. Security - Personal corresponded with security and sense of belonging. Meanwhile, Self-direction - Action is found to correspond with freedom, independence, and privacy. The remaining human value corresponded with one discovered theme each.
+
+# 4. System value themes
+We discovered ten themes that matter for users but require an extra inference to be mapped to Schwartz’s values. We placed them into a different category and referred to them as system value themes. Table 5 presents the system value themes discovered along with their description.
+
+Trust indicates how an application convinces users that it is harmless. For instance, contributors of K-9 raised their concern in the following post: ‘‘if one doesn’t trust K-9 to behave, there’s no hope’’. Correctness, compatibility, portability, reliability, and efficiency are related to the quality attributes of software . We found evidence that these themes could affect users. Correctness aligns information or behaviour of the app with users’ expectations. For instance, Signal’s users reported that pressing their own message showed the recipient’s number instead of their number. Compatibility relates to support of an app to various devices and internal systems. For example, some users of K-9 reported application crashes after they updated their systems. Portability allows users to migrate their data and configurations in the app from one device to another. For instance, the following comment in a Signal discussion reflects a case where users cannot change their device to use the app: ‘‘Currently there is no way to change the phone without losing existing data’’. Reliability concerns the stability of the app during use. As an example, the lack of reliability encourage a user to report, ‘‘Unfortunately, that’s all I have... :/ I tested a bit, and it seems to crash at random positions. Not the same post every time, not the same type of post". Efficiency can be associated with the time and effort needed to perform tasks in the app. For example, a user of Signal pointed out how the low performance of the app could discourage users, ‘‘... group chat isn’t even that fast, and this is discouraging my friends a lot. Energy preservation is similar to efficiency but in terms of energy usage. We separated energy preservation because we found many discussions demonstrating users’ concerns about how the app drained their devices’ power. For instance, a K-9 user reported how the app is ‘‘eating ’’ his battery when there is no network connection. Accessibility and usability have a similar characteristic in terms of how easy users can use the app. The difference is that accessibility is related to accessing information and features, especially for disabled users. The lack of accessibility support in the app made a K-9 user mentioned, ‘‘It probably also makes the app much harder or even impossible to use with accessibility services". Meanwhile, usability concerned with the ease of use of the app. For instance, a K-9 user complained, ‘‘mail view should remember the scrolled position ... This is a tiny usability thing, but I think I would make a big difference". Lastly, longevity ensures the future development and use of the app. For example, a contributor reminds the forum: ‘‘Be aware, that 95% of other users will have lost their backups because you removed support for external SD cards."
+As we have explained, these system value themes could not be easily mapped into Schwartz’s values. Nevertheless, based on the empirical findings that we have, we attempted to map these themes to Schwartz’s values. Table 6 shows our working mapping between system value themes and Schwartz’s values. Our theme of trust could be loosely mapped to Conformity - Interpersonal with the similarity of objective in avoiding harm to others. The compatibility theme could be mapped to Power - Resources in terms of how devices (i.e., resources) are supported by the application. For portability theme, we could map it to Self-direction - Action in terms of how the application should allow users to migrate to other devices. Portability could also be mapped to Power - Resources in terms of its relation with devices as the resource. The themes of efficiency and energy preservation both could be mapped to Power - Resources. We thought both themes are related to
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+The mapping between system value themes and human values in the context of the three projects.
+
+resources management, namely time and energy. The theme of usability and accessibility could be mapped to Benevolence - Caring because they are about supporting users in using the application. Additionally, accessibility could also be mapped to Universalism - Concern because this theme also aimed to support users with special needs. Longevity could be mapped to Security - Personal because it is related to assurance to users that the application will be available in the future. We could not find any Schwartz’s values that suitable for the correctness and reliability themes. These mapping between system value themes and human values are limited to the context of our three projects under study.
+
+# RQ1 Summary:
+We discovered 20 value themes in issue discussions and described each of them. The themes can be broadly classified into two groups:
+- (a) Ten value themes, including conformity, pleasure, dignity, inclusiveness, sense of belonging, freedom, independence, wealth, privacy, and security have a corresponding concept in Schwartz’s refined theory of basic values.
+
+- (b) Ten other value themes could not be directly mapped into Schwartz’s values: trust, correctness, compatibility, portability, reliability, efficiency, energy preservation, usability, accessibility, and longevity.
+
+We also found seven out of 19 values from Schwartz’s refined model corresponded to the discovered human value themes, namely Self-direction - Action, Security - Personal, Hedonism, Universalism - Concern, Power - Resources, Conformity - Rules, and Face.
+
+# 4. RQ2: The presence of values across projects
+# 4. Value themes across projects
+As shown in Fig. 7(a), value themes were present in 33% of the sampled issues constructed from all three projects. If we break it down to each project, Signal has the most issues where value themes were present: 163 out of 364 issues or 45% (Fig. 7(b)). It is followed by K-9, in which 31% of issues (102 out of 333 issues) contained value themes (Fig. 7(c)). The project with the least presence of value themes is Focus with 25% or 102 out of 400 issues (Fig. 7(d)).

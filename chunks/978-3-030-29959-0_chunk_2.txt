@@ -1,0 +1,71 @@
+In SSL/TLS, the server is configured with a pair of public and private keys. The public key is certified by a Certification Authority (CA) which issues a public key certificate to the server. There are over 100 trusted CAs2 to support Android apps. During the execution of the SSL/TLS protocol, it is crucial that the client correctly performs a number of verifications on the public key certificate received from the server. The verification steps are described as follows.
+
+1. Certificate Validation. The client verifies the server’s certificate by performing three different checks : (1) whether the certificate is signed by a trusted CA; (2) whether the certificate is self-signed; and (3) whether the certificate has expired.
+
+2. Hostname Verification. The client checks whether the hostname in the subjectAltname field of the certificate matches the host portion of the server’s URL in order to make sure that the certificate indeed belongs to the server that the client is communicating with.
+
+Nonce-Based Password Authentication Protocols. Another approach to counter password eavesdropping and replay attacks is the use of nonce-based password authentication protocols . A nonce is a number used only once in the execution of a protocol. Depending on whether the nonce is a random number or a timestamp, nonce-based protocols can be classified into either challenge-response or timestamp-based password authentication protocols. In the former, the server sends a random number as a challenge to the client, and the client uses
+2
+# Finding Flaws from Password Authentication Code in Android Apps
+the user’s password as a secret key to compute a cryptographic function on the nonce (i.e., either by encryption of the nonce or a keyed hash of the nonce), and sends the result to the server. In the latter, the client uses the user’s password as a secret key to compute a cryptographic function on a timestamp and sends the result to the server. Due to the use of a nonce, both protocols prevent replay attacks in the sense that any replayed protocol message can be detected as such by the server.
+
+# 2 Authentication Flaws
+A password authentication protocol is designed to meet specified security objectives, but its security can be undermined if the implementation is incorrect. We examine the authentication code in real-world apps and compare the implementations with the authentication primitives provided by the developer’s guides3. Three types of authentication flaws listed below are discovered in Android apps.
+
+# Flaw 1: Insecure Password Transmission
+Passwords are required to be encrypted and hashed by the client app before transmission. An app without encrypting passwords makes the authentication protocol become vulnerable to eavesdropping and replay attacks. Consider the situation of transmitting an encrypted password without being hashed, the password is easily to be leaked at the server-side.
+
+# Flaw 2: Insecure Server Connection
+To establish a secure channel between apps and their servers, each app should follow two verification steps mentioned in Sect. 2 to validate a server. However, we observe that some apps incorrectly implement these two steps by simply accepting either all certificates or all hostnames.
+
+Accepting all certificates represents that invalid certificates, including certificates signed by untrusted CAs, self-signed certificates, or expired certificates, are also acceptable. It makes an app become vulnerable to several attacks, such as MITM attacks, phishing attacks, and impersonation attacks. An attacker can use a forged certificate to connect with the app to steal users’ usernames and passwords.
+
+Only checking the certificate from a server is not enough. An app should also check if the hostname in the certificate matches that in the server’s URL. A mismatch in hostname indicates that the server is using someone else’s (probably valid) certificate in the SSL/TLS handshake. Any app with this flaw is potentially vulnerable to be connected to a malicious counterfeit server.
+
+# Flaw 3: Repeatable Timestamp
+Timestamps must be used with great caution in any authentication protocol. For the timestamp-based password authentication protocol, a timestamp in the format of Minute/Second results in the protocol message being replayed every hour at the same minute and second without being detectable by the server. A prudent practice is to have the timestamp in the format of Year/Month/Day/Hour/Minute/Second. This ensures the
+3 Android Developers: https://developer.android.com/.
+
+624 S. Ma et al.
+
+uniqueness of the timestamp and hence the protocol message in any foreseeable future. Another potential authentication flaw is use of a repeatable challenge in the challenge-response password authentication protocol. However, without access to the source code of the authentication server, we are not aware of any efficient techniques to determine the randomness of the challenge generated by the server. Hence, we leave the analysis of this implementation flaw in Android apps as part of our future work.
+
+# 3 GLACIATE
+In this section, we describe how GLACIATE detects authentication flaws automatically (i.e. without manual predefined rules). Figure 1 illustrates the workflow of GLACIATE, which contains two phases, Rules Creation and Flaws Detection. We provide details of each phase below.
+
+# 3 Rules Creation
+The rules creation phase generates rule templates by processing labeled apps in three steps - flow sequence construction, learning cluster generation, and detection rules mining.
+
+# Flow Sequence Construction.
+
+GLACIATE extracts enriched call graphs by analyzing the Jimple code of each app and traverses each enriched call graph to construct flow sequences. Details to construct flow sequences are listed below.
+
+Enriched Call Graphs Generation. GLACIATE applies Soot  to translate low-level Android bytecode into its intermediate representation (IR) (i.e., Jimple code in this paper) and generates enriched call graphs. Each node in an enriched call graph represents either a local function or an external method4.
+
+4 A local method is a method designed by developers, and an external method is a system or library call.
+
+# Finding Flaws from Password Authentication Code in Android Apps
+which can be represented by a 4-tuple: (ClassName, ReturnType, MethodName, ParameterTypes[]). An edge connecting two nodes has three types: Call Edge, Control Flow Edge and Data flow Edge that represent a method invocation, flow of control and flow of data, respectively. The enriched call graph is generated in the following steps:
+1. GLACIATE first performs an intra-procedural analysis  to extract method calls in each method and control flow relationships among those calls. At the end of this process, for every method, we have a graph that captures the control flow relationships among method calls made in the method.
+
+2. Next, for each graph constructed in Step 1, GLACIATE examines the declared arguments and variables to extract data dependencies. According to each data dependency, a data flow edge is created between two nodes, and the data flow edge is labeled with the corresponding argument/variable through which the data dependency occurs.
+
+3. Finally, we combine the graphs extracted in Steps 1 and 2, across all methods by adding edges corresponding to method invocations.
+
+Each enriched call graph may have redundant methods. GLACIATE performs local distortions  to alter the graph topology (i.e., remove redundant methods), without changing the code’s functionality. To remove redundant functions, GLACIATE first splits an enriched call graph into smaller pieces based on the local method <init>. It then removes the <init> method which has only one connected local method.
+
+# Flow Sequence Conversion
+A flow sequence consists of a sequence of vector s, each of which has four elements (Sf rom, Sto, Vin, Vout), indicating that method Sf rom is the caller of method Sto, values Vin are input parameters of method Sto, and values Vout are returned parameters of method Sto. Note that Vin and Vout can be null to specify a method without any input parameters or return values.
+
+Given an enriched call graph, GLACIATE extracts the corresponding flow sequences in three steps:
+1. Following call edges, GLACIATE collects method invocations from the enriched call graph and constructs pairs in the form of (Sf rom, Sto).
+
+2. Following data flow edges, GLACIATE inserts input values Vin and returned values Vout of each callee into the corresponding pair to construct a vector (Sf rom, Sto, Vin, Vout).
+
+3. Following control flow edges, GLACIATE extracts the sequence of vectors. Note that we generate a flow sequence for each condition while processing the decision making statements (e.g., if-else, switch, break).
+
+# Learning Cluster Generation
+GLACIATE computes the similarity between each enriched call graph and the other enriched call graphs, and groups the similar enriched call graphs to produce learning clusters. Details are shown as below.
+
+# Similarity Computation
+Based on the app labels, GLACIATE first classifies enriched call graphs into five groups (Secure Group, Group 1, Group 2, Group 3, and Group 4), which correspond to secure authentication, authentication with flaw 1, authentication with flaw 2, authentication with flaw 3, and authentication with flaw 4, respectively.

@@ -1,0 +1,75 @@
+# API 23 and Lower
+An application targeting an API level lower or equal than 23 cannot specify a policy since this mechanism was introduced from API level 24. In this case, the system will then enforce the following default policy:
+&lt;base-config cleartextTrafficPermitted="true"&gt;
+&lt;trust-anchors&gt;
+&lt;certificates src="system" /&gt;
+&lt;certificates src="user" /&gt;
+&lt;/trust-anchors&gt;
+&lt;/base-config&gt;
+This configuration allows an app to use cleartext protocols and to trust the union of CAs from both System and User KeyStore.
+
+# From API 24 to 27
+The default policy for applications targeting API levels from 24 to 27 changes as follows:
+&lt;base-config cleartextTrafficPermitted="true"&gt;
+&lt;trust-anchors&gt;
+&lt;certificates src="system" /&gt;
+&lt;/trust-anchors&gt;
+&lt;/base-config&gt;
+That is, cleartext traffic is still allowed, however, only CAs in the System KeyStore are trusted by the application.
+
+# API Level 28 and Higher
+For apps targeting an API level greater or equal of 28, the policy is even stricter:
+&lt;base-config cleartextTrafficPermitted="false"&gt;
+&lt;trust-anchors&gt;
+&lt;certificates src="system" /&gt;
+&lt;/trust-anchors&gt;
+&lt;/base-config&gt;
+This change enforces that all cleartext protocols are blocked.
+
+Starting from November 1st, 2019, all applications (and updates as well) published on the official Google Play Store must target at least API level 28, corresponding to Android 9.
+
+# 3 TrustKit
+One library that is particularly relevant for our discussion is TrustKit. This library allows the definition of a NSP for apps targeting versions of Android earlier than 7 (which, as we mentioned before, do not support NSP). From a technical standpoint, this library reimplements the logic behind the NSP, allowing an application to import it as an external library.
+
+# Policy Weaknesses
+As discussed in the previous section, NSP is undoubtedly making the specification of a fine-grained network policy more practical. However, each of the features introduced by the NSP may be inadvertently disabled or weakened by an inexperienced developer during the definition of the policy. Unfortunately, to date, there are no tools that help developers to verify the correctness of the defined policy and to check that the settings she wanted to implement are effectively the ones enforced by the system. This section discusses several potential pitfalls that may occur when an inexperienced developer configures a NSP.
+
+# Allow Cleartext
+As described in the previous section, a developer has multiple ways to define the usage of cleartext protocols. For example, the developer can define a list of domains and limit the adoption of cleartext only to them. Otherwise, if the application contacts all the endpoints securely, she can completely opt-out from cleartext communications and be sure to identify potential regression issues. However, a developer may configure her application with the following policy:
+&lt;base-config cleartextTrafficPermitted="true"&gt;
+...
+
+&lt;/base-config&gt;
+This configuration allows the application to use cleartext protocols, potentially exposing the user and the application to threats described in Section 2. To make things worse, as we will discuss throughout the paper, several online resources suggest implementing this very coarse-grained policy, with the goal of disabling the safer defaults: the main concern is whether the inexperienced developer is fully aware of the security repercussions of such policy.
+
+For the sake of clarity, it is important to mention how this specific configuration does not impact an application where all the endpoints are already reached securely—this policy is useful only when acting as a safety net. In other words, this configuration does not lower nor weaken the security of an application performing all the network operations using, for example, HTTPS. However, this configuration is not able to identify regression issues: if an endpoint is inadvertently moved from HTTPS to HTTP, the insecure connection is allowed due to this “too open” policy (while the default policy could have blocked that). A similar scenario also affects complex apps, which are either developed by different teams within the same organization or that are developed by embedding a high number of third-party dependencies: in these cases, it is extremely challenging, if not outright impossible, to make sure that no connection would rely on cleartext protocols. Unfortunately, as we previously discussed, even one single endpoint (or resource) reached through HTTP might be enough to compromise the security of the entire app.
+
+# Certificate Pinning Override
+The NSP makes the adoption and configuration of certificate pinning straightforward. The developer now only needs to declare a valid certificate for each of the domains she wants to protect: then, the system takes care of all the logic to handle the verification of the certificates at connection time. On the other hand, we identified pitfalls that an inexperienced developer may not be aware of. For example, consider the following policy (which we took from a real app):
+&lt;domain-config&gt;
+&lt;domain&gt;DOMAIN&lt;/domain&gt;
+&lt;pin-set&gt;
+&lt;pin digest="SHA-256"&gt;VALID_HASH&lt;/pin&gt;
+&lt;/pin-set&gt;
+&lt;/domain-config&gt;
+&lt;trust-anchors&gt;
+&lt;certificates src="system" overridePins="true"/&gt;
+&lt;/trust-anchors&gt;
+We argue that this policy is misconfigured and that it is very likely that the developer is not aware of it. Given the specification of the pin-set entries, it is clear that the intent of the developer was to actually implement certificate pinning. However, the overridePins attribute of the system certificate entry is set to true: this indicates that certificate pinning should not be enforced for any CAs belonging to the System KeyStore, thus making the previous pin-set specifications useless. We believe that this kind of policy offers a “false sense” of security for a developer, especially since no warnings are raised at compilation time nor at runtime.
+
+# Silent Man-In-The-Middle
+Switching from HTTP to HTTPS does not always guarantee that the communication cannot be eavesdropped. As described in Section 2, under certain specific circumstances, it is possible to perform MITM over SSL/TLS encrypted connection and break the confidentiality, integrity, and authenticity of the communication. Consider the following policy taken from a real app:
+&lt;trust-anchors&gt;
+&lt;certificates src="system"/&gt;
+&lt;certificates src="user"/&gt;
+&lt;/trust-anchors&gt;
+This policy may expose an application to MITM (see Threat Model 3). In fact, this policy trusts the union of the CAs in the System and User KeyStore: hence, the traffic of the app can be eavesdropped by anyone who controls a custom CA in one of the KeyStores. This policy overrides the default configuration introduced on Android 7, which prevents applications from trusting CAs stored in the User KeyStore when performing secure connections. Even though trusting “user” certificates may be the norm at the development phase, we believe that a “production app” that actually trusts user certificate is often a symptom of misconfiguration since it is very rare that an application would need to trust user certificates in a production environment.
+
+USENIX Association 29th USENIX Security Symposium 347
+app would actually need to trust User CAs. For example, even network-related apps such as VPN apps do not need to trust User CAs, even when trusting custom certificates is required: in fact, VPN apps can hardcode the custom CA within the app, and add a trust-anchors node pointing to it. This has the net effect of trusting only this specific certificate, and nothing else. One scenario where trusting User CAs seems required relates to Mobile Device Management apps (MDM), which need to install different CAs coming from different sources and that cannot be pre-packaged within the released app. However, these MDM apps constitute a rare exception, rather than the norm.
+
+# 5 Policy Adoption
+As one of the contributions of this paper, we set out to explore how the NSP has been adopted by the Android ecosystem. This section discusses our findings, and it is organized as follows. First, we present the dataset we used for our study (§5). Second, we discuss how apps use this new security mechanism, we provide statistics on how frequently each feature of the policy is used, and we present insights related to apps adopting policies that are inherently “weak” and that likely constitute inadvertent misconfigurations (§5). Last, we conclude this section with an analysis of network libraries, which, from a technical standpoint, is where the “enforcing” of the policies actually lies; we have also developed an automatic testing framework to determine whether a given network library correctly honors the various elements of network policies (§5).
+
+# 5 Dataset
+To perform our analysis, we first built a comprehensive and representative dataset of apps. To determine which apps to download, we obtained the package names from AndroidRank , a service that provides “history data and list of applications on Google Play.” We opted to select the “most-installed applications” on the Google Play Store according to the installation distribution, with apps whose unique installation count ranges from 10K to more than a billion. In total, we downloaded 125,419 apps, during June and July 2019.

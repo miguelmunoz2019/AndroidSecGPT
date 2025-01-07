@@ -1,0 +1,77 @@
+# 6. Future directions
+The proposed taxonomy uncovers various research gaps and challenges that need more focus on analysis approaches used in Android security. The following research directions are presented to the research community to stay ahead of today’s advancing security threats:
+# 7. Threats to validity
+This SLR outlines different threats to validity to highlight the potential impact and measures for mitigation.
+
+# 7. Construct validity
+1. Android Security will remain a strong focus of research: Threats to construct validity can arise because of keywords-based search performed on repositories and conference venues. The overall publication list may not be exhaustive since only the top 15 conference venues are taken into consideration that are related to SE/PL and S&P domains. However, the attempt to search top-ranked venues guarantees that the influential 15 papers are taken into account. To mitigate this, citation chaining is done that helps reap the best-related papers. In addition, the iterative keyword-based search is incorporated to refine the search results timely.
+
+2. Integrating multiple analytical approaches to obtain more precise and accurate results: Relying on the single technique will never give the best result due to their inherent limitations. More reliable hybrid techniques along with ML and DL, consolidating the advantages of both static and dynamic approaches could be leveraged for high precision analysis.
+
+3. Analyzing different code forms for thorough analysis: Apart from Java, other code forms are also present in Android apps such as native C/C++, Dalvik bytecode, and binaries. Dynamic code loading (DCL)  and reflection  are used to access Dalvik bytecode, whereas the Java Native Interface (JNI) API  is used to access binaries. Very few state-of-the-art static analysis approaches have considered DCL and JNI for analysis, thereby obtaining incomplete results.
+
+4. Shifting from single app analysis to system-level analysis to unfold compositional vulnerabilities: Malware writers can easily exploit the vulnerabilities of multiple benign apps. However, most of the studies in the existing literature focus on single app or individual system components. As an example, Bagheri et al. (2015c) analyzed the permission protocol of Android to check the security requirements of preventing unauthorized access. It is challenging to identify such attacks that require complete system analysis rather than analyzing individual parts of the system in isolation. Therefore, it is important to completely analyze vulnerabilities to predict all the possible ways to exploit the vulnerabilities at the system level.
+
+5. Focusing on repudiation: The search process employed in this SLR retrieved no results for Android repudiation. The research community should take into account the potential threats and weaknesses that are caused by the vetting process of the Android. Vetting process is a pro-
+# 7. Internal validity
+Threats to internal validity can be primarily due to limited and focused searches on the topic concerned. It is primarily related to the soundness of proposed taxonomy, i.e., whether the proposed taxonomy can categorize the different aspects of Android security. To handle this, an iterative-content analysis method is employed, where the taxonomy is evolving constantly to account for new concepts and ideas encountered in the papers.
+
+# 7. External validity
+The analysis based on this study is performed on the research publications collected from 2013–2020, to cover all possible approaches used in Android security to date. Though, the trends may vary for different time-period.
+
+# 7. Conclusion validity
+The threat may also occur due to consideration of studies with individual reviewer’s bias. This may lead to flaws and biases in our study. To maintain the objectiveness cross-checking mechanism is applied, where a thorough examination is done to ensure that no paper is reviewed by a single reviewer. To further minimise the individual reviewer’s bias, inferences made in this SLR are based on cumulative and general observations from different papers rather than relying on a single reviewer’s interpretation.
+
+# 24
+# Conclusion
+With the growing security threats in mobile platforms, particularly Android has led to considerable research efforts in the domain of Android security. This paper presented the state-of-the-art approaches concerning Android security. To achieve this, a comprehensive taxonomy is constructed for categorizing different aspects of Android security. A formal process of SLR is followed by analyzing 200 research papers published in the domains of security and privacy, software engineering, programming languages, and mobile computing from 2013 to 2020. The search strategy and selection criteria employed in this article play a key role in making this study more sound and complete. It is evident from the results of SLR that Android security has gained a lot of focus in the last few years primarily due to the popularity among mobile platforms as well as increasing incidents of malware and vulnerabilities. To summarise, this study points out (1) the purposes of multiple analysis approaches, (2) most of the analysis approaches are built on Soot framework, (3) taint analysis is the most used analysis technique, (4) path sensitivity is ignored by the majority of the research works, (5) integrated analysis techniques prove to be much beneficial than pure static or dynamic approaches.
+
+# Declaration of Competing Interest
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper.
+
+# Computers & Security
+# 100 (2021) 102087
+Caputo D, Verderame L, Aonzo S, Merlo A. Droids in disarray: detecting frame confusion in hybrid Android apps. In: IFIP Annual Conference on Data and Applications Security and Privacy; 2019. p. 121–39.
+
+Cen L, Gates CS, Si L, Li N. A probabilistic discriminative model for android malware detection with decompiled source code. IEEE Trans. Dependable Secure Comput. 2014;12(4):400–12.
+
+Chen X, Zhu S. DroidJust: automated functionality-aware privacy leakage analysis for Android applications. In: Proceedings of the 8th ACM Conference on Security & Privacy in Wireless and Mobile Networks; 2015. p. 1–12.
+
+Chen KZ, Johnson NM, D’Silva V, Dai S, MacNamara K, Magrino TR, Wu EX, Rinard M, Song DX. Contextual policy enforcement in android applications with permission event graphs. In: NDSS; 2013. p. 234.
+
+Chen CM, Lin JM, Lai GH. Detecting mobile application malicious behaviors based on data flow of source code. In: 2014 International Conference on Trustworthy Systems and their Applications; 2014a. p. 1–6.
+
+Chen K, Liu P, Zhang Y. Achieving accuracy and scalability simultaneously in detecting application clones on android markets. In: Proceedings of the 36th International Conference on Software Engineering; 2014b. p. 175–86.
+
+Chen S, Xue M, Tang Z, Xu L, Zhu H. Stormdroid: a streaminglized machine learning-based system for detecting android malware. In: Proceedings of the 11th ACM on Asia Conference on Computer and Communications Security; 2016. p. 377–88.
+
+Chen L, Hou S, Ye Y. Securedroid: enhancing security of machine learning-based detection against adversarial android malware attacks. In: Proceedings of the 33rd Annual Computer Security Applications Conference; 2017a. p. 362–72.
+
+Chen H, Leung HF, Han B, Su J. Automatic privacy leakage detection for massive android apps via a novel hybrid approach. In: International Conference on Communications (ICC); 2017b. p. 1–7.
+
+Choi K, Chang BM. A type and effect system for activation flow of components in Android programs. Inf. Process. Lett. 2014;114(11):620–7.
+
+Chua TW, Tan DJ, Thing VL. Accurate specification for robust detection of malicious behavior in mobile environments. In: European Symposium on Research in Computer Security; 2015. p. 355–75.
+
+Chuang HY, Wang SD. Machine learning based hybrid behavior models for Android malware analysis. In: International Conference on Software Quality, Reliability and Security; 2015. p. 201–6.
+
+Citation chaining in Google Scholar and PubMed, 2020. Available from: https://canvas.seattlecentral.edu/courses/1252744/pages/citation-chaining-in-google-scholar-and-pubmed#/.
+
+Cortesi A, Ferrara P, Pistoia M, Tripp O. Datacentric semantics for verification of privacy policy compliance by mobile applications. In: International Workshop on Verification, Model Checking, and Abstract Interpretation pp.; 2015. p. 61–79.
+
+Coulter R, Han QL, Pan L, Zhang J, Xiang Y. Code analysis for intelligent cyber systems: a data-driven approach. Inf. Sci. 2020.
+
+Denis Cr ˘aciunescu, The layers of the Android security model, 2020, Available from: https://proandroiddev.com/the-layers-of-the-android-security-model-90f471015ae6/
+Crussell J, Gibler C, Chen H. Andarwin: scalable detection of semantically similar android applications. In: European Symposium on Research in Computer Security; 2013. p. 182–99.
+
+Cui X, Wang J, Hui LC, Xie Z, Zeng T, Yiu SM. Wechecker: efficient and precise detection of privilege escalation vulnerabilities in android apps. In: Proceedings of the 8th ACM Conference on Security & Privacy in Wireless and Mobile Networks; 2015. p. 1–12.
+
+Dai P, Pan Z, Li Y. In: 2018 3rd Joint International Information Technology, Mechanical and Electronic Engineering Conference (JIMEC 2018). Review of researching on dynamic taint analysis technique. Atlantis Press; 2018.
+
+Darki A, Chuang CY, Faloutsos M, Qian Z, Yin H. Rare: a systematic augmented router emulation for malware analysis. In: International Conference on Passive and Active Network Measurement; 2018. p. 60–72.
+
+De Lorenzo A, Martinelli F, Medvet E, Mercaldo F, Santone A. Visualizing the outcome of dynamic analysis of Android malware with VizMal. J. Inf. Secur. Appl. 2020;50.
+
+Degu A. Android application memory and energy performance: systematic literature review. IOSR J. Comput. Eng. 2019;21(3):20–32.
+
+dex2jar, 2020. Available: https://code.google.com/p/dex2jar/.

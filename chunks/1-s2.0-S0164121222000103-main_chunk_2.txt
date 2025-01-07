@@ -1,0 +1,54 @@
+# 2. Data collection
+As previously explained, Java has been historically the official programming language for creating Android apps. However, in 2019, Google announced that Kotlin is its official and preferred language for native Android apps. Thus, when selecting the mobile apps to study, we made sure to have a mix of Java and Kotlin apps by (i) merging different datasets available in the literature, and (ii) mining a dataset we created for this study. Keep in mind that for all considered apps we must have access to their repositories, since we later mine their commits. Having in mind previously mentioned considerations, we adopted the three following datasets.
+
+Geiger et al. (2018) This dataset is composed of 8431 real-world open-source Android apps. It combines source and commit history information from GitHub with metadata from Google Play store. We processed the dataset to exclude apps that are no longer available on GitHub, leading to 7862 apps currently usable from this dataset (all available both on GitHub and on the Google Play store).
+
+Coppola et al. (2019) The authors of this dataset mined all projects hosted on F-Droid, a repository for free and open source Android apps. This dataset is interesting because Coppola et al. reported the presence of 19% of apps featuring Kotlin code among the 1232 mined apps. We excluded apps that are no longer available on GitHub and, for consistency with the previous dataset, also those not published in the Google Play store. This resulted in 472 projects.
+
+GitHub archive. Since in the two previous datasets there is a prevalence of Java apps (also due to the fact that they were built before the announcement by Google pushing Android apps towards Kotlin), we ran a query on GH Archive using Google BigQuery, with the goal of identifying repositories having Kotlin as the primary language. The query is available in our online appendix (Mazuera-Rozo et al., 2021). The aforementioned query was run on March 1st, 2020, obtaining a list of 3967 repositories as a result. We sorted these projects by number of stars.
+
+References:
+- https://developer.android.com/kotlin/first.
+
+- Dart is a programming language developed by Google and designed to support the implementation of applications, including mobile apps. https://dart.dev/.
+
+- Flutter is a software development kit created by Google that is built on top of Dart and can be used to develop cross-platform applications. https://flutter.dev/.
+
+- https://tcrn.ch/363AyBv.
+
+- https://f-droid.org.
+
+- https://www.gharchive.org.
+
+# A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+# The Journal of Systems & Software 187 (2022) 111233
+descending order) and selected the top 5% (i.e., 200 repositories) for manual analysis. In particular, we checked that the 200 repositories were real-world Android apps available on the Play Store. From this screening, we obtained a list of 22 Kotlin apps to consider in our dataset.
+
+We aggregated these three datasets and removed duplicates, obtaining a final list of 8157 open-source Android apps. The list is available in our replication package (Mazuera-Rozo et al., 2021).
+
+We cloned all 8157 repositories and ran on them a customized version of git-vuln-finder (cve-search, 2020), a Python application aimed at finding commits likely to fix a security weakness. The search is based on a set of regular expressions applied on the commit message (Zhou and Sharma, 2017). While most of the used regular expressions are applicable in the context of mobile apps, the work by Zhou and Sharma (2017) focuses on web applications. Thus, we modified their tool by complementing the list of regular expressions with others we defined by looking at the list of security weaknesses relevant to mobile apps and present in the Common Weakness Enumeration (CWE8) version 4, a community-developed list of common software and hardware security weaknesses. Also, we considered a commit as relevant for our study if it explicitly mentions the name or id of any weakness present in the CWE dictionary. The adopted regular expressions are publicly available (Mazuera-Rozo et al., 2021).
+
+After running git-vuln-finder on the 8157 projects, we identified a set of candidate commits from which we removed duplicates due to: (i) commits mined from both the master branch and other branches merged in the master; (ii) forked repositories. Also, we decided to keep in our dataset only commits in which the developers are modifying a single Java or Kotlin file (as identified by their extension). The rationale behind this decision is two-fold. First, if a developer mentions in the commit note that she is fixing a security weakness and only one file is modified in the commit, we can be sure that the fix happened in that file. Second, since we aim at classifying the type of security weakness involved in each commit, understanding a fix spanning across many files can be quite challenging, and lead to misclassifications.
+
+This cleaning process resulted in a final list of 4781 candidate commits.
+
+# 2. Open coding
+Given the 4781 commits collected in the previous step, we manually analyzed 681 of them with the goal of describing, using a label, the type of security weakness fixed in the commit. The number of inspected commits ensures a significance interval (margin of error) of ±5% with a confidence level of 99%. We did not use random sampling for the selection of the commits to manually inspect. Indeed, in the set of 4781 candidate commits, there are 4391 commits impacting a Java file, and 390 modifying a Kotlin file. Since we aim at comparing the types of security weaknesses affecting these two main languages used to develop native Android apps, we decided to target the analysis of the same number of Java- and Kotlin-related commits. We targeted the inclusion of 200 valid commits per language (i.e., excluding commits labeled as false positive since they are not related to security weaknesses’ fix).
+
+The choice of 200 was tailored on the amount of commits available for Kotlin, since we expected to find a substantial number of false positives as result of the regular expressions used to select the commits. By applying the process described in the following, we analyzed 360 Java-related commits (200 valid + 160 false positives) and 321 Kotlin-related commits (200 valid + 121 false positives).
+
+8 https://cwe.mitre.org
+# Structure of the survey used in our study.
+
+Five authors took part to the labeling process that was supported by a web application. Each author independently labeled the commits randomly assigned to her/him by the web application, defining a “label” describing the security weakness fixed in each commit. To define such a label the authors manually inspected the diff of the commit and the message accompanying it. As a guideline for the label definition, the authors used the CWE 4 list. The authors reused as much as possible the list of security weaknesses in CWE, defining new labels only when needed. Moreover, the web application also showed the list of labels created so far, allowing the author to select one of the already defined labels. Since the number of possible labels (i.e., types of security weaknesses) is extremely high, such a choice helps using consistent naming while not introducing a substantial bias. In case the commit was not related to a security weakness fix, a false positive label was assigned, discarding the commit from the study. Each commit was assigned to two authors and, in cases for which there was no agreement between the two authors, the commit was assigned to a third author. Conflicts arisen for 344 commits (∼50% of 681). While such a number may look high, note that we considered as a conflict also cases in which the authors used two slightly different labels to express the same concept (e.g., CWE-703: improper check or handling of exceptional conditions vs. CWE-754: improper check for unusual or exceptional conditions). A total of 1706 labels was required in order to reach our target of assessing and characterizing 200 valid commits per programming language: two labels per each of the 400 valid commits (800), two labels for each of the 281 false positives we discarded (562), and one more label for each of the 344 solved conflicts (344).
+
+As outcome, we present a taxonomy of software security weaknesses identified in the manual analysis and we complement our discussion with qualitative examples.
+
+# 2. Survey with developers
+We designed a survey aimed at investigating the types of security weaknesses that are found by developers in their apps and their perception about specific aspects of security weaknesses. The survey was designed to last at most 15 min, to maximize the survey completion rate. The survey structure is reported in Table 1. Note that we rephrased some of the questions to shorten them. First, we collected background information about participants (Q1 − Q5). If a participant answered “zero” to the part of Q4 related to the overall programming experience of native Android.
+
+# A. Mazuera-Rozo, C. Escobar-Velásquez, J. Espitia-Acero et al.
+
+# The Journal of Systems & Software 187 (2022) 111233
+apps, the survey ended, and the participant was excluded from the study. This happened in 2 cases.

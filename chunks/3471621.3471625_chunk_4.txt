@@ -1,0 +1,89 @@
+# iOS.
+
+On iOS, LinkedIn displays the title and domain name on the address bar (Case 8), which is GOOD (as opposed to its BAD design on the Android counterpart). Other apps have exactly the same performance on the two mobile platforms.
+
+# 4 T3: HTTPS Indicators.
+
+Apps typically provide HTTPS indicators in the form of text (“https” in the URL) or a lock icon. Screenshots of representative apps in this analysis are shown in Figure 5.
+
+# Chrome Custom Tabs and SFSafariViewController.
+
+Both CCT and SF use a lock icon as the indicator of HTTPS, which is not customizable or removable by the app developers (Case 1 and 2 in Figure 5). We consider them GOOD designs.
+
+# GOOD.
+
+Similar designs can be found in own IABI implementations in three apps, Facebook (Case 3), FB Messenger and KakaoTalk (Case 4).
+
+2Three apps (Twitter, LinkedIn and Reddit) provide both CCT/SF and own IABI implementations.
+
+# RAID ’21, October 6–8, 2021, San Sebastian, Spain
+# NEUTRAL.
+
+Some apps rely on the scheme portion of the full URL (the text “https”) to indicate that HTTPS protocol is being used (Case 5 and 6), which might not be very intuitive but suffice for advanced users.
+
+# BAD.
+
+The absence of any HTTPS indicators (text or lock icon) is a BAD design. Surprisingly, we found 12 out of the 18 subject Android apps with their own IABI implementation falling into this category, including Instagram developed by the Facebook company (Facebook and FB Messenger are GOOD though).
+
+# iOS.
+
+The iOS version of Snapchat displays a lock icon in its own IABI implementation, while its Android version does not have any indicators. Other apps have identical behavior with respect to T2 on Android and iOS.
+
+# 4 T4: HTTP Indicators.
+
+As discussed in Section 3, proper indicators for HTTPS should not exempt an app from displaying an HTTP indicator/prompt. In other words, an HTTP indicator should always be displayed regardless of the presence or absence of HTTPS indicators. Figure 6 shows screenshots of representative apps in this analysis.
+
+# Chrome Custom Tabs and SFSafariViewController.
+
+CCT uses an exclamation mark icon in place of the lock icon when the URL does not meet TLS requirements; see Case 1 and 2 in Figure 6. This icon is very intuitive and can give the user a clear warning. Same as the lock icon for HTTPS, this exclamation mark icon cannot be customized or removed by a developer. SFSafariViewController uses the text “Not Secure” as the indicator; see Case 8. Both of them scored GOOD in this test.
+
+# GOOD.
+
+Similar to the analysis of HTTPS indicators, a GOOD design should always display an insecure indicator for HTTP. Unfortunately, Facebook is the only app scoring GOOD design in this test (Case 3).
+
+# NEUTRAL.
+
+Displaying the complete URL with the scheme portion of text “http” also serves the purpose with a less intuitive interface, and is considered a neutral design in our analysis. LINE and Twitter join this category (Case 4 and 5).
+
+# BAD.
+
+The absence of any HTTP indicator is considered a BAD design, and we have 15 out of 18 apps with their own IABI implementation in this category including FB Messenger. This is an alarming finding.
+
+# RAID ’21, October 6–8, 2021, San Sebastian, Spain
+# Zicheng Zhang, Daoyuan Wu, Lixiang Li, and Debin Gao
+# CO BBCR
+# Covlng
+# 4 T5: Certificate Errors
+As discussed in Section 3, an app is supposed to inform end users upon certificate errors (with expired or self-signed certificates, or with certificates of the wrong host). We test all subject apps with URLs that contain such certificate errors, and examine their corresponding prompts; see Figure 7 with expired certificates as examples.
+
+Chrome Custom Tabs and SFSafariViewController. Since most layman end users do not possess the necessary technical background to make informed decisions when they are prompted with a certificate error, both CCT and SF (and the corresponding full-fledged browsers) introduce “twisted” routes for end users to proceed opening web pages with certificate errors. Cases 2 and 4 in Figure 7 show examples of the design of such “twisted” routes, where an end user will have to choose “Advanced” or “Show Details” before they are given the option to continue browsing. We consider these GOOD designs with best security usability practice.
+
+That said, both CCT and SF choose to remember such end user decisions across all apps with CCT/SF implementation. In other words, an app with CCT/SF implementation would skip the certificate error warning if a user had chosen to proceed with browsing the same URL on any other CCT/SF apps. Although the CCT/SF implementation is generally considered GOOD, such a design choice sacrifices security for usability.
+
+GOOD. Here we relax the security requirement and consider apps that either refuse to open the page or prompt end users with various options as GOOD designs.
+
+With such relaxation on the definition of GOOD designs, all but 3 subject apps with their own IABI implementations are in this category. Among them are 7 apps that simply refuse to open the page, and 8 apps that prompt the end users and give options to proceed. There are two interesting observations worth noting when we dig deeper into the latter group.
+
+First, 3 out of the 8 apps show details of specific certificate errors (e.g., Facebook, Case 5) while the other 5 apps skip the details of errors (e.g., KakaoTalk, Case 1). Second, all these apps remember the user selection and would not display any SSL error indicators after proceeding to open the web page, except Facebook (case 5) which turns the domain name into red color and include a red exclamation mark icon even after end user chooses to proceed.
+
+NEUTRAL. Twitter instead chooses to launch the system default browser to handle the web pages with certificate errors. We consider this design acceptable (NEUTRAL) although the burden is now shifted to the default browser.
+
+BAD. Ignoring the certificate errors or directly opening the insecure web page are both considered as BAD designs. In this category we have Alipay which directly opens a web page with wrong host certificates and Zhihu which indiscriminately displays a prompt of visiting external websites regardless of presence of absence of certificate errors.
+
+iOS. Surprisingly, all iOS subject apps deliver GOOD designs including Alipay and Zhihu whose Android versions are BAD. Both two iOS apps show blank pages when attempting to open pages with certificate errors. We suspect that this better behavior of iOS apps is due to stricter control for certificate errors on the iOS platform.
+
+# 4 T6 & T7: Special URLs
+As discussed in Section 3, T6 and T7 concern about special URLs where a lock emoji is part of the title, and where extended sub-domain names are used, respectively. Figure 8 shows screenshots of representative apps when they process such special URLs.
+
+Chrome Custom Tabs and SFSafariViewController. CCT could be configured with or without the title of the page being visible. When the title is visible (Case 1 of Figure 8), the lock emoji (part of the title) and the exclamation mark icon (due to the HTTP protocol being used) show up next to each other, which is confusing but not too bad as the warning is there. In absence of the page title,
+# On the Usability (In)Security of In-App Browsing Interfaces in Mobile Apps
+# RAID ’21, October 6–8, 2021, San Sebastian, Spain
+either due to developer configuration in CCT (Case 2) or due to SF in use (Case 11), the HTTP warning is there without any confusion.
+
+Regarding T7, both CCT and SF display the suffix of the URL (with the long subdomain trimmed), which means that both CCT and SF are immune to T7 attacks (see Cases 7 and 12).
+
+GOOD. Regarding T6, a potential GOOD design we’d suggest is to detect the use of lock (or similar) emojis in the title and replace them with unambiguous text or symbols. Unfortunately, none of the subject apps has a similar design (not even the CCT/SF implementations). Therefore, we only consider their own IABI implementations not showing the title as GOOD designs. Except for those CCT apps which choose not to show the title, only Facebook (case 3 in Figure 8) and KakaoTalk have a GOOD design in this test.
+
+In T7, we consider designs that prioritize the display of domain name over subdomain name GOOD. LINE is the only GOOD one in our tests (Case 8).
+
+NEUTRAL. When the lock emoji in the title is shown, we consider it NEUTRAL if either the full URL or an HTTP indicator (e.g., exclamation mark icon) is also shown, so that end users still have a way of telling that the page is insecure. Examples include CCT implementation, LINE (Case 4), and Twitter.

@@ -1,0 +1,57 @@
+# Strategy 2
+When the interface is identified as a list interface, we first build a path set from the root node to all the leaf nodes. The path set consists of a sequence of widget types, such as “framelayout-viewpager-listview-framelayout-text-view.” Then we filter out the paths that contain the scrollable ListView, RecyclerView, and ExpandableListView nodes from the path set. And those path sets which have more than 10 the same paths will be also filtered out. Finally, the same paths in the list path set are filtered, and only the Actions of one of the multiple child nodes under the list widget are generated.
+
+# Strategy 3
+When the interface is recognized as a pop-up box, we will carry out text matching analysis on the prompt message of the interface. If the text prompt is to update or download information, select the reject button such as “cancel.” For AD pop-ups, select the “close” button. For menus and other system prompt boxes, we generate the actions in turn according to the hierarchical traversal order of actionable widgets.
+
+# Strategy 4
+When the interface is identified as a detailed interface, we search the “return” widget on the interface or add a return action and directly return to the previous interface, without processing other widgets on the interface.
+
+# Strategy 5
+When the interface is recognized as a welcome interface, we generate sliding actions on the interface, including left sliding, right sliding, up sliding, and down, to make it jump to the real initial interface.
+
+# Strategy 6
+When the identified interface is other interfaces, generate an action sequence just according to the hierarchy traversal sequence of the interface widget tree.
+
+# Strategy 7
+Set the processing priority of different actions on each interface: combined action &gt; click action &gt; sliding action.
+
+# Strategy 8
+Set the priority of the same action processing on each interface according to the hierarchy traversal sequence of the interface widget tree.
+
+2037, 2019, 1, Downloaded from https://onlinelibrary.wiley.com/doi/10/2019/7193684 by Cochrane Colombia, Wiley Online Library on [09/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License
+# 6 Security and Communication Networks
+Strategy 9. When the “clickable” property of both parent and child widgets in the interface widget tree is “true” and the child widget overrides the parent widget, we crop the parent widget and only generate the action of the child widget.
+
+# 4. Interface State Similarity Calculation.
+
+During dynamic construction and traversal of the directed graph, each node corresponds to a different interface state. After each widget action is executed, we need to take different approaches depending on whether the state of the interface has changed. Currently, there are three solutions to determine whether the current interface has changed. (1) Compare the Activity name where the interface is located . (2) Calculate the similarity between the screenshot of the current interface and the screenshot of the interface that has been traversed through the image recognition technology. (3) Extract all widget types, widget quantity, and widget property information on the interface for comparison . Solution 1 is not accurate enough because the same Activity may contain multiple different interfaces. Both solution 2 and solution 3 require a large amount of comparison time and are inefficient. It can be seen that too fine or too thick comparison will result in poor traversal effect. Considering that we focus on the analysis of different network requests in the application and the common widgets among different interfaces (if the widgets corresponds to sending network request event) often correspond to the same request links, we propose to calculate the similarity of two interface states based on the widget path set. Formula (1) is used to calculate the similarity sim(s1, s2) of the interface state s1 and interface state s2:
+⎪0, activity(s1) ≠ activity(s2),
+⎧
+⎪
+⎪
+⎨ sim(s1, s2) = ⎪|R(s1) ∩ R(s2)|,
+⎪
+⎩|R(s1) ∪ R(s2)| activity(s1) = activity(s2).
+
+Formula (1) indicates that if s1 and s2 belong to different Activities, they correspond to different interface states and the similarity of them is zero. When s1 and s2 belong to the same Activity, the similarity of the corresponding interface state can be calculated based on the widget path set. +e R(s1) and R(s2) in the |R(s1)∩R(s2)|/|R(s1)∪R(s2)| represent all the paths from all root nodes to leaf nodes of the interface widget tree s1 and s2, respectively. |R(s1)|∩|R(s2)| represents the number of identical paths in these paths. |R(s1)|∪|R(s2)| represents the number of all the paths from the root node to the leaf node. +e two paths are the same if and only if the total number of widgets, the widget type, and the widget text on the same hierarchy of both paths are consistent.
+
++is method is only used for the pairwise calculation of the similarity of interfaces belonging to the same Activity, effectively reducing the comparison time. When the similarity is greater than a certain threshold value, it indicates that the interface state is an old state. When the similarity is less than a certain threshold value, it indicates that the interface state is a new state. By setting similarity threshold, the scale of traversal model can be controlled effectively. When the similarity threshold value is higher, the interface state is divided more finely and the traversal coverage rate is higher. +is means that the traversal directed graph constructed is large and cumbersome, and it takes lots of time to traverse.
+
+# 5. System Design and Implementation
+# 5. System Architecture.
+
++e architecture of Android application SSL security vulnerability automatic detection system based on dynamic UI traversal is shown in Figure 1, which mainly includes three modules: preprocessing, UI traversal, and attack test. According to the three characteristics including application networking permission, packing, and SSL-related interface call, the preprocessing module will screen out the suspicious application set from the test Android application dataset to reduce the size. +e UI traversal module distributes the (Android Package) apk files of the suspect application to the idle devices (or emulators) through our scheduling logic. At the same time, our UI traversal technology drives the application to install, run, and uninstall on the device. +e whole UI traversal process includes widgets extraction, traversal algorithm design, and
+# Security and Communication Networks
+# SSL security vulnerability
+user action simulation. Among them, UI traversal strategy is used to guide and optimize the process of UI traversal. The attack test module attacks the application running on the device through the man-in-the-middle attack agent tool and returns the attack results in real time. The implementation details of each module are described below.
+
+that the function inherits, and x4 represents the summary information of the function body. The above formal representation is used to describe four known SSL security vulnerabilities to form the vulnerability feature library. For example, the formal description of the characteristics of trusting all hosts vulnerability is shown in Figure 2.
+
+# 5. Preprocess
+The preprocessing module uses static code analysis and feature matching technology to filter the Android application dataset preliminarily and screens out the “suspicious application” set. The whole filtering process consists of building SSL security vulnerability feature library and matching filtering rules. This process is designed to initially filter some applications and determine whether the application belongs to one of the four SSL vulnerability types. In fact, this preprocessing is not always necessary and will not affect the subsequent detection efficiency and progress, because SSLDetecter can also directly conduct dynamic analysis of applications.
+
+# 5. SSL Security Vulnerability Feature Library
+Based on existing research and combining with specific vulnerability code blocks in Android applications, we divide SSL security vulnerabilities of Android applications into four types: trusting all certificates, trusting all host names, recalling insecure SSL APIs, and ignoring SSL errors. SSL security vulnerability characteristics are formally described as X (1, x2, x3, x4), x (2) where X represents the SSL-related function summary information of the Android application, x1 represents the function name summary information, x2 represents the summary information of the interface implemented by the function, x3 represents the summary information of a class that the function inherits, and x4 represents the summary information of the function body.
+
+The information above is uniformly expressed in the form required by the SSL security vulnerability feature library as the characteristics of the application. For the application that can extract the features, we match the feature information with the vulnerability features in the vulnerability feature library one by one. When the matching is successful, it indicates that the application is suspicious and will be stored in the dynamic test application database; otherwise, it will be stored in the white list database. For the applications which cannot be decompiled (such as packed apps), we directly put them into dynamic test application database.

@@ -1,0 +1,61 @@
+However, as also acknowledged by Felt et al., permission re-delegations are not always vulnerabilities; they can also be legitimate cases. Permission re-delegation is legitimate when it is an intention of the developer. In fact, in Android, inter-app communication is a cornerstone feature for app integration that involves permission re-delegation. In our running example, initiating a phone call (the method invocation makePhoneCall()) when requested by other app is an intended behavior of the Dialer app.
+
+An accurate vulnerability detection approach should go beyond the mere detection of permission re-delegation and it should distinguish between legitimate permission re-delegations and permission re-delegation vulnerabilities.
+
+Hence, going beyond Felt et al.’s threat model, we pose an additional precondition to distinguish these two cases. To consider a permission re-delegation behavior as legitimate (as intended by the developer), it should be similar to what can be observed on many similar apps. Conversely, to consider a permission re-delegation behavior as vulnerable, it should
+3 https://www.computerworld.com/article/2489707/malware-vulnerabilities/android-bug-lets-apps-make-rogue-phone-calls.html
+Empirical Software Engineering (2020) 25:5084–5136
+represent an anomaly, i.e., something uncommon among similar apps. Thus, the following precondition is defined:
+# Precondition PR2: Anomalous permission re-delegation.
+
+It is uncommon for other similar apps to execute that privileged API upon receiving an intent message.
+
+We consider an app that satisfies both of the above preconditions as vulnerable to permission re-delegation attacks. In the following sections, we propose and assess an automated approach to detect apps containing such permission re-delegation vulnerabilities.
+
+# 4 Overview of the Approach
+The PREV framework is a fully-automated approach for detecting permission re-delegation vulnerabilities in Android apps. It takes as input the Android package kit (apk for short) file and the app description. As output, it generates a vulnerability report that states if the app is vulnerable or not and provides test execution scenarios with proof-of-concept attacks so as to document the security issues and help the developer in fixing the vulnerabilities.
+
+As shown in Fig. 6, the proposed approach consists of three major steps:
+1. Model inference: this step takes a large training set of safe apps as input and produces permission re-delegation models as output. It contains three sub-steps:
+1. The first sub-step applies topic modeling and clustering techniques to group those safe apps into clusters based on their similarities in terms of functional descriptions.
+
+2. In the second sub-step, for each app in each cluster, static analysis is used to generate the call graph and identify the privileged APIs that can be reached from public entry-points. This provides the permission re-delegation behaviors, i.e., the privileged operations that may be performed by the apps upon receiving incoming requests via public entry points.
+
+3. In the third sub-step, among the reachable privileged APIs of the apps in each cluster, we determine the common APIs and the uncommon ones. Based on this information, we learn the permission re-delegation model for each cluster, which characterizes the permission re-delegation behaviors of the safe apps in the cluster.
+
+Empirical Software Engineering (2020) 25:5084–5136 5093
+This step is performed only once before testing a given set of new apps; however, the models may need to be updated at times, for example, when new versions of safe apps become available.
+
+# 2. Outlier detection
+This step takes the clusters and the associated permission re-delegation models obtained in the first step and the app under test (AUT) as input. It reports anomalies as output. It contains three sub-steps:
+1. (a) First, it classifies the AUT into one of the clusters by using the same topic modeling technique used in the previous step and a classification technique.
+
+2. (b) Then, it proceeds to the second sub-step which applies the same API reachability analysis used in the previous step and extracts the reachable, privileged APIs in the AUT. If there is no reachable, privileged API, the procedure terminates reporting that the AUT is not vulnerable.
+
+3. (c) The third sub-step applies a classification method to identify the anomalies, which are reachable privileged APIs that are anomalous according to the permission re-delegation model. The AUT is flagged as an outlier; the anomalies are reported as candidate permission re-delegation vulnerabilities. If the AUT does not contain any anomaly, the procedure terminates.
+
+# 3. Test case generation
+This step takes the outlier AUT, the list of candidate vulnerabilities, and the call graph produced in the previous step as input. It produces proof-of-concept attacks as output. It contains two sub-steps:
+1. (a) It applies static analysis to extract target paths from the call graph — paths from public entry points to the calls to anomalous privileged APIs corresponding to candidate vulnerabilities.
+
+2. (b) Next, it applies genetic algorithm-based technique to generate test cases that exercise the target paths. This confirms that the AUT is indeed vulnerable and exploitable. It generates a detail vulnerability report containing the anomalous privileged APIs used and the exploited target paths.
+
+These steps are described in detail in the next sections.
+
+# 5 Model Inference
+# 5 Clustering
+In the first step of our approach, we cluster apps that can be considered benign and non-vulnerable (safe apps) based on the similarity of their app descriptions. The intuition behind is that safe apps that are similar in terms of their descriptions should exhibit common permission re-delegation behaviors, which can be considered as legitimate.
+
+For example, it might be common for communication-related apps to send SMS messages. However, it might be very uncommon for safe communication-related apps to send SMS messages when servicing requests coming from other apps (without involving user interaction). Essentially, while this feature is largely used internally, it is rarely exposed as a service to other apps. Thus, we can establish that sending SMS on behalf of the requesting app is not a common behavior for communication-related apps. Whenever a new communication-related app is found to exhibit such behavior, it can be classified as an outlier.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+The “safe” apps that we use are those apps that (i) come from official app store (therefore, they are scrutinized and checked by the store maintainer); and (ii) are very popular (as such, their quality is acknowledged by a large group of users). We chose Google Play as the official app store. At the time we crawled the Google Play store, it provided 30 different app categories. From each category, we downloaded, on average, the top 500 apps together with their descriptions. We then discarded apps with non-English description and those with short descriptions (less than 10 words). We are then left with 11,796 apps for clusters preparation.
+
+The fact that top apps are suggested and endorsed by the official store makes us assume that the apps are of high quality and do not contain many security problems. However, it is important to note that our approach does not absolutely assume that all the “safe” apps which are used for learning the model are completely benign and non-vulnerable. In fact, our model is robust with respect to the inclusion of a small number of malicious or vulnerable apps in the training set, because we classify a permission re-delegation behavior as vulnerable when it deviates from the cluster norm. Therefore, as long as the majority of the apps exhibit legitimate permission re-delegation behaviors, the cluster norm will only reflect those legitimate behaviors (see Section 6). On the other hand, our approach does rely on the majority of them being truly benign and non-vulnerable. In our empirical evaluation, we will quantify how much majority is required (see Section 8).
+
+Our clustering step is inspired by the approach proposed by Gorla et al. (2014), with some differences in topic classification and clustering algorithm used. Specifically, we additionally apply a NLP technique called lemmatization for better topic classification and we use a probability-based clustering algorithm based on Expectation Maximization (EM) algorithm and cross validation method for clustering so that the number of clusters does not need to be defined a priori. This step takes safe apps as input and produces clusters of safe apps as output. It consists of three sub-steps: 1) App descriptions preprocessing; 2) Topics discovery; and 3) Apps clustering.
+
+# App Descriptions Preprocessing
+Our approach applies filtering, lemmatization and stemming (standard NLP techniques) to preprocess the app descriptions. The process is summarized with an example in Fig. 7. First, it filters out non-English descriptions using Google’s Compact Language Detector,4 because having one single language is necessary for clustering similar descriptions.
+
+Second, the approach filters stopwords that do not contribute to topic discovery (Fig. 7a), such as “a”, “after”, “is”, “in”, “as”, “very”, etc Third, it applies lemmatization technique.

@@ -1,0 +1,95 @@
+# 7. Summary and Conclusions
+This paper describes the creation and deployment of a survey to Android app developers, in which we asked them a range of questions related to their approach to security and privacy in app development; and a second phase in which we compared the answers with the outcomes of running security analysis tools on one of their apps. The research addresses the questions as follows:
+# RQ1: To what extent, and how, does a perceived need for security and privacy lead to security-enhancing activities and interactions in the development team?
+From the 335 survey responses analyzed, we found a high level of reported security need for the app development, but less use of practical security assurance techniques (Section 5). Where such techniques were used, this was in proportion to the perceived need, as was the involvement of professionals and security champions. The frequency of app security updates followed a similar pattern (Sections 5, 6). Considering the “how” of RQ1: in the perception of respondents to the survey, app security improvements have been predominantly driven by developers themselves (Section 6); this is supported by the observation that the assurance techniques first adopted are those most easily available to developers. GDPR has also had an impact, though the resulting changes for GDPR have been mainly cosmetic (Section 5).
+
+# RQ2: To what extent do the need for security, the involvement of specialist roles, and the use of assurance techniques in a development team lead to fewer security defects?
+The results of the app analysis showed little relationship with the reported security drivers and development process from the survey; we believe this reflects the inability of the current generation of binary analysis tools to analyze libraries effectively and separately from the main app code. We did however find the involvement of security specialists or champions to be associated with more Cryptographic API issues, probably since they correctly enforce much more Cryptography use (Sections 5, 6).
+
+# RQ3: What proportion of Android developers have access to security experts?
+Section 5 concludes that between 14% and 22% of developers work with security experts.
+
+# RQ4: To what extent do Android developers actually use assurance techniques?
+Only between 22% and 30% regularly use assurance techniques (Section 5). Further, contrasting the high need for security with the low use of assurance techniques and low availability of security professionals, we suggest that there is an urgent need for ways to support app developers in adopting security assurance techniques in the absence of security professionals.
+
+# 7. Future Work
+As Section 6 discusses, we need binary analysis tools capable of:
+1. Detecting library versions
+2. Performing static analysis on library components separately from the main code.
+
+This is an active area of research; once such tools are available, a further survey using these will provide both valuable results, and an indication of changes over time in Android developer security practices. More information is also needed to support developers in using these assurance techniques, starting with how developers currently use each one. Specific questions might address where developers go to get security advice; what tools they use to analyze their code; the methods they use for library analysis; how they approach penetration testing; what forms of code review they use; and how they tackle threat assessment. A further online survey can investigate these questions.
+
+# 7. Notes and Credits
+A privacy-preserving set of the survey data, along with the full questions and data description, is available online . First, we thank Christian Stransky of LU Hannover for obtaining the Google Play data and APK files used as a basis for the survey; and Dominik Wermke of LU Hannover for
+USENIX Association 29th USENIX Security Symposium 301
+initiating the use of Python and Jupyter notebooks for statistical analysis in this project.
+
+We thank Dr Tamara Lopez of the Open University, UK, for her helpful review of the survey questionnaire; Dr Yasemin Acar, of LU Hannover for practical guidance on creating and validating questionnaires; and Professor Ian White, of UCL, UK, for valuable advice on the statistical analysis.
+
+We also thank the eight anonymous reviewers of this and an earlier version of this paper, who have all contributed significantly; and particularly USENIX shepherd Professor Daniel Zappala of Brigham Young University.
+
+This research was partially funded by the Deutsche Forschungsgemeinschaft (DFG, German Research Foundation) under Germany's Excellence Strategy - EXC 2092 CASA – 390781972).
+
+# 8.  References
+1. Acar, Y., Backes, M., Fahl, S., et al. Comparing the Usability of Cryptographic Apis. 2017 IEEE Symposium on Security and Privacy (SP), IEEE (2017), 154–171.
+
+2. Acar, Y., Backes, M., Fahl, S., Kim, D., Mazurek, M.L., and Stransky, C. You Get Where You’re Looking For: The Impact of Information Sources on Code Security. IEEE Symposium on Security and Privacy, (2016), 289–305.
+
+3. Anscombe, F.J. The Transformation of Poisson, Binomial and Negative-Binomial Data. Biometrika 35, 3/4 (1948), 246.
+
+4. Arzt, S., Rasthofer, S., Fritz, C., et al. FlowDroid: Precise Context, Flow, Field, Object-sensitive and Lifecycle-aware Taint Analysis for Android Apps. Proceedings of the 35th ACM SIGPLAN Conference on Programming Language Design and Implementation, (2014).
+
+5. Assal, H. and Chiasson, S. Think Secure From the Beginning: A Survey With Software Developers. Conference on Human Factors in Computing Systems (CHI), (2019).
+
+6. Backes, M., Bugiel, S., and Derr, E. Reliable Third-Party Library Detection in Android and Its Security Applications. Proceedings of the ACM Conference on Computer and Communications Security, (2016), 356–367.
+
+7. Bai, J., Wang, W., Qin, Y., Zhang, S., Wang, J., and Pan, Y. BridgeTaint: A Bi-Directional Dynamic Taint Tracking Method for JavaScript Bridges in Android Hybrid Applications. IEEE Transactions on Information Forensics and Security 14, 3 (2019), 677–692.
+
+8. Becker, I., Parkin, S., and Sasse, M.A. Finding Security Champions in Blends of Organisational Culture. Proceedings 2nd European Workshop on Usable Security, (2017).
+
+9. Bell, L., Brunton-Spall, M., Smith, R., and Bird, J. Agile Application Security: Enabling Security in a Continuous Delivery Pipeline. O’Reilly, Sebastopol, CA, 2017.
+
+10. Caputo, D.D., Pfleeger, S.L., Sasse, M.A., Ammann, P., Offutt, J., and Deng, L. Barriers to Usable Security? Three Organizational Case Studies. IEEE Security and Privacy 14, 5 (2016), 22–32.
+
+11. CONSORT. Checklist of Information to Include When Reporting a Randomized Trial. 2010, 11–12. http://www.consort-statement.org/consort-2010.
+
+12. Coopamootoo, K.P.L. and Gross, T. A Codebook for Evidence-Based Research: The Nifty Nine Completeness Indicators. Newcastle, 2017.
+
+13. Date, S. The F-Test for Regression Analysis - Towards Data Science. https://towardsdatascience.com/fisher-test-for-regression-analysis-1e1687867259.
+
+14. Deborah J. Rumsey. Statistics Essentials For Dummies. Wiley, For Dummies, 2019.
+
+15. Derr, E., Bugiel, S., Fahl, S., Acar, Y., and Backes, M. Keep Me Updated: An Empirical Study of Third-Party Library Updatability on Android. Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security - CCS ’17, ACM Press (2017), 2187–2200.
+
+16. Egelman, S. and Peer, E. Scaling the Security Wall: Developing a Security Behavior Intentions Scale (SeBIS). Conference on Human Factors in Computing Systems (CHI2015), (2015).
+
+17. Eichberg, M. and Hermann, B. A Software Product Line for Static Analyses: The OPAL Framework. Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation (PLDI) 2014-June, June (2014).
+
+18. Enck, W., Octeau, D., McDaniel, P., and Chaudhuri, S. A Study of Android Application Security. Proceedings of the 20th USENIX conference on Security, (2011).
+
+19. European Commission. General Data Protection Regulation (GDPR). 2019. https://ec.europa.eu/info/law/law-topic/data-protection_en.
+
+20. Fahl, S., Harbach, M., Muders, T., Smith, M., Baumgärtner, L., and Freisleben, B. Why Eve and Mallory Love Android: An Analysis of Android SSL Security Categories and Subject Descriptors. Proceedings of the 2012 ACM conference on Computer and communications security - CCS ’12, ACM Press (2012).
+
+21. Fowler, F.J. Survey Research Methods. Sage.
+
+22. Glanz, L., Amann, S., Eichberg, M., et al. CodeMatch: Obfuscation Won’t Conceal Your Repackaged App. Proceedings of ESEC/FSE’17, (2017), 638–648.
+
+# Appendix A
+# Analysis Tool Versions
+The following are the versions of the tools we used for application analysis.
+
+# Appendix B
+# Survey Questions
+The following are the survey questions. Some questions were skipped if appropriate (marked with *). The answer formats are abbreviated as follows:
+- YN - Yes or No
+- SS - Single Selection.
+
+- MS - Multiple Selection
+- LSS - Likert-Style Scale: Extremely, though to Not at all.
+
+- 0-100 - Slider selecting an integer
+- N - Integer
+In addition, ‘?’ indicates an ‘I don’t know’ option, and ‘O’ an ‘Other’ option, where the participant could enter open text. In Q10 and Q21, the option descriptions give the encodings used in Appendix C.
+
+Q1-Q3 were text-only statements.

@@ -1,0 +1,54 @@
+We further characterize component communication by looking into the ways ICCs carried data, if any. In particular, we examine the total percentage of ICCs that carried data, and among data-carrying ICCs the distribution over the three ways (see Section 3) of doing so. Fig. 6 shows the overall reduction (albeit slow) in carrying data in ICC Intents by any means, in both benign and malicious apps. Among the ICCs that did carry any data, bundle data has been consistently the primary means, in both groups. Very few ICCs carried data in both the data and extras fields of their Intent objects, though. Our p and Δ values show that the evolution of the two groups on ICC data transfer was only significantly different in carrying standard data only.
+
+# Finding 5:
+Like benign apps, malware did not transfer any data in most of their ICCs, and if doing so bundles were always the preferred means. Over the years, benign apps had significantly larger portions of data-carrying ICCs that contain standard data than did malware; yet both groups had seen decreasing total invocation of data-carrying ICCs.
+
+# 5. RQ3: Callback use and categorization
+Through this research question, we intended to investigate how Android apps invoke callbacks of various kinds during their execution, and in particular attempted to characterize the evolution of callback use in malware versus in benign apps.
+
+# 5. Extent of use
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+Internal ternal explirnal implicipercentage of lifecycle callbacks were always attributed to managing 100% the lifecycle of Activity components. This is not surprising given our observation from Fig. 3 that this type of components constantly dominated in the component distribution of app executions. The second highest percentage of lifecycle callbacks were invoked due to the framework’s management of the app as a whole. The top two ranks were always taken by Activity and Application, in any given year and in both benign apps and malware. The ranking of other three categories, however, varied slightly across years in both groups, with Content Providers being the least frequently exercised lifecycle callback type in most years. Also, the differences in the ranks of these three categories were generally small in absolute terms.
+
+Overall, the evolutionary pattern of lifecycle categorization was similar between benign apps and malware. Our statistical analysis results (p and Δ) pinpointed that, during the eight-year evolution, invocation of callbacks associated with Content Providers in malware was significantly and largely lesser (ranked lower) than in benign apps (greater rank value means lower rank). This is consistent with, and can be explained by, the finding from our results on component distribution (Fig. 3) that the malware samples executed lower percentages of components of this type than did benign apps with statistical significance and large effect sizes. However, although the malware executed significantly higher percentages of Services, callbacks for managing these components’ lifecycle were not significantly different between malware and benign-app executions. The reason was that many of the exercised methods in Service components were not lifecycle callbacks.
+
+# Finding 7:
+Lifecycle callback distribution was largely similar between malware and benign apps, with Activity callbacks constantly dominating and the overall category ranking being consistent over time. Yet malware invoked significantly less Content Provider callbacks than benign apps.
+
+is consistent with our prior observations on the execution composition in terms of functionality scopes (of Fig. 2): the portion of calls from SDK to user code, which correspond to callback invocations, was almost negligible. Comparatively, however, benign apps exercised callbacks more prevalently than malware, which is again consistent with the significant larger portions of SDK → UserCode calls in benign apps seen in Fig. 2. In terms of the evolution differences between the two groups, the generally steady decrease in both kinds of callbacks in benign apps is opposed to the overall drastic increase in the invocation of lifecycle callbacks in malware, till year 2016. Event-handling callbacks in malware were exercised decreasingly over the eight-year span, and consistently less than in benign apps—the gap was significant and large as per the p and Δ values. In terms of total amount of callback usage, malware saw general growth while benign apps saw gradual declination.
+
+# Finding 6:
+Callbacks were not very frequently invoked in malware, nor in benign apps. Consistently, malware executed event handlers significantly less often than did benign apps. Overall, total callback execution was on the decline in benign apps, but generally on the rise in malware.
+
+# 5. Callback distribution
+For a closer look into callback usage, we further examine the distribution of invoked callbacks over the major callback categories, for lifecycle methods and event handlers separately (Section 3). Fig. 8 presents the ranks of the top-five lifecycle callback categories in benign apps and malware. One clear observation is that in both app groups, Activity was constantly the top category, meaning the highest.
+
+# Finding 8:
+Event-handling callback ranking was generally stable over time in both groups. While the rank differences among event-handler categories were largely constant in benign apps, the ranks had become hardly differentiable in malware. Also, malware had significantly higher ranks than benign apps for the top system- and UI-event callbacks.
+
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+# 6. Lessons learned
+In this section, we discuss the implications of our major empirical findings to both app testing and security analysis.
+
+# 6. On functionality scope
+Our evolution study on app execution distribution over functionality scopes revealed that benign apps and malware were largely the same (without significant differences) in both the distribution and the evolutionary patterns over the eight-year span. This similarity (Finding 1) suggests
+# H. Cai, X. Fu and A. Hamou-Lhadj
+# Information and Software Technology 122 (2020) 106291
+# APP_BAR
+# APPLICATION MANAGEMENT
+# DIALO
+# HARDWARE
+# ATION_STATU
+# MEDIA
+# NETWORK_MANAGEMENT
+# SYSTE
+# VIEW
+# GFT
+gests that learning-based malware detector may not benefit much from using features that characterize how apps execute user code relative to the execution of library code. Thus, relevant features (e.g., the percentage of user-code or third-party-library calls over all method calls) should be avoided in learning-based malware classification as they would confuse the classifier hence downgrade its malware detection performance. Meanwhile, the steady drop in user-code involvement in app executions indicates the promise of prioritizing user code in app testing and security defense (for better cost-effectiveness), assuming that the framework itself is more secure and less defective. Moreover, this prioritization strategy can be increasingly justifiable given the increasing portion of app executions being carried out through calls within the SDK and shrinking interaction between user code and libraries (e.g., calls from user code to SDK). However, run-time activities within third-party libraries remain a standing, substantial portion of app executions, confirming the necessity of security screening of third-party libraries for a holistic app security defense solution.
+
+In contrast to benign apps, malware tended to make calls to the SDK via third-party libraries much more substantially than benign apps did (Finding 2), likely due to malware intention of impeding detection based on framework-based characteristics (e.g., features based on usage of APIs). In contrast, benign apps’ execution of framework functionalities was mostly bounded within the framework. Thus, securing benign apps relies more on the security of the framework itself, while malicious behaviors of malware are more likely to be rooted in the insecurity of third-party libraries. Accordingly, third-party libraries’ traits (e.g., percentage of method calls originated and targeting these libraries over all method calls) can be modeled as features for more effective malware detection.
+
+# 6. On app components
+Despite the general declination in exercising Activities in both benign app and malware executions (possibly due to the increasing use of web content in newer apps), Activity components remain the dominant type among all exercised components. Thus, user interfaces are still, and likely continue to be in the future, a major attack surface in Android apps. In particular, the fact that Activity execution in malware rose again in recent years after experiencing two decreasing periods (Finding 3) implies that securing users against attacks via user interfaces need to be emphatically attended. More (less) intensive use of Content Providers (Services) in benign apps than in malware, as well as that of associated callbacks, could be sustaining differentiators to be leveraged by dynamic malware detectors, given the significant and large differences in the use of these components (Finding 3) and the use of associated callbacks (Finding 7) between malware and benign apps. Accordingly, app features that characterize the use of these components (e.g., the percentage distribution of executed components over varied component types) may be used by the detectors based on supervised learning.

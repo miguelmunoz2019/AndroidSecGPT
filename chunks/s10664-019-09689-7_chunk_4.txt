@@ -1,0 +1,73 @@
+A second web-based scraper was used to extract from the CVE details portal all vulnerabilities in the Android category. In total, we collected 1,430 CVE ids. We found that 62 of the vulnerabilities were reported as reserved, meaning that the details of the vulnerability were not publicly available yet, and were consequently discarded. Additionally, information regarding other 132 vulnerabilities could not be collected because of different reasons (e.g., timeout error, absence of important data, etc.). Finally, one vulnerability was discarded since it was related to iOS. We ended up with 1,235 CVE ids having valid information stored in JSON files as depicted in Fig. 2. Note that there are two groups of information related to CVSS 2, because there are two sources of information: the CVE Details and the NVD website. The gainedAccess field is marked in red in Fig. 2 because this element is only used in CVE Details and it is not defined in the CVSS 2 documentation. Indeed, the authentication field from the CVE Details portal uses the CVSS 1 nomenclature. For this reason, while using the general description information provided in CVE Details (see top part of Fig. 2), we exploit the CVSS information collected from NVD rather than the one from CVE Details portal. It is worth noting that some of the collected vulnerabilities do not have all the CVSS-related data because some information is not mandatory.
+
+We complemented/updated the data collected for these vulnerabilities via manual analysis. In particular, once extracted the information in Fig. 2, two of the authors manually analyzed each vulnerability to:
+1. Check and complement the vulnerability type automatically inferred by CVE Details, and obtain its hierarchy. CVE Details uses a keywords-based mechanism to automatically infer the type of each vulnerability according to the Common Weakness
+# General description from CVE Details
+# CVEDetails CVSSv2:
+# NVD CVSSv2:
+Information stored for the mined vulnerabilities
+Empirical Software Engineering (2019) 24:2056–2101
+Enumeration (CWE) dictionary, version 2 (MITRE 2017p). Such an automatic process can introduce imprecisions in the data. For this reason, the authors analyzed all the information available about each vulnerability (i.e., its page on the National Vulnerability Database, fixing patches when publicly available, official vulnerability bulletins, the Android issue tracker, etc.) to verify the type of the vulnerability, identify the CWE hierarchy, and change/complement the classification according to the CWE dictionary.
+
+Note that a vulnerability can belong to multiple types having hierarchical relationships between them. For example, a vulnerability can be classified in any of the types of the following hierarchy (the hierarchy is shown from the least to the most specialized vulnerability type):
+- Weaknesses that Affect Memory
+- Improper Restriction of Operations within the Bounds of a Memory Buffer
+- Out-of-bounds Read
+- Buffer Over-read
+Overall, the manual analysis led to the change of the type provided by CVE Details for 81% of the analyzed vulnerabilities.
+
+# 2. Identify the subsystems affected by the vulnerability.
+
+We also analyzed the information available in the NVD Database and CVE details (including, when available, the patches fixing the vulnerability) as well as online documentation (e.g., the Android issue tracker) to identify the code components in the Android OS affected by the vulnerability at two levels: first, what layer of the Android Stack is affected by the vulnerability (e.g., Android runtime), and second, which component (subsystem) of the layer was affected (e.g., Dalvik VM).
+
+The above described manual analysis was performed in three rounds. First, the authors manually analyzed half of the 1,235 vulnerabilities each. Then, an author Ai checked the vulnerability types and the impacted architectural layers/subsystems assigned by A j and vice versa. In cases in which the evaluators were undecided about the specific type of vulnerability and/or about the subsystem affecting the vulnerability, an “unclear” tag was assigned. Before solving conflicts, the authors achieved an agreement ratio of 93%, i.e., only in 86 cases the authors disagreed. To determine whether such agreement level was due to chance, we computed the Fleiss’ kappa inter-rater agreement coefficient , obtaining an almost perfect agreement between the raters with a kappa score of 0.
+
+One example of the conflicts arisen during the manual coding is the CVE-2017-0735 vulnerability, described in CVE details as a denial of service in the Android media framework (libavc). In this case the patches fixing the vulnerability were available and they could be inspected by the authors Analyzing the code committed, two alternatives were discussed regarding the type of vulnerability: (i) Improper Initialization, i.e., the software does not initialize or incorrectly initializes a resource, which might leave the resource in an unexpected state when it is accessed or used; (ii) Unchecked Error Condition, i.e., ignoring exceptions and other error conditions may allow an attacker to induce unexpected behavior unnoticed. Given the patches and their commits messages (i.e., “Postponed the initializations to decoder context till the end of the parse sps function, after all the error checks are done” and “Fixed hang in the case of multiple sps id”), it can be appreciated considering the first commit that despite the inappropriate initialization of particular parameters in the code, the main factor to be considered is the postponement of the initialization of those.
+
+2 https://tinyurl.com/yadtggsr
+3 https://tinyurl.com/y9u5odrv
+# Empirical Software Engineering (2019) 24:2056–2101
+parameters after error checks are done. If these checks are not considered before the initial-
+izations, error conditions may allow an attacker to induce unexpected behavior unnoticed.
+
+Moreover, contemplating the second commit3 it is noticeable that an uncommon scenario
+was not being foreseen and a validation was introduced in order to handle it. Therefore, the
+type of vulnerability was defined as:
+- Improper Check or Handling of Exceptional Conditions → Unchecked Error Condi-
+- Another example of conflict is CVE-2017-8267, described in CVE details as “in all
+- Qualcomm products with Android releases from CAF using the Linux kernel, a race con-
+- dition exists in an IOCTL handler potentially leading to an integer overflow and then an
+- out-of-bounds write”. The patch for this vulnerability is not publicly available, constraining
+- the decision about its classification to the information available in the CVE details descrip-
+- tion. The two taggers discussed two alternatives (i) Exposed IOCTL with Insufficient Access
+- Control, i.e., the software implements an IOCTL (Input/Output ConTroL) with functional-
+- ity that should be restricted, but it does not properly enforce access control for the IOCTL;
+- (ii) Race Condition within a Thread, i.e., two threads use a resource simultaneously, with
+- the possibility that resources may be used while invalid, in turn making the state of execu-
+- tion undefined. Since there was no code to review and the IOCTL system call could not be
+- analyzed, the type of vulnerability was defined as:
+- Concurrent Execution using Shared Resource with Improper Synchronization (‘Race
+- Condition’) → Race Condition within a Thread
+# 3 Analysis Method
+We answer RQ1 by creating a taxonomy of the types of vulnerabilities identified in the
+manual analysis. Also, we analyze the evolution of the vulnerabilities by grouping them
+in semester-based batches according to the vulnerabilities publication date (e.g., we have
+one batch for the vulnerabilities published during the first semester of 2008, one batch
+for the vulnerabilities published during the second semester of 2008, etc.). To analyze the
+evolution, we identified the changes in the frequency of vulnerability types across different
+semesters.
+
+We address RQ2 by analyzing the features in the CVSS vectors to characterize the most
+common vectors and the vulnerabilities related to the vectors. As part of the analysis, we
+first computed the distribution of the values for the base group attributes depicted in Fig. 2
+(i.e., attack complexity, severity, user interaction, confidentiality impact, integrity impact,
+and availability impact); we did not include the authentication attribute in the analysis,
+because for all vulnerabilities a “None” value is reported for this attribute. Then, we iden-
+tified the most common CVSS 2 vectors and the types of vulnerability related to each
+vector.
+
+Concerning RQ3, we report a heat map showing the distribution of vulnerabilities across
+the Android layers subsystems. We also analyzed the top ten subsystems/components in
+the Android OS layers more frequently impacted by vulnerabilities in each of the semester-
+based batches considered in RQ 1. We complement our discussion for RQ 3 with qualitative
+examples of the vulnerabilities.

@@ -1,0 +1,121 @@
+# 6 Fear of Incompatibility vs. Will to Update
+In our evaluation, we learned that, the majority of the outdated libraries can be updated all the way to the latest version (see Figure 4) without having to change the app code (i.e., 68% quick-fixes are update to the latest version). Developers are afraid of updating because they fear that the new version of the libraries would break the app’s existing functionality . Without the information on the compatibility of the new update, developers either have to manually verify the release notes (if available) of the libraries to make sure that the functions their apps are using are still available in the update, or simply keep using the outdated versions. One developer shared such experience via email with us after trying out Up2Dep: "Thank you for sharing your project with me. It’s really exciting, we’re normally manually reviewing the change logs to see if we should update our dependencies right away or what we should test." Compatible check was rated the most useful feature (see Figure 6) by developers in our study. Had Up2Dep not provided the compatibility information on the outdated dependencies, developers would probably not be willing to perform the updates on these 68% outdated dependencies (80 of 116 outdated dependencies).
+
+# 6 Impact of Fixing Insecure Dependencies
+Among the 116 applied fixes, 6% had security vulnerabilities (4 known security vulnerabilities, 4 cryptographic API misuse). We consider these numbers non-negligible and this has tangible impact on the security and privacy of the Android apps that developers are working on. Previous work has identified the security & privacy impact of outdated third-party libraries in general and of outdated insecure third-party libraries in particular (see Section 2). By updating the insecure code dependencies to secure versions, we are removing the factors that could amplify security & privacy problems in apps and expose end users to multiple types of attacks. While market stores such as Google Play have been scanning apps for security & privacy problems, they are dealing with monolithic byteblobs where there is no separation between app code and library code. Hence, such solutions need exact, reliable library detection mechanisms which is a challenging task and no satisfactory solution exists yet. This becomes even more challenging when the apps’ byte-code is obfuscated, something that Google itself is promoting to app developers . Our results show that by integrating support to suggest secure code dependencies within developers’ IDEs, we can eliminate many security problems that arise from including insecure third-party libraries without having to deal with monolithic apks where app code and library code have been merged together. Especially, developers do not need to learn new tools or adjust their daily work-flow to be able to use Up2Dep. Our results call for action from IDE developers to merge tools like Up2Dep into IDEs, like Android Studio, so that developers immediately and by default benefit from such support. Based on our results, the experiences in other software ecosystems  or for native Android libs , and the movement toward integrating security into software development life cycle namely SevDevOps , we argue that this would have a tangible impact on the security & privacy of the Android ecosystem especially.
+
+# 7 CONCLUSION
+Since security patches of libraries are often rolled out as updates, app developers (not market stores, not the end users) need to keep their project’s third-party libraries up-to-date to avoid security problems of outdated libraries. In this paper, we present Up2Dep, an Android Studio extension that facilitates the task of keeping an Android app project third-party libraries up-to-date while taking into account the security and the compatibility of the newer versions of such dependencies. Up2Dep suggests alternative library APIs to developers in case a newer library version is incompatible. It further helps developers in avoiding insecure libraries by alerting them to publicly disclosed vulnerabilities and cryptographic API misuse in third-party libraries. We tested Up2Dep with 56 Android developers. Up2Dep has helped developers in fixing 116 outdated third-party libraries, of which 6% had security vulnerabilities (4 known security vulnerabilities, 4 cryptographic API misuse). The majority (80%) of the suggested quick-fixes worked as expected with only 4 cases of failed quick-fixes. In further investigation, we discovered the hidden security problems of transitive dependencies of 13% of the libraries in our dataset. We are the first to discover the hidden problem of insecure transitive dependencies and subsequently developed the corresponding solution to tackle this problem. Our results call for action to (1) merge tool support, like Up2Dep, into developers’ integrated development environments, as this would create a tangible impact on the security and privacy of the Android ecosystem when developers benefit from tool support for upgrading used third-party libraries, and (2) study developer’s behavior to best provide them the right tool support.
+
+# Up2Dep: Android Tool Support to Fix Insecure Code Dependencies
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+# Duc Cuong Nguyen, Erik Derr, Michael Backes, and Sven Bugiel
+# A SURVEY QUESTIONS
+# A App Development
+Q1: How do you prefer getting update notifications? [multiple choice]
+- Yellow highlighting on the dependency version
+- Pop up when new versions are available, with “Ignore” option
+- When I build/compile my project?
+- Other [free text]
+Q2: Based on which criteria do you usually pick a library for your projects? [multiple choice]
+- Popularity
+- Easy to use
+- Functionality
+- Security
+- Other
+Q3: Have you developed any third-party libraries?[Yes/No]
+- Yes: Which library is that? [freetext]
+- No
+Q4: How would you rate the security (whether a given version has security vulnerability) of libraries you decide to include it into your projects [single choice]
+1-5
+Q5: Did you notice any highlights regarding outdated library versions in your app’s Gradle files? [single choice]
+- Yes
+- No
+- I don’t know
+Q6: Where do you reach out for help while solving programming tasks that relate to third-party libraries? [multiple choice]
+- StackOverflow
+- Search engines
+- Third party library’s website
+- Other [free text]
+# A Up2Dep Usage
+Q7: How did you get to know Up2Dep? [multiple choice]
+- Friends, colleagues
+- IntelliJ IDEA/Android Studio repository
+- Twitter
+- Android Developer Conference
+- Other
+Q8: Which features of Up2Dep do you find useful? (screenshots are included for each feature)
+- Compatibility check (compatible version vs. latest version)
+- Insecure version check
+- Crypto API misuse check
+- Show dependencies and alternative API suggestions
+- Other [free text]
+Q9: Since you started using Up2Dep, how many outdated libraries have you updated?
+- 0
+- 1
+- More than 2
+- Other [free text]
+# A Up2Dep Usability - SUS Questions
+Q10: For each of the following statements, how strongly do you agree or disagree (Strongly disagree, disagree, neutral, agree, strongly agree)
+- I think that I would like to use Up2Dep frequently.
+
+- I found Up2Dep unnecessarily complex.
+
+- I thought Up2Dep was easy to use.
+
+- I think that I would need the support of a technical person to be able to use Up2Dep.
+
+- I found the various functions of Up2Dep were well integrated.
+
+- I thought there was too much inconsistency in Up2Dep.
+
+- I would imagine that most people would learn to use Up2Dep very quickly.
+
+- I found Up2Dep very cumbersome to use.
+
+- I felt very confident using Up2Dep.
+
+- I needed to learn a lot of things before I could get going with Up2Dep.
+
+# A Demographic
+Q11: How many years have you been programming in Android?
+- less than 1 year
+- around 2 years
+- around 3 years
+- more than 3 years
+Q12: How old are you?
+- 18–30
+- 31-40
+- 41-50
+- &gt;50
+- No answer
+Q13: What is your gender?
+- Male
+- Female
+- No answer
+Q14: How many apps have you developed so far?
+- 1
+- 2
+- more than 2
+- 0
+Q15: Do you have IT-Security background?
+- Yes
+- No
+Q16: Where are you from? [free text]
+274
+# Up2Dep: Android Tool Support to Fix Insecure Code Dependencies
+ACSAC 2020, December 7–11, 2020, Austin, USA
+ext.supportVersion = '25'
+dependencies {
+implementation 'com.example:magic:1'
+// or
+implementation group: 'com.example', name: 'magic', version: '1'
+// dependencies use variable as version string
+implementation "com.android.support:support-v4:$supportVersion"
+implementation "com.android.support:appcompat-v7:$supportVersion"
+}
+Listing 1: Declaring external dependencies in Android projects.
+
+# B BACKGROUND
+We will briefly provide information on the Gradle build system and Android Studio plugin development.

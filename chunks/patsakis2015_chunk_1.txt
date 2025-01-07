@@ -1,0 +1,54 @@
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+Constantinos Patsakis1(B), Athanasios Zigomitros1, and Agusti Solanas2
+1 Department of Informatics, University of Piraeus, Piraeus, Greece
+kpatsak@gmail.com, azigomit@unipi.gr
+2 Smart Health Research Group, Department of Computer Engineering and Mathematics, Universitat Rovira i Virgili, Catalonia, Spain
+agusti.solanas@urv.cat
+# Abstract
+Millions of people around the globe try to find their other half using Information and Communication Technologies. Although this goal could be partially sought in social networks, specialized applications have been developed for this very purpose. Dating applications and more precisely mobile dating applications are experiencing a continuous growth in the number of registered users worldwide. Thanks to the GPS and other sensors embedded in off-the-shelves mobile devices, dating mobile apps can provide location aware content, not only about the surroundings, but also about nearby users. Even if these applications have millions of registered users, it can hardly be said that they are using the best standards of security and privacy protection.
+
+In this work we study some of the major dating applications and we report some of the risks to which their users are exposed to. Our findings indicate that a malicious user could easily obtain significant amounts of fine-grained personal information about users.
+
+# Keywords
+User profiling · Location privacy · Online social networks · Security and privacy exposure
+# 1 Introduction
+The wide adoption of ICT has drastically modified the way we exchange information and interact with other people. Nowadays, our capacity to communicate with others is no longer bounded to our immediate surroundings. Instead, we can easily interact with people from distant places in almost real time.
+
+Mobile technology has become commonplace and the possibility to easily reach a huge market has fostered the development of numerous and diverse applications. In addition, smartphones and tablets are steadily improving their computing capabilities and come equipped with accelerometers, GPS and a series of other sensors that enable developers to deploy more sophisticated solutions to exploit spatial information. As a result of these new means of interaction, users are more engaged and developers can make them actively participate and provide added-value content and information.
+
+©c Springer International Publishing Switzerland 2015 S. Boumerdassi et al. (Eds.): MSPN 2015, LNCS 9395, pp. 151–162, 2015. DOI: 10/978-3-319-25744-0 13
+C. Patsakis et al.
+
+A good example of these communication and behavioural changes can be found in mobile dating applications. The way in which people look for partners has drastically changed as a result of the use of mobile technology. However, using technology does not come without risks. Due to their very nature, dating applications contain sensitive information. Note that in addition to the sexual orientation and preferences of users, modern dating apps are context-aware and allow the finding of nearby partners. Moreover, user profiles contain other sensitive data such as political views or beliefs.
+
+Certainly, users would like to share some personal information with potential partners as these could create criteria to filter candidates. Notwithstanding, users might not want this shared information to be publicly available. Additionally, the information exchanged between two users might be private and very sensitive. Thus, information leaks could have a huge impact on the reputation of individuals and should be avoided.
+
+It might be thought that these privacy and security issues are well-known and defined. Hence, one would expect that developers put in place the right measures to secure their applications and deter any information leak, especially since these applications are used by millions of people.
+
+In this article we study 18 mobile dating and chatting apps and highlight doubtful software development practices, which we have found to be commonplace. The detected vulnerabilities are, in many cases, quite obvious so are their solutions. The vulnerabilities that we discuss might have a very big impact on the users in a variety of ways and might affect millions. More importantly, we have observed that those vulnerabilities can be exploited very easily and require little, if any, computer skills. Actually, there is no need for reverse engineering of the applications. In our experiments, the most sophisticated scenario implies to intercept network packages e.g. by using a proxy, while in the simplest scenario, the attacker just needs to eavesdrop exchanged messages.
+
+# 2 Related Work on S&P in Apps
+The use of ICT has helped us to communicate and exchange information more easily, specially thanks to the Internet. However, it has opened the door to remote attacks that might affect millions. With the aim to fight against these attacks many organizations strive to raise awareness about secure web development. For instance, OWASP1 compiles the well-known OWASP Top Ten survey, which highlights the most critical web application security flaws. This survey provides a very good insight on what developers should be aware of when developing applications and it illustrates how attackers would try to penetrate into a web service. Other surveys such as  provide similar results.
+
+Mobile applications could be developed as stand-alone services running in a mobile device. However, in most cases, they do not rely on local resources only but use web content and infrastructure. Very frequently, most of the mobile apps content is retrieved, uploaded, and updated through the Internet, and the data
+1 https://www.owasp.org.
+
+# Analysis of Privacy and Security Exposure in Mobile Dating Applications
+gathered by means of the embedded sensors are used to provide value-added services and functionalities.
+
+Currently, the most used operating systems for smart phones are Android and iOS. Android provides a permission-based security model, however, it has been shown that it has vulnerabilities . Beresford et al.  created MockDroid, a modified version of Android which allows users to intervene and revoke the access rights of applications to particular resources at run-time. Definitely, this approach has a very big impact on the usability of the application because it limits some functions. Notwithstanding, it allows users to define their own privacy policies and reduce their possible information leakage. A similar approach was followed with TISSA , which allows users to fine-tune their privacy policies and the access level of specific applications at run-time. Enck et al. approached the problem from a different perspective and introduced TaintDroid . Instead of constantly intervening, their Android mod tracks down which sensitive data is requested by an app and when it is used, hence, providing real-time analytics. Their analysis can be very useful in the automated characterization of benign, grayware and malware . A more user friendly approach has currently been embedded in CyanogenMod , one of the most well-known customized distributions of Android, allowing users to block access to apps from specific resources.
+
+In the iOS arena, where publishing an app in the official app store passes some stricter filters, Egele et al.  made a comprehensive study over a sample of 1,400 iOS apps (3/5 from the iTunes App Store and 2/5 from the Cydia repository). While most apps were found to be benign, their analysis revealed that more than half of them was leaking the unique ID of the device. To provide users with a clearer overview about how their information flows in their mobile devices, Wetherall et al.  created two tools: a browser plugin and a mobile app. These tools alert users of dangerous logins (a.k.a. logins performed without encryption) and inform them about which private information is collected.
+
+Burattin et al.  illustrated that while users think that some of their information is hidden, e.g. list of friends, it can be recovered from the OSNs with various methods. Focusing on dating apps, Qin et al.  show how an attacker could obtain the real location of users in several well-known dating apps. It was showed that the main reason for this exposure is the poor randomization and obfuscation techniques used. Recently, the Electronic Frontier Foundation published a review  to determine what security is offered by secure messaging products. The review clearly indicates that there are many problems in the architecture of most applications and the user cannot be considered secure as for instance she cannot verify the contact’s identity, or the service provider has access to the users’ traffic.
+
+# 3 Experimental Setup
+In our experiments we have approached the problem of obtaining information from a non-invasive perspective. Given the legal constrains to apply reverse
+ www.cyanogenmod.org.
+
+https://www.eff.org/secure-messaging-scorecard.
+
+# C. Patsakis et al.
+
+# Experimental Setup
+Engineering on an application, and considering the capacities of an average user or a network administrator, we have installed a proxy that intercepted the messages targeted towards our apps. To ensure that the content of the intercepted packages can be analysed by the proxy, we generated a root certificate for it and installed it in the smartphone. Therefore, even if the packages were encrypted, their content could be read by the proxy. In this sense, the setup is analogous to a man-in-the-middle attack, with the only, but important, difference that we are controlling all sides, both the benign and the malicious.

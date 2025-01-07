@@ -1,0 +1,52 @@
+As defined by Powers , Informedness quantifies how informed a predictor is for the specified condition, and specifies the probability that a prediction is informed in relation to the condition (versus chance). Markedness quantifies how marked a condition is for the specified predictor and specifies the probability that a condition is marked by the predictor (versus chance). Quantitatively, informedness and markedness are defined as the difference between true positive rate and false positive rate (i.e., T P/(T P + F N ) − F P/(F P + T N )) and the difference between true positive accuracy and false negative accuracy, (i.e., T P/(T P + F P ) − F N/(F N + T N )), respectively When they are positive, the predictions are better than chance (random) predictions. When these measures are zero, the predictions are no better than chance predictions. When they are negative, the predictions are perverse and, hence, worse than chance predictions.
+
+In this evaluation, while we use the above quantitative definitions, we interpret informedness as a measure of how informed (knowledgeable) is a tool about the presence and absence of vulnerabilities (i.e., will a vulnerable/secure app be detected as vulnerable/secure?) and markedness as a measure of the trustworthiness (truthfulness) of a tool’s verdict about the presence and absence of vulnerabilities, i.e., is an app that is flagged (marked) as vulnerable/secure indeed vulnerable/secure?
+reports the informedness and markedness for the evaluated tools. It also reports precision and recall to help readers familiar with precision and recall but not with informedness and markedness. It reports the measures for each Amandroid plugin separately as we applied each plugin separately to different sets of benchmarks. It does not report measures for each variation of JAADAS and QARK separately as the variations of each tool were applied to the same set of benchmarks and provided identical verdicts. For tools that did not flag any app as vulnerable (positive), markedness was undefined. Informedness was undefined for FixDroid as we had not evaluated it on secure (negative) apps.
+
+# Observation 15
+Out of 13 tools, 6 tools were better informed than an uninformed tool about the presence and absence of vulnerabilities, i.e., 0 ≤ informedness ≤ 0; see Informedness column in Table 8. These tools reported a relatively higher number of true positives and true negatives; see TP and TN columns in Table 5. At the extremes, while Amandroid7 plugin was fully informed (i.e., informedness = 1), the remaining tools and Amandroid plugins were completely uninformed about the applicable vulnerabilities they were applicable to, i.e., informedness ≈ 0 as they did not report any true positives. Thus, tools need to be much more informed about the presence and absence of vulnerabilities to be effective.
+
+# Observation 16
+Out of 14 tools, 8 tools provided verdicts that were more trustworthy than random verdicts, i.e., 0 ≤ markedness; see Markedness column in Table 8. The verdicts from Amandroid7 plugin could be fully trusted with regards to the applicable vulnerabilities (benchmarks), i.e., markedness = 1. The verdicts of Amandroid1 were untrustworthy, i.e., markedness = 0. The verdicts of FixDroid cannot be deemed untrustworthy based on markedness score because we did not evaluate FixDroid on secure apps. The remaining tools and Amandroid plugins did not flag any apps from any of the applicable benchmarks as vulnerable.
+
+14TP, FP, FN, and TN denote the number of true positive, false positive, false negative, and true negative verdicts, respectively.
+
+vulnerable, i.e., no true positive verdicts. Unlike in the case of informedness, while some tools can be trusted with caution, tools need to improve the trustworthiness of their verdicts to be effective.
+
+Both the uninformedness and unmarkedness (lack of truthfulness of verdicts) of tools could be inherent to techniques underlying the tools or stem from the use of minimal configuration when exercising the tools. So, while both possibilities should be explored, the ability of tools to detect known vulnerabilities should be evaluated with extensive configuration before starting to improve the underlying techniques.
+
+# Observation 17
+In line with observation 9, in terms of both informedness and markedness, shallow analysis tools fared better than deep analysis tools; see H/E column in Table 2 and Informedness and Markedness columns in Table 8. Also, non-academic tools fared better than academic tools; see tools marked with * in Table 8. Similar to observation 9, these measures also reinforce the need to explore questions 3, 4, and 5.
+
+# Observation 18
+We projected Ghera’s representativeness information from Section 3 to APIs that were used in true positive benign apps (i.e., common APIs plus TP-only APIs) and the APIs that were used in false negative benign apps Barring the change in the upper limit of the x-axis, the API usage trends in figures 2 and 3 are very similar to the API usage trend in Figure 1. In terms of numbers, at least 83% (457 out of 548) of relevant APIs and 70% (70 out of 99) of security-related APIs used in true positive benign apps were used in at least 50% of apps in both the Androzoo sample and the top-200 sample. These numbers are 84% (416 out of 493) and 61% (48 out of 78) in case of false negative benign apps. These numbers are very close to the API usage numbers observed when evaluating the representativeness of Ghera Section 3. Therefore, the effectiveness of tools in detecting vulnerabilities captured by Ghera benchmarks will extend to real-world apps.
+
+# Observation 19
+In terms of the format of the app analyzed by tools, all tools supported APK analysis. A possible explanation for this is that analyzing APKs helps tools cater to a broader audience: APK developers and APK users (i.e., app stores and end users).
+
+15We considered TP-only (FN-only) APIs along with common APIs as vulnerabilities may depend on the combination of TP-only (FN-only) APIs and common APIs.
+
+# Relevant APIs
+# Security Related APIs
+200 APIs in decreasing order of API use percentage in API level 25 specific sample
+API levels 19 =
+# Relevant APIs
+# Security Related APIs
+200 APIs in decreasing order of API use percentage in API level 25 specific sample
+API levels 19 =
+Observation 20 For tools that completed the analysis of apps (either normally or exceptionally), the median run time was 5 seconds with the lowest and highest run times being 2 and 63 seconds, respectively. So, in terms of performance, tools that complete analysis exhibit good run times.
+
+# 4 Threats to Validity
+# Internal Validity
+While we tried to execute the tools using all possible options, but with minimal or no extra configuration, we may not have used options or combinations of options that could result in more true positives and true negatives. The same is true of extra configuration required by specific tools, e.g., providing a custom list of sources and sink to FlowDroid.
+
+Our personal preferences for IDEs (e.g., Android Studio over Eclipse) and flavors of analysis (e.g., static analysis over dynamic analysis) could have biased how we diagnosed issues encountered while building and setting up tools. This preference could have affected the selection of tools and the reported set up times.
+
+We have taken utmost care in using the tools, collecting their outputs, and analyzing their verdicts. However, our bias (e.g., as creators of Ghera) along with commission errors (e.g., incorrect tool use, overly permissive assumptions about API levels supported by tools) and omission errors (e.g., missed data) could have affected the evaluation.
+
+All of the above threats can be addressed by replicating this evaluation; specifically, by different experimenters with different biases and preferences than us and comparing their observations with our observations as documented in this manuscript and the artifacts repository (see Section 7).
+
+We used the categorization of vulnerabilities provided by Ghera as a coarse means to identify the vulnerabilities to evaluate each tool. If vulnerabilities were mis-categorized in Ghera, then we may have evaluated a tool against an inapplicable vulnerability or not evaluated a tool against an applicable vulnerability. This threat can be addressed by verifying Ghera’s categorization of vulnerabilities or individually identifying the vulnerabilities that a tool is applicable to.
+
+# External Validity
+The above observations are based on the evaluation of 14 vulnerability detection tools. While this is a reasonably large set of tools, it may not be representative of the population of vulnerability detection tools, e.g., it does not include commercial tools, it does not include free tools that failed to build. So, these observations should be considered as is only in the context of tools similar to the evaluated tools and more exploration should be conducted before generalizing the observations to other tools.

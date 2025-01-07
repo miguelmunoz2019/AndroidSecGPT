@@ -1,0 +1,48 @@
+Service is the entry point for the general purpose of keeping an application running in the background. It is a component that runs in the background to perform long-running operations or work for remote processes. Normally, the Service often handles sensitive information not related to the user interface, such as authentication with username, password, information synchronization, etc. If mistakenly called to Malware’s Service, sensitive information will be leaked. To
+# 3 Protect Data Stored on Mobile Phones
+When developers want to store data in Android phones, they should ensure the security of that data. The developers should decentralize and encrypt data stored on the device. The data stored temporarily in the phone in a file or SQL lite can be exposed if the phone is lost, the device is rooted, etc. Some rules should hold such as: restrict storing information on the phone, only save broadcast information; do not store sensitive data such as accounts, passwords, PINs, etc. in plaintext; you can use Android’s Keystore to increase security; storing confidential company data and documents on mobile devices is strictly prohibited; do not use world readable and writable permissions when saving important information.
+
+The developers also should protect sensitive data when apps are running in the background. When an application goes into the background, there may be a lot of information displayed on the interface that could be exposed if the user does not completely turn off the application and can be accidentally seen by someone. For example, when logging in with credit card information. When it is necessary to ensure that data is not batched after switching to the background, it is necessary to force the application event to go into background mode to hide this information.
+
+# 3 Secure Coding with Logs and Debug Information
+When programming or debugging applications, programmers often log or put some debug information that could reveal sensitive information. With logging logs as below, it will log both the login information and the user’s password when the login fails. Doing so will reveal the user’s username and password. To avoid this, log information is not recorded with important user information (password, etc.).
+
+# Security Issues in Android and Plug-in for Android Studio
+1   try    {
+2   ...
+
+3   }  catch      ( Exception       e )  {
+4          Log . w ( " Failed     login " ,     userName
+5   }
++  "   "  +   password ) ;
+Besides, developers should turn off debugger mode when compiling the source code to strip debug symbols that may contain valuable information for attackers in reverse engineering. To do this, developers have to set the attribute &lt;application android:debuggable=“false”/&gt; in the Android-Manifest.xml file.
+
+# 4     Secure Coding Plugin for Android Studio
+Android Studio  is an IDE that was announced in 2013 at the Google I/O conference, built on the IntelliJ Platform by Google. It is professionally designed to develop apps for the Android operating system. It provides all the principal functionality that an IDE must-have for supporting app development. Android Studio has an editor that can do syntax checking and code completion, and the real power comes from the Program Structure Interface (PSI). PSI provides a lot of functionality, from quick navigation to files, symbols to the quick fix, refactor the source code, and many other functions.
+
+# 4     Android Lint
+In the past, programmers had to spend a lot of time detecting a simple error such as using an uninitialized variable or index out of range. Therefore, after the C language was founded, creating a tool to help detect potentially error-prone code and reduce the burden of reading code for programmers. In 1987, Stephen C. Johnson  - a computer scientist at Bell Labs created lint to help with debugging of one of its projects, and then lint had been widely used outside of the lab.
+
+The lint tool with its amazing capabilities is growing and becoming popular to this day. Vendors also create many different lint variants for their projects, including Google with Android lint. It is a tool specifically for Android source code analysis that supports software developers to analyze all components in a project, including source code, configuration files, resource files, and helps developers to automatically detect and edit issues in the project without having to execute the application.
+
+Android lint can be used manually by a command line like the original lint tool or a standalone lint tool. Project’s source code and the configuration file lint.xml that will be loaded into a scan engine and produce Issues. Besides, Android lint in Android Studio is usually used as an Inspection that allows developers to control rules thanks to the interface panel. Especially, Inspection can also suggest developers edit problematic source code when programming that other ways cannot do. This capability is very powerful for our team to
+# 4 Proposed Architecture for Extending Android Lint’s Detection and Reporting System
+Lint scans Android source code for Issues. There are many types of Issues, which link with metadata like id, category, brief explanation, severity, and so on. To be enabled, the Issue must be registered with lint’s issues management system called the Issue Registry. An Issue is an object whose main function is to contain information about an Issue, so each issue needs a partner to interact with source code and users. This partner is Detector that can be responsible for finding problems and reporting them to lint.
+
+A Detector can implement a scanner for a specific scope. There are many scanning toolkits such as ClassScanner, GradleScanner, BinaryFileScanner, etc. Still, to detect security vulnerabilities in the programming process, we only focus on XmlScanner to analyze XML resource files and UastScanner to analyze Java source code. When a Detector reports a problem, it can provide a Lint Fix. This Lint Fix class has the main task of finding and replacing an old code with a new code in the same location. The code that needs to be replaced can be searched using a regular expression, making editing flexible and retaining part of the context of the source code. The relation between concepts is modeled as shown in Fig. 1.
+
+In general, the lint’s rules of detecting and reporting working are shown in the Fig. 2. The system consists of many Issues. Each Issue points to a Detector object class that detects problems and report for that Issue which leads to
+# Security Issues in Android and Plug-in for Android Studio
+Every time developers want to add or edit custom rules to inspect code for their projects, they must implement a couple of issues, detector, and register to the Issue Register.
+
+From the stated limitation, our team decided to find a way to generalize and group the rules based on the detection. We can save all the Issues’ information, the Detectors’ problem code and Lint Fix’s pattern to generate a quick fix for the developer of each problem rule to the storage. Our new system is described in the Fig. 3.
+
+The Issue Entry components are responsible for declaring the Detector groups. Each Detector will scan and check an entire group of problems divided based on the detection method. Developers can edit or add their rules in the Rules Storage. After that, Detector groups will load detection rules, report Issues if they meet the condition and craft Lint Fix. To provide a basic set of safe programming rules and allow developers to customize each project, our team decided to build a plugin for the most popular Android app development tool, Android Studio.
+
+# 4 9Fix: Android Studio Secure Coding Plug-in
+Android Studio, designed based on The IntelliJ Platform, has extremely powerful extensibility. There are several types of plug-in, but two of them are suitable for the tool our team is planning to develop. UI themes provide the ability to edit some component protocols IDE interface such as MenuBar, ToolBar, which can provide developers dialogues for interacting with plugins. Custom language support syntax highlighting, language testing, parsing source code, and more. Gathering all the techniques and proposed architecture, we composed a secure coding plug-in for Android Studio, the 9Fix. Our plug-in architecture is described in Fig. 4.
+
+# 116 A.-D. Tran et al.
+
+# Issue
+The Project Manager Listener always listens to the opening project event, then automatically downloads the default rules storage file called Rules.xml that contains problems, detection phrases, and recommend code pieces. This file and our Inspection module will be stored and work locally, do not send any data to any web server that keeps the project source code completely secret. Actions and Dialogues are responsible for interacting with the user and changing the ruleset so that the Inspection can load changes and immediately affect the code editor.

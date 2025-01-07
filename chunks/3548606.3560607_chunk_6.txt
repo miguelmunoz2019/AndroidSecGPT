@@ -1,0 +1,51 @@
+The reason why we have zero FN is two-fold. First, identification of positional constraint will not yield FN because we have enforced an allow-list mechanism to detect misplaced manifest entities. As such, the positional constraint will be even stricter than the documentation if we fail to extract any positional constraints. As manifest files containing misplaced element will for sure be inconsistent with the documentation, it will for sure be identified as misplaced by ManiScope. Second, although the quantitative constraint extraction which involves NLP may have FN if we fail to extract some quantitative constraints (thus making the constraint less strict than documentation), we have manually validated with the documentations and found no such a problem.
+
+# 5 Security-Related Misconfigurations
+(I) Severity and impacts of the misconfiguration. To determine the security impact of these misconfigurations, we manually checked all of the elements and attributes associated with the misconfigurations to understand their potential security impact. Among them, we identified 2 elements and 13 attributes that could have an impact on security. To rate the security severity of the identified misconfigurations, we categorized them based on their expected severity according to the CVSS (Common Vulnerability Scoring System) 3  scoring metric. This metric is widely used in industry and academia to provide an assigned Common Vulnerabilities and Exposures (CVE) with a severity score. A CVSS score includes six metrics that can be scored with values of high, medium, and low security impact: the attack vector (same network, adjacent network, local, or physical access), access complexity (whether an attacker can expect repeatable success or needs to create certain conditions), confidentiality impact (whether all the exported components are divulged to the attacker), integrity impact (whether the attacker can manipulate the file and data freely), and availability impact (whether it causes a denial of service, or heavy performance losses). The CVSS scores for these 15 misconfigurations are presented in the Score-column of Table 4.
+
+According to the CVSS system, among these 15 misconfigurations that could cause security concerns, 3 of them have high severity, 10 have medium severity, and 2 have low severity. These misconfigurations can result in various security issues, including component hijacking, data leakage, and app crashing. For instance, we can see that apps with a misplaced android:permission attribute are associated with most installs, which may cause purchasing replay attacks. In addition, some misconfigurations (e.g., the data leakage and component hijacking caused by the android:allowBackup
+# Detecting and Measuring Misconfigured Manifests in Android Apps
+# CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# # Pre-installed apps
+Total Downloads: 0–1K: 1K–1M: 1M–1B: 1B+
+ProtectionLevel and android:exported attributes) may also affect both thousands of Google Play apps and pre-installed apps. However, compared to Google Play apps, the pre-installed apps make less mistakes, and these pre-installed apps contain significantly less misconfigurations in elements and several attributes (e.g., permission). This might be explained by the limited but essential functionalities of pre-installed apps that make developers avoid using some manifest entities.
+
+# Affected apps with security-related misconfiguration
+To further understand the effects of these misconfigurations, we grouped the Google Play apps based on their categories and the pre-installed apps on the firmware versions, as shown in Table 5, where the cell color denotes the scale of total install numbers of affected apps. We notice that most of the misconfigured apps are in the game category, which may be explained by additional system resources required by games to avoid decreased performance or process termination. For pre-installed apps, the misconfigured apps also grow as total amount of apps grow: most of the pre-installed apps are in version 4 to 8, and the problem still exists in recent devices after version 7.
+
+# 6 SECURITY CASE STUDIES
+# 6 Component Hijacking
+There are several attributes in the manifest file to protect a component from unauthorized access (i.e., component hijacking). However, with misconfigurations of those attributes, the component would have been exposed to attackers. Through a victim’s component, a malicious app can perform illicit actions such as component hijacking, assume there is a malicious app in the victim’s phone and this app will attack the app with misconfigured attributes.
+
+Misplaced android:permission attribute. This attribute specifies the permissions required by other apps for component communication, in order to defend against unauthorized access from
+# Payment Cloud Msg SMS Msg CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+Yuqing Yang et al.
+
+# Table A.
+
+Total downloads: 0–1K: 1K–1M: 1M–1B: 1B+:
+Interestingly, on top of the misconfigurations of manifest elements or attributes that are in the documentation, we also detected a wide usage of elements and attributes that are not on the documentation, appearing as unexpected elements/attributes but not identified as typos. This is caused by a set of undocumented manifest entities for applications from Android or OEM producers carrying system signature only, which are designed for testing or privilege-protected configuration. Unfortunately, there are still third-party developers that attempt to use these elements or attributes for configuration, which will eventually be ignored by Android. For instance, among the undocumented elements, we found a particular element called protected-broadcast which appeared in 4,098 apps in total. Due to space limits, we only present the top five categories of each types of components as presented in Table 6(C), which contains 3,261 apps in total. This element is only usable by pre-installed privileged system apps and the Android framework, allowing them to restrict certain broadcast actions to be sent only by the system.
+
+When this element is configured in third-party apps, the Android PackageParser will silently ignore the element and no protection will be granted. This can create a severe vulnerability since any app on the device can send these messages and the receiving app will treat them as though they have been sent by the system.
+
+# 7 DISCUSSION
+# 7 Root Causes and Mitigation
+One plausible cause of misconfigurations is developer’s carelessness. Ideally, instead of allowing developers to manually configure the manifests, additional tools should be provided to automate these configurations to reduce potential errors. Second, as evidenced in §5, the official documentation pages provided by Google contain mistakes (e.g., typos, or missing attributes) which lead to misconfigurations in the manifest files. Finally, similar to many other bugs, code reuse is another root cause. For instance, the Amazon app defrauding case caused by the manifest misconfiguration of the component exposed 9,474 apps to defrauding due to a single misplaced attribute in the official guide on Amazon website that was copied by developers when integrating amazon in-app purchases.
+
+Explicit warnings during validation. The Android operating system currently only triggers error logs on essential problems in app manifest files, and these error logs cannot be easily viewed by the users. Android system could proactively display the warnings to developers and end-users, to help them identify and fix any issues.
+
+Correct and clear documentations. IDE and SDK providers such as Google and Amazon, should provide clear documentation to facilitate developer comprehension for manifest configuration. They also need to ensure that the code snippets provided in their documentation and online resources are correct. Otherwise, defects in the manifest snippets could be propagated to a large number of apps. In addition, they should provide systematic, rigorous validation tools for developers to proactively detect and fix misconfigurations.
+
+# Detecting and Measuring Misconfigured Manifests in Android Apps
+CCS ’22, November 7–11, 2022, Los Angeles, CA, USA
+# Ensuring manifest file correctness.
+
+For app developers, they have to ensure that they understand the configurations correctly, and then leverage automated tools to reduce errors. Meanwhile, they have to be careful copying snippets online as they may contain mistakes that eventually impair the security of their applications.
+
+# 7 Limitations and Future Work
+Covering undocumented elements and attributes. Although ManiScope identified all the manifest elements and attributes defined in the official documentation, there may be other elements and attributes defined elsewhere. For instance, developers might define their own attributes and elements. Also, there might be some attributes and elements exclusively for pre-installed apps. Future work could automate the element and attribute extraction from other sources in addition to the official documentation.
+
+Providing more comprehensive case studies. In this paper, we only discussed security-related cases from three categories of misconfigurations. An immediate future work could be performing more comprehensive case studies to measure and identify the potential attacks to raise the attention from community and fix the problems to prevent from exploitation.
+
+# 7 Responsible Disclosure
+We have disclosed our findings to Amazon about the issues in apps that use its in-app purchasing SDK, and the incorrect snippets in its documentation and online forum. We have also disclosed all issues involving android:allowBackup attribute and &lt;protected-broadcast&gt; element to developers of impacted apps. Our disclosure of the misconfigurations have been confirmed by various developers, and we were informed that they have fixed or will fix the issue in the future. We had also informed Google about typos in documentations, and the issue was then fixed on July 13th, 2021.

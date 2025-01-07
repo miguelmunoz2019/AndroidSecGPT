@@ -1,0 +1,62 @@
+# WATANABE et al.: STUDY ON THE VULNERABILITIES OF FREE AND PAID MOBILE APPS
+285
+# 6 Price vs. Vulnerabilities
+# 6 Time-Domain Analysis
+We examined how vulnerabilities in apps are addressed over time. Here, we examine the status of the same apps with vulnerabilities six months after we first acquired them, and
+Note that these 4,525 vulnerabilities were found in the distinct 4,525 Java classes contained in the app. For each page of the book, the app declares a unique class rather than introducing a single generic class that represents a page. In other words, every time a user turns a page of the book, the app calls a new class. To fix this vulnerability, the developer must modify all 4,525 Java classes. Despite this rather poor code implementation, it is ranked as a top paid app and had been installed more than 10,000 times at the time of data collection.
+
+In summary, even if an app is a paid app, it is likely to have vulnerabilities. Somewhat paradoxically, more expensive/popular paid apps tend to have more vulnerabilities. These results indicate that we cannot apply price-perceived quality heuristics when we appraise the quality of an app with respect to security.
+
+# Figures
+# IEICE TRANS. INF. & SYST., VOL.E103–D, NO FEBRUARY 2020
+# 6 Key Findings and Suggestions
+We summarize the statistics of the apps (Fig. 12). The percentage of apps removed from the marketplace in that period was less than 9% for each category. The percentages of apps that were updated are as follows: free (top): 59%, paid (top): 26%, free (random): 16%, and paid (random): 8%. The update intervals of paid and random apps were longer than that of free and top apps. We randomly acquired over one-half of the updated apps in the four categories and confirmed which vulnerabilities were fixed using Droid-V. The percentages of apps with fixed vulnerabilities indicate the same update interval tendency, i.e., paid and random apps were more difficult to fix than free and top apps. It is shown statistically since the p-values of the two-sample t-test between each category are less than 0. The percentages of apps whose vulnerabilities were fixed completely are as follows: free (top): 18%, paid (top): 6%, free (random): 4%, and paid (random): 2%. Unfortunately, a large proportion of apps were still vulnerable even six months after our initial investigation.
+
+Free apps are updated in a short period due to their monetization model, i.e., updating an ad library to optimize advertising effectiveness. Therefore, vulnerabilities in libraries are fixed when apps are updated. Ruiz et al. indicated that ad libraries are frequently updated by advertising companies, and such frequent app updates force developers to update their apps. In contrast to the above freemium monetization model, premium monetization of paid apps results in less frequent updates. In addition, we assume that the effort spent on product development for random apps is less than that of top apps, and this results in infrequent updates for random apps.
+
+The top three fixed vulnerabilities are CR-KSHC, ID-STOK, and WV-SSLV, and there is little difference between free and paid apps. The first two arise from the problem of hardcoded secret keys/tokens. WV-SSLV arises from problems with SSL validation. The reasons why these vulnerabilities are more likely fixed are as follows. First, CR-KSHC and ID-STOK are fairly easy to discover and fix. For instance, a developer can simply obfuscate secret keys/tokens. Second, since all these vulnerabilities pose a high risk to the integrity of server-side services, developers have motivation to fix them.
+
+Here, we summarize key findings derived from our extensive analyses.
+
+- Roughly 70% of free apps with vulnerabilities were vulnerable due to libraries, and Roughly 50% of paid apps with vulnerabilities were also vulnerable due to libraries.
+
+- Among the three library categories, third-party libraries were the main source of vulnerabilities.
+
+- While most vulnerable libraries originated from third-party libraries, a few official libraries were also detected as vulnerable due to the use of old versions.
+
+- Paid apps can contain vulnerabilities, and more expensive/popular paid apps tend to have more vulnerabilities.
+
+- Paid apps tend to have not been updated for longer periods than the free apps; thus, vulnerable libraries in paid apps have not been updated for longer periods than the free apps.
+
+- Approximately one-half of the detected vulnerabilities were attributed to dead code. We demonstrated that Droid-L can successfully exclude such cases from analysis.
+
+These key findings enable us to derive clues to remediate vulnerabilities in mobile app. We make the following suggestions to the stakeholders of mobile app distribution ecosystems, i.e., mobile app developers, mobile OS developers, app market operators, and mobile app library providers. We also offer a suggestion for the developers of vulnerability test tools.
+
+- Mobile app developers: Developers of apps with many classes/libraries must pay more attention to their apps. They could apply vulnerability assessment before release to at least eliminate easily-detectable vulnerabilities. After the release of apps, they could also check the updates of libraries they use. As we discuss in short, building a systematic update checking mechanism will be useful.
+
+- Mobile OS developers: Generally, infrequent updates lead to vulnerabilities. For instance, some paid apps adopt the “sell-once-and-that’s-it” model. For such apps, it may not be reasonable to expect developers to perform vulnerability assessment of their products. If a mobile OS provides an automated mechanism that updates obsolete libraries/codes in an app, that could address the vulnerabilities caused by outdated software.
+
+- Mobile app market operators: Mobile app market operators should inspect all active apps using systems like Droid-L and Droid-V. In addition, they should provide vulnerability notification mechanisms that inform app developers of the sources of detected vulnerabilities. It may also be effective to present ways to update apps appropriately. Using systems like Droid-L and Droid-V, a mobile app market operator can also inform users of the potential risks of an app.
+
+- Mobile app library providers: By linking Droid-L and Droid-V outputs, a list of libraries that contain vulnerabilities are generated. The results of our analysis would be useful for library providers to quickly know about the vulnerabilities and fix them.
+
+- Vulnerability test developers: As reported, roughly
+# WATANABE et al.: STUDY ON THE VULNERABILITIES OF FREE AND PAID MOBILE APPS
+one-half of vulnerabilities detected by existing vulnerability check tools reside in dead code. The developers of such tools could implement a dead code checker to address this issue.
+
+# 7. Discussion
+This section discusses the limitations of our analyses, user perception of security risks, and ethical issues.
+
+# 7 Limitations of the Analyses
+As discussed in Sects. 3 and 4, both library detection and vulnerability checking are based on static analysis approaches. We are aware of the limitations and have described future work in previous sections. Another limitation we did not discuss is apps with native code. While our analysis focuses only on Java-written components, some Android apps contain both Java-written and native code components written in C/C++. The use of native code components is especially popular in game apps, which are required to run as quickly as possible. Afonso et al. mentioned that “Malicious apps can use native code to hide malicious actions. . . ” and surveyed how actual Android apps use native code . They revealed that most native code components are used to improve CPU-intensive workloads, such as graphics and audio, while several hundred apps out of 1M contain root exploits written in native code. However, their work was not a vulnerability survey; thus, investigating vulnerabilities in native code remains a challenge.
+
+# 7 Ethics
+We finally discuss three ethical issues.
+
+- Acquisition of paid apps: All paid apps used for our analyses originated from the official Android marketplace, i.e., Google Play. We acquired all apps from the official marketplace according to the legitimate payment procedure. This means that we used our owned Google accounts to collect and purchase apps one by one without violating the Acceptable Use Policy.
+
+- No additional harm: We conducted our app analysis in a test environment without Internet accessibility. Therefore, there was no damage to the actual apps, devices, and services.
+
+- Responsible disclosure: After finding new vulnerabilities in apps and libraries, we followed the principle of responsible disclosure and reported them to CSIRTs. The disclosure includes the app and library names, the categories of vulnerability, and the source code, as well as suggested guidelines to reduce insecure code.
+
+code provenance, which means identifying different components of an application, e.g., host apps and libraries and their developers , . These studies tackled the negative effects of a library and host app running without isolation with the same privileges. Li et al. indicated that piggybacked apps with a library containing malicious code can mislead security analysis . Bhoraskar et al. also mentioned that a host app as a whole can become vulnerable if there are bugs in the library.

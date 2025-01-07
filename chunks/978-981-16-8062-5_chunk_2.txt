@@ -1,0 +1,52 @@
+Android applications are also vulnerable to various assaults due to the integration of web pages into mobile apps. For example, Bao et al.  investigated Cross-site Scripting vulnerability on Hybrid mobile apps makes it possible for attackers to bypass the access control policies of WebView and WebKit to run malicious codes into victim’s WebView.
+
+Bagheri et al.  performed an analysis of the permission protocol implemented in Android and proposed a formal model of the Android permission protocol to identifies potential flaws. The study found that weaknesses in the Android permission system can have serious security ramifications, allowing an attacker to bypass permission checks in some circumstances completely.
+
+# 2 Android Secure Coding Methodologies and Tools
+From performing static code analysis, we can inspect the control-flow to identify the possible execution path and the data-flow to specify the possible predicted values of variables at the location of execution . A tool named StubDroid can automatically generate the summarized models of the Android framework or libraries by using the flow analysis developed by Arzt et al. . Another research by developed Arzt et al.  FlowDroid, an open-source tool that can detect the data leakage in the source code of Android applications by also using static code analysis. However, this tool cannot fully be used to detect security bugs in Android apps like SQL injection and intent leakage. Those tools normally find the vulnerable code after the program has been written.
+
+Another example is ComDroid which is developed by Chin et al. . By following the approach of building secure applications and systems from platform-level, API-level, and design-level solutions, ComDroid can detect and alert developers of application vulnerabilities in communication. However, the downside of ComDroid still needs a compiled code to scan threats and thus cannot helps developers at coding time.
+
+# Security Issues in Android and Plug-in for Android Studio
+The idea of building a tool to support secure coding in Android development is not new. There are many tools and research that have been published and tackle one or more security problems in Android applications and help the developers to write safe code . Most of those research base on static code analysis, which tries to analyze the source code without running its program. Recently, Tabassum et al. did a study that compared the impact of secure programming tool support (ESIDE) versus teaching assistants. The findings revealed that ESIDE offered students greater information regarding security issues. Therefore, tools are built in the form of an IDE plugin that can help the developers to inspect the insecure code at the right coding time shows their effectiveness. The Application Security IDE (ASIDE) and the Eclipse IDE extension highlight the potential security issues, bugs, or vulnerabilities in the code and help fix them at the development phase. Eclipse IDE plugin, SonarLint  gives real-time feedback for Python, JavaScript, and Java programming languages. The Snyk  from Eclipse plugins can examine code dependencies using dependency trees, as well as check for vulnerabilities and recommend patches. However, those tools and plugins cannot support or integrate with Android Studio, one of the most used IDEs for Android development. FixDroid, which is developed by Nguyen et al. , is an Android Studio plugin that can help secure coding. It integrates many security tooltips to overcome some security weaknesses in the code at the programming time. Nevertheless, the developers cannot extend the rules or add more tooltips for new or special security issues. Moreover, the number of security rules in FixDroid is small, and it needs a server to handle the security problem sent by the client machine. That makes the privacy of the coding is not ensure.
+
+To build an Android Studio plugin, this paper aims to employ a larger security tooltip set gathered from the common Android application security issues. This plugin can run locally in the developer’s machines to remove the need for a handling server and thus guarantees the secrecy and privacy of the application’s source code. Moreover, the developers can also extend security rules for this plugin.
+
+# 3 Security Issues in Android Applications
+In this section, we briefly summarize the common vulnerability in Android applications. From there, we can base on those security errors to build the tool that supports secure coding for Android Studio.
+
+# 3 Security in Cryptography Implementation
+Cryptography ensures the secrecy of the sensitive data which the application needs to store, analyze or transmit. The wrong way of implementation could make cryptography algorithms weak and vulnerable. Therefore, the developers have to follow the standard guidelines of implementation for each algorithm, and many requirements must be held to guarantee the safeness and performance of cryptography. First, developers should use strong cryptography algorithms.
+
+# 110 A.-D. Tran et al.
+
+instead of outdated or weak ones. For example, use AES replace for DES, RC2, RC4, etc. Second, effective operation modes and padding schemes should be applied with the corresponding algorithms (GCM for AES, OAEP for RSE, etc.). Third, the length of the key should qualify the standard such as over 128 bit for block cipher and 2048 for RSA.
+
+# 3 Security in Client-Side and Click-Jacking Prevention
+The first security to be considered on the client-side is control database queries to avoid SQL Injection vulnerabilities. When querying to the database, developers often concatenate input strings from the user. These queries are likely to have SQL Injection errors. An attacker can view, add, modify, delete data, steal user information. To fix this, the developers have to use PrepareStatement so that parameters must be added with a function (setParam) to eliminate string concatenation. In the code below, username and password are parameterized when entering the query to avoid SQL Injection vulnerabilities.
+
+SQLiteDatabase db = mDbHelper.getWritabelDatabase();
+String userQuery = "SELECT * FROM useraccounts WHERE user_name = ? and password = ?";
+prepStatement.bindString(1, Username.getText().toString()("user_name"));
+prepStatement.bindString(2, Password.getText().toString()("password"));
+SQLiteStatement prepStatement = db.compileStatment(userQuery);
+Second, the Android application should prevent XSS vulnerabilities. Web-View is a key component in both Android and iOS platforms, allowing smartphone apps to embed a simple yet powerful browser within them. By default, WebView disallows javascript execution, but if the programmer sets set-JavaScriptEnable(true) property then WebView will allow javascript execution and can exploit XSS error. When using WebView, it is not recommended setting property setJavaScriptEnable (true).
+
+Third, the Android application should also prevent Click-Jacking vulnerabilities. An attacker may use interface spoofing to trick the user into performing something hidden underneath the interface. When defining important layout elements, it is necessary to set the filterTouchesWhenObscured property to prevent that vulnerability.
+
+# 3 Security in Communication Between Application and Server
+Most Android applications have connections to servers located on the Internet to update and exchange information. This transmission may be eavesdropped on from telecommunications networks, Wifi networks, etc. Sensitive information is transmitted between the application and the server, such as login process, cookies, sessions, etc., must be encrypted.
+
+# Security Issues in Android and Plug-in for Android Studio
+TLS (Transport Layer Security) and SSL (Secure Sockets Layer) are standard technologies for keeping Internet connections secure and protecting data transferred between two systems, preventing hackers from reading and modifying any data being transmitted. A certificate containing the public key from the server is needed to enable SSL/TLS. In addition, the client must validate the certificate to ensure that the certificate is sent from the correct connected server. The Android operating system provides a built-in digital certificate authentication method, and developers can also build their certificate authentication method depending on their use. However, Android developers may not properly implement SSL/TLS during application development, leading to Man-in-the-middle attacks or user phishing attacks.
+
+In Android development, we can create an HTTPS connection by using HttpsURLConnection:
+1         URL   url   =   new   URL ( " https :// bank . com / login " ) ;
+2         HttpsURLConnection           urlConn     =  ( HttpsURLConnection ) url . openConnection () ;
+3
+4         // Or
+5         HttpsURLConnection           urlConn     =  new    HttpsURLConnection ( " https :// bank . com / login " ) ;
+# 3 Security in Android Components
+Android components are the essential foundation of an Android application. Each component is an entry point through which the system or user can interact with the application. Some components depend on others. Android has four different application components: Activity, Service, Broadcast Receiver, and Content Provider.
+
+When developing applications that allow other applications to interact with Activity, if the programmer uses the android:exported= “true” attribute or defines the intent-filter, without setting permissions to call this Activity, the attacker can take advantage of building malicious applications and call this Activity, then perform destructive, unwanted actions. For example, when an app needs to call another app’s Activity to perform a certain action, Android will allow the user to select apps with the same Activity without specifying which program’s Activity. Then the attacker can take advantage of an Activity with the same name to deceive users and steal information. Therefore, developers should set the permission for an Activity, so when you want to call that Activity, you should ask the permission.

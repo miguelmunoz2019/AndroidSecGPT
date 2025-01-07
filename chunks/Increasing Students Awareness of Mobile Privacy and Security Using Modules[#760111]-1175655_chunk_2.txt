@@ -1,0 +1,118 @@
+# Mobile Devices Security
+Mobile devices usage has grown exponentially since the advent of mobile phones in the nineties of last century. In 2014, the number of mobile devices had surpassed the number of people inhabiting planet Earth . Furthermore, a recent Pew report, about smart phones usage, showed that smartphones and other mobile devices are being used for much more than calling, texting or basic internet browsing. Indeed, 57% of people interviewed stated that they have used their mobile device for online banking, 62% have used them to look up a health condition and 19% have limited means to access the internet besides their mobile device . This unfettered use of mobile devices brings about many security issues related to their physical mobility and to the data they store; it is then appropriate that students acquire principles of how to securitize mobile devices. The module on Mobile Devices Security aims at informing students about the security and privacy problems related to mobile devices use and how to mitigate them. Table 1 shows the scope, objectives and prerequisites for this module.
+
+# Topics Covered in Mobile Devices Security Module
+malware by platforms and the way mobile operating systems handle device and software security (Felt, Finifter, Chin, Hanna & Wagner, 2011); (Suarez-Tangil, Tapiador, Peris-Lopez & Ribagorda, 2014).
+
+# Security Risks of Mobile devices to “traditional” IT Systems
+Corporations and organizations are faced with two choices when trying to integrate mobile devices into their IT infrastructure. They can either provide their employees with an approved company device that they manage, or adopt a BYOD (bring your own device) policy. This section presents these two options and what each entails on the part of a company’s IT department ; (Miller, Voas & Hurlburt, 2012).
+
+# Suggested Learning Activities
+In order to provide the student with hands experience with the topic, several activities are suggested. Some of these exercises require students to use a smart phone and perform independent research to answer open ended questions:
+- Activity 1: Backing up a mobile device.
+
+- Activity 2: Privacy and security of geolocation, study the pros and cons of saving the user location data in a cloud database versus the device.
+
+- Activity 3: Define device rooting and study the pros and cons of jailbreaking a device.
+
+# Introduction to Mobile Devices
+This section introduces mobile devices and their characteristics, such as display screens, operating systems, Wi-Fi and GPS, etc. It presents features of smart versus non smart versus fake smart phones. It also discusses the physical security of mobile devices and mitigation approaches (Ruggiero & Foote, 2011);.
+
+# Secure Local Data Storage
+This section introduces the most common authentication methods used on mobile devices. It also presents types of sensitive data that mobile devices store and issues that prevent the adoption of strong authentication policies for mobile devices.
+
+# Safe Browsing Environments
+The mobile computing environment with its limited display space presents various security challenges. This section presents these challenges and how they can be addressed (Siddharth & Doshi, 2010).
+
+# Mobile Spyware, Malware and Phishing
+There has been a surge in mobile malware (Trojans, ransomware) that spread through SMS –text messaging- or through downloading compromised apps or accessing fake links. This section presents most the common mobile.
+
+© 2019, Journal of Learning and Teaching in Digital Age, 4(2), 1-9
+# L. Ghemri & S. Yuan
+# Mobile Devices Security Module
+# Learning Objectives
+The purpose of this module is to learn the security threats of mobile devices. The student will:
+- Understand the security and privacy threats to mobile devices
+- Understand the basic strategies and approaches to enhance mobile device security and privacy: device configuration, user authentication, apps certification, data encryption.
+
+- Be knowledgeable of corporate strategies for managing mobile devices.
+
+# Prerequisites
+# Concepts
+1. Wireless Networking
+2. Operating Systems
+3. Encryption
+4. Programming
+# Modules/Courses
+- Mobile Infrastructure Security
+- Operating Systems
+- Computer Security
+- Intrusion Detection
+# Expected Outcomes
+At the conclusion of this module, the student will be capable of recognizing various threats to mobile devices; the benefits and risks of jailbreaking a device.
+
+# Time Required
+Two hours of lecture and four hours of independent hands-on activities.
+
+# Subsequent module
+Mobile Applications Privacy and Security
+# Mobile Applications Privacy and Security
+# Learning Objectives
+The purpose of this unit is to teach security risks of mobile applications. The student will learn:
+- Coding vulnerabilities and safe coding practices.
+
+- Android/Java vulnerabilities
+- Apple/iOS vulnerabilities
+- Mobile HTML Security
+- Privacy and security threats of geolocation
+# Prerequisites
+# Concepts
+1. Programming, SQL
+2. Security
+3. Mobile App programming
+# Modules/Courses
+- Programming
+- Database Systems
+- Computer Security
+# Expected Outcomes
+At the conclusion of this unit, the student will be capable of recognizing the security risks of mobile applications. They will have knowledge of how to address some vulnerabilities by applying secure programming techniques, how to manage applications permissions and how to gather data judiciously.
+
+# Time Required
+Three hours of lecture and two hours per hands-on activity.
+
+# Subsequent module
+N/A
+© 2019, Journal of Learning and Teaching in Digital Age, 4(2), 1-9
+# Mobile privacy and security
+# Mobile Applications Privacy and Security
+Mobile applications programming has become a very popular and requested topic for many students, so much so that a majority of computer science programs have included such courses in their curricula. The privacy and security of mobile applications module aims at providing students who have a background in mobile programming, with necessary knowledge of the security risks that applications may present, and some design principles that developers can apply to design more secure applications (Dwivedi, Clark & Thiel, 2010). The module scope and objectives are presented in Table 2.
+
+# Topics Covered in Mobile Applications Privacy and Security:
+and best practices to put in place to prevent privacy violations (Doty and Wilde, 2010).
+
+# Suggested Learning Activities
+In order to strengthen students’ knowledge of the security risks in mobile applications as well as mitigation methods, we designed a set of activities as well as used off-the-shelf, public domain lab exercises. Such public domain repositories are the Android Security Labware developed by Li Yang at the Information Security (InfoSec) Center, the University of Tennessee in Chattanooga  and at the Information Assurance and Security Education on Portable Labs . Most of these activities require a closed environment in which students use malware and learn how to mitigate threats.
+
+- Vulnerabilities: This part introduces security terms such as vulnerability, exploits, zero-day attacks, etc. It also introduces types of malware and how each type operates.
+
+- Coding Vulnerabilities: This part introduces the array of security issues that could inadvertently be introduced through bad programming techniques, such as the unnecessary use of global variables, non-initialized variables, buffer overflow and SQL injections. Methods for writing secure code are presented (Viega and McGraw, 2001).
+
+- Mobile JAVA Security: This topic discusses mobile JAVA that is used by the Android platform. It discusses the security approaches that are practiced, such as, sandboxing, controlling access and permissions to resources, limiting communication and signing an app to verify integrity and provenance (Gibler, Crussell, Erickson, & Chen, 2012).
+
+- Mobile iOS Security: This section introduces the Apple iOS security framework. Encryption methods in iOS as well as the types of protections that an app is required to have, such as mandatory code signing and security enclaves.
+
+- Mobile HTML Security: Mobile websites are slimmed down versions of regular websites for mobile devices use. Mobile HTML sites are growing in popularity as more devices can access them. Security challenges are introduced, such as cross-site scripting (XSS), HTTP redirect and phishing.
+
+# Activities
+- Activity 1: Securing Code
+- Activity 2: Managing mobile application permissions using the Manifest file.
+
+- Activity 3: Geolocation sensors use and permissions.
+
+- Activity 4: RSA Encryption Decryption in Android
+- Activity 5: Spreading a Trojan through SMS.
+
+- Activity 6: SQL injection malware through SMS.
+
+# RESEARCH QUESTIONS
+After the module design phase, the specific research questions we are interested in investigating are whether, conceptually, modules can be effectively integrated within a traditional curriculum and improve student learning, and how to best design these modules. Specifically (1) Do students show any learning gain of the module material? (2) What are the module characteristics that students liked and which ones were most helpful? Investigating modular teaching effectiveness and likeability is important because it can help guide the design and content of modules and validate the approach as a viable method to address gaps in student learning. Research question was addressed through the use of a multiple choice questionnaire with ten questions, each having a single correct answer. The questionnaire was administrated before the module was presented, so as to establish a baseline for each student’s performance.

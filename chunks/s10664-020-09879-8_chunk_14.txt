@@ -1,0 +1,51 @@
+# Colluding Apps
+Covert  uses static analysis and formal verification to verify the collusive data leaks and privilege escalation problems that arise from the interaction of multiple apps (known as colluding apps). It infers the security properties from individual apps and reasons about the security of the phone device as a whole; that is, it checks whether apps installed in a device can collude with each other to generate attacks. The major difference between Covert and PREV is that Covert’s formal verification process relies on predefined security policies that describe what is normal and what is abnormal. Similar to Covert, AppHolmes  also uses static analysis and predefined security policies to detect collusive data leaks. DIALDroid  addressed the complexity problem of performing pairwise program analysis of apps to detect collusive data leaks by incorporating optimized, efficient data storage and fast query processing techniques into static analysis of ICC data-flows. The major difference with these approaches is that, instead of relying on predefined security policies, we compare the security properties of the app against functionally similar apps to detect abnormal/malicious behavior.
+
+# Test Case Generation
+FuzzDroid  generates executable test cases using an evolutionary algorithm, with the aim of covering a given target location (e.g. privileged API call) to expose malicious behaviors of a given app. EvoSuite (Fraser and Arcuri 2011) is a general purpose test generator based on genetic algorithm, which can also be applied to generate executable scenarios for Android apps. App graphical user interface
+Empirical Software Engineering (2020) 25:5084–5136 5131
+(GUI) testing approaches (Hu and Neamtiu 2011; Amalfitano et al. 2012; Amalfitano et al. 2011; Mahmood et al. 2012) have been proposed to detect events and event sequences that make the apps crash and identify abnormalities of apps. EvoDroid  and Sapienz  apply search-based testing techniques to systematically test Android apps. EvoDroid uses a model generated based on static data collected from manifest file and layout XMLs to guide the search process. Similar to these approaches, we also apply a search-based algorithm to systematically explore app behaviors. The main difference is that they generate test cases mainly to detect abnormalities in apps such as crashes, exceptions, and violations of access permissions; our approach, instead, generates security test cases that expose permission re-delegation vulnerabilities in Android apps.
+
+# 10 Conclusion
+Smart phone apps are often developed under a high time-to-market pressure. As a result, they are often delivered with defects or vulnerabilities that may threaten the security and privacy of end users. In particular, apps that are granted with special permissions could expose privileged services to unprivileged apps, which may then exploit this to perform malicious actions without user knowledge. Automated support to detect such problems would be beneficial to security analysts and app developers.
+
+In this paper, we present a novel approach to accurately detect and test permission re-delegation vulnerabilities by combining static analysis, natural language processing, machine learning, and genetic algorithm-based test generation techniques. Our approach detects vulnerable apps that abnormally expose privileged actions to other (potentially malicious) apps and distinguishes them from legitimate permission re-delegation cases. It also generates proof-of-concept attacks to prove the vulnerabilities and security reports to document them. We evaluated our approach on 1,258 real world apps from the official Google Play store. Our approach automatically detected 30 apps that are vulnerable to permission re-delegation attacks without any false alarm, significantly outperforming recent approaches — Covert and IccTA — that can detect permission re-delegation problems. The analysis was done in a matter of minutes.
+
+In future work, we plan to improve both our static analysis and test generation phases, e.g., by handling string operations, for more effective vulnerability detection.
+
+# Funding
+Open access funding provided by Universit degli Studi di Verona within the CRUI-CARE Agreement.
+
+# Open Access
+This article is licensed under a Creative Commons Attribution 4 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article’s Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article’s Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommonshorg/licenses/by/4/.
+
+# Appendix A: Mutation Operators
+In the following we explain the two mutation operators that we used in our controlled experiment (Section 8).
+
+# A Mutation Operator μ1 : Expose API
+To provide its services, an app may be granted with special permissions to perform privileged operations (APIs). If these operations are security-sensitive, the app developer may limit these operations among its internal components only and may not intend to accept action requests of these operations from external apps.
+
+Mutation μ1 is used to inject a security defect by contradicting the developer’s intention of limiting the exposure of a privileged API to action requests. The precondition to apply this mutation operator is:
+- There is an exposed component that can be called by other apps to request an action from this app;
+- the app contains a call to a privileged API;
+- but this privileged API is not exposed to action requests (i.e., the call to this API is not reachable from public entry points).
+
+If this precondition is met by a given app, we apply μ1 by exposing the privileged API to action requests via the exposed component. Hence, the postcondition after applying μ1 is:
+- The privileged API is now exposed (i.e., reachable from at least one public entry point) and thus, the app is vulnerable to permission re-delegation attacks.
+
+For example, in Fig. 20, the left-hand side shows the original code of an app; onCreate is an exposed component; the method m contains a call to sendSMS, but m is not reachable from any public entry point. The right-hand side shows the mutated code, which exposes a privileged API by adding a call to the method m in the exposed component.
+
+# A Mutation Operator μ2 : Expose Component
+Similarly to μ1, μ2 is used to inject a security defect by contradicting the developer intention of limiting the exposure of a privileged operation. However, in this case, the mutation is on the component visibility to other apps.
+
+# Empirical Software Engineering (2020) 25:5084–5136
+# 5133
+The precondition to apply this operator is:
+- A component is not exposed; so it cannot be called by other apps;
+- the component contains a call to a privileged API;
+- but the call to this API is not reachable from public entry points.
+
+If this precondition is met by a given app, we apply μ2 by changing the visibility of the component in the manifest file of the app. Hence, the postcondition after applying μ2 is:
+- The component is now exposed; so the privileged API call is now reachable from at least one public entry point.
+
+For example, in Fig. 21, the left-hand side shows the original code; the method onCreate in the activity A is not exposed and it contains a call to a privileged API sendSMS, which is also not reachable from any public entry point. The right-hand side shows the mutated code, which specifies in the manifest file that activity A is publicly callable.

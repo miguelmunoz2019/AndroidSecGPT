@@ -1,0 +1,11 @@
+47.  M. Kim, D. Cai, and S. Kim, “An empirical investigation into the role of API-level refactorings during software evolution,” in Proc. ACM 33rd Int. Conf. Softw. Eng., 2011, pp. 151–160.
+
+48.  M. M. Lehman, “Programs, life cycles, and laws of software evolution,” Proc. IEEE, vol. 68, no. 9, pp. 1060–1076, Sep. 1980.
+
+49.  T. Mens, “Introduction and roadmap: History and challenges of software evolution,” in Software Evolution. Berlin, Germany: Springer, 2008, pp. 1–11.
+
+50.  Q. Tu et al., “Evolution in open source software: A case study,” in Proc. IEEE Int. Conf. Softw. Maintenance, 2000, pp. 131–142.
+
+51.  R. Coppola, M. Morisio, and M. Torchiano, “Mobile GUI testing fragility: A study on open-source Android applications,” IEEE Trans. Rel., vol. 68, no. 1, pp. 67–90, Mar. 2019.
+
+52.  T. McDonnell, B. Ray, and M. Kim, “An empirical study of API stability and adoption in the Android ecosystem,” in Proc. IEEE 29th Int. Conf. Softw. Maintenance, 2013, pp. 70–79..

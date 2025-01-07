@@ -1,0 +1,90 @@
+• X509TrustManager: We check if the code extends the X509TrustManager class. If it happens, we check the checkClientTrusted and checkServerTrusted methods to see if the method has only one instruction which is return-void. If so, we consider the method is vulnerable.
+
+• HostNameVerifier: We check whether the HostnameVerifier interface is implemented in the code. If it exists, we check the verify method. If the method has only two instructions, and the first instruction begins with const and the second instruction is return, we then consider the method vulnerable.
+
+• WebViewClient sslError: We check whether the code extends the WebViewClient class. If that happens, we check onReceivedSslError method. If this method has only two instructions, and the first instruction starts with invoke-virtual and ends with Landroid/webkit/SslErrorHandler;->proceed()V, and the second instruction is return void, we then consider this method vulnerable.
+
+• X509HostnameVerifier: We check whether there is an instruction named sget-object in the class which extends X509TrustManager class. If that happens, we check.
+
+Y. Wang, G. Xu and X. Liu et al. / The Journal of Systems and Software 167 (2020) 110609
+Bnaixye, Remhala. Aley_District Bnaiyye_ Remhala, Aley District Bnaiyye, Remhala Aley District
+Snaakpeck @ CollecticnsEycnt Cuitina For YovSnedkolck CollactionsEventsCuisin Sneakpeek0 collacticnsEvenisCuisin
+Casual Dining SecnIl sneakpeek
+Our in-housa uxperis tell you tha scries bahina the city$
+Lebanese Manakish
+Grill by Pouce VertGlory" Bistro zomato
+Lcban
+Whalo
+Lebanese delights Senals
+Bakery Desserts
+GoouT Cooit
+if it is ended with ALLOW_ALL_HOSTNAME_VERIFIER Lorg/apache/http/conn/ssl/X509Hostname Verifier. If it hap-
+pens, we check whether the next instruction is ->setHostname Verifier (Lorg/apache/ http/n/ssl/X509Hostname Verifier);V. If it exists, we then consider the method vulnerable.
+
+# 4. Call relation analysis
+We use Algorithm 1 to analyze the method call relationship of an app. We analyze the call relationship of the method with the Method Call Graph (MCG) to determine the entry point (including Activity, Service) where the vulnerable method is finally executed. By recording these entry points, we give priority to these entry points in the dynamic detection phase so that they can be executed.
+
+We start from vulnerable methods found in static analysis, traverse their methods (these methods are called their parents), and then traverse their parents until the method has not been called by other methods. We then jump to the constructor of the class where the method belongs to and continue traversing until we reach a constructor that has never been called by other app code. These constructors are therefore called only by system code and are the entry points of an app.
+
+# 4. Get entry activity
+The entry points will be associated with Activity and Service. The final call points of vulnerable methods have been known with Algorithm 1. We also find the entry Activity associated with the vulnerable code. Then we analyze the call relationship of the activity and build the Activity Call Graphs (ACG). The node in the ACGs represents Activity, the leaf represents a vulnerable Activity, and the edge represents an Intent of the Activity. The detail of construction is shown in Algorithm 2. We consider click events mainly.
+
+# Algorithm 1 Find Final Caller of Vulnerable Method.
+
+Require: MCG : Method Call Graph,V M : Vulnerable Method
+Ensure: Result : Set of Entry Point Methods
+1:  function FindFinalCaller(MCG, V M)
+2:      if method_callers of V M not null then
+3:          for each method_caller in method_callers do
+4:              FindFinalCaller(MCG,method_caller)
+5:          end for
+6:      else
+7:          for each method in class(method_callers) do
+8:              if method is class' constructor and method is not in Result then
+9:                   Result.append(method)
+10:                   FindFinalCaller (MCG, method)
+11:              else method is in Result
+12:                   return
+13:              end if
+14:          end for
+15:      end if
+16:  end function
+# Algorithm 2 Build Activity Call Graph(ACG).
+
+Input: AndroidManifest.xml potentialVulnerableViews
+Output: Activity Call Graph(ACG)
+1:  function BuildACG(potentialVulnerableViews, AndroidManifest.xml)
+2:      ACG=φ
+3:      for each views in potentialVulnerableViews do
+4:          EntryActivity=findActivityByViewID(views.getId)
+5:          ActivitySet=initActivity(AndroidManifest.xml)
+6:          ACG=Fun(EntryActivity,ActivitySet,ACG)
+7:      end for
+8:      return ACG
+9:  end function
+10:  function Fun(EntryActivity, ActivitySet, ACG)
+11:      for each activity in ActivitySet do
+12:          if activity == MainActivity then
+13:              return ACG
+14:          end if
+15:          if activity jump to EntryActivity By method.Event (such as Button.click) then
+16:              ACG ∪ (activity → EntryActivity)
+17:              fun(activity,ActivitySet,ACG)
+18:          end if
+19:      end for
+20:  end function
+in the algorithm. Some complex events (such as swipe and long touch) are ignored because they are unlikely to trigger HTTPS connections. Then we can get the execution path from the Main Activity to the entry Activity. During the dynamic analysis, we run the Activities contained in Activity path one by one under the guidance of ACGs.
+
+# 4. Dynamic analysis
+# 4. UI Automation
+UI automation is the core component of DCDroid. It makes an app run to the direction that vulnerable code can be executed and avoids meaningless execution. There are three tasks for UI automation components: obtain UI elements and operate them, reduce UI elements and determine priorities, run app and manage UI status.
+
+When the app enters an Activity, it needs to get every element of the Activity and extract the attributes of the element, such as the text of the button and the input form of the text box. With the information obtained, the system creates appropriate events to operate elements so that Activity can jump from one to another normally. For example, select events are created for check boxes and input events are created for text boxes. To achieve this goal, we use the AndroidViewClient to manage component. It can get the UI elements, create appropriate events for the UI elements and execute the dynamic operation of a specific app.
+
+# 4. Acceleration
+In order to accelerate the operation, we select only a part of UI elements to execute from similar elements. Through our analysis, we find that it is appropriate to select four to execute for similar elements. Take Fig. 3 as an example, on the one hand, it can avoid meaningless execution of duplicate elements. On the other hand, it can ensure that similar UI elements with different code logic are executed, too (Such elements are usually tab options with no more than 4). When acquiring UI elements, we add up to four similar UI elements at most and simply delete the extra elements. Algorithm 3 describes our method. If a component inherits from the same parent component and has the same attributes (such as the same size, color, etc.), then we consider that they are the same. With this strategy, we can speed up our dynamic detection process.
+
+We use AndroidViewClient to manage the state of the Activity. It provides the API to obtain the information about the current Activity and the way to operate the window elements. The Activities are executed one by one according to the ACG information provided with the static detection phase. Specifically, for each execution path, we execute each Activity’s method.Event (e.g., button.Click). If we enter a new Activity, we will continue to execute until the entry Activity. If a crash happened during the execution or an execution path is completed, we will exit the app and start Main Activity again. If the execution ends normally, we release the corresponding execution path. If the execution ends abnormally, we retry once and release it.
+
+# 4. Set proxy
+In order to execute a SSL/TLS MITM attack, all traffic between Android clients and servers must be intercepted. Fidder  is a widely-used tool in this area. However, in our experiment, not only do we need to intercept HTTPS traffic, but we also need conduct some processing for traffic. Therefore Fidder is not suitable for us. We use mitmproxy  as a MITM attack tool. Mitmproxy is a proxy tool. It forwards requests and executes MITM attack like a normal proxy. It generates its own fake certificate and sends it to the client to start an attack. We do not add mitmproxy certificates to the host’s trust certificate list. Therefore, those HTTPS traffic that could be established successful are generated by vulnerable apps. The biggest advantage of mitmproxy is that it can manage intercepted requests by using Python script. With this feature, we can easily analyze intercepted requests, such as the number, type and content of requests. It is helpful to analyze the experimental results to determine the app with certificate verification vulnerabilities.

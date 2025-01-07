@@ -1,0 +1,55 @@
+- Lower body – Shows information including ticket type, ticket provider, date of purchase, and passenger’s name.
+
+One implementation decision made by the app developer is the activation and generation of tickets without Internet connectivity. The downside to this is that the app itself is in charge of generating the ticket, and not the server. This means an attacker with access to the source code could attempt to understand and replicate the process of generating tickets. Clearly, the numeric token is what bus drivers check in order to decide whether a ticket is valid. Hence, understanding how valid numeric tokens are obtained can compromise the underlying mechanism.
+
+Analysing the source code, one particular function stands out, namely GenerateWatermark(), located inside the Core.Utilities module. This function will be called whenever a ticket is activated, performing the following computation:
+# 242
+J. Sanz Maroto et al.
+
+token =⌊ (x − c)² × 104 mod 104⌋, (1)
+where · : R → Z denotes the floor function, c is a date constant with value 01/01/1990 and x represent the current date. The app uses this formula to create the numeric tokens, which are displayed to drivers for validation when the passenger is boarding the bus.
+
+To accurately predict a token, it is necessary to understand how the seed variable is obtained. By performing a text pattern search through all of the app’s files, we identify a particularly interesting string, namely “Ticket.Seed”: “71473”, located in files/.config/data.json. Creating numeric tokens with the logic shown above and this seed value across different days, and comparing against tokens for the same days embedded in legitimate tickets, the values match perfectly. This means that the alleged seed is nothing but a hidden hard-coded value, rather than an actual seed of a pseudo-random sequence.
+
+Besides, although the existence of the modulo and the floor operations in Eq. 1 makes this computation irreversible, we show in Fig. 3 that this function exhibits obvious periodic patterns, meaning that it does not qualify as a one-way function.
+
+10960 10980 11000 11020 14600 14620 14640 14660 14680 18260 18280 18300 18320
+days since 1990/01/01
+As shown in Fig. 3, the mapping between current date x and the token value presents a period-like relation, and the period gradually becomes longer as more time elapses from the fixed referenced date c. Thus an attacker can simply modify the system date and collect some data to recover the underlying function through trial and error.
+
+Finding: An attacker can retrieve the procedure and relevant variables (which are unfortunately hard-coded) from the app source code, easily generate a valid numeric token for the current day, and embed that into a Graphics Interchange Format (GIF) image that resembles a genuine ticket, thereby evading payment. We also conclude that reverse-engineering of the application is not necessarily needed to predict the token of any future date, since the token generation algorithm reveals naive periodic patterns.
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+# 5 Re-activation of Expired Tickets
+If one can already predict tickets, what would be the purpose of reactivating expired tickets? Predicting a ticket is one thing, but generating animated images on a phone is not straightforward. An attacker may need to replicate the layout of the official app to perfection and build a new app from scratch in order to exploit the vulnerability discussed in the previous subsection.
+
+Therefore, we investigate whether it may be possible to reactivate an expired ticket, by analysing how the app saves the state of tickets. To this end, we examine the changes made on the app whenever a ticket is activated, first saving all the files in the home directory of the app prior to the activation of a ticket, then comparing them against those changed after the ticket expired.
+
+Most files seem to be modified, however the app would not make any requests over the Internet connection. All of the modified files are inside the net.corethree.lothianbuses folder, except for a small /.storage/atl.txt file created after the activation of the first ticket. After analysing the decompiled app code, it is clear that this file is just a back up of activated tickets.xml, a file used to store the serialised activated tickets. This means that the content of net.corethree.lothianbuses is the representation of the state of the app. Hence, we can save its contents, activate as many tickets as previously purchased, and then swap the saved folder with the one used by the app, thereby restoring all the tickets as if the app was never opened in the first place. To facilitate repeated testing of this vulnerability and demonstrate the simplicity of the attack, we build a small app, which exploits this process, as detailed in Fig. 4.
+
+In the above, we save the state of net.corethree.lothianbuses into a folder called tickets, and then use the app to substitute the files in the official app with those saved in this folder. However, it appears that after one week of testing, the vulnerability can no longer be exploited. Since our exploit would return to the state of the app after purchasing the tickets, from the app's point of view we...
+
+244 J. Sanz Maroto et al.
+
+had not been connected to the Internet for more than 5 days, which is one of the security measures that Corethree seem to have implemented. However, by the very fact that this is a response to a certain event, we expect to find the relevant implementation in the app’s source code. Indeed, the code checks if the value CheckInLastSuccessfulTimestamp minus 5 days is less than 0, as shown in Fig. 5, where CheckInLastSuccessfulTimestamp was extracted from the timestamp saved as CILST in the net.corethree.lothianbuses preferences.xml file, as shown in Fig. 6 (see line 4).
+
+However, the app does not check whether CILST is larger than the current time, meaning that an attacker can set the CILST to year 2030, and the exploit would work for the next 10 years.
+
+Finding: By restoring the application state prior to ticket activation and modifying the XML file containing the app preferences, an attacker can reactivate expired tickets, which stay valid for any specified duration.
+
+# 5 Modification of Tickets
+Being able to re-activate tickets, next we explore the different type of tickets the app offers and whether these could be modified by an adversary. Excluding the fact that the app offers different tickets for different routes, there are 2 main type of tickets: Single-Adult and All-day tickets. We purchase both types and activate them on the same day, to understand the technical difference between them. Perhaps unsurprisingly, the two are virtually the same, except that a user has 5 min to use a Single-Adult, whilst the All-day ticket can be used for 24 h.
+
+# On the Struggle Bus: A Detailed Security Analysis of the m-tickets App
+245
+Knowing this, we analyse how the app identifies and stores different type of tickets, and find that the majority of ticket data is stored in the data.json file. The file is relatively large, containing information such as the app’s layout, user tokens, URLs from where to download images and, most importantly, the characteristics of purchased tickets, as exemplified in Fig. 7.
+
+Examining Fig. 7, note that tickets are defined by a JSON structure, which encompasses their characteristics. Therefore, our first attempt is to change the values of a Single-Adult ticket to those of an All-day ticket. However, after modifying data.json, the app would not open without an Internet connection, suggesting a security provision was implemented to prevent this exploit. We then use the Frida framework to trace precisely what happens internally when the app blocks the modified data.json. The trace reveals that both data.json and lothianbuses preferences.xml are opened at program execution start. Reviewing the code again and identifying where these files are being used, it appears data.json is hashed with ContentRoot and the device's GUID, which are given in the lothianbuses preferences.xml file. The hash is then compared with the value stored into NSSC (line 6 in Fig. 6). This procedure is illustrated in Fig. 8. Therefore, an attacker aiming to modify anything in the app, should change the hash stored in NSSC for a new one that passes the checks.
+
+By reversing the hashing applied and retrieving key variables stored by the app, this can be circumvented.
+
+246 J. Sanz Maroto et al.
+
+Since the hash is crafted based on values that we already have, we can write a small C# script to replicate the creation of the hash and use it to modify the app. We are now able to change any of the characteristics of a ticket. For example, we could make a single Adult ticket last for months, if we changed the ticket’s “Lifetime” property.
+
+Finding: By replicating the hashing mechanism applied to the tickets data store and overwriting key variables in the m-tickets preferences file, an attacker can extend the lifetime of tickets at will.

@@ -1,0 +1,63 @@
+Symptom: Query keys like key, token, user, username, password, pw are used in web requests and the corresponding values are statically stored in the apps.
+
+Mitigation: Developers should avoid using access tokens and logins of corporate accounts for apps. Instead, a unique child token based on the corporate token should be assigned to every user. If this option is unavailable, web relay APIs can be provided to the apps which forward the requests to the final destination without disclosing any credentials.
+
+- Embedded languages. We found apps that assemble CSS, HTML, or JavaScript code programmatically using external input. In many apps, such constructed code is executed within a WebView or Android’s UI framework, which is inspired by Java Swing and supports HTML elements. Similarly, we found assembled SQL statements that are executed in the local SQLite database engine. In two apps we found assembled shell commands sent over an SSH connection.
+
+Issue: An attacker could gain control over the app’s visual representation, the behavior, the data storage, or the corresponding server by exploiting such code. Shell commands such as String command = "touch /home/" + username + "/.toolConfig/configuration"; allow an adversary to execute commands on a server by letting the variable username be ;echo ’executes on server’;. Consequently, for HTML and CSS, an attacker could change the appearance of existing web elements to make space for additional ones, e.g., by reducing the font size of existing text to make it impossible to read and at the same time injecting additional text in regular size. Such changes can trick users into taking unintended actions. With JavaScript, an attacker could gain access to the Document Object Model (DOM) of the app’s webpage and extract or alter the visible content. Such changes expose sensitive user data, or mislead users through altered information. SQL allows adversaries to perform arbitrary actions on the database, e.g., altering and deleting existing data, or inserting new data. This leads to data loss, corruption, or leaks for the users. Through shell commands an adversary could potentially gain elaborated remote access to the server’s operating system. Threats range from DoS attacks to sensitive user information leaks and corporate network infiltrations by disabling security measures and installing malicious software on the server.
+
+Symptom: At least one statement is manually assembled with the help of external data, e.g., "# " + example + "" or "color:" + color + ";". HTML/CSS: common tags or properties occur, e.g., "# ", "", or "color:". JavaScript: identifiers exist in the app, e.g., function(), &lt;script, js=. SQL: keywords are used in the app, e.g., SELECT, INSERT, UPDATE, DELETE, REPLACE, TRUNCATE. Shell: commands are not trivial to detect, because developers use a variety of different commands, e.g., sudo, rm, cp, mv, ls, exec, attrib, chmod, touch, etc.
+
+Mitigation: Developers should not use external input when assembling embedded languages, but try to embed the content into the app installation or update package. Static code should be used whenever possible. If dynamic code is required, the built-in sanitizing classes must be used, e.g., PreparedStatement for SQL code. User input should never be trusted. In general, any untrustworthy input must not be used before it is properly escaped and sanitized.
+
+- Insecure transport channel. Web API communication relies on HTTP or HTTPS; both variants exist in apps.
+
+Issue: HTTP does not provide any security; neither the address, nor the header information or the payload are encrypted. Consequently, any attacker with access to the transmitted data can read or alter all plain text messages. User data leaks, corruptions, losses, or impersonation are probable.
+
+Symptom: HTTP URLs are used to establish connections to web APIs.
+
+Mitigation: HTTPS instead of HTTP URLs must be used for any web communication.
+
+# Server-side
+For every collected API in our dataset, we accessed the corresponding web server and stored the response. We were particularly interested in information such as operating system identifiers, used software modules, and version numbers, which we could initially identify during the manual analysis of a sample of the server responses. We then crafted a number
+of search queries to detect occurrences of such features and the client and the server should remove the affected keys applied them to our dataset.
+
+# We have identified five server-side web API security code smells.
+
+- Disclosure of API implementation code. Error messages provide valuable information regarding the implementation of a running system. We found web APIs that leak internal error states and use status codes in a different way than what is specified by the RFC7231
+Issue: Error messages that include the relevant stack trace are transmitted as plain text in the server’s message response body. Such a message reveals information like the used method names, line numbers, and file paths disclosing the internal file system structure and configuration of the server. Consequently, adversaries can obtain detailed information about the service implementation, which may lead to an exploit.
+
+Symptom: When an invalid request is received, a server responds with a detailed error message containing information that is not required by any user of the API.
+
+Mitigation: If the used framework provides an option to turn off diagnostic or debug messages: this feature should be used. Otherwise, an API gateway in between the client and the server should filter such responses and deliver regular HTTP 500 messages to the client instead.
+
+- Disclosure of version information. Besides useful connection parameters, HTTP headers provide information regarding the software architecture and configuration of a running system. We spotted in the reported HTTP headers version information of web server daemons and API implementation frameworks.
+
+Issue: We encountered outdated software that suffers from severe security vulnerabilities. For instance, we observed a server that returned X-Powered-By: PHP/5 in the response header. This PHP version is at the time of writing more than 6 years old, and a quick search in the Common Vulnerabilities and Exposures (CVE) database showed that this framework suffers from 69 known security vulnerabilities, six of which received the most severe impact score of 10
+Mitigation: Application architects have to implement authentication, favorably multi-factor authentication, whenever sensitive data or elevated operations are involved in the process. All user data, and location data in general, have to be considered as sensitive. Developers should never expose interpreter interfaces to a web service without prior authentication and input validation.
+
+- Missing HTTPS redirects. In contrast to HTTPS, HTTP does not provide any security: neither the URL, nor the header information and embedded content are encrypted. We found servers that do not redirect the clients to encrypted connections although they would have been supported.
+
+9 https://tools.ietf.org/html/rfc7231
+10 Although HTTP servers should reply with the status code 200 to indicate a successful request, we noticed that some servers use this status code when an error has occurred.
+
+11 https://www.cvedetails.com/vulnerability-list/vendor_id-74/product_id-128/version_id-183021/PHP-PHP-5.html
+# Issue: Web API servers do not redirect incoming HTTP connections to HTTPS
+when legacy apps try to connect, or users manually configure a URL without adding a proper https:// prefix. Consequently, the transmitted data remains visible and changeable to anyone within the communication path.
+
+# Symptom:
+For an HTTP web API request, a server does not deliver an HTTP 3xx redirect message which points to the corresponding HTTPS implementation of the web API.
+
+# Mitigation:
+A server should not offer legacy HTTP services. If they are still required due to legacy clients with hardcoded HTTP URLs, redirects should be provided to guide all clients to the secure version.
+
+Missing HSTS. HTTP header information is used to properly set up the connection by specifying various communication parameters, e.g., the acceptable languages, the used compression, or the enforcement of HTTPS for future connection attempts, a feature which is called HTTP Strict Transport Security (HSTS). HSTS provides protection against HTTPS to HTTP downgrading attacks, i.e., when a user once accessed a web resource in a secure environment (at home or work), the client knows that the resource needs to be accessed only through HTTPS. If this is not possible, e.g., at an airport at which an attacker tries to perform MITM attacks, the client will display a connection error. Hence, HSTS should be used in combination with HTTP to HTTPS redirects, because the HSTS header is only considered to be valid when sent over HTTPS connections. We found servers that do not enforce clients to remain on the secure channel for future requests.
+
+# Issue:
+Servers do not leverage the HSTS feature. Consequently, in unprotected public networks or networks under external supervision, if an attacker sets up a fake gateway which runs SSLsniff, the provided services remain vulnerable, because transmitted data is visible and changeable.
+
+# Symptom:
+A server does not deliver the HTTP HSTS header Strict-Transport-Security: max-age=31536000; includeSubDomains for an HTTPS request.
+
+# Mitigation:
+In combination with HTTP to HTTPS redirects, the HSTS header should be used in all HTTPS connections.

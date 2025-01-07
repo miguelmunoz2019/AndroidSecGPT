@@ -1,0 +1,163 @@
+It would be interesting to examine in a future work the impact of the recently introduced Manufacturer Usage Description Specification (MUD) standard  within the companion apps explored in the work. According to this standard, manufacturers, i.e., some entity along the supply chain, explicitly prescribes in a MUD reference profile the exact behaviors allowed for their devices according to the device’s precise functionality; the gist here is that each IoT device is supposed to serve a limited purpose, and therefore the device’s MUD profile is a set of rules and expected behaviors. For instance, a light bulb is intended to light a room. It may also be remotely controlled over the network, typically through a smartphone app. A MUD profile is obtainable by local network management systems through a URL. This allows updating the network (security) policies regarding the device.
+
+Therefore, in the light bulb example, the local network management system will be aware that this device is not supposed to talk to other things, say, the air-conditioner or the printer. It is not also prescribed to interact with social networking sites. In this sense, the network is enabled to provide an extra protection layer to the device. All in all, while (as expected) none of the examined devices in the context of this work is MUD compatible, a future research avenue is to explore if and to what degree the introduction of MUD will also positively affect the security and privacy level of the mobile apps that go hand and glove with this kind of devices.
+
+A similar research direction can be followed with respect to the Device Identifier Composition Engine (DICE) industry standard (a suite of hardware and software based techniques that aims in certifying the health of software and hardware on IoT devices) and the Matter smart home interoperability protocol, which is developed with the promise to focus on security by design.
+
+# Author Contributions
+Conceptualization, G.K. and E.C.; methodology, G.K. and E.C.; validation, E.C. and G.K.; formal analysis, E.C. and G.K.; investigation, E.C., G.K. and C.S.; writing—original draft preparation, E.C., G.K. and C.S.; writing—review and editing, E.C., G.K. and C.S.; supervision, G.K.; project administration, E.C. and G.K. All authors have read and agreed to the published version of the manuscript.
+
+# Funding
+This research received no external funding.
+
+# Institutional Review Board Statement
+Not applicable.
+
+# Informed Consent Statement
+Not applicable.
+
+Sensors 2022, 22, 513 37 of 41
+Data Availability Statement: All data are made available in the manuscript.
+
+Conflicts of Interest: The authors declare no conflict of interest.
+
+# Abbreviations
+The following abbreviations are used in this manuscript:
+# Appendix A
+# Appendix A. List of Identified Trackers per App
+- ASUS Router: Google Firebase.
+
+- D-Link WiFi: Google Firebase, CrashLytics.
+
+- MyFRITZ!App: Google Firebase, CrashLytics.
+
+- Huawei HiLink: Huawei (HMS) Core.
+
+- Linksys: Google Firebase, CrashLytics, Splunk MINT.
+
+- Mikrotik Pro: Google Firebase, CrashLytics.
+
+- Mi Wifi: Tencent.
+
+# Sensors 2022, 22, 513
+# 38 of 41
+- Netgear Nighthawk: Google Firebase, Google Analytics, Google Tag Manager, Crashlytics, Instabug, Optimizely, Urbanairship.
+
+- TP-Link Tether: Google Firebase, CrashLytics.
+
+- Unify: Google Firebase, CrashLytics, New Relic.
+
+- LGThinQ: Adobe Experience Cloud, Dynatrace, Google Firebase, Keen, CrashLytics, Facebook Login, Facebook Places, Facebook Share, Google AdMob, Salesforce Marketing Cloud, Treasure Data.
+
+- Arlo: Google Firebase, CrashLytics, Swrve.
+
+- HiLookVision: Bugly, Google Firebase.
+
+- iVMS-4500: Flurry, Huawei (HMS) Core.
+
+- Mi Home: AutoNavi, Bugly, Facebook Login, Facebook Analytics, Facebook Places, Facebook Share, Huawei (HMS) Core, Segment, Tencent.
+
+- mydlink: Google Firebase, CrashLytics, Facebook Login.
+
+- Wyze: Braze, Google Firebase, CrashLytics, Segment.
+
+- Garmin Connect: Google Firebase, CrashLytics, Facebook Login, Facebook Share.
+
+- Fitbit: Google Firebase, CrashLytics, Facebook Login, Facebook Analytics, Facebook Places, Facebook Share, MS Visual Studio Analytics, MS Visual Studio Crashes, MixPanel, Optimizely, Salesforce Marketing Cloud.
+
+- Huawei Health: AutoNavi, Huawei (HMS) Core.
+
+- Mi Fit: AutoNavi, Facebook Login, Facebook Places, Facebook Share.
+
+- Polar Beat: Google Firebase, CrashLytics, Google AdMob.
+
+- Polar Flow: Google Firebase, Google Analytics, Google Tag Manager, CrashLytics, Huawei (HMS) Core.
+
+- realme Link: Google Firebase, CrashLytics, Facebook Login, Facebook Analytics, Facebook Share.
+
+- Samsung Health: AutoNavi, Google Firebase, Google Analytics, Google Tag Manager.
+
+- Suunto: Braze, Google Firebase, CrashLytics, Facebook Login, Facebook Share, HelpShift, Mapbox.
+
+- Withings Health Mate: Google Firebase, CrashLytics, Huawei (HMS) Core.
+
+- Zepp: AutoNavi, Facebook Login, Facebook Analytics, Facebook Share.
+
+- Amazon Alexa: Amazon Ads, Amazon Analytics, Bugsnag, Google Firebase, Metrics.
+
+- Google Home: Google Firebase, Google Analytics.
+
+- Gosund: Google Firebase, Flurry, CrashLytics, Facebook Login, Facebook Analytics, Facebook Places, Facebook Share.
+
+- Samsung SmartThings: MS Visual Studio Analytics, MS Visual Studio Crashes.
+
+- Philips Hue: Braze, Google Firebase, CrashLytics.
+
+- Yeelight: Google Firebase, CrashLytics.
+
+- Wiz: Google Firebase, CrashLytics, Facebook Login, Facebook Analytics, Facebook Places, Facebook Share, HelpShift.
+
+- Wipro: Google Firebase.
+
+# Appendix A. List of Identified Outdated Dependencies per App
+The following list contains every outdated dependency we found per device. The categorization that took place is based on each outdated version and the parenthesis occurs of how many open CVE IDs the relevant outdated version contains, separated on the severity level, i.e., medium (M), high (H), or critical (C).
+
+- ASUS Router, OpenSSL 1h (10M/8H/3C).
+
+- D-Link WiFi, jQuery 1 (1M).
+
+- MyFRITZ!App, OpenSSL 1p (4M).
+
+- Linksys, jQuery 3 (1H).
+
+- Mikrotik Pro, SQLite 3 (2H/1M), and OpenSSL 1 (4M).
+
+- Mi Wi-Fi, OpenSSL 1h (10M/8H/3C).
+
+- Netgear Nighthawk, Python 2 (1M/2H/1C), and OpenCV 3 (2M/3H).
+
+- TP-Link Tether, SQLite 3 (1M/1H), and OpenSSL 1b (1M).
+
+# Sensors 2022, 22, 513
+• LGThinQ, libcurl 7 (1H/2C).
+
+• RemoteNOW, expat 2 (1M/5H/1C).
+
+• HiLookVision, Libjpeg 1 (1M/1H), and OpenSSL 1c (13M/13H/7C), 1k (6M), 1q (1M), and 1p (3M).
+
+• iVMS-4500, OpenSSL 1c (13M/13H/7C), and 1k (6M).
+
+• Mi Home, SQLite 3 (1M/1H), Libjpeg 1 (1M/1H), OpenSSL 1b (1M), 1k (6M), and 1n (3M), Python 2 (1M/2H/1C), libpng 1beta03 (1C), and 1 (1C), OpenCV 4 (2M/3H), zlib 1 (2H/2C).
+
+• mydlink, OpenSSL 1g (10M/8H/3C).
+
+• Wyze, SQLite 3 (1M/1H), OpenSSL 1b (1M).
+
+• Garmin Connect, Python 2 (1M/2H/1C), and OpenCV 2 (2M/17H).
+
+• Fitbit, SQLite 3 (1M/3H).
+
+• Mi Fit, libjpeg 1 (1M/1H), and Python 2 (1M/2H/1C).
+
+• Polar Flow, SQLite 3 (1M/1H).
+
+• Amazon Alexa, SQLite 3 (1M/2H/1C).
+
+• Samsung SmartThings, SQLite 3 (2M/2H/1C).
+
+• Wiz, 1k (6M).
+
+• Wipro, SQLite 3 (1M/1H), libjpeg 1 (1M/1H), OpenSSL 1g, and 1e (1M), Python 2 (2M/2H/2C), and 2 (2M/17H), ffmpeg 3 (11M/5H/1C).
+
+# Sensors 2022, 22, 513
+#aff (accessed on 12 September 2021).
+
+12. Launch Mode|Android Developers. Available online: https://developer.android.com/guide/topics/manifest/activity-element (accessed on 12 September 2021).
+
+13. Hwang, S.; Lee, S.; Ryu, S. All about activity injection: Threats, semantics, detection, and defense. Softw. Pract. Exp. 2020, 50, 1061–1086. [CrossRef]
+14. Li, L.; Bissyandé, T.F.; Klein, J.; Traon, Y.L. An Investigation into the Use of Common Libraries in Android Apps. In Proceedings of the IEEE 23rd International Conference on Software Analysis, Evolution, and Reengineering, SANER 2016, Suita, Osaka, Japan, 14–18 March 2016; IEEE Computer Society: Washington, D.C., USA, 2016; Volume 1, pp. 403–414.
+
+15. Taylor, V.F.; Beresford, A.R.; Martinovic, I. Intra-Library Collusion: A Potential Privacy Nightmare on Smartphones. arXiv 2017, arXiv:1708.
+
+16. Backes, M.; Bugiel, S.; Derr, E. Reliable Third-Party Library Detection in Android and its Security Applications. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security, Vienna, Austria, 24–28 October 2016; Weippl, E.R., Katzenbeisser, S., Kruegel, C., Myers, A.C., Halevi, S., Eds.; ACM: New York, NY, USA, 2016; pp. 356–367. [CrossRef]
+17. RELRO: RELocation Read-Only. Available online: https://medium.com/@HockeyInJune/relro-relocation-read-only-c8d0933faef3 (accessed on 12 September 2021).

@@ -1,0 +1,31 @@
+Funding: “This research received no external funding”
+Conflicts of Interest: “The authors declare no conflict of interest.”
+Received: Dec 20, 2019
+Revised: March 21, 2020
+Accepted: May 1, 2020
+DOI: 10/zenodo
+# Journal of Cybersecurity and Information Management (JCIM)
+# Vol. 3, No. 1, PP. 14-20, 2020
+# Journal of Cybersecurity and Information Management (JCIM)
+Vol. 3, No. 1, PP. 14-20, 2020
+1. Shuying Liang, Weibin Sun, and Matthew Might. 2014. Fast flow analysis with godel hashes. In Source Code Analysis and Manipulation (SCAM), 2014 IEEE 14th International Working Conference on. IEEE, 225–234.
+
+2. Yepang Liu, Chang Xu, Shing-Chi Cheung, and Valerio Terragni. 2016. Understanding and detecting wake lock misuses for android applications. In Proceedings of the 2016 24th ACM SIGSOFT International Symposium on Foundations of Software Engineering. ACM, 396–409.
+
+3. Laurens van der Maaten and Geoffrey Hinton. 2008. Visualizing data using t-SNE. Journal of machine learning research 9, Nov (2008), 2579–2605.
+
+4. Vinod Nair and Geoffrey E. Hinton. 2010. Rectified Linear Units Improve Restricted Boltzmann Machines. In Proceedings of the 27th International Conference on International Conference on Machine Learning (ICML’10). Omnipress, USA, 807–814. h.p://dl.acm.org/citation.cfm?id=3104322
+5. Vlad Niculae. [n.d.]. A library for factorization machines and polynomial networks for classification and regression in Python. Retrieved 5-22-19 from h.ps://github.com/scikit-learn-contrib/polylearn
+6. Damien Octeau, Daniel Luchaup, Matthew Dering, Somesh Jha, and Patrick McDaniel. 2015. Composite constant propagation: Application to android inter-component communication analysis. In Proceedings of the 37th International Conference on Software Engineering-Volume 1. IEEE Press, 77–88.
+
+7. Lucky Onwuzurike, Enrico Mariconti, Panagiotis Andriotis, Emiliano De Cristofaro, Gordon Ross, and Gianluca Stringhini. 2019. MaMaDroid: Detecting Android Malware by Building Markov Chains of Behavioral Models (Extended Version). ACM Trans. Priv. Secure. 22, 2, Article 14 , 34 pages. h.ps://doi.org/10/3313391
+8. F. Pedregosa, G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O. Grisel, M. Blondel, P. Prettenhofer, R. Weiss, V. Dubourg, J. Vanderplas, A. Passos, D. Cournapeau, M. Brucher, M. Perrot, and E. Duchesnay. 2011. Scikit-learn: Machine Learning in Python. Journal of Machine Learning Research 12 (2011), 2825–2830.
+
+9. Naser Peiravian and Xingquan Zhu. 2013. Machine learning for android malware detection using permission and api calls. In Tools with Artificial Intelligence (ICTAI), 2013 IEEE 25th International Conference on. IEEE, 300–305.
+
+10. Steffen Rendle. 2010. Factorization machines. In Data Mining (ICDM), 2010 IEEE 10th International Conference on. IEEE, 995–1000.
+
+Received: Dec 20, 2019
+Revised: March 21, 2020
+Accepted: May 1, 2020
+DOI: 10/zenodo.

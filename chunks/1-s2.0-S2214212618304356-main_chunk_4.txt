@@ -1,0 +1,40 @@
+A third-party library that does not read private information is considered secure. There is no risk of privacy leakage, so the risk level of this third-party library is labeled as 0. For a third-party library that reads privacy data but does not initiate a network connection, its privacy leakage risk is low, so it is labeled as 1. For a third-party library that reads the privacy data, and it also initiates a third-party network connection there is a high risk of privacy leakage, so it is labeled as 2. The risk level of a third-party library can be used in fine-grained privacy access control, we will discuss it in more detail in Section 5.
+
+Privacy data leakage statistics.
+
+# 4. Statistics of third-party library privacy leakage risk
+Each privacy leakage path of an App is recorded in detail in the privacy log, and the exposure risk of each privacy leakage path is analyzed and classified according to the privacy leakage scenario, as shown in Fig. 13.
+
+We analyze 150 Apps’ privacy logs and categorize privacy flows based on privacy type and privacy leakage path. After removing the duplications, we get 1909 privacy-related call chains. Specific classification statistics are shown in Table 11.
+
+The statistics of the categories of privacy data and privacy leakage paths are shown in Figs 14 and 15. We can see that IMEI, IMSI, location information, are the most frequently leaked information. IMEI information is often used to track users, and Apps usually obtain geographic location information through third-party libraries to ensure a more stable location service. The observation indicates that the previous privacy data protection schemes which deny third-party libraries the permissions to access privacy data are likely to affect the normal functions of the App, so that...
+
+# 4. Third-party library privacy risk assessment
+We summarize the leaked privacy data of popular third-party libraries’ privacy flows, as shown in Table 12.
+
+# Privacy behavior statistics of third-party libraries.
+
+# 4. Accuracy evaluation
+Based on analysis of the privacy log, 10 applications involving more privacy types are selected from the test set, and static analysis of the privacy leakage path is carried out manually, which is considered as the ground truth. The manual analysis is compared with the results of our tool to calculate accuracy, which is shown in Table 14.
+
+Our tool discovers 156 privacy leakage paths. There are 152 correct paths, 4 false paths, and the correct rate reaches 97%. The main reason for the errors is that the third-party library detection tools cannot accurately identify the third-party libraries integrated into the application. Matching the call chain with an inaccurate third-party library list results in errors in the analysis result.
+
+Through the complete manual analysis of the API functions used to read privacy in the App, we find that our Xposed privacy monitor module can cover all these APIs, accurately identify the leakage path of privacy data in the running of an App, and will not miss out any privacy flow. So this module can attain high accuracy.
+
+# 4. Performance evaluation
+In our tool, the running time of the module of detecting all third-party libraries of an App takes around 10–40 seconds. However, this module executed only once for an App before launching. Meanwhile, the other two modules of monitor and analysis are running while the Apps are running, so we focus on discussing the performance of these two modules.
+
+The privacy log has the records of the time when the privacy APIs are called and when the tool detects the privacy leakage. The time delay of leakage detection is about 28 milliseconds, which means that the tool introduces small latency. In addition, we evaluate the overall performance by an Android benchmark tool with four indicators including RAM performance, CPU integer performance, CPU floating point performance and millions of floating point operations per second. The results of the comparison between the system installing our tool and the original system are shown in Table 15. The experiment shows that our tool has little impact on system performance and does not degrade user experience significantly.
+
+# 5. Discussion
+In this section, we discuss a few important issues not addressed in this paper and the future research directions.
+
+# Y. He, X. Yang and B. Hu et al. / Journal of Information Security and Applications 46 (2019) 259–270
+# Third-party libraries privacy risk analysis.
+
+# Accuracy analysis result.
+
+# Performance evaluation.
+
+# Conclusions
+Libraries inside Apps play an important role in privacy leakage. After we identify four types of privacy leakage paths between components of an App, we propose a dynamic and fine-grained tool for privacy leakage analysis based on Xposed to analyze the privacy leakage behaviors of the third-party libraries in Apps in real time. Our tool first identifies the third-party libraries inside an App, and then extracts call chains of the privacy source and sink functions. By distinguishing between the host App and the third-party libraries, our tool evaluates the privacy leakage risk of the third-party libraries according to the risk assessment criteria. We conduct experiments on 150 Apps and the third-party libraries inside them. The experimental results show that the third-party libraries have different behaviors in privacy leakage, and pose different privacy leakage risk to both App developers and users..

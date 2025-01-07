@@ -1,0 +1,42 @@
+In the early 1980s, would also see Intelligent Computer-Assisted Instruction (ICAI) and ITS goals diverge from their roots in CAI. With CAI increasingly focused on deeper interactions with content created for a particular area of interest, ITS sought to create systems that focused on knowledge of the task and the ability to generalize that knowledge in non-specific ways . The main objectives set for the intelligent tutoring system were to be able to teach a task as well as to carry out, and adapt dynamically with its mode. In moving from the CAI system to the ICAI systems, the computer will have to distinguish not only between the correct and false response but the incorrect response type to adjust the type of instruction. Research on Artificial Intelligence and Cognitive Psychology has fueled the new principles of ITS. Psychologists considered how computers can solve problems and perform 'intelligent' activities. The ITS should be able to represent, store, retrieve, and even search its own database to derive its own new knowledge to answer learners' questions. Essentially, the early specifications of ITS or ICAI require "to diagnose errors and modify processing according to diagnosis". The idea of diagnosis and treatment is still in use today when ITS programming.
+
+After implementing the initial ITS, more researchers created a number of ITS for different students. In the late 20th century, Intelligent Tutoring Tools (ITTs) were developed by the Byzantium Project, which included six universities. ITTs were builders of the general-purpose tutoring system and many institutions had positive feedback during their use. . This ITT originator will produce an Intelligent Tutoring Applet (ITA) for various fields. Various teachers created ITAs and built a large inventory of knowledge that others could access online. Once ITS is created, teachers can copy and modify it for future use. This system was effective and flexible. However, Abu-Naser believed that ITS was not designed from an educational point of view and was not developed based on the actual needs of students and teachers. Recent work has used ethnographic research and design methods to examine methods used by students (ITSs) and teachers in a range of contexts, often revealing unexpected needs that they meet or fail to meet, or in some cases, even create.
+
+ITSs in modern times try to replicate the role of teacher or teaching assistant, and increasingly lead to the automation of pedagogical functions such as problem generation, problem selection, and feedback generation. However, given the current shift towards blended learning models, the recent work in ITS focuses on ways in which these systems can effectively enhance the complementary strengths human-led instruction from a teacher or peer, when used in classrooms or other social contexts are located.
+
+There were three ITS projects that were based on the conversational dialogue: Auto-Tutor, Atlas and Why2. The idea behind these projects was that as students learn better by building their own knowledge, the programs will start with the students' key questions and give answers as a last resort. Auto-Tutor students focused on answering computer technology questions. Atlas students focused on solving quantitative problems, and Why2 students focused on explaining physical systems in a qualitative way. Other similar educational systems such as Andes tend to offer students immediate hints and comments when students have difficulty answering questions. They can guess their answers and get the correct answers without a deep understanding of the concepts. The research was conducted with a small group of students using Atlas and Andes respectively. The results showed that students using Atlas improved significantly compared to students who used Andes. However, since the above-mentioned systems require an analysis of student dialogues, improvements still need to be made to manage more complex dialogues [22,37-43].
+
+# 2 Features of ITS
+ITS has many features such as :
+- Generativity: The ability to generate appropriate problems, hints, and customized help for students' learning needs.
+
+- Student modeling: The ability to represent the student's current knowledge and learning needs and to respond to them by providing instruction.
+
+- Expert modeling: A representation and reason about the performance of experts in the domain and the implicit ability to respond by providing instructions.
+
+- Mixed initiative: The ability to initiate interactions with the student, as well as to explain and respond to the interactions initiated by the student.
+
+- Interactive learning: Learning activities that require real student participation and are context-appropriate and appropriate for the domain.
+
+- Instructional modeling: The ability to change the teaching method based on inferences about student’s learning.
+
+- Self-improving: The ability of the system to monitor, evaluate and improve the performance of its teaching based on its experience with former students.
+
+# 2 Study Community
+The target audience for the proposed ITS is teachers working in the field of teaching Android applications development, as well as students who want to learn the development of Android applications or belong to a university department that gives university degrees in the development of mobile applications.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 3. Literature Review
+Information Technology has many studies on artificial intelligence and intelligent tutoring. In this part of the study, the researchers reviewed what was written in the previous studies, either directly or indirectly. The researchers will present and analyze some of the previous studies that have been obtained, which are relevant to the subject of the current study, and the previous studies were presented according to their importance for the current study.
+
+- The study of (Al-Shawwa et. al., 2019). An Intelligent Tutoring System for Learning Java
+Java is one of the most widely used languages in Desktop developing, Web Development and Mobile Development, so there are many lessons that explain its basics, so it should be an intelligent tutoring system that offers lessons and exercises for this language. Why tutoring system? Simply because it is one-one teacher, adapts with all the individual differences of students, begins gradually with students from easier to harder level, save time for teacher and student, the student is not ashamed to make mistakes, and more. In this paper, The authors describe the design of an Intelligent Tutoring System for teaching Java to help students learn Java easily and smoothly. Tutor provides beginner level in Java. Finally, The authors evaluated our tutor and the results were excellent by students and teachers.
+
+- The study of (Alshawwa et. al., 2019). An Intelligent Tutoring System for Learning Computer Network CCNA
+Networking is one of the most important areas currently used for data transfer and enterprise management. It also includes the security aspect that enables us to protect our network to prevent hackers from accessing the organization's data. In this paper, The authors would like to learn what the network is and how it works. And what are the basics of the network since its emergence and know the mechanism of action components. After reading this paper-even if you do not have a general background on networking-you will be able to manage your own network and be able to distribute and control your IP.
+
+- The study of (Bakeer et. al., 2019). An Intelligent Tutoring System for Learning TOEFL
+An e-learning system is increasingly gaining popularity in the academic community because of several benefits of learning anywhere anyplace and anytime. An Intelligent Tutoring System (ITS) is a computer system that aims to provide immediate and customized instruction or feedback to learners, usually without requiring intervention from a human teacher. (ITSB) is the tutoring system Builder Which designed and improved to help teachers in building intelligent tutoring system in many fields. In this paper, The authors have an example and an evaluating are presented of building an intelligent tutoring system for teaching TOEFL using ITSB tool.

@@ -1,0 +1,60 @@
+# Applying Spectrum-Based Fault Localization to Android Applications
+Euler Horta Marinho
+Federal University of Minas Gerais
+Brazil
+eulerhm@dcc.ufmg.br
+Fischer Ferreira
+Federal University of Ceara
+Brazil
+fischer.ferreira@sobral.ufc.br
+João P. Diniz
+Federal University of Minas Gerais
+Brazil
+jpaulo@dcc.ufmg.br
+Eduardo Figueiredo
+Federal University of Minas Gerais
+Brazil
+figueiredo@dcc.ufmg.br
+# ABSTRACT
+The pressing demand for high-quality mobile applications has a major influence on Software Engineering practices, such as testing and debugging. The variety of mobile platforms is permeated with different resources related to communication capabilities, sensors, and user-controlled options. As a result, applications may exhibit unexpected behaviors and resource interactions can introduce failures that manifest themselves in specific resource combinations. These failures can affect the quality of mobile applications and degrade the user experience. To reduce human effort of manual debugging, several techniques have been proposed and developed aiming to partially or fully automate fault localization. Fault localization techniques, such as Spectrum-based Fault Localization (SBFL), identify suspicious faulty program elements related to a software failure. However, we still lack empirical knowledge about the applicability of fault localization techniques in the context of mobile applications, specifically considering resource interaction failures. To address this problem, this paper evaluates the use of SBFL aiming to locate faults in 8 Android applications and verify the sensitivity of SBFL to variations in resource interactions. We rely on mutation testing to simulate faults and on the Ochiai coefficient as an indicator of the suspicious faulty code. Our results indicate that SBFL is able to rank more than 75% of the faulty code in 6 out of 8 applications. We also observed that the ranking of suspicious code varies depending on the combination of enabled resources (e.g., Wi-Fi and Location) in the mobile applications.
+
+# CCS CONCEPTS
+• Software and its engineering → Software testing and debugging.
+
+# KEYWORDS
+mobile applications, resource interactions, fault Localization, SBFL
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+© 2023 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+
+ACM ISBN 979-8-4007-0787-2/23/09. . . $15
+https://doi.org/10/3613372
+# ACM Reference Format:
+Euler Horta Marinho, Fischer Ferreira, João P. Diniz, and Eduardo Figueiredo. 2023. Applying Spectrum-Based Fault Localization to Android Applications. In XXXVII Brazilian Symposium on Software Engineering (SBES 2023), September 25–29, 2023, Campo Grande, Brazil. ACM, New York, NY, USA, 10 pages. https://doi.org/10/3613372
+# 1 INTRODUCTION
+The growth of the mobile application market, for instance, due to the popularity of application store, has brought new challenges to their development and testing. For instance, the pressing demand for high quality applications has an important influence on Software Engineering practices, such as testing and debugging . Testing is one of the most important approaches to quality assurance in the field of mobile applications, as evidenced by several secondary studies . For a proper software testing, we also need debugging which is another quality assurance activity aimed at the localization and removal of faults . Nevertheless, manual debugging can be extremely challenging, tedious, and costly, since it relies heavily on the software developer experience, judgment, and intuition to identify and prioritize code that is likely to be faulty . Therefore, developing techniques have been proposed aiming to partially or fully automate fault localization while reducing human effort.
+
+Fault localization techniques aim to identify faulty program elements related to software failures using static or run-time information to determine the root cause of the failure . Some of these techniques, such as Spectrum-based Fault Localization (SBFL), can produce a ranked list of suspicious code elements for developers, reducing their effort for manual fault checking . Intuitively, the more a code element is executed by failing test cases, the more suspicious it is . An SBFL technique often calculates suspiciousness scores using a ranking metric also known as a risk evaluation formula . Ochiai , DStar , and Tarantula  are among the most common metrics for this purpose.
+
+Several techniques have been proposed and evaluated for fault localization . Nonetheless, these techniques must be assessed for mobile applications, since they may demand tailored quality assurance approaches due to mobile specific characteristics . For instance, debugging mobile applications is challenging and the localization of the faulty code may not even be apparent from the stack trace.
+
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+Marinho, et al.
+
+Mobile applications typically run on a variety of platform configurations . Each platform configuration relies on a different set of enabled platform resources making application testing and debugging more challenging. Application resources can be related to communication features (e.g., Wi-Fi and GPS), sensors (e.g., Accelerometer and Gyroscope), and user-controlled options (e.g., Battery Saving and Do Not Disturb). Some of these resources can be managed directly through system-level settings, such as the Android Quick Settings1, which allow the user to customize many system or application behaviors . However, applications may exhibit unexpected behavior due to failures that manifest themselves in certain combinations of enabled resources . According to Sun et al. , failures involving two resources are critical but not very common in mobile applications. Another study  found a greater number of this type of failure.
+
+In this work, we evaluate the use of the SBFL technique  aiming to locate faults in Android applications and verify the sensitivity to resource interaction failures. We use faults seeded from mutation operators in order to conduct the experimental study and rely on the Ochiai coefficient as an indicator of the suspicious faulty code . Although there are many metrics for calculating the suspiciousness score, the Ochiai coefficient is considered one of the metrics with the best performance . Despite the Ochiai coefficient being preliminarily used in mobile applications , we still lack knowledge about its applicability in the context of open source mobile applications, especially with respect to resource interaction failures, since the SBFL was not designed for these types of failures. Testers and developers may neglect to properly test and debug mobile applications considering resource interactions because they lack knowledge about such failures . In consequence, these failures may occur during everyday use of the mobile application, while they are not noticeable during the testing and debugging activities.
+
+To achieve our goal in this study, we follow four steps. First, we select 8 open source applications from GitHub used in our previous study . Second, we use a tool  to generate mutants for each target application. We generate mutants for two groups of classes, i.e., classes that use APIs2 of resources (resource-related classes) and classes that do not use such APIs (general classes). Third, we execute the test suites for each mutant and collect code coverage metrics. We then investigate the sensitivity of SBFL when there are variations in resource settings, a known source of application failures as demonstrated in previous studies . Finally, we analyze the test reports to calculate the Ochiai coefficient for each application aiming to locate the faulty code. Our analysis is performed at the method-level. Therefore, SBFL reports the suspiciousness score for the methods.
+
+Our results indicate that SBFL is able to rank more than 75% of the faulty methods for 6 applications. However, there is no evidence of a difference in the ranking coefficient between faults in resource-related classes and faults in general classes. Regarding the sensitivity of SBFL to variations in resource settings, we found a major influence of resource settings on the suspiciousness score.
+
+# 2 BACKGROUND
+In this section, we present an overview of concepts of Spectrum-based fault localization (Section 2), mutation testing (Section 2), and resource interactions in mobile applications (Section 2).
+
+# 2 Spectrum-based fault localization
+SBFL is a technique based on the analysis of the program spectra or coverage , i.e., the program elements covered during a test execution . These elements can be of different granularity level, e.g., statements, blocks, predicates, methods, etc. We focus on method-level fault localization in this paper. Many SBFL techniques use ranking metrics to associate a suspiciousness score to the program elements. These techniques produce as output a list of elements ranked in descending order of suspiciousness.
+
+The metrics used to calculate the suspiciousness score are the major concern for the design of a SBFL technique. Several metrics have been proposed to indicate faulty elements . Tarantula  was the first metric proposed exclusively for fault localization. The Ochiai  coefficient was adapted from Molecular Biology. Often, the metrics are defined in terms of four values collected from the execution of the tests :
+- 𝑒𝑓: number of failed tests that execute the program element.

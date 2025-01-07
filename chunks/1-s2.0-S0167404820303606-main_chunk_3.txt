@@ -1,0 +1,65 @@
+# 4. Backward and forward citation
+# 4. Research publication selection
+Results of final selection of publications are described in the Table 5. In Row 1, keyword-based search is performed on the research databases and initial set of papers are obtained. The search engine of each database treats the search query differently; therefore, initial filtration is performed over the initial set of papers as specified in Row 2. Row 3 shows the merged results from all the databases. Finally, selection criterions’ consisting of inclusion and exclusion criteria are applied to get the final set of selected papers. This process yields total of 200 research publications required to carry out this SLR.
+
+Distribution of published papers in journals such as IEEE, ACM, Elsevier, and Springer is shown in Fig. 6. IEEE and ACM digital library form the largest share of published papers followed by Springer and Elsevier. Others include publications from IGI Global, Wiley and non-official proceedings such as arXiv.
+
+Citation chaining or reference mining is a method to expand the research. It identifies additional relevant articles by reviewing the cited works/bibliographies/references list of a specific article from the search list (Citation chaining in Google Scholar and PubMed, 2020). The article can be traced both in backward and forward direction.
+
+# 5. Taxonomy construction
+After retrieving the relevant papers, taxonomy based on Android security analysis is constructed using properties and dimensions from the existing literature. This taxonomy of information will be helpful in order to (1) answer the above enumerated RQs, (2) provide systematic assessment of each paper, and (3) present a basis for categorizing and comparing the different approaches. The aforementioned surveys or SLRs described in Section 3, though relevant and useful, are not sufficient enough to categorise Android security analysis approaches.
+
+1. Backward Chaining – It helps in finding those articles that are cited in the existing resources. It identifies past resources regarding the same topic.
+
+2. Forward Chaining – It helps in finding those articles that cite the existing resources. Research databases such as Web of Science and Scopus are used for forward chaining. They show a list of references for a particular work if that item has been cited by other works in those particular databases.
+
+Thus, we have defined the novel taxonomy to help classify existing work in this domain. Fig. 7 describes the defined taxonomy.
+
+# Computers & Security 100 (2021) 102087
+# 5. Android security analysis objectives
+This dimension identifies different objectives for which analyses are performed. Several security issues are addressed while performing such analyses. Some of these are permission management concerns, code verification problems, automation of test case generation, private data leaks, clone detection, assessing code efficiency in terms of energy consumption, etc. This SLR identifies 9 objectives of Android security analysis approaches. The statistics of the different approaches targeting these objectives are also presented as follows.
+
+1. Permission exploitation: Permission-based security model forms the basis of Android architecture. Permissions must be granted to access the system resources. However, some inherent risks are associated with the permissions since apps can leverage extra permissions what they actually need . Malicious apps can control permissions and can launch different types of attacks such as data loss attacks, data integrity attacks, DoS and Distributed DoS (DDoS) attacks.
+
+2. Passive content leaks: It is also referred to as leaking private data. Privacy of data is the major concern among Android researchers. Potential privacy data leaks include phone information, WiFi data, GPS location, audio recorded with the microphone, etc.
+
+3. Code verification: The purpose of the code verification is to ensure the correctness of a given app. There are very few works addressing this purpose. Cassandra  checks whether apps in Android are in compliance with their privacy requirements before app installation.
+
+4. Misusing cryptography techniques: Implementation issues in cryptography are another cause of concern among the researchers. Cryptography misuse includes validation failure in the SSL/TLS resulting in man in the middle (MITM) attacks that violate the system authentication. CMA  analyses cryptography misuse using crypto misuse analyzer.
+
+5. Vulnerability detection: Android suffers from large number of security vulnerabilities. Intent injection and content hijacking are most common vulnerabilities in Android. Intent injection occurs due to the execution of arbitrary code by manipulating the user data. Content hijacking occurs when private and protected resources are accessed in an unauthorised way through exported components in vulnerable apps. Epicc  uses static analysis for detecting inter-component vulnerabilities.
+
+6. Energy consumption: Modern smartphones with large screen sizes have high energy consuming components. Battery stand-by time is a major concern for mobile devices. According to Li et al.  modern smart-
+# Android Security Analysis
+# Objective
+Femi-sions
+Lak
+Cude
+Cryptography
+Vulnerability
+Enctgy
+Test ese
+Clone
+Malware
+# Techniques
+Phones consume more energy when the light colors are displayed compared to dark colors. They investigated that the energy consumption could be reduced by 40% by building dark background color web pages for the mobile systems to generate efficient web pages.
+
+1. Test case generation: Test case generation provides a set of test cases that are executed for automatic and repeatable testing. Symbolic execution is performed on the source code to ensure the reachability of branches. As an example, SIG-Droid  is a framework for system testing of Android apps. It automatically generates test cases through symbolic execution using interface model and behavior model. Interface model finds the values that a given app can receive, whereas behavior model generates the sequences of events to drive the symbolic execution.
+
+2. App Cloning: Researchers have used several analysis approaches to detect app cloning in Android. According to Mojica et al. (2013) app cloning is very common in mobile apps. In another work, AnDarwin  has proved to be efficient in detecting the cloned apps.
+
+3. Malware detection: Vulnerabilities in Android are increasing leading to malware attacks. Malware can be of different types such as spyware, adware, Trojan, ransomware, etc., which can have a potential impact on the system. Therefore, modern studies are focusing more on malware detection.
+
+Primary research publications serving these 9 objectives are enumerated in Table 6. Due to space constraints, these security objectives are represented in 25 clusters with the count of publications in each cluster as shown Fig. 8. Fig. 9 shows the statistics of the publications focusing on these security objectives. It is seen that majority of the studies focus on vulnerability detection (32%) followed by privacy leaks (28%) and malware detection (18%).
+
+# 5. Android analysis techniques
+The second dimension of the taxonomy, which tries to answer RQ1, is concerned with classifying the different techniques used in Android security analysis. There are four different program analysis techniques leveraged in the security domain of Android. These are Static, Dynamic, Hybrid and ML.
+
+Static analysis examines the potential behavior of the program structure. These techniques parse the program source code or bytecode by traversing the program paths to check the properties of the program. Dynamic analysis observes the actual behavior of the program at runtime. In addition to pure static or dynamic techniques, there are hybrid techniques that leverage benefits from both static and dynamic techniques. In hybrid techniques, static analysis is first used to detect potential security concerns, and then dynamic analysis is used to eliminate the false warnings, thereby improving their precision. Apart from these techniques, other supplementary techniques such as ML are also used to complement the analysis. The program analysis either provides the input for, or consumes the output of, the supplementary techniques.
+
+Each technique has its own merits and demerits according to their intrinsic properties. Static analysis techniques are sound and conservative however, dynamic analysis techniques are unsound but precise . In case of dynamic analysis, certain events are required to run the application.
+
+# Computers & Security 100 (2021) 102087
+# 12
+# Computers & Security 100 (2021) 102087
+Since it is not possible to record all the events at a time and so the provided test cases are likely to be incomplete, therefore, apps behaviors are captured. These results in false negatives, i.e., vulnerabilities or malicious behaviors are missed in the security analysis. Moreover, dynamic analysis approaches are often deceived by advanced malware, such as anti-taint tracking techniques bypass the dynamic taint analyses . Hybrid techniques have their own limitations that inhibit them from delivering impeccable results. It is seen that hybrid techniques have produced the worst results as those of static and dynamic techniques. ML approaches require large volume of data for training and hence demand for considerable amount of system resources and high computational power however, these problems can be resolved using DL.

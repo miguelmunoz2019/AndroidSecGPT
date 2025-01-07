@@ -1,0 +1,46 @@
+# 7 Evaluation
+# 7 Dataset and Configuration
+We collect 9 popular Android third-party libraries  including Butterknife , Dropbox , EventBus , Glide , Gson , Leakcanary , Okhttp , Picasso  and Retrofit , with a total of 173 security commits over 83 different versions to evaluate our system. Table 2 shows the library names, total number of security commits as well as the associated library versions.
+
+We first collect ground truth based on commit information in Github repositories to gather the vulnerability information for all the 173 security commits. Vulnerability types proposed in prior research  to these security related commits are presented in Table 3. As shown, our representative dataset covers a wide range of different types of vulnerabilities.
+
+Then, we compile libraries into a number of testing versions with two requirements: 1). each testing version contains at least one security commit; 2). these testing versions cover all the security commits and version numbers that are listed in Table 2. Finally, we develop Android apps that utilize these testing versions. For each testing version other than the latest one, we feed the Android apps with these versions along with the latest version of each library into LIBBANDAID for evaluation. For instance, Butterknife library has 6 security commits from version 7 to 8. We compile 6 testing versions v1 to v6 to guarantee each one will contain at least 1 commit. Then we develop 5 Android apps a1 to a5 that use testing versions v1 to v5 and feed (a1,v6), (a2,v6),..,(a5,v6) into LIBBANDAID for experiments.
+
+Furthermore, we collect 100 real-world Android apps from F-Droid  to demonstrate LIBBANDAID in practice. On average, the size of these apps is 4MB and they contain 7 TPLs per app. We handpick these apps since they all contain
+284 22nd International Symposium on Research in Attacks, Intrusions and Defenses USENIX Association
+at least one of the 9 libraries described above. Therefore, we can use the latest versions of these TPLs to update the apps.
+
+# 7 Effectiveness of LIBBANDAID
+As discussed, we feed each Android app that contains an older version library along with the latest version into LIBBANDAID, and then manually investigate the updated libraries to see if the commits have been updated.
+
+Security commits can be divided into three categories: 1). ‘patched’; 2). ’fail to patch’; and 3). ’potentially patchable’. ’patched’ means our system can successfully update the library with the commit. ‘fail to patch’ shows the commits that are filtered out because of to the violation of our pre-defined rules. ‘potentially patchable’ indicates the commits that change the APIs of the library. LIBBANDAID may still update the ‘potentially patchable’ ones as long as the analyzed Android apps do not directly invoke the changed APIs.
+
+By Absolute Numbers. Figure 4 gives the results in absolute numbers for the 9 libraries. The x-axis shows each execution of LIBBANDAID while y-axis is the absolute number of vulnerabilities. For example, the x-axis in Figure 4b gives the 9 executions from (a1,v10) to (a9,v10) for Dropbox library and the y-axis shows the number of security commits updated for each run. By looking at the first bar in the figure, we can see that there are total of 11 vulnerabilities between the old and new versions of the library. LIBBANDAID is able to fix 7 of them but fails in 2. Moreover, there are 2 security commits that change the APIs, so we mark them as ‘potentially patchable’.
+
+From the 9 figures, 2 libraries (Butterknife and Picasso) are shown to have no ‘fail to patch’ commit (no yellow bar) for all the versions. And for the rest 7 libraries, ‘fail to patch’ commits only take up a small average potion of total numbers across all executions. (a9,v10) execution in Okhttp (Figure 4g) is the worst case in our evaluation in which it has 1 ‘fail to patch’ commit out of 3. Further investigation shows these commits could potentially lead to protocol changes due to the fact that Okhttp is an HTTP client and performs considerable amount of network communications. A more interesting observation is that the ‘fail to patch’ commits will disappear in many libraries when the outdated library becomes more recent and closer to the latest version. For Gson library in Figure 4e, starting from (a5,v10), the ‘fail to patch’ commit is gone.
+
+From the experiments, LIBBANDAID could achieve an average success rate of 80% for updating security commits and even a higher rate of 94% when combining with the ‘potentially patchable’.
+
+# By Vulnerability Categories
+We then examine the categories of vulnerabilities that LIBBANDAID fails to update. The results are exhibited in Table 4. It shows the breakdown of vulnerabilities and the number of failures for that security commit if LIBBANDAID fails to update in all executions.
+
+We find that among all kinds of security vulnerabilities, Info Leak is most likely to fail (1 failed in 3 total commits). In general, vulnerabilities that are related to IO exceptions and information processing (e.g., input validation, data handling) also bear relatively high failure rates. This result is expected since the updates to these vulnerabilities are most likely to affect the interactions between the library and the system or the server. Therefore, the filtering process in LIBBANDAID is triggered.
+
+Observations. Two observations can be made from the above experimental results. First, our assumption made in Section 2 (security patches usually do not introduce backward incompatibility or change how the TPL interacts with other components) holds in practice. Second, LIBBANDAID performs better in updating relatively newer version of the library. This is because the newer the library is, the less code changes it has compared to the latest version. As a result, fewer and smaller slices will be generated and they are less likely to be filtered out by LIBBANDAID.
+
+# 7 Correctness of LIBBANDAID
+The correctness of LIBBANDAID is demonstrated by performing random testing as well as manual investigation for the updated apps. To this end, we first use LIBBANDAID to update TPLs within the 100 real-world apps from F-Droid . Then, we collect apps with updated TPLs for testing.
+
+For random testing, we run Monkey, which is a popular UI/Application testing tool developed by Google, on every app with an updated library for 2 hours. Although we did observe some crashes, we have confirmed that they are bugs in the original apps. No new crash is introduced by LIBBANDAID. The results demonstrate that the updated library can function normally and pass the random testing successfully. Due to the code coverage issue for random testing, we augment it with manual investigation to try out all the combinations of UI components. Combined with Monkey, our testing achieves an average code coverage of 25% for all the updated libraries. A closer look shows that our testing covers 30% of the functions that are actually updated. Admittedly, the code coverage is still far from complete, however, the correctness of LIBBANDAID can still be demonstrated to-
+USENIX Association 22nd International Symposium on Research in Attacks, Intrusions and Defenses 285
+100% 100% 80% clear view for the advantage of our slicing over the traditional slicing in terms of over-conservativeness reduction.
+
+80% 60% 60% 40% 40% 20% 20% 0 5000 10000 15000 20000 0 2500 5000 7500 10000 12500
+# 7 Effectiveness of new slicing
+Finally, we evaluate the effectiveness of Value-sensitive Differential Slicing by comparing it with the traditional slicing algorithm. We seek to evaluate the algorithm by answering the two following questions:
+1. How well it performs in terms of over-conservativeness reduction?
+2. Can it help LIBBANDAID achieve better results?
+# Over-conservativeness Reduction
+We evaluate the effectiveness of Value-sensitive Differential Slicing by examining how much it could reduce the over-conservativeness across the 9 testing libraries. Figure 3 displays the cumulative distributions of the sizes of generated slices for traditional slicing as well as the new slicing with respect to the numbers of edges and nodes. The blue line indicates the new slicing algorithm while the yellow line represents the traditional slicing.
+
+From the figures, we can see that Value-sensitive Differential Slicing could effectively reduce the number of edges as well as nodes by at least one order of magnitude. For example, 100% of the generated slices by Value-sensitive Differential Slicing have less than 2,500 edges and 2,000 nodes. On the contrary, traditional slicing generates way larger slices up to 20,000 edges and 12,500 nodes. This information gives us a clear view for the advantage of our slicing over the traditional slicing in terms of over-conservativeness reduction.

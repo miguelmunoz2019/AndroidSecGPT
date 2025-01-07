@@ -1,0 +1,78 @@
+Content of a store (register or a field) into a register. Therefore, the resulting abstracted instruction belongs to the register-register or register-field categories. The first component of the resulting instruction is the destination register and the second component is the source store. Examples of the abstraction applied by Rule 1 are as follows:
+(iget − object, [(0, 0), (0, 0), (258, 3987, MainActivity; − > editor)])
+[0, MainActivity; − > editor].
+
+# 10
+# computers & security 109 (2021) 102395
+(iget − object, [(0, 0), (0, 0), (258, 3990, MainActivity; − > telephonyManager ))] [0, MainActivity; − > telephonyManager].
+
+# Rule 2.
+
+This rule abstracts also some of the category of read instructions. More specifically, Rule 2 treats the cases of assigning the value of an array location into a register. Therefore, the resulting abstracted instruction belongs to the register-register category, where the second component is the register ID holding the array reference.
+
+# Rule 3.
+
+This rule abstracts subset of the instructions in the write category. Rule 3 is similar to Rule 1. However, the order of components of the resulting abstracted instruction is reversed. An example of the abstraction applied by Rule 3 is as follows:
+(iput, [(0, 0), (0, 3), (258, 3986, webviewInterface; − > xInter )]) [webviewInterface; − > xInter, 0].
+
+# Rule 5.
+
+This abstracts the category of invoke instructions. This rule is effective when the invocation is for a method in M. In this case, the resulting abstracted instruction is a list of the string ’CALL’, the method id, argument registers, and operand list of the Dalvik instruction. An example of the abstraction applied by this rule is as follows:
+(invoke − direct, [(0, 3), (0, 0), (0, 1), (256, 249, f2(String, String))]) [CALL, f2, , [(0, 3), (0, 0), (0, 1), (256, 249, f2(String, String))].
+
+# Rule 6.
+
+This abstracts the category of invoke instructions. This rule is effective when the invocation is for a source method. In this case, the resulting abstracted instruction is a pair of the string ’SINK’ and a list of the register arguments including the leaked register. An example of the abstraction applied by this rule is as follows:
+(invoke − interface, [(0, 0), (0, 2), (0, 1), (256, 2, Editor; − > putInt ())]) [SINK, ].
+
+# Rule 4.
+
+This rule abstracts subset of the instructions in the write category. More specifically, the rule treats instructions writing into arrays. Rule 4 is similar to Rule 2. However, the order of components of the resulting abstracted instruction is reversed.
+
+# Computers & Security 109 (2021) 102395
+Instruction. An example of the abstraction applied by this rule is as follows:
+(invoke − virtual , [(0, 0), (256, 5, TelephonyManager; − > getDeviceId ())]) [SOURCE].
+
+# Path analysis (step 5)
+This module is a recursive one that analyzes abstracted paths (created by the previous module) of methods in M. For an execution path p, this module analyzes the instructions of L(p) one by one and the analysis inputs are (id p, L(p), R(p), Lid(p)), where R(p) = &lt; Rs, R, Rr, Rm, Rc, Rk &gt;.
+
+- Results of the analysis are built gradually into R(p). Therefore at a program point of p, R(p) would contain the results collected till that program point. The recursive nature of the module causes including this parameter in the module arguments.
+
+- The set Lid(p) (containing IDs of method called in p till the instruction under analysis) is included in the inputs to avoid infinite loops. Such loops are possible due to the static nature of our analysis.
+
+- Rm aims at tracing the move of sensitive data among class fields.
+
+- Rc aims at watching contents of registers relevant to the analysis (not all registers).
+
+The analysis is based on a heuristically developed set of inference rules that are presented in Table 7. The rules mainly show the effect that instructions have on the entries of the tuple R(p). A primed entry of R(p) represents the new value of the variable after analyzing an instruction.
+
+# Rules
+Rule 14. The rule shows that the return instruction has effect on Rc and Rs only. The remaining entries of R(p) are unchanged by this instruction. For R, it gets restricted on the register i. For Rs, it gets first restricted on fields, then it may get augmented with the register i or with Rr according to the conditions in the rule.
+
+Rule 15. The rule treats the CONSTANT instructions, by removing the register i from Rc and Rs. This is so as assigning a constant to the register overwrites any sensitive data in it and hence tracing its content becomes not important.
+
+# 12
+# c o m p u t e r s & s e c u r i t y 1 0 9 ( 2 0 2 1 ) 1 0 2 3 9 5
+pending the sourced register to Rs . The rule also removes the register from Rc . The reason for this removal is that the register status became evident and hence it is not necessary to trace its content anymore. Derivation 21 provides an example of applying this rule.
+
+R(p) =< {}, {}, 0, {}, {(0, MainActivity; − > telephonyManager)}, {(MainActivity; − > editor, webviewInterface; − > xInter )} >
+[SOURCE, 0] : R′s → {0} ∧ R′c → {} R = [{0}, {}, _, {}, {(0, telephonyManager )}, {}]
+(21) [CALL, f 2, , [(0, 3), (0, 0), (0, 1), (256, 249, webInterface; − > f 2(Str ))]] :
+Rc ′′= {0, id} ∧ Rl ′= {id f 2 } ∧ Rr ∧ Rk = {editor, telephonyManager} Rs = {(0, telephonyManager )} ′= {} ∧ Rm = {(telephonyManager, id )}∧′ ′
+Rule 17. The rule treats the SINK instruction. In case L∩Rs = ∅ which means that one of the sink registers has sensitive data, then the path leaks data. Therefore the path ID is added to R. For each i ∈ L, the rule adds to Rk all fields along the assignment path that leads to the value in i. This augmentation of Rk is done because, as leaking caused by i, other leaks may be caused by the fields added to Rk.
+
+Rule 18. The rule treats the register-register and register-field instructions whose first entry is a register. The rule updates Rc to record the data flow from i2 to i1 . The rule also updates Rs by adding or removing i1 depending on whether i2 contains sensitive data. An example of applying Rule 18 is given in derivation 22.
+
+Rule 19. The rule treats the register-field instructions whose first entry is a field.
+
+Rule 20. The rule treats the method call category of instructions. In this rule, the recursive side of the module is evident as the module calls itself. The rule builds arguments (R example, Rs m is composed of fields of Rs plus the set of argument registers (denoted by Rgs in the rule) that contain sensitive data (i.e. in Rs ). However, the IDs of these argument registers are translated to their corresponding local registers in the method m. The final result of the rule is derived from the result of the m. This is denoted by the operation arg() in definition of Rs recursive call (denoted by Rn (pm ) in the rule): for instance, R′m = Rm n.
+
+R = {R(p) =< R s >| p ∈ P} is the set of analysis results for a set of paths P, type 1 vulnerability occurs if one of the following conditions are verified:
+- For some p ∈ P, R p p= ∅ and the method of this path is an interface one.
+
+- There exist paths p1 , . . . , pn ⊆ P, i ∈ Rs 1, j ∈ Rk n, and fields f1 , . . . , fn such that the methods of p1 and pn are interface ones and (i, d1 ) ∈ Rm 1, . . . , (dn , j) ∈ Rm n.
+
+# Implementation
+This section illustrates the implementation details of a convenient abstraction rule (among the ones in Table 5) to be applied. This relies on the APIs get_name() and get_nb_instructions(). The instruction name and operands are extracted from each instruction to determine the corresponding path of abstracted instructions which has the form of a list. During instruction iteration, some instructions may not match any rule. In this case, this instruction is not relevant to our analysis and hence gets dropped. For each abstracted path (list), we iterate its elements to analyze its content using convenient rules of Table 7. Applying an analysis rule mainly consists in updating the variables of Table 6, according to the applied rule.
+
+W ebV Sec is implemented on top of Androguard Desnos (2011), a tool for reverse engineering Android applications. The result of W ebV Sec is implemented as a text file that contains all the information collected in all phases of the system.

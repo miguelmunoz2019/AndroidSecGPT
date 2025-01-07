@@ -1,0 +1,60 @@
+The authors of  evaluated ChatGPT and GPT-3 in detection of Common Weakness Enumeration (CWE) vulnerabilities contained in code. Using a custom real-world dataset with Java files from open GitHub repositories, they concluded that the detection capabilities of the aforementioned models are limited. In , an empirical study of the potential of LLMs for detecting software vulnerabilities is presented. The authors tested 129 code samples from various GitHub repositories, written in eight different languages, and their results showed that GPT-4 identified around four times more vulnerabilities than traditional, rule-based, static code analysis tools. In addition, the LLMs were asked to provide fixes for the identified vulnerabilities. The models used include GPT-3 and GPT-4.
+
+Apart from generic code, LLMs have been used for detecting vulnerabilities in smart contracts. LLM4Vuln  is an evaluation framework for vulnerability detection systems based on LLMs, focusing on smart contract vulnerabilities. The difference from other similar works is that, instead of benchmarking the performance of LLMs in vulnerability detection, the authors evaluate the vulnerability reasoning capabilities of each model. Similarly, the authors of  proposed GPTLens, a framework for detecting vulnerabilities in smart contracts using LLMs. GPTLens takes a different approach from the traditional one-stage detection in order to decrease false positives. The detection process is broken down in two steps, where the LLM takes two different roles: auditor and critic. As an auditor, the LLM provides a large range of vulnerabilities for the examined contract, whereas as a critic it verifies the claims produced in the first step. The performed experiments show that GPTLens presents improved results over the single-stage vulnerability detection.
+
+# Title Suppressed Due to Excessive Length
+# 3 Methodology
+This section details our methodology, including the creation of the benchmark dataset, the selection of LLMs, and the evaluation process.
+
+# 3 Dataset
+Also with reference to Section 2, to our knowledge, there is no publicly available dataset containing vulnerable Android code covering each one of the OWASP Mobile Top 10 vulnerabilities. The most relevant dataset to our study is LVDAndro , which however is labelled based on CWE. Additionally, since LVDAndro was created using actual Android applications, it contains a significant proportion of non-vulnerable code. In view of this shortage, for the needs of our experiments, we created a new dataset coined Vulcorpus  containing 100 pieces of vulnerable code. It is important to note that the term “piece of code”, hereafter called sample, refers to a part of an application, not its full codebase. All the samples were written in Java by exploiting common insecure coding practices, e.g., logging private information, not filtering input/objects, etc., and target the Android OS. However, obviously, the same vulnerabilities apply to other mobile platforms, say, iOS.
+
+More specifically, Vulcorpus contains 10 samples for each of the OWASP Mobile Top-10 vulnerabilities of 2024, which are briefly explained in subsection 3. Every sample exhibits one or maximum two interrelated vulnerabilities, while one or two of these samples per vulnerability category are obfuscated using the well-known renaming technique. Half of the samples per vulnerability contain code comments regarding the specific vulnerability. Moreover, to assess each LLM in detecting privacy-invasive code, we created three more samples which perform risky actions without asking the user for confirmation. These actions are:
+- Get the precise location of the device through the “android.permission.ACCESS_FINE_LOCATION” permission, and directly share the latitude and longitude over the Internet via API. According to the Android API , this permission has a “dangerous” protection level, namely it may give the requesting application access to user’s private data, among others.
+
+- Capture an image via the “ACTION_IMAGE_CAPTURE” intent , and subsequently attempt to share the captured image file via API.
+
+- Open local documents through the “ACTION_OPEN_DOCUMENT” intent , and attempt to send them to a remote host via API.
+
+The latter three samples are also available at  along with Vulcorpus.
+
+# 3 List of vulnerabilities
+This subsection briefly delineates each vulnerability contained in the current OWASP Mobile Top 10 list. For more details regarding each vulnerability, the
+# 6
+Vasileios Kouliaridis, Georgios Karopoulos, and Georgios Kambourakis
+The reader is referred to . It is important to note that the list differs from its 2016 version, given that four vulnerabilities contained in the 2016 list have been replaced with new ones in the current list. The reader should also keep in mind that while some categories of vulnerabilities, say, M5 are straightforward, others might be more complicated for LLMs to understand, such as the M7.
+
+# Improper credential usage (M1)
+Poor credential management can lead to severe security issues, namely, unauthorized users may be able to gain access to sensitive information or administrative functionalities within the mobile app or its backend systems. This in turn leads to data breaches and fraudulent activities.
+
+# Inadequate supply chain security (M2)
+By exploiting vulnerabilities in the mobile supply chain, attackers may be able to manipulate application functionality. For example, they can insert malicious code into the mobile application’s codebase or libraries , as well as modify the code during the application’s build process to introduce backdoors, spyware, or other type of malware. The attacker can also exploit vulnerabilities in third-party software libraries, software development kits (SDKs), or hard-coded credentials to gain access to the mobile app or the backend servers. Overall, this type of vulnerabilities can lead to unauthorized data access or manipulation, denial of service, or complete takeover of the mobile application or device.
+
+# Insecure authentication/authorization (M3)
+Poor authorization could lead to the destruction of systems or unauthorized access to sensitive information, while poor authentication results in the inability to identify the user making an action request, leading to the inability to log or audit user activity. This situation makes it difficult to detect the source of an attack, understand any underlying exploits, or develop strategies to prevent future attacks. Obviously, authentication failures are tightly coupled to authorization failures; when authentication controls fail, authorization cannot be performed. That is, if an attacker can anonymously execute sensitive functionality, it indicates that the underlying code is not verifying the user’s permissions, highlighting failures in both authentication and authorization controls.
+
+# Insufficient input/output validation (M4)
+A mobile application that does not adequately validate and sanitize data from external sources, like user inputs or network data, is susceptible to a range of attacks, including SQL injection, command injection, and cross-site scripting. Insufficient output validation can also lead to data corruption or presentation vulnerabilities, possibly allowing the malicious actor to inject harmful code or manipulate sensitive information shown to the users.
+
+# Insecure communication (M5)
+Modern mobile applications typically communicate with one or more remote servers. This renders user data susceptible to interception and modification, if they are transmitted in plaintext or using an outdated encryption protocol.
+
+# Inadequate privacy controls (M6)
+Privacy controls aim to safeguard Personally Identifiable Information (PII), including names and addresses, credit card details, emails, and information related to health, religion, sexuality, and political opinions. This sensitive information can be used to impersonate the victim for
+# Title Suppressed Due to Excessive Length
+fraudulent activities, misuse their payment data, blackmail them with sensitive information, or harm them by destroying or manipulating sensitive data.
+
+# Insufficient binary protections (M7)
+The application’s binary may hold valuable information, such as commercial API keys or hard-coded cryptographic secrets. Furthermore, the code within the binary itself could be valuable, for instance, containing critical business logic or pre-trained AI models. In addition to gathering information, attackers may also manipulate app binaries to gain access to paid features for free or to bypass other security controls. In the worst-case scenario, popular apps could be altered to include malicious code and then distributed through third-party app stores or under a new name to deceive unsuspecting users.
+
+# Security misconfiguration (M8)
+These occur when security settings, permissions, or controls are improperly configured, leading to vulnerabilities and unauthorized access.
+
+# Insecure data storage (M9)
+Such vulnerabilities may stem from weak encryption, insufficient data protection, insecure data storage mechanisms, and improper handling of user credentials.
+
+# Insufficient cryptography (M10)
+The use of obsolete cryptographic suites, primitives, or cryptographic practices may lead to loss of data confidentiality, integrity, and inability to impose source authentication among others. Typical repercussions include data decryption, manipulation of cryptographic processes, leak of encryption keys, etc.
+
+# 3 Selection of LLM
+For the purposes of our experiments, nine contemporary, well-known LLMs were chosen: three commercial models, i.e., GPT 3, GPT 4, and GPT 4 Turbo, and six open source models, i.e., Llama 2, Zephyr Alpha, Zephyr Beta, Nous Hermes Mixtral, MistralOrca, and Code Llama. According to their documentation, these models have been pre-trained on large amounts of text data, including code, having demonstrated performance in various software engineering tasks, including code analysis. That is, their ability to understand code syntax and semantics makes them well-suited for identifying vulnerabilities residing in code. Additionally, their large size and diverse training data make them less likely to overfit to a specific codebase. A succinct description of each LLM is given below.

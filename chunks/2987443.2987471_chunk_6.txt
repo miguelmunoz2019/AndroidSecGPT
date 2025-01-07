@@ -1,0 +1,112 @@
+Several research efforts leverage Android’s VPN permission to accurately characterize Android’s traffic and identify private data leakage inflicted by mobile apps . More related to studying VPN apps, the study conducted by Perta et al.  is perhaps the closest one to our analysis. The paper provides a manual analysis of 14 popular VPN services and includes a study of their mobile clients identifying developer-induced bugs and mis-configurations that lead to IPv6 and DNS leaks. Our paper provides a systematic and thorough security and privacy analysis of Android mobile apps employing the VPN permission. The study by Vallina-Rodriguez et al. characterized Android’s root certificate store using data provided by Netalyzr for Android tool . The study revealed how VPN-enabled apps could perform transparent TLS interception after compromising the root certificate store.
+
+Finally, Appelbaum et al. identified security vulnerabilities on commercial and public online VPN services . A survey conducted by Khattack et al. on VPN usage across Pakistani Internet users reported that 57% of the participants used SSL-based VPN software to access YouTube content . Our paper in turn, presents a method to systematically identify and analyze security and privacy aspects of VPN-enabled apps on Android-based app stores. The implications of our analysis span to other areas such as censorship analysis and network measurements that leverage VPN services to penetrate different countries and ISPs.
+
+# 8. CONCLUSIONS
+Android app developers benefit from native support to implement VPN clients via the VPN permission to provide censorship circumvention, support enterprise customers and enhanced online security and privacy. However, despite the fact that Android VPN-enabled apps are being installed by millions of mobile users worldwide, their operational transparency and their possible impact on user’s privacy and security remains “terra incognita” even for tech-savvy users.
+
+In this paper, we presented a number of static and dynamic methods that allowed us to conduct in-depth analysis of VPN-enabled apps on Google Play. We investigate from the presence of tracking services and malware on VPN app binaries to artifacts implemented by these apps at the network level. Our comprehensive tests allowed us to identify instances of VPN apps embed third-party tracking services and implement abusive practices such as JavaScript-injection, ad-redirections and even TLS interception.
+
+The ability of the BIND_VPN_SERVICE permission to break Android’s sandboxing and the naive perception that most users have about third-party VPN apps suggest that it is urging to re-consider Android’s VPN permission model to increase the control over VPN clients. Our analysis of the user reviews and the ratings for VPN apps suggested that the vast majority of users remain unaware of such practices even when considering relatively popular apps.
+
+# 9. REFERENCES
+1. Alexa Top 500 Websites. http://www.alexa.com/topsites.
+
+2. Android Permissions. http://developer.android.com/guide/topics/security/permissions.html.
+
+3. Application Fundamentals. http://developer.android.com/guide/components/fundamentals.html.
+
+4. Archie VPN. https://play.google.com/store/apps/details?id=com.lausny.archievpnfree.go.
+
+5. Cisco AnyConnect. https://play.google.com/store/apps/details?id=com.cisco.anyconnect.vpn.android.avf.
+
+6. CM Data Manager - Speed Test. https://play.google.com/store/apps/details?id=com.cmcm.flowmonitor.
+
+7. CrossVpn. https://play.google.com/store/apps/details?id=com.goodyes.vpn.cn.
+
+8. Cyberghost - free vpn & proxy. https://play.google.com/store/apps/details?id=de.mobileconcepts.cyberghost.
+
+9. Dash Net Accelerated VPN. https://play.google.com/store/apps/details?id=com.actmobile.dashnet.
+
+10. Dash VPN | Dash Office - Speed Test. http://dashoffice.com/dash-vpn/.
+
+11. DNSet. https://play.google.com/store/apps/details?id=com.dnset.
+
+12. DroidVPN - Android VPN. https://play.google.com/store/apps/details?id=com.aed.droidvpn.
+
+13. Dr.Web Security Space. https://play.google.com/store/apps/details?id=com.drweb.pro.
+
+14. EasyOvpn - Plugin for OpenVPN. https://play.google.com/store/apps/details?id=com.easyovpn.easyovpn.
+
+15. EasyVpn. https://play.google.com/store/apps/details?id=yujia.easyvpn.
+
+16. F-Secure Freedome Anti-Tracking Feature Explained. https://community.f-secure.com/t5/F-Secure/F-Secure-Freedome-Anti-Tracking/ta-p/52153.
+
+17. Fast Secure Payment Service. https://play.google.com/store/apps/details?id=com.lausny.ocvpnaio.allpay.
+
+18. FlashVPN Free VPN Proxy. https://play.google.com/store/apps/details?id=net.flashsoft.flashvpn.activity.
+
+19. Free VPN Proxy by Betternet. https://play.google.com/store/apps/details?id=com.freevpnintouch.
+
+20. Good. Mobile Device Management (MDM). https://www1.good.com/secure-mobility-solution/mobile-device-management.html.
+
+# Google Play Unofficial Python API
+https://github.com/egirault/googleplay-api
+# VPN Applications
+- HatVPN
+- HideMyAss! Pro VPN for Android
+- Hola Free VPN Proxy
+- Hotspot Shield Advertising
+- Hotspot Shield Free VPN Proxy
+- ip-shield VPN
+- Junos Pulse
+- Knox Standard SDK
+- Mobile Security & Antivirus
+- NEOPARD
+- Neopard Privacy Policy
+- NeoRouter VPN Mesh
+- NoRoot Firewall
+- OkVpn
+- One Click VPN
+- Open Gate
+- Orbot: Proxy with Tor
+- Packet Capture
+- pcap-parser (0)
+- Private WiFi
+- Qihoo 360
+- Raccon APK Downloader
+- Rocket VPN - Internet Freedom
+- Samsung KNOX. Partnering with Samsung
+- Security with HTTPS and SSL
+- Selendroid: Selenium for Android
+- sFly Network Booster, Adblocker
+- Spamhaus PBL
+- Spotflux VPN
+- StrongVPN OpenVPN Client
+- SuperVPN
+- SurfEasy Secure Android VPN
+- tigerVPN - Privacy Defender
+- Tigervpns Free VPN and Proxy
+- TorGuard VPN
+- VirusTotal
+- VPN Free
+- VPN Gate
+- VPN Service Documentation
+- VPNSecure OpenVPN VPN Proxy
+- VPN+TOR+Cloud VPN Globus Pro!
+- VyprVPN Free VPN for Privacy
+- WiFi Protector VPN
+#createInstallIntent()
+- J. Appelbaum, M. Ray, I. Finder, and K. Koscher. vpwns: Virtual Pwned Networks. In USENIX FOCI, 2012.
+
+- D. Arp, M. Spreitzenbarth, H. Gascon, and K. Rieck. Drebin: Effective and Explainable Detection of Android Malware in Your Pocket. In NDSS, 2014.
+
+- K. W. Y. Au, Y. F. Zhou, Z. Huang, and D. Lie. PScout: Analyzing the Android Permission Specification. In ACM CCS, 2012.
+
+- T. Bläsing, L. Batyuk, A.-D. Schmidt, S. A. Camtepe, and S. Albayrak. An Android Application Sandbox System for Suspicious Software Detection. In IEEE MALWARE, 2010.
+
+- A. Bose, X. Hu, K. G. Shin, and T. Park. Behavioral Detection of Malware on Mobile Handsets. In ACM MobiSys, 2008.
+
+- I. Castro, J. C. Cardona, S. Gorinsky, and P. Francois. Remote Peering: More Peering Without Internet Flattening. In ACM CoNEXT, 2014.
+
+- T. Chen, I. Ullah, M. A. Kaafar, and R. Boreli. Information.

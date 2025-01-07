@@ -1,0 +1,61 @@
+# CHI 2019 Paper
+# “Think secure from the beginning”: A Survey with Software Developers
+Hala Assal
+School of Computer Science
+Carleton University
+Ottawa, ON, Canada
+HalaAssal@scs.carleton.ca
+# ABSTRACT
+Vulnerabilities persist despite existing software security initiatives and best practices. This paper focuses on the human factors of software security, including human behaviour and motivation. We conducted an online survey to explore the interplay between developers and software security processes, e.g., we looked into how developers influence and are influenced by these processes. Our data included responses from 123 software developers currently employed in North America who work on various types of software applications. Whereas developers are often held responsible for security vulnerabilities, our analysis shows that the real issues frequently stem from a lack of organizational or process support to handle security throughout development tasks. Our participants are self-motivated towards software security, and the majority did not dismiss it but identified obstacles to achieving secure code. Our work highlights the need to look beyond the individual, and take a holistic approach to investigate organizational issues influencing software security.
+
+# CCS CONCEPTS
+- Security and privacy → Software and application security; Human and societal aspects of security and privacy.
+
+# KEYWORDS
+Security, Survey, HCI for development, Secure programming
+Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. Copyrights for components of this work owned by others than the author(s) must be honored. Abstracting with credit is permitted. To copy otherwise, or republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee. Request permissions from permissions@acm.org.
+
+CHI 2019, May 4–9, 2019, Glasgow, Scotland Uk
+© 2019 Copyright held by the owner/author(s). Publication rights licensed to ACM.
+
+ACM ISBN 978-1-4503-5970-2/19/05. . . $15
+https://doi.org/10/3290605
+Sonia Chiasson
+School of Computer Science
+Carleton University
+Ottawa, ON, Canada
+Chiasson@scs.carleton.ca
+# ACM Reference Format:
+Hala Assal and Sonia Chiasson. 2019. “Think secure from the beginning”: A Survey with Software Developers. In CHI Conference on Human Factors in Computing Systems Proceedings (CHI 2019), May 4–9, 2019, Glasgow, Scotland Uk. ACM, New York, NY, USA, 13 pages. https://doi.org/10/3290605
+# 1 INTRODUCTION
+Software security focuses on the resistance of applications to vulnerabilities exercised through malicious exploitations or unintentional triggers . Best practices and initiatives have been proposed to promote the inclusion of security throughout the Software Development Lifecycle (SDLC) (e.g., ) in part to address such vulnerabilities. However, vulnerabilities persist, impact millions of users , and extend beyond traditional computing systems.
+
+Developers are often blamed for vulnerabilities  and are sometimes viewed as the “weakest link” who just need to do more . However, recent user-centric research has focused on software developers as users who critically need support when dealing with the implementation of software that adequately addresses security.
+
+In this paper, we take a human-centric approach to address an under-investigated research area—the interplay between the developer and the process of managing software security. We focus on understanding how the human actors (e.g., developers) deal with, and influence, this process. Although we do not focus on technologies to support secure software development, this work can help inform the design of these technologies. We note that security vulnerabilities could be unintentional or could be introduced to a system out of malice. In this paper, we focus on supporting developers avoid unintentional vulnerabilities; malicious developers are thus out of the scope of this work. In particular, this paper addresses the following three research questions. RQ1: How does security fit in the development lifecycle in real life? RQ2: What are the current motivators and deterrents to developers paying attention to security? RQ3: Does the development methodology, company size, or adopting Test-Driven Development (TDD) influence software security?
+# CHI 2019 Paper
+# CHI 2019, May 4–9, 2019, Glasgow, Scotland, UK
+To answer these questions, we conducted an online survey study with a representative sample of 123 software developers from North America. The survey focuses on how developers and their teams direct their efforts towards software security, as well as strategies developers employ to deal with security. We also explore developers’ work motivation styles, their motivation towards software security, as well as factors that may deter developers from addressing security.
+
+Our study shows that efforts towards software security vary; in extreme cases, security is consistently disregarded throughout the SDLC but most participants reported at least some attention to it. Development methodology had no significant effects on our results. The use of TDD was most influential, while company size had moderate influence.
+
+In general, our results are promising for software security and suggest that developers do not intentionally disregard it. Our participants have a good understanding of software security and generally oppose statements that imply ignoring or deferring security, even though it is typically not their primary objective . However, our analysis identified systemic barriers to achieving secure code, e.g., the lack of a security plan. This highlights the need to investigate and address organizational issues that lead to insecure practices.
+
+# 2 RELATED WORK
+In their overview of the usable security field, Garfinkel and Lipford  highlight the shortage of human factors security research that focuses on software developers. Naiakshina et al.  cautioned that researchers do not have the same expertise in studies with developers as with typical end-users, and they discussed how different study designs can help investigate different research questions. Pieczul et al.  discussed challenges facing usable security research for developers and highlighted the need for deeper understanding of the continuously evolving field of software development.
+
+# Developers’ Abilities and Expertise
+Developers and their lack of security education are frequently cited as the reason for vulnerabilities . The assumption is that if developers learned about security, they could avoid vulnerabilities . Some argue the reason might be because security guidelines do not exist or are not mandated by the companies , or that developers might lack the ability  or proper expertise  to identify vulnerabilities.
+
+Baca et al.  found that developers’ general software development experience did not have the expected positive impact on the correctness of identifying vulnerabilities. Oliveira et al.  argued that developers and security education are not the root causes of security vulnerabilities. They explained that throughout their tasks, developers are consumed with solving problems that assume common cases, whereas vulnerabilities are usually unexpected corner cases  that are cognitively-demanding to identify.
+
+# Security Tools and Methodologies
+Approaches for improved code security include advocating for the use of Static-code Analysis Tools (SATs) , reducing their false positives , and using innovative methods to assist in vulnerability discovery . However, despite SATs’ benefits , they are not widely used.
+
+Security tool adoption: The company’s policies and its overall security culture are among the main factors for encouraging developers to adopt new security tools . Developers’ positive perception of the usefulness of security to their applications also encourages security tool adoption , whereas tools’ complexity discourages it.
+
+Improving tools’ usability: Smith et al.  proposed an approach for building tools that support developers’ information needs while analyzing vulnerabilities. They identified 17 categories of information that developers seek during the analysis of SAT warnings . These included questions regarding understanding vulnerabilities, attacks that might exploit these vulnerabilities, alternative fixes, and whether a vulnerability is worth fixing.
+
+In-context security: Xie et al.  proposed a tool to remind web developers of secure programming practices in their Integrated Development Environment (IDE). The tool statically analyzes the code and alerts developers of potential issues on-the-spot. Although it does not cover all vulnerability types, usability evaluations (e.g., ) showed promising results in encouraging developers’ attentiveness to security. Focusing on mobile applications, Nguyen et al.  developed an IDE plugin to support Android app developers adhere to and learn about security best practices. Studies suggest that the plugin significantly improves code security regardless of the developer’s experience.
+
+APIs and documentation: The use of Application Programming Interfaces (APIs) is recommended to improve code security . However, further research is needed for improving the design of APIs to reduce vulnerability-causing mistakes  and account for security implications that may be missed by developers . For example, Acar et al.  found usability issues in several cryptographic APIs that can result in compromised code security. In addition, many software security guidance resources available to developers lack helpful concrete examples, fail to address important topics, and some include obsolete advice . This is an unfortunate finding, given that developers often rely on resources that are not necessarily ideal for security . To partially address this, Gorski et al.  integrated context-sensitive security advice in a cryptographic API, which significantly improved the security of code using this API.

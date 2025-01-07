@@ -1,0 +1,87 @@
+21. Mona H. Mahmoud, Sanaa H. Abo El-Hamayed (2016), "An Intelligent Tutoring System for Teaching the Grammar of the Arabic Language, Journal of Electrical Systems and Information Technology.
+
+22. Mahdi, A. O., et al. (2016). "An Intelligent Tutoring system for teaching advanced topics in information security." World Wide Journal of Multidisciplinary Research and Development 2(12): 1-9.
+
+23. AbuEl-Reesh, J. Y. and S. S. Abu-Naser (2018). "An Intelligent Tutoring System for Learning Classical Cryptography Algorithms (CCAITS)." International Journal of Academic and Applied Research (IJAAR) 2(2): 1-11.
+
+24. Alhabbash, M. I., et al. (2016). "An Intelligent Tutoring System for Teaching Grammar English Tenses." EUROPEAN ACADEMIC RESEARCH 6(9): 7743-7757.
+
+25. Hamed, M. A. and S. S. Abu Naser (2017). "An Intelligent Tutoring system for teaching the 7 characteristics for living things." International Journal of Advanced Research and Development 2(1): 31-45.
+
+26. M. Zin, A. Aljunid, Z. Shukur, and M.J. Nordin. (2000). A knowledge-based automated debugger in learning system,” In: Proceedings of 4th International Workshop on Automated Debugging (AADEBUG-2000).
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+1. Akkila, A. N., et al. (2019). "Survey of Intelligent Tutoring Systems up to the end of 2017." International Journal of Academic Information Systems Research (IJAISR) 3(4): 36-49.
+
+2. Alawar, M. W. and S. S. Abu Naser (2017). "CSS-Tutor: An Intelligent Tutoring system for CSS and HTML." International Journal of Academic Research and Development 2(1): 94-98.
+
+3. Albatish, I. M. and S. S. Abu-Naser (2019). Modeling and Controlling Smart Traffic Light System Using a Rule Based System. 2019 International Conference on Promising Electronic Technologies (ICPET), IEEE.
+
+4. Al-Bayed, M. H. and S. S. Abu Naser (2017). "An Intelligent Tutoring system for health problems related to addiction of video game playing." International Journal of Advanced Scientific Research 2(1): 4-10.
+
+5. Al-Bayed, M. H. and S. S. Abu-Naser (2018). "Intelligent Multi-Language Plagiarism Detection System." International Journal of Academic Information Systems Research (IJAISR) 2(3): 19-34.
+
+6. Aldahdooh, R. and S. S. Abu Naser (2017). "Development and Evaluation of the Oracle Intelligent Tutoring System (OITS)." EUROPEAN ACADEMIC RESEARCH 6(10): 8711-8721.
+
+7. Al-Hanjori, M. M., et al. (2017). "Learning computer networks using Intelligent Tutoring system." International Journal of Advanced Research and Development(2): 1.
+
+8. Almasri, A., et al. (2019). "Intelligent Tutoring Systems Survey for the Period 2000-2018." International Journal of Academic Engineering Research (IJAER) 3(5): 21-37.
+
+9. Almurshidi, S. H. and S. S. Abu Naser (2017). "Design and Development of Diabetes Intelligent Tutoring System." EUROPEAN ACADEMIC RESEARCH 6(9): 8117-8128.
+
+10. Almurshidi, S. H. and S. S. Abu Naser (2017). "Stomach disease Intelligent Tutoring system." International Journal of Advanced Research and Development 2(1): 26-30.
+
+11. Alnajjar, M. and S. S. Abu Naser (2015). "EVALUATING SOFTWARE ENGINEERING PRACTICES IN PALESTINE." International Journal of Soft Computing, Mathematics and Control (IJSCMC) 4(1): 35-47.
+
+12. Alnajjar, M. and S. S. Abu Naser (2015). "Improving Quality Of Feedback Mechanism In Un By Using Data Mining Techniques." International Journal of Soft Computing, Mathematics and Control 4(2).
+
+13. Al-Nakhal, M. A. and S. S. Abu Naser (2017). "Adaptive Intelligent Tutoring System for learning Computer Theory." EUROPEAN ACADEMIC RESEARCH 6(10): 8770-8782.
+
+14. AlZamily, J. Y. and S. S. Abu-Naser (2018). "A Cognitive System for Diagnosing Musa Acuminata Disorders." International Journal of Academic Information Systems Research (IJAISR) 2(8): 1-8.
+
+15. Anderson, J., et al. (2005). "Adaptation of Problem Presentation and Feedback in an Intelligent Mathematics Tutor." Information Technology Journal 5(5): 167-207.
+
+16. El Agha, M. I., et al. (2018). "SQL Tutor for Novice Students." International Journal of Academic Information Systems Research (IJAISR) 2(2): 1-7.
+
+17. El Haddad, I. A. and S. S. Abu Naser (2017). "ADO-Tutor: Intelligent Tutoring System for leaning ADO. NET." EUROPEAN ACADEMIC RESEARCH 6(10): 8810-8821.
+
+18. Elnajjar, A. E. A. and S. S. Abu Naser (2017). "DES-Tutor: An Intelligent Tutoring System for Teaching DES Information Security Algorithm." International Journal of Advanced Research and Development 2(1): 69-73.
+
+19. Elreesh, J. Y. A. and S. S. Abu-Naser (2019). "Cloud Network Security Based on Biometrics Cryptography Intelligent Tutoring System." International Journal of Academic Information Systems Research (IJAISR) 3(3): 37-70.
+
+20. Ghali, M. J. A. and S. S. Abu-Naser (2019). "ITS for Data Manipulation Language (DML) Commands Using SQLite." International Journal of Engineering and Information Systems (IJEAIS) 3(3): 57-92.
+
+21. Hamed, M. A., et al. (2018). "Intelligent Tutoring System Effectiveness for Water Knowledge and Awareness." International Journal of Academic Information Systems Research (IJAISR) 2(4): 18-34.
+
+22. Hasanein, H. A. A. and S. S. Abu-Naser (2018). "Developing Education in Israa University Using Intelligent Tutoring System." International Journal of Academic Pedagogical Research (IJAPR) 2(5): 1-16.
+
+23. Hilles, M. M. and S. S. Abu Naser (2017). "Knowledge-based Intelligent Tutoring System for Teaching Mongo Database." EUROPEAN ACADEMIC RESEARCH 6(10): 8783-8794.
+
+24. Khella, R. A. and S. S. Abu Naser (2018). "An Intelligent Tutoring System for Teaching French." International Journal of Academic Multidisciplinary Research (IJAMR) 2(2): 9-13.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+1. Marouf, A. and S. S. Abu-Naser (2019). "Intelligent Tutoring System for Teaching Computer Science I in Al-Azhar University, Gaza." International Journal of Academic and Applied Research (IJAAR) 3(3): 31-53.
+
+2. Marouf, A., et al. (2018). "An Intelligent Tutoring System for Learning Introduction to Computer Science." International Journal of Academic Multidisciplinary Research (IJAMR) 2(2): 1-8.
+
+3. Masri, N., et al. (2019). "Survey of Rule-Based Systems." International Journal of Academic Information Systems Research (IJAISR) 3(7): 1-23.
+
+4. Mosa, M. J., et al. (2018). "ASP. NET-Tutor: Intelligent Tutoring System for leaning ASP. NET." International Journal of Academic Pedagogical Research (IJAPR) 2(2): 1-8.
+
+5. Qwaider, S. R. and S. S. Abu-Naser (2018). "Excel Intelligent Tutoring System." International Journal of Academic Information Systems Research (IJAISR) 2(2): 8-18.
+
+6. Shaath, M. Z., et al. (2017). "Photoshop (CS6) Intelligent Tutoring system." International Journal of Academic Research and Development 2(1): 81-87.
+
+7. Sulisel, O., et al. (2005). "Growth and Maturity of Intelligent Tutoring Systems." Information Technology Journal 7(7): 9-37.
+
+www.ijeais.org/ijaisr
+View publication stats.

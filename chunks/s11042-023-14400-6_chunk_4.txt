@@ -1,0 +1,62 @@
+Signature-based detection studies (cryptographic hash or package name) are used very often, but they are not successful enough. Malware and threats are constantly evolving and changing themselves to avoid detection by current security tests. Therefore, more machine learning algorithms should be used for detecting fake mobile applications and network monitoring in a timely manner. Testing for malware and threats should be performed dynamically using deep learning algorithms. For these tests to yield successful results, security companies must be more generous in making their malware datasets public. Otherwise, malware detection and recognition studies using smaller data samples may be insufficient.
+
+Despite the increase in mobile malware and threats, corporate mobile usage has become widespread in recent years, with bring-your-own-device (BYOD) policies. This spread accelerated as people started working from home due to the COVID-19 outbreak. This creates new opportunities for malware developers. Organizations that must employ a mobile-friendly workforce need to increase the necessary cyber security measures both to protect the personal data security of the employees and to protect the information belonging to the sensitive organization.
+
+In the light of the current studies, and the mobile security reports, the future of mobile security can be focused on these sub-research areas and topics:
+1. New signature-based techniques powered with machine learning-based techniques can be proposed,
+2. New machine learning-based techniques that especially work with imbalanced network traffic datasets can be produced,
+3. New classification algorithms can be presented that detect the malicious flow,
+4. The storage of the sensitive user data can be secured with new techniques,
+5. The Android market rules can be redesigned similarly to iOS market rules.
+
+# Authors’ contributions
+Ahmet Cevahir Cinar: Conceptualization, Methodology, Writing- Reviewing and Editing, Supervision.
+
+Turkan Beyza Kara: Investigation, Writing- Original draft preparation.
+
+# Data availability
+Not applicable.
+
+# Multimedia Tools and Applications (2023) 82:20269–20281
+# 20279
+# Code availability
+Not applicable.
+
+# Declarations
+# Conflicts of interest/Competing interests
+The authors have no conflicts of interest to declare that are relevant to the content of this article.
+
+# Multimedia Tools and Applications (2023) 82:20269–20281
+1. Koppanati RK, Kumar K (2020) P-MEC: polynomial congruence-based Multimedia encryption technique over cloud. IEEE Consum Electron Mag 10(5):41–46
+2. Kumar M (2017) Bad rabbit: new ransomware attack rapidly spreading across Europe. https://thehackernews.com/2017/10/bad-rabbit-ransomware-attack.html
+3. Kumar K (2021) Text query based summarized event searching interface system using deep learning over cloud. Multimed Tools Appl 80(7):11079–11094
+4. lab. K (2016) Mobile malware evolution 2016. https://media.kasperskycontenthub.com/wp-content/uploads/sites/43/2018/03/07180734/Mobile_report_2016.pdf
+5. Lalotra GS, Kumar V, Bhatt A, Chen T, Mahmud M (2022) iReTADS: an intelligent real-time anomaly detection system for cloud communications using temporal data summarization and neural network. Secur Commun Netw 2022
+6. Lee K-C, Hsieh C-H, Wei L-J, Mao C-H, Dai J-H, Kuang Y-T (2017) Sec-Buzzer: cyber security emerging topic mining with open threat intelligence retrieval and timeline event annotation. Soft Comput 21(11): 2883–2896
+7. Li T, Zhao M, Wong KKL (2020) Machine learning based code dissemination by selection of reliability mobile vehicles in 5G networks. Comput Commun 152:109–118
+8. Martinelli F, Mercaldo F, Nardone V, Santone A, Vaglini G (2020) Model checking and machine learning techniques for HummingBad mobile malware detection and mitigation. Simul Model Pract Theory 105: 102169
+9. Micro T, Research N and Perspectives (2016) ‘GODLESS’ mobile malware roots devices. https://www.trendmicro.com/en_us/research/16/f/godless-mobile-malware-uses-multiple-exploits-root-devices.html
+10. Naik N, Jenkins P, Cooke R, Gillett J, Jin Y (2020) Evaluating automatically generated YARA rules and enhancing their effectiveness. In: 2020 IEEE Symposium Series on Computational Intelligence (SSCI). IEEE, pp 1146–1153
+11. Needham M (2021) The global smartphone market grew 13% in the second quarter despite supply concerns and vendor shakeups, according to IDC. IDC. https://www.idc.com/getdoc.jsp?containerId=prUS48120021
+12. NIST CVSS severity distribution over time. Information Technology Laboratory. https://nvd.nist.gov/general/visualizations/vulnerability-visualizations/cvss-severity-distribution-over-time
+13. Patil R, Dudeja H, Modi C (2020) Designing in-VM-assisted lightweight agent-based malware detection framework for securing virtual machines in cloud computing. Int J Inf Secur 19(2):147–162
+14. Point C September 2020’s most wanted malware: new info-stealing valak variant enters top 10 malware list for first time. Check Point Software Technologies ltd. https://blog.checkpoint.com/2020/10/07/september-2020s-most-wanted-malware-new-info-stealing-valak-variant-enters-top-10-malware-list-for-first-time/
+15. Point C https://www.checkpoint.com/press/2017/ransomware-doubled-second-half-2016-says-check-point/
+16. Rayappan D, Pandiyan M (2021) Lightweight Feistel structure based hybrid-crypto model for multimedia data security over uncertain cloud environment. Wirel Netw 27(2):981–999
+17. Sadiku M, Shadare A, Musa S (2016) Social engineering: an introducction. J Sci Eng Res 3:64–66
+18. SAN CARLOS C (2021) September 2021’s most wanted malware: trickbot once again tops the list. Check Point Software Technologies Ltd. https://www.checkpoint.com/press/2021/september-2021s-most-wanted-malware-trickbot-once-again-tops-the-list/
+19. Sarker IH, Abushark YB, Alsolami F, Khan AI (2020) Intrudtree: a machine learning based cyber security intrusion detection model. Symmetry 12(5):754
+20. Savenko O, Nicheporuk A, Hurman I, Lysenko S (2019) Dynamic signature-based Malware detection technique based on API call tracing. In: ICTERI workshops, pp 633–643
+21. Shishkova T (2021) IT threat evolution in Q3 2021. Mobile statistics. https://securelist.com/it-threat-evolution-in-q3-2021-mobile-statistics/105020/
+22. Shrivastava G, Kumar P (2019) SensDroid: analysis for malicious activity risk of android application. Multimed Tools Appl 78(24):35713–35731
+23. Staff V (2021) Report: applications and critical data vulnerable to attack. VentureBeat. https://venturebeat.com/2021/11/26/report-applications-and-critical-data-vulnerable-to-attack/
+24. Sui A-F, Guo (2012) T A behavior analysis based mobile malware defense system. In: 2012 6th international conference on signal processing and communication systems. IEEE, pp 1–6
+25. Tchakounté F, Ngassi RCN, Kamla VC, Udagepola KP (2021) LimonDroid: a system coupling three signature-based schemes for profiling android malware. Iran J Comput Sci 4(2):95–114
+26. Venugopal D, Hu G (2008) Efficient signature based malware detection on mobile devices. Mob Inf Syst 4(1):33–49
+# Multimedia Tools and Applications (2023) 82:20269–20281
+# 49.
+
+Wang F, Yang N, Shakeel PM, Saravanan V (2021) Machine learning for mobile network payment security evaluation system. Trans Emerg Telecommun Technol:e4226
+Publisher’s note: Springer Nature remains neutral with regard to jurisdictional claims in published maps and institutional affiliations.
+
+Springer Nature or its licensor (e.g. a society or other partner) holds exclusive rights to this article under a publishing agreement with the author(s) or other rightsholder(s); author self-archiving of the accepted manuscript version of this article is solely governed by the terms of such publishing agreement and applicable law..

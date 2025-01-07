@@ -1,0 +1,61 @@
+The typical Viterbi algorithm  calculates the most likely Activity trace {a02). , ..., a n}, with computation complexity O((n + 1)|A|). However, for our case, only the new foreground Activity a n is of interest, so we modify the Viterbi algorithm by only calculating Prob({a n−c+1, ..., a n}), where c is a constant. O(c|A|2). This reduces the computation complexity to In our implementation, we choose c = 2.
+
+# Inference result.
+
+After inference, our attack outputs a list of Activities in decreasing order of their probabilities.
+
+# 4 Automated Activity Transition Tool
+By design, both the Activity signature and Activity transition graph are mostly independent of user behavior; therefore, the training phase does not need any victim participation. Thus, we also develop an automated tool to accelerate the training process offline.
+
+# Implementation.
+
+Our tool is built on top of ActivityInstrumentationTestCase, an Android class for building test cases of an app . The implementation has around 4000 lines of Java code.
+
+# Activity transition graph generation with depth-first search.
+
+To generate the transition graph, we send and record user input events to Activities to drive the app in a depth-first search (DFS) fashion like the depth-first exploration described in . The DFS graph has View-States as nodes, user input event traces as edges (create transitions), and the BACK key as the back edge (resume transitions). Once the foreground Activity changes, transition information such as the user input trace and the landing Activity name is recorded. The graph generated is in the form of the example shown in Fig. 4.
+
+# Activity transition graph traversal.
+
+With the transition graph generated, our tool supports automatic graph traversals in deterministic and random modes. In the random mode, the tool chooses random egress edges during the traversal, and goes back with some probabilities.
+
+# Tool limitations.
+
+We assume Activities are independent from each other. If changes in one Activity affect Activity transition behavior in another, our tool may not be aware of that, leading to missed transition edges. For some user input such as text entering, the input generation is only a heuristic and cannot ensure 100% coverage. To address such limitations, some human effort is involved to ensure that we do not miss the important Activities and ViewStates.
+
+currently monitor /proc/net/tcp6, which contains network connection information such as the destination IP address and app uid for all apps. We use the uid to find the app which the connection belongs to, and use time correlation to match the first packet size to the connection. For the LandingState with multiple connections, we use the whois IP address registry database  to get the organization names and thus distinguish connections with different purpose. To read first packet sizes accurately, we raise the sampling rate to be 1 in 5 ms during the transition period. Since this period usually lasts less than 1 second, the overall sampling overhead is still low.
+
+For signature construction, we keep separate records for connections with different organization names and occurrence ordering. For each record, we use the first packet size appearance frequencies to calculate the probability for this feature.
+
+With these four types of features, our signature probability Prob(�·, a.ls�), i a ∈ A, a.lsi ∈ a.LS is obtained by computing the product of each feature’s probability, based on the observation that they are fairly independent. In §5, we evaluate our signature design with these four features both jointly and separately.
+
+# Application Activity
+# Application Activity transition detection
+# Evaluation
+In this section, we evaluate (1) the effectiveness of the automated Activity transition tool, (2) the performance of the Activity inference, and (3) the attack overhead.
+
+# Activity Inference Attack Evaluation
+Data collection. We use the automated tool in §4 to generate Activity transitions. We use random traversals to simulate user behavior, and deterministic traversals in controlled experiments for training and parameter selection, e.g., the sampling rate. We run all experiments on Samsung Galaxy S3 devices with Android 4. We do not make use of any device-specific features and expect our findings to apply to other Android phones.
+
+App selection and characteristics. In our experiments, we choose 7 Android apps, WebMD, GMail, Chase, H&R Block, Amazon, NewEgg, and Hotel.com, all of which are popular and also contain sensitive information. Table 2 characterizes these apps according to properties relevant to our attack techniques. NewEgg and GMail have the highest and the lowest number of Activities, and Amazon has the highest graph density. Chase app is the only one with no automatic soft keyboard pop-up during the transition among these apps. The Content Provider is only extensively used by WebMD. Except GMail, the percentage of the network feature is usually high.
+
+# Activity Transition Tool Evaluation
+For Activity transition graph generation, the tool typically spends 10 minutes to 1 hour on a single Activity, depending on the UI complexity. For all apps except NewEgg and GMail, the detection accuracies are more than 96%, and the FP and FN rates are both less than 4%. When changing the sampling period from 30 to 100 ms in our experiment, for all apps the increases of FP and FN rates are no more than 5%. This shows a small impact of the sampling rate on the detection; thus, a lower sampling rate can be used to reduce sampling overhead.
+
+# 5 Activity Inference Results
+The aggregated Activity transition inference result is shown in column 5–7 in Table 3. For all apps except Amazon, the average accuracies for the top 1 candidates are 82–92%, while the top 2 and top 3 candidates’ accuracies exceed 91% and 93%. Amazon’s accuracy remains poor, and can achieve 80% only when considering the top 5 candidates. In the next section, we will investigate more into the reason of these results.
+
+# 5 Breakdown Analysis and Discussion
+To better understand the performance results, we break down the contributions of each signature feature and the transition model further. Table 4 shows the decrease of the average accuracy for top 1 candidates if leaving out certain features or the transition model. Without the CPU utilization time feature, the accuracy decreases by 36% on average, making it the most important contributor. Contributions from the network feature and the transition model are also high, which generally improves the accuracy by 12–30%. As low-entropy features, the Content Provider and the input method contribute under 5%. Thus, the CPU utilization time, the network event and the transition model are the three most important contributors to the final accuracy. Note that though the Content Provider and input method features have lower contributions, we find that the top 2 and top 3 candidates’ accuracies benefit more from them. This is because they are more stable features, and greatly reduce the cases with extremely poor results due to the high variance in the CPU utilization time and the network features.
+
+Thus, considering that the CPU utilization time is always available, apps with a high percentage of network features, or a sparse transition graph, or both, should have a high inference accuracy. In Table 2 and Table 3, this rule applies to all the selected apps except Amazon.
+
+Amazon has a low accuracy mainly because it benefits little from either the transition model or the network event feature due to high transition graph density and infrequent network events. The reason for the high transition graph density is that in Amazon each Activity has a menu which provides options to transition to nearly all other Activities. The infrequent network events are due to its extensively usage of caching, presumably because much of its content is static and cacheable. However, we note that many network events are typically not cacheable, e.g., authentication events and dynamic content (generated depending on the user input and/or the context). Compared to the other 6 apps, we find that these two properties for Amazon are not typical, not present in another shopping app NewEgg.
+
+The Amazon app case indicates that our inference method may not work well if certain features are not sufficiently distinct, especially the major contributors such as the transition model and the network event feature. To better understand the general applicability of our inference technique, a more extensive measurement study about the Activity and Activity transition graph properties is needed, which we leave as future work.
+
+# 5 Attack overhead
+We use the Monsoon Power Monitor  to measure the attack energy overhead. Using an Activity trace of WebMD on the same device, with our attack in the background the power level increases by 2 to 6% when the sampling period changes from 100 to 30 ms.
+
+# 6 Enabled Attack: Activity Hijacking
+In this section, based on the UI state tracking, we design a new Android attack which breaches GUI integrity — Activity hijacking attack — based on a simple idea: stealthily inject into the foreground a phishing Activity at the right timing and steal sensitive information a user enters, e.g., the password in login Activity.

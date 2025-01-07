@@ -1,0 +1,57 @@
+# Vulnerability Analysis of URI Scheme Handling in Android Mobile Browsers
+Abdulla Aldoseri, University of Birmingham, UK, axa1170@bham.ac.uk
+David Oswald, University of Birmingham, UK, d.f.oswald@bham.ac.uk
+University of Bahrain, Bahrain
+# Abstract
+Uniform Resource Identifier (URI) schemes instruct browsers to conduct specific actions depending on the requested scheme. Previous research has addressed numerous issues with web URI schemes (e.g., http: and https:) both for desktop and mobile browsers. Less attention has been paid to local schemes (e.g., data: and file:), specifically for mobile browsers. In this work, we examined the implementation of such schemes in Android OS browsers, analysing the top-15 mobile browsers. As a result, we discovered three vulnerability types that affect several major browsers (including Google Chrome, Opera and Samsung Internet). First, we demonstrate an URI sanitisation issue that leads to a cross-site scripting attack via the JavaScript scheme. The problem affects Chromium browsers including Chrome, Opera, Edge, and Vivaldi. Second, we found a display issue in Samsung Internet that allows abusing data URIs to impersonate origins and protocols, posing a threat in the context of phishing attacks. Finally, we discover a privilege escalation issue in Samsung’s Android OS, leading to full read and write access to the internal storage without user consent and bypassing the Android storage permission. While this issue was originally discovered in the file scheme of the Samsung browser, utilising a combination of static and dynamic analysis, we traced the problem back to an authorization issue in Knox Sensitive Data Protection SDK. We then show that any app can abuse this SDK to obtain full access to the internal storage without appropriate permission on Samsung devices running Android 10. We responsibly disclosed the vulnerabilities presented in this paper to the affected vendors, leading to four CVEs and security patches in Chrome, Opera and Samsung Internet browser.
+
+# Keywords
+Android, mobile browsers, XSS, privilege escalation, URI schemes
+# I. INTRODUCTION
+Mobile browsers are among the most widely used apps on mobile devices. They feature various methods, known as URI schemes, to access Internet (e.g., https:) and device resources (e.g., file:) . Due to the complexity and feature-richness of URI schemes, they also expose substantial attack surfaces. A single flaw in their implementation can jeopardize the security of a user’s data, profile, and online accounts and thus also compromise the user’s privacy.
+
+In general, URI schemes can be classified into two broad types: web schemes and local schemes. Web schemes are protocols that are used to communicate with online endpoints (e.g., https: and http:), whereas local schemes perform certain client-side operations (e.g., JavaScript: and file:). While web schemes have been extensively scrutinised in the literature, particularly with regard to authentication and authorization procedures, local schemes received less attention. Nevertheless, some notable issues in local schemes have been reported for desktop browsers (e.g., phishing with top-level navigation via data URIs  and Cross-Site Scripting (XSS) via encoding JavaScript URIs ).
+
+In this paper, we set out to analyse local URI schemes on mobile devices. Our initial assumption was that the specific usage context and the different OS characteristics compared to desktop browsers give rise to new vulnerability types specific to the mobile context.
+
+# A. Our contribution
+In this paper, we perform a systematic analysis of local browser schemes on mobile devices, focusing on JavaScript, data:, and file: schemes. We concentrate on these three schemes, however, also analysed other schemes (e.g., about:) but did not find significant issues. We then describe several vulnerabilities affecting mobile browsers that we found. In summary, our main contribution are:
+First, we discovered a self-XSS issue  in the JavaScript scheme. The issue allows executing JavaScript in the context of a loaded web page, e.g., leading to session hijacking. The issue is caused by lack of sanitisation of the clipboard of Android’s Input Method Editor (IME) keyboards. Most Chromium browsers are affected by this issue, including Google Chrome, Microsoft Edge, Opera, and Brave.
+
+Second, we demonstrate how data URIs in the Samsung Internet browser can be used to impersonate websites, i.e., render content that seems hosted on a genuine origin. This problem is caused by Samsung Internet’s behaviour to display the last URI characters in the address bar, making the data: scheme prefix invisible.
+
+Finally, by examining the file scheme, we uncover a privilege escalation issue in Samsung’s Android variant that allows an arbitrary app to access the internal storage of the device without user consent, bypassing the Android storage permission. We trace the issue to Sensitive Data Protection (SDP), a Samsung Knox module.
+
+# B. Responsible disclosure
+The vulnerabilities described in this paper have been responsibly disclosed through the respective channels. The JavaScript scheme issues described in Section III-A were reported to Google and Opera on December 1, 2020 and November 25, 2020 respectively. They can be tracked via CVE-2020-6159 for Opera and #1154353 in the Chromium bug tracker. The latter issue is currently embargoed until Google has released a patch. The data scheme issue in Samsung Internet browser described in Section III-B was reported on March 19, 2021, and can be tracked via CVE-2021-25419. Finally, the file scheme vulnerability described in Section III-C was reported on October 30, 2020 and resulted in two CVEs as follow: CVE-2021-25348 for bypassing the permission security check in the browser, and CVE-2021-25417 for the underlying privilege escalation issue in Samsung’s Android OS variant.
+
+# C. Outline
+The remainder of this paper is structured as follows: In section II, we provide a background on browser schemes together with related work regarding their security. Based on this, we define the scope of our work and choose specific schemes for our analysis. In section III, we discuss our analysis and present the discovered issues in widely-used browsers. Subsequently, we assess the impact of the discovered issues and propose mitigations in section IV. Finally, we conclude in section V, discussing limitations and opportunities for future work.
+
+# II. BACKGROUND AND RELATED WORK
+In this section, we provide an overview of browser schemes and review their security aspects. We then discuss related work in terms of security issues and common weaknesses.
+
+# A. URIs
+User agents (browsers) accept URIs from users and execute an action based on the URI. RFC3986 defines a URI to have the following structure :
+URI               = scheme ":" hier-part [ "?" query ]
+[ "#" fragment ]
+# B. Browser schemes
+Browsers support different schemes for remote communication (e.g., http, https, ftp) as well as local schemes (e.g., JavaScript, data, file). Unlike remote schemes, these local schemes solely operate on the client machine and do not require internet access. As they operate locally, they may expose local computer privileges which can cause security issues. Therefore, in this paper, we focus on understanding and analysing local schemes from a security perspective.
+
+# a) The JavaScript scheme:
+is implemented in web browsers applications to execute custom JavaScript from a URI . The scheme uses the following URI format:
+javascript:
+where  is JavaScript code. The scheme has two sequential operations: source text retrieval and in-context evaluation. The first operation retrieves the source text that is included in the  part of the URI and applies necessary decoding and characters replacements operations to it. Then, the in-context evaluation operation evaluates the generated text. A typical JavaScript scheme example for embedding a script as a hyperlink in an HTML document is as follows :
+&lt;a href="javascript:doSomething()"&gt;click&lt;/a&gt;
+In this example, when the user clicks on the hyperlink, the browser executes the doSomething() function in the context of the currently loaded origin. The embedded JavaScript inherits the current origin . The JavaScript scheme can also be invoked (like any URI) from the browser address bar.
+
+# b) The data scheme:
+renders binary data as-is and allows to include external data . An according URI has the following form:
+data:[<mediatype>][;base64],
+<mediatype> is a media type specification for the represented data (e.g., txt or png). base64 indicates if the data is Base64-encoded, otherwise, ASCII encoding is assumed.  is the payload data itself. The following is an example of rendering a PNG image using the data scheme :
+&lt;img src="data:image/png;base64,aGVsbGl..." /&gt;
+From the perspective of the browser, the scheme refers to the used protocol in a request (e.g., https but also local schemes like file and JavaScript). The “authority” includes host and port for requests to remote servers.
+
+Browsers adopt the Same-Origin Policy (SOP) as a security model. SOP provides isolation between origins (authorities), i.e., prevents different origins from accessing each other unless they are the same origin or explicitly authorised each other for example via Cross-Origin Resource Sharing (CORS) . SOP prevents network adversaries from compromising retrieved responses from one origin or carrying out actions on behalf of the user from compromised origins (e.g., via JavaScript).
+
+The maximum length of URIs in browsers imposes a limitation on the size of the  part in data URIs. Similarly to JavaScript URIs, data URIs can be used from the browser’s address bar.

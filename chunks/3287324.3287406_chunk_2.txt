@@ -1,0 +1,49 @@
+Additionally, students should comprehend the heterogeneous nature of the attacks likely to target Android devices. We have presented a few examples of vulnerabilities in Table 1 that illustrate the diversity of the likely threats. The kernel is the most challenging component to attack, and a representative vulnerability is the Futex vulnerability1, which enables, under certain conditions, the execution of arbitrary code in the kernel mode and to root the phone. On top of the kernel, the Android services can be exploited, e.g., the process that installs or updates applications. An example of such a threat is the Janus exploit that abuses a vulnerable signature verification implementation. Similar attacks target the direct environment of the malicious application, i.e., the Dalvik virtual machine or the ART library that implements security verifications for the running application. Moreover, the attacker can attempt to abuse the SDK itself by identifying vulnerable classes  with controllable side-effects. Finally, and this constitutes a significant part of the attacks, the attacker does not exploit any vulnerability but performs malicious activities using the requested permissions. Examples of such applications are ransomware, cryptominers, and remote administration tools.
+
+Taking these remarks into consideration, we describe the structure of the proposed labs and detail their content, in the next section.
+
+1https://tinyhack.com/2014/07/07/exploiting-the-futex-bug-and-uncovering-towelroot
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA
+# 4 ANDROID SECURITY LABS
+# 4 Security Labs Design
+We have developed several labs2 which cover different Android components involved in the understanding of mobile security. We present these labs in Table 2, following Bloom’s revised taxonomy of educational objectives . Students should follow these labs from left to right in the table, eventually completing the sequence with a security project (PROJ) that corresponds to the deepest cognitive process of the taxonomy (Create).
+
+The number of hours depends of the level of knowledge teachers intend to obtain. We distinguish three levels: level 1 (~2h) provides fundamental knowledge or focuses on a particular aspect; level 2 (~5h-8h) enables the student to cover more notions and practice with real devices; level 3 (~20h) aids the student to cover a large variety of notions or to work on a particular one with important software development. Most of the labs use level 1 or 2 (e.g., INST and MAL); however, a few of them (e.g., DEV and COV) can use level 3 or can be adapted as a security project (PROJ).
+
+The first two labs (Remember process) train the students to develop Android applications (DEV) and to flash a custom Android image on a smartphone (INST). Such labs are typically observed in other available approaches . Then, two labs enhance the students in the understanding of benign (BANK) and malicious applications (MAL) by reversing their bytecode. This aids the studying of attacks at the application level and their associated countermeasures (debugger detection, obfuscation, etc.) that can be used both by malicious and legitimate applications.
+
+The subsequent labs correspond to the “Apply” step in the taxonomy. Students are encouraged to implement attacks and countermeasures with their previously acquired knowledge. For this purpose, we propose two use cases. The first one (COV) is proposed to defeat the Android access control system by implementing a covert channel between two applications that do not have permission to interact with each other. The second one (MEM) is proposed to exploit a dump of the volatile memory to recover certain confidential information. The likely benefit of these labs is to compel the students to obtain deeper knowledge of the low-level components of Android, i.e., the leakage induced by the operating system and its primitives (COV) and the Dalvik (or Art) data structures used to represent the Java classes of the applications in volatile memory (MEM).
+
+Contrary to the previous labs, wherein students are completely guided while they practice, the three subsequent labs require the performance of security analysis (Analyze process). We provide the symptoms of certain issues to the students, and we expect an investigation and eventually certain remediation. In the first lab (CLASS), students are required to analyze an application that uses a vulnerable class loader. The second lab (PACK) proposes to analyze a malicious application obfuscated with packing techniques. The third lab (KERN) focuses on low level vulnerabilities by performing ROP attacks using gadgets of the kernel.
+
+Note that no lab is classified in the “Evaluate” cognitive process as the distinction between “Analyze” and “Evaluate” is marginal. In particular, in , only three levels of mastery is proposed (familiarity, usage, assessment). Thus, we use only four levels of the Bloom taxonomy for classifying our labs; additionally, we propose various security projects (PROJ). They are designed to explore a specific subject with a large number of hours (level 3 or higher) for a group of students and may be linked to research activities.
+
+# 4 DEV Lab: Android Development
+The DEV lab provides the pre-requisite for understanding the fundamentals of Android development. We classify this lab in Bloom’s taxonomy in the “Remember” process as we do not intend to train software developers and rather intend to teach the fundamentals for discussing security aspects. The topics covered depend on the amount of time allocated, and we distinguish three chapters of knowledge, as presented in Table 3.
+
+Learning outcomes. At the end of the lab, we expect the students to comprehend the architecture and deployment of an Android application. The students should be capable of developing an application that communicates with a remote server, using REST API.
+
+# 4 INST Lab - Compiling, Modifying, Flashing
+Numerous other laboratories presented in this paper are required to be able to setup a clean image of the smartphone. As indicated by Guo et al. , students appreciate having a real device to experiment with while performing development or hacking activities. Moreover, it is occasionally more difficult to work with an emulator, for example to play with the different sensors, or to pair an emulated smartphone with an emulated Wear watch, which may require the installation of the Google APIs with an active Google account.
+
+# Paper Session: Advanced Topics
+# SIGCSE '19, February 27–March 2, 2019, Minneapolis, MN, USA
+The INST lab (level 1) includes the compilation of a complete AOSP distribution for a Google Nexus 5 or 5X or Sony Xperia X smartphone and then the flashing of the compiled images. Additionally, the Nexus models offer the capability to debug the kernel output using serial headphone jack. For that purpose, we constructed a small serial debugger that aids students involved in advanced labs, where the kernel is modified and is likely to crash during runtime.
+
+# Learning outcomes.
+
+Students are able to customize the source of an operating system and install it on a device.
+
+# 4 MAL Lab - Malware Reverse Engineering
+The MAL lab consists in reversing several types of malware using different open source tools. The pedagogical goal of the lab is to demonstrate that each type of malware requires a custom reverse process. The lab consists of multiple exercises. Thus, the required number of hours can be adapted from level 1 to 3. In Bloom’s taxonomy, we place this lab in the “Understand” process because we provide the students with the entire set of instructions for reversing the malware. We present the two most representative ones.
+
+# Programming an antidote for a ransomware.
+
+The students install a ransomware on a provided smartphone. They observe that the image files are encrypted by the malware. Then, the students explore the code using BytecodeViewer 3 or Jadx 4 in order to identify the service that encrypts the images. The code analysis reveals that the AES ciphering key used by the ransomware is a constant. Thus, after locating the deciphering code, the students modify the malicious application using a bytecode editor so that it calls the deciphering code. Finally, they use this modified application to recover the images on the smartphone.
+
+# Observing spyware.
+
+The students are first required to reverse the spyware and locate the code that extracts personal data (accounts, phone number, IMEI) and the code that transmits the data to a remote server, whose domain name is identified for the sake of simplicity. We also propose the observation of the leaked data in network traces as part of the lab in order to confirm the static analysis. To achieve this goal, the students setup a local web server, use the ngrok website 5 to create a public URL of the form x.ngrok.io, and link this URL to the local web server. Then, using a provided tool based on Soot 6, the students substitute the domain name used by the malware with this URL. Executing this new version of the malware enables one to capture the first requests that are responsible for leaking user’s data.
+
+# Learning outcomes.

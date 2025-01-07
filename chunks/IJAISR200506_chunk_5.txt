@@ -1,0 +1,156 @@
+This study aims to teach the development of Android applications through an intelligent tutoring system that helps students and teachers overcome many obstacles in the learning process in addition to improve the student's abilities and ensure the quality of education.
+
+# 4. Design And Development Of The Proposed System
+# 4. Overview of the Proposed System
+The researchers built the proposed ITS for teaching Android Applications Development to students to overcome the difficulties they face. The basic idea of this system is a systematic introduction into the concept of Android Application Development. The system presents the topics of Android Application Development and generates problems for the students to solve. The system is automatically adapted at runtime to the student’s individual growth. The system provides obvious support for adaptive demonstration constructs.
+
+The Proposed ITS has role-based access control and there are two types of users that can sign in the system:
+1. Teacher (or admin) user
+2. Student user
+Once signed in to the system decides which interface to provide for the specified user.
+
+# The teacher interface provides ability to:
+- Add a new student.
+
+- Add new lessons or modify existing ones.
+
+- Add new examples or modify existing ones.
+
+- Add new questions or modify existing ones.
+
+- Add hints or modify existing ones.
+
+- Adjust the themes of the system.
+
+- Change the main system language.
+
+# The student interface provides ability to:
+- Read the training material and related examples.
+
+- Go through the lessons in a hierarchical pattern.
+
+- Solve the questions.
+
+- Request for hint.
+
+- Do the final exam.
+
+- See the results in a statistical view.
+
+The training material used in the proposed ITS for teaching the development of Android applications is prepared by the researchers. It has been approved for training by UNRWA's Khan Younis Training College (KYTC) and has been audited by experts in the development of Android applications.
+
+This training material helps the trainee to develop Android applications step-by-step from scratch to professionalism. It includes how to build Android applications, how to design, develop and deploy applications on the Google play store, as well as how to protect and test these applications to ensure their integrity from gaps and crashes.
+
+# 4. Authoring Language Used
+The researchers used the Intelligent Tutoring System Builder (ITSB) tool to assemble an intelligent tutoring system to teach the development of Android applications.
+
+ITSB is an authoring tool designed and developed to help teachers build intelligent learning systems in multidisciplinary areas. The teacher is needed to create a set of educational basics, which, in-line, are automatically trained to build a broad teacher framework and build an intelligent tutoring system.
+
+ITSB has two interfaces, one for teacher interface through which to add lessons, examples, questions and answers, and the other for students to learn lessons and answer questions. ITSB supports English and Arabic languages.
+
+The authoring process goes through several steps as follows:
+- Add lessons and examples,
+- Add questions and hints,
+- Set the difficulty level for each question, and
+- Add students. Each student has his own profile.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# 4. Architecture of the proposed ITS
+A Typical ITS include four basic models: the domain model, the student model, the expert model, and the user interface model as shown in Figure 2 in section 2. The proposed ITS uses the typical structure of ITS. The proposed ITS uses the Intelligent Tutoring System Builder (ITSB) tool, developed by Prof. Dr. Sami S. Abu Naser using the Delphi language.
+
+# 4 Domain Model
+The domain model adds the course format in a systematic way. The course may contain parts, such as division, sub-section, and subject. These parts are kept in the domain model with all the elements and resources needed to teach the student.
+
+The training material is arranged for six chapters containing 96 lessons and 290 examples. There are exams at the end of each chapter, and a final test for all chapters.
+
+The key sections that draw the main structure of the tutoring material are:
+# Chapter 1: Android Overview and history
+- Mobile phones revolution
+- What is Android? Android Features, Android Versions
+- Android Devices on the market
+- Android Architecture
+- The Advantage of adopting Android as a Developer
+- Android Applications
+- Android Development Environment
+- Android Development Prerequisites
+# Chapter 2: Basics Android User Interface
+- Android Applications Components
+- Installing Android Studio Environment
+- Create First Android Application and Run AVD
+- Anatomy of Android Application
+- Layout Manager and Android Views
+- Android UI Control
+- Activity Lifecycle
+- Views Events Handling
+- Build Styles and Themes
+- Dealing with Container Views and Adapters
+- Build Menu Groups and Items
+- Build Android Dialogs
+- Intent and Intent Filters
+# Chapter 3: Advanced Android Applications Design
+- Android Fragments and Fragment Manager
+- Android Drawable Styles
+- Android Animations
+- Android Material Designs
+- Advanced UI Examples
+- Localizations and Multilanguage’s
+- Support Multiscreen mobile and tablet
+# Chapter 4: Android Applications Development
+- Android Shared Preferences
+- SQLite Database
+- Android Multimedia
+- Android Service
+- Android Content Provider
+- Android Web Service
+- Android Broadcast Receiver
+- Google Maps and Location Service
+- Android Push Notifications
+- Camera and Sensors
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+# Table of Contents
+- Social Media API
+- Monetize Applications
+- Chapter 5: Android Applications Testing and Publishing
+- - Introduction to Android Applications Testing
+- Android Applications Testing Types
+- Unit and Instrumentation Testing
+- Using Fabric Library
+- Publishing Android Applications
+Chapter 6: Android Security Essentials
+# 4 Student Model
+The new student must create their own account for a profile. The profile contains information about the student such as his name, the dates of the login, the results of each session, and progress in learning during each session. Student degree can be viewed at any time during the session describing the student's performance in problem solving in the following subjects: casting, classes, and inheritance.
+
+# 4 Expert Model
+The Expert Model was carried out to collect information needed to generate feedback . The expert model is able to solve the resulting problems by analyzing the template. Since the expert model can execute any code, it can create the correct answer to a problem of its own, and determine whether the user answer is correct / incorrect. In addition to whether the user answer is correct / incorrect, the model can provide the student with the correct answer when requested. In addition, the unit provides the student with appropriate feedback in response to the student's response.
+
+Students can answer questions from the first difficulty level. If the student gets 75% or higher at any level, he can move to the next difficulty level. However, if the student is less than 75% and above 50%, the ITS forces him to repeat the exercises at the same level of difficulty again in a random way. If the student receives a score of less than 50%, the ITS forces the student to return to the relevant lesson and after that the student can return to the exercises as shown in Figure 3.
+
+www.ijeais.org/ijaisr
+# International Journal of Academic Information Systems Research (IJAISR)
+ISSN: 2643-9026
+Vol. 4, Issue 5, May – 2020, Pages: 33-58
+Login
+Questions enter the Bludeni choose the question of the lesson he/she wants. The student answers the questions of the document of the current lesson.
+
+Score > 50
+Cloze question session and take the student to lesson a102 later. Present the questions of the current.
+
+# 4 User interface Model
+The user interface has two sections; one is for the teacher to add lessons, examples and questions with the correct answers to each one, and the student to read lessons, examples and test his comprehension by answering exam questions.
+
+The researchers used ITSB features such as text, graphics, colors, audio and video to improve student motivation.
+
+# 4 Screen captures
+These are some screenshots of the proposed ITS divided into two sections:
+1. Teacher interfaces:
+- Figure 4: This interface contains text boxes to enter the teacher's ID and name and then press the login button to move it to the main window.
+
+- Figure 6: The main interface of the teacher, which contains a set of buttons for administrative processes such as the addition of lessons and others, and contains a front to display lessons and also contains examples of lessons.
+
+- Figure 8: Special interface for the teacher to modify the colors and types of fonts and size of forms and buttons for all interfaces to suit the overall appearance of the application.

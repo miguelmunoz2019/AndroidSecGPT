@@ -1,0 +1,70 @@
+# Resource availability
+Some participants said their team decides their security practices based on the available budget and/or employees who can perform security tasks. As reported, some teams violate B10 as they do not have enough employees who can perform all the recommended security tasks in addition to their original workload. Also, others reportedly violate B9, because they neither have the budget to hire external penetration testers, nor do their members have the expertise to perform such post-development tests. For such companies, the price for conforming with these best practices is too steep for little perceived gain. In other cases, participants said their team strains their resources in ways that can be detrimental. For example, the one developer with the most security knowledge is handed responsibility to identify security-sensitive features and to verify the security of the team’s code. This is a significant burden, yet with little support or guidance. Besides the obvious security risks of such an approach, it may also lead to employee fatigue and ultimately to the loss of valuable team members.
+
+# External pressure
+Monitoring by an overseeing entity can drive teams to adopt security practices to ensure they comply with its standards. Encouraging security practices through external mandates is not new, e.g., the UK government mandated that applications for the central government should be tested using the National Technical Authority for Information Assurance CHECK scheme . As a result of this initiative, companies have improved their management and response to cyber threats . It would be interesting to explore how to mandate security practices in companies, and how governments and not-for-profit agencies could support teams, particularly those from the security inattentive group, to become more secure.
+
+# Experiencing a security incident
+Participants reported that discovering a vulnerability or experiencing a security breach first-hand is another factor that encouraged security practices and awareness in their teams. Despite extensive publicity around security vulnerabilities, awareness of and commitment to security remains low . Our analysis shows that direct vulnerability discovery influenced security practices more than hearing news-coverage of high-profile vulnerabilities (e.g., ). This can be explained by the optimistic bias : the belief that “misfortune will not strike me” . Rhee et al.  found that the optimistic bias strongly influences perception of security risks in Information Technology (IT). It is even greater when the misfortune seems distant, without a close comparison target. Thus, to overcome such bias, security training and awareness has to reach all levels–from upper management to those directly involved in the development process. Similar to Harbach and Smith’s  personalized privacy warnings which led users to make more privacy-aware decisions, software security training should be personalized and provide concrete examples of the consequences of these threats to the company. We recommend that training should also not focus exclusively on threats; it should provide concrete proactive steps with expected outcomes. Additionally, it should include case studies and first-hand accounts of security incidents, and approaches to overcome them. Hence, security training moves from the theoretical world to the real world, aiding in avoiding the optimism bias.
+
+# Future research directions
+Security best practices advocate for integrating security starting from the early SDLC stages. However, with limited resources and expertise, if a team can only address security in post-development testing, is this team insecure? Or might this testing be sufficient? Is the security inattentive group in our dataset really guilty of being insecure? Or did they just find the cost of following security best practices too steep? Available best practices fail to discuss the baseline for ensuring security, or how to choose which best practices to follow based on limited resources and expertise. It was also interesting to find that most security best practices are from industry sources and are not necessarily empirically verified. For future research, we suggest devising a lightweight version of security best practices and evaluating its benefit for teams that do not have enough resources to implement security throughout the SDLC, or when implementing traditional security practices would be too disruptive to their workflow. Additionally, teams that succeeded at building a security-oriented culture should be further explored to better understand how others can adopt their approach. Further exploration of how to incorporate security in the company culture and evaluating its benefits can be a starting point for more coherent security processes, since developers are more likely to follow security practices if mandated by their company and its policy . Particularly, what lessons can be carried from the security adopters over to the security inattentive group? Our work explores some of the issues surrounding secure development practices. Surveys with a larger sample of companies and more stakeholders would be an interesting next step.
+
+# CONCLUSION
+Through interviews with developers, we investigated SDLC practices relating to software security. Our analysis showed that real-life security practices differ markedly from best practices identified in the literature. Best practices are often ignored, simply since compliance would increase the burden on the team; in their view, teams are making a reasonable cost-benefit trade-off. Rather than blaming developers, our analysis shows that the problem extends up in company hierarchies. Our results highlight the need for new, lightweight best practices that take into account the realities and pressures of development. This may include additional automation or rethinking of secure programming practices to ease the burden on humans without sacrificing security.
+
+Fourteenth Symposium on Usable Privacy and Security  USENIX Association
+# 9. REFERENCES
+1. https://www.owasp.org/index.php/Category:OWASP_Guide_Project
+2. https://www.cigital.com
+3. www.owasp.org/index.php/OWASP_SAMM_Project
+4. www.owasp.org/index.php/OWASP_Testing_Project
+5. AngularJS Developer Guide. https://docs.angularjs.org/guide/security
+6. BSIMM. https://www.bsimm.com
+7. Cybersecurity Engineering. https://www.cert.org/cybersecurity-engineering/
+8. Security Development Lifecycle. https://www.microsoft.com/en-us/sdl
+9. Content analysis for the social sciences and humanities. Addison-Wesley Publishing Co., 1969.
+
+10. Cyber security boost for UK firms. https://www.gov.uk/government/news/cyber-security-boost-for-uk-firms, 2015.
+
+11. IT Health Check (ITHC): supporting guidance. https://www.gov.uk/government/publications/it-health-check-ithc-supporting-guidance/it-health-check-ithc-supporting-guidance, 2015.
+
+12. Y. Acar, M. Backes, S. Fahl, S. Garfinkel, D. Kim, M. L. Mazurek, and C. Stransky. Comparing the usability of cryptographic apis. In Proceedings of the 38th IEEE Symposium on Security and Privacy, 2017.
+
+13. Y. Acar, M. Backes, S. Fahl, D. Kim, M. L. Mazurek, and C. Stransky. You get where you’re looking for: The impact of information sources on code security. In IEEE Symp. on Security and Privacy, 2016.
+
+14. Y. Acar, S. Fahl, and M. L. Mazurek. You are not your developer, either: A research agenda for usable security and privacy research beyond end users. In 2016 IEEE Cybersecurity Development (SecDev), pages 3–8, Nov 2016.
+
+15. Y. Acar, C. Stransky, D. Wermke, C. Weir, M. L. Mazurek, and S. Fahl. Developers need support, too: A survey of security advice for software developers. In Cybersecurity Development (SecDev), 2017 IEEE, pages 22–26. IEEE, 2017.
+
+16. H. Assal, S. Chiasson, and R. Biddle. Cesar: Visual representation of source code vulnerabilities. In VizSec’16, pages 1–8, Oct.
+
+17. N. Ayewah, D. Hovemeyer, J. D. Morgenthaler, J. Penix, and W. Pugh. Using static analysis to find bugs. IEEE Software, 25(5):22–29, Sept 2008.
+
+18. M. Backes, K. Rieck, M. Skoruppa, B. Stock, and F. Yamaguchi. Efficient and flexible discovery of php application vulnerabilities. In 2017 IEEE European Symposium on Security and Privacy (EuroS P), pages 334–349, April 2017.
+
+19. G. Berisha and J. Shiroka Pula. Defining small and medium enterprises: a critical review. Academic Journal of Business, Administration, Law and Social Sciences, 1, 2015.
+
+20. B. Chess and G. McGraw. Static Analysis for Security. IEEE Security & Privacy, 2(6):76–79, 2004.
+
+21. Codenomicon. The Heartbleed Bug. http://heartbleed.com.
+
+22. D. Oliveira et al. It’s the Psychology Stupid: How Heuristics Explain Software Vulnerabilities and How Priming Can Illuminate Developer’s Blind Spots. In ACSAC ’14, pages 296–305. ACM, 2014.
+
+23. S. Elo and H. Kyng¨as. The qualitative content analysis process. Journal of Advanced Nursing, 62(1):107–115, 2008.
+
+24. A. Forward and T. C. Lethbridge. A taxonomy of software types to facilitate search and evidence-based software engineering. In Proceedings of the 2008 Conference of the Center for Advanced Studies on Collaborative Research: Meeting of Minds, CASCON ’08, pages 14:179–14:191, New York, NY, USA, 2008. ACM.
+
+25. D. Geer. Are Companies Actually Using Secure Development Life Cycles? Computer, 43(6):12–16, June 2010.
+
+26. B. G. Glaser and A. L. Strauss. The discovery of grounded theory: strategies for qualitative research. Aldine, 1967.
+
+27. M. Green and M. Smith. Developers are not the enemy!: The need for usable security apis. IEEE Security Privacy, 14(5):40–46, Sept 2016.
+
+28. A. Greenberg. Hackers Remotely Kill a Jeep on the Highway—With Me in It. https://www.wired.com/2015/07/hackers-remotely-kill-jeep-highway/, 2015.
+
+29. M. Harbach, M. Hettig, S. Weber, and M. Smith. Using personal examples to improve risk communication for security & privacy decisions. In Proceedings of the 32Nd Annual ACM Conference on Human Factors in Computing Systems, CHI ’14, pages 2647–2656, New York, NY, USA, 2014. ACM.
+
+30. M. Howard and S. Lipner. The security development lifecycle: SDL, a process for developing demonstrably more secure software. Microsoft Press, Redmond, Wash, 2006.
+
+31. B. Johnson, Y. Song, E. Murphy-Hill, and R. Bowdidge. Why don’t software developers use static analysis tools to find bugs? In ICSE, 2013.

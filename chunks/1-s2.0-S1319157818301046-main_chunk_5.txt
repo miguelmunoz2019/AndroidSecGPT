@@ -1,0 +1,48 @@
+# 3. Flawed factory reset and remote wiping
+In  researchers analyzed the effectiveness of the factory reset in Android by studying 21 Android smartphones from 5 vendors with Android versions from v2.x to v4. They found that wiping the external storage can only be done if the user chooses the additional option ‘‘External storage” in factory reset setting in Android graphical user interface (GUI). However, if a user resets his device with Recovery/Bootloader instead of using the setting in GUI, external storage is not sanitized (see Fig. 3). Additionally, they discovered that all devices did not sanitize the external storage properly. The study concludes with a set of critical issues regarding factory reset, because of the flawed factory reset, Android v2.x does not provide proper deletion of the data partition. Besides, Android does not provide appropriate removal of the internal and external SD card in all versions. Furthermore, vendors push incomplete upgrades to the devices, and newer devices lack driver support for proper deletion that should be shipped by vendors, which could affect the factory reset process. Android full disk encryption has the potential to mitigate flawed factory reset problem. However, researchers found that encryption keys can be recovered because of flawed factory reset. To mitigate this issue, researchers recommend filling up the partition of interest with random-byte files, to overwrite all unallocated space or overwrite the entire partition ‘‘bit-by-bit”.
+
+To protect data in stolen devices, a user can use mobile anti-virus (MAV) that provides ‘‘remote wipe” of the device and ‘‘remote lock”. MAV requires Admin permission that should be enabled by the user on the setting, if it is not enabled, MAV cannot use the built-in wipe and lock features, also, cannot do reliable partition overwriting bit-by-bit to sanitize data storage. A study in (‘‘Remotely ring, lock, or erase a lost device - Accounts Help”, Support.google.com, 2016) examined top 10 MAV apps that provide remote wipe and lock functionalities to check their security practices and implementations. Starting by installing these apps on Android 2 device and then reviewing the apps’ code and conducting a simple run-time analysis. The result showed that MAV might be defective due to poor implementation skills, Android API limitations and incorrect documentation that lead to misuse the API, also, vendor customizations that allow the attacker to bypass MAV protection even if its functions are appropriately implemented.
+
+There are several issues regarding using MAV; there is incorrect information given to users after a remote wipe and lock, for example, even when the admin permission is disabled, MAV display ‘‘successful wiping” when the user requests to wipe. Additionally, using MAV web interface, users can access their data and perform remote lock and wipe; however, the authentication process is weak since there is no restriction on the password in most of MAV, for example, four letters as a password is accepted. Moreover, MAV relies on carrier network that might be insecure. The study deduces that MAV remote wipe functions cannot be used as an alternative to a flawed built-in Factory Reset.
+
+# 4. Solutions for Android data storage threats
+This section presents proposed solutions for the previously mentioned threats which can also be divided into physical and software solutions.
+
+Android provides built-in ‘‘Factory Reset” to erase data on the device; this can be done either remotely or by accessing the device directly. In the case of lost or stolen device, users can use ‘‘Android device manager” to find the device location, lock the device with.
+
+A set of research papers present solutions to tackle physical threat problem in Android devices. CleanOS, TinMan, Sentry,
+# Privacy
+# Backup and restore
+- Back up my data
+- Back up application data, Wi-Fi passwords; and other settings
+- Google servers
+- Automatic restore
+When reinstalling an application, backed up settings and data will be restored.
+
+# Personal data
+- Factory data reset
+Erases all data on phone
+# Factory Reset in Settings
+# Factory Reset in Recovery:
+Armored, Deadbolt, DroidVault, Replay Protected Memory Block (RPMB) partition, CATT, and ARMOR are different countermeasures in several papers. A summary of these countermeasures is given in Table 1.
+
+# 4. CleanOS
+In , researchers proposed a prototype of “CleanOS”, which is an Android-based operating system that identifies sensitive data in RAM and internal storage that are unused for a specific amount of time, encrypt them, and then save the encrypted keys in the cloud. Thus, keep a clean environment in case of device theft. However, CleanOS does not protect data in use; it intends to minimize data exposure by protecting data that are not used for a period. Besides, it is vulnerable to network attack, where the attacker can sniff keys when they are sent to the cloud.
+
+# 4. TinMan
+In (“javax.crypto—Android Developers,” Developer.android.com, 2016) researchers tried to mitigate data exposure issue and protect in-memory confidential data by proposing “TinMan” prototype system that uses offloading mechanism. It separates credentials access from the rest of the functionalities of the app and provides a trusted node to store those credentials. They focus on confidential data such as password, bank account, social security number, and credit card number, which are named confidential record (cor). TinMan separates cor from regular private data and enforces its protection (see Fig. 4). This mechanism aims to avoid storing sensitive data on the device, so when the device is lost or stolen, there is nothing to lose. The trusted node can be a server inside a company or a virtual machine on a trusted cloud, other than the device itself, so the applications need to access.
+
+# 4. Sentry
+Another solution to overcome the problem of data lodging in RAM was proposed in . The study focuses on securing the data only when the screen is locked because in unlocked state attacker can access the data using the user interface. The problem is when the device is locked, data remains in RAM for a while, which makes it vulnerable to physical attack. Hence for the proposed solution, is to encrypt memory pages of the sensitive application when the screen is locked and decrypt when the screen is unlocked. However, the main contribution is to avoid storing encryption/decryption keys in RAM and use ARM system-on-chip (SoC) instead. An ARM is an abbreviation for Advanced RISC (reduced instruction set computer) Machines Company which develops ARM processor based on the RISC architecture (“What is ARM processor – Definition from WhatIs.com”, WhatIs.com, 2016). ARM SoC architecture is used by recent smartphones and tablets; it contains low capacity storage next to the CPU. The paper presents “Sentry” prototype system that uses SoC storage mechanisms to secure the cryptography keys, making physical attacks more difficult to mount because they must target the SoC to retrieve secrets, which is much more expensive. The main limitation of Sentry is that it leads to lower performance.
+
+# 4. Armored
+In (Müller et al., 2013) researchers provided a countermeasure against physical attacks where they built “Armored” that stores.
+
+# H. Altuwaijri, S. Ghouzali / Journal of King Saud University – Computer and Information Sciences 32 (2020) 543–552
+# Summary of physical threat solutions.
+
+# 4. Deadbolt
+“Deadbolt” prototype application has been developed (Skillen and Barrera, 2013) as another countermeasure against physical attack, and as a complement to Android lock-screen and FDE features. Since mobile phone is always-on and rarely shut down, the FDE keys remain in memory even when the device is in locked screen state. Deadbolt protects the FDE keys while still providing essential mobile functionality by (upon lock screen) unmounting the encrypted data partition, and securely overwriting key stored RAM. The main limitation of Deadbolt is that it is still vulnerable to offline password guessing attack on the stored volume key.
+
+# 4. Droidvault
+DroidVault  provides a secure data vault on Android devices using the TrustZone. TrustZone technology provides trusted hardware that allows for developing a diverse set of security services. Parallel to the OS, TrustZone is a separate environment that can run security function isolated from kernel OS by a hardware barrier . Utilizing TrustZone, DroidVault presents a secure storage platform on Android since the data is stored in encrypted form on the filesystem and the unencrypted data is manipulated only in the TrustZone. DroidVault is a promising solution based on  evaluation. However, it encompasses limitations. First, it is difficult for applications to have a clear-cut line between secure and insecure data. Second, TrustZone is processor-dependent, so it does not work for all the devices. Third, it requires a firmware update in the existing devices. Finally, the system has not been implemented on smartphones or tablets, but on a programmable board running the Android operative system.

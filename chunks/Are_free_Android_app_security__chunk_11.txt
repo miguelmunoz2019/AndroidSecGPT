@@ -1,0 +1,103 @@
+# I1
+Android apps can dynamically register broadcast receivers at runtime. Such receivers are automatically exported without any access restrictions and, hence, can be accessed via ICC and exploited to perform unintended actions.
+
+# I2
+A component can use a pending intent to allow another component to act on its behalf. When a pending intent is empty (i.e., does not specify an action), it can be seeded (via interception) with an unintended action to be executed on behalf of the originating component.
+
+# I3
+To perform an action (e.g., send email), users choose an activity/app from a list of activities ordered by priority. By using appropriate priorities, activities can gain unintended privilege over other activities.
+
+# I4
+Implicit intents are processed by any qualifying service determined by intent filters as opposed to a specific explicitly named service. In case of multiple qualifying services, the service with the highest priority processes the intent. By registering appropriate intent filters and by using appropriate priorities, services can gain unintended access to implicit intents.
+
+# I5
+Pending intents can contain implicit intents. Hence, services processing implicit intents contained in pending intents are vulnerable like in I4.
+
+# I6
+Apps can use path-permissions to control access to data exposed by content provider. These permissions control access to a folder and not to its subfolders/descendants and their contents. Incorrectly assuming the extent of these permissions can lead to information leak (read) and data injection (write).
+
+# I7
+Components that process implicit intents are by default exported without any access restrictions. If such a component processes intents without verifying their authenticity (e.g., source) and handles sensitive information or performs sensitive operations in
+# Empirical Software Engineering (2020) 25:178–219
+response to implicit intents, then it can leak information or perform unintended actions.
+
+# I8
+Broadcast receivers registered for system intents (e.g., low memory) from Android platform are by default exported without any access restrictions. If such a receiver services intents without verifying the authenticity of intents (e.g., requested action), then it may be vulnerable like the components in I7.
+
+# I9
+Broadcast receivers respond to ordered broadcasts in the order of priority. By using appropriate priorities, receivers can modify such broadcasts to perform unintended actions.
+
+# I10
+Sticky broadcast intents are delivered to every registered receiver and saved in the system to be delivered to receivers that register in the future. When such an intent is re-broadcasted with modification, it replaces the saved intent in the system, which can lead to information leak and data injection.
+
+# I11
+Every activity is launched in a task, a collection (stack) of activities. An activity can declare its affinity to be started in a specific task under certain conditions. When the user navigates away from an activity X via the back button, the activity below X on X’s task is displayed. This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a phishing attack.
+
+# I12
+When an activity from a task in the background (i.e., none of its activities are being displayed) is resumed, the activity at the top of the task (and not the resumed activity) is displayed. This behavior along with task affinity and specific start order — malicious activity started after benign activity — can be used to mount a phishing attack.
+
+# I13
+When a launcher activity is started, its task is created and it is added as the first activity of the task. If the task of a launcher activity already exists with other activities in it, then its task is brought to the foreground, but the launcher activity is not started. This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a phishing attack.
+
+# I14
+In addition to declaring task affinity, an activity can request that it be moved to the affine task when the task is created or moved to the foreground (known as task reparenting). This behavior along with task affinity and specific start order — malicious activity started before benign activity — can be used to mount a denial-of-service or a phishing attack.
+
+# I15
+Apps can request permission to perform privileged operations (e.g., send SMS) and offer interfaces (e.g., broadcast receiver) thru which these privileged operations can be triggered. Unless appropriately protected, these interfaces can be exploited to perform an operation without sufficient permissions.
+
+# I16
+The call method of Content Provider API can be used to invoke any provider-defined method. With reference to a content provider, this method can be invoked without any restriction leading to both information leak and data injection.
+
+# A Networking
+Networking APIs allow Android apps to communicate over the network via multiple protocols.
+
+# Empirical Software Engineering (2020) 25:178–219
+# N1
+Apps can open server sockets to listen to connections from clients; typically, remote servers. If such sockets are not appropriately protected, then they can lead to information leak and data injection.
+
+# N2
+Apps can communicate with remote servers via insecure TCP/IP connections. Such scenarios are susceptible to MitM attacks.
+
+# A Permissions
+In addition to system-defined permissions, Android apps can create and use custom permissions. These permissions can be combined with the available four protection levels (i.e., normal, dangerous, signature, signatureOrSystem) to control access to various features and services.
+
+# P1
+Permissions with normal protection level are automatically granted to requesting apps during installation. Consequently, any component or its interface protected by such “normal” permissions will be accessible to every installed app.
+
+# A Storage
+Android provides two basic options to store app data.
+
+1. Internal Storage is best suited to store files private to apps. Every time an app is uninstalled, its internal storage is purged. Starting with Android 7 (API 24), files stored in internal storage cannot be shared with and accessed by other apps.
+
+2. External Storage is best suited to store files that are to be shared with other apps or persisted even after an app is uninstalled. While public directories are accessible by all apps, app-specific directories are accessible only by corresponding apps or other apps with appropriate permission.
+
+# S1
+Files stored in public directories on external storage can be accessed by an app with appropriate permission to access external storage. This aspect can be used to tamper data via data injection.
+
+# S2
+The same aspect from S1 can lead to information leak.
+
+# S3
+Apps can accept paths to files in the external storage from external sources and use them without sanitizing them. A well-crafted file path can be used to read, write, or execute files in the app’s private directory on external storage (directory traversal attack).
+
+# S4
+Apps can copy data from internal storage to external storage. As a result, information could be leaked if such apps accept input from untrusted sources to determine the data to be copied.
+
+# S5
+SQLiteDatabase.rawQuery() method can be used by apps to serve data queries. If such uses rely on external inputs and use non-parameterized SQL queries, then they are susceptible to sql injection attacks.
+
+# S6
+Content Provider API support selectionArgs parameter in various data access operations to separate selection criteria and selection parameters. App that do not use this parameter are be susceptible to sql injection attacks.
+
+# A System
+System APIs enable Android apps to access low-level features of the Android platform like process management, thread management, runtime permissions, etc.
+
+# Empirical Software Engineering (2020) 25:178–219
+Every Android app runs in its own process with a unique Process ID (PID) and a User ID (UID). All components in an app run in the same process. A permission can be granted to an app at installation time or at run time. All components inherit the permissions granted to the containing app at installation time. If a component in an app is protected by a permission, only components that have been granted this permission can communicate with the protected component.
+
+# A Inter-Process Communication (IPC)
+During IPC, checkCallingOrSelfPermission method can be used to check if the calling process or the called process has permission P. If a component with permission P uses this method to check if the calling component has permission P, then improper use of this method can leak privilege when the calling component does not have permission P.
+
+checkPermission method can be used to check if the given permission is allowed for the given PID and UID pair. getCallingPID and getCallingUID methods of Binder API can be used to retrieve the PID and UID of the calling process. In certain situations, they return PID/UID of the called process. So, improper use of these methods by a called component with given permission can leak privilege.
+
+During IPC, enforceCallingOrSelfPermission method can be used to check if the calling process or the called process has permission P. Like in Y1, improper use of this method can leak privilege.

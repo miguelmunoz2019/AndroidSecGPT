@@ -1,0 +1,71 @@
+The driver which makes the given USB device functionality available to the userspace is usually just a simple translation layer. Its main task is to transform (for a given OS) generic user calls related to the given functionality to be built on the top of the USB protocol which is understandable by the device. As some functionalities are hard to map to system entities like block devices or network interfaces it is not always convenient to have in-kernel driver. That is why libusb has been created. Libusb is a library which allows userspace programs to communicate with the device at a USB protocol level.
+
+On the device side Linux kernel also provides infrastructure to implement parts of the USB device logic and the executive element in the userspace. Thus it is possible to create two services: one for the device side and the second for the
+2 The exact structure of each USB descriptor can be found in usb (2000).
+
+# 84
+# c o m p u t e r s & s e c u r i t y 8 2 ( 2 0 1 9 ) 8 0 – 9 8
+# USB DEVICE
+# USB HOST
+host side. Both will be able to communicate with each other using the USB bus (see Fig. 5).
+
+# 3. ADB fundamentals
+ADB (Android Debug Bridge) is an application layer protocol which is used to enable Android Apps developers to access mobile device resources. Current implementation may use USB bulk endpoints or TCP sockets as a transport layer. In this paper we focus on the USB backend. It must be also noted that most of the presented information is also valid for other transport layers. Detailed description of the ADB communication protocol for all transport layers may be found in adb (2016).
+
+The main goal of the ADB protocol is to simulate multiple data streams using a single bidirectional communication channel. From the USB transport perspective, this means that the ADB protocol uses only one bulk IN and one bulk OUT endpoints which are grouped into a single interface. Each stream is identified by a pair of 32-bits unsigned integers. One identifies the stream from the host side and the other from the device side. Therefore, each stream provides theoretically independent communication channel between the service on a host and the other one on the device side (Fig. 6).
+
+The high-level design of the ADB ecosystem consists of:
+- adb daemon (adbd): This is a daemon which runs on an Android device. It listens to the requests incoming from the host and executes them.
+
+- adb server: This is a daemon which runs on a developer’s machine. It uses libusb3 to communicate with an Android device connected via USB. Its main task is to provide synchronization between many independent executions of the adb tool. Adb server listens for requests which should be sent to the device on the localhost TCP port 5037. This daemon has to be run with rights to open the USB device node in the RW (read-write) mode.
+
+- adb: This is a command line tool which is directly used by the developer. Its main task is to parse command line call and then to form a request which is then sent to the adb daemon via a TCP socket.
+
+The main reason for splitting adb command line tool and the adb server is to allow multiple calls of this tool at the same time. It also allows external tools like SDK to reuse existing implementations of the USB protocol. The communication between the adbd and the adb server is realized using ADB protocol as described later in this section. It is also worth noting that the communication between the adb and the adb server is performed using different protocol which is out of scope of this paper.
+
+ADB is a message-based protocol and each ADB message is sent in two USB transfers. The first transfer has a static size defined in the protocol and contains a generic header (Listing 1). Then during the second transfer the command-dependent, variable length payload is sent (this part may be omitted as it is optional).
+
+Each field in the header is in a form of 32-bit unsigned integer in the little endian byte order. The field command identifies the message type. As every message carries a command these terms can be used interchangeably. The next two fields (arg0 and arg1) contain data specific to a given message type. Then, the data_length field contains the length of the data which are going to be sent during the second phase. If it is 0 then the second stage is omitted and the message consists only of a header. The next field is data_check which contains a simple checksum of the payload. The last field i.e. magic includes the same data as command but XORed with 0xffffffff fixed value.
+
+# Computers & Security 82 (2019) 80–98
+a Typical destinations are: TCP/UDP/local port, shell, and file.
+
+# Listing 1 – ADB message header structure.
+
+CNXN(&lt;version? &lt;maxp?, &lt;system strz)
+AUTH(TOKEN, RND)
+AUTH(SIGNATURE, SIGN(Priv, RND))
+AUTH(TOKEN, RND)
+AUTH(RSAPUBLICKEY, Pub)
+Message types defined by the ADB protocol are presented in Table 1.
+
+The communication is always initiated by the adb server. It waits for the new ADB-capable device to appear on the system and then issues CONNECT command. When the device receives a new CONNECT message it tries to authenticate a new host which is trying to access it
+The authentication process is done using the classical challenge-response scheme. The device generates randomly 20 bytes and then sends them to the host using AUTH TOKEN command. The host digitally signs this received payload using RSA 2048 private key and sends the resulting signature back to the device using AUTH SIGNATURE message. The device checks if a public key which has been used to generate the signature is on a list of trusted keys. If yes, then the host is authenticated and the device responds with a CONNECT message. Otherwise, the device transmits a new...
+
+4 Android OS versions older than 4 do not support Secure USB Debugging so they will not perform host authentication – they will just reply with a suitable CONNECT command.
+
+# Computers & Security 82 (2019) 80–98
+# 4. Related work
+OPEN(<id1>, 0, "shell")
+A OKAY(<id2>, <id1>)
+WRTE(<id2>_<id1>, 'shell@dev:/
+A_OKAY(<id1>, <id2>)
+WRTE(<id1>, <id2>_ "Is -Iln")
+OKAY(<idz>, <id1>)
+WRTE(<id2> <id1>, alnblncln
+A_OKAY(<id1>, <idz>)
+As previously mentioned USB is currently the most commonly used external interface. Even machines which, for security reasons, are disconnected from the Internet, usually offer USB host functionality. Popularity and blind trust in the USB security seem to be one of the major reasons why malware started spreading using this attack vector.
+
+From this perspective existing attacks exploiting USB can be categorized in many ways. In Tian et al. (2018) categorized host-related attacks based on the layer which they exploit. As in this article we consider broader spectrum of the USB-related attacks we can divide them into one of three groups:
+- USB host-focused attacks,
+- USB traffic analysis, modification and injection attacks,
+- USB device-focused attacks.
+
+Below we review related work using above mentioned ad-hoc classification.
+
+# 4. USB host-focused attacks
+Challenge to the host to give it another chance to use different signing key. When the host runs out of its signing keys then it responds to the AUTH TOKEN with AUTH RSAPUBLICKEY which contains the public key associated with one of its private keys. After receiving this message, the device calculates MD5 fingerprint of the public key and generates a pop-up for a user to decide whether a host which owns such a key should be allowed to access device resources. If the access is granted, the device responds with the CONNECT message, otherwise the connection is closed.
+
+When both sides of communication agree to create a session then the host obtains a full user mode access to the device’s resources. It means that it is able to run all applications and access user files or even send input events. All these actions can be achieved using streams abstraction defined by the ADB protocol.
+
+To obtain the access to some device’s resources or services the host has to create a new data stream. This starts by choosing (on the host side) some unused identifier and determining the destination. Both local id and the destination are sent to the device in the OPEN message. If a given destination is available at the device side, it associates some unused device side identifier and replies to the host with the READY command.

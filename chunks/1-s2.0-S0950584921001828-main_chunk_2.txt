@@ -1,0 +1,75 @@
+In this study, we use Schwartz’s model as our primary source to illustrate what human values are. We use Schwartz’s model for the following reasons: Firstly, Schwartz’s model has been universally assessed in 83 countries . Secondly, this model covers most values compared to other existing human value models. . Thirdly, this model has been used in different fields such as computer science , data mining , and software engineering . These values in Schwartz’s theory are not meant to limit the analysts in discovering values but to illustrate the landscape of values.
+
+# 2. Human values in SE
+In acknowledging the importance of human values, some previous works attempted to integrate values into software development. For instance, Value-based Requirements Engineering (VBRE) was proposed to guide human values elicitation from stakeholders in the requirements phase . Another framework from Human–Computer Interaction (HCI) field, called Value Sensitive Design (VSD) focused on values with ethical import in the design phase by identifying potential harms to stakeholders . These previous works considered a specific set of values (e.g., values with ethical import) and addressed a specific phase in software development phases (i.e., requirements and design). Another notable related work by Winter et al. proposed a tool called Values Q-Sort to measure Schwartz’s values in SE . Schwartz’s values are considered broader than ethics that do not cover things that ‘an individual, group, or wider society consider as important’ , such as successful or social recognition. However, Winter et al.’s work was focused on characterising the values of software practitioners instead of the presence of values related to apps from users’ perspectives. Ferrario et al.  proposed Values-first SE to address the broader Schwartz’s values in the entire development phases. This framework maps requirements to Schwartz’s values model to build a prototype. Then, a reflection on values is carried out from users’ feedback on the prototype. Similar to Ferrario et al. , our paper considered Schwartz’s values from feedback submitted by users and contributors in issue discussions from three open-source applications.
+
+Human values are the ‘guiding principles of what people consider important in life’ . Values are personal beliefs and serve as criteria or standards to guide the selection or evaluation of actions or policies . Human values are also known to be ‘infused with
+# 2. GitHub and issue tracker
+GitHub is one of the most popular collaborative coding platforms, especially for open-source projects. GitHub not only serves as a code repository but also as a platform for communication between software developers amongst each other and between users and developers . These collaborations are captured in many of its features, such as code
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+# SELF DIRECTION
+# EQUILINI UNIVERSALISM
+# Growth
+# Anxiety- Free
+# STIMULATION
+# HEDONISM
+# CONFORMITY
+# ACHIEVEMENT
+# TRADITION
+# POWER
+# SECURITY
+(a) the original model  taken from  and (b) the refined model taken from.
+
+review and issue tracker, in the form of discussions (i.e. discussion artefacts). These discussions are accessible via a public API provided by GitHub. The data accessibility of GitHub, along with its popularity among developers, attracted researchers to use it as a primary source for software engineering studies.
+
+The issue tracker in GitHub, or also known as Issues, is a place where users can report bugs and provide feedback to the project . Issue tracker also allows project maintainers to organise tasks and discuss feature requests or enhancements with other contributors . A discussion in the issue tracker (i.e. issue discussion) comprises several posts, initiated with the first post from a reporter (see Fig. 2). This post is then followed by subsequent posts from contributors who can be the project maintainers, developers, users, or the reporter itself. In issue discussions, it is easy to observe that a developer who contributes to the application usually also uses the app. Conversely, not all users identified in the discussion contribute to application development. Because issue discussions have been used as an investigation object for values in previous works , we believe that issue discussion is a suitable object of study to discover the extent human values are discussed in application development.
+
+# 3. Methodology
+Our overarching objective is to discover the presence of values in software development discussions. The following research questions guide our study:
+# 3. Data collection
+As a case study, we decided to investigate open source Android projects because of the following reasons:
+- Open source - the software development process of these applications is publicly available in their repository.
+
+- Android applications - as of 31 October 2020, the Android operating system has almost 73% of the mobile operating system market share worldwide.
+
+We first purposively browsed for the applications under the communication category to select which projects should be investigated. We chose applications under the communication category because these applications tend to be used frequently and require more permissions than other categories . Consequently, a discrepancy of behaviour in the apps (e.g., breach of personal information) will encourage users to express their concerns. Then, we reviewed each application to find applications that fit our criteria:
+- the application has a substantial number of downloads (e.g., at least five million times)
+- the application has a publicly available repository with a substantial number of contributors and active community
+- the application has a statement of supporting human values (e.g., privacy, freedom, efficiency) in its homepage website to increase our chance of discovering values
+In the end, we selected Signal Private Messenger, K-9 Mail, and Firefox Focus out of 10 applications that fit all of our criteria. We chose these three applications because we wanted to have one app for each type of application that we discovered in the communication category, namely, instant messenger, email client, and web browser.
+
+# RQ1 What values are discovered in issue discussions?
+# RQ2 Does the presence of values differ across projects? If so, how?
+At the highest level, our case study consists of three phases: Data Collection, Pilot Study, and Main Study (see Fig. 3). In the data collection phase, we collected issues from each project’s GitHub repository. The pilot study consists of four steps, namely issues sampling, issues allocation, pilot analysis, and discussion, to obtain insights for the main study. In the main study, we sampled issues from the collected dataset and conducted analyses to answer the research questions. The following subsections describe the methodology phases in detail.
+
+1. Signal Private Messenger (or Signal) is a privacy-oriented messenger application supported by a non-profit organisation: The Signal Foundation. This application is determined to provide a private messenger to its users. Since its first public beta release in 2010 , this application has evolved from only providing encrypted SMS (formerly known as TextSecure) into an integrated private communication application, supporting voice and video calls on top of text messaging function. In 2015, Signal Private Messenger phased out support for encrypted
+2 https://signal.org.
+
+# A. Nurwidyantoro et al.
+
+# Information and Software Technology 141 (2022) 106731
+# Disable Google SafeBrowsing #4320
+opened this issue on Aug 2, 2019
+# Issue title
+Contributor commented on Aug 2, 2019
+# Issue post
+Using Firefox Klar 8 from Droid on Android 7. Apologies if there's a newer version where this can be mitigated by the user.
+
+# Why/User Benefit/User Problem
+Privacy
+Freedom
+Google SafeBrowsing makes browsing more secure from malware. Though Firefox Focus is a privacy-focused browser: Therefore if there's a tradeoff between privacy and security users should be allowed to choose the side of privacy.
+
+I haven't investigated how Firefox Focus gets safe browsing data from Google but according to this link browsers request the data immediately on opening and thereafter periodically.
+
+# Security
+Letting Google know whenever I open my web browser is a substantial privacy leak for rather small security gain.
+
+# What Requirements
+Offer a switch in the settings to disable SafeBrowsing; or just disable it altogether. Or just implement about:config.
+
+SMS  in favour of data-based communication and support for PC and iOS. As of 1 October 2020, this application has been downloaded more than ten million times in the Google Play Store. Fig. 4a shows the welcome message of the application having a statement about privacy.
+
+K-9 Mail (or K-9) is an email application supporting PGP/MIME for private communication. K-9 Mail intends to provide seamless interaction for users to send and receive encrypted emails . As of 1 October 2020, this application has been downloaded more than five million times from the Google Play Store. Fig. 4b shows the welcome message of the application showing a statement of efficiency and a list of supported features.

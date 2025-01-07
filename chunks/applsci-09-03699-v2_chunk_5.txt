@@ -1,0 +1,34 @@
+Therefore, we have manually reviewed the Android API reference and made a list of APIs that has a description on security exception in its documentation. If an API call either has SecurityException in its thrown list or the API name appears in our list, then the expression should be protected by a try-catch block. PerHelper will give a warning for every API call that does not meet this requirement.
+
+# 5. Evaluation
+We implemented PerHelper as a plug-in in the Android Studio environment. Figure 3 presents a screenshot showing the result of the permission analysis of PerHelper. Three permission sets are shown in the figure, where declared permissions represent all permissions declared by the app, used permissions represent all permissions used by the code except libraries, and library permissions are listed separately. Permissions declared but not used (shown in red) and permissions used but not declared (shown in green) are highlighted, suggesting that the developer should take appropriate actions to fix the issues. Permissions from third-party libraries are optional, so the developer can choose whether to include them. The permissions in blue suggest the new permissions introduced by the third-party libraries, which were not invoked in the custom code written by the app developers.
+
+# 5. Case Studies
+Because PerHelper is designed to analyze source code for developers, we downloaded 100 open-source Android apps from GitHub (note that the 100 apps were randomly chosen from the F-Droid project: https://f-droid.org/) to evaluate PerHelper. In particular, we loaded each app into Android Studio (three apps failed this step), using PerHelper to check whether it had any permission-related issues discussed above. The overall result on the remaining 97 apps is shown in Table 3.
+
+About 23% of the apps were permission overprivileged, and 36% were permission underprivileged. A small fraction of the apps (about 3%) used the wrong permissions, all of which were deprecated permissions. About 22% of the apps failed to protect certain API calls, which may result in crashing when the APIs are called. Table 4 shows 5 examples of them. On the other hand, only eight apps included third-party libraries, and no libraries requested extra permissions.
+
+It is somewhat surprising to find that the results on open-source apps were different from the results we obtained from Google Play apps. Firstly, permission overprivilege and underprivilege were not as common. A main cause for this difference is that open-source projects do not declare many permissions (2 permissions on average, compared to 7 permissions declared by Google Play apps). Thus it was less likely to find permission-related issues in these open-source apps.
+
+# 5. Performance Overhead
+We also evaluated the execution performance of PerHelper. We selected six open-source apps with different sizes and measured the time cost of PerHelper to generate permission sets and detect unprotected API methods. When an app was just loaded into the IDE (cold start), it cost more time for PerHelper to run compared to when the app had been used in the IDE for a while (warm start). The reason was that the IDE would not load all the code when the app was first loaded. However, when the app was edited and viewed several times, the IDE would cache some snippets of code to gain better performances, which also made it faster for PerHelper to parse the code.
+
+The result is shown in Figure 4. The processing time of PerHelper was roughly proportional to the size of the app it attempted to analyze. For the cold start case, the time cost to complete all its tasks for an app with about 50K lines of code was about 6 s. As for the warm start case (which is a more common situation for PerHelper), the performance was much better, with the cost for an app with about 10K lines of code requiring less than 1 s and the cost for an app with about 50K lines of code needing only less than 2 s. Compared to the time used to look up API documentation or search the Internet, PerHelper introduced acceptable overhead for developers.
+
+# 6. Discussions
+Handling native code. The current mechanism to detect permissions in native code is not accurate enough. For JNI functions, a complete control flow analysis is needed to deal with complex situations. For native APIs, an extensive study on the source code of native libraries will improve the accuracy of the permission map.
+
+Intents and Broadcast Receivers. PerHelper does not have the ability to deal with Android Intents and Broadcast Receivers. If an app makes use of a privileged intent, PerHelper will miss a required permission.
+
+Permission-API mapping. PerHelper uses a static API-permission map for all API versions, while the mapping between APIs and permissions is actually mutable in different versions of Android systems. If an app is designed to be compatible with an older version of Android, the permission set provided by PerHelper may fail to reach high accuracy.
+
+The difference between commercial apps and open-source apps. We evaluated the performance of PerHelper using open-source projects, which significantly differ from commercial apps in Google Play. Therefore, to accurately measure its usability, it is better to involve some real developers at companies to offer feedback.
+
+# 7. Concluding Remarks
+This paper revisited and dissected Android permissions from the perspective of app developers. We conducted a comprehensive empirical study to identify the permission-related issues that are most relevant and important to developers. Using detailed analysis of the experimental data, we showed that it is more desirable to solve the issues during the app development phase. We also built PerHelper, an IDE plug-in to guide developers to declare permissions automatically and correctly and identify permission-related mistakes. PerHelper was demonstrated to be effective and practical through case studies on a set of open-source Android apps.
+
+Author Contributions: G.X. (Guosheng Xu) conceived of and organized the research work; G.X. (Guosheng Xu), S.X., and C.G. conducted the experiments and analyzed the data; G.X. (Guosheng Xu) and S.X. wrote the paper; C.G., B.W., and G.X. (Guoai Xu) checked and verified the paper. All authors reviewed the paper.
+
+Funding: This work was funded by the National Key Research and Development Program of China (No. 2017YFB0801903), the National Key Program for Basic Research of China (Grant No. 2017-JCJQ-ZD-043), and the National Secrecy Scientific Research Program of China (No. BMKY2018802-1).
+
+Conflicts of Interest: The authors declare no conflicts of interest..

@@ -1,0 +1,117 @@
+33. Y. Jing, Z. Zhao, G.-J. Ahn, H. Hu, Morpheus: automatically generating heuristics to detect android emulators, in: Proceedings of the 30th Annual Computer Security Applications Conference, 2014, pp. 216–225.
+
+34. A. Bianchi, E. Gustafson, Y. Fratantonio, C. Kruegel, G. Vigna, Exploitation and mitigation of authentication schemes based on device-public information, in: Proceedings of the 33rd Annual Computer Security Applications Conference, 2017, pp. 16–27.
+
+35. V. Haupert, T. Müller, On app-based matrix code authentication in online banking, in: ICISSP, 2018, pp. 149–160.
+
+36. Cecilia, 80% China’s mobile users rooted smartphones in 2014, 2015, [Accessed: 09-Apr-2020]. URL https://www.chinainternetwatch.com/12926/80-china-smartphone-users-rooted/.
+
+37. A.P. Felt, M. Finifter, E. Chin, S. Hanna, D. Wagner, A survey of mobile malware in the wild, in: Proceedings of the 1st ACM Workshop on Security and Privacy in Smartphones and Mobile Devices, 2011, pp. 3–14.
+
+38. D.R. Thomas, A.R. Beresford, A. Rice, Security metrics for the android ecosystem, in: Proceedings of the 5th Annual ACM CCS Workshop on Security and Privacy in Smartphones and Mobile Devices, 2015, pp. 87–98.
+
+39. S.-T. Sun, A. Cuadros, K. Beznosov, Android rooting: Methods, detection, and evasion, in: Proceedings of the 5th Annual ACM CCS Workshop on Security and Privacy in Smartphones and Mobile Devices, 2015, pp. 3–14.
+
+40. L. Nguyen-Vu, N.-T. Chau, S. Kang, S. Jung, Android rooting: An arms race between evasion and detection, Secur. Commun. Netw. 2017 (2017).
+
+41. V. Sihag, A. Swami, M. Vardhan, P. Singh, Signature based malicious behavior detection in android, in: International Conference on Computing Science, Communication and Security, Springer, 2020, pp. 251–262.
+
+42. E.J. Schwartz, T. Avgerinos, D. Brumley, All you ever wanted to know about dynamic taint analysis and forward symbolic execution (but might have been afraid to ask), in: 2010 IEEE Symposium on Security and Privacy, IEEE, 2010, pp. 317–331.
+
+43. W. Enck, P. Gilbert, S. Han, V. Tendulkar, B.-G. Chun, L.P. Cox, J. Jung, P. McDaniel, A.N. Sheth, Taintdroid: an information-flow tracking system for realtime privacy monitoring on smartphones, ACM Trans. Comput. Syst. (TOCS) 32 (2) (2014) 1–29.
+
+44. G. Sarwar, O. Mehani, R. Boreli, M.A. Kaafar, On the effectiveness of dynamic taint analysis for protecting against private information leaks on android-based devices, in: SECRYPT, Vol. 96435, 2013.
+
+45. Y. Fratantonio, C. Qian, S.P. Chung, W. Lee, Cloak and dagger: from two permissions to complete control of the ui feedback loop, in: 2017 IEEE Symposium on Security and Privacy (SP), IEEE, 2017, pp. 1041–1057.
+
+46. Android Developer, Display, 2020, [Accessed: 09-Apr-2020]. URL https://developer.android.com/reference/android/view/Display.html.
+
+47. Kolin Sturt, Securing communications on android, 2018, [Accessed: 09-Apr-2020]. URL https://code.tutsplus.com/tutorials/securing-communications-on-android--cms-31596.
+
+48. P. Sharma, V.K. Sihag, Hybrid single sign-on protocol for lightweight devices, in: 2016 IEEE 6th International Conference on Advanced Computing (IACC), IEEE, 2016, pp. 679–684.
+
+49. G. Suarez-Tangil, J.E. Tapiador, F. Lombardi, R. Di Pietro, Alterdroid: differential fault analysis of obfuscated smartphone malware, IEEE Trans. Mob. Comput. 15 (4) (2015) 789–802.
+
+50. G. Suarez-Tangil, S.K. Dash, M. Ahmadi, J. Kinder, G. Giacinto, L. Cavallaro, Droidsieve: Fast and accurate classification of obfuscated android malware, in: Proceedings of the Seventh ACM on Conference on Data and Application Security and Privacy, 2017, pp. 309–320.
+
+51. R. Nigam, A timeline of mobile botnets, Virus Bull. (2015).
+
+52. M. Christodorescu, S. Jha, Testing malware detectors, ACM SIGSOFT Softw. Eng. Notes 29 (4) (2004) 34–44.
+
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+1. M. Zheng, P.P. Lee, J.C. Lui, Adam: an automatic and extensible platform to stress test android anti-virus systems, in: International Conference on Detection of Intrusions and Malware, and Vulnerability Assessment, Springer, 2012, pp. 82–101.
+
+2. S. Badhani, S.K. Muttoo, Analyzing android code graphs against code obfuscation and app hiding techniques, J. Appl. Secur. Res. 14 (4) (2019) 489–510.
+
+3. Apk protect: Android apk security protection, 2013, URL https://sourceforge.net/projects/apkprotect/.
+
+4. Baidu Inc., URL http://app.baidu.com.
+
+5. Bangcle Inc., URL http://www.bangcle.com.
+
+6. P. Solutions, Dasho: Java & android obfuscator & runtime protection.
+
+7. Transakt, Entersekt Mobile App Security, URL https://www.entersekt.com/.
+
+8. Ijiami Inc., URL http://www.ijiami.cn.
+
+9. Inside Secure Code & Application Protection, URL https://www.insidesecure.com/us/Products/Mobile-and-IoT-Security/Applications-Protection/Code-Protection.
+
+10. Mobile Protector by Gemalto, a Thales company, URL https://thales-protector-oath-sdk.docs.stoplight.io/releases/5/general/overview.
+
+11. Promon Shield | In-App Protection & Application Shielding, URL https://promon.co.
+
+12. SecNeo, The Professional service provider for the mobile application security, URL https://www.secneo.com/.
+
+13. Source Code Protection — whiteCryption. URL https://www.intertrust.com/products/application-shielding/code-protection/.
+
+14. yworks, Yguard - java bytecode obfuskator and shrinker, 2020, [Accessed: 09-Apr-2020]. URL https://www.yworks.com/products/yguard.
+
+15. H. Ohuchi, Jarg-java archiver grinder, 2003, http://jarg.sourceforge.net/index.en.
+
+16. J. Hoenicke, Jode, 2004, URL http://jode.sourceforge.net.
+
+17. W. Zhou, Z. Wang, Y. Zhou, X. Jiang, Divilar: Diversifying intermediate language for anti-repackaging on android platform, in: Proceedings of the 4th ACM Conference on Data and Application Security and Privacy, 2014, pp. 199–210.
+
+18. A. Shabtai, Y. Fledel, U. Kanonov, Y. Elovici, S. Dolev, C. Glezer, Google android: A comprehensive security assessment, IEEE Secur. Priv. 8 (2) (2010) 35–44.
+
+19. J. Shu, J. Li, Y. Zhang, D. Gu, Android app protection via interpretation obfuscation, in: 2014 IEEE 12th International Conference on Dependable, Autonomic and Secure Computing, IEEE, 2014, pp. 63–68.
+
+20. B. Bichsel, V. Raychev, P. Tsankov, M. Vechev, Statistical deobfuscation of android applications, in: Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security, 2016, pp. 343–355.
+
+21. G. Suarez-Tangil, G. Stringhini, Eight years of rider measurement in the android malware ecosystem, IEEE Trans. Dependable Secure Comput. (2020) 1.
+
+22. V. Balachandran, D.J. Tan, V.L. Thing, et al., Control flow obfuscation for android applications, Comput. Secur. 61 (2016) 72–93.
+
+23. Y. Wang, A. Rountev, Who changed you? Obfuscator identification for android, in: 2017 IEEE/ACM 4th International Conference on Mobile Software Engineering and Systems (MOBILESoft), IEEE, 2017, pp. 154–164.
+
+24. J. Garcia, M. Hammad, S. Malek, Lightweight, obfuscation-resilient detection and family identification of android malware, ACM Trans. Softw. Eng. Methodol. (TOSEM) 26 (3) (2018) 1–29.
+
+25. A. Arora, S.K. Peddoju, Minimizing network traffic features for android mobile malware detection, in: Proceedings of the 18th International Conference on Distributed Computing and Networking, 2017, pp. 1–10.
+
+26. F. Zhang, H. Huang, S. Zhu, D. Wu, P. Liu, ViewDroid: Towards obfuscation-resilient mobile application repackaging detection, in: Proceedings of the 2014 ACM Conference on Security and Privacy in Wireless & Mobile Networks, 2014, pp. 25–36.
+
+27. G. Suarez-Tangil, J.E. Tapiador, P. Peris-Lopez, Stegomalware: Playing hide and seek with malicious components in smartphone apps, in: International Conference on Information Security and Cryptology, Springer, 2014, pp. 496–515.
+
+28. A. Continella, Y. Fratantonio, M. Lindorfer, A. Puccetti, A. Zand, C. Kruegel, G. Vigna, Obfuscation-resilient privacy leak detection for mobile apps through differential analysis, in: NDSS, 2017.
+
+29. M.Y. Wong, D. Lie, Tackling runtime-based obfuscation in android with {TIRO}, in: 27th {USENIX} Security Symposium ({USENIX} Security 18), 2018, pp. 1247–1262.
+
+30. M. Ikram., P. Beaume., M.A. Kaafar., Dadidroid: An obfuscation resilient tool for detecting android malware via weighted directed call graph modelling, in: Proceedings of the 16th International Joint Conference on E-Business and Telecommunications - Volume 2: SECRYPT, SciTePress, 2019, pp. 211–219, http://dx.doi.org/10/0007834602110219.
+
+31. J. Zhang, A.R. Beresford, S.A. Kollmann, LibID: reliable identification of obfuscated third-party Android libraries, in: Proceedings of the 28th ACM SIGSOFT International Symposium on Software Testing and Analysis, 2019, pp. 55–65.
+
+32. A. Aghamohammadi, F. Faghih, Lightweight versus obfuscation-resilient malware detection in android applications, J. Comput. Virol. Hacking Tech. (2019) 1–15.
+
+33. M. Park, G. You, S.-j. Cho, M. Park, S. Han, A framework for identifying obfuscation techniques applied to android apps using machine learning., J. Wirel. Mob. Netw. Ubiquitous Comput. Dependable Appl. 10 (4) (2019) 22–30.
+
+34. B. Kim, J. Jung, S. Han, S. Jeon, S.-j. Cho, J. Choi, A new technique for detecting android app clones using implicit intent and method information, in: 2019 Eleventh International Conference on Ubiquitous and Future Networks (ICUFN), IEEE, 2019, pp. 478–483.
+
+35. Z. Li, J. Sun, Q. Yan, W. Srisa-an, Y. Tsutano, Obfusifier: Obfuscation-resistant android malware detection system, in: International Conference on Security and Privacy in Communication Systems, Springer, 2019, pp. 214–234.
+
+36. X. Yang, L. Zhang, C. Ma, Z. Liu, P. Peng, Android control flow obfuscation based on dynamic entry points modification, in: 2019 22nd International Conference on Control Systems and Computer Science (CSCS), IEEE, 2019, pp. 296–303.
+
+37. S. Aonzo, G.C. Georgiu, L. Verderame, A. Merlo, Obfuscapk: An open-source black-box obfuscation tool for android apps, SoftwareX 11 (2020) 100403.
+
+38. L. Glanz, P. Müller, L. Baumgärtner, M. Reif, S. Amann, P. Anthonysamy, M. Mezini, Hidden in plain sight: Obfuscated strings threatening your privacy, in: ASIA CCS ’20, Association for Computing Machinery, New York, NY, USA, 2020, http://dx.doi.org/10/3320269..

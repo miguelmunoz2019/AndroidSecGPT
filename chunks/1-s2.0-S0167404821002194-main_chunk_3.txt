@@ -1,0 +1,118 @@
+# 6 Decompilation (step 1)
+WebV Sec receives in input an APK file, which corresponds to the app under investigation. The decompilation aims at reverse-engineering the APK file to obtain its manifest and dex files, on top of which WebV Sec works.
+
+# 6 Identification of interface and webviewclient classes (step 2)
+The objective of this module is to identify MA, Ic, Ic17, Iu, W and Wu. The identification of interface methods needs
+# 5 Examples of vulnerabilities
+In the code example shown in Listing 5, we provide examples of the four vulnerability types. The listing assumes a WebView object ThreatWebview that is associated with a JavaScript Interface (ThreatwebviewInterface) and a WebViewClient objects. Invoking the method f3() using myThreatInterfaceObj.f3() causes the device ID to be read into the global variable id. A following invocation to f4(), using myThreatInterfaceObj.f4(), would leak the device ID into the device memory (via the editor which is Shared-Preferences.Editor editor object).
+
+# Type 2 Vulnerability (Interface-WebViewClient Vulnerability)
+This type has the same definition as type one, except that the condition (a) above is replaced by
+((P1 ∈ P∧Pn ∈ PW)∨(P1 ∈ PW ∧Pn ∈ P))∧2 ≤ k ≤ n−1, PK ∈ P∪PW.
+
+In other words, the first or the last path (but not both) has to be a WebViewClient one. Moreover, any of the remaining paths can be an interface or a WebViewClient one.
+
+# Type 3 Vulnerability (WebViewClient-WebViewClient Vulnerability)
+This type has the same definition as type one, except that the condition (a) above is replaced by
+∀1 ≤ k ≤ n, Pk ∈ PW.
+
+In other words, all paths have to be WebViewClient ones.
+
+# Type 4 Vulnerability (Reverse Vulnerability)
+An Android application has this type of vulnerability if it has a path P ∈ PI ∪ PW such that:
+1. P has a sink API (i.e., K) at some program point (i.e., u) that leaks the value of some variable (i.e., v).
+
+2. P has a source API (i.e., S) at some program point (i.e., w) such that w > u (i.e., the program point w comes before the program point u) and S reads the value stored in v.
+
+In other words, a type 4 vulnerability occurs if there is an interface or WebViewClient path that has a source API preceded by a sink API. For this vulnerability type, there also must be a data flow path from the source API to the sink API using a global variable. For manipulating this vulnerability type, the attacker should run the path twice: in the first run the source gets the sensitive information and in the second run the sink leaks the information. Therefore, this vulnerability is tricky and, up to our knowledge, has never been revealed in the literature.
+
+As shown in Table 1, up to our knowledge, the state-of-the-art tools neither illustrate the type 2, type 3, and type 4 vulnerabilities nor propose techniques to detect them in Android applications. One of the contributions of this paper is to fill this gap.
+
+# 5 Half vulnerabilities
+A WebView vulnerability requires a path that has a source method reading sensitive data into a variable. If this variable keeps its content unchanged till the end of its hosting execution path, we call the variable a sourced variable. This path constitutes half the vulnerability or the leaking process. The other
+# Computers & Security 109 (2021) 1023957
+# Listing 5 – Interface Example.
+
+# Decompilation of APK file
+# 1. Identification of Interface and WebView classes
+tion is a pair (N, O) where N is the instruction name and O a list of operands. The instruction name belongs to one of the following eight categories: removing_source_ins, read, write, invoke, move, return, and constant instructions. Each element of the operands list belongs to one of the following four categories: register, constant, field, method. Considering, for example, the method category, this encompasses two elements, composed of two pieces. The first piece is a list of pairs [0, integer]*, where the 0 indicates that the integer is a register ID. The other piece is a triple [integer, integer, method signature] that uniquely identifies a method. The first piece represents the arguments of the second piece.
+
+# Finding vulnerabilities
+# Analysis Report
+to consider both applications with Min Sdk greater than or equal 17 and applications with Min Sdk lower than 17: the former have interface methods annotated with @JavascriptInterface, while the latter does not. However, for the latter, we found out that it is common to include annotated and also non-annotated interface methods.
+
+# 6. Identification of relevant methods (step 3)
+The objective of this module is to identify the relevant methods (i.e., M) which might contain the vulnerabilities studied in this paper. Algorithm 1 presents the logic of this module. The algorithm starts by collecting all the relevant classes in one list, C (line 1) and all the methods for each of these classes (line 2 − 5). If the number of found methods exceeds a certain threshold thm (line 6), the algorithm reconstructs the list M to reduce its length (line 9 −27). This reduction is done by considering three sets of methods (i.e., M, MW, Ma) to build M. The first set, MI (constructed in the steps 9 − 17), includes annotated methods (MA, step 9) and init and onCreate methods of classes in Ic (line 10–13). If the minSdk of the application is less than 17, MI is augmented with methods of classes in Ic17 (line 14–17). The second set, MW, is the set of WebViewClient methods (line 18–20). The third set, Ma, is the set of access methods of classes C (line 22–25). Finally, the algorithm calculates the number of arguments for methods in M (inline 27).
+
+# 6. Methods abstraction (step 4)
+Our experiments showed that analyzing abstracted versions of method paths is more efficient and convenient than analyzing the paths in their native Dalvik code. Therefore, this module presents a new technique for abstracting Dalvik instructions related to our studied vulnerabilities. This module starts by building execution paths for methods in M.
+
+In Table 3, we collected the set of Dalvik instructions that are most related to our studied vulnerabilities. Each instruction is categorized as follows:
+1. register-register - it abstracts instructions that move data between registers.
+
+2. register-field - it abstracts instructions that move data between registers and class fields.
+
+3. method call - it abstracts the Dalvik invocation instructions. The abstraction is done in two steps. The first step produces the first instruction form in this category. The second step augments the instruction built in the first step with the component [RESULT, integer] that identifies the register holding the result of the invocation (if any).
+
+4. sink call - it abstracts the instructions invoking sink methods, where integer* is the set of register IDs including leaked registers.
+
+5. source call - it abstracts instructions that read sensitive data and store it into the register whose ID is the integer. This particular abstraction is practically done in two steps. The result of the first step is the abstracted instruction [SOURCE] and the second step augments this result with the register ID to produce [SOURCE, integer].
+
+6. move call - it abstracts the Dalvik instructions that move results of method invocations to other registers.
+
+7. return - it abstracts the Dalvik return instructions.
+
+8. constant - it abstracts the instructions that assign constants of different types into registers.
+
+- def s1 ⇐⇒ O [len(O) − 1], and
+- def s2 ⇐⇒ s1 [len(s1) − 1].
+
+Below, we illustrate each abstraction rule shown in Table 5 with some reference examples of rule application. All the examples are taken from a testbed Android app and are presented as follows:
+The Dalvik instruction
+The corresponding abstraction.
+
+Rule 1. This abstracts some of the category of read instructions. In particular, Rule 1 treats the cases of assigning the con-
+# Computers & Security 109 (2021) 102395
+# Algorithm 1 Find_All_Relevant_Methods()
+Input: The Sets of classes I, Ic17, W, Iu, and Wu.
+
+Output: The list M of all methods relevant to the studied vulnerabilities.
+
+1. C ← Ic + Ic17 + W + Iu + Wu.
+
+2. M ← [].
+
+3. for each c ∈ C do
+4. &nbsp;&nbsp;&nbsp;&nbsp;for each m ∈ c.methods do
+5. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M.append(m).
+
+6. if len(M) ≤ thm then
+7. &nbsp;&nbsp;&nbsp;&nbsp;return M.
+
+8. else
+9. &nbsp;&nbsp;&nbsp;&nbsp;MI ← MA.
+
+10. &nbsp;&nbsp;&nbsp;&nbsp;for each c ∈ Ic do
+11. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each m ∈ c.methods do
+12. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if m.name ∈ {′init,′ onCreate} then
+13. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M.append(m).
+
+14. if minSdk ≤ 17 then
+15. &nbsp;&nbsp;&nbsp;&nbsp;for each c ∈ Ic17 do
+16. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for each m ∈ c.methods do
+17. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;M.append(m).
+
+18. for each c ∈ W do
+19. &nbsp;&nbsp;&nbsp;&nbsp;for each m ∈ c.methods do
+20. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MW.append(m).
+
+21. M ← MI + MW
+22. for each c ∈ C do
+23. &nbsp;&nbsp;&nbsp;&nbsp;for each m ∈ c.methods do
+24. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if′access′ ∈ m.name then
+25. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Ma.append(m).
+
+26. M ← M + Ma
+27. Mr ← Find_Method_Register_Numbers(M).
+
+28. return M.

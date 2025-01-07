@@ -1,0 +1,102 @@
+- Wireshark helps in network analysis and it can capture and display packets in real-time. Packets can also be captured offline and network packet analyzer provides details about packet, protocols etc. Wireshark is multiplatform and runs on various operating systems and provides decryption support for SSL, TLS, WPA and IPSec.
+
+- Netsparker has a web scanner that helps in identification of vulnerabilities and provides a solution. It also detects and exploits SQL injections and local file inductions.
+
+- BurpSuite performs sensitive data searching and IP scans. It also performs web scanning to detect vulnerabilities. Burp Suite is multiplatform and also intercepts crawling contents.
+
+- OWASP ZAP identifies security holes through passive scanning and also perform brute force attack for password cracking and directories access. ZAP identifies and exploits vulnerabilities and can execute Beanshell scripts.
+
+- Nmap is a multi-platform security scanner to detect network host and displays results in the form of interactive graphs. It can draw topologies and shows changes in the network hosts and services to track any vulnerabilities or services which are down.
+
+- Intent Fuzzer is android vulnerability scanner and finds the bug that can crash the system. It fuzzes all the components including broadcast receivers. It can only fuzz a single activity at a time.
+
+- Caiipa runs the app in real-time hardware or in the emulator and performs bugs and fuzzing test. Another important aspect of Caiipa is that it inspects the code as well to check if it is draining the system resources.
+
+- IntentDroid  dynamically analyses Android apps for Inter App Communication related vulnerabilities. It generates attack scenario for vulnerabilities such as User-Interface, SQL Injection, Unsafe Reflections, Spoofing and Cross-Site Scripting.
+
+- CRAXDroid tests Android mobile and tablets and test system and applications in executable form without source code and uses Android emulator. CraxDroid automatically crawls execution paths to identify potential software defects..
+
+- Sapienz performs White, Gray and Black box testing on the application under test. It also unpacks and repacks the app and uses non-invasive skin coverage.
+
+# A. EVALUATION CRITERIA
+As shown in table 6, the above tools were evaluated using the below-mentioned criteria.
+
+- Code Analysis: Reconnaissance – Information gathering on the target and footprinting.
+
+- Code Review: Identifying issues in source code.
+
+- Vulnerability Analysis: Capability of identifying, classifying and prioritizing vulnerabilities.
+
+- Vulnerability Exploit: Proficiency of exploiting the vulnerability.
+
+- Payload: Reports on test results.
+
+- Model bases test generation: The tool automatically generates test cases.
+
+- Vulnerability modelling in the design phase using UML: The tools supports the modeling of threat vectors.
+
+If the tool supports (3) the assessment criteria the tool will get 1 score and if not supported (5) will get 0 score. Since we have seven evaluations criteria so the total score is 7.
+
+# B. EVALUATION RESULTS
+Analysis of penetration test tools mentioned in Figure 6 revealed that these tools can detect vulnerabilities from applications after development of application. However, any vulnerabilities detected can be fixed by the developer post application development which cost extra time and often lead to changes in the entire structure. Among selected tools, we were unable to find functionality which can help in producing a secure design by integrating security stereotypes during the design phase of android application for novice developers/designers who have little or no knowledge about a secure design or familiarity around penetration related issues.
+
+# 6. Conclusion and Discussion
+Different penetration test frameworks and tools were analyzed and each framework has different coverage issues for Android domain. Although, these frameworks provide guidelines, tools and techniques for effective penetration testing but these methodologies are generic and mainly focused on web-based applications. Developers and testers cannot use them without having the expertise and knowledge of change effect. For effective penetration testing and to test vulnerabilities in the application, all the policy base, static and dynamic approaches and techniques should be applied to overcome limitations in penetration testing tools. Different communication channels such as shared preferences and Content provider should also be considered for analysis. Below are a few findings for effectively testing the application for vulnerabilities.
+
+- The security level must be decided at the beginning of the application development and Secure development techniques should be employed.
+
+VOLUME 9, 2021 87819
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+- Sensitive data and information should be identified and handled as per security requirements.
+
+- Functional tests should be performed based on the system requirements.
+
+- Both Manual and automated testing tools should be used to test security aspects of the android application.
+
+- Test bed of the applications should not only be limited to the specific application but it should also cover IPC (inter process communication) and privilege handling among different applications.
+
+- Automated code analysis and code review techniques should be employed.
+
+- Different methods like GET, POST, PUT etc. along with functionality, data format and data shared between services should be tested.
+
+- Application should be tested for memory and energy leaks.
+
+Based on the research and literature review, it is concluded that no such model-driven methodology for penetration testing in an Android application is available which can help the developer to model vulnerabilities during the design and identify risks during coding stage. There is an urgent need to develop solutions which can monitor the source code of the app in real time and can capture and prompt coding vulnerabilities during the development stage.
+
+The researcher community can focus on developing an application which can have inbuilt threat repository to help developer in designing the functionality using custom secure profile of UML stereotypes for identifying all the threats/vulnerabilities during coding as well as code auto correct feature using Java libraries.
+
+# V. APP DEVELOPMENT CHALLANGES (RQ2)
+Mobile application development involves writing software applications that can be native or web and uses the same SDLC. Android devices are different based on hardware features and developer must ensure that app should be capable to run on different devices carrying the same android OS version. As shown in Figure 7, our literature review concluded that android app developers come across a number of challenges w.r.t android security and privacy.
+
+# A. ADHERENCE TO BEST PRACTICES
+Malicious applications in android OS can use other applications to steal data and drain resources . Various android security frameworks provide best practices and vulnerability
+87820 VOLUME 9, 2021
+# I. U. Haq, T. A. Khan: Penetration Frameworks and Development Issues in Secure Mobile Application Development
+# Tools
+- CRAXDroid
+- Caiipa
+- IntentFuzzer
+- IntentDroid
+- SAPIENZ
+- Nmap
+- OWASP ZAP
+- Burp Suite
+- Netsparker
+- Wireshark
+- W3af
+- Core Impact
+- Metasploit
+# Vulnerability Modeling in Design Phase
+documentation but developers do not adhere to these best practices and resulting applications are often vulnerable to attacks. Android apps are built using third party exposed components and devices. The developer will be responsible for data security and privacy leak if these components are not protected through label declaration ,.
+
+# B. LIMITING COMPUTING POWER AND RESOURCES
+In mobile app design, a major hindrance is the screen size, limited processing power and limited storage space. A set of best practices guidelines to deal with issue and challenges related to mobile app development can greatly help the designer and developer. For application where developers do not take proper care of mobile resource utilization, battery and resource drain may occur . Design limitation often results in development problems.
+
+# C. LACK OF SECURITY KNOWLEDGE AND COMPLEXITY OF TESTING
+Due to limited resources and the unique nature of devices, the mobile app testing faces a number of issues. Applications often tested with mobile emulator often do not generate the same real-time device characteristics and do not show network and hardware related failure due to coding issues. There is a need for a model-driven testing framework for Automated testing functional and compatibility testing of mobile phone apps.
+
+# D. SECURITY AND PRIVACY
+Since the era has changed, Web applications are mostly converted into mobile apps. Android apps are widespread and it’s the developer’s responsibility to protect and secure user data by inducing end to end security during the mobile app development. These applications should be tested thoroughly for security through automated testing tools and test cases . Lack of security testing tools and techniques also affect the reliability of resulting android application . Security flaws emerge from time to time in various android versions such as Fakeid, mRST and Hijacking etc. developers often do not have knowledge of such security flaws which result in a vulnerable application.
+
+# E. MANIFEST FILE CONFIGURATIONS ISSUES
+The Manifest file is written by developers and contains important parameters and configurations to run an application. These configurations include security, privacy and accessibility of an application. Any type of permissions which are required to access protected parts of system are defined in the manifest and can lead to serious privacy and security infringes if not handled properly by developer.

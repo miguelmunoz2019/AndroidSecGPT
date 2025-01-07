@@ -1,0 +1,10 @@
+18. Derr, E.; Bugiel, S.; Fahl, S.; Acar, Y.; Backes, M. Keep me Updated: An Empirical Study of Third-Party Library Updatability on Android. In Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security, CCS 2017, Dallas, TX, USA, 30 October–3 November 2017; Thuraisingham, B.M., Evans, D., Malkin, T., Xu, D., Eds.; ACM: New York, NY, USA, 2017; pp. 2187–2200. [CrossRef]
+19. Salza, P.; Palomba, F.; Nucci, D.D.; D’Uva, C.; Lucia, A.D.; Ferrucci, F. Do developers update third-party libraries in mobile apps? In Proceedings of the 26th Conference on Program Comprehension, ICPC 2018, Gothenburg, Sweden, 27–28 May 2018; Khomh, F., Roy, C.K., Siegmund, J., Eds.; ACM: New York, NY, USA, 2018; pp. 255–265. [CrossRef]
+20. Chatzoglou, E.; Kambourakis, G.; Kolias, C. How is your Wi-Fi connection today? DoS attacks on WPA3-SAE. J. Inf. Secur. Appl. 2022, 64, 103058, [CrossRef]
+21. Chatzoglou, E.; Kambourakis, G.; Kolias, C. Empirical Evaluation of Attacks Against IEEE 802 Enterprise Networks: The AWID3 Dataset. IEEE Access 2021, 9, 34188–34205. [CrossRef]
+22. Kolias, C.; Kambourakis, G.; Stavrou, A.; Gritzalis, S. Intrusion Detection in 802 Networks: Empirical Evaluation of Threats and a Public Dataset. IEEE Commun. Surv. Tutor. 2016, 18, 184–208. [CrossRef]
+23. Chatzoglou, E.; Kambourakis, G.; Kolias, C. WiF0: All Your Passphrase Are Belong to Us. Computer 2021, 54, 82–88. [CrossRef]
+24. Yu, M.; Zhuge, J.; Cao, M.; Shi, Z.; Jiang, L. A Survey of Security Vulnerability Analysis, Discovery, Detection, and Mitigation on IoT Devices. Future Internet 2020, 12, 27, [CrossRef]
+25. Meneghello, F.; Calore, M.; Zucchetto, D.; Polese, M.; Zanella, A. IoT: Internet of Threats? A Survey of Practical Security Vulnerabilities in Real IoT Devices. IEEE Internet Things J. 2019, 6, 8182–8201. [CrossRef]
+26. Kambourakis, G.; Kolias, C.; Geneiatakis, D.; Karopoulos, G.; Makrakis, G.M.; Kounelis, I. A State-of-the-Art Review on the Security of Mainstream IoT Wireless PAN Protocol Stacks. Symmetry 2020, 12, 579, [CrossRef]
+# Sensors 2022, 22, 513.

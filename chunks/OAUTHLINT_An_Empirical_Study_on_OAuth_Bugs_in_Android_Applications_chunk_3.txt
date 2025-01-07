@@ -1,0 +1,88 @@
+# IV. ANALYSIS
+This section describes OA UTH L INT’s static analyses for computing an over-approximation of some built-in predicates that encode the data- and control-dependency of a program. In what follows, we first give some background on Datalog, and then describe the syntax and semantics of OAUTH L INT’s built-in predicates.
+
+# A. Datalog Preliminaries
+A Datalog program consists of a set of rules and a set of facts. Facts simply declare predicates that evaluate to true. For example, parent("Bill", "Mary") states that Bill is a parent of Mary. Each Datalog rule is a Horn clause defining a predicate as a conjunction of other predicates. For example, the rule:
+ancestor(x, y) :- parent(x, z), ancestor(z, y).
+
+says that ancestor(x, y) is true if both parent(x, z) and ancestor(z, y) are true. In addition to variables, predicates can also contain constants, which are surrounded by double quotes, or “don’t cares”, denoted by underscores.
+
+Datalog predicates naturally represent relations. Specifically, if tuple (x, y, z) is in relation A, this means the predicate A(x, y, z) is true. In what follows, we write the type of a relation R ⊆ X × Y × ... as (s1 : X, s2 : Y, ...), where s1, s2, ... are descriptive texts for the corresponding domains.
+
+# Base Facts
+The base facts of our inference engine describe the instructions in the application’s control-flow graph (CFG). The base facts take the form of A(y, x1, ..., xn), where A is the instruction name, y is the variable storing the instruction result (if any), and x1, ..., xn are variables given to the instruction as arguments (if any). For example, the instruction r1 = 0 is encoded to assign(r1, 0). Further, the special local store instruction lstore(d, v) denotes that the value of v is stored in location d.
+
+# Flow-to Predicates
+The flowTo predicate is defined over pairs of variables and is inferred from the application’s CFG. The intuitive meaning (also summarized in Fig. 4) is: flowTo(x1, x2) holds for x1 and x2 if the value of variable x2 depends on the value of x1.
+
+# OAuth-specific Predicates
+In addition to base facts from programs, OA UTH L INT also defines a list of predicates that are specific to the OAuth domain. As shown in Fig. 5, isToken(x) denotes that x may be an access token.
+
+FlowTo(x, y) :- alloc(y, x)
+FlowTo(x, y) :- assign(y, x)
+FlowTo(x, z) :- assign(y, x), FlowTo(y, z)
+FlowTo(x, z) :- alias(y, z), FlowTo(x, y)
+Since it is difficult to precisely pinpoint strings that correspond to access tokens, we use both pattern matching (i.e., regular expressions) and domain-specific knowledge (i.e., API that may return an access token) to over-approximate the domain of access tokens. Similarly, client secret is encoded as isSecret(x). Furthermore, statement y = new SecretKeySpec(x), which is used to construct a client secret, is represented as SecretKeySpec(y, x). Finally, isLocalStore(x) represents a location for local store, which can be Android SharePreferences or file systems.
+
+isToken(x) :- x may be an access token
+isSecret(x) :- x may be a secret
+webView(x) :- x is the URL of a WebView
+secretKey(y, x) :- SecretKeySpec(y, x)
+Http(y, x, ) :- y is an HTTP object of which arguments contain x
+lstore(x, z) :- isLocalStore(x), FlowTo(z, x)
+login(x, y) :- Login with user x and password y
+# V. ANTI-PROTOCOLS IN OA UTH
+This section describes OA UTH L INT’s anti-protocol language, which is a Datalog program augmented with builtin predicates. We propose five anti-protocols that widely appear in existing mobile apps and formalize them using our language. To identify the pattern of these anti-protocols, we manually reverse engineered 43 Android apps from Google Play Store. The anti-protocols are designed with Android and Java APIs, and therefore are not biased with any particular application. For each anti-protocol, the user defines a unique predicate that serves as the signature for this anti-protocol. In what follows, we first describe the syntax of OA UTH - L INT’s built-in predicates, and then discuss five common anti-protocols in OAuth.
+
+# A. An anti-protocol language for OAuth
+We first introduce our anti-protocol language for OAuth, shown in Fig. 6. Here, arg, reg, and mem are variables from function arguments, registers, and memory, respectively. The predicate flowTo determines the data dependency between two variables, as specified in Section IV. Finally, we can express more complex queries by composing simple expressions with logical operators (i.e., ¬, ∧, ∨, etc.).
+
+vi ::= arg | reg | mem | ...
+
+φ ::= flowTo(v1, v2) | isToken(v1) | isSecret(v1) | secretKey(v1, v2) | Http(v1, v2, v3) | lstore(v1, v2) | webView(v1) | login(v1, v2) | ¬φ | φ ∧ φ | φ ∨ φ
+# B. Common Anti-protocols in OAuth
+# 1) Locally Bundled Client Secrets:
+Relying party secret, which is often referred to as the client secret by OAuth 2 and consumer secret by OAuth 1, is used by service providers to authenticate the relying party. Developers can obtain the relying party secret from the developer’s console of the service providers when they register their application. Many developers misunderstand the purpose of the relying party secrets and store them locally on client-side applications. If a developer bundles the relying party secret with her mobile application, an attacker can easily retrieve it through reverse engineering, and use this secret to get her own application to be authenticated by the service providers as a benign application. Fig. 7 use OAuth 1 as an example to illustrate the vulnerability of locally bundled client secret. Relying party gets the client secret from the service provider when it registers for the OAuth service, and the client secret is then used to generate the signature from the token in step 8. Since the service provider verifies the signature to check the identity of the relying party, if the relying party bundles the secret in their mobile app, the attacker can do simple reverse engineering to extract the client secret and impersonate the relying party (i.e., victim) to access the user’s protected resources.
+
+In practice, OAUTH L INT identifies that many developers bundle their relying party secrets as field variables, resource files, or constants in their application code. For instance, here is an example from the GoFundMe application  which hard-codes its secret for communicating with Twitter:
+1    String       consumer_secret               =
+2         "QfMu9***...";
+3    mac    =   Mac.getInstance("HmacSHA1");
+4    key    =   encodeParam(consumer_secret);
+5    mac.init(new SecretKeySpec
+6    (key.getBytes(), "HmacSHA1"));
+7    HttpURLConnection                 c =
+8    new    URL(url).openConnection();
+9    params = new ArrayList();
+10     params.add("signature="
+11          +getSignature(mac,token,..));
+12     ...
+
+13     r   =  c.getInputStream();
+The locally store client secrets can be encoded as the following anti-protocol in OAUTH L INT:
+isSecret(x) ∧ secretKey(y, z) ∧ flowTo(x, z)
+∧Http(      , u,   ) ∧ flowTo(y, u)
+In addition to the above scenario, developers also store relying party secrets in Android SharedPreferences, which is also insecure:
+1    String appSecret = getAppSecret();
+2    SharedPreferences                 sf = getActivity()
+3         .getPreferences(mode);
+4    SharedPreferences.Editor editor                             =
+5         sf.edit();
+6    editor.putString("app_secret",
+7         appSecret);
+8    editor.commit();
+Since the data in SharedPreferences are stored in the file system, an attacker can access the secret by other malicious applications if the device is rooted. OAUTH L INT uses the following anti-protocol for checking this variant:
+isSecret(x) ∧ lstore(       , z) ∧ flowTo(x, z)
+where lstore represents all untrusted locations.
+
+# 2) Using WebView for OAuth Transactions:
+Using WebView for OAuth transactions is insecure because WebView breaks the isolation between the service provider and the relying party. When a malicious relying party hosts the service provider’s website in the WebView of their mobile applications, the malicious relying party can get the user’s cookies to log in on behalf of the user. Fig. 8 illustrates an example of using Webview for Facebook login. Webview enables the hosting app (malicious relying party) to access the cookies of the service provider such as Facebook. With the cookies, the malicious relying party can log in on behalf of the user. This attack can be persistent if the service providers such as Google and Facebook use long term cookie for better user experiences, which is quite common.
+
+In practice, we found many developers use embedded WebView or mobile browsers for user redirection in OAuth, which endangers user privacy. For example, here is a code snippet from the Waplog application :
+1    WebView webview;
+2    String       url    =   "provider.com/..?
+3         client_id=".."
+4         &redirect_url=".."
+Webview provides the feature that app can get the cookies from the webview it embeds.
+
+Facebook uses long term cookie even inside webview, and attacker can reuse the cookie to log in as the user.

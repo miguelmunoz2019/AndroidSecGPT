@@ -1,0 +1,33 @@
+While this work addressed the fundamental research question: “how are the vulnerabilities of mobile apps associated with libraries?”, we can further generalize it to: “where do the vulnerabilities of mobile apps come from?”. There are many research aspects that could address this question; e.g., the app development environments, the economic models of mobile app ecosystems, the sources of information for coding, and the reuse of code. An in-depth study of such research aspects is left for future work.
+
+# IEICE TRANS. INF. & SYST., VOL.E103–D, NO FEBRUARY 2020
+290
+# Authors
+# Takuya Watanabe
+received M.E. degree in computer science and engineering from Waseda University, Japan in 2016. Since joining Nippon Telegraph and Telephone Corporation (NTT) in 2016, he has been engaged in research of consumer security and privacy. He is now with the Cyber Security Project of NTT Secure Platform Laboratories.
+
+# Eitaro Shioji
+received his B.E. in computer science and M.E. in communications and integrated systems from Tokyo Institute of Technology in 2008 and 2010, respectively. Since joining NTT in 2010, he has been engaged in R&D on computer security. His research interests include software security, program analysis, and reverse engineering.
+
+# Yuta Takata
+received his B.E., M.E., and Ph.D. degrees in computer science and engineering from Waseda University, Japan in 2011, 2013, and 2018. He was engaged in R&D of new technologies related to cyber security at NTT from 2013 to 2018. Since joining PwC Cyber Services LLC in 2019, he has been focusing on developing new solutions to effectively analyze and detect cyber attacks.
+
+# Bo Sun
+received B.E degree in science from Jilin University in 2007, M.E degree in engineering from Yokohama National University in 2012, and Ph.D degree in engineering from Waseda University in 2018. He was with the University of Waseda as a research associate from 2016 to 2018. He is currently a researcher with the National Institute of Information and Communications Technology and visiting researcher at the University of Waseda. His research interest includes web security, mobile security and offensive security.
+
+# Yuta Ishii
+received B.E and M.E degree in computer science from Waseda University in 2015 and 2017. His research interest is network security and mobile security.
+
+# Mitsuaki Akiyama
+received his M.E. and Ph.D. degrees in information science from Nara Institute of Science and Technology, Japan in 2007 and 2013. Since joining Nippon Telegraph and Telephone Corporation (NTT) in 2007, he has been engaged in research and development on network security, especially honeypot and malware analysis. He is now with the Cyber Security Project of NTT Secure Platform Laboratories.
+
+# Fumihiro Kanei
+received his M.E. degree in computer science from Yokohama National University in 2015. Since joining Nippon Telegraph and Telephone Corporation (NTT) in 2015, he has been engaged in research and development on cyber security, especially mobile security, web security, and program analysis. He is now a researcher in the Cyber Security Project of NTT Secure Platform Laboratories.
+
+# Toshiki Shibahara
+is currently a researcher at NTT Secure Platform Laboratories, Tokyo, Japan. He received his B.E. degree in engineering and M.E degree in information science and technology from The University of Tokyo, Japan in 2012 and 2014. Since joining Nippon Telegraph and Telephone Corporation (NTT) in 2014, he has been engaged in research on cyber security and machine learning.
+
+# WATANABE et al.: STUDY ON THE VULNERABILITIES OF FREE AND PAID MOBILE APPS
+Takeshi Yagi received his B.E. degree in electrical and electronic engineering and his M.E. degree in science and technology from Chiba University, Japan in 2000 and 2002. He also received his Ph.D. degree in information science and technology from Osaka University, Osaka, Japan in 2013. He joined the Nippon Telegraph and Telephone Corporation (NTT) in 2002 and transferred to NTT Security (Japan) KK in 2018, where he is currently researching honeypots, security-data analysis based on machine learning, and security intelligence technologies such as URL/domain/IP blacklisting and reputation. He is a member of the Institute of Electrical and Electronics Engineers (IEEE) and the Institute of Electrical Engineers of Japan (IEEJ) and IEICE.
+
+Tatsuya Mori is currently an associate professor at Waseda University, Tokyo, Japan. He received B.E. and M.E. degrees in applied physics, and Ph.D. degree in information science from the Waseda University, in 1997, 1999 and 2005, respectively. He joined NTT corporation in 1999. Since then, he has been engaged in the research of measurement and analysis of networked systems and network security. From Mar 2007 to Mar 2008, he was a visiting researcher at the University of Wisconsin-Madison..

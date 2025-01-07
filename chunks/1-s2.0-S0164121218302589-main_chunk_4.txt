@@ -1,0 +1,62 @@
+The explicit communication domain shows all potential component-to-component interactions using explicit Intents. Similarly, the implicit communication domain shows all potential component-to-component interactions using implicit Intents. Each non-empty cell in these domains indicates the fact that the architecture of the system allows for potential interaction between two components. Rows represent sender components; columns represent receiver components. Allowed explicit communications are derived using the following rule.
+
+# M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+# Explicit Communication Domain
+Legend: Location permission SMS permission Bluetooth permission
+# Definition 1 (Allowed explicit communication)
+Let E be a set of all exported components, and c1 and c2 be two arbitrary components in the system. We say that c1 can explicitly communicate with c2, if either both components belong to the same app or c2 is an exported component and c1 is granted the permissions enforced by c2:
+communicatee (c1, c2) ≡ (appc1 = appc2) ∨ (c2 ∈ E ∧ enforcedc2 ⊆ grantedc1)
+The Explicit Communication Domain in Fig. 3 shows the result of applying Definition 1 to Table 1. According to the explicit communication domain, components 1, 2, and 3 can communicate with one another because they belong to the same app, as well as component 5 since it is exported, but not component 4. Components 4 and 5 can also communicate with all the other components in the system.
+
+# Definition 2 (Allowed implicit communication)
+Let F be a set of all declared public provided interfaces, i.e., Intent filters, and c1 and c2 be two arbitrary components in the system. We say that c1 can implicitly communicate with c2, if c2 defines a public provided Interface and either both components belong to the same app or c1 is granted the permissions enforced by c2:
+communicate(c1, c2) ≡ c2.filters ⊆ F ∧ (appc1 = appc2 ∨ enforcedc2 ⊆ grantedc1)
+The Implicit Communication Domain in Fig. 3 shows the result of applying Definition 2 to Table 1. According to the implicit communication domain, all components in the system can communicate with component 3 and component 5. Component 3 declares a public provided interface for sending text messages without enforcing any permission. Component 5 is the main entry point for FunGame app, i.e., declares a public Intent filter with android.intent.action.MAIN action.
+
+Note that the communication domain also includes interactions between the Android framework and components of third-party apps. Android provides over 230 protected broadcast Intents that can only be sent by the system to the registered components. For example, when a user installs an app, the system sends a broadcast Intent including the package name of the newly installed app to all components that listen to the PACKAGE_ADDED broadcast Intent action. Fig. 3 shows no such interactions with the system, as no component in our running example is registered to receive protected broadcast Intents.
+
+# Permission Domains
+The three permission domains in the MDM model of Fig. 3 represent the component-to-permission relationships. Each non-empty cell corresponds to a permission that is either (1) granted to a component, meaning that the component has that permission, as its hosting app has requested the permission in its manifest file, (2) used by a component, meaning that the component is actually making API calls or interacts with other apps that require the permission, or (3) enforced by a component, meaning that either the Android runtime environment or the component itself check the permission of callers (as you may recall from Section 4 there are two ways of enforcing permissions in Android). The permission domains in the MDM are populated based on the information obtained in the first step (i.e., Granted, Used, and Enforced columns of Table 1). For example, the MDM shown in Fig. 3 indicates that the first three components are granted the SMS and the BLUETOOTH permissions, while components 4 and 5 are granted the location permission.
+
+# 4. Step 3: Privilege reducer
+The Original architecture derived in the previous step clearly violates the principle of least privilege. This step aims to derive the LP architecture by granting only the privileges required by each component to fulfill its tasks.
+
+DelDroid uses the extracted inter-component communications (information in the Intent and Intent Type columns of Table 1) to determine the communication privileges that are needed for each component to provide its functionality, and removes communication privileges that are unnecessary. For instance, as shown in Fig. 4, the LP architecture allows the Composer component to communicate with the Sender component to send text messages (indicated by “1” in row 2, column 3 of Implicit Communication Domain). On the other hand, the LP architecture prohibits the LevelUp component to communicate with the Sender component.
+
+# 8 ListMsgs
+# 9 Composer
+# Sender
+# LevelUp
+Main
+Legend:
+# Location permission
+# SMS permission
+# Bluetooth permission
+Furthermore, DelDroid reduces the granted permissions for each component in the Permission Granted Domain of the LP architecture using the following rule:
+The amount of privilege reduction achieved through enforcing LP architecture can be quantified by calculating the distance between the LP architecture (L) and the Original architecture (O) as shown in Eq. (1).
+
+Reduction(O, L) = 1 − ∑i=1∑j=1 Li,j / ∑i=1∑j=1 Oi,j (1)
+In Eq. (1), i and j represent the ith column and jth row of an MDM with n rows (components) and m columns (components and permissions). In our running example, comparing the Original architecture (cf. Fig. 3) with the LP architecture (cf. Fig. 4) shows 83% reduction in granted privileges.
+
+# 4. Step 4: Security analyzer
+The previous sections present derivation of the LP architecture for an Android system captured in an MDM. Here, we describe how the resulting architecture can be used to effectively perform security analysis of Android apps. In particular, we focus on three prominent types of vulnerabilities due to the interaction of multiple apps, i.e., privilege escalation , unauthorized Intent receipt , and Intent spoofing.
+
+# Definition 4 (Privilege escalation)
+Let p be a permission, cm be a malicious component that does not hold p, and cv be a vulnerable component that holds and uses p but does not enforce (check) the components that may be using its services also hold p. In the privilege escalation attack, cm is able to indirectly obtain p by interacting with cv.
+
+(communicatee (cm, cv) ∨ communicate(cm, cv)) ∧ p ∈ usedcv ∧ p ∈ grantedcm ∧ p ∈ enforcedcv
+According to Definition 4, in privilege escalation, a malicious app is able to indirectly perform a privileged task, without having a permission to do so, by interacting with a component that possesses the permission. By applying the privilege escalation rule to the MDM representation of the system’s architecture, DelDroid identifies communications that may result in privilege escalation attack.
+
+To illustrate this, let us assume that instead of LevelUp using dynamic class loading to communicate with the Sender component...
+
+# M. Hammad, H. Bagheri and S. Malek / The Journal of Systems and Software 149 (2019) 83–100
+# 91
+Legend: Location permission, SMS permission, Bluetooth permission
+In this Activity hijacking attack, the malicious component can also perform a phishing attack to get even more information from the user after stealing the interface of the legitimate Activity. Phishing attacks cannot be easily determined by users since the Android UI does not specify the currently running application. By applying Definition 5 to the MDM representation of the system’s architecture, DelDroid identifies communications that may result in unauthorized Intent receipt ICC attack.
+
+# Definition 5 (Unauthorized intent receipt)
+Let cm, cv, and cx be three components, where cv and cx belong to the same app, and cx declares a public provided interface, i.e., an Intent filter, through which cv aims to communicate with cx by means of an implicit Intent. In the unauthorized Intent receipt attack, cm can intercept an implicit Intent sent by cv through declaring a provided interface similar to the one declared by cx. As such, cm may gain access to all enclosed data in any matching Intents meant to be received by cx.
+
+communicate(cv, cm) ∧ (appcv = appcm)i ∧ ∃ communicate(cv, cx) ∧ (appcv = appcx)i
+# Definition 6 (Intent spoofing)
+Let cm, cv, and cx be three components, where cv and cx belong to the same app and cv declares a public provided interface, i.e., an Intent filter, through which it aims to communicate with cx. In the Intent spoofing attack, cm can communicate with the exported component of cv that is not expecting an Intent from cm. In this attack, if the vulnerable component cv performs an action upon receiving an Intent, the malicious component cm can trigger that action at will for nefarious purposes.

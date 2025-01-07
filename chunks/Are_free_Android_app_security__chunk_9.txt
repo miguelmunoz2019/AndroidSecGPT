@@ -1,0 +1,53 @@
+# 4 Threats to Validity
+# Internal Validity
+While we tried to execute the tools using all possible options, but with minimal or no extra configuration, we may not have used options or combinations of options that could result in more true positives and true negatives. The same is true of extra configuration required by specific tools, e.g., providing a custom list of sources and sink to FlowDroid.
+
+Our personal preferences for IDEs (e.g., Android Studio over Eclipse) and flavors of analysis (e.g., static analysis over dynamic analysis) could have biased how we diagnosed issues encountered while building and setting up tools. This preference could have affected the selection of tools and the reported set up times.
+
+We have taken utmost care in using the tools, collecting their outputs, and analyzing their verdicts. However, our bias (e.g., as creators of Ghera) along with commission errors (e.g., incorrect tool use, overly permissive assumptions about API levels supported by tools) and omission errors (e.g., missed data) could have affected the evaluation.
+
+All of the above threats can be addressed by replicating this evaluation; specifically, by different experimenters with different biases and preferences than us and comparing their observations with our observations as documented in this manuscript and the artifacts repository (see Section 6).
+
+We used the categorization of vulnerabilities provided by Ghera as a coarse means to identify the vulnerabilities to evaluate each tool. If vulnerabilities were mis-categorized in Ghera, then we may have evaluated a tool against an inapplicable vulnerability or not evaluated a tool against an applicable vulnerability. This threat can be addressed by verifying Ghera’s categorization of vulnerabilities or individually identifying the vulnerabilities that a tool is applicable to.
+
+# External Validity
+The above observations are based on the evaluation of 14 vulnerability detection tools. While this is a reasonably large set of tools, it may not be representative of the population of vulnerability detection tools, e.g., it does not include commercial tools, it does not include free tools that failed to build. So, these observations should be considered
+While evaluating the tools against all vulnerabilities seems like a solution to address this threat, we recommend against it as it would be unfair (as mentioned in Consider only applicable categories of vulnerabilities paragraph in Section 4).
+
+206 Empirical Software Engineering (2020) 25:178–219
+as is only in the context of tools similar to the evaluated tools and more exploration should be conducted before generalizing the observations to other tools.
+
+In a similar vein, the above observations are based on 42 known vulnerabilities that have been discovered by the community since 2011 and captured in Ghera since 2017. While this is a reasonably large set of vulnerabilities and it covers different capabilities of Android apps/platforms, it may not be representative of the entire population of Android app vulnerabilities, e.g., it does not include different manifestations of a vulnerability stemming from the use of similar yet distinct APIs, it does not include vulnerabilities stemming from the use of APIs (e.g., graphics, UI) that are not part of the considered API categories, it does not include native vulnerabilities. So, these observations can be considered as is only in the context of the considered 42 known vulnerabilities. The observations can be considered with caution in the context of different manifestations of these vulnerabilities. More exploration should be conducted before generalizing the observations to other vulnerabilities.
+
+# 4 Interaction with Tool Developers
+By the end of June 2017, we had completed a preliminary round of evaluation of QARK and AndroBugs. Since we were surprised by the low detection rate of both tools, we contacted both teams with our results and the corresponding responses were very different.
+
+The QARK team acknowledged our study and responded to us with a new version of their tool after two months. We evaluated this new version of QARK. While the previous version of the tool flagged three benchmarks as vulnerable, the new version flagged ten benchmarks as vulnerable. The evaluation reported in this manuscript uses this new version of QARK.
+
+AndroBugs team pointed out that the original version of their tool was not available on GitHub and, hence, we were not using the original version of AndroBugs in our evaluation. When we requested the original version of the tool, the team did not respond
+After these interactions, we decided not to communicate with tool developers until the evaluation was complete. The rationale for this decision was to conduct a fair evaluation: evaluate tools as they are publicly available without being influenced by intermediate findings from this evaluation.
+
+# 4 Why did the Evaluation Take One Year?
+In June 2017, we started gathering information about solutions related to Android app security. By mid-June, we had performed both shallow and deep selection of tools. At that time, Ghera repository had only 25 benchmarks, and we evaluated the selected tools on these benchmarks.
+
+In July 2017, we started adding 17 new benchmarks to Ghera. Also, we upgraded Ghera benchmarks to work with Android Studio 3 (from Android Studio 2). So, in October 2017, we evaluated the tools against 25 revised benchmarks and 17 new benchmarks.
+
+In November 2017, based on feedback at the PROMISE conference, we started adding secure apps to Ghera benchmarks along with automation support for functional testing of benchmarks. This exercise forced us to change some of the existing benchmarks. We completed this exercise in January 2018.
+
+16 The corresponding GitHub ticket can be found at https://github.com/AndroBugs/AndroBugs Framework/issues/16.
+
+Empirical Software Engineering (2020) 25:178–219 207
+To ensure our findings would be fair and current, we re-evaluated the tools using the changed benchmarks, i.e., a whole new set of secure apps along with few revamped benign and malicious apps. We completed this evaluation in February 2018.
+
+While the time needed for tools evaluation — executing the tools and analyzing the verdicts — was no more than two months, changes to Ghera and consequent repeated tool executions prolonged tools evaluation.
+
+Between February and May 2018, we designed and performed the experiment to measure the representativeness of Ghera benchmarks. Throttled remote network access to Androzoo, sequential downloading of apps from Androzoo, processing of 339K apps, and repetition of the experiment (to eliminate errors) prolonged this exercise.
+
+# 5 Related Work
+Android security has generated considerable interest in the past few years. This interest is evident by the sheer number of research efforts exploring Android security. Sufatrio et al. (2015) summarized such efforts by creating a taxonomy of existing techniques to secure the Android ecosystem. They distilled the state of the art in Android security research and identified potential future research directions. While their effort assessed existing techniques theoretically on the merit of existing reports and results, we evaluated existing tools empirically by executing them against a common set of benchmarks; hence, these efforts are complementary.
+
+In 2016, Reaves et al. (2016) systematized Android security research focused on application analysis by considering Android app analysis tools that were published in 17 top venues since 2010. They also empirically evaluated the usability and applicability of the results of 7 Android app analysis tools. In contrast, we evaluated 14 tools that detected vulnerabilities. They used benchmarks from DroidBench (DroidBench 2013), six vulnerable real-world apps, and top 10 financial apps from Google Play store as inputs to tools. While DroidBench benchmarks and vulnerable real-world apps were likely authentic (i.e., they contained vulnerabilities), this was not the case with the financial apps.
+
+In contrast, all of the 42 Ghera benchmarks used as inputs in our evaluation were authentic albeit synthetic. While DroidBench focuses on ICC related vulnerabilities and use of taint analysis for vulnerability detection, Ghera is agnostic to the techniques underlying the tools and contains vulnerabilities related to ICC and other features of Android platform, e.g., crypto, storage, web. While their evaluation focused on the usability of tools (i.e., how easy is it to use the tool in practice? and how well does it work in practice?), our evaluation focused more on the effectiveness of tools in detecting known vulnerabilities and less on the usability of tools. Despite these differences, the effort by Reaves et al. is closely related to our evaluation.
+
+Sadeghi et al. (2017) conducted an exhaustive literature review of the use of program analysis techniques to address issues related to Android security. They identified trends, patterns, and gaps in existing literature along with the challenges and opportunities for future research. In comparison, our evaluation also exposes gaps in existing tools. However, it does so empirically while being agnostic to techniques underlying the tools, i.e., not limited to program analysis.

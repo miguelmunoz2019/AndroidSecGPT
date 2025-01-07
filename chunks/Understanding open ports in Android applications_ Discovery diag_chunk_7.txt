@@ -1,0 +1,17 @@
+32. “Setting the Record Straight on Moplus SDK and the Wormhole Vulnerability,” http://tinyurl.com/wormholevulnerability.
+
+33. “Sony DLNA Support,” https://esupport.sony.com/US/p/support-info.pl?info id=884.
+
+34. “The tcp states.h file in Linux kernel,” http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/tree/include/net/tcp states.h?id=HEAD.
+
+35. “Tcp/udp port numbers used in samsung system,” ftp://81/Samsung/OS%20ports/attachment.pdf.
+
+36. “Tencent XG Push SDK,” http://docs.developer.qq.com/xg/.
+
+37. “Titanium Mobile Intro Series: Fastdev for Android,” http://www.appcelerator.com/blog/2011/05/titanium-mobile-intro-series-fastdev-for-android/.
+
+38. “Yandex Metrica SDK,” https://github.com/yandexmobile/metrica-sdk-android.
+
+39. K. Allix, T. F. Bissyande, J. Klein, and Y. L. Traon, “AndroZoo: Collecting millions of Android apps for the research community,” in Proc. ACM MSR, 2016.
+
+40. S. Arzt, S. Rasthofer, C. Fritz, E. Bodden, A. Bartel, J. Klein, Y. Traon, D. Octeau, and P. McDaniel, “Flowdroid: Precise context, flow, field, object-sensitive and lifecycle-aware taint analysis for Android apps,” in Proc. ACM PLDI, 2014..

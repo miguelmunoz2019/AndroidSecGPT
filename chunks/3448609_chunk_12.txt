@@ -1,0 +1,20 @@
+17. Sandeep Bhatkar, Daniel C. DuVarney, and R. Sekar. 2003. Address obfuscation: An efficient approach to combat a board range of memory error exploits. In Proceedings of the USENIX Security Symposium, Volume 12. USENIX Association, Berkeley, CA, 8–8. http://dl.acm.org/citation.cfm?id=1251353
+18. Chad Brubaker. 2014. Introducing nogotofail—A network traffic security testing tool. Retrieved from https://security.googleblog.com/2014/11/introducing-nogotofaila-network-traffic.html.
+
+19. Chad Brubaker. 2018. Protecting Users with TLS by Default in Android P. Retrieved from https://android-developers.googleblog.com/2018/04/protecting-users-with-tls-by-default-in.html.
+
+20. N. Burow, X. Zhang, and M. Payer. 2019. SoK: Shining Light on Shadow Stacks. In Proceedings of the 2019 IEEE Symposium on Security and Privacy (SP’19). 985–999. DOI:https://doi.org/10/SP
+21. Pierre Carru. 2017. Attack TrustZone with Rowhammer. Retrieved from http://www.eshard.com/wp-content/plugins/email-before-download/download.php?dl=9465aa084ff0f070a3acedb56bcb34f5.
+
+22. Dan Cashman. 2017. SELinux in Android O: Separating Policy to Allow for Independent Updates. Retrieved from https://events.static.linuxfound.org/sites/events/files/slides/LSS%20-%20Treble%20%27n%27%20SELinux.pdf.
+
+23. Jen Chai. 2019. Giving users more control over their location data. Retrieved from https://android-developers.googleblog.com/2019/03/giving-users-more-control-over-their.html.
+
+24. Haining Chen, Ninghui Li, William Enck, Yousra Aafer, and Xiangyu Zhang. 2017. Analysis of SEAndroid policies: Combining MAC and DAC in Android. In Proceedings of the 33rd Annual Computer Security Applications Conference (ACSAC’17). ACM, New York, NY, 553–565. DOI:https://doi.org/10/3134600
+25. Haining Chen, Vishwath Mohan, Kevin Chyn, and Liz Louis. 2020. Lockscreen and Authentication Improvements in Android 11. Retrieved from https://android-developers.googleblog.com/2020/09/lockscreen-and-authentication.html.
+
+26. Jiska Classen and Matthias Hollick. 2019. Inside job: Diagnosing Bluetooth lower layers using off-the-shelf devices. In Proceedings of the 12th Conference on Security and Privacy in Wireless and Mobile Networks (WiSec 2019). ACM, 186–191. DOI:https://doi.org/10/3317549
+ACM Transactions on Privacy and Security, Vol. 24, No. 3, Article 19. Publication date: April 2021.
+
+# The Android Platform Security Model
+# The Android Platform Security Model.

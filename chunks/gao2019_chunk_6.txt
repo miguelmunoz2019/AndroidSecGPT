@@ -1,0 +1,62 @@
+# A. Vulnerability “Bubbles” in App Markets
+To answer RQ1: Have there been vulnerability bubbles in the Android app market? We first compute, for each vulnerability type, the percentage of apks, which are infected in a given year. Fig. 10(a) outlines the evolution of vulnerable apks in the space of six years. Clearly, we do not see any steady trend toward less and less proportions of vulnerable apks. A more specific investigation is conducted to further explore the expected pattern. The same computation is repeated with apps only debuted on year 2010. This limits to a dataset containing only 3109 apks of 141 app lineages. Nevertheless, very similar patterns have been observed Since apks are built to target specific Android OS versions (i.e., API level targets), the availability of specific features and programming paradigms may influence the share of vulnerable apks. Thus, we present in Fig. 10(b) the evolution of the percentage of vulnerable apks across different API level targets. We note an interesting case with the command vulnerability: The percentage of vulnerable apks has steadily dropped from 60% in apks targeting first OS versions to about 10% for the more recent OS version. This evolution is likely due
+15 Since the change could be only related to program refactoring, we cannot say if the change is a real fix or not.
+
+16 Vulnerabilities of Intent and IntentFilter contains missing data in certain years. Therefore, these two vulnerabilities are not discussed here.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+to the various improvements made in the OS as well as in the app markets toward preventing the capability and permission abuse. We further investigate whether the overall evolutions depicted previously break down differently in specific markets, given that markets do not implement the same security checking policies; and whether evolution trends are visible inside the apps, since developers may make efforts to at least reduce their numbers.
+
+# Insights from RQ1:
+Our analyses did not uncover any vulnerability bubble in the history of app markets. Instead, we note that vulnerabilities have always been widespread among apps and across time. Nevertheless, the case of Leaks suggests that wide and intense researching focus can significantly impact the number of vulnerabilities in apps.
+
+# B. Survivability of Vulnerabilities
+To answer RQ2: What is the impact of app updates w.r.t. vulnerabilities? We investigate whether a given vulnerability type identified at a location remains or is removed from the successor apk in the lineage. Similarly, we investigate whether new vulnerability types appear in updated versions of the app.
+
+We further detail in Fig. 12 the distribution of the numbers of vulnerabilities added and removed in apps. Except for the Permission case, we note that the median number of vulnerabilities added is equal or higher to the number of vulnerabilities that are removed. This confirms the following finding in a recent study by Taylor et al. on a smaller set of apps: “Android apps do not get safer as they are updated.” The p-values of the Mann–Whitney–Wilcoxon (MWW) test with null hypothesis of equal distribution, alternative hypothesis of not equal distribution and confidence level of 0, indicated above each box plot.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# 12
+# IEEE TRANSACTIONS ON RELIABILITY
+pair, however, show that the difference is statistically significant only for the three ICC-related vulnerabilities.
+
+We now investigate the general trend in vulnerability evolutions, comparing the impact of updates between consecutive pairs and the impact of all updates between the beginning and the end of a lineage. We expect to better highlight the overall evolution of vulnerabilities as several changes have been applied. The box plots in Fig. 13 highlight the following simple reality: Commonly vulnerabilities are neither removed nor introduced during app updates [i.e., all median values equal to 0 in Fig. 13(a)] and when they happen, their chances are quite equal as well (i.e., all mean values are very close to 0 too). When looking at the distribution obtained based on the initial/latest versions shown in Fig. 13(b), the major pattern stays similarly (i.e., all median values are still 0 only except for Leak, which is 1, and for most of the mean values, they increased slightly but still between around 0 and 0; the exceptions are Leak and IntentFilter, which are 3 and 2, respectively), but observable differences are exhibited as well. Several vulnerabilities expand in size and the scale increases obviously. The main parts of all boxes are on the positive side of y-axis, which indicates that there are more cases of adding vulnerabilities than removing.
+
+Insights from RQ2: As more than 50% of vulnerabilities stay untouched during one update and the possibility of fixing and introducing vulnerabilities during updates does not show a significant difference, app updates indeed do not make apps safer. Moreover, vulnerabilities can normally survive three updates and even longer, this suggests developers have not been paying enough attention on vulnerability issues.
+
+# C. Vulnerability Reintroductions
+To answer RQ3: Do fixed vulnerabilities reappear later in app lineages? We track all vulnerability alerts (associated with their locations) and cross check throughout the lineages. We found 342 809 distinct cases of location-based vulnerability reintroductions (i.e., vulnerable code removed and reappeared in the same method of the same class of an app, as specified in Section II-A) for 15 375 distinct apps. On average, a given app is affected by 6 vulnerability reintroductions. Fig. 14(a) further breaks down reintroduction cases and their proportions among all vulnerability alerts. Encryption-related vulnerabilities (2%) are the most likely to be reintroduced, in contrast to SSL Security-related vulnerabilities (0%).
+
+We investigate whether, in some lineages, a vulnerability type may completely disappear at some point and later reappear. Fig. 14(b) provides statistics on proportions of lineages where a given vulnerability type is reintroduced (note that this type-based vulnerability reintroduction is only discussed here, for the rest of this article, without specification, the reintroduction should be location based).
+
+Insights from RQ3: Vulnerability reintroductions occur in Android apps and Encryption-related vulnerabilities are the most likely to reappear with the possibility of around 3%.
+
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+# TABLE III
+# SPEARMAN CORRELATION COEFFICIENT (ρ) VALUES
+# D. Vulnerability Introduction Vehicle
+We answer RQ4: Where are vulnerabilities mostly located in programs and how do they get introduced into apps? By first providing a characterization of code locations where vulnerabilities are found, we focus on the following two main location categories: library code and developer code. We attempt to provide a fine-grained view on the vulnerable-prone code by distinguishing between the following.
+
+1. Developer code, approximated to all app components that share the same package name with the app package (i.e., app ID).
+
+2. Official libraries, which we reduce in this work to only Android framework packages (e.g., that start with com.google.android or android.widget).
+
+3. Common libraries, which we identify based on whitelists provided in the literature.
+
+4. Reused or other third-party code, which we defined as all other components that do not share the app package name, but are neither commonly known library code.
+
+Our heuristics are solely based on package name, and thus, may actually include abusively named packages. See package list on artifact release page.
+
+With experiments Exp: # of packages versus # of vulns. per apk; Exp: # of new packages versus # of vulns. per update.
+
+We investigate the correlation between the size of apps and the number of vulnerabilities to assess a literature intuitively acceptable claim that larger apps are more vulnerable. Then, we study how this reflects in evolution via apk updates, by checking whether the number of new code packages added in an app during an update correlates with the number of newly appearing vulnerabilities. Table III provides Spearman correlation computation results. All correlation appear to be “Negligible.” IntentFilter shows the highest correlation close to being categorized as “Moderate” w.r.t. the size of the apps.
+
+Interestingly, computation of locally estimated scatterplot smoothing (LOESS) regression  shown in Fig. 17 further highlights that while a positive correlation, although “Negligible,” may exist between added packages and the number of added vulnerabilities, no correlation can be observed between removing packages and variations in vulnerability numbers.
+
+As numbers of the vulnerabilities are not correlated with both apk size and package numbers. We can deduce that not
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.

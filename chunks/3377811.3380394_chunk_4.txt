@@ -1,0 +1,112 @@
+# 4 Rationale analysis – What is in the Box?
+We performed two distinct thematic analyses to build a holistic understanding of developer rationales: one to understand the rationales driving the choices made in each task, and another to understand cross-task themes. For the first analysis, key themes prevalent in the codebook are shown in Fig. 4. The three subgroups most relevant to understand why developers do (not) develop securely are discussed here: (1) security rationales and security solutions, (2) security rationales but non-security solutions, and (3) non-security rationales with security solutions. Distribution of these subgroups over the professional demographics of the participants showed no significant deviation across organization size.
+
+# 4 Security rationales, and security solutions.
+
+Trust in other developers: Across different tasks participants
+# EBILG
+# DOU [ 2016 beemnOlq
+pGibz ?bor 422r162 zb0t 4zzricz
+Bnt2bO(IGl pGibz Do !ubaf 29UWISSIIOU
+nuqolziguqiug bGLWJiziouz !? !wbougur
+# ZGcnnu^ 2oiniou
+Rniinivo 2OMKJLC
+gqA64I26LEUI 204
+(Ia2k = couinziud FbL266*iud Ngib Ou 9532
+(192k S)
+(4a2k 1) 208
+Zoitil] n Au
+# ZGcnl 2inicu VOU-2GCOLIM 2cinriou
+IS(G INIFJIU (JJGII gbb:
+(LIT[ !UJ OfFGI
+IAJFH OFHGI FjGA bjgcG !IJ [JJGIJJ
+~["] mIII 0126 (pG [IPLSLA(I62 _
+# ZOMLCG:
+OL MjIJG qGciquE MpIcp gq FPLSLA [0 JIJCOLboLSG FJJG KIOtjGqE6 (613)
+cogs: suq Ux!eZOMICG- 2cpuloquua6L,
+(pG
+bGL?ous qJ9
+BG CJLGII mp KOnizgll L9(Ou9IG &InGU
+DOU; [G?r pA Vo ciGgi
+bleqicrgpi6 OWpJGL ZOinou ZGCrLa ZOpnou
+# ZGcnui 2oiniiau VOU 26cnlua 2Diniicu 2GCM [JiomIC
+[0 [2G ZCITLG pJg?pUTIJCHIOIJ [LOIJJ WPL9LA (638)
+~MJIIG FJG CLAb[o JOOK? IUA (MpA JLGUJ~LpGpg?pJIG Jj8oLFJJIJJ !2 JPLSLAmG Jm?[ CSJI!E HSuq- ITUGGL?
+LG - [0 GIJZIILG Rooq LG[TTLI [OIJ {IJAG?LJGIt] _ (LvI)
+IKG [0 LJJ(cp !F (0 IJA gbb? FFG ASJIG Fj"Gh suq FJJG
+bo[Gufs] , (650)
+ICZE .SO' Visa 53-Sd\' SOSO\' 2gon1" KGbnpiic Ol KolGg 155
+# ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+# van der Linden, et al.
+
+This indicates that messaging about not rolling one’s own crypto is reaching app developers.
+
+# Do input sanitization:
+Several participants noted this, whether by explicitly pointing out that the source-code in task 2 lacked this:
+“Variables haven’t been sanitised.” (P39)
+to more nuanced statements explaining one should not just trust data provided by others:
+“. . . just inserting untrusted, unsanitised data is a bad idea” (P32)
+# Don’t store passwords in plain text:
+Participants showed an understanding of the risks of storing passwords in plain text, whether simply calling it out as being not done:
+“Passwords should never be stored in plain text.” (P39)
+to re-iterating why this should not be done:
+“This stores the user’s plaintext password in a file. If the file was compromised then user’s passwords would be leaked. Passwords should never be stored – Only the hash.” (P28)
+# Static analysis and bug spotters help spot issues:
+Participants also showed a clear understanding of their own limitations in catching any and all possible coding mistakes or vulnerabilities, some noting additionally how important this is when developing alone without the safety net of a wider team:
+“Bug spotter and analyzer because it’d help fix issues I create which is important as a lone dev with no code review” (P9)
+“The most important thing would be detecting things that are ‘off’ in the code. Syntax highlighting helps me do this myself, and the bug spotter / static code analyzer plugins do this in an automated fashion.” (P19)
+Moreover, participants noted the importance of such tools because even when armed with the relevant security knowledge, they:
+“help prevent non-obvious security issues.” (P24)
+# 4 Secure rationales, but other solutions.
+
+This subgroup, smaller in number than others, shared a number of themes with those who chose security solutions and provided security rationales, namely, trusting in other developers, and more technical matters like understanding permissions, not implementing their own crypto, and always performing input sanitization.
+
+# Be careful with personal data:
+The one particular theme that came to the fore within this subgroup is that participants always considered whether they would have to process and hold personal data of their users, and adjusted their decision-making accordingly:
+“I’m assuming that if I’m writing an app that requires the user’s personal information I would first make sure that I am well-versed in the field of data security.” (P6)
+Some participants noted the same reservations in the context of specific resources such as ad libraries:
+“I would want to know what data libraries want to collect on my users and what they plan on doing with it.” (P24)
+# Do not test by yourself and don’t assume users are predictable:
+This again varied from participants simply calling it out:
+“A developer should never test the code he built.” (P1)
+to giving a more detailed reasoning, e.g., that one can never predict how software is actually used, and thus account for this as much as possible:
+“I never rely on just myself for testing, since I cannot always know how people are going to use the app beforehand.” (P1)
+Similarly, developers gave more technical considerations to dealing with the unpredictable nature of their users:
+“Never trust user input. Sanitize it before doing anything . . . ” (P18)
+# 4 Other rationales, but security solutions.
+
+By far the largest subgroup in the analysis, many participants produced a secure solution, but seemingly almost by accident. Unclear rationales such as:
+“no specific reason” (P18), or simply because it’s the “best [solution] I could come up with” (P34), or that solutions “looked OK like this.” (P14)
+means that we are unable to determine their intentions (i.e. focusing on security or not).
+
+Through some latent knowledge or behavior, participants produced security relevant solutions – yet we cannot be sure why they solved the tasks the way they did. From a security standpoint this is particularly troubling, as there is no insight into whether this group of developers are consistently acting in a secure way (but subconsciously), following secure development trends, or simply doing whatever feels right at the moment.
+
+# 4 What else characterizes participants’ rationales?
+The thematic analysis of the rationale data gave rise to several recurring themes that spanned across different tasks. These are described below to allow for further understanding of why developers may prioritize the way they do.
+
+# Caring about users:
+Many participants, across several tasks, reflect on the impact of their decisions on users of the app. This manifests in altruistic or empathetic context as, for example, in reflection on the advertisement and license tasks:
+“I don’t want to put my users at risk with weird permissions.” (P30)
+“I prioritized based on how ‘extortionist’ or ‘evil’ the clauses would feel to me as a consumer.” (P19)
+Additionally, participants manifest the attitude in an egotistic context as well. For example, caring about users in order to preserve or improve one’s reputation as a developer:
+“It is better to have a small group [of testers] find bugs than your users. This way, your reputation would be secured with the whole world.” (P3)
+# Avoiding dealing with others:
+In the tasks where participants had to reason about interacting with others, a theme arose indicating their reluctance to engage with others before putting in their own effort. For example:
+“This problem should be solved as fast as possible but without being needy so firstly I would read documentation and try to find a solution on my own.” (P17)
+“First I’ll use resources I can use without the help from other people (their time is important as well).” (P7)
+# All about the flow:
+In rationales for setting up an IDE, a key distinction was IDE configurations supporting the developer getting into a state of flow during development, rather than selecting plugins that intervene and steer their behavior:
+“Moving forward and getting better at programming takes practice and I really enjoy the process. Programming at my own speed without interruptions from plugins is my most productive workflow.” (P30)
+# LII?IGq {0 $
+# I!uGmWFF JWK pGMAGGU
+# SCHIAIG? (bojAcpOLc pGqu& WJJOLG
+(pG ?qA Ig? SC(!AG" ELOLJ (pG LGdnG?f? [0 IO es
+FJJc2MLAGA' IG OHGIGq IJO BI94*IG GIJJSIJGG FJJG?G 4G - ERMLG
+[G coj[Gc(Gq
+157
+# ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+# van der Linden, et al.
+
+impact of writing code and selecting external SDKs (r=, p<0), as well as a low negative correlation between writing code and under what license their software is released (r=−, p<0). This may indicate that writing code and selecting external SDKs are indeed the two key factors which developers perceive to affect the security of their software. Additional correlations were found, in particular the two strongest correlations between the test and help question (r=, p<0), and the help and development environment question (r=, p<0).
+
+The correlation between test and help – and that it did not score as affecting security – corroborates the findings from Study I where participants also prioritized security the least in the same tasks.

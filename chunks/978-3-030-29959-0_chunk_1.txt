@@ -1,0 +1,57 @@
+# Finding Flaws from Password Authentication Code in Android Apps
+Siqi Ma1(B), Elisa Bertino2, Surya Nepal1, Juanru Li3, Diethelm Ostry1, Robert H. Deng4, and Sanjay Jha
+1 CSIRO, Sydney, Australia
+{siqi.ma,surya.nepal,diet.ostry}@csiro.au
+2 Purdue University, West Lafayette, USA
+3 bertino@purdue.edu
+Shanghai Jiao Tong University, Shanghai, China
+4 jarod@sjtu.edu.cn
+Singapore Management University, Singapore, Singapore
+5 robertdeng@smu.edu.sg
+University of New South Wales, Sydney, Kensington, Australia
+sanjay.jha@unsw.edu.au
+# Abstract
+Password authentication is widely used to validate users’ identities because it is convenient to use, easy for users to remember, and simple to implement. The password authentication protocol transmits passwords in plaintext, which makes the authentication vulnerable to eavesdropping and replay attacks, and several protocols have been proposed to protect against this. However, we find that secure password authentication protocols are often implemented incorrectly in Android applications (apps). To detect the implementation flaws in password authentication code, we propose GLACIATE, a fully automated tool combining machine learning and program analysis. Instead of creating detection templates/rules manually, GLACIATE automatically and accurately learns the common authentication flaws from a relatively small training dataset, and then identifies whether the authentication flaws exist in other apps. We collected 16,387 apps from Google Play for evaluation. GLACIATE successfully identified 4,105 of these with incorrect password authentication implementations. Examining these results, we observed that a significant proportion of them had multiple flaws in their authentication code. We further compared GLACIATE with the state-of-the-art techniques to assess its detection accuracy.
+
+# Keywords
+Password authentication protocol · Mobile application security · Authentication protocol flaws · Vulnerability detection · Automated program analysis
+# 1 Introduction
+Although a variety of authentication protocols are proposed, most Android applications (apps for short) with online services are still using password to authenticate user’s identity because it is simple and inexpensive to create, use and
+©c Springer Nature Switzerland AG 2019 K. Sako et al. (Eds.): ESORICS 2019, LNCS 11735, pp. 619–637, 2019. https://doi.org/10/978-3-030-29959-0_30
+620 S. Ma et al.
+
+revoke . To validate the identity in the password authentication protocol  (named as BPAP in this paper), a user sends a combination of username and password in plaintext to a server through a client app, and the server replies with an authentication-acknowledgement if the received password is valid.
+
+While using BPAP over an insecure communication channel, the transmission and verification of password become vulnerable to many attacks, such as eavesdropping and replay attacks. In recent years, many cases of password leakage, even from those large corporations (e.g., Facebook and Yahoo), are reported. To regulate the use of password, some secure password authentication protocols (PAP) are proposed to help developers validate users’ credential: (1) BPAP over Secure Socket Layer/Transport Layer Security (SSL/TLS) , which validates the identities of the client and the server by checking their certificates and hostname to set up a secure channel between them , and then the client sends the combination of username and password over the secure channel; and (2) nonce-based PAP , which utilizes the user’s password as a secret key to compute a cryptographic function on a nonce value.
+
+Unfortunately, we found that app developers tend to implement those secure password authentication protocols incorrectly even though the requirements for a secure password authentication are well-defined. A secure protocol with incorrect implementation makes the authentication process become vulnerable to attack. Suppose for example that in an app, a timestamp (Hour/Minute/Second) is generated for use in a password hash. An attacker could then launch replay attacks by using the hashed password at the same time every day.
+
+To detect implementation flaws of PAP in Android apps, several approaches are proposed: MalloDroid  detects SSL implementation errors by checking network API calls and Internet permissions. SMV-Hunter  detects SSL vulnerabilities by launching MITM attacks, using generated inputs to simulate interactions between users and servers. Chen et al.  proposed an approach that targets the host head of HTTP implementations and launched a new attack “Host of Troubles” on those HTTP implementations, and analyzed their behaviour in handling the host headers. However, these approaches are highly implementation dependant (i.e., they rely on specific APIs and inputs that can only recognize certain protocols). To the best of our knowledge, there exist no approach that can analyze password authentication protocols in a more general scope (e.g., BPAP over SSL/TLS and nonce-based PAP). Moreover, most of the detected flaws are summarized in a manual and ad-hoc way, and thus the detection processes are neither automated nor general.
+
+To address the limitations of previous approaches, i.e., implementation dependant and high manual-effort, we propose a novel approach to extend state-of-the-art insecure password authentication implementation detection. Our approach first uses a machine learning algorithm, agglomerative hierarchical clustering, to summarize detection rules in a fully automated way, and then utilizes a fine-grained program analysis to detect flaws in Android apps according to the generated rules. We implemented GLACIATE1, an automated analysis tool.
+
+1 GLACIATE: proGram anaLysis And maChIne leArning To dEtect.
+
+# Finding Flaws from Password Authentication Code in Android Apps
+to support end-to-end automatic detection of insecure password authentication implementations. Given only a small amount of training data, GLACIATE creates detection rules automatically. It generates enriched call graphs for the apps and groups similar enriched call graphs into different clusters, and mines the patterns of flaws in each cluster to obtain templates of insecure implementation. GLACIATE then uses a forward and backward program slicing to locate the code part of password authentication in an Android app, and compares it with the obtained templates to check whether the implementation is insecure.
+
+To assess the effectiveness of GLACIATE, we compared GLACIATE with two state-of-the-art tools, MalloDroid  and SMV-Hunter . We found that GLACIATE successfully identified 686 authentication flaws that are related to SSL/TLS, achieving precision, recall, and F1 metrics of 91%, 93%, and 92%, respectively. In the mean time, MalloDroid and SMV-Hunter only detected 201 and 572 flawed apps, respectively. Additionally, we downloaded 16,387 apps from Google Play and utilized GLACIATE for a large scale analysis. GLACIATE identified 5,667 apps that implemented password authentication protocols, and found that only 28% of them were implemented securely. Among the vulnerable apps detected, 65% suffered from authentication flaws related to SSL/TLS. While analyzing the transmitted passwords, 20% of them transmit passwords with insecure hash, or even in plaintext. Moreover, 15 apps violate all the requirements of establishing PAP.
+
+# Contributions
+Overall, our contributions are as follows:
+- We proposed a novel end-to-end approach to identify authentication flaws from the implementation code of secure password authentication protocols. By analyzing the authentication code of client apps, our approach locates all the authentication flaws accurately.
+
+- We designed a fully automated detection tool, GLACIATE. With only limited training data, it uses both intra- and inter-procedural analyses to construct enriched call graphs which represent the call relationships and data dependencies in an app. GLACIATE then applies a clustering algorithm to construct rule templates automatically. GLACIATE subsequently uses program analysis to match an input app with those rule templates and so identify authentication flaws.
+
+- We compared GLACIATE and state-of-the-art tools to assess its detection effectiveness. We also applied GLACIATE on a large dataset of Android apps to analyze the implementation code of secure password authentication protocols.
+
+# Organization
+The rest of this paper is organized as follows. Section 2 provides background information on authentication protocols used in Android apps and their correct implementation. In Sect. 3, we give an overview of GLACIATE design and each component of GLACIATE in details. In Sect. 4, we evaluate the detection effectiveness of GLACIATE against our dataset and compare it with the accuracy of MalloDroid and SMV-Hunter. We discuss related work in Sect. 5 and Sect. 6 concludes the paper and outlines future work.
+
+# Common Violations of Password Authentication Protocols
+In this section, we give an overview of the most commonly used secure password authentication protocols (SPAP) in Android. In Sect. 2, we describe security properties to establish secure password authentication protocols, and then we list four types of violations that are commonly existed in the password authentication implementation and describe how they can be exploited by attackers in Sect. 2.
+
+# Secure Password Authentication Protocol
+The basic password authentication protocol (BPAP) is intended for users requiring authentication by a local computer or a remote server over a closed network, because BPAP is very simple, and only one message from the client to the server is required, without the need for any cryptographic operations. To establish a secure password authentication protocol (SPAP) over an opened network, the following authentication protocols are commonly used.
+
+BPAP over SSL/TLS. A common mitigation of the BPAP vulnerabilities is using BPAP over SSL/TLS, where SSL/TLS is executed first to establish a secure communication channel between the client and the server and then the username and password are sent over the secure channel.

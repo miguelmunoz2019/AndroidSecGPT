@@ -1,0 +1,71 @@
+# 5 Display Integrity Enforcement
+SEPI is necessary to confirm whether the graphic buffer received from Gralloc is a secure buffer and whether a surface Z-order is maintained as a top to enforce the display integrity. There are two validation elements for display integrity; (i) Magic number verify the setLayer function set to top Z-order to the frame. (ii) UsageFlags verify the graphic buffer is from a secure buffer. User components hand over the combination of two elements contained in a header when requesting indicator rendering to TrustZone. The SEPI trusted application (TA) already has the information about the validation element and verifies the corresponding value to check the integrity of the graphic buffer.
+
+The TA conducts an initial integrity check on the header information. If the integrity check confirms the authenticity, the TA proceeds with composing the indicator to the received buffer with a physical address. However, if the integrity check fails, indicating potential data tampering, the TA presents an integrity alert image. Additionally, if the Knox warrant fuse is set to 0x1, the TA displays the integrity alert image. Once the composition is completed, a notification is sent back to the SEPI HIDL client, and the composed buffer from TrustZone is enqueued for display on the device.
+
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+# 8 30000 Baseline
+# SEPI
+# Overall CPU Memory Disk 2D 3D
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+# Figures
+PassMark benchmark score comparing Baseline (factory image) and SEPI detection with one-second kernel polling enabled binary.
+
+Execution latency of tasks and Total latency with TrustZone Composition.
+
+# 6 EVALUATION
+We evaluated SEPI in three aspects for the hypervisor detection and TrustZone composition: (1) performance, (2) security, and (3) Trusted Computing Base (TCB) size. Our experiments were conducted on the Samsung Galaxy A52s 5G model, which is equipped with a Qualcomm SM7325 processor and 6GB memory. The normal world was running Android version 13 and the Linux kernel version 5, while the secure world was based on the Qualcomm Trusted Execution Environment (QTEE), a hardware-based security solution developed by Qualcomm. QTEE runs in a separate partition on the processor, isolated from the Android operating system and other software on the device.
+
+# 6 Performance Overhead
+In this section, we present the impact of SEPI on the performance of hypervisor detection and TrustZone composition.
+
+# 6 Hypervisor Detection
+SEPI driver’s has a dedicated kernel thread polling function with a one-second interval using hypercalls to detect device status as explained in Section 5. We evaluate the impact of kernel thread polling utilizing an Android benchmark application called PassMark, which is available on Google Play. PassMark includes 26 benchmarks in five categories: CPU, memory, disk, 2D graphics, and 3D graphics, and provides an overall system score. We conduct evaluations with two Samsung Galaxy A52s 5G devices, one with a factory binary (Baseline) and the other with a SEPI-enabled binary (SEPI). In the case of the SEPI-enabled binary, the Android Privacy Indicator feature is disabled through the shell command introduced in the Section 3 to exclude interference in operation.
+
+PassMark scores while Background Video Recorder Pro (BVR Pro) application is running in the background recording the video. The video recording continuously triggers the kernel thread polling of the SEPI and Android privacy indicator operations for each test case. For the Equivalent test environment, the devices are maintained as follows; (i) keep the battery level at 100%, (ii) record the video in the background through the BVR Pro application, (iii) delete the recorded video file every trial to rule out the impact on the DISK score, (iv) have a five-minute term cooling down the device to rule out the impact of overheating. We measure the average value after 30 times tests for each Baseline and SEPI device.
+
+# 6 TrustZone Composition
+SEPI’s TrustZone composition involves executing four primary tasks sequentially: (1) Surface, (2) Request, (3) Enqueue, and (4) Stop.
+
+- Surface involves creating and configuring a surface, as well as dequeuing a buffer for the surface.
+
+- Request involves transferring the dequeued buffer to TrustZone and requesting that the indicator image be composed on the buffer.
+
+- Enqueue involves displaying the image composed on the buffer by TrustZone on the screen.
+
+- Stop involves removing the surface so that the indicator can be removed from the screen.
+
+We conducted a total of 403 repeated tests for each of the four tasks to measure the execution latency when using SEPI. To thoroughly evaluate the data’s distribution, we performed the Shapiro-Wilk test to assess data set normality. This statistical test confirmed that the task completion times are not normally distributed. Consequently, we present the median results of our trials along with box plot representations.
+
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+Yurak Choe, Hyungseok Yu, Taeho Kim, Shinjae Lee, Hojoon Lee, and Hyoungshick Kim
+# 6 Security Analysis
+In this section, we evaluate and describe the security benefits of SEPI’s hypervisor detection and TrustZone composition.
+
+# 6 Hypervisor Detection
+Android provides a privacy indicator that allows users to detect when the camera and microphone are being used at runtime. However, this privacy indicator is implemented at the EL0 (user mode) level, where detection is performed by AppOpsManager and indicator display is handled by SystemUI. Additionally, the Android privacy indicator can be deactivated using shell commands, making it less secure. In contrast, SEPI’s Hypervisor detection takes advantage of the higher privilege level of the Hypervisor (EL2), which can directly access and control hardware peripheral resources such as the camera and microphone. The Hypervisor is isolated from the Android OS (EL1 and EL0 levels), thereby protecting the system from malicious attacks and malware targeting user and kernel spaces.
+
+As a result, SEPI places itself in a secure and isolated environment in which the hardware peripheral resources are accessed directly to confirm the true status of the camera and microphone. In order for the SEPI to distinguish whether this exception is the operation of the camera and microphone, the SEPI is based on each significant predefined value when the camera and microphone operate and does not operate. Since this value is based on the datasheet for the actual operation of the camera and microphone hardware, it cannot be compromised and is unique.
+
+SEPI integrates the hypervisor into the secure boot chain, beginning with the boot ROM. The hash of the root cert for secure booting is fixed to the CPU’s eFuse hardware at the manufacturing stage, ensuring the hypervisor’s role as a TCB. This setup eliminates the possibility of malicious modifications to the hypervisor and TrustZone images, including SEPI’s trusted components. Device status changes are monitored at the hypervisor level due to its exclusive access to Stage 2 page tables and MMIO mappings, which are essential for device communication (e.g., memory-mapped registers).
+
+# Test Common Function
+(a) Test application unable to render green in the top-most area, designated for the privacy indicator.
+
+(b) Screenshot showcasing the activated privacy indicator (represented by a red dot) during a UI overlay attack.
+
+frame buffer isolated from the Android OS so that it can be safely protected from the above threats.
+
+# 6 TCB Size
+TCB refers to the part of a system that is considered trustworthy. A smaller TCB can result in fewer security vulnerabilities, as it is easier to verify, audit, maintain, and update the code. In the case of SEPI, 0K LoC was added for implementing hypervisor detection and 0K LoC were added for implementing TrustZone composition. This LoC count only includes pure code and excludes files that were used by the SConScript build system.
+
+# 6 TrustZone Composition
+SEPI involves a security buffer to provide the following security advantages. First, indicator buffer memory can be protected using a security buffer since the secure memory region is isolated from general graphic memory. The secure buffer protects the rendered indicator images from being accessed or modified by unauthorized applications. Thus, the security of sensitive image data can be ensured.
+
+More specifically, SEPI thwarts the following two malicious operations in user applications that were possible with unprotected privacy indicator rendering in conventional Android OS configuration:
+- Losing indicator functionality by accessing the indicator buffer memory in a malicious application and adjusting the icon pixel value to make it transparent. Since the surface of the SEPI is made with the PIXEL_FORMAT_RGBA_8888 attribute, it becomes transparent when adjusting the alpha value to the max value.
+
+- Malicious applications use screenshots or mirroring to expose images such as indicator images and status bars of target devices, UI overlay attacks using deceptive status bars can be facilitated. The secure buffer can make the indicator.
+
+# 7 DISCUSSION
+Responsible Disclosure and Ethical Considerations. During our user study, we maintained high ethical standards, prioritizing vulnerability disclosure, harm prevention, and data privacy.

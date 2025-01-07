@@ -1,0 +1,86 @@
+These results highlight that, while code vulnerabilities are the genesis of software insecurity, focusing solely on one’s code is not a foolproof strategy to avoid introducing or exacerbating vulnerabilities. Developers need to be supported in understanding the security implications of their actions when deciding upon their way of working, trusting third party resources, interacting with third parties, and thinking of longer-term impacts of licensing. Researchers, equally, should provide support, whether tools or methods, that focus not only on code-level support, but non-obtrusively support secure reasoning and decision making in the above activities.
+
+# Schrödinger’s Security: Opening the Box on App Developers’ Security Rationale
+ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+The rest of this paper proceeds as follows: Section 2 reviews and contrasts related work. Section 3 describes the design of our experiment, and Section 4 reports its results. Section 5 reports the design of our wider survey of app developers, and Section 6 reports its results. We discuss potential limitations and biases in Section 7 and conclude in Section 9.
+
+# 2 BACKGROUND AND RELATED WORK
+# 2 Vulnerabilities in mobile apps
+Security failures in mobile apps and their consequences – ranging from developers forgetting to sanitize user input to third-party libraries using dynamic code-loading to execute malicious content – are well understood . The factors that influence security on major mobile ecosystems such as Android and iOS , as well as attackers’ behavior to some extent , have also been studied. On the developer side, vulnerability mitigation typically focuses on tool-based interventions to catch vulnerabilities through static or dynamic analysis (cf. ), assess third-party code or binaries loaded into the app , and the promotion of APIs which take critical code out of developers’ hands , the usability of which for developers has been criticized.
+
+Our focus on understanding what app developers prioritize and the rationale they give for their decisions complements this body of work by highlighting why vulnerabilities arise. This, in turn, can help to focus interventions not just on identifying vulnerabilities in code, but also on other tasks surrounding coding where the root causes may lie.
+
+# 2 Developer motivation
+A 2012 study of mobile app developers found that 40% worked as independents, 27% in small 2–3 person organizations . Recent professional reports  show that app developers have less professional experience, and are not as motivated by financial gains as others. For example, the solo ‘hobbyists’ (15%) and ‘explorers’ (28%) – those working to gain experience, constituted almost half of the developer demographic in 2016. Other demographics constitute a rather significant proportion, such as ‘hunters’: independent developers focused on the money (21%), and ‘guns for hire’: independent developers working on commission (15%). These demographics clearly emphasize the need to understand the reality of this new group of less established developers. When it comes to motivations for security, developers vary to what extent they consider it to be part of their development process . While many developers are known to pass responsibility for security to others if they can  and focus instead on functionality , the growing demographic of independent app developers may not have this luxury, or have to rely on different means to have recourse on others’ knowledge. Intrinsic motivation for secure software has been found to translate into better attitude toward secure development . An important anti-motivation in the context of app development is a perceived lack of self-competence, which arises through a lack of extant resources and support , which may arise especially in the case of less experienced app developers working independently.
+
+Our work shows that, notwithstanding code, by and large developers do not reason about security in many development activities—providing a contrasting viewpoint that it is not so much whether developers are (de)motivated to work securely, but that it may never even occur to them.
+
+# 2 Developer-centred security
+Recent work has started to focus on developer-centred security, both understanding (e.g., ) and improving (e.g., ) how they engage with security. Much of this work is focused on security surrounding technical code activities (e.g., coding, testing, deploying), or studying developers in traditional larger software development organizations (e.g., ). Research has also shown that security knowledge does not guarantee secure software: some developers with good understanding of security practices fail to apply it, while other developers with very little security knowledge somehow built secure software.
+
+Little work has yet focused on this breadth of knowledge now required of developers. For example, a recent survey of security advice most visible to developers  discusses guidance centered almost exclusively on code-related security concerns. A recent research agenda similarly focuses on coding activities , finding wildly differing attitudes towards security in this task alone.
+
+In contrast our findings offer support for the position that, especially in the app development context characterized by individuals and small teams, security vulnerabilities should be understood in context of the rationale for the activities that introduced them. Only by understanding the lack of security rationale can we begin to conceptualize interventions to mitigate these vulnerabilities.
+
+# 3 STUDY I: SECURITY RATIONALES ACROSS APP DEVELOPMENT ACTIVITIES
+We designed a task-based online study to address three research questions:
+1. Do app developers prioritize security during different activities in which they engage while producing the app?
+2. Are activities where security is prioritized informed by a security rationale?
+3. What explanations underlie the rationales that developers have for their prioritization?
+Drawing on examples established in the literature, we identified six tasks that reflect the activities that developers typically undertake , all of which present some form of security concern. We provided brief scenarios, and a selection of choices – some security focused, and some not. An overview of the tasks as they were presented to participants – and how we operationalized whether participants’ selection and sorting of choices prioritizes security or not, is given in Fig. 2.
+
+In order to make the study tractable online we based the tasks directly on activities found in recent literature summarizing the wide spectrum of activities in software development , taking care to ground them in relevant literature showing the effect of insecure decisions in licensing , incorporation of advertisement SDKs , seeking out of testers , and use of different sources for help.
+
+Tasks 1 and 2 were selection tasks (see Fig. 2), in which participants had to make a single choice while viewing source-code (Task 2), or choose a maximum of 3 from a number of possible options.
+
+8TAGIJ
+    Luzk? 3-Q MGLG CSIq2OLFQE [92K?"                     IJGLG bSLAICIbsIg? IGIG                     FHSf MUGGLIJJIIGq 2GCTILIAA g2 pOHOIJ CpOICG
+enbboLfzu€ obf_on?                                                                                                                                                                      obfIo?
+                                                            FjjGA
+                                                                                                                                                            TpGOLYGI (p6A IOfjY (SKG
+                        OLger],
+[0 GJ!CH                                                                                                                                                                          2OL[6q (P6
+                                                                                                                                        ESCF [J?K Ig? {OJIOMGq pA g dmG?fOI
+                                                                                  (pG rob (bLtontfi-sq):
+                                  EOL
+                                                                                                                                                                        [uG
+                                                          QJGOLbOLS[G [JJGIJJ                        [JC61J266
+                                                                                                     V [OLCGQ SLPIIST[OL
+     mGp?iG? LS G !JGWJ
+     26j6c(2becuc
+   IpG Cpojcg? [0 2014;                                                                           JELGGIIIGIIT"
+  IpGLJJ'                                                                                         LJGM sbb: H6
+                                                                                  conbje OL       [SIKGq [0                                                                   Lon SUq AOITL
+                                                               [LOIJJ JIJ gbb Aont mLO[G'                                               [6aGjobyu&      DJG/ sbb" BG[OLGLG[GgzuuE !r' Aon
+               J?K 2:                                                                                      J?K €:Bnque
+       IOLK!E GxgwbjG
+      Co [0                                                                   pGpb Juq nzg
+      2G9IC] FJJG IGp' nzqu& JuA LGZOmcG AOn IgA Quq
+      V?K SIJOIJJGI qGAGjobGI AO pgbhGI [0 KIJOM QJ bGI?On                                           LG?[
+                                                                                                                                                                         [G2[ ![
+                                                                                                     2G1Y JF [0
+  HOM [0 1126 !f" BG[OM JIG                                                                       [G2[!uE
+  sbb" XOM UGGq [0 I12G
+                           2Gf(uE _       ZGCMIG GOIJIJGCHIOI [0     IGp ZGLAGL JIJ AOMI           VZZMJG FJJJ[ AOn [JSAG pGGuJmOKie
+               L?K 3:                                                                                                      L?K $:
+      oiIr    A?Tg] IJJOGS[IE
+     Coque 22[G GIJLOICGI
+      ZCLGGUJ 4SIKGIJGL
+     QIIJGCGZZJLZ CoqG IGIJIOAGL
+  0 BGNJRIOIJ COIJILO] (CA?)
+                                                                                                      GoqG IGLG booLA [OLLJSHGq
+  D BrE 2bofGI
+   IVG                                    (plcc Lowj:
+                                                                                LJJSXIJJMIJJ
+  TGaGjob                             JU[G&IS[Gq DGAG[ObIJJGIJ[ EIAJLOIJIJJGIJE (IDE) [0SIA                                                 pOnf (JJIGG b9L(? O (JG coqs' Juq MJIJE AOn
+                                                                                                                                       bigcG OL 2OnIcG-CoqG ILJHGD pA 2OGpoqA
+                       Ig2K I:2GHHE nb 91 IDE (2GJGcf FJLGG)                                                            Ig?K $: Ex!uk 2OMCG-coqg (2G]Gcf OIJG)
+ICZE , JO" Wsa 53-Sd' SOsO' 2G0r1|' KGbrpiic Ol KolGg                                                                                                                          96L FiqGU" Gf %"
+                                                                                               152
+# Schrödinger’s Security: Opening the Box on App Developers’ Security Rationale
+ICSE ’20, May 23–29, 2020, Seoul, Republic of Korea
+# Task 1: Setting up an IDE
+IDEs are commonplace, and can be configured to provide necessary support to developers. The selection was drawn from a list of most popular plugin types. Of the given type of plugins, the static analyzer with security checking rules is the only plugin explicitly mentioning support for automatic analysis of code vulnerabilities, and its inclusion can reasonably be assumed to follow from an attitude of prioritizing security.
+
+# Task 2: Fixing source-code
+Storing passwords in plain text is an obvious security concern which should be avoided. If participants select any other code fragment, they de-prioritize security (or do not have the expertise and/or security-focused approach to development). Thus, to prioritize security, participants should select the security concern. An example of the code presented to participants (one of three randomly shown variations to rule out priming bias) is shown in the online appendix.

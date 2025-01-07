@@ -1,0 +1,93 @@
+# INFORMAL SECURITY ANALYSIS
+(i) Mutual authentication: In this scheme, the server S authenticates the client Ci by checking M1. If M1 is valid, S authenticates Ci. On the other hand, Ci verifies the legitimacy of S by checking M2. If M2 is valid,
+VOLUME 10, 2022
+# B. Mishra et al.: Privacy Protection Framework for Android
+# SUMMARY
+Verifies secrecy of the confidential information
+# DETAILS
+# STATISTICS
+Analysed: 0 states
+Reachable: 0 states
+Translation: 0 seconds
+Computation: 0 seconds
+# COMMENTS
+parseTime: 0Os
+searchTime: 0
+visitedNodes: 12 nodes
+depth: plies
+# RESULTS AND CASE STUDY
+In this study, the behavior of nine permissions is analyzed. These permissions (listed in Table 3) are the permissions
+# FIGURES
+# B. Mishra et al.: Privacy Protection Framework for Android
+# A. STATIC ANALYSIS
+All Permissions:
+- android.permission.CAMERA
+- android.permission.FLASHLIGHT
+- android.permission.STATUS_BAR
+- android.permission.MAKE_LOCK
+- android.permission.ACCESS_COARSE_LOCATION
+- android.permission.ACCESS_FINE_LOCATION
+- android.permission.ACCESS_NETWORK_STATE
+- android.permission.INTERNET
+- android.permission.READ_PHONE_STATE
+The first step in the process is static analysis; it yields the permissions declared in the AndroidManifest.xml and classes and their respective methods from the Smali code using Smali parsers of the engine. A list of all permissions that are processed by our engine that is required by Brightest flashlight is shown in Fig. 12, and all the dangerous permissions are shown in Fig. 13. As discussed in Section V in analysis and instrumentation, a map is obtained from the Python parser which shows method traces and data flow. The class names and method calls of these dangerous permissions of Brightest Flashlight APK are shown in Fig. 14.
+
+# Dangerous Permissions:
+- android.permission.CAMERA
+- android.permission.ACCESS_FINE_LOCATION
+- android.permission.ACCESS_COARSE_LOCATION
+- android.permission.WRITE_EXTERNAL_STORAGE
+- android.permission.READ_PHONE_STATE
+The dangerous permissions declared in the Brightest Flashlight app are AP.CAMERA, AP.ACC_FINE_LOC, AP.ACC_COARSE_LOC, AP.READ_PHONE_STATE, and AP.WRITE_EXTERNAL_STORAGE, as shown in Figure 13. Similar code analysis on the two apps shows that the dangerous permissions in the Peacock Flashlight are AP.CAMERA, AP.WRITE_EXTERNAL_STORAGE, AP.ACC_FINE_LOC, and AP.ACC_COARSE_LOC. Meanwhile, the Splendapps flashlight takes AP.CAMERA permission only which is justified as per the requirement.
+
+# B. PERMISSION ANALYSIS
+The permissions parsed as described in the previous sub-section are provided as input to permission recommendation algorithms. The algorithms evaluate each permission and yield result vectors. Each result vector contains 9 elements which can be 0 or 1. Each value in the vector corresponds to permission as given in Table 2. If the permission is marked safe to use and is required by the application, the corresponding value is 1 else the value is 0.
+
+Running the permission recommender for Brightest Flashlight: for collaborative filtering, using a threshold value as 0. The resultant vector can be obtained as:
+rp =  (11)
+Here, rp shows the resultPermissions. The RScoreCF for each permission was found below the threshold value. It signifies that this app required none of the permissions and all the three permissions ‘AP.ACC_FINE_LOC’,
+VOLUME 10, 2022 7985
+# B. Mishra et al.: Privacy Protection Framework for Android
+‘AP.ACC_COARSE_LOC’, and ‘AP.READ_PHONE_STATE’ are classified as unsafe.
+
+From frequent permission set mining, each permission’s support was computed and evaluated against the average value as mentioned in Section V. The result vector can be obtained as:
+rp =  (12)
+It signifies that permissions ‘AP.ACC_FINE_LOC’, ‘AP.ACC_COARSE_LOC’, are safe whereas ‘AP.READ_PHONE_STATE’ is unsafe. It is found that, on the final recommendation, all three permissions are marked unsafe. Thus, the Brightest Flashlight takes three extra permissions for which it is instrumented.
+
+Running the permission recommender for Peacock Flashlight, it is found that it takes dangerous permissions ‘AP.ACC_FINE_LOC’ and ‘AP.ACC_COARSE_LOC’. Since Splendid Torch took no extra permissions, therefore, we did not perform any permission analysis for this app.
+
+# C. INSTRUMENTATION AND FINAL RESULTS
+The permission analysis phase identified LOC and READ_PHONE_STATE permissions as unsafe for the flashlight applications. Brightest Flashlight and Peacock Flashlight were instrumented and installed on the target device. The instrumented apps interacted with the background service at runtime. Garbage location data was sent to the apps, and it was seen that the apps functioned properly after instrumentation.
+
+After completing the whole process, the proposed framework gave the following results:
+1. A flashlight app requires CAMERA permission for its operation.
+
+2. The rest of the permissions that the two applications requested are classified as unsafe. The results of the applications were added to the dataset for use in the future.
+
+3. Instrumentation and re-packaging the application restored the application’s true use while protecting user data that could have been used for malicious activities.
+
+We took three apps in the same category and of the same utility to study their patterns of operation. The three apps although, of the same nature, behaved differently as they were taking different permissions which were not directly related to the actual functionality that they have been listed for. The results obtained from the permission recommender show that two of the applications are taking extra permissions. After instrumentation, it is seen that their operation was unaltered, which shows that their functioning had not been impacted. At the same time, the user location was protected from a potentially malicious Android application.
+
+The above case study shows that the proposed framework can be used to analyze and instrument Android applications to prevent user data from being used maliciously.
+
+The existing related works discussed in Section IV is compared to the proposed framework as depicted in Table 4. For comparison, four features such as use of dynamic learning (DL), instrumentation (IN), permission recommendation (PR), and app based dangerous permission detection (ADPD) are considered. It is found that the proposed framework is able to support the analysis of an Android application as well as the prevention of user data theft. Existing works focused on detecting whether the app is benign/malware. Terminator prevents the application from using extra permissions by revoking access to those permissions identified as dangerous. But it is failed in the scenarios where an application fails to start without access to the permissions it requires. The proposed solution addresses this issue with instrumentation and ensures that the app is functioning as expected.
+
+# VI. CONCLUSION AND FUTURE DIRECTION
+The smartphone market has grown extensively in recent years and has become a repository for users’ private data making the security of the device a big challenge. As technology advances, the risk of data breaches and invasion of privacy increases. Various research approaches were presented to identify the malicious behavior of Android applications. A privacy-preserving secure framework was proposed to prevent the applications from stealing user data by restricting all unnecessary permissions using instrumentation and re-packaging of the application. These permissions were recognized by predicting the permissions required by a given Android app by using collaborative filtering and frequent permission set mining algorithms. Thus, the proposed model interacts with the target app and modifies the permission data inside. A layer of security was added in proposed framework to prevent attackers from intercepting communications. Therefore, the proposed framework is more secure and efficient than the competitive models. Experimental results have shown that the proposed model not only protects the user data but also ensures the proper functioning of the given application.
+
+However, this approach may achieve poor results for sealed protected applications that generally come under the category of finance/ payments as these applications come with additional security. Hence, these apps cannot be installed after they have been instrumented. In the future,
+# B. Mishra et al.: Privacy Protection Framework for Android
+the framework can be modified to make it resilient to the additional securities/ protections in the applications.
+
+# AUTHORS
+BHARAVI MISHRA received the master’s degree from the Indian Institute of Information Technology, Allahabad, India, and the Ph.D. degree from the Indian Institute of Technology (BHU), Varanasi. He is working as the Assistant Professor with the Department of Computer Science and Engineering, The LNM Institute of Information Technology, Jaipur, India. He published more than 15 research articles in reputed journals and conferences. He also published three book chapters. His research interests include machine learning and its applications, security, and privacy.
+
+AASTHA AGARWAL received the B.Tech. degree from The LNM Institute of Information Technology. Currently, she is working at VMware, India, as a Software Development Engineer. Her research interests include brain–computer interface with psychology, android security, and machine learning.
+
+VOLUME 10, 2022 7987
+# B. Mishra et al.: Privacy Protection Framework for Android
+# AYUSH GOEL
+received the B.Tech. degree from The LNM Institute of Information Technology. Currently, he is working at Zeta Suite (Directi), India, as a Software Development Engineer. His research interests include brain–computer interface, analysis of non-stationary signals, and machine learning.
+
+# AMAN AHMAD ANSARI
+received the M.Tech. degree from the Indian Institute of Information Technology, Allahabad, India. He is currently pursuing the Ph.D. degree with The LNM Institute of Information Technology, Jaipur, India. His current research interests include security and privacy.

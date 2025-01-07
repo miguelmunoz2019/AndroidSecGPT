@@ -1,0 +1,65 @@
+We add further requirements for our class mapping fc. Let c ∈ p be a class in the package p and c ′ ∈ p′. Then we have:
+fc (c) = c ′ ⇒ c ⊆ c ′. (3)
+If we map an app class c to a library class c′, then the app class is included in the library class. The inclusion relation between classes is defined analogously to the inclusion relation between packages:
+c ⊆ c ′ ⇔ ∃fm : c 7→ c ′, fm ... injective. (4)
+However, we can only map a fingerprint m ∈ c to a fingerprint m′ ∈ c ′ if their sanitized signatures are equal, or:
+fm (m) = m′ ⇒ Signature of m and m′ are equal. (5)
+Having defined inclusion for both packages and classes, we can now describe how our solution practically determines inclusion.
+
+# Determining Class Inclusion
+Let c = {s1, ..., sn} be a class consisting of sanitized signatures si (for the sake of simplicity, we ignore AST vectors and fingerprints for now). Then we can determine if c ⊆ c ′ in a greedy manner as described in Listing 3. The idea behind this approach is to find all signatures from c in c ′. If we find one, we delete it from the c ′ set such that we do not pick the given signature in c ′ twice. If we found all signatures from c in c ′, we know that there is an injective mapping fm and, thus, c ⊆ c.
+
+# Determining Package Inclusion
+In order to determine if package p is included in package p′, we need to find an injective mapping fc for all classes in p to classes in p′. This task is more challenging than the mapping fm for methods because of the lacking symmetry in the class inclusion relation. Figure 2 illustrates an example, where the greedy approach from Listing 3 fails.
+
+We are given the packages p and p′, and we can tell that p ⊆ p′ because there exists an injective mapping fc with fc (c1) = c ′1 and fc (c2) = c 2′. However, the greedy approach fails because class c1′, since c1 ⊆ c ′2 holds. If we assign c1 to c 2′, we end up with c2 being unassigned, because of c2 ✚⊆ c 1′.
+
+In the case where a valid assignment is not possible, we could backtrack by amending some assignments until we explore all possibilities. However, we opted to reduce the problem such that we can solve it with the Hungarian Algorithm . Given a set of workers, a set of tasks and a cost matrix, this algorithm assigns workers to tasks such that the overall costs are minimized. Instead of workers and tasks, we use classes of p and p′. We construct our cost matrix Ms as follows:
+Ms ∈ {0, 1} |p|×|p′|, Ms [i, j] = (0 if ci ⊆ c ′j (6) 1 otherwise
+If we apply the Hungarian Algorithm on Ms, we end up with an assignment fc. Since the algorithm minimizes the cost of fc, it prefers assignments that cost 0 over the ones that cost 1. Eventually, we compute the overall cost of fc with
+cost(Ms, fc) := ÕMs [i, fc (i)]|p| (7)
+i=1
+and can argue that if
+cost(Ms, fc) = 0 ⇔ ∃fc : p 7→ p′, fc ... injective. ⇔ p ⊆ p′ (8)
+# Similarity Score
+The similarity score helps us to determine how similar two packages hierarchies p and p′ are. The score depends on the similarity of AST vectors in the respective packages. Packages that are similar yield a higher score than packages that are not. Next, we explain how we measure the similarity between packages, classes, and AST vectors.
+
+# Package Similarity
+We compute the similarity score s(p, p′) by leveraging the Hungarian Algorithm, as it helps us to find the mapping between classes with maximum similarity. We fill the cost matrix S with the similarity score of the respective classes s(c, c ′):
+S ∈ R|p|×|p′|, S[i, j] = (s(c, c ′) if ci ⊆ c ′j 0 otherwise (9)
+Since the Hungarian Algorithm minimizes the costs in the cost matrix, we apply it on an inverted matrix Sinverted, where we negate each entry and shift it by the maximum:
+Sinverted = (max(S) − S[i, j])i j (10)
+After the Hungarian Algorithm generated a mapping fc, we can compute the similarity with cost(S, fc), as defined in Definition 7.
+
+# Class Similarity
+Let c = {m1, ..., mn} be a class consisting of a list of fingerprints mi where each fingerprint consists of a sanitized signature si and an AST vector vi. Then the class similarity s(c, c ′) can be determined with the Hungarian Algorithm once again.
+
+First, we generate the cost matrix T:
+T ∈ R|c|×|c′|, T [i, j] = (s(vi, v j ′) if si = s j′ (11) 0 otherwise
+We invert T as in Equation 10 and let the Hungarian Algorithm find the best assignment. We use the cost function cost(T, fc) in Definition 7 to determine the similarity score s(c, c ′).
+
+# Obfuscation-Resilient Code Recognition in Android Apps
+# 4 AST Vector Similarity
+We express the similarity between two AST vectors v and v ′ with the following formula:
+s(v, v ′) = max(0, ∥v ∥1 − ∥v − v ′∥1) (12)
+We use the Manhattan distance to determine distance and length of vectors, as proposed in . Our formula fulfills these requirements:
+- We want the similarity to be 0 if the vectors are too far apart. The threshold where similarity becomes 0 is reached if the difference between two vectors is greater than the vector itself.
+
+- We do not accept negative values for similarity, as we want to avoid the situation where a mismatch of vectors worsens the overall score of an assignment. We ensure this requirement by taking the maximum between the difference and 0.
+
+- We require maximum similarity when both vectors are equal. In that case ∥v − v ′∥1 becomes 0, such that s(v, v ′) = ∥v ∥1.
+
+- If ∥v1 ∥1 > ∥v2 ∥1, we require s(v1, v1) > s(v2, v2) because we want larger and therefore more particular vectors to have more influence on the assignment cost.
+
+# 5 EVALUATION
+The goal of this evaluation is twofold. First, we investigate how well AST vectors and sanitized signatures fingerprint code and tackle obfuscation (see Section 5). Second, applying our solution on a set of open-source Android apps, we assess (1) how much code of a library is needed to accurately recognize it (see Section 5), (2) how much confidence a match should have to be significant (see Section 5), and (3) how well we can recognize individual libraries when different obfuscation techniques are applied (see Section 5).
+
+# 5 Method and Dataset
+In the learning phase, we seek to assign similar fingerprints to semantically similar code fragments. Distinctive features should characterize unrelated code. To better understand how well AST vectors and sanitized signatures identify code, as a first step, we test our features using a home-made app that is obfuscated, includes two libraries, and 150 packages. The results give an intuition on how changes in the codebase or parameters affect the tool’s accuracy.
+
+To evaluate how our solution can recognize code in real-world apps, we chose to crawl the F-Droid Repository7. Since this app repository offers only Free and Open Source Software (FOSS), we can download the source codes of apps including configuration files for the Gradle build system. From these files, which are needed for compilation only but are not included in final Android app archives, we can extract a list of used library packages. On their basis, we split the code into different parts to derive fingerprints for each of them. Moreover, we adapted the build files of all downloaded FOSS apps to compile multiple versions with different code transformation techniques enabled: shrunken, obfuscated, shrunken + obfuscated, shrunken + obfuscated + optimized. For this evaluation, we crawled source codes of 800 FOSS apps and compiled one regular and four transformed versions, resulting in 4,000 app samples overall.
+
+The collected dataset enables us to unambiguously verify how well learned code can be recognized. Based on the assumption that FOSS apps exhibit the same library inclusion as other apps, our results should also hold for arbitrary Android applications.
+
+# 5 Fingerprint Quality
+Our algorithm derives a representation of code using AST vectors and sanitized signatures. We designed these techniques to be invariant to commonly used code transformations while still being able to characterize individual code parts precisely.

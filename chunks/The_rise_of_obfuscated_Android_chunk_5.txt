@@ -1,0 +1,50 @@
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Android evasion detection frameworks
+Many researchers (Apvrille & Apvrille, 2015; Bagheri et al., 2015; Battista et al., 2016; Chenxiong et al., 2015; Elish et al., 2015; Fratantonio et al., 2016; Gonzalez, Stakhanova & Ghorbani, 2014; Gurulian et al., 2016; Kuhnel, Smieschek & Meyer, 2015; Lei et al., 2015; Li et al., 2016; Martín, Menéndez & Camacho, 2016; Preda & Maggi, 2016; Sheen, Anitha & Natarajan, 2015; Shen et al., 2015; Sun, Li & Lui, 2015; Wang et al., 2016; Wu et al., 2016; Zhang, Breitinger & Baggili, 2016) examine their frameworks against different evasion techniques, and they take countermeasures to overcome evasion techniques, which prevent the anti-malware framework from detecting malicious applications. These evasions are the leading cause of false negatives, as they allow many malware applications to penetrate freely into Android smart devices. This section investigates the latest frameworks with different approaches, finding a robust solution to detect evasion techniques. We are aiming to discover the gap in this area of research. We also review the different evasion test benches and tools that researchers and commercial enterprises use to secure their codes. We review the latest detection frameworks and their resilience against five different evasion categories and 16 different subcategories distributed into 56% static analysis, 28% dynamic, and 16% hybrid frameworks.
+
+# Android malware detection techniques
+There are three leading techniques for Android malware detection. Fig. 3 presents the three main categories of Android malware detection techniques, the first category is logic-based techniques (Lee et al., 2014; Zhang, She & Qian, 2015a), based on hard-coded safe lists and predefined alarms stored in text files or a small database like Amamra (Amamra, Robert & Talhi, 2015). The second category is signature based malware detection techniques (Niazi et al., 2015; Tchakounté et al., 2021), it based the malware detection on comparing the suspicious application with malware application signature. The third category of Android malware detection uses machine learning (ML) classification algorithms to classify the application as benign or malware (Afonso et al., 2015; Alzaylaee, Yerima & Sezer, 2016; Amamra, Robert & Talhi, 2015; Baskaran & Ralescu, 2016; Canfora et al., 2016; Canfora et al., 2015c; Castellanos et al., 2016; Faruki et al., 2015a; Feizollah et al., 2015; Fratantonio et al., 2016; Kurniawan, Rosmansyah & Dabarsyah, 2015; Lei et al., 2015; Lindorfer, Neugschwandtner & Platzer, 2015; Lopez & Cadavid, 2016; Meng et al., 2016; Nissim et al., 2016; Spreitzenbarth et al., 2015; Spreitzer et al., 2016; Wang & Wu, 2015; Wu et al., 2016; Xu et al., 2016; Yerima, Sezer & Muttik, 2014; Yuan, Lu & Xue, 2016;
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Logic
+# Android based Malware Signature Detection
+# Main categories
+# Vulnerability check
+# Post-installation
+# Pre-installation
+# Hybrid analysis
+Dynamic Sandbox
+Updating call graph
+Zhang, Breitinger & Baggili, 2016. The ML-based techniques extract the Android devices feature that represent the Android application characteristics such as the application’s permission, code hierarchy from reverse engineering process, or monitoring application behaviour in runtime. The collected feature is a result of static, dynamic, or hybrid analysis of analyzing Android applications. The collected features are used to build machine learning classification model that decides whether the application is malware or benign.
+
+Android malware detection methodologies are classified from a different point of view, as depicted in Fig. 4, defining the Android malware detection taxonomy as post-installation and pre-installation methods.
+
+Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Post-installation detection
+This section explains the Android vulnerability check and monitors the system logs after installing the application. Therefore, post-installation analysis reports the security issues and malicious activity to the end-users.
+
+# a) Vulnerability Check
+The vulnerability check method scans all existing Android apps and Android system versions against common security threats. APSET (Salva & Zafimiharisoa, 2015) collects the vulnerability pattern using the Android application’s test case execution framework, which supports receiving exceptions. However, using more vulnerability patterns or generating more test cases per pattern improves the APSET malware detection performance.
+
+# b) Monitoring Logs
+Android systems use process monitoring tools and network monitoring tools. Mobile-Sandbox  uses the process trace monitoring tool and PCAP network monitoring tool to capture the required data for analyzing the Android applications.
+
+# Pre-installation detection
+Android malware detection frameworks perform static, dynamic, or hybrid analyses to analyze features for malware detection techniques, which classify the apps as benign or malware. Hence, we identify the following application analysis methodologies.
+
+# Static analysis
+It is a technique to reverse engineer the APK statically without installing it; the analysis requires reading configuration settings, decompiling executable bytecode, and extracts the source code for further analysis.
+
+# a) Signature-based
+This paper classifies the signature-based method under static analysis detection because the signature-based detection approach builds its frameworks with static Android application characteristics. As such, DroidAnalytics (Zheng, Sun & Lui, 2013b) uses a signature-based manner in which it dynamically collects and creates a signature for each malware and stores malware signature into a central database. This model has limitations where each of the new malware family variants needs a different signature. LimonDroid (Tchakounté et al., 2021) proposed a signature-based database of Android malware signature based on fuzzy hashing technique. It builds a signature database for literature purposes rather than a malware detection framework.
+
+# b) Permission-based
+APK Auditor (Talha, Alper & Aydin, 2015) is a static model that leverages permission-based detection castoff decompressing the APK package; it extracts the malicious symptoms using permission and signature matching analysis. Likewise, Triggerscope  uses permissions characteristics as an input to classify the application using different machine learning algorithms (Abdulla & Altaher, 2015; Alazab et al., 2020; Arora, Peddoju & Conti, 2019; Dharmalingam & Palanisamy, 2021; Fang, Han & Li, 2014; Glodek & Harang, 2013; Elsersy et al. (2022), PeerJ Comput. Sci., DOI 10/peerj-cs
+# Dynamic analysis
+Dynamic analysis is the process of running the suspect app in an isolated Android environment. It starts by receiving the Android application APK files, either using an online scanning portal VirusTotal (Google) or a scanning agent on an Android smartphone/device. Next is opening a suitable Android operating environment in a physical device or emulator, which we hereafter refer to as a sandbox. The sandbox isolates the application to protect the analysis device from possible malicious attacks. Later, the dynamic analysis starts system logging and network monitoring tools and captures the default system logs.
+
+Once the sandbox and the logging or monitoring tools are ready, the APK installation follows, and once the installation is successful, the logging system captures all system logs. Dynamic analysis requires the application to start and run all codes and capture all changes to the Android system environment. The sandbox captures the system logs before installing the application and compares the system logs after installing and running the suspect Android application. The sandbox uses a monkeyrunner tool to randomly emulate user gestures and cover all the possible alleged code in an Android application. Dynamic analysis sandboxing techniques install and run Android applications in a virtual environment, emulator, or physical device and monitor the application’s behaviour. It considers network traffic, opened ports, and system calls. One of the main issues during the monitoring process is the user interaction simulation tool, which simulates the user interaction gestures that must cover all possible interactions.
+
+The following are types of sandboxing: Sandbox Emulator: Most researchers (Afonso et al., 2015; Desnos & Lantz, 2014; Faruki et al., 2015a; Spreitzenbarth et al., 2015) use Android emulators like Droidbox (Desnos & Lantz, 2014), TantDroid , and CuckooDroid (Check Point Software Technologies, 2015), which run an Android image as a virtual machine. Later, the framework destroys the used OS image and prepares a factory reset Android OS for the
+Li et al., 2018; Niazi et al., 2015; Şahin et al., 2021; Shalaginov & Franke, 2014; Talha, Alper & Aydin, 2015; Tiwari & Shukla, 2018).
+
+c) Source code based Analysis: Arp et al. (2015) extracts features from the application’s Androidmanifest file and source code; it scrutinizes the code by listing the native calls, API calls, and URL addresses. It uses machine learning classification to discriminate between malware and benign apps. Likewise, DroidMat  uses the configuration file to get the required permission by the APK and counts the method that has API calls from the decompiled source code; it uses 1,500 benign APK applications and 238 malware, evaluates the accuracy of the framework, and achieves 97% accuracy. However, Lei et al. (2015) proposed a probabilistic discriminative model based on decompiled source code with permissions. It classified apps as benign and malware using machine learning classification techniques. Hanna et al. (2013) tried to find the code similarity among Android applications to detect similar code patterns with the same vulnerabilities and the repackaged or cloned applications in Android markets.

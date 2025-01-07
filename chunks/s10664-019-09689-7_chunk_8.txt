@@ -1,0 +1,51 @@
+Empirical Software Engineering (2019) 24:2056–2101 2081
+(media framework) (52) and Adobe flash player (22), respectively. This is the only vector in the top-5 list that does not require specialized access conditions to exploit the vulnerability (AC:L); therefore, the vulnerabilities with this vector are the most dangerous in the dataset because have complete impact on confidentiality, integrity and availability (C:C/I:C/A:C), without requiring authentication (Au:N), and without the need for specialized access conditions (AC:L). CVE-2016-2506 in the media framework has this vector, which means that the (i) vulnerability can be exploited without having specialized access to the system, (ii) there is total disclosure of the files, (iii) the system integrity is compromised, and (iv) there is a total shutdown of the system when the vulnerability is exploited:
+DRMExtractor.cpp in libstagefright in mediaserver in Android 4.x before 4, 5.x before 5, 5.x before 5, and 6.x before 2016-07-01 does not validate a certain offset value, which allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via a crafted media file.
+
+Top 5: AV:N/AC:M/Au:N/C:P/I:P/A:P tor; 46,4% of these are grouped in the following categories: permissions, privileges, and access control (17); and weaknesses that affect the memory (16). Examples for this vector, from the permissions, privileges, and access control category, are identified with the ids CVE-2017-0740, CVE-2017-0741, CVE-2017-0742. The three vulnerabilities are an elevation of privilege vulnerability but in three different drivers: Broadcom networking driver, MediaTek gpu driver and MediaTek video driver. There are 71 vulnerabilities associated to this vec-
+# 4 RQ 3 : Which are the Android Subsystems More Affected by Security Vulnerabilities?
+For the heatmap we used two color schemes: white-to-red for the layers, with white representing the lowest value and red the highest one; and white-to-yellow for the subsystems (i.e., internal boxes), with full yellow meaning that a subsystem is responsible for 100% of the vulnerabilities in the corresponding layer. Note that the subsystems’ colors are normalized on the basis of the total vulnerabilities affecting a layer. Figure 11 also reports the percentage of vulnerabilities affecting each layer and subsystem/component.
+
+Top 1: The Kernel clML vulnerabilities (52%) It is the most frequently affected layer, with 615 of the 1,235WOUn- It is worth noting that the Kernel layer in the Android Open Source Project is a fork of the original Linux Kernel; Android-specific changes have been made to the Linux Kernel to enable mobile features such as the memory “viking killer” and the Android Binder. We assigned “unclear” to the impacted subsystem/component for 32 of the Kernel vulnerabilities.
+
+Most of the vulnerabilities in the Android OS Kernel are in the drivers for hardware components. In particular, we found that 471 (76%) of the Kernel vulnerabilities are related
+15 Compared to Linares-Vásquez et al. (2017), in our dataset we observed 354 new vulnerabilities in the Kernel that have been reported from November 2016 to August 2017.
+
+# Empirical Software Engineering (2019) 24:2056–2101
+# Applications
+# Application Framework
+# Native Libraries
+# Hardware Abstraction Layer (HAL)
+# Linux Kernel
+RQ 3 : Heat map of vulnerabilities in the Android layers/subsystems
+Empirical Software Engineering (2019) 24:2056–2101 2083
+to the drivers developed by Google and third-parties such as Qualcomm, Broadcom, Mediatek, and NVIDIA. The top-5 components impacted by vulnerabilities in kernel drivers are Wi-Fi (81 vulnerabilities), Video (59), Camera (49), Sound (49) and GPU (36). Concerning the vulnerability categories in the drivers, permissions, privileges, and access control is the most frequent type with 138 instances, followed by 73 instances of weaknesses that affect the memory; the top-3 position is for data handling with 63 instances.
+
+The next two categories are improper input validation (32) and time state (24). We assigned “unclear” to the type of 64 vulnerabilities. The remaining 77 vulnerabilities were distributed across seven types: pointer issues, improper input validation, security features, improper check or handling of exceptional conditions, initialization and cleanup errors, indicator of poor quality code, behavioral problems and injection flaws.
+
+The Kernel and its subsystems (e.g., sockets, profiling/performance, security, networking, ION) account together for 46 vulnerabilities. Permissions, privileges, and access control is again the most frequent category (15 vulnerabilities), followed by pointer issues (8) and weaknesses that affect the memory (5). Android-specific components (i.e., Google contributions to the kernel) such as Binder, ashmem/Shared memory, and aboot/Boot loader are the top-3 with 37 vulnerabilities. The most frequent vulnerabilities in Android-specific contributions to the kernel are data handling (10), improper check or handling of exceptional conditions (6), and permissions, privileges, and access control (6).
+
+# Top 2: The Native Libraries
+As described in Section 2, the native libraries layer contains Android-specific libraries like libstagefright (a.k.a., Media framework) and third party libraries such as libc, bionic, and SSL. Both, Google and third-party native libraries have 353 out of 1,174 vulnerabilities (30%). This is mostly due to the Media Framework subsystem that has suffered of 274 vulnerabilities, including the set of issues known as “Stagefright”  that are sourced in the Stagefright library (libstagefright). Most of the vulnerabilities in the Media Framework are related to weaknesses that affect the memory (69), such as arrays access/writing, and memory management that lead to any type of overflow/underflow when accessing, writing, creating, and copying buffers (MITRE 2017a, b, c), and when performing integer operations (MITRE 2017d). Other frequent categories of vulnerabilities in the Media framework are improper check or handling of exceptional conditions (40) and initialization and cleanup errors (30).
+
+The vulnerability CVE-2015-3834, reported as fixed in the August 2015 bulletin, is a representative example of weakness that affect the memory in the Media framework, and has the following CVE description:
+Multiple integer overflows in the BnHDCP::onTransact function in libstagefright allow attackers to execute arbitrary code via a crafted application that uses HDCP encryption, leading to a heap-based buffer overflow [...]
+This vulnerability was fixed with the commit c82e31a that modifies the IHDCP.cpp file. The lack of buffer size validation when computing a buffer size, was leading to heap-based buffer overflows (MITRE 2017c) when creating an input buffer with the calculated size. Another example of a security issue in the Media Framework related to improper validation/restriction of operations within the bounds of a memory buffer is CVE-2016-0815:
+The MPEG4Source::fragmentedRead function in MPEG4Extractor.cpp in libstagefright in mediaserver [...] allows remote attackers to execute arbitrary code or cause a denial of service (memory corruption) via a crafted media file [...]
+2084 Empirical Software Engineering (2019) 24:2056–2101
+# The issue can be summarized as an out-of-bounds write (MITRE 2017k) generated when an array offset goes beyond the buffer size.
+
+The vulnerability was fixed in commit 5403587. Another example of vulnerability in the Media framework, but related to initialization and clean-up errors is CVE-2016-0829, reported in the March 2016 bulletin:
+The BnGraphicBufferProducer::onTransact function in libs/gui/IGraphicBufferConsumer.cpp in mediaserver in Android 4.x before 4, 5.x before 5 LMY49H, and 6.x before 2016-03-01 does not initialize a certain output data structure, which allows attackers to obtain sensitive information, and consequently bypass an unspecified protection mechanism, by triggering a QUEUE BUFFER action [...]
+The CVE-2016-0829 vulnerability is an example of missing initialization of resource (MITRE 2017n), in which an output buffer is not initialized with the memset C function.
+
+# The second most affected subsystem in the native libraries layer is the one related to the Graphics/UI system
+(14 vulnerabilities), which includes libraries such as libpng, libgui, OpenGL, and OpenJPEG. The Graphics/UI system in the native libraries layer has been affected by eight categories of vulnerabilities, having weaknesses that affect the memory as the top-one type with 5 vulnerabilities, followed by data handling (2). One example of vulnerability in the Graphics/UI system is CVE-2016-8332:
+A buffer overflow in OpenJPEG 2 causes arbitrary code execution when parsing a crafted image. An exploitable code execution vulnerability exists in the jpeg2000 image file format parser as implemented in the OpenJpeg library. A specially crafted jpeg2000 file can cause an out of bound heap write resulting in heap corruption leading to arbitrary code execution. For a successful attack, the target user needs to open a malicious jpeg2000 file. The jpeg2000 image file format is mostly used for embedding images inside PDF documents and the OpenJpeg library is used by a number of popular PDF renderers making PDF documents a likely attack vector.
+
+# Bluetooth and OpenSSL are top-3 in the native libraries with five vulnerabilities each.
+
+An interesting example here is an instance of indicator of poor quality code in OpenSSL reported in the May 2016 bulletin with the id CVE-2016-0705:
+Double free vulnerability in the dsa priv decode function in crypto/dsa/dsa ameth.c in OpenSSL 1 before 1s and 1 before 1g allows remote attackers to cause a denial of service (memory corruption) or possibly have unspecified other impact via a malformed DSA private key.
+
+The description reports a “double free”, which means a double call to the free C function on the same memory address (i.e., with the same argument) (MITRE 2017j).

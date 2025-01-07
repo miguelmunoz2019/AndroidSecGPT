@@ -1,0 +1,54 @@
+# 2. Colluding
+The colluding threat is happening from the side of the users. Here, users deploy a group of applications that have the same certificate and grant various sorts of permissions could be non-sensitive or sensitive. These applications after installing it can get access to all their resources and permissions by taking advantage of a shared UID.
+
+# 3. Proposed Solutions
+Android security solutions separated into two kinds: 1) Static; 2) Dynamic which both can use for vulnerability assessment, analysis, and detection. Static methods are fast, yet it needs to manage false-positives sensibly. Dynamic methods, however time-consuming, are exceptionally useful when applications are extremely obscured. There are also hybrid methods that merge both dynamic and static methods together with the limitations of both.
+
+# 3. Crowdroid
+In (Burguera, Zurutuza, & Nadjm-Tehrani, 2011) they proposed a Crowrdoid system which is a behavior based malware detection. Which is having two mechanisms, a crowd sourcing application that should be deployed on user-devices and other is for malware detection which is a remote-server. The crowd sourcing application communicates with the remote server by sending the behavioral data and this data could be as an application log file. The application log file contains fundamental device info, behavioral data, and a list of installed apps. This data is processed at the remote-server to produce feature vectors which later might be analyzed by 2-means partition clustering for recognizing if the app malicious or benign. An application report is created and deposited in the remote-server’s database.
+
+# 3. AndroSimilar
+In (Faruki, Ganmoor, Laxmi, Gaur, & Bharmal, 2013) they propose AndroSimilar method which is used
+Original article | doi: 10/ajnu.v6n3a97
+# Academic Journal of Nawroz University (AJNU)
+# 3. Kirin
+In (Bahman Rashidi, Fung, & Vu, 2014) they proposed Kirin method the main goal of this method is to qualifying malicious applications at install time utilizing certification process on applications. On app’s requested permissions this method uses a set of previously defined security rules for finding the matched permission requests that are considered as a malicious. The defined rules are based on the sensitive permissions which lead to abusing of dangerous activities and permissions.
+
+# 3. RecDroid
+In (B Rashidi, Fung, & Vu, 2014) they proposed the RecDroid method it is a framework through crowdsourcing for resource accessing permission control. RecDroid tries to help users to choose the correct choice to decide if a permission request ought to be denied or accepted. RecDroid is an approval framework that brings together the user’s permission responses to the application’s permission requests, also for evaluating the level of experience of users this method is utilized and to figure a proper response to the permission request even to be rejected or accepted. RecDroid depends on a slight group of seed expert users that might generate dependable recommendations for a slight group of apps. To ignore malicious responses and detecting the malicious clients this method in addition utilizes a game-theoretic Bayesian.
+
+# 3. Aurasium
+In (Xu, Saïdi, & Anderson, 2012) they proposed Aurasium technique which is a very useful technique that takes control of execution of applications, by forcing arbitrary security rules at runtime. In order to have the ability to do that, Aurasium includes code for rules enforcement to Android applications by repackages it. Aurasium can apply security rules across multiple applications not only at individual application. Any privacy and security violations are informed to the user. So, it rejects the necessity of manipulating an Android operating system to monitor application behavior. It interferes when the application accessing sensitive data like phone identifiers, messages, contacts and implementing shell-commands by requesting the user for approval regarding the same.
+
+# 3. FireDroid
+In (Russello, Jimenez, Naderi, & van der Mark, 2013) they propose FireDroid which is a framework that is policy-based by interleaving process system calls can implementing security policies. In this method an application monitor is generated for tracking all processes spawned in Android operating system and based on humanly managed policies can accept or reject them. At runtime, the FireDroid can identify if an app is executing illegitimate or potentially harmful actions by interrupting the system calls the app executes. Regardless of if the malware is repackaged or a new type of an existing one: FireDroid can detect and implement the proper security policies once the malware executes harmful system calls. The objective of FireDroid is that it is entirely transparent to the apps along with Android operating system. By this the users are not complicated with a heavy interaction.
+
+# 3. DroidScope
+In (Yan & Yin, 2012) they proposed DroidScope which is a Virtual Machine Introspection (VMI) that is for Android applications is dynamic analysis framework. Contrasting other dynamic analysis frameworks, it doesn't be located inside the emulator but creating Dalvik-level and OS-level semantics by locating outside the emulator. By this, even in the kernel, the privilege escalation attacks can be detected. It likewise makes the attackers mission of disorderly analysis hard. upon QEMU emulator the DroidScope is built, and likewise, make a set of APIs available to modify analysis needs to human analysts.
+
+# 3. RiskMon
+In (Jing, Ahn, Zhao, & Hu, 2014) they propose the RiskMon method which is integrated runtime behaviors and user’s expectations of authorized apps to produce a risk assessment baseline in which can seizures suitable behaviors of apps. User’s expectations on the apps are the key part of the operating system. Initially, the user’s expectations of the deployed applications are gathered and the position of permission sets based on their relevancy to the corresponding app. After that, depending on the gathered data from the user, it generates or produce the risk assessment baseline for the apps. Lastly, utilizing the produced baseline, the method ranks deployed apps depending on the risk of the application’s interactions.
+
+# 3. RiskRanker
+In (Grace, Zhou, Zhang, Zou, & Jiang, 2012) they propose RiskRanker is a practical active procedure to recognize zero-day Android malicious apps. It attempts to assess potential security risks caused by unauthorized applications. They design an automated system with the purpose of analyzing the harmful behavior of applications dynamically. The proposed method
+Original article | doi: 10/ajnu.v6n3a97
+# Academic Journal of Nawroz University (AJNU)
+achieves a two-stage risk analysis. Firstly, they recognizes applications with medium and high risk. The purpose of recognizing these applications it traces non-obfuscated implementations of applications that invoke: privacy violation attacks, illegal cost creation, and launching root exploits. Secondly, so as to determine those applications that encrypt exploit code to avoid the previous stage analysis it achieves an additional investigation by analyzing suspicious application behavior. To solve this encounter, they make a set of heuristics to map applications to associated risk types (Low, Medium, and High risk).
+
+# 3. DroidRanger
+In (Zhou, Zhou, Jiang, & Ning, 2012) they present a survey to estimate the security of applications on some existing unofficial Android application markets and Google Play. The DroidRanger has two-stage analysis to detect zero-day malware and existing known malware. They utilize a permission-based behavioral footprinting scheme so as to detect known malware. The other stage, to identify certain inherent behaviors of a zero-day malware they apply a heuristics-based filtering scheme. The summary of all previous proposed solutions is presented in Table.
+
+# 4. Conclusion
+Alongside the expanding of Android smartphones, the quantity of Android applications, as well as malware is expanding daily. Regardless of existing Android security system, malware exploits the existing security system’s weakness to reach and access the granted resources. By this means, various solutions have been proposed in order to control and prevent the vulnerabilities in Android platform. In this review paper, the proposed solution is divided into two groups static and dynamic and into three goals assessment, analysis, and detection.
+
+# Academic Journal of Nawroz University (AJNU)
+Rashidi, B., Fung, C., & Vu, T. (2014). RecDroid: A resource access permission control portal and recommendation service for smartphone users. 2014 ACM MobiCom Workshop on Security and Privacy in Mobile Environments, SPME 2014, 13–17.
+
+Russello, G., Jimenez, A. B., Naderi, H., & van der Mark, W. (2013). FireDroid: hardening security in almost-stock Android. Proceedings of the 29th Annual Computer Security Applications Conference, 319–328.
+
+Xu, R., Saïdi, H., & Anderson, R. (2012). Aurasium: Practical Policy Enforcement for Android Applications. Proceedings of the 21st USENIX Conference, 27. Retrieved from https://www.usenix.org/system/files/conference/usenixsecurity12/sec12-final60.pdf
+Yan, L. K., & Yin, H. (2012). DroidScope: Seamlessly Reconstructing the OS and Dalvik Semantic Views for Dynamic Android Malware Analysis. In USENIX Security Symposium.
+
+Zhou, W., Zhou, Y., Jiang, X., & Ning, P. (2012). Detecting repackaged smartphone applications in third-party android marketplaces. Proceedings of the Second ACM Conference on Data and Application Security and Privacy - CODASKY ’12, 317–326.
+
+Original article | doi: 10/ajnu.v6n3a97.

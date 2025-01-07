@@ -1,0 +1,102 @@
+# 3. System architecture
+Android is a Linux-based mobile OS with different layers, namely, kernel, hardware abstraction layer, Android runtime, libraries, application framework and applications as shown in Fig. 4. The application architecture of Android is designed in such a way that it simplifies the reuse of components. Modular system components and services allow the applications to use each other’s capabilities. It also allows components to be replaced by the user . Functionality of these layers is described as follows:
+- Kernel — It supports and manages core system services like process, memory, security, network, etc.
+
+- Hardware Abstraction Layer (HAL) — It acts as an interface for communicating the Android application/framework with hardware-specific device drivers such as camera, Bluetooth, etc. HAL is hardware-specific and implementation varies from vendor to vendor.
+
+- Android Runtime (ART) — ART is introduced as a new runtime environment in newer Android versions (version 5 onwards). During app installation, it uses ahead-of-time (AOT) and just-in-time (JIT) compilation, which compiles the Dalvik bytecode into native binaries (ELF format). This optimizes garbage collection and power assumption and achieves high runtime performance.
+
+- Native Libraries — Core system services and different components of Android like ART and HAL are built from the native libraries, which are written in C/C++. There are different libraries, which provide support in building user interface application framework, drawing graphics and accessing database.
+
+- Application framework — Android SDK provides tool and API libraries to develop applications on Android java. This framework is known as Android Application Framework. Important features are database for storing data, support for audio, video and image formats, debugging tools, etc.
+
+- System applications — Applications are located at the top most layer of the Android stack. These consist of both native and third-party applications such as web browser, email, SMS messenger, etc., which are installed by the user.
+
+The iOS is OS X based mobile OS, which is a variant of a BSD UNIX kernel running on top of a micro kernel called Mach. iOS has a layered architecture. There is no direct communication since it has an intermediate layer between the applications and the hardware. Basics services in iOS are handled by the lower layers, namely, Core Services layer and Core OS layer, whereas upper layers like Media layer and Cocoa Touch layer provide the user interface and sophisticated graphics . The layered architecture
+# S. Garg and N. Baliyan
+# Computer Science Review 40 (2021) 100372
+# APK SYSTEM APPLICATIONS (Java)
+Android Manifest
+Permissions
+Contacts
+IPC
+Phone
+IPC
+Email
+# APPLICATION FRAMEWORK (Java)
+Activity Manager
+Content Providers
+Window Manager
+Package Manager
+Telephony Manager
+# NATIVE LIBRARIES (C/C++)
+# HARDWARE ABSTRACTION LAYER (Vendor specific)
+Camera
+Audio
+Bluetooth
+Sensors
+# LINUX KERNEL (C)
+Binder (IPC)
+Keypad Driver
+Display Driver
+USB Driver
+Power Management
+# COCOA TOUCH LAYER
+UI Kit
+Map Kit
+Event Kit UI
+Message UI
+Game Kit
+Push Kit
+# MEDIA LAYER
+Core Graphics
+Core Animation
+Core Media
+OpenGL ES
+AV Foundation
+# CORE SERVICES LAYER
+Core Location
+Core Foundation
+Core Data
+CF Network
+# CORE OS LAYER
+Core Bluetooth
+Security
+External Accessory
+Local Authentication
+Accelerate
+# HARDWARE
+The different layers of iOS architecture are described as follows:
+Hardware — This layer contains the physical chips, which are soldered to the iOS circuitry.
+
+Core OS Layer — It is the bottommost layer, which interacts directly with the hardware. It has the operating system above which the other layers reside. This layer takes care of memory management (allocation and de-allocation once the application has finished using it), file management, network management, etc.
+
+Core Services Layer — This forms the foundation layer on which above layers are built. It provides several features like data protection, iCloud storage, file sharing support, XML Support features, SQLite database, In-App purchases, etc.
+
+Media Layer — This layer is responsible for graphics, audio and video capabilities. Media layer consists of three different frameworks — Graphic framework, Audio framework and video framework. These frameworks help in accessing photos and videos stored on the device, to manipulate the images through filters and provide support for 2D drawings.
+
+Cocoa Touch Layer — It provides key frameworks for building iOS apps and defines their appearance. This layer is responsible for fundamental technologies like multitasking, touch-based input, push notifications, and many high-level system services.
+
+# 3. Security
+Android is an open-source mobile OS, i.e., its code is available to all and can be used by anyone. Linux kernel in Android provides user protection, where it restricts the users to access system resources and prevents them from exhausting. This mechanism of user protection helps in creating Application Sandbox, where each Android application is assigned with unique user ID . The processes are run in a separate space, thereby having user permission access control as shown in Fig. 6.
+
+iOS security model is more restrictive as compared to Android. iOS is a closed system, where developers can develop their own apps but its source code is not released, as in case of Android . Device level security includes a device-level locking mechanisms like passcode or Personal Identification Number (PIN) and remote wipe using Mobile Device Management (MDM). System-level security implements a secure boot chain process, Secure Enclave, Touch ID and authorizes system software updates. Data level security encompasses file encryption methodology through data-protection classes and using hardware and software components. Another level of comparison is that iOS is not easy to jailbreak. This means both the hardware and software is controlled by Apple. Data encryption in iOS is not configurable; therefore it is not disabled by the users. Fig. 7 illustrates the security model of iOS.
+
+# 3. Isolation mechanism
+Sandbox environment is provided for each and every application executing in the device, i.e., every application executes in its own environment. In this way they cannot modify other application.
+
+In Android, applications are separated from each other and from the system’s kernel; however, permissions are given to the applications to access the system resources. Isolation mechanism does not allow to access resources beyond the approved permissions. Isolation from kernel prevents gaining access to the administrative control. As a result, attacker is not able to compromise with other applications running on the Android. However, an application can neither launch other applications on the system using certain permissions nor they can check the programming logic of other applications.
+
+iOS isolation mechanism is similar to Android. Applications running in iOS do not need user’s permissions to access system resources. Application sandboxing enforced in iOS architecture isolates all applications from each other and restrains the third party applications from accessing iOS kernel . As a result, applications can neither interact with each other nor they know about the kernel . This makes the iOS systems more secured as compared to Android.
+
+# 3. Encryption mechanism
+Data on the mobile devices can be easily lost or stolen. Therefore, data stored on the mobile devices should be encrypted to ensure safety and security.
+
+Previous versions of Android provide Full Disk Encryption (FDE). Recent Android versions support hardware encryption, also known as Trusted Execution Environment (TEE) and File-based Encryption (FBE). In FBE, different files are encrypted with different keys so that they can be unlocked independently , as shown in Fig. 8.
+
+In iOS, combinations of hardware and software keys are iterated to encrypt every file to ensure only offline brute-force attack can carry out. Data protection class is associated with every file, which allows developers to define under what circumstances the data is accessible , as shown in Fig. 9.
+
+# 3. App permissions
+Permissions control and regulate the access to device resources, once an app is downloaded on the device. In most of the cases users are not aware about the permissions which applications are accessing, thereby causing serious security concerns.
+
+In Android, list of all permissions which an app needs are shown to the users while installing the app. User can then decide whether that app needs that particular permission or not. In some cases, if the user denies certain permissions to an app, then it stops installing. Attackers can misuse the permissions in Android. They can force the users to allow certain permissions, which can steal their sensitive information. Different types of attacks can be performed using permissions, namely, data loss attacks, data integrity attacks, Denial of Service (DoS) and Distributed DoS (DDoS) attacks. The permission system in Android is not effective since security decisions are handled by the device users. This may compromise with the security aspect of Android as majority.

@@ -1,0 +1,192 @@
+In the survey of Faruki et al. (2014), they focused on the malware growth, anti-analysis techniques, and malware detection techniques. They also discussed that stealthy techniques such as encryption and code transformation can generate variants of malware. They analyzed static and dynamic approaches for malware detection.
+
+In a technical report presented by Sadeghi et al. (2016), a qualitative comparison of program analysis techniques was done based on Android security. They proposed the taxonomy after reviewing 336 research papers, including both static analysis and dynamic analysis approaches. However, the very less focus was on the hybrid and ML techniques supplementing the conventional analysis approaches.
+
+|Android 1 (Cupcake)|2009|- Very little software vetting
+- Pro-Police to prevent buffer overflows
+- Safe integer operations to reduce integer overflows
+|
+|Android 2 (Éclair)|2009|- Handled null pointer dereference privilege escalation
+- Prevention of code execution on the heap and stack
+- Format string vulnerability protections
+|
+|Android 3 (Honeycomb)|2011|- Encryption of all user data
+- Write access to memory cards not allowed to applications
+- HTTPS stack improvement with Server Name Indication (SNI)
+|
+|Android 4 (Ice Cream Sandwich)|2011|- SELinux support
+- ASLR to randomize key locations in memory
+- Read-only relocations / immediate binding
+- Handled kernel addresses leakage
+- Verified boot
+|
+|Android 5 (Lollipop)|2014|- Improved full disk encryption
+- Smart Lock
+- Android sandbox reinforced with SELinux
+- Updated cryptography for HTTPS and TLS/SSL
+- Kill-switch option for full factory reset
+|
+|Android 6 (Marshmallow)|2015|- Automatic update security patches on a device
+- Runtime Permissions
+- Hardware-Isolated Security
+- Fingerprints
+|
+|Android 7 (Nougat)|2016|- File-based encryption
+- Verified and Direct boot
+- Kernel hardening
+- Updated SELinux
+- Improved ASLR
+|
+|Android 8 (Oreo)|2017|- Google Play Protect to automatically scan Google play store
+- Verified boot with Rollback protection
+- Tight Sandboxing with Webview
+- User-space and Kernel hardening
+|
+|Android 9 (Pie)|2018|- Support for biometrics
+- APK signature scheme v3
+- Support for kernel control flow integrity (CFI)
+- Default HTTPS for apps
+- Passcode for device restoration
+|
+|Android 10 (Quince Tart)|2019|- Support for the WPA3 Wi-Fi security protocol
+- Device and File-based encryption mandatory for all devices
+|
+# 4. Research methodology
+The research methodology used to prepare this SLR is based on the general guidelines proposed by Kitchenham and Brereton (2013). 200 research papers published in reputed journals and conferences with a significant number of citations are studied and analyzed. We have compared different concepts presented in the proposed taxonomy to identify the current trends and research gaps in the presented literature and provided future directions to the researchers that will shape the domain of Android security. Fig. 3 explains the protocol that is used to carry out this SLR.
+
+The key steps in the formation of SLR are detailed below:
+- Formulated research questions describing the purpose of the SLR (cf. Section 4).
+
+- Enumerated distinct search keywords to find prominent journals and conferences (cf. Section 4). The searching process considered two scenarios, first one focused on finding reputed publication repositories while the second one focused on publications from top venues including conferences, workshops, and symposia (cf. Section 4).
+
+- Applied inclusion/exclusion criteria to filter retrieved papers that fit in the scope (cf. Section 4).
+
+# Computers & Security 100 (2021) 102087
+# APK
+# System Applications (Java)
+8%
+Android Manifest
+Permissions
+Contacts
+IPC
+Phone
+IPC
+Email
+# Application Framework (Java)
+5%
+Activity Manager
+Content Providers
+Window Manager
+Package Manager
+Telephony Manager
+# Native Libraries (C/C++)
+30%
+Media
+SQLite
+FreeType
+SSL
+OpenGL
+Graphics
+Libc
+WebKit
+# Android Runtime
+1%
+Core Libraries
+Dalvik Virtual Machine
+# Hardware Abstraction Layer (Vendor specific)
+1%
+Camera
+Audio
+Bluetooth
+Sensors
+# Linux Kernel (C)
+52%
+Binder (IPC)
+Keypad Driver
+Display Driver
+USB Driver
+Power Management
+- Performed citation chaining to refine the search process studied remaining issues that are still open for current research efforts.
+
+- Results from different research findings are combined to carry out future research (cf. Section 4).
+
+# 4. Search strategy
+# 4. Research questions (RQ) identification
+This SLR aims to answer the following research questions (RQs):
+1. RQ1: What are the different approaches to analyze Android security? To answer this survey-of-surveys is built with complete taxonomy for classifying Android security analysis approaches.
+
+2. RQ2: How are these analysis approaches designed and implemented? For this question, research results cataloged during SLR are reviewed to understand concepts and techniques of implementation.
+
+3. RQ3: What is the current state-of-the-art concerning Android security? To answer this, research articles are categorized across multiple dimensions that help perform quantitative/qualitative analysis.
+
+4. RQ4: What research gaps and challenges need to be inferred and addressed? Finally, with this question, we...
+
+# 4. Search keywords
+The focus is on specific keywords to confine the scope of the literature review. The keywords are searched on the papers’ title, abstracts, and meta-data like tags. Table 3 describes the research domains and the related keywords that appear in these domains.
+
+There are three research domains, denoted by R, which fit in the scope of the SLR. These are as follows:
+1. Android Mobile OS – this domain focuses on a mobile platform and target programs.
+
+2. Technical Approach – this domain includes the analysis techniques- static, dynamic, hybrid or ML.
+
+3. Security Aspects – this domain covers the analysis methods to be applied to the potential security issues.
+
+# Computers & Security 100 (2021) 102087
+# Identily Research Questions (RQ)
+- RQ 1
+- RQ 2
+- Review Papers in Detail
+# Search Keywords
+Analysis techniques; Static. Dynamic; Hybrid. ML
+Android Malware, Vulnerability
+# Search Repository
+ACM; IEEE. Springer etc.
+
+# Check Venues
+NDSS; CCS; FSE; SEC, etc.
+
+# Design & Implementation
+Analysis Schemes
+# Apply Inclusion & Exclusion Criteria
+RQ 3
+Study Current State-of-the-Art
+# Identify Research Gaps & Challenges
+RQ 4
+# Future Research Directions
+# Computers & Security 100 (2021) 102087
+The search query (q) is a conjunction of the three research domains, namely, R1: Android Mobile OS, R2: Technical Approach, R3: Security Aspects, where R1, R2, R3 ∈ R. Each domain in the search query string is represented as a disjunction of its corresponding keywords (K), as shown in Table 1.
+
+The search query is:
+q = ∧r ∈ {R1, R2, R3} ∧keywords∈Kr keyword
+In simplified form,
+q = R1 AND R2 AND R3
+R1 = {Android OR Smartphone OR Mobile OR App∗ OR Application}
+# 4. Search repositories and datasets
+We have considered reputed electronic repositories such as IEEE Xplore Digital Library, Science Direct, ACM Digital Library, and Springer Link to find relevant datasets of publications. Some repository search engines pose a limit to download to the search result meta-data. In that case, the search string is split and iterated over multiple times to retrieve the relevant results.
+
+Other data sources such as conference proceedings, workshops and symposia that are not listed in the aforementioned repositories are also considered. To make our search exhaustive, we considered top 15 publication venues from security and privacy (S&P) field and software engineering and programming languages (SE/PL) field ranked according to the H-Index, as summarised in the Table 4. The H-Index of a publication as defined by Google Scholar is the count of h (largest value) published papers by a given author/journal that each been cited at least h times . It is considered that larger the value of H-Index, the better is the venue.
+
+# 4. Selection criteria
+A selection criterion viz. inclusion/exclusion is used to filter out the research results, since all the retrieved results do not lie in the scope of this SLR.
+
+# 4. Inclusion criteria
+We have limited the scope of the SLR that lie at the intersection of three research domains (discussed in the Section 4). We have collected the papers from 2013–2020.
+
+# 4. Exclusion criteria
+Exclusion criteria followed in this SLR are:
+1. Research publications written in English are only considered since it is the most common language spoken by reviewers and researchers. Publications written in non-English are omitted.
+
+Research papers published after June 2020 are not included in this SLR.
+
+# Malware/Static
+# 1. Short papers with page length of less than
+4 pages in IEEE/ACM-like double-column format or with less than 7 pages in LNCS single-column format are rejected. These papers are preliminary works, which are later published as full-length papers and so should be included in the final set.
+
+# 2. Duplicate papers
+Duplicate papers that are first published in conference proceedings and later on extend in the journals are excluded. Such papers are identified by comparing the author list, paper title, abstract and meta-data.
+
+# 3. Search term
+Search term contains keywords such as “Mobile”, “Smartphone”, to retrieve good volume of papers. However, the retrieved result set includes papers about “Windows/iOS” platforms, “mobile networking”, etc. Therefore, non Android-related publications are excluded from this study.
+
+# 4. Papers published before 2013
+Papers published before 2013 are excluded from the SLR to include the recent trends and researches.

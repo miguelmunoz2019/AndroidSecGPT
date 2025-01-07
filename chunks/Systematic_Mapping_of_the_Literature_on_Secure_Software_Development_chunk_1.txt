@@ -1,0 +1,137 @@
+# Systematic Mapping of the Literature on Secure Software Development
+HERNAN NINA 1,2, (Senior Member, IEEE), JOSÉ ANTONIO POW-SANG1, (Senior Member, IEEE), AND MÓNICA VILLAVICENCIO3
+1Maestría en Informática, Pontificia Universidad Católica del Perú, Lima 15088, Peru
+2Carrera Profesional de Ingeniería de Sistemas, Universidad de Lima, Lima 15023, Peru
+3Facultad de Ingeniería en Electricidad y Computación, Escuela Superior Politécnica del Litoral, 090902 Guayaquil, Ecuador
+Corresponding author: Hernan Nina (hernan.nina@pucp.edu.pe)
+Received January 22, 2021, accepted February 15, 2021, date of publication February 26, 2021, date of current version March 9, 2021.
+
+Digital Object Identifier 10/ACCESS
+# ABSTRACT
+The accelerated growth in exploiting vulnerabilities due to errors or failures in the software development process is a latent concern in the Software Industry. In this sense, this study aims to provide an overview of the Secure Software Development trends to help identify topics that have been extensively studied and those that still need to be. Therefore, in this paper, a systematic mapping review with PICo search strategies was conducted. A total of 867 papers were identified, of which only 528 papers were selected for this review. The main findings correspond to the Software Requirements Security, where the Elicitation and Misuse Cases reported more frequently. In Software Design Security, recurring themes are security in component-based software development, threat model, and security patterns. In the Software Construction Security, the most frequent topics are static code analysis and vulnerability detection. Finally, in Software Testing Security, the most frequent topics are vulnerability scanning and penetration testing. In conclusion, there is a diversity of methodologies, models, and tools with specific objectives in each secure software development stage.
+
+# INDEX TERMS
+Software development, security, requirements, design, construction, testing, vulnerability, systematic mapping review.
+
+# I. INTRODUCTION
+A study by the US Department of Homeland Security shows that more than 90% of cyber-attacks are not due to defects in cryptography, networks, or hardware, but due to vulnerabilities generated in software development . Furthermore, the increase in malicious activities targeting software products and software security weaknesses has become a significant problem for the software development process. Likewise, it is necessary to address security issues from the beginning of the software development life cycle (and in each phase) instead of facing them by creating patches when the software is in the production phase –; therefore, a comprehensive model is needed to adapt security activities to the software development process . The secure software development process comprises software requirements security, software design security, software construction security, and software testing security. This process aims to enrich security requirements, use threat models methodologies during software design, and apply best security practices for coding, code reviews, and tests . To increase the security level of software products, this process should be continuously updated , ; hence, studies showing the trends in methodologies, notations, tools, and techniques are required.
+
+Moreover, a systematic mapping study with an updated overview of trends in secure software development is necessary to identify the most relevant topics in the secure software development process and to complement existing studies which have a variety of objectives and context. For example, some systematic mapping reviews focus on: agile methodologies’ security requirements; specific applications (e.g. Cyber-physical System), particular methods (e.g. problem frames or threat analysis), quality assessment, SWOT analysis, among others –.
+
+This paper is structured as follows: Section II describes the research methodology, section III presents the results of the systematic mapping study, and section IV poses the conclusions and future works.
+
+36852 This work is licensed under a Creative Commons Attribution 4 License. For more information, see https://creativecommons.org/licenses/by/4/
+VOLUME 9, 2021
+# EEE Access
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# Study Planning
+# Searching for Studies
+# Study Selection
+# Assessing Study Quality
+# Data Extraction and Classification
+# Analysis
+# Reporting
+# II. RESEARCH METHODS
+This systematic mapping follows the guidelines for performing systematic literature reviews in software engineering proposed by Kitchenham and Charters  and the guidelines for systematic mapping studies in security engineering recommended by Felderer and Carver . Figure 1 illustrates the steps described to carry out systematic mapping studies.
+
+Each process of the systematic mapping study in secure software development is presented below.
+
+# A. STUDY PLANNING
+In this phase, the research questions must be formulated. To do so, the PICo technique  was applied, as follows:
+- Population: Software development.
+
+- Interest: Secure software.
+
+- Context: The context corresponds to the sector of the Software development industry.
+
+As a result, five research questions were stated for this mapping study (see Table 1).
+
+# B. SEARCHING FOR STUDIES
+For the present study, the indexed bibliographies databases were used: Scopus, Web of Science, IEEE Xplore, and ACM Digital Library. These databases are frequently used in systematic mapping studies in the Software Engineering discipline and have automated search tools that allow an adequate level of coverage for the subject studied. Table 2 illustrates the selected sources for this mapping study.
+
+The search for scientific articles in the above mentioned databases was carried out according to the following procedure:
+- Keywords: Two keywords were obtained by decomposing the research questions: ‘‘software development’’ and ‘‘secure software’’.
+
+- Synonyms: Synonyms were created for ‘‘software development’’ which correspond to the following terms: ‘‘software engineering’’, ‘‘software process’’, ‘‘software construction’’, and ‘‘software project’’. The following terms were used for the keyword ‘‘secure software’’: ‘‘software security’’, ‘‘security requirement’’, ‘‘security attribute’’, ‘‘software vulnerability’’.
+
+- Search strings: Search strings were generated using logical operators: OR for synonyms and AND for combine keywords. Table 3 shows the string used in each database considering studies published in English between 2014 and 2019. The total number of publications found until June 10th, 2019 was 867.
+
+- Filtering articles: Articles with a blank abstract or a language other than English were deleted.
+
+# C. STUDY SELECTION
+For the final selection of the articles, the inclusion and exclusion criteria shown in Table 4 were used.
+
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+After applying the inclusion and exclusion criteria and filtering duplicates, 528 articles were selected. Table 5 shows the summary of the search process.
+
+For selecting the articles, the title and abstract were read. However, full-text reading was necessary in 49 studies.
+
+# D. ASSESSING STUDY QUALITY
+Considering that a large number of studies were retrieved; one reviewer, the first author, filtered the papers applying the inclusion and exclusion criteria . Next, actions were taken by the second author to evaluate the final set of articles to reduce the validity threat. The second author checked the extraction to reduce the bias. The quality assessment of selected studies was performed based on their credibility, integrity, and relevance to answer the research questions.
+
+# E. DATA EXTRACTION
+The extraction of the relevant data from the selected studies was performed using a classification scheme (see Figure 2).
+
+36854
+VOLUME 9, 2021
+# H. Nina et al.: Systematic Mapping of the Literature on Secure Software Development
+# Sub-phases in the security requirements stage
+- Elicitation
+- Analysis
+- Specification
+- Validation
+# Methods used in security requirements
+- Approach Security Requirements Engineering
+- Misuse Cases
+- Fuzzy Analytic Hierarchy Process
+- Machine Learning Technique
+- Threat Modeling
+- Security Patterns
+- UMLsec
+- Structured Object-Oriented Formal Language
+- Non-Functional Requirements Modeling
+- Architecture Modeling
+- Identify and Access Management
+- Develop an Encryption Strategy
+- Security Design Principles
+# Topics in the secure code building stage
+- Static Code Analysis
+- Standards and Conventions
+- Compiler; library; and execution environment
+- Handle Errors
+- Find Security Issues Early
+- Dynamic Code Analysis
+# Vulnerabilities in the secure code construction stage
+- Standards on vulnerabilities
+- Detecting vulnerabilities
+- Exploit vulnerabilities prevention
+- Vulnerability Response and Disclosure
+- Fix the Vulnerability
+- Mitigation vulnerabilities
+- Predicting vulnerabilities
+- Assessment potentially vulnerability
+- Classification vulnerabilities
+- Software vulnerability mining
+- Vulnerability Scanning
+- Penetration testing
+- Fuzz testing
+# Software Testing Security
+- Static Analysis Security Testing
+- Reverse Engineering and software disassembling
+- Automatic patch generation
+- Dynamic Analysis Security Testing
+- Code review coverage
+- Dynamic symbolic execution (DSE)
+- Automated Testing
+- Security principle
+# Types of papers
+- Security application domains
+- Main trends
+- Type of software application
+- Non-traditional life cycle model
+- Secure software development model
+- Contributions to the development of secure software
+- Artificial intelligence techniques
+- Problems encountered by developers
+based on a set of recommended rules and practices in secure software development obtained from: the Software Engineering Body of Knowledge (SWEBOK), ISO/IEC/IEEE 12207:2017 Standard, Software Security Assurance State of the Art Report (SOAR), and Software Assurance Forum for Excellence in Code (SAFECode).

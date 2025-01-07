@@ -1,0 +1,59 @@
+used to configure which shard library needs to be isolated and what permissions the shared library can use. However, there are many different kinds of shared libraries. It is difficult for a developer to know exactly what permissions are required for each shared library, especially for some less experienced developers. Although many TPLs specify the required permissions in their development documents, according to ’s research, 17 of the 20 popular TPLs they analyzed used undocumented permissions. Therefore, it is not a friendly way to let developers configure permissions themselves. We plan to explore techniques that efficiently help developers determine the minimum permission requirement of shared libraries. This could be achieved by scanning permission-sensitive APIs in shared libraries’ import tables and path-sensitive strings in libraries. For example, if the string “/mnt/sdcard/a.dex” and API “open” are found, we will assume the shared library needs EXTERNAL_STORAGE permission.
+
+The initial objective of SEBox is to defeat shared library-caused threats. However, as a security-enhanced and integral Android system, SEBox provides not only a fine-grained permission mechanism to confine the potential damage caused by shared libraries but also an isolated environment with controllable permissions, which can be further used for the dynamic analysis of applications. Thus, not only can SEBox be a hardened OS, but also it can be used as a platform for application analysis, especially for inspecting shared library’s behavior.
+
+# 7. Conclusion
+This paper designed and implemented a system named SEBox to defend intra-application threats caused by untrusted shared libraries in applications. By separating these shared libraries into a new application with a few permissions and providing IPC-based interactive mechanisms for host apps and shared libraries, SEBox successfully gets shared libraries isolated. Consequently, applications running in SEBox are immune from shared library-caused threats.
+
+Evaluations on SEBox proved its effective defense capability and reasonable performance overhead. Furthermore, SEBox works transparently for application developers and does not break the app’s integrity. SEBox can be either deployed as a security-enhanced OS for personal use or used as a platform for application analysis.
+
+# Data Availability
+The data used to support the findings of this study are included within the article.
+
+# Conflicts of Interest
+The authors declare that there are no conflicts of interest regarding the publication of this paper.
+
+# Security and Communication Networks
+1. S. Kumar and S. K. Shukla, “The state of Android security,” in Proceedings of the Cyber Security in India, pp. 17–22, Springer, Singapore, 2020.
+
+2. I. M. Almomani and A. A. Khayer, “A comprehensive analysis of the android permissions system,” IEEE Access, vol. 8, pp. 216671–216688, 2020.
+
+3. M. Hatamian, J. Serna, K. Rannenberg, and B. Igler, “Fair: fuzzy alarming index rule for privacy analysis in smartphone apps,” in Proceedings of the International Conference on Trust and Privacy in Digital Business, pp. 3–18, Springer, Cham, 2020.
+
+4. S. Smalley and R. Craig, “Security enhanced (SE) android: bringing flexible MAC to android,” Ndss, vol. 310, pp. 20–38, 2013.
+
+5. H. Kawabata, T. Isohara, K. Takemori et al., “Sanadbox: sandboxing third party advertising libraries in a mobile application,” in Proceedings of the 2013 IEEE International Conference on Communications (ICC), pp. 2150–2154, IEEE, 2013.
+
+6. M. Sun and G. Tan, “Nativeguard: protecting android applications from third-party native libraries,” in Proceedings of the 2014 ACM Conference on Security and Privacy in Wireless & mobile Networks, pp. 165–176, Oxford, UK, 2014.
+
+7. Y. Liang, Research on Key Technologies of Software Binary Code Reuse, Wuhan University, Wuhan, China, 2016.
+
+8. J. Huang, O. Schranz, S. Bugiel, and M. Backes, “The art of app compartmentalization: compiler-based library privilege separation on stock android,” in Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security, pp. 1037–1049, 2017.
+
+9. J. Lee, A. V. Raja, and D. Gao, “Splitsecond: flexible privilege separation of android apps,” in Proceedings of the 2019 17th International Conference on Privacy, Security and Trust (PST), pp. 1–10, IEEE, New Brunswick, NB, Canada, 2019.
+
+10. X. Zhu, J. Li, Y. Zhou, and J. Ma, “AdCapsule: practical confinement of advertisements in android applications,” IEEE Transactions on Dependable and Secure Computing, vol. 17, no. 3, pp. 479–492, 2018.
+
+11. J. Seo, D. Kim, D. Cho, I. Shin, and T. Kim, “FLEXDROID: Enforcing in-app privilege separation in android,” in Proceedings of the NDSS, 2016.
+
+12. J. Zhan, Q. Zhou, X. Gu, Y. Wang, and Y. Niu, “Splitting third-party libraries’ privileges from android apps,” in Proceedings of the Australasian Conference on Information Security and Privacy, pp. 80–94, Springer, Cham, 2017.
+
+13. J. Qiu, X. Yang, H. Wu, Y. Zhou, J. Li, and J. Ma, “LibCapsule: Complete Confinement of Third-Party Libraries in Android Applications,” IEEE Transactions on Dependable and Secure Computing, 2021.
+
+14. X. Zhan, T. Liu, L. Fan et al., “Research on Third-Party Libraries in Android Apps: A Taxonomy and Systematic Literature Review,” IEEE Transactions on Software Engineering, 2021.
+
+15. W. Jules: Google’s Latest Android Version Distribution Numbers Show 11 in Dead Heat with 10, 2021, https://www.androidpolice.com/googles-latest-android-version-distribution-numbers-show-11-in-dead-heat-with-10/.
+
+16. Google, “Using Binder IPC,” 2022, https://source.android.com/devices/architecture/hidl/binder-ipc.
+
+17. M. R. Guthaus, J. S. Ringenberg, D. Ernst, T. M. Austin, T. Mudge, and R. B. Brown, “MiBench: a free, commercially representative embedded benchmark suite,” in Proceedings of the fourth annual IEEE international workshop on workload characterization, pp. 3–14, IEEE, 2001.
+
+18. P. Labs, “A cross-platform benchmark,” 2020, https://www.geekbench.com/.
+
+19. A. Labs, “Antutu Benchmark,“ 2022, https://www.antutu.com/en/index.htm.
+
+20. V. Afonso, A. Bianchi, Y. Fratantonio et al., “Going native: using a large-scale analysis of android apps to create a practical native-code sandboxing policy,” in Proceedings of the The Network and Distributed System Security Symposium, pp. 1–15, 2016.
+
+21. P. Mutchler, Y. Safaei, A. Doupé, and J. C. Mitchell, “Target fragmentation in Android apps,” in Proceedings of the 2016 IEEE Security And Privacy Workshops (SPW), pp. 204–213, IEEE, 2016, May.
+
+Copyright © 2022 Pengju Liu et al. This is an open access article distributed under the Creative Commons Attribution License (the “License”), which permits unrestricted use, distribution, and reproduction in any medium, provided the original work is properly cited. Notwithstanding the ProQuest Terms and Conditions, you may use this content in accordance with the terms of the License. https://creativecommons.org/licenses/by/4/.

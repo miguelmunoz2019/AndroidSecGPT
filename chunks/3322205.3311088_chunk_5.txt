@@ -1,0 +1,82 @@
+and invalid reviews (shorter than three words), we collected 11,008 user reviews in total. Second, we crawled the names of the top 100 ranked Android apps from each category on Google Play. Then, we compare the user reviews with the app names, revealing what apps are used by users. Since users are likely to use a short abbreviation (i.e. WhatsApp) rather than the whole name of the app (WhatsApp Messenger), we apply a normalization phase as follows:
+# App name normalization
+To normalize the app names, we first compute the occurrence frequencies for every words and phrases in app names. For example, there are two words (WhatsApp and Messenger) and one phrase (WhatsApp Messenger) in the name “WhatsApp Messenger". After computing the occurrence frequencies of these words and phrases in other apps’ names, we find Messenger occurs much more frequently than WhatsApp. (f req(W hatsApp)/f req(Messenger ) &lt; Threshold). Thus, the word Messenger is a common word that should be excluded, and we use WhatsApp as the normalized app name.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+histories). Thus, leveraging the vulnerabilities above, these private information are exposed to the malware. Additionally, we notice that some users use these frameworks to manage on-line shops, or even their digital wallets (i.e., Pockets). These apps can also be targeted by malware. Another important part of apps in virtualization frameworks are game apps. Users commonly virtualize games to use game bots. We investigate a game bot community in §4.
+
+We observed that users of the virtualization frameworks care about their privacy, and some of them even worry about the security of the virtualization frameworks . However, no existing work studies the security of these frameworks systematically, thus many users still consider them secure. Indeed many users believe that virtualization frameworks use a secure sandbox to execute their apps and apps are well isolated, which makes the users ignore the threats of malware.
+
+# 4 Understanding the malware distribution channels
+To understand how malware can be distributed to the virtualization frameworks, we conduct a comprehensive study of how apps can be launched and used in these frameworks.
+
+# 4 Insecure app launching
+First, by manually analyzing the 32 selected frameworks, we notice that these frameworks support installing apps from various sources. Despite that all the frameworks can launch an app that is already installed to the Android device, each virtualization framework supports at least one of the following approaches to install apps:
+- Launch an app from the SD card. Almost all the virtualization frameworks support app installation from the SD card. To install an app, the user can first download the installation package (.apk file) to the global accessible SD card, and use the virtualization framework to load the package. In Android, content on SD card is global accessible by any app with a READ_OR_WRITE_EXTERNAL_STORAGE permission, thus, a malware can easily replace the installation package before it is loaded by the virtualization framework.
+
+- Embedded app market. Some virtualization frameworks embed their own app markets. However, according to our observation, most of them are vulnerable to attacks. For example, Go Multi, a popular virtualization framework in Google Play, uses plain-text HTTP links when users are downloading apps from its web disk servers. Thus, attackers can conduct a man-in-the-middle attack to replace the downloaded app files.
+
+# 4 Insecure game app usage
+By analyzing the user reviews of using virtualization frameworks for gaming, we find that many users utilize app virtualization to launch game bots. Then, we investigate a famous game bots community which uses the virtualization framework.
+
+A game bots community using virtualization frameworks. GameGuardian is a popular game bots tool and community. Typically, it can only be executed in a rooted Android device. After March 2018, it supports being executed without rooting the device , which is replaced by using the virtualization frameworks. Interestingly, we observe that GameGuardian is utilizing a vulnerability we introduced to instrument the game apps. Although the vulnerability is exploited to achieve the legitimate need of GameGuardian, it is not certain that the vulnerability will not be abused.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 17:14
+# L. Zhang et al.
+
+# hijack
+# LUA Bots
+Facebook Customized Game GameGuardian
+Application Virtualization Framework
+Android Framework
+# 4 A real-world demonstration
+Our demonstration example (https://youtu.be/Mk_ZISSitow) illustrates a real-world attack to Facebook. In this attack, we succeed in replacing an executable file of Facebook with a crafted one, by means of a simple customized game bot.
+
+1 ParallelSpace = / data / data / com . lbe . parallel . intl / parallel /0
+2 Facebook_SO = / com . facebook . katana / lib - xzs / libcaffe2 . so
+3 function replaceExecutable ( path )
+4            local f2 = io . open ( path , 'w ')
+5            f2 : write ( PAY_LOAD )
+6            f2 : close ()
+7 end
+8 function main ()
+9            replaceExecutable ( ParallelSpace + Facebook_SO )
+10 end
+To launch the attack, we first upload a game bot (LUA program) to the GameGuardian forum. To be ethical and avoid it being downloaded by other users, we explicitly notify that this bot is used for testing purpose. Our script passes the vetting processes, and it is visible by all the users of GameGuardian. Figure 6 shows the content of the LUA program. In this program, line 9 replaces an executable file (libcaffe2.so) of Facebook with a crafted one. Once activated, the replaced executable file takes control of the Facebook app. Then, attackers can easily steal user privacy, or abuse the user account.
+
+# 5 REPACKAGE WITH APP VIRTUALIZATION
+The above sections illustrate how malware can leverage the vulnerabilities of app virtualization frameworks to launch attacks. In this section, we show that malware can abuse the app virtualization techniques from another scenario: by repackaging malicious payload into Android apps using virtualization techniques. We observed that app virtualization techniques are frequently applied by developers to repackage Android apps. Repackage used to be a common approach to distribute Android malware, and a plenty of techniques are proposed to detect repackaged apps. However, they are disabled by the virtualization techniques. In this section, we first propose a new method to detect apps repackaged by virtualization techniques. Then, utilizing this tool, we drive a large scale analysis on Android apps.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# App in the Middle
+# 5 Methodology
+Existing approaches for detecting repackaged Android apps are based on code similarity analysis . Commonly, they drive static analysis to capture the signatures of apps, and calculate code similarity based on the analysis results. Figure 8.(a) illustrates an example of a repackaged app without utilizing app virtualization. In Android, the execution code of apps are packed into a file named classes.dex. Malware are used to directly inject the malicious payload into this file. Thus, the repackaged app and the original app share common code (the Original App Code in Figure 8) in their executable files (classes.dex). This is a common assumption of existing repackage detection approaches. However, as illustrated in Figure 8, this assumption is incorrect on repackaged apps with virtualization techniques. In this example, the original Android app is stored in the local storage of the framework (assets), and dynamically loaded at runtime. As a result, the executable file of the repackaged app is the code of the virtualization framework, thus it does not share common code with the original app.
+
+We propose a new approach to detect repackaged apps. First, we summarize several common features of virtualization techniques, and propose a static analysis approach to detect apps with virtualization. Second, if an app virtualizes another app, we drive another analysis to determine whether the virtualization is applied to repackage the app. Our detection method is supported by two key insights. First, popular apps tend to sign their code with private signatures that malicious developers are difficult to obtain. Then, these apps commonly check their signatures before execution, preventing malicious developers from repackaging them with a different signature. Malware therefore is difficult to evade our analysis, that is, using a same signature as the repackaged app. The details of our approach are described below:
+&lt;activity&gt;
+android:name=&quot;com.lbe.doubleagent.client.proxy.ActivityProxy$P40&quot;
+android:process=&quot;:P40&quot;
+android:exported=&quot;false&quot;
+...
+
+android:configChanges=&quot;keyboard|keyboardHidden|navigation|orientation|screenSize&quot;
+&lt;/activity&gt;
+&lt;activity&gt;
+android:name=&quot;com.lbe.doubleagent.client.proxy.ActivityProxy$P41&quot;
+android:process=&quot;:P41&quot;
+android:exported=&quot;false&quot;
+...
+
+android:configChanges=&quot;keyboard|keyboardHidden|navigation|orientation|screenSize&quot;
+&lt;/activity&gt;
+Recognizing virtualization techniques. According to our observation, the apps with virtualization techniques share the following common features: First, apps with virtualization tend to use a large number of wrapper components to provide proxies between the original app and the Android framework. These wrapper components are structurally similar to each other. For example, Figure 7 illustrates two wrapper components from Parallel Space, which have similar configurations.
+
+Proc. ACM Meas. Anal. Comput. Syst., Vol. 3, No. 1, Article 17. Publication date: March 2019.
+
+# 17:16
+# L. Zhang et al.

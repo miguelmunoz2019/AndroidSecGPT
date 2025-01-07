@@ -1,0 +1,48 @@
+# 3 RQ3 – Do Developers Frequently Make Use of Third-Party Libraries When Developing Mobile Apps?
+In the first part of the questionnaire, we aimed at understanding whether the developers are used to employ third-party libraries when developing mobile apps. Table 7 reports how many participants replied with values ranging between minimum and maximum of the Likert scale to the first two questions of the survey; it is worth remarking that in the case of Q1 the Likert scale was nominal and comprised between “never” and “very frequently”, while in Q1 between 1 and > 5. As it is possible to observe, none of the participants excluded the use of libraries at all: 89% of developers stated that they make use of libraries frequently or very frequently. 40% declared to have included more than 5 libraries for each app, while only 5 of them (7%) declared a poorly usage of external dependencies. These results clearly show that is very common for developers to rely on third-party libraries when developing mobile apps. Thus, we can confirm that the developers’ perception of third-library usage matches the quantitative findings revealed in the context of RQ 1. Most of the developers commented that the main reason behind the use of third-party libraries is the code reuse, avoiding reinventing the wheel and save effort and time. Moreover, some of them recognize that libraries reflect the experience of their developers, resulting in components that are better maintained, tested, and designed.
+
+Results for RQ3 – For Q1 the Likert scale ranges between “never” and “very frequently”; for Q1 between “1” and “> 5”
+# Empirical Software Engineering (2020) 25:2341–2377
+# In summary
+Developers make use of third-party libraries in mobile apps very often, mostly to save effort and time, trusting the experience of developers of these libraries.
+
+# 3 RQ3 – What is the Rationale Behind the Decisions of Mobile Developers When Updating the Third-Party Libraries They Use for Their Mobile Apps?
+In the second part of the questionnaire, we specifically investigated the behavior of developers in updating third-party libraries. Table 8 reports the results achieved when inquiring developers. Also in this case, we report how many participants answered using each of the five-level Likert scale.
+
+From the analysis of the results, it emerged that 30% of developers upgrade libraries very frequently, another 36% occasionally, and only 7% rarely. Nobody excluded upgrading completely. We also asked about the opposite action, i.e., downgrading. The results show that the majority of them (66%) never or very rarely performed an activity of downgrading the version of a third-party library, while 27% of them stated that it happened at least once. The developers commented that it is usually due to incompatibility with the current version of the app, often making the app failing already during the build task. For those who tested the app after the upgrade, it happened that some found conflicts with other dependencies or unexpected bugs never experienced before.
+
+Then, we asked developers to which types of library they are mostly attentive in updating. Thus, we were able to compare the direct developers’ perception and experience with the ranks we automatically extracted in the context of RQ2 and RQ2 (see Sections 3 and 3). The developers confirmed that GUI libraries are the most upgraded, followed by those that ease the interaction with external services, e.g., networking.
+
+More interesting is the report about the reasons why they perform or not updates. On the one hand, they mostly keep libraries up-to-date to reduce propagation of bugs from dependencies, possibly improving app performance. Moreover, new releases of Android often cause incompatibility with previous implementations, affecting both app and dependencies source code. Sometimes, it means that it is not possible to make an app compatible with the most recent version of Android if all the used libraries are not compatible. One of the participants declared:
+“Usually to stop Android Studio from nagging ;). Mostly because Google advises to upgrade the support libs whenever you update the target SDK.”
+S/he refers to the fact that ANDROID STUDIO, as the official Integrated Development Environment (IDE) for Android development, warns the developers on whether new versions of
+Empirical Software Engineering (2020) 25:2341–2377 2367
+libraries used in a project are available. Furthermore, it is a best practice advised by Google to keep official support libs whenever there is an upgrade for the Android SDK.
+
+On the other hand, they avoid updates mostly because they are afraid of breaking the current version of the app, as declared by one of the participants:
+“If things are working, don’t break them!”
+Most of the participants pointed out that often an upgrade does not correspond to a simple rebuild of the app, according to their experience. Moreover, they tend to avoid change things if themselves, or their users, did not experience issues. When asking whether they include a testing activity every time they introduce a new version of a third-party library, 51% of them reported how they always test the app after that, possibly highlighting that testing API modifications would represent a research direction to further investigate. Furthermore, 47% of the respondents claimed that receiving requests from users complaining about issues clearly attributable to the use of certain libraries is not common, therefore, the inner-working of third-party libraries can somehow be hidden to the final users.
+
+We also asked if they generally take into consideration the effort required to update a library and how they estimate it. One of them commented:
+“Usually if you update them regularly (e.g. weekly) it’s minimal effort, like less than 30 minutes per week (or even much less, like 5-10 minutes).”
+The reported consideration is common also for other developers:
+“Yes. If the update is a major version it usually means it’s going to be more difficult to upgrade.”
+These considerations seems to go in the direction of what we qualitatively discovered in RQ 2, i.e., if a developer does not update third-party libraries frequently, the effort required to perform such an update might be not worth the gain it provides. This result confirm the results previously obtained by Kula et al. (2017) who showed that the “migration effort” is one of the main reasons that prevent library updates. One of the developers also mentioned the “technical debt” :
+“It’s seen as good ‘health’ to do it regularly, to reduce technical debt”
+In other words, it is a common feeling that having an app with up-to-date libraries reduce accumulating future effort, which may be traduced in some form of technical debt.
+
+Finally, we investigated about the introduction of possible security issues when updating: 45% of the participants declared that they always take into consideration the possibility of such an introduction. Interestingly, only 29% even performed a downgrade due to a security issue.
+
+# In summary
+Developers upgrade third-party libraries in mobile apps frequently, but the opposite action of downgrading is less common. GUI libraries are the most upgraded third-party components. The main reasons for keeping the libraries up-to-date are (i) avoiding the propagation of bugs, (ii) making the app compatible with new Android releases.
+
+# 4 Threats to Validity
+This section describes the threats that may have affected the validity of the study.
+
+# Construct Validity
+Threats in this category are mainly related to the effectiveness of the tools built in order to mine data from the different software repositories analyzed. Before employing the tools, we carefully tested them against a sample set of mobile apps coming from the F-DROID repository. Moreover, we made all the tools publicly available for replication purposes.
+
+# Conclusion Validity
+Threats to conclusion validity concern the relation between the treatment and the outcome. In RQ1, we computed the technical lag on the basis of the definition previously provided by Zerouali et al. (2019). Nevertheless, we cannot exclude the presence of other alternative more effective methods to define such a technical lag. Still, in this context, we estimated the technical debt using days as time unit: while it may be possible that our findings might change based on the amount of activities performed by developers (e.g., commit), it is important to note that the selected apps are active and perform continuous activities of software maintenance and evolution.
+
+In the context of RQ2 we adopted an open coding procedure to identify the common update-patterns followed by mobile developers. This procedure involved the authors, who firstly independently classified a part of the libraries histories considered in this study, and then were involved in an open discussion with the aim of double-checking the previous classifications. Still, we cannot exclude imprecision and/or some degree of subjectivity, even if mitigated through the discussion.

@@ -1,0 +1,42 @@
+# B Gradle Build Tool in Android Studio
+Android Studio uses Gradle Build Tool  as an Android Studio plugin to automate and to manage the app build process. The Gradle build system eases the task of including internal and/or external libraries to app builds as dependencies. In our work, we do not take into account local binary dependencies, e.g., jar files that developers manually download and import into their projects because the majority of third-party libraries are included in Android projects via central repositories. Besides, for local module dependencies and local binary dependencies, the exact version information is not available, one can only profile the binary files and provide approximate matches which would add up another factor of uncertainty.
+
+Listing 1 shows examples of how developers can declare their project’s external dependencies in Android Studio. On line 3, components of a dependency’s information are colon-separated, group_id:-artifact_id:version, while on line 5, they are declared as key-values. From this information, when developers choose to sync their project’s dependencies, Gradle will sync such dependencies from the default repository (e.g., JCenter or Maven) or the ones declared in the gradle.settings file of the app project. Besides, developers can also declare version strings as a variable (line 1) and use this variable for the external dependency’s version (lines 7,8). This helps developers avoiding repeatedly specifying (and updating) version strings for multiple libraries from the same group (e.g., com.android.support) that use the same version string.
+
+# B Android Studio Plugin
+Android Studio is based on Jetbrain’s IntelliJ IDEA. Therefore, to develop an Android Studio plugin one needs to create an IntelliJ IDEA plugin that targets Android Studio. The IntelliJ platform provides tools designed for static code analysis, i.e., inspections that allow developers to check for potential problems in the source code. Examples of such inspections are finding probable bugs, dead code, performance issues, improving code structure and quality, or examining coding practices and guidelines. In the following, we describe how code inspection and quick-fixes work in IntelliJ IDEA/Android Studio. Code inspection in Android Studio leverages the program structure interface (PSI) to analyze source code files of a project. PSI is responsible for parsing files and creating syntactic as well as semantic code models. This allows the IDE to efficiently perform static code analysis on a project’s source code such as identifying code inconsistency, probable bugs, and specification violations. There are two main program structure interfaces in IntelliJ IDEA namely PsiFile and PsiElement. PsiFile represents the content of a code file as a hierarchy of elements (so-called PsiTree). Each specific programming language can extend the PsiFile base class to have its own representation, such as PsiJavaFile for Java language, GroovyFileBase for Groovy language, or KtFile for Kotlin language. PsiElements are used to explore the internal structure of a project’s source code by the IntelliJ platform.
+
+Specifically, PsiElements are used to perform code inspection and quick-fixes on IntelliJ IDEA/Android Studio projects. When a quick-fix is applied, PsiElements are updated, removed from, or additionally added to an existing PsiFile. To analyze developer’s code, one can extend the InspectionProfileEntry class to build a PsiElementVisitor that traverses through all PsiElements belonging to a PsiFile. Each PsiElement corresponds to a keyword, a variable, or an operation in a particular language. To apply a quick-fix, e.g., updating a dependency declared in the file build.gradle of an Android project (see Appendix B), a new PsiElement representing a newer version is created and replaces the existing PsiElement that represents the outdated library’s version.
+
+Help us improve UpzDcp
+We need your help - UmproveUpzDep Please share with us your UpzDep experience Yes (open browser)
+Event Lon
+# ACSAC 2020, December 7–11, 2020, Austin, USA
+Duc Cuong Nguyen, Erik Derr, Michael Backes, and Sven Bugiel
+# Implementation
+cOMa squareup okhttp3:okhttp:3'
+This version contains security vulnerability; more details here. Consider upgrading it to newer version or avoid using it:
+Implementation chaacra acra:4"
+You are using an insecure (cryptographic misuse) API from this library. This makes your app vulnerable; more details here.
+
+# Usages
+Library Classes
+Production Classes entry)
+Usage of the dependency tree selection in the above tree 2 usages
+Unclassified usage usages
+Opp Usates
+saarland: duc gradletest usages
+MainActivity usages
+testPicasso()
+Mainactivity java usages
+60 Picasso pis Picasso with(this);
+51 RequestBuilder requestBuildet pis load("http Ilexample com");
+Picasso load java lang String; return comsouareud Dic; 550 Reqestcreatot
+Implementation com. squareup. picasso:picasso:l'
+There is a newer version (2), consider upgrading this dependency more__. (B8F1)
+comasquareup picasso picasso:1'
+Change to com squareup picasso:picasso:1 (latest compatible version)
+Give feedback on this check
+Show me dependencies
+Update to com squareup picasso picasso:2 (code changes needed)
+276.

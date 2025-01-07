@@ -1,0 +1,50 @@
+We analyzed the unidentified smell instances by DACS and investigated why they were missed. Eventually, we discovered that the DACS missed some smells detection due to the inconsistent compression libraries used for classes affected by the MU and classes considered in the detection rules. For example, in the VINCLES project (id = 15), com.iceteck.silicompressorr package defines class SiliCompressor for video, audio, and other files (Gallerypresenter, ChatPresenter, FileUtils) for compression. However, DACS has not yet extended the SiliCompressor library, so DACS will not identify such code smells. Meanwhile, the reason for ignoring HA smells is roughly the same. While Android apps request communication with the server, except for the common request libraries HttpClient and OKhttp provided in the Smell rule library, there are also higher-level encapsulation libraries such as Feign, Retrofit, and Volley, so DACS can hardly identify some complex smells correctly.
+
+RQ1 provides a potential method to improve the detector’s performance. In the future, we will consider adding various libraries to DACS for Android developers. With the support of more third-party libraries, DACS performance will be higher.
+
+Main findings for RQ1: Except for the omission of MU and HA, for most code smells, the detection result of DACS strongly agrees with the manual detection. Lin’s concordance correlation coefficient–rc reaches 0, demonstrating that DACS can effectively detect 15 custom Android code smells and capture developers’ sub-optimal coding practices. Overall, the results confirm the accuracy of DACS in detecting code smells.
+
+# 5 Answer to RQ2
+# 5 Results analysis of the NB fitting model
+NB is applied to analyze the relationship between fault counts and code smells. Table 6 presents the first-order interaction model, where the Intercept row summarizes the average effect of some not explicitly mentioned factors on faults. The remaining rows represent code smells, NCLOC, and combinations associated with the fault counts. Multiplicative interaction terms test the combinations, that is, if there are two code smells in the test file, then the multiplicative interaction result is 1 (1 × 1). And the interactive combinations neglect the existence of any other code smells in the files.
+
+As shown in Table 6, the constructed first-order interaction model’s residual sum of squared (RSS) over 535 Degrees of Freedom (DF) is 529. Since the RSS < DF, the model meets the requirements. However, Table 6 shows that NCLOC, WCA, MU, SDV, NCLOC:WCA, NCLOC:MU, NCLOC:SDV, HA:DBA, and HA:MU are the terms significantly associated with the faults (p-value < 0). Therefore, we select the above indicators to create a simpler model, shown in Table 7. This model has a better fit compared with the first-order interaction model, with RSS = 530 and DF = 547. NCLOC, WCA, MU, SDV, NCLOC:WCA, and NCLOC:MU significantly correlate with the fault counts (p-value < 0).
+
+The six valid parameters discussed above were used to fit the simplest fault counting model, and the details are shown in Table 8. The model has RSS = 526 over DF = 550. There is a significant association (p-value < 0) between the faults and six code smells, that is, a significant fault-proneness to the app quality.
+
+# T A B L E 6 First-order fault counting model based on negative binomial.
+
+# 1097024x, 2023, 11
+Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions https://onlinelibrary.wiley.com/terms-and-conditions on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+# ZHONG et al.
+
+Second-order fault counting model based on negative binomial.
+
+Third-order fault counting model based on negative binomial.
+
+Fault counting model based on zero-inflated negative binomial.
+
+# 5 Results analysis of the ZINB fitting model
+We apply the ZINB model to investigate the distribution relationship between faults and code smells, and the modeling process is similar to NB. After obtaining the significantly correlated parameter individuals, we continue constructing the fault counting regression model until all the parameters in the model are significantly correlated. The final model results are presented in Table 9, and we omit listing all detailed model information.
+
+As displayed in Tables 8 and 9, the results remain consistent, showing a significant correlation between six code smells and the faults in apps. However, this correlation is not always positive; some code smells (WCA, SDV, and NCLOC:MU) are negatively correlated with the fault counts. The remaining code smells (NCLOC, MU, and NCLOC:WCA) positively correlate with the fault counts. The results show that several code smell combinations increase the fault-proneness, while
+1097024x, 2023, 11, Downloaded from https://onlinelibrary.wiley.com/doi/10/spe by <Shibboleth>-member@javeriana.edu.co, Wiley Online Library on [11/08/2024]. See the Terms and Conditions (https://onlinelibrary.wiley.com/terms-and-conditions) on Wiley Online Library for rules of use; OA articles are governed by the applicable Creative Commons License.
+
+2316 ZHONG et al.
+
+Some code smells decrease the faults. Nonetheless, we should note that the limited availability of experimental data might have contributed to this phenomenon. Many projects on GitHub are experimental and not intended for commercial purposes, lacking adequate testing, maintenance, and standardization. As a result, we may have collected limited information about both code smells and faults. Developers need to repair and refactor the code smells with positive fault correlation in time and carefully refactor the code smells with negative fault correlation.
+
+# 5 Answer to RQ3
+We evaluate the fitness for fault counts and code smells by AIC and BIC values of the fault counting model under the same dataset, and judge the performance of the regression models constructed by NB and ZINB. When the model becomes more complex (k rises, i.e., the feature number grows), the likelihood function also increases, thus reducing the AIC and BIC values. However, if the data is too heavy, this can cause overfitting issues. In the equations AIC = 2k − 2ln(L), BIC = ln(n) ∗ k − 2ln(L), L represents the maximum likelihood, k refers to the free parameters for estimation (6), and n is the experimental data volume (516). The AIC and BIC values of the final NB fault counting model are 552 and 557, respectively, while for the ZINB model, the values are 517 and 522, respectively, obviously indicating that the ZINB model fits the experimental data better than the NB (both AIC_ZINB and BIC_ZINB values are lower than NB). Overall, the fault counting model constructed by ZINB performed better than the one based on NB.
+
+For a more intuitive view of the extent to which code smell affects fault counts, we construct the repair priority level according to the best-fitting fault counting model on ZINB. Specifically, considering the direct correlation of the coefficients of the arguments with the faults in the model, we take them as the influence factors of the arguments and map the coefficients to the interval  by the Sigmoid function. The Sigmoid function is represented by:
+f (x) = 1 + e1−x.
+
+According to the ZINB fault counting model, we obtained coefficients representing the importance levels of three independent code smells (WCA, MU, SDV), and then calculated the importance value by S-function. The importance values for the remaining smells were derived by the Spearman correlation coefficient, where correlations below 0 were considered as no correlation. Therefore, we calculated the importance-value of HA, CSC, CRW, UR, DBA, ICV, UICC, and WNDS based on the spearman part >0. Importance values for EC, WPS, BWS, and GFRW could not be obtained due to a lack of research data and low correlation. We assigned these smells the lowest repair level considering their occurrence frequency in the files. The repair priority levels of the 15 code smells are presented in Table 10.
+
+Main findings for RQ3: Among the two fault counting models constructed by NB and ZINB regression algorithms, the ZINB-based fault counting model is more suitable for the dataset under work (AIC=517, BIC=522). We generate fault repair priority levels based on the ZINB fault counting model by quantifying the code smells impact on the faults. This assists developers and researchers focus on fault-prone code smells. The priority list drives the building of high-quality and low-debt apps by refactoring poor designs with high risk first, thereby increasing the repair benefits.
+
+# 6 THREATS TO VALIDITY
+# 6 Threats to internal validity
+Code smell is an abstract definition of poor design by researchers from different practice results, and the definition is subjective and lacks strict criteria. Due to varying opinions on what constitutes an Android code smell, practitioners often rely on their own experiences to define them. To achieve broad acceptance, we carefully investigate technical blogs and conferences related to Android security and code specification, provide the Code Smell Definition, and targeted repair suggestions based on programming practices.

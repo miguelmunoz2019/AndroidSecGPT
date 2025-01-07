@@ -1,0 +1,44 @@
+# Disabling webcam indicator
+Most laptops with built-in cameras have an important privacy feature: an LED light that turns on whenever the camera is in use. This light is meant to serve as a warning to users that their camera is active and could be recording them. However, a previous study  demonstrated that it is possible to disable these warning lights on MacBooks and iMacs. The researchers reprogrammed the microcontrollers inside the camera, which are responsible for controlling its functions. By reprogramming the microcontrollers, the researchers were able to turn on the camera without turning on the LED light. This finding raises serious concerns about the security of laptop cameras. If someone can disable the warning light, they could secretly record users without their knowledge or consent. Recently, iOS and Android have introduced software-based indicators called privacy indicator  for privacy enhancement. These functions are designed to notify users when an application is accessing their camera. However, there is no prior work to investigate the security issues of these privacy indicator features. In this paper, we show that the Android privacy indicator can be obfuscated by the UI overlay attacks, making it unrecognizable, and disabled by the device configuration tampering attack.
+
+# UI overlay attacks and misuse of accessibility API
+UI overlay attacks are not a novel concept. Fratantonio et al.  demonstrated how the combination of SYSTEM_ALERT_WINDOW and BIND_ACCESSIBILITY_SERVICE permissions could be exploited to manipulate the UI feedback loop. However, as presented in Section 2, their techniques result in overlays with Z-order values too low to conceal the privacy indicator UI, which is our target. Diao et al.  systematically analyzed the misuse of Android’s accessibility service API, revealing significant design flaws and instances of API misappropriation. Our work extends these studies, introducing novel attack scenarios like COA and DOA, specifically targeting the privacy indicator feature in Android 12. Unlike previous studies, we use the TYPE_ACCESSIBILITY_OVERLAY parameter in WindowManager combined with BIND_ACCESSIBILITY_SERVICE permission to create windows with higher Z-order, enabling the execution of COA and DOA attacks. Huang et al.  investigated the potential misuse of accessibility features in 95 apps, proposing an enhanced accessibility framework to improve user privacy while maintaining assistive functionality. However, their framework does not encompass the UI overlay attacks like DOA and COA, as identified in our study.
+
+# TrustZone research
+Previous research has implemented a mobile peripheral control system using the ARM TrustZone architecture and hardware components provided by the SoC to control the secure modes of the CPU. The system uses a custom kernel designed to run in the TrustZone security mode and utilizes ARM security configuration registers (SCR), the TrustZone Address Space Controller (TZASC), and the Central Security Unit (CSU) to enable secure mobile peripheral control . SEPI controls peripheral devices by changing the access permissions of IO addresses at the hardware level from the hypervisor. This approach has some common characteristics of prior research  in operating separately from the Android OS. However, a key distinction lies in SEPI’s reliance on Knox HDM , a tool used to ensure secure and accurate communication between the Android OS and the hardware. The utilization of Knox HDM enables SEPI to securely control peripheral devices such as the camera and microphone without necessitating significant modifications to the existing system architecture. This ensures not only an added level of security but also maintains the compatibility and user experience of the original system.
+
+# 9 CONCLUSION
+In this paper, we presented two types of attacks: the UI overlay attack and the device configuration tampering attack. Both can disable the Android privacy indicator feature, which is designed to notify users when applications access their camera or microphone. We tested the feasibility of these attacks on various Android devices and applications. Subsequently, we communicated our findings to Samsung Electronics and Google, from whom we received acknowledgments. To counter these security weaknesses, we developed a hardware-based security solution, SEPI. We conducted thorough tests of SEPI on the Samsung Galaxy A52s 5G, where it showed robust protection with only a minimal impact on performance. Since SEPI operates independently from the Android OS, it can promptly restore the privacy indicator in case of tampering.
+
+# (In)visible Privacy Indicator: Security Analysis of Privacy Indicator on Android Devices
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+# A USER STUDY QUESTIONNAIRE
+Q1: What is your age in years? [single choice]
+- 0-19
+- 20-29
+- 30-39
+- 40-49
+- 50-59
+- 60 and more
+- Prefer not to answer
+Q2: What is your gender? [single choice]
+# ASIA CCS ’24, July 1–5, 2024, Singapore, Singapore
+Yurak Choe, Hyungseok Yu, Taeho Kim, Shinjae Lee, Hojoon Lee, and Hyoungshick Kim
+# USER STUDY DEMOGRAPHICS AND RESULTS
+# Q3: Which of the following best describes the highest level of formal education that you have completed? [single choice]
+- Have not completed high school
+- High school or equivalent
+- Bachelor or associate degree
+- Graduate degree
+- Other
+# Q4: What is your profession? [free text]
+# Q5: During the use of the camera, did you notice any special icon appearing in the top right corner? [free text]
+- †Yes 14 (63%)
+- ‡No 8 (36%)
+# Q6: If you noticed, can you describe what you recognized? Why do you think you were able to recognize it? [free text]
+- Yes 3 (13%)
+- No 19 (86%)
+# Age
+†‘Yes’ means the user recognized the privacy indicator.
+
+‡‘No’ means the user did not recognize the privacy indicator..

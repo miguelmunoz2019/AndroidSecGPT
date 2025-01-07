@@ -1,0 +1,5 @@
+With our manual investigation, we find out that a shared object can fall into two category: (1) a game engine, (2)a general library (e.g., libc++, advertisement library). The detailed results are presented in Table 6. From this information, we have identified 12 popular game engines. For each game engine, we use the appearance number of its highest shared object as its market share. Then we created a pie chart for the market share as shown in Figure 1. It is clear that Unity Engine is holding the dominant market position.
+
+Note that, not all the games are developed with games engines. We found that 116, 084 (39%) games that do not contain shared objects. Those games are normally simple games (e.g., puzzles such as com.puzzle.mathpuzzle) that do not need fancy UI, and they are developed in pure Java. In addition, the binaries of some games are missing in AndroZoo due to Multiple APK feature as mentioned in §6.
+
+3110 31st USENIX Security Symposium USENIX Association.

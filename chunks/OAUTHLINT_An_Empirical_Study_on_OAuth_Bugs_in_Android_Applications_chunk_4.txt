@@ -1,0 +1,75 @@
+Using WebView for OAuth transactions can be encoded as the following anti-protocol:
+isSecret(x) ∧ isToken(y) ∧ webView(z) ∧ flowTo(x, z) ∧ flowTo(y, z)
+# 3) Client-side API Call:
+Client devices should not be trusted during API calls that are involved in the flows for OAuth authentication. In other words, relying parties should always assume that any requests made from client devices could be tampered by the attackers. Unfortunately, in reality, developers often misunderstand the security implication and assume that the access token granted by the service providers are only bounded to the relying party. As a result, an attacker could leverage the access token granted for some malicious applications and login as a user for other benign applications to access other sensitive information. For example, the Topface application  exchanges access token for user id by doing API call from the application to authenticate users.
+
+String url = "api.provider.com/..";
+HttpURLConnection c = new URL(url).openConnection();
+c.setRequestMethod("POST");
+...
+
+params = new ArrayList();
+params.add("oauth_consumer_key=" + client_id);
+params.add("oauth_token=" + access_token);
+params.add("oauth_signature=" + getSignature(client_secret));
+...
+
+c.setRequestProperty("Authorization", createHeaders(params));
+String user_id = parseJSON(c.getInputStream(), "id");
+newUserLogin(user_id);
+We express the Client-side-API-Call vulnerability using the following anti-protocol:
+isToken(x) ∧ isSecret(y) ∧ Http(r, u, ) ∧ login(v, ) ∧ flowTo(x, u) ∧ flowTo(y, u) ∧ flowTo(r, v)
+# 4) Storing Access Tokens on Client Devices:
+By the end of a typical OAuth transaction, the relying party receives an access token, which is a raw string that can be used to make API calls to retrieve protected resources from the service provider. Stealing access token provides an ideal vector through which an attacker can compromise user accounts and harvest confidential data such as email and contacts. Some service providers (e.g., Google) also allow access to user’s files stored in the cloud via access tokens . More importantly, an access token does not require user’s password and is capable of bypassing any two-factor authentication. To make things worse, the only way to revoke an attacker’s access is to explicitly revoke access to the malicious application that uses the access token to launch attacks. Thus, having access token obtained by attackers could have an adverse impact on users. During U.S. Presidential Election in 2016, one of the tactics attackers used was collecting OAuth access tokens, as reported  by security experts from FireEye.
+
+Our analysis finds that many developers often do not encrypt their raw access tokens before storing them to client devices, using SharePreferences or files in the external storage. This is insecure, as data in Sharedpreferences or filesystem and can easily be accessed from any rooted device or an emulator. For example, the Chatous application  stores the access token received from Instagram as follows:
+String aToken = getAccessToken();
+SharedPreferences sf = getActivity().getPreferences(mode);
+SharedPreferences.Editor editor = sf.edit();
+editor.putString("access_token", aToken);
+editor.commit();
+Storing access token on client devices can be encoded as the following anti-protocol:
+isToken(x) ∧ lstore( , u) ∧ flowTo(x, u)
+# 5) Sending Raw Access Token to Server:
+To make server-to-server API calls during OAuth transactions, developers send the access token to the relying party server. However, if a raw (i.e., unsigned) access token is sent to the backend server, a modified client application can send arbitrary access token and initiate an impersonation attack.
+
+A client device is assumed to be untrusted when OAuth is used for authentication. Thus, instead of making API call directly, a mobile application should communicate with its own backend server and pass the access token to the server. The server would then use the access token to make API calls to communicate with the resource server of the corresponding service provider. However, it is important for developers to
+understand that access tokens are portable. Once an access token is received, it can be used from both applications and server to fetch users’ resources. Thus, sending an unsigned access token to the server can lead to Token Hijacking. An example from the Wish application  that sends the raw access token to the backend server is given below:
+1   String       aToken       =   getAccessToken();
+2   HttpClient           httpClient          =
+3         new    DefaultHttpClient();
+4   HttpPost         httpPost        =
+5         new    HttpPost("/backend.com/tokensignin");
+6   params       =   new    ArrayList(1);
+7   params.add(new              BasicNameValuePair
+8         ("access_token",               aToken));
+9   httpPost.setEntity(new
+10          UrlEncodedFormEntity(params));
+11
+12    httpClient.execute(httpPost);
+Sending raw access token to server can be encoded as the following anti-protocol:
+isToken(x) ∧ Http( , u, ) ∧ flowTo(y, u)
+Google recently added a security notice to address this vulnerability in their official documentation . To authenticate users on Google’s backend servers, they recommend developers to send ID-token ((returned by GoogleSignInAccount.getIDToken())) which is signed by Google’s public keys. If backend server receives sensitive information such as access token in plain text, a modified application can send an arbitrary token to the server and thereby, initiate an impersonation attack.
+
+# VI. EXPERIMENTAL EVALUATION
+To evaluate the effectiveness of OA UTH L INT, we conduct a series of experiments to answer the following questions:
+- How effective is OA UTH L INT at identifying real-world vulnerabilities in OAuth implementations?
+- How prevalent are those anti-protocols discussed in section V?
+- How do the real-world OAuth vulnerabilities look like?
+# A. Data Collection
+To find the current scenario of vulnerable implementation of OAuth, we have analyzed 600 latest Android applications (shown in Table I) collected from Google Play Store. Our unbiased selection of applications includes top 300 free applications from all categories, top 200 free social applications, and top 100 free communication applications. The reason why we include more applications in the social and communication category is that these applications are usually more likely to use OAuth. Most applications use OAuth SDKs from service providers such as Google and Twitter. Table III shows the detail of the statistics. All applications were collected in April 2019.
+
+Our analysis found that 316 out of the 600 applications use OAuth with at least one Service Provider. We built a Soot-based sanitizer that automatically analyzes the Dalvik byte-codes to filter out applications not using any relevant classes or APIs provided by the Service Providers. We included 20 most popular Service Providers for this sanitization step.
+
+TABLE I: Top Android applications using OAuth
+# B. Results
+OA UTH L INT successfully analyzed, in total 316 applications that use at least one OAuth service provider. Among the remaining 284 applications, 273 applications did not use any OAuth implementation and 11 applications ran out of memory during the analysis. In average, total runtime for each application was 282 seconds and maximum memory consumption was 1931 MB during the analysis. All results mentioned here are in reference to the 316 successfully analyzed applications.
+
+Table II lists the number of vulnerable applications for different OAuth vulnerabilities. Total vulnerable applications with distinct number of vulnerabilities are illustrated in Fig. 9. We discuss the results for each vulnerability below:
+Locally Bundled Client Secrets. OAUTH L INT successfully identified 29 applications that bundle the consumer key/secret of at least one service provider within the application code. We found 18 applications bundled Twitter consumer key and secret, 7 applications bundled the client id and client secret from Instagram, 3 applications bundled the facebook app secret, and 12 applications bundled the consumer keys/secrets from other service providers in the source code.
+
+Using WebView for OAuth Transactions. This vulnerability is a common scenario for the application that implements OAuth in an embedded WebView for the web-based service providers. By hosting the service provider’s website in the WebView of the relying party’s mobile applications, the relying party can interact with the service provider easily. In addition, a malicious relying party can access the user’s cookies in the service provider website to log into the user’s account. OA UTH L INT successfully identified 24 applications who use WebView for the authorization and authentication transactions of OAuth. 9 applications choose to implement the web-based OAuth version instead of app-based version, even though corresponding service providers provide official SDK particularly for app-based OAuth implementation.
+
+Client-side API Call. When using OAuth for authentication, developers should pass the encrypted access token received from the relying party application to the backend server of the same relying party and then, should verify the access token with the service provider by doing server-to-server API call. OA UTH L INT identified 69 applications that violated this.
+
+secure approach and performed the authentication by making client-to-server API call. For authentication, client device should not be trusted as an API call made from the client side could be tampered by a malicious user.

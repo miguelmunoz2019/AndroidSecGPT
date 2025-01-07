@@ -1,0 +1,61 @@
+# Analysis of testing approaches to Android mobile application vulnerabilities
+© Mykhailo Antonishyn [0000-0002-2665-0066], © Oleksii Misnik [0000-0002-4654-9125]
+Pukhov Institute for Modelling in Energy Engineering National Academy of Sciences of Ukraine, Kyiv, Ukraine
+antonishin.mihail@gmail.com, alexmisnik91@gmail.com
+# Abstract
+In the first part of the article we discuss international, industrial and national standards and methodologies that describe the process of testing for application vulnerabilities, including mobile applications for Android OS. The following standards and methodologies were taken for the study: ISO/IEC 27034. Information technology. Security techniques. Application Security, NIST 800-163 Vetting the Security of Mobile application, National Information Assurance Partnership and Mobile application security verification standard. Also, we have compared methods it selves and methods of testing for vulnerabilities of mobile software applications for operating system Android. The analysis of the stages by which testing for vulnerabilities is carried out. The second part of the article presents statistics on vulnerabilities that were published by vendors – Google security statistics and Quick Heal, as well as statistics, which were formed by the authors of the publication. For statistics, the test results were taken from an online store, two crypto exchanges and two crypto wallets. The conclusions to the article summarize the results of a study of standards and statistics for conducting subsequent research on the subject of scientific work.
+
+# Keywords
+mobile application, security assessment, security testing, Open Web Application Security Project, ISO/IEC 27034, National Information Assurance Partnership.
+
+# 1 Introduction
+According to Beta News, among the 30 best applications with more than 500,000 downloads, 94% contain at least 3 average risk vulnerabilities, while 77% contain at minimum two high-level vulnerabilities. Among the 30 applications 17% were vulnerable to Man-In-The-Middle (MITM) attacks exposing all data to interception by malicious users. Furthermore, 44% of applications contain confidential data with strict encryption requirements, including passwords or Application Programming Interface (API) keys, while 66% utilize functional abilities which can compromise users’ confidentiality. This is exactly why mobile devices are subject to numerous security discussions.
+
+Copyright © 2019 for this paper by its authors. Use permitted under Creative Commons License Attribution 4 International (CC BY 4).
+
+# Application security standards
+# ISO/IEC 27034. Information technology. Security techniques. Application Security
+ISO/IEC 27034 offers guidance on information security to those specifying, designing and programming or procuring, implementing and using application systems, in other words business and Information Technology (IT) managers, developers and auditors, and ultimately the end-users of Information and Communication Technology (ICT). The aim is to ensure that computer applications deliver the desired or necessary level of security in support of the organization’s Information Security Management System, adequately addressing many ICT security risks.
+
+This multi-part standard provides guidance on specifying, designing/selecting and implementing information security controls through a set of processes integrated throughout an organization’s Systems Development Life Cycle (SDLC). It is process oriented  -.
+
+It covers software applications developed internally, by external acquisition, outsourcing/offshoring or through hybrid approaches. It addresses all aspects from determining information security requirements, to protecting information accessed by an application as well as preventing unauthorized use and/or actions of an application. The standard is SDLC-method-agnostic: it does not mandate one or more specific development methods, approaches or stages but is written in a general manner to be applicable to them all. In this way, it complements other systems development standards and methods without conflicting with them. One of the key driving principles is that it is worth investing more heavily in specifying, designing, developing and testing software security controls or functions if they are reusable across multiple applications, systems and situations, albeit at the risk of propagating vulnerabilities more widely than might otherwise be the case. In a nutshell, “Do it properly, do it once, and reuse it”. The approach may seem a little idealistic, but some far-sighted organizations are already successfully using it: it is more than just an academic interest  -.
+
+Section 8 “Security Audit” of this standard consists of verification and formal confirmation of evidence that the application that is being developed is at the required level of security, which is written in the technical documentation. An application security audit can be performed at any time during the development and operation life cycle. The sixth part of the standard ISO / IEC 27034-6:2016. Information technology. Security techniques. Application security. Part 6. Case studies does not describe how and by what means it is necessary to conduct testing. It shows just what needs to be tested ,.
+
+# NIST 800-163 Vetting the Security of Mobile application
+This document defines an app vetting process and provides guidance on planning and implementing an app vetting process, developing security requirements for mobile apps, identifying appropriate tools for testing mobile apps and determining if a mobile app is acceptable for deployment on an organization’s mobile devices. An overview of
+# 1 Standards includes security checks according to which mobile applications are tested
+# 1 Incorrect Permissions
+Permissions allow accessing controlled functionality such as the camera or Global Positioning System (GPS) and are requested in the program. Permissions can be implicitly granted to an app without the user’s consent.
+
+# 1 Exposed Communications
+Internal communications protocols are the means by which an app passes messages internally within the device, either to itself or to other apps. External communications allow information to leave the device.
+
+# 1 Exposed Data Storage
+Files created by apps on Android can be stored in Internal Storage, External Storage, or the Keystore. Files stored in External Storage may be read and modified by all other apps with the External Storage permission.
+
+# 1 Potentially Dangerous Functionality
+Controlled functionality that accesses system-critical resources or the user’s personal information. This functionality can be invoked through API calls or hard coded into an app.
+
+# 1 App Collusion
+Two or more apps passing information to each other in order to increase the capabilities of one or both apps beyond their declared scope.
+
+# 1 Obfuscation
+Functionality or control flows that are hidden or obscured from the user. For the purposes of this appendix, obfuscation was defined as three criteria: external library calls, reflection, and native code usage.
+
+# 1 Excessive Power Consumption
+Excessive functions or unintended apps running on a device which intentionally or unintentionally drain the battery.
+
+# 1 Traditional Software Vulnerabilities
+All vulnerabilities associated with traditional Java code including: Authentication and Access Control, Buffer Handling, Control Flow Management, Encryption and Randomness, Error Handling, File Handling, Information Leaks, Initialization and Shutdown, Injection, Malicious Logic, Number Handling, and Pointer and Reference Handling.
+
+# 2 National Information Assurance Partnership (NIAP)
+This document presents functional and assurance requirements found in the Protection Profile for Application Software which are appropriate for vetting mobile application software (“apps”) outside formal Common Criteria (ISO/IEC 15408) evaluations. Common Criteria evaluation, facilitated in the U.S. by the National Information Assurance Partnership (NIAP), is required for IA and IA-enabled products in National Security Systems according to Committee on National Security Systems (CNSS) Policy #11. Such evaluations, including those for mobile apps, must use the complete Protection Profile. However, even apps without IA functionality may impose some security risks, and concern about these risks has motivated the vetting of such apps in government and industry.
+
+# Security Functional Requirements
+# 1. Random Bit Generation Services
+If implement Deterministic Random Bit Generator (DRBG) functionality is chosen, then additional security requirements elements shall be included in the ST. In this requirement, cryptographic operations include all cryptographic key generation/derivation/agreement, Initial Vector's (IVs) (for certain modes), as well as protocol-specific random values.
+
+# 1. Storage of Credentials
+This requirement ensures that persistent credentials (secret keys, Public Key Infrastructure (PKI) private keys, or passwords) are stored securely. The assurance activity implicitly restricts which selections can be made, on per-platform basis. For example, if a platform provides hardware-backed protection for credential storage, then the third selection cannot be indicated. If implement functionality to securely store credentials is selected, then the following components must be included in the Security Target (ST). If other cryptographic operations are used to implement the secure storage of credentials, the corresponding requirements must be included in the Security Target.

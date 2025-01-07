@@ -1,0 +1,52 @@
+# 14
+# IEEE TRANSACTIONS ON RELIABILITY
+# TABLE IV
+# BENIGN AND MALWARE IN VULNERABLE apk SETS
+All packages commonly introduce vulnerabilities yet only for certain packages.
+
+# Insights from RQ4:
+Although third-party libraries are the main contributor of vulnerabilities, it is quite possible that the major contribution is only from part of these libraries. Therefore, more focus should be given on the analysis of libraries and market maintainers could draw policies rejecting apps using nonvetted libraries. Moreover, the claim made in  that more code and libraries imply more vulnerabilities may not be always true.
+
+# Vulnerability and Malware
+# To answer RQ5:
+Do vulnerabilities foreshadow malware? We investigate relationships between app vulnerabilities and malware. One way for malware to achieve their malicious behaviors is by leveraging vulnerabilities. Reasonably, malware can deliberately implement vulnerabilities for their own use as presented in . Moreover, to distinguish malware from benign apks, the common practice is using antivirus (AV) flagging reports. AndroZoo provides these reports20 as metadata for all its apks, and in this article, we treat an apk as malware as long as one or more AVs gave positive reports.
+
+Table IV reports the proportion of benign and malware that are detected as vulnerable for each vulnerability type. Malware are not more likely to contain a given vulnerability than benign apps. We further perform a correlation study on these malware to assess whether the number of vulnerabilities in an apk can be correlated to the number of AVs that flag it. This is important since AVs are known to lack consensus among themselves , . For every vulnerability type, we found that the Spearman’s ρ was below 0, implying negligible correlation.
+
+We now carry an evolution study to investigate whether certain vulnerabilities may foreshadow certain type of Android malware. To this end, we rely on type information provided in AndroZoo based on the Euphony tool . A malware can be labeled with various types, including trojan, adware, etc. Given an app lineage, when a single apk is flagged by AVs, we consider its nonflagged predecessors in the lineage and count cumulatively how many vulnerabilities were included in them. For each lineage where all apks are benign, we also count the number of vulnerabilities per vulnerability types. We then perform the MWW test, for each vulnerability type, to assess whether the difference between, on the one hand, the median number of vulnerabilities for malware of a given type, and on the other hand, the median number of vulnerabilities in benign apps, is statistically significant. In most cases, this difference is not statistically significant, suggesting that most types of Android malware cannot be readily characterized by vulnerabilities within the malware itself. Nevertheless, we find four interesting cases of vulnerability types (namely, Command, KeyStore, Fragment, and Encryption), where vulnerabilities are suggestive of malicious behavior. Fig. 18 illustrates the distribution of vulnerabilities across benign, trojan, and adware. Vulnerabilities of these types are significantly less in benign lineages than in earlier apks of lineages where malware of type trojan or adware will appear as shown in the figure and further proved by the 0 valued p-values between benign and adware and between benign and trojan of all three types except Encryption, while the absence of benign of type Encryption in the figure reflects that benign apks does not contain any of such vulnerability.
+
+# Insights from RQ5:
+Our study finds similar rates of vulnerabilities in malware as well as benign apps. However, we uncovered cases where vulnerable apks were updated into malicious versions later in the app lineage.
+
+# IV. DISCUSSION
+We now discuss the potential implications and future works, as well as the possible threats to the validity of this study.
+
+# A. Implication and Future Work
+The datasets and empirical findings in this work suggest a few research directions for implications and future works in improving security in the Android ecosystem, which are as follows.
+
+1. Understanding the genesis of mobile app vulnerabilities: Since app lineages represent the evolution of apps, they could contain the information about “when” and “how” is a given vulnerability initially introduced. This information could then be leveraged to understand the genesis of the vulnerability, and thereby, help researchers and developers invent better means to locate and defend such vulnerabilities.
+
+2. Tools to address vulnerability infections: By leveraging app lineages, the corrected pieces of code of a vulnerability happened in a certain app version could be spotted and extracted from its subsequent app versions with the fixes. Indeed, the vulnerable code snippets disclosed in this
+This article has been accepted for inclusion in a future issue of this journal. Content is final as presented, with the exception of pagination.
+
+# GAO et al.: UNDERSTANDING THE EVOLUTION OF ANDROID APP VULNERABILITIES
+1. Work could be leveraged to mine fix patterns for certain vulnerabilities, and subsequently, enable the possibility of automated vulnerability fixes.
+
+2. Reintroduction analysis for app updates: As revealed in the answer to RQ3, the fact that vulnerabilities can be reintroduced into apps during their updates, it is essential to perform reintroduction analysis (either statically or dynamically) for Android apps. These analyses later could be immediately adopted by app markets to guarantee that app updates do not introduce more (known) vulnerabilities.
+
+3. Library screening strategies: As concluded in Section III-D, third-party libraries are the main contributor of vulnerabilities in an app. Thus, when libraries containing serious vulnerabilities get to be popular, the aftermath will be difficult to estimate. Such incident happened once on August 21, 2017, Bauser and Hebeisen , from the Lookout Security Intelligence team, have reported that their investigation of a suspicious ad software development kit (SDK) (i.e., ad library) revealed a vulnerability that could allow the SDK maintainer to introduce malicious spyware into apps. After it was alerted, Google has then removed from the market over 500 apps containing the affected SDK: those apps were unfortunately already downloaded over 100 million times across the Android ecosystem. Therefore, strategies of selective screening of libraries could be investigated to clean app markets with apps that unnecessarily ship vulnerable libraries.
+
+4. Understanding the pervasiveness of vulnerabilities: According to this study, each apk contains more than 60 vulnerabilities on average. Although intensive studies have been done on different kinds of vulnerabilities, no vulnerability “bubble” explosions have been observed as we studied in RQ1. However, detection tools targeting on these vulnerabilities have been made publicly available and free for quite a long time such as the tools we used in this study. Therefore, why developers did not use these tools to protect their apps could be an interesting question to answer in future work.
+
+5. A correlation study of vulnerabilities and malware: In this study, the cases where apks containing certain vulnerabilities were updated into malware have been spotted. Khodor et al.  also observed similar cases that malware deliberately implements vulnerabilities for its malicious purpose. This phenomenon implies that there could be correlations between certain vulnerabilities and malware. Nonetheless, more thoroughly defined experiments are needed to confirm this hypothesis. We believe that app lineages, introduced in this work, can be leveraged to implement such studies.
+
+# B. Threats to Validity
+Like most empirical investigations, our study carries a number of threats to validity. We now briefly summarize them in this subsection.
+
+Threats to external validity are associated with our study subjects as well as to the vulnerability detection tools that are selected. To provide reasonable confidence in the generalizability of our findings, this study leverages the most comprehensive dataset of Android apps. Threats to external validity are further minimized by considering a variety of vulnerability detection tools (hence, of vulnerability types) for our study.
+
+The main threat to the internal validity is related to the process that we have designed for reconstructing app lineages. To minimize this threat, we have implemented constraints that are conservative in including only relevant apks in a lineage.
+
+In terms of threats to construct validity, our analyses assume that all vulnerability types are of the same importance and that every apk can be successfully analyzed. Yet, since the IC3 and FlowDroid successfully analyzed fewer apks than AndroBugs, the scale of the significance of the findings may vary. Nevertheless, we have focused more on assessing proportions related to available data per vulnerability types (instead of immediate averages).
+
+Also, code obfuscation is not considered in this article. As it is more and more common for developers to obfuscate their code because of security or malicious consideration. This could introduce some impacts on our results. However, many of our analyses are naturally obfuscation immune (e.g., leak analysis checks the data flows from sources to sinks, while sources and sinks are normally Android API calls that cannot be obfuscated). Therefore, the impact of code obfuscations should be limited.

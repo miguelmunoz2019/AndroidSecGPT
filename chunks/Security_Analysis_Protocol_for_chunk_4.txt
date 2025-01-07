@@ -1,0 +1,30 @@
+# 4. Data Gathering
+The protocol defined for the collection of information has given successful results for this mobile application, since it has been possible to identify the transactions they allow to carry out, as well as the permissions they request for their installation. In addition, it was found at the analyzed mobile application important data, such as the name of the company that developed the application, on its certificate.
+
+# 4. Static Analysis
+By applying the protocol defined for static analysis, successful results have been obtained for this mobile application. However, for applications that contain most of the server-side process, such as the analyzed application. For this case, it is recommended to browse through the files which are part of the application.
+
+It has been found that the protocol was most useful for applications which log a large part of the information, so that it is possible to identify the code portions associated with authentication processes, transfers, etc. For the analyzed application, the protocol allowed to identify the folder containing the HTML code files for the different processes to be identified. As an alarming problem it has been found that the banking application contains the image of a check, including personal information such as, names and valid identification numbers, incorporated in the application code. Also, the analyzed application has been signed using the SHA1 algorithm with RSA, which is known to have collision problems.
+
+# 4. Dynamic Analysis
+The protocol has proven to be effective for the dynamic analysis of mobile applications, since the results obtained when applied showed that there were security shortcomings, at the analyzed application. It has been successful, mainly for detecting the use of weak protocols, as it has been possible to identify the username and password for the analyzed application in plain text.
+
+376 RISTI, N.º E19, 04/2019
+# RISTI - Revista Ibérica de Sistemas e Tecnologias de Informação
+# 5. Conclusions
+- Thanks to the selection of specific steps of the methodology of OWASP Mobile Security Project and considering the treats, which affects mobile applications, it’s been designed the first version of a testing protocol to verify the security status of mobile applications. The protocol has three phases: data gathering, static analysis and dynamic analysis, which are implemented, using Android Virtual Device Manager, OpenSSL, Dex2Jar, JD-Gui, Logcat, MobSF, OWASP ZAP and Drozer.
+
+- The protocol proposed for the information gathering phase was useful for analyzing the content of the .apk file. The protocol proposed for the static analysis phase has given good results, mainly for applications that perform data processing in the application and not only on the server side. The protocol proposed for the dynamic analysis phase has been successful, mainly for applications that need to authenticate with an external server. For this phase is recommended to use a physical Android device.
+
+- Through the analysis of the chosen mobile application, it’s observed that there exists the need of a better control on the developing process of mobile applications, since this application include vulnerabilities such as: customer data included in the source code, and the log of sensitive information. In addition, it’s been found that the mobile banking application includes in its source code, personal information of customers at the image of a check, which undermines the privacy of this customer. This highlights the lack of security controls on the developing process. All this can compromise the personal information of the customers.
+
+# Security Analysis Protocol for Android-Based Mobile Applications
+#tab=M-Security_Testing
+Permissions Overview-Android Developers. (n. d.). Permissions overview. Developer.android.com. Retrieved from https://developer.android.com/guide/topics/permissions/overview.html
+Quora. (n. d.). How do I know if android app was programmed in a framework such as ionic, cordova or phonegap? Quora. Retrieved from https://www.quora.com/How-do-I-know-if-android-app-was-programmed-in-a-framework-such-as-ionic-cordova-or-phonegap
+Sublime Text. (n. d.). A sophisticated text editor for code, markup and prose. Sublime Text. Retrieved from https://www.sublimetext.com/
+US-CERT|United States Computer Emergency Readiness Team. (n. d.). Official website of the Department of Homeland Security. US-CERT. Retrieved from https://www.us-cert.gov/
+Welivesecurity. (2016). Cómo evitar errores de desarrollo en Android con PidCat. Welivesecurity. Retrieved from https://www.welivesecurity.com/la-es/2016/06/28/auditar-aplicaciones-android-pidcat/
+Zhauniarovich, Y., Philippov, A., Gadyatskaya, O., Crispo, B., & Massacci, F. (n. d.). Towards Black Box Testing of Android Apps. Zhauniarovich.com Retrieved from http://www.zhauniarovich.com/files/pubs/BBoxTester_Zhauniarovich2015.pdf
+378 RISTI, N.º E19, 04/2019
+© 2019. This work is published under https://creativecommons.org/licenses/by-nc-nd/4/ (the “License”). Notwithstanding the ProQuest Terms and Conditions, you may use this content in accordance with the terms of the License..

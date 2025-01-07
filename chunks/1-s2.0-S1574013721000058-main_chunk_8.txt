@@ -1,0 +1,140 @@
+# 3. Anti rooting
+Android device manufacturers limit user control over the operating system and applications. Every application in Android executes with its context inside a sandbox. Rooting allows user to attain full privilege over hardware, OS, applications and data stored among them . Rooting is achieved by obtaining persistent root access of the OS , which is achieved by installing a customized superuser (su) binary. su binary is then used to perform operations as root such as remove application restrictions and security constraints . Sun et al. in , detailed five rooting methods namely: (a) Fastboot or Download mode; (b) Custom recovery; (c) Bootable SD card; (d) Rooting apps; and (e) Privileged ADB. A rooted device is a risk for applications transacting sensitive information (such as financial applications) or applications that restrict user interaction (such as a company’s internal mailing application). High valued applications perform rooting detection to prevent exposure to a rooted device. Techniques and artifacts to detect presence of a rooted device are popularly categorized into Anti rooting. Depending on how a device is rooted, artifacts for its detection vary. Table 3 presents a comprehensive view compiled from existing root detection methods.
+
+# 3. Anti tainting
+A recent popular analysis technique known as taint analysis is based on the data flow from source to sink using tags . For instance, in the case of sending DeviceID information over the network, method returning DeviceID is the source and socket’s send method is a sink. Movement of tagged data in taint analysis is logged, thus enabling the detection of information leakage. Taint analysis for Android was introduced in . Evasion of information flow detection taint analysis is known as Anti Tainting. Hoffmann et al.  and Sarwar et al.  experimented anti tainting by monitoring sensitive sources (such as contact list, location data) and instead of original data sent the duplicated data or a copy to the sink.
+
+# 3. Anti keylogger
+Android offers the feature to install third-party keyboards, which may be designed to extract user’s sensitive information or credential data during typing . Few application hardening solutions such as Promon Shield uses anti key-logging by providing its own keyboard whenever an application is calling SecureEditText and SecureKeyboard classes. Another approach followed is to maintain a whitelist of trusted keyboard applications. An application may quit on finding the presence of a keyboard not in the whitelist.
+
+# 3. Anti-screen reader
+Malicious applications can target for screen captures to eavesdrop user activity and credentials using Android accessibility services . Similar to Anti Key-logging, Anti screen reader technique try to detect presence of a screen reader when a critical application such as banking is running. An application can restrict screen captures by activating FLAG_SECURE, which is a display flag to treat window content of the application as secure.
+
+# 3. Other techniques
+In this section we consider methods which cannot be into above categories.
+
+# 3. Network communication hardening
+A stealthy network communication lowers the possibility of eavesdropping over network connection or interfaces. This subsection presents techniques to strengthen network communications, which may serve as preliminary network security by developers.
+
+- HTTPS: As most applications use HTTP to transceive data, Android supports HTTPS client connection using HttpsURLConnection. HTTPS encrypts traffic to prevent eavesdropping. It provides TLS based confidentiality and authentication. Listing 25 a sample code to open a client connection using HTTPS.
+
+- DNS: Android 10 and above supports DNS request over TLS using DNS-over-TLS mode. The API DnsResolver can be used for name resolutions.
+
+- Certificate and Public Key Pinning: Whenever an HTTPS connection is made to server, authentication of server certificate is requested by underlying TLS connection. Certificates
+# V. Sihag, M. Vardhan and P. Singh
+# Computer Science Review 39 (2021) 100365
+# Artifact list to detect a rooted device.
+
+1 private static boolean isValidJPEG ( String path)
+throws IOException
+2 {
+3     RandomAccessFile file = null;
+4     try{
+5        file = new RandomAccessFile (path , " r " );
+6        long length = file.length ();
+7       if ( length < 10L){
+8          return false; }
+9        byte [] head = new byte ;
+10        file. readFully (head);
+11        file.seek(length - 2);
+12        byte [] tail = new byte ;
+13        file. readFully (tail);
+14     return head  == -1 && head  == -40 && tail 
+== -1 && tail  == -39;}
+15     finally {
+16       if (file != null){
+17          file.close ();} } }
+# Listing 26: Code to validate JPEG file based on header (FF D8) and footer (FF D9) values
+presented by a server are issued and verified by Certifi-
+cate Authority (CA). A valid certificate based https con-
+nection greatly reduces the chances of man-in-the-middle
+(MITM) attacks. Certificate pinning checks the authenticity
+of server certificate. Only when the server is authenticated,
+the connection is established.
+
+- Sanitization and Validation: Validation is the process of en-
+- surings the data submitted to server is sensible i.e. it fulfills
+- the constraints of validity. For example, if server is expecting
+- a 10 digit number then making sure that the submitted
+- value is 10 digit. It reduces the likelihood of memory corrup-
+- tion and injection attacks. Listing 26 illustrates validating a
+- submitted file to be a JPEG.
+
+- End to End encryption: Limitation with https protection
+- level is that it provides a confidential communication chan-
+- nel between client and the server. But there exist scenarios
+- in which an end to end communication between two peers
+- going through multiple servers need to be encrypted (for
+- instance, Whatsapp). It means the intermediary servers or
+- nodes shall have no information about data content but
+- metadata. End to end encryption solution is specifically de-
+- signed as per application functionalities.
+
+# 3. Resource centric obfuscation
+Assets and res directories of an APK are responsible to store
+resource files such as audio, images. They are even used by
+developers to store database files. Below we discuss different
+hardening techniques used by developers to protect or evade.
+
+# Resource renaming.
+
+List of resources and their names are defined in the XML files in the APK. Scanning engines often identify ma-
+licious applications based on resource files with specific names.
+
+This class of obfuscators aims at evading signatures based on
+string matching. For example, Android Rootnik malware can be
+identified by the presence of secData0.jar file in the assets
+folder in APK . In resource renaming protection technique,
+user defined resource identifiers are renamed with random or
+predefined naming pattern and the same is updated with respec-
+tive files. Preda et al. in  replaced resource names by first 8
+characters from MD5sum of the file name.
+
+# Resource encryption.
+
+Resource encryption technique encrypts the file content of resources and assets. For it to work, subsequent
+changes are required in byte code for resource decryption during
+execution. For example, secData0.jar in Rootnik malware is
+an encrypted resource file . Developers may use existing
+popular encryption methods (for e.g. DES, AES and XOR based
+encoding) or custom methods for it.
+
+# Code and package hiding.
+
+Malware authors often use resource files to hide malicious elements such as code segments, DEX
+file and APK inside resource files . It makes the application
+look benign upon inspection. For example, GingerMaster mal-
+ware hides it malicious script in resources with the extension of
+.png . Another malware, Gamex.A!tr contains a ZIP file in
+Assets under the name logos.png . Malware even employ
+steganography to hide malicious packages and JAR files in valid
+resource files. The objective is to embed an executable piece of
+code or payload to evade detection, static analysis in particular.
+
+Advantage with steganography based obfuscation approach is
+that the malicious content is difficult to recognize during the
+static phase as it is revealed at execution time only. For example,
+SmsZombie.A!tr uses jpeg file to hide package using steganog-
+raphy. Code and package hiding in combination with encryption
+increase the obfuscation level.
+
+# 4. Effectiveness of obfuscation methods
+Faruki et al. in  discussed obfuscation methods, application
+protection and deobfuscation methods specific to Android. Dong
+et al. in  provided an understanding into Android code ob-
+fuscation and carried out a large scale investigation on 114,560
+samples for its usage.
+
+Obfuscation methods are new normal for both developers
+and malware authors. Malware authors leverage above discussed
+techniques such as code obfuscation, anti-debugging, anti-
+hooking to bypass detection. Developers furthermore engage
+them to defend against evasive systems. Never ending cycle of
+detection, anti-detection and anti-anti-detection propel innova-
+tion in both detection and evasion. While the effectiveness of
+detection methods against ever improving anti-detection is a
+question to contemplate, limited research in available literature
+focuses on it. Evolution of these techniques in the form of a
+timeline is illustrated in Fig. 14. It has been created based on the
+introduction of techniques in the literature over the decade to the
+best of our knowledge.

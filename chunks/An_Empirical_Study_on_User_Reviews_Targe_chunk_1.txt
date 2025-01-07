@@ -1,0 +1,63 @@
+# AN EMPIRICAL STUDY ON USER REVIEWS TARGETING MOBILE APPS’ SECURITY & PRIVACY
+Debjyoti Mukherjee
+Department of Computer Science
+University of Calgary, Canada
+debjyoti.mukherje1@ucalgary.ca
+Alireza Ahmadi
+Department of Computer Science
+University of Calgary, Canada
+alireza.ahmadi1@ucalgary.ca
+Maryam Vahdat Pour
+Schulich School of Engineering
+University of Calgary, Canada
+maryam.vahdatpour@ucalgary.ca
+Joel Reardon
+Department of Computer Science
+University of Calgary, Canada
+joel.reardon@ucalgary.ca
+# ABSTRACT
+Application markets provide a communication channel between app developers and their end-users in form of app reviews, which allow users to provide feedback about the apps. Although security and privacy in mobile apps is one of the biggest issues, it is unclear how much people are aware of these or discuss about them in reviews.
+
+In this study, we explore the privacy and security concerns of users using reviews in the Google Play Store. For this we conducted a study by analyzing around 2M reviews from the top 539 apps of this Android market. We found that 0% of these reviews are related to the security and privacy concerns of the users. We further investigated these apps by performing dynamic analysis which provided us valuable insights into their actual behaviours. Based on the different perspectives, we categorized the apps and evaluated how the different factors influence the users’ perception about the apps. It was evident from the results that the number of permissions that the apps request plays a dominant role in this matter. We also found that sending out the location can affect the users’ thoughts about the app. The other factors do not directly affect the privacy and security concerns for the users.
+
+# Keywords
+Natural Language Processing · Google Play · App Review · Mobile Application · Security · Privacy · Dynamic Analysis
+# 1 Introduction
+Mobile application have been a part of computers for over a decade and mobile software market is the fastest growing segment in the mobile industry. With the ever-growing popularity of mobile apps, various OS providers and device vendors have launched their own application stores; Google Play and Apple’s App Store are the two most popular among them. These markets distribute many apps for end-users to search, download, and purchase applications.
+
+Similar to online retail markets, end-user reviews are a key for the success of the apps. Users that have used an app can write reviews—including a 1-to-5-star rating—to express their opinion about an app and help other users to choose among similar apps.
+
+Reviews can also be used as a direct feedback channel to app developers. Developers can find out feature suggestions, as well as usability issues, crashes, and other types of feedback about their apps. While prior research has focused on providing users with support for choosing less risky apps  or helping them making informed decisions , there is a dearth of research related to this feedback channel. We believe that for apps to improve their security-and-privacy related behavior, feedback should be directed to developers. User reviews would seemingly form such an immediate feedback and rating channel for security and privacy related concerns from users.
+
+This paper performs an empirical study on mobile app reviews for top free mobile applications in Google Play to explore how much the users are concerned about their security-and-privacy while using mobile apps and whether their concerns are justified. In this study, we have answered the following two research questions:
+# RQ 1:
+How much are users concerned about security and privacy while using mobile apps?
+# RQ 2:
+To what extent, users’ judgment matches the actual functionality of mobile apps?
+To answer RQ1, we mined the reviews and apps’ details from the app store and performed supervised learning to identify the security-and-privacy related reviews. We refer to these reviews as “Related” reviews and observed that a considerable number of reviews are related. We also devised a method to identify if the related reviews correspond to a positive or a negative sentiment. Based on this classification, we have successfully labelled the apps.
+
+In order to evaluate RQ2, we performed dynamic analysis to check the actual behaviour of the apps and collected various types of data like Personal Identifiable Information (PII) leaked, the different hosts connected, the type of permissions asked, etc. On the basis of these data we have again categorized the apps. Finally we have compared the categorization of apps based on reviews to new categories based on the dynamic analysis and have successfully answered the second research question. We have also used different statistical measures to evaluate our results.
+
+In summary, the contributions of this work are the following:
+- We demonstrate a way to judge how much the users of mobile apps are concerned about their privacy-and-security.
+
+- We have measured the actual behavior of the apps as it relates to privacy and could compare how much of the users’ concerns are justified.
+
+- We have identified some of the key factors that users’ depend on while judging any app’s behavior related to privacy.
+
+- We show that reviews can be useful for identifying some types of privacy violation in mobile apps, while it may not be as effective in some other aspects.
+
+The rest of this paper is structured as follows: Section 2 provides an overview of the related work, Section 3 depicts our methodology, Section 4 provides overview of the data analyzed, Section 5 shows the results, Section 6 contains the discussion, and Section 7 has the conclusion.
+
+# 2 Related Work
+Android privacy, and in particular application privacy and the role of developers in the mobile ecosystem, have been studied from a variety of perspectives. In this section, we survey related works on app reviews in general and how describe privacy issue and awareness on apps using natural language. We would also take a look at app security evolution.
+
+# 2 General App Reviews
+App reviews are the primary channel through which developers receive feedback about their applications. Prior work by Pagano and Maalej  found that different apps receive different amount of reviews, and reviews are not easy to automatically analyze given their unstructured forms. Chen et al.  has shown that about one third of the user reviews are informative and focused on automatically identifying useful user reviews for developers. Existing work by Palomba et al.  also proposed a similar approach to support app developers in classifying feedback useful for app maintenance. Fu et al.  proposed a tool that analyzes user comments and ratings in mobile app markets. The approach uses regression and Latent Dirichlet Allocation (LDA)  models to analyze the comments’ topics. In contrast, our study focuses on the connection between app reviews and the application’s security and privacy concerns.
+
+# 2 Developer Reviews
+Past research has successfully mined software artifacts and connected them with the app descriptions regarding security and privacy aspects. Gorla et al.  proposed an approach to examine whether the applications’ descriptions matches the applications’ behavior. It offers a solution to cluster apps by their topics based on their description, and the usage of permission for protected APIs within each cluster. Further, Pandita et al.  and Qu et al.  proposed two systems that mine Android application descriptions and then use natural language processing (NLP) to automatically bridge the semantic gap between what applications do and what users expect them to do from their description. Our study, however, focuses on reviews written by users, which do not always follow rigid grammatical structures.
+
+Recent works by Gruber et al.  also focused on mining privacy policy of apps to identify critical discrepancies between developer-described app behavior and permission usage. Further, Sadeh et al.  focus is on comparing the practices described in privacy policies to the practices performed by smartphone apps covered by those policies. Although these two works are comparing privacy policy of the apps, it is not based on real experience, and it is based on the documents provided by the developers.
+
+Bugiel et al.  measured the impact of user reviews on Android app security and privacy. This method first measures the security and privacy relevant reviews (SPR), and then for each app version mentioned in the SPR, they use static code analysis to extract permission-protected features mentioned in the reviews. However, their study does not show if the mentioned privacy and security leaks is actually leaking in the application or not.

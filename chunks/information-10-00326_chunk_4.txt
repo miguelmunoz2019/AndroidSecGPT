@@ -1,0 +1,68 @@
+Overall App risk: Medium
+# The detected vulnerabilities are:
+- Static: Exported Components, Debug Mode Enabled, Backup Mode Enabled
+# 3. Ampere
+This is one of the applications on the Google Play store. It is used for battery usage and voltage calculation.
+
+Overall App risk: Medium
+# The detected vulnerabilities are:
+- Static: Exported Components, Information Leaks
+# 4. Brevent
+This is one of the applications on the Google Play store. It is used to control other applications that are in the background.
+
+Overall App risk: Low
+# The detected vulnerabilities are:
+- Static: Exported Components
+# 5. GoIV
+This is one of the applications on the Google Play store. It is used alongside Pokemon Go game.
+
+Overall App risk: Low
+# The detected vulnerabilities are:
+- Static: Exported Components, Information Leaks
+# Analysis Report Overview
+The output of the model is an analysis report which consists of three sections. The first section is the APK information section. It contains unique information that describes the APK including the APK version, package name, minimum SDK version, target SDK version, the architectures supported by the application, whether the backup and debug modes are enabled or not, and whether the application is for testing only or not. The second section is the permissions granted to the application by the operating system. The third and final section in the report contains the vulnerabilities detected in the APK file. The vulnerabilities are represented in a table consisting of four columns: risk level, category, type, and description. The risk level indicates how severe the vulnerability is on a scale from low to high. The category indicates what the vulnerability is (e.g., exported component). The type of vulnerability specifies whether it resulted from static or dynamic analysis. Finally, the description explains the vulnerability in details.
+
+# Information 2019, 10, 326
+# Apk Info
+# Apk Permissions
+# Vulnerabilities Report
+(a) Low Risk
+(b) High Risk
+# 6. Conclusions and Future Work
+The world has become very dependent on mobile applications in all aspects. With this increase in
+demand, the rate of releasing mobile applications has also increased to meet the continuously changing
+demands of the users and to keep up with competitors on the market. This has caused applications
+testing time to decrease and for third-party testing to become harder to perform as it requires more
+time and resources. The shortening of the testing phase of the released applications has caused these
+apps to become vulnerable to malicious users and hackers who may gain unauthorised access to
+private information. Throughout this paper, we proposed a usable Android vulnerability detection
+framework. The framework can be used by both developers and normal users. A web application
+is built to make it easy to use. The framework analyzes any uploaded APK file by two methods:
+static analysis and dynamic analysis and generates an analysis report. The types of vulnerabilities
+that we detected in our project were Information Leaks, Intent Crashes, Insecure Network Requests
+(Http Requests), Exported Android Components, Enabled Backup Mode, and Enabled Debug Mode.
+
+The framework is available on GitHub.
+
+Future work includes improving the model by detecting more vulnerabilities. For example,
+detecting deprecated and vulnerable libraries used in the source code and adding support for static
+analysis to analyse kotlin code and not only Java code. It also involves analysing native libraries to
+detect malware that may cause security vulnerabilities protecting Android applications and supporting
+ARM architecture for APKs in the dynamic analysis since there are numerous Android mobiles and
+applications based on that architecture. Finally, it constitutes assessing the severity of information
+leaks based on linking static analysis outputs with dynamic analysis ones.
+
+# Author Contributions
+Investigation, A.A., A.E., M.T.M., N.A., H.H. and I.H.; Methodology, A.A., A.E., M.T.M.
+
+and N.A.; Project administration, H.H. and I.H.; Software, A.A., A.E., M.T.M. and N.A.; Supervision, H.H. and I.H.;
+Visualization, A.A., A.E., M.T.M. and N.A.; Writing—original draft, A.A., A.E., M.T.M. and N.A.; Writing—review
+& editing, H.H. and I.H.
+
+# Funding
+This research received no external funding.
+
+# Conflicts of Interest
+The authors declare no conflict of interest.
+
+# Information 2019, 10, 326.

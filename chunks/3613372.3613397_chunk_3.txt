@@ -1,0 +1,56 @@
+These mutation operators (AOR, ROR, and LCR) are a subset of the five representative ones . They act on binary expressions and replace the language operator (arithmetic, relational, or logical) with other syntactically similar operators. Although the mutation operator SBR (Statement Block Removal) was implemented in the used tool , we do not use this operator because SBFL techniques have limitations in locating faults related to missing code . These mutation operators are capable of reproducing faults related to resource interactions in mobile applications because we generate mutants for resource related classes. This strategy allows the modification of the code related to the resource, as seen in the example of Figure 2 in a similar way to the mutation generation strategies in other studies.
+
+We generate all mutants to each target application based on the selected operators, since the tool uses the concept of metamutant  to encode all mutants and the original source code into one application. In this way, the compilation and loading time is reduced, because all mutants can be enabled/disabled at runtime. Thereafter, we conducted a previous analysis to identify mutants covered by at least one test case.
+
+The number of mutants generated is constrained by the SBFL approach, where each test case is executed individually, increasing the testing effort. We attempt to select 20 mutants (10 mutants for resource-related classes and 10 mutants for general classes) in each target application. The number of mutants for each application can be found in Table 3. However, we could not generate a uniform number of mutants for some applications due to a lack of mutation points. The mutants were randomly selected from the mutation operators set (AOR, ROR, and LCR). We restricted our study to 20 mutants due to experimental time constraints.
+
+As we can notice, we are not able to seed all mutants for resource-related classes for Ground and Threema. For Ground, we only identify 5 mutants for this kind of class. A possible reason for Threema.
+
+# 3 Test Suite Extension
+Similar to our previous work , we instrumented code aiming to control 14 common resources of the Android Platform: Auto Rotate, Battery Saver, Bluetooth, Camera, Do Not Disturb, Location, Mobile Data, Wi-Fi, Accelerometer, Gyroscope, Light, Magnetometer, Orientation, and Proximity. The instrumentation is based on Android instrumented tests, i.e., a type of functional test . They execute on devices or emulators and can interact with Android framework APIs.
+
+Each class of the test suites is extended with the instrumentation, allowing the control of specific contextual information of the resource states. The control of resources is based on settings. A setting is defined as a 14-tuple of pairs (resource, state) where state can be True or False depending on whether the resource is enabled or disabled.
+
+# 3 Test Suite Execution
+For each mutant of the first set of applications and the applications of the second set, we execute the test suites with the coverage reports enabled. We used a Xiaomi Pocophone F1 with 6 GB RAM, running Android 10. Since the calculation of the coefficient is based on the output of each test case, we execute test cases separately.
+
+For illustrating the experimental effort, we collect a sample of the approximate execution time for all 20 mutants of each application in “Execution Time” column of Table 1. The CPU time was randomly sampled, since from our observation, we could not verify a great variation of time in the execution of the mutants. We can see that the execution time varies between 1h45m (OpenScale) to 1d3h (WordPress).
+
+# 3 Coefficient Calculation
+We analyzed test reports to identify failed test cases and the coverage reports to get the coverage information. In order to decrease the complexity of the analysis, we use the method coverage data for calculating the Ochiai coefficient of each method in target applications.
+
+# 4 RESULTS
+This section presents the study results and discusses them focusing on providing answers to the research questions. Section 4 provides.
+
+9 https://developer.android.com/training/testing/instrumented-tests
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+# Marinho, et al.
+
+# 4 Use of SBFL for Mobile Applications (RQ1)
+The amount of dead mutants and the mutation score are related to the quality of the test suites, generally assessed by some code coverage criteria . We can note that AnkiDroid, Threema, and WordPress have mutation scores greater than 0 while the number of test cases oscillated between 54 and 164 (Table 1). However, their code coverage is between 2% and 19%. According to the ranked dead mutants, the SBFL is able to rank more than 75% of the dead mutants for 6 applications. A faulty method could not be ranked if there is no failed test case for it.
+
+# 4 Coefficients in Resource-Related Classes and in General Classes (RQ2)
+We analyse the Ochiai coefficients for resource-related classes (Group 1) and general classes (Group 2). Figure 5 shows the box plots of the coefficients. The horizontal axis presents the groups,
+# Applying Spectrum-Based Fault Localization to Android Applications
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+# 4 Variations in Resource Settings (RQ3)
+We select three instrumented applications to compare the suspiciousness score in the context of the variation of resource settings. The applications were selected considering the fact that they had failures manifested in three executions, an experimental procedure for dealing with flaky tests . We randomly select settings for each application from 214 possibilities that are able to cause failures in three executions to avoid flaky tests. For instance, SA for application Owntracks is 〈Wi-Fi, !MobileData, !Location, Bluetooth, !Camera, !AutoRotate, !BatterySaver, !DoNotDisturb, !Accelerometer, !Gyroscope, Light, Magnetometer, Orientation, Proximity〉, in which the exclamation mark indicates the disabled resource. We analyze the pairs of ranks and determine the number of methods ranked differently and calculate the percentage of difference in relation to the total number of ranked methods.
+
+In this table, the settings id were labelled to make the presentation more clear.
+
+# 5 DISCUSSION
+We considered 8 applications with test suites created by the developers. In this way, the ranking of faults depends on the quality of these test suites. Since we investigate fault localization in the
+# SBES 2023, September 25–29, 2023, Campo Grande, Brazil
+# Marinho, et al.
+
+context of resource-related failures by looking at RQ2 and RQ3 (Section 3), our analysis relies on instrumented tests, a type of functional tests (Section 3). Therefore, further efforts need to be made to extend the detection of these failures to other levels, e.g., unit and integration tests.
+
+As we answered RQ2, there is no evidence of a difference between the two groups of classes. Therefore, we believe that the ranking of SBFL needs to be improved by differentiating the contribution of the tests to produce a broader program spectra . We can use coverage metrics of failed tests with respect to the methods of resource-related classes. For example, following the same logic as in the study of Zhang et al. , a failed test that covers fewer methods would be more helpful for locating faults than a failed test that covers more methods.
+
+As we answered RQ3, we found an influence of resource settings on the suspiciousness score. Using the example of Figure 3 presented in Section 2, we argue that resource-interactions can be caused by multiple faulty elements as can be seen by the provided correction of the issue 10. Therefore, similar to the study of Zou et al. , we assume that if a failure is caused by multiple faulty elements, a fault will be localized by SBLF if one faulty element is localized. That is, if SBFL indicates one of the faulty elements, the developer can infer the other faulty elements.
+
+We observed that the SBFL is thus a fault localization technique that can be applied in the context of mobile application testing (RQ1). We see two directions to improve the SBFL. The first is to adapt the ranking metrics to leverage the characteristics of mobile applications, for instance, exploring coverage metrics that estimate the use of the resources (e.g., to point out the methods that effectively use the resources). The second is to get feedback from the ranking process to evolve the test suites. For example, creating more tests to improve the coverage of the methods of resource-related classes.
+
+The interplay of software testing and debugging is a well-known demand for software quality assurance . Wang et al.  emphasized the rule of test artifacts as a support mechanism for debugging. In addition, the adoption of the automation of mobile applications testing by developers is influenced by the generation of test cases that improve debugging and traceability between test cases and features.
+
+As we discussed in Section 2, resource-interaction failures have only recently been explored in mobile applications testing. The characterization of the faults behind these failures is an identified demand . In this way, an improved SBFL approach focusing on these faults could be integrated into a toolset to promote quality-related development activities.

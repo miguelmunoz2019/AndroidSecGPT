@@ -1,0 +1,59 @@
+# Academic Journal of Nawroz University (AJNU)
+# Android Security: A Review
+Omar M. Ahmed1 and Amira B. Sallow2
+1Department of Computer Science, Faculty of Science, Zakho University, Duhok, Kurdistan Region – Iraq
+2Department of Computer Science and Information Technology, College of Computer Science & Information Technology, Nawroz University, Duhok, Iraq
+# ABSTRACT
+Smartphones are used by billions of people that means the applications of the smartphone is increasing, it is out of control for applications marketplaces to completely validate if an application is malicious or legitimate. Therefore, it is up to users to choose for themselves whether an application is safe to use or not. It is important to say that there are differences between mobile devices and PC machines in resource management mechanism, the security solutions for computer malware are not compatible with mobile devices. Consequently, the anti-malware organizations and academic researchers have produced and proposed many security methods and mechanisms in order to recognize and classify the security threat of the Android operating system. By means of the proposed methods are different from one to another, they can be arranged into various classifications. In this review paper, the present Android security threats is discussed and present security proposed solutions and attempt to classify the proposed solutions and evaluate them.
+
+KEYWORDS: Android, Security, Smartphone.
+
+# I. INTRODUCTION
+Android is a platform for mobile that is designed and developed to be totally open source. An advanced level of software and hardware can be used by Android applications, in addition to local and server data and information, uncovered by the operating system in order to gets value and innovation to consumers. On the way to guarantee the security of user’s application, information, and data Android platform should be having a powerful security mechanism. In order to provide security for Open source platform, it requires a powerful and severe security architecture. With multilayered security, the architecture of Android platform is designed that gives the flexibility required for an open source platform.
+
+There are huge diversity of Android vulnerabilities are existing which they could appear in many layers of Android operating system’s security, like framework layer or application layer or even Linux Kernel layer. Vulnerabilities as well occurs in benign or any applications by the unintended include of design flaws or coding faults. As mentioned previously, the flawed Android operating system gives the opportunity for hackers or attackers to use it. There is many of security threats exists on Android phones, like Denial of Service attacks, colluding, repackaging apps to inject malicious code, permission escalation, and unauthorized access between the application.
+
+The objective of this paper is for expanding the coverage of malicious application growth, and Android security threats. In this review paper, the main proposed works in Android operating system privacy and security will be covered, and furthermost of the existing deployed tools and techniques.
+
+# 1. Android Platform Security Architecture
+Android is developed by Google at first and then via Open Handset Alliance (OHA) is promoted. The Android platform is located on highest of the Linux kernel which is
+Academic Journal of Nawroz University (AJNU) Volume 6, No 3(2017), 6 pages
+Received 1 May 2017; Accepted 29 August 2017
+Regular research paper: Published 30 August 2017
+Corresponding author’s e-mail: omar.m.a@gmail.com
+Copyright ©2017 Omar M. Ahmed and Amira B. Sallow
+This is an open access article distributed under the Creative Commons Attribution License.
+
+Original article | doi: 10/ajnu.v6n3a97
+# Academic Journal of Nawroz University (AJNU)
+consists of the APIs, libraries, and middleware by writing components, the Android operating system is based, which is organized by five major layers like appeared in Figure 1. Android operating system and platform components and layers are described and analyzed as Threats and Defenses of Android Security (Brähler, 2010).
+
+# Applications
+Fig 1: Android operating system architecture
+The Linux kernel is the most important among all layers of the whole system. This layer for the embedded environment is customized especially containing limited resources. The entire Android operating system is constructed on top of the Linux kernel and by Google extra architectural changes has been made. This layer as well performances as a deliberation layer between the software and hardware layers. The basic system functionality is provided Linux kernel such as the management of device, memory, and process. Beside, an array of device drivers is provided by Linux kernel which makes the job simpler while communicating the peripheral devices with Android.
+
+The native libraries of the Android on top of the Linux kernel were developed. For handling different types of data on the device this layer is enabled. Different useful libraries are provided for Android OS as the well-function. These libraries are developed for a particular hardware and were written in C or C++ language. As an example of native libraries such as for Internet security the SSL libraries are used, for providing various media codecs the Media framework is used, to show 2D or 3D graphics content the OpenGL is used, the common library libc, for storing data the SQLite database engine is used, and to display HTML content the Web browser engine WebKit is used.
+
+The Android runtime has an element named Dalvik Virtual Machine (DVM), which is an interpreter for byte code that has been converted from Java Virtual Machine (JVM) particularly designed and enhanced for Android. From Linux core features the Dalvik takes advantage such as memory management, multitasking execution environment, and multi-threading, which is for Java language it is very essential. Dalvik provides control to applications to work as a process immediately with its own VM and the Linux kernel. While Dalvik is utilizing JVM, which gives clients a group of APIs and libraries to design and create Android application mainly via Java.
+
+Original article | doi: 10/ajnu.v6n3a97
+# Academic Journal of Nawroz University (AJNU)
+# 137
+programming language. The application framework is written in Java and it is a collection of services that together make an environment for managing and running Android applications. As Java classes, the services are provided to applications. These services are allowed for application developers to use in their applications. The main services of application framework are View System, Notifications Manager, Resource Manager, Content Providers, and Activity Manager.
+
+Application layer which is the last layer is placed on the upper of the Android operating system stack. This layer involve both of the preinstalled application and third-party application developed and created by informal application developers, such as Contacts Manager, Browser, and Email apps.
+
+# 2. Android Security Threats
+Android operating system security is designed as a permission-based mechanism which manages and control the admission and approval of third-party Android apps to reach critical resources. This permission-based mechanism is extensively criticized for the inefficient permission management and controlling the application permissions, by end-users, marketers, and developers. Let's say, all permission requests from an app can either be accepted by users to install it or not. Here, the major security threats of the Android will be discussed, which makes the user’s information vulnerable to leak and places the privacy at risk.
+
+# 2. Information Leakage
+The design of the present Android architecture restricts applications from using or accessing other applications or resources except it is approved by the users. Before installing and using an application the user has to grant all access requests of the resources. Information leakage happens when without any restriction from OS the users grant resources. However, permission control mechanism of the Android Operating system ineffectively protect user’s resource and privacy from malware.
+
+# 2. Privilege Escalation
+Privilege escalation threats are utilized by taking advantage of freely accessible Android kernel vulnerabilities to obtain higher or all access to resources which is typically protected from a user or app. Such kind of threat can be a consequence of unauthorized activities from apps with extra privileges than intended, as a result, can lead to many sensitive information leakages. To obtain access to the critical permissions the Android exported components can be exploited.
+
+# 2. Repackaging Apps
+In the Android operating system, one of the most common and important security threat is Repackaging. Repackaging by using reverse-engineering techniques can apply decompiling/disassembling of .apk files and inserting malicious code inside the main source code. By using of repackaging techniques as a normal app with distract the malicious code can be disguised. The differentiate between a normal app and a repackaged malicious code can be difficult because as the same way as the legitimate one the repackaged app typically appears to function.
+
+# 2. Denial of Service Attack
+The growing quantity of mobile devices which they are connected to the Internet as a big network which could be a stage for evolution of DoS attacks. Because the smartphones are not fortified or having less protections compared with PCs, the developers of malicious applications find it as an appropriate platform for DoS attacks. The primarily objectives of DoS attacks are targeting Overusing limited CPU, battery power, memory, and network bandwidth.

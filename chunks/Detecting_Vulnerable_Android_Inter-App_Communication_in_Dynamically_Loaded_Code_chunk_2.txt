@@ -1,0 +1,83 @@
+# A. Collective Static Analysis
+The collective static analysis of DINA aims to statically identify the reflection, DCL and IAC capabilities of each app in the app bundle, by analyzing multiple apps at the same time. DINA is a classloader-based analysis system written in C++ that builds upon JITANA  to statically and dynamically analyze multiple apps simultaneously. This approach is more scalable than compiler-based approaches, such as the popular SOOT, which analyzes the entire code of one app at a time.
+
+We generate two different types of graphs for each app, the method call graph (MCG) and instruction graph (IG). The method call graph maintains the call relationships among the methods defined within the analyzed apps in the bundle, while the instruction graph includes detailed control-flow and data-flow information for a certain method. DINA works on the bytecode level of the target application, and the analysis focuses on the app’s Dalvik bytecode. Algorithm 1 outlines the collective static analysis process, which consists of three major steps:
+1. Preprocessing. We first decompile APKs in the collective app bundle to generate the bytecode of each app and extract its manifest file. Intent filter information for each app is then extracted from the manifest file. This step also involves the generation of MCG for each app and the IG for each method in the method call graph. All extracted information and the generated graphs are stored in a database for fast access.
+
+2. Reflection/DCL analyzer. We then identify DCL and reflective calls using the MCG of each app by detecting DCL and reflection APIs, such as invoke(), newInstance(), and getMethod(). The list of reflection and DCL APIs (i.e., Ref_DCL_API_List in Algorithm 1) is similar to the API list in STADYNA , which mainly includes APIs of dynamic class loading. We extend that list to include additional reflection APIs involving method invocations . As a result, this step identifies the apps that need to be executed in the incremental dynamic analysis module. We further extract the class and method names (call sites) implementing these APIs.
+
+3. Static IAC analyzer. We identify the IAC paths by performing string matching over the IGs of each method to match the Intent action strings that are extracted from the manifest files of all apps. If a matching is found, a new edge will be added between the components of two apps related to the matched Intent action, and the static IAC graph will be augmented via the addEdge() method (Algorithm 1, lines 17–19). Collectively, all the component-level IAC paths will be aggregated to construct a complete static IAC graph (i.e., static_IAC in Algorithm 1) for all the analyzed apps in the app bundle. The generated static IAC graph depicts the communication activities of the apps at the component-level. DINA also identifies the methods responsible for Intent-sending activities within each component of the communicating apps in the static IAC graph.
+
+# B. Incremental Dynamic Analysis
+DINA performs incremental dynamic analysis for each app that contains reflective or DCL calls. The dynamic analysis is
+# Algorithm 1 Collective Static Analysis
+edges pertaining to the identified IAC are added to the graph at runtime.
+
+INPUT: Bundle of Apps: B, Ref _DCL_AP I_List
+OUTPUT: static_IAC, Intent_F ilter_Appi, Ref _Details
+// Preprocessing
+1. static_IAC ← CreateNodes(|B|)
+2.
+
+3. for each Appi ∈ B do← {}Intent_F ilter_Appi
+4. Decompile(Appi)
+5. parse_manifest(Appi)
+6. update(Intent_F ilter_Appi) ← {(Appi, class-name, intent-action-string)}
+7. end for
+8. for each Appi ∈ B do
+9. Generate M CG(Appi)
+10. // Reflection analyzer ∈ M CG(Appi) do for each method
+11. if methodj ∈ Ref _DCL_AP I_List then
+12. update(Ref _Details) ← {(Appi, class-name, method-name)}
+13. end if
+14. // Static IAC Analyzer Generate IG(methodj )
+15. for each instruction ∈ IG(methodj ) do
+16. for each String str in instructionk do
+17. if str ∈ Intent_F ilter_Appr.intent-action-string then
+18. Update static_IAC ← addEdge(Appi, Appr)
+19. end if
+20. end for
+21. end for
+22. end for
+Listing 5: Excerpts from DroidBench’s Echoer app.
+
+capable of capturing and loading code in various formats (i.e. APK, ZIP, JAR, DEX), resolving reflection, and performing IAC analysis incrementally with progressive augmentation of graphs. We modified Android framework for resolving reflective calls and capturing newly loaded codes at runtime.
+
+The incremental dynamic analysis consists of two major steps as described below (see Algorithm 2).
+
+# Resolving reflection and loading new codes.
+
+Every app implementing reflection and DCL will be executed on a real Android device or an emulator. This step aims to capture the dynamic behaviors of the app. To reach the components that implement reflection, we use the reflection details extracted and stored in the database, which includes the component name and the corresponding method name that implement reflection and DCL in each app. These methods/components of an app, regarded as method of interest (MoI), will be exercised in the dynamic analysis for resolving reflection and DCL call sites, which will augment the control-flow and data-flow graphs dynamically. We utilize a fuzzing approach to trigger the components that contain reflection and DCL call sites.
+
+# Dynamic IAC analyzer.
+
+DINA’s dynamic analyzer will execute components to generate dynamic analysis graphs. DINA immediately starts pulling and analyzing files when new dex files or classes are loaded through the DCL mechanism. It not only analyzes the triggered MoIs, but also loads the entire class that the MoI belongs to. All methods within the class will be subsequently analyzed, while some of which may initiate reflection/DCL. After generating the dynamic graphs that are augmented by resolving reflection in real-time (i.e., dynamic_IAC in Algorithm 2), it then performs an incremental analysis approach to detect IAC activities continuously during every augmentation process. In the end, the static IAC graph will be refined to include all the IAC detected inside the dynamically loaded codes after resolving reflection.
+
+# Algorithm 2 Incremental Dynamic Analysis
+INPUT: static_IAC, Ref _Details, Intent_F ilter_Appi
+OUTPUT: dynamic_IAC
+1. dynamic_IAC ← static_IAC // Resolving Reflection and Loading new code
+2. for each Appi do
+3. Install(Appi)
+4. Launch(Appi)
+5. Pull newly loaded code
+6. for each Component ∈ Ref _Details(Appi) do
+7. Find method of interest (MoI)
+8. for each Method ∈ MoI(Appi) do
+9. Execute the component using Monkey (if failed, execute the whole app using Monkey), and incrementally generate IG(methodj)
+10. // Dynamic IAC analyzer for each instruction ∈ IG(methodj) do
+11. for each String str in instruction do
+12. if str matches Intent_F ilter_Appr.action-string then
+13. dynamic_IAC ← addEdge(Appi, Appr)
+14. end if
+15. end for
+16. end for
+17. end for
+18. end for
+uninstall(App)i
+# IAC Vulnerability Analysis
+Algorithm 3 depicts the process of IAC vulnerability analysis. Essentially, it identifies whether the nodes in the dynamic IAC graph constitute a vulnerable path that reveals sensitive information. IAC vulnerability analyzer performs its analysis over all identified IAC paths in the dynamic IAC graph. Then for each path, every node is analyzed, by identifying whether it is a sender or receiver node, and then depth-first search (DFS) is conducted to find if this node can reach a sensitive source method in case of sender node, or can reach a sensitive sink in case the node is receiver. We leverage a sensitive API list that simplifies the widely used SuSi list to identify these sensitive APIs.
+
+Authorized licensed use limited to: Pontificia Universidad Javeriana. Downloaded on August 12, 2024 at 03:20:10 UTC from IEEE Xplore. Restrictions apply.
+
+MoI (identified in Algorithm 2) to seek sensitive sources, of existing colluding apps , specifically benchmark apps while another DFS searches from Intent-receiving method at the receiver (line 12 in Algorithm 3) to look for sensitive sinks. Finally, it marks the complete sensitive paths from the sensitive source to the sensitive sink across multiple apps. Note that these paths are stealthy and difficult to find, as they only appear after loading dynamic codes and resolving reflection calls, but they can be captured by DINA efficiently.
