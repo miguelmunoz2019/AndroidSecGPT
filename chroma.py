@@ -4,8 +4,8 @@ import torch
 import chromadb
 from chromadb.config import Settings
 
-persist_dir = "C:\\Users\\ASUS\\Desktop\\Trabajo tesis 2\\new\\XLM-RoBERTa\\chromadb_store"
-chunks_folder = 'C:\\Users\\ASUS\\Desktop\\Trabajo tesis 2\\new\\XLM-RoBERTa\\chunks'
+persist_dir = "./chromadb_store"
+chunks_folder = './chunks'
 
 client = chromadb.PersistentClient(path=persist_dir, settings=Settings(persist_directory=persist_dir, anonymized_telemetry=False))
 
