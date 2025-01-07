@@ -6,7 +6,7 @@ from chromadb.config import Settings
 
 
 
-# Solicitar datos del usuario
+
 openai.api_key = input("Por favor, ingrese su OpenAI API key: ")
 print("Seleccione la opción con la version del modelo XLM-RoBERTa que desea utilizar: ")
 print("1. xlm-roberta-base")
@@ -14,7 +14,7 @@ print("2. xlm-roberta-large")
 
 xlm_type = input("")
 print(xlm_type)
-# Validar tipo de modelo
+
 if xlm_type == '1':
     model_name = 'xlm-roberta-base'
 elif xlm_type == '2':
@@ -28,7 +28,7 @@ print("1. GPT-3.5")
 print("2. GPT-4.0")
 gpt_type = input("")
 
-# Validar tipo de modelo What security precautions should be taken in order for my app and the data it handles to be secure?
+
 print(gpt_type)
 if gpt_type == '1':
     gptmodel_name = 'gpt-3.5-turbo'
@@ -144,8 +144,8 @@ def completeProcess(query_text):
     
     # Ejecutar el paso 2
     hypothetical_answer = generate_hypothetical_response(query_text)
+     # Ejecutar el paso 3
     hypothetical_embedding = get_hypothetical_embedding(hypothetical_answer)
-
     # Ejecutar el Paso 4
     top_n = 30
     relevant_chunks, chunk_ids = get_relevant_chunks(hypothetical_embedding, collection, top_n=top_n)
@@ -165,38 +165,31 @@ def save_response_to_file(query_text, final_response, file_path="AndroidSecGPTAn
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(f"Pregunta del usuario:\n{query_text}\n\n")
         f.write(f"Respuesta final generada:\n{final_response}\n\n")
-# Lógica según el método de entrada
-if questionType == '1':  # Una pregunta
+
+if questionType == '1':  
     query_text = input("Por favor, ingrese su pregunta: ").strip()
     final_response=completeProcess(query_text)
-     # Mostrar la respuesta final
     print("Respuesta final generada:")
     print(final_response)
-
-    # Ejecutar la función para guardar la respuesta
     document_path = "AndroidSecGPTAnswer.txt"
     save_response_to_file(query_text, final_response, document_path)
-
     print(f"La respuesta ha sido guardada en {document_path}.")
     
 
-elif questionType == '2':  # Múltiples preguntas en consola
+elif questionType == '2': 
     while True:
         query_text = input("Ingrese su pregunta (o escriba 'salir' para terminar): ").strip()
         if query_text.lower() == 'salir':
             break
         final_response=completeProcess(query_text)
-        # Mostrar la respuesta final
         print("Respuesta final generada:")
         print(final_response)
-
-        # Ejecutar la función para guardar la respuesta
         document_path = "AndroidSecGPTAnswer.txt"
         save_response_to_file(query_text, final_response, document_path)
 
         print(f"La respuesta ha sido guardada en {document_path}.")
 
-elif questionType == '3':  # Múltiples preguntas desde archivo Excel
+elif questionType == '3': 
     import pandas as pd
     excel_file = "questions.xlsx"
     df = pd.read_excel(excel_file)
